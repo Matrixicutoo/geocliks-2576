@@ -1,0 +1,66 @@
+{
+  "expo": {
+    "icon": "./assets/icon.png",
+    "android": {
+      "package": "com.timemark_a7k2.runable",
+      "googleServicesFile": "./google-services.json",
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/icon.png",
+        "backgroundColor": "#0B0E13"
+      },
+      "edgeToEdgeEnabled": true,
+      "config": {
+        "googleMaps": {
+          "apiKey": "AIzaSyCooTC1R7KhuG9RoI3dsqqpujHtrpfWGTc"
+        }
+      }
+    },
+    "extra": {
+      "eas": {
+        "projectId": "5a0e9262-b5c1-4da3-ab37-2012eff9013f"
+      },
+      "apiUrl": "https://timemar-nt1ia4s-preview-4200.runable.site/",
+      "applicationId": "timemar-nt1ia4s",
+      "runableAuthIssuer": "https://api.runable.com/api/auth"
+    },
+    "ios": {
+      "bundleIdentifier": "com.timemark_a7k2.runable",
+      "supportsTablet": true,
+      "config": {
+        "googleMapsApiKey": "AIzaSyCooTC1R7KhuG9RoI3dsqqpujHtrpfWGTc"
+      }
+    },
+    "splash": {
+      "image": "./assets/splash-icon.png",
+      "resizeMode": "cover",
+      "backgroundColor": "#0B0E13"
+    },
+    "name": "GeoCliks",
+    "slug": "geocliks",
+    "owner": "matrixicutoo",
+    "version": "1.0.0",
+    "scheme": "runable-timemar-nt1ia4s",
+    "orientation": "portrait",
+    "userInterfaceStyle": "dark",
+    "newArchEnabled": true,
+    "web": {
+      "favicon": "./assets/favicon.png",
+      "bundler": "metro"
+    },
+    "plugins": [
+      "expo-router",
+      "expo-secure-store",
+      "expo-web-browser",
+      "expo-font",
+      "expo-video",
+      [
+        "expo-notifications",
+        {
+          "icon": "./assets/notification-icon.png",
+          "color": "#FFB021"
+        }
+      ],
+      "expo-iap"
+    ]
+  }
+}

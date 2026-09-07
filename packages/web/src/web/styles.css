@@ -1,0 +1,306 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+
+@custom-variant dark (&:is([data-theme="dark"] *));
+
+/* ── GeoCliks design tokens — see /design.md ───────────────────────────────────
+ * The palette is theme-aware: every surface/text token resolves through a
+ * `--c-*` custom property so switching `data-theme` on <html> repaints the whole
+ * app without touching a single component. Light is the default.
+ * Names are kept from the original dark-first palette on purpose (`ink` = page,
+ * `ink-2` = card, `ink-3` = inset, `line` = border, `fog` = muted text,
+ * `chalk` = primary text) so all existing utility classes keep working.
+ * ──────────────────────────────────────────────────────────────────────────── */
+
+/* Light theme — default. */
+:root {
+  --c-ink: #ffffff;
+  --c-ink-2: #f6f8fb;
+  --c-ink-3: #edf1f6;
+  --c-line: #dce3ec;
+  --c-fog: #4b5a6e;
+  --c-chalk: #0b0e13;
+  --c-amber: #ffb021;
+  --c-amber-deep: #b06c00;
+  --c-verified: #0f9d58;
+  --c-alert: #d93a28;
+  --c-sky: #1b7fd4;
+  --c-paper: #f7f8fa;
+
+  /* Textures. */
+  --c-grid: rgba(11, 14, 19, 0.07);
+  --c-grid-fine: rgba(11, 14, 19, 0.05);
+  --c-scan: rgba(11, 14, 19, 0.02);
+  --c-scrollbar-hover: #b8c3d2;
+
+  /* On-amber text: amber is a light fill, so it always carries ink text. */
+  --c-on-amber: #0b0e13;
+}
+
+/* Dark theme — the original field palette. */
+[data-theme="dark"] {
+  --c-ink: #0b0e13;
+  --c-ink-2: #11161e;
+  --c-ink-3: #1a212c;
+  --c-line: #242e3c;
+  --c-fog: #9daaba;
+  --c-chalk: #e8edf4;
+  --c-amber: #ffb021;
+  --c-amber-deep: #e08a00;
+  --c-verified: #1fc16b;
+  --c-alert: #ff5a47;
+  --c-sky: #48a9ff;
+  --c-paper: #f7f8fa;
+
+  --c-grid: rgba(36, 46, 60, 0.55);
+  --c-grid-fine: rgba(36, 46, 60, 0.35);
+  --c-scan: rgba(255, 255, 255, 0.025);
+  --c-scrollbar-hover: #35435a;
+
+  --c-on-amber: #0b0e13;
+}
+
+@theme {
+  --font-display: "Sora", ui-sans-serif, system-ui, sans-serif;
+  --font-sans: "Manrope", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, monospace;
+}
+
+@theme inline {
+  --color-ink: var(--c-ink);
+  --color-ink-2: var(--c-ink-2);
+  --color-ink-3: var(--c-ink-3);
+  --color-line: var(--c-line);
+  --color-amber: var(--c-amber);
+  --color-amber-deep: var(--c-amber-deep);
+  --color-verified: var(--c-verified);
+  --color-alert: var(--c-alert);
+  --color-sky: var(--c-sky);
+  --color-fog: var(--c-fog);
+  --color-chalk: var(--c-chalk);
+  --color-paper: var(--c-paper);
+  --color-on-amber: var(--c-on-amber);
+
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+  --color-background: var(--c-ink);
+  --color-foreground: var(--c-chalk);
+  --color-card: var(--c-ink-2);
+  --color-card-foreground: var(--c-chalk);
+  --color-popover: var(--c-ink-2);
+  --color-popover-foreground: var(--c-chalk);
+  --color-primary: var(--c-amber);
+  --color-primary-foreground: var(--c-on-amber);
+  --color-secondary: var(--c-ink-3);
+  --color-secondary-foreground: var(--c-chalk);
+  --color-muted: var(--c-ink-3);
+  --color-muted-foreground: var(--c-fog);
+  --color-accent: var(--c-ink-3);
+  --color-accent-foreground: var(--c-amber-deep);
+  --color-destructive: var(--c-alert);
+  --color-border: var(--c-line);
+  --color-input: var(--c-line);
+  --color-ring: var(--c-amber);
+  --color-sidebar: var(--c-ink);
+  --color-sidebar-foreground: var(--c-chalk);
+  --color-sidebar-primary: var(--c-amber);
+  --color-sidebar-primary-foreground: var(--c-on-amber);
+  --color-sidebar-accent: var(--c-ink-3);
+  --color-sidebar-accent-foreground: var(--c-chalk);
+  --color-sidebar-border: var(--c-line);
+  --color-sidebar-ring: var(--c-amber);
+}
+
+:root {
+  /* Softened corners. Controls sit at 8px, cards at 12px. The evidence stamp,
+   * QR codes and verified photo frames stay square on purpose. */
+  --radius: 0.75rem;
+  --r-control: 8px;
+  --r-card: 12px;
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+
+  html {
+    background: var(--c-ink);
+  }
+
+  body {
+    @apply bg-ink text-chalk;
+    font-family: var(--font-sans);
+    font-feature-settings: "ss01", "cv01";
+    -webkit-font-smoothing: antialiased;
+    /* Field-software voice: copy runs semibold, never light. Explicit
+     * `font-*` utilities still win wherever a component sets one. */
+    font-weight: 600;
+  }
+
+  /* Body copy and controls sit one notch heavier than a default web page. */
+  p,
+  li,
+  a,
+  label,
+  button,
+  input,
+  select,
+  textarea,
+  th,
+  td {
+    font-weight: inherit;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    font-family: var(--font-display);
+    letter-spacing: -0.02em;
+    font-weight: 800;
+  }
+
+  h5,
+  h6 {
+    font-weight: 700;
+  }
+
+  /* Muted grey copy is the most-read text in the product — it runs bold so it
+   * never looks washed out against the light surfaces. */
+  :where(.text-fog) {
+    font-weight: 700;
+  }
+
+  /* Every control rounds by default so we don't have to touch each call site.
+   * A `rounded-*` utility on the element still wins. */
+  button,
+  input:not([type="checkbox"]):not([type="radio"]),
+  select,
+  textarea {
+    border-radius: var(--r-control);
+  }
+
+  ::selection {
+    background: var(--c-amber);
+    color: var(--c-on-amber);
+  }
+
+  ::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+  }
+  ::-webkit-scrollbar-track {
+    background: var(--c-ink);
+  }
+  ::-webkit-scrollbar-thumb {
+    background: var(--c-line);
+    border: 2px solid var(--c-ink);
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: var(--c-scrollbar-hover);
+  }
+}
+
+@utility mono {
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
+  font-weight: 500;
+}
+
+/* Blueprint grid — the base texture of the product. */
+@utility blueprint {
+  background-image:
+    linear-gradient(to right, var(--c-grid) 1px, transparent 1px),
+    linear-gradient(to bottom, var(--c-grid) 1px, transparent 1px);
+  background-size: 48px 48px;
+}
+
+@utility blueprint-fine {
+  background-image:
+    linear-gradient(to right, var(--c-grid-fine) 1px, transparent 1px),
+    linear-gradient(to bottom, var(--c-grid-fine) 1px, transparent 1px);
+  background-size: 16px 16px;
+}
+
+/* Hero band — a faint blue wash under the top of the landing page, closed off by a
+   soft shadow along its bottom edge. Dark theme keeps the flat page colour. */
+@utility hero-band {
+  background: linear-gradient(180deg, #fafcff 0%, #f2f7fd 62%, #edf4fc 100%);
+  box-shadow: inset 0 -30px 30px -30px rgba(13, 33, 55, 0.22);
+}
+
+[data-theme="dark"] .hero-band {
+  background: var(--c-ink);
+  box-shadow: inset 0 -34px 34px -32px rgba(0, 0, 0, 0.55);
+}
+
+/* Horizontal tab strips on phones: scrollable but no visible bar. */
+@utility scrollbar-none {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+/* Corner-cut evidence card silhouette. */
+@utility cut-corner {
+  clip-path: polygon(0 0, calc(100% - 14px) 0, 100% 14px, 100% 100%, 0 100%);
+}
+
+@utility cut-corner-lg {
+  clip-path: polygon(0 0, calc(100% - 22px) 0, 100% 22px, 100% 100%, 0 100%);
+}
+
+@utility label {
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--c-fog);
+}
+
+@utility scan-lines {
+  background-image: repeating-linear-gradient(
+    to bottom,
+    var(--c-scan) 0px,
+    var(--c-scan) 1px,
+    transparent 1px,
+    transparent 4px
+  );
+}
+
+@keyframes tm-rise {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@utility rise {
+  animation: tm-rise 0.6s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+@keyframes tm-pulse-ring {
+  0% {
+    box-shadow: 0 0 0 0 color-mix(in oklab, var(--c-verified) 40%, transparent);
+  }
+  70% {
+    box-shadow: 0 0 0 10px transparent;
+  }
+  100% {
+    box-shadow: 0 0 0 0 transparent;
+  }
+}
+
+@utility pulse-verified {
+  animation: tm-pulse-ring 2.4s ease-out infinite;
+}

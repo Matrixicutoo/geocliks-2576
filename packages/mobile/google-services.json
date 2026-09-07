@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "222895504630",
+    "project_id": "geocliks-d12b8",
+    "storage_bucket": "geocliks-d12b8.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:222895504630:android:91512c7a9da577507600d7",
+        "android_client_info": {
+          "package_name": "com.timemark_a7k2.runable"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCY9SdUfcPfFM1U573MuCg-JnQGXcIl2yE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
