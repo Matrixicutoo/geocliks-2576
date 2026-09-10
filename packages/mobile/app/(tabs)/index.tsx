@@ -130,6 +130,10 @@ export default function Capture() {
   const [recipient, setRecipient] = useState("");
   const [signaturePath, setSignaturePath] = useState<string | null>(null);
   const [signatureBox, setSignatureBox] = useState<string | null>(null);
+  // Saving on the pad emits the drawing and closes the sheet in the same handler, so the close
+  // callback would still read the pre-save `signaturePath` out of its closure and decide nothing
+  // was signed. The ref holds what the pad last emitted, current at the moment it closes.
+  const signatureRef = useRef<string | null>(null);
   // Off by default: the crew member flips it on for the drops that actually need a
   // signature. A no-contact drop still has to be capturable.
   const [requireSignature, setRequireSignature] = useState(false);
@@ -345,6 +349,7 @@ export default function Capture() {
       setPending(items.length);
       if (pod) {
         setRecipient("");
+        signatureRef.current = null;
         setSignaturePath(null);
         setSignatureBox(null);
       }
@@ -1109,71 +1114,52 @@ export default function Capture() {
 
             <Pressable
               onPress={() => {
-                const next = !requireSignature;
-                setRequireSignature(next);
-                // Ticking it on is the moment the crew member wants to collect a signature, so
-                // open the pad right there instead of making them hunt for it.
-                if (next && !signaturePath) setSignOpen(true);
-                // Unticking takes the pad off the screen, so whatever was drawn on it goes too.
-                // A signature nobody can see before sealing is not one anybody should be sending.
-                if (!next) {
-                  setSignOpen(false);
-                  setSignaturePath(null);
-                  setSignatureBox(null);
-                  setPodError(false);
-                }
+                // No tick box to find: pressing the tab is the request for a signature, and the
+                // pad opens on the spot. It stays required only if something is actually signed,
+                // which the pad reports back through onChange.
+                setRequireSignature(true);
+                setSignOpen(true);
               }}
               onHoverIn={() => setSignHover(true)}
               onHoverOut={() => setSignHover(false)}
-              accessibilityRole="checkbox"
-              accessibilityState={{ checked: requireSignature }}
+              accessibilityRole="button"
               accessibilityLabel={tr("capture.requireSignature")}
-              // The same amber tab as the project and evidence-type selectors above: this is the
-              // control that decides whether a signature gets collected at all, so it reads as an
-              // action rather than a line of fine print. Ticked fills solid, unticked is the same
-              // tab left outlined, and both deepen under a pointer.
+              // The same solid amber tab as the project and evidence-type selectors above, and it
+              // stays amber whatever the state — it is the control that opens the pad, so it reads
+              // as an action. It only deepens under a pointer or a finger.
               style={({ pressed }) => [
                 styles.podToggle,
                 {
                   borderColor: pressed || signHover ? colors.amberDeep : colors.amber,
-                  backgroundColor: requireSignature
-                    ? pressed || signHover
-                      ? colors.amberDeep
-                      : colors.amber
-                    : pressed || signHover
-                      ? "rgba(255,176,33,0.14)"
-                      : "transparent",
+                  backgroundColor: pressed || signHover ? colors.amberDeep : colors.amber,
                 },
               ]}
             >
-              <Ionicons
-                name={requireSignature ? "checkbox" : "square-outline"}
-                size={16}
-                color={requireSignature ? colors.primaryForeground : colors.amber}
-              />
-              <Text
-                style={[
-                  styles.podToggleText,
-                  { color: requireSignature ? colors.primaryForeground : colors.amber },
-                ]}
-              >
+              <Text style={[styles.podToggleText, { color: colors.primaryForeground }]}>
                 {tr("capture.requireSignature")}
               </Text>
             </Pressable>
 
             {/* The pad only exists once a signature is actually being collected. It used to sit
                 there open on every delivery, so every crew member scrolled past an empty box they
-                had no intention of using. */}
+                had no intention of using. Closing the pad with nothing drawn puts it away again. */}
             {requireSignature ? (
               <SignaturePad
                 value={signaturePath}
                 valueBox={signatureBox}
                 open={signOpen}
-                setOpen={setSignOpen}
+                setOpen={(open) => {
+                  setSignOpen(open);
+                  if (!open && !signatureRef.current) setRequireSignature(false);
+                }}
                 onChange={(path, box) => {
+                  signatureRef.current = path;
                   setSignaturePath(path);
                   setSignatureBox(box);
                   setPodError(false);
+                  // Cleared and saved means they changed their mind: drop the requirement so the
+                  // capture is not held back waiting on a signature nobody is collecting.
+                  if (!path) setRequireSignature(false);
                 }}
               />
             ) : null}
