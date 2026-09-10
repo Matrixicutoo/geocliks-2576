@@ -11,6 +11,8 @@ export const it: Catalog = {
   "nav.watermarks": "Filigrane",
   "nav.plan": "Piano",
   "nav.admin": "Console di amministrazione",
+  "shell.menu": "Menu",
+  "shell.closeMenu": "Chiudi il menu",
   "shell.signOut": "Esci",
   "shell.lightTheme": "Tema chiaro",
   "shell.darkTheme": "Tema scuro",

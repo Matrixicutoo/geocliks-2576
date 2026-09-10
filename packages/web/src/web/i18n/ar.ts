@@ -11,6 +11,8 @@ export const ar: Catalog = {
   "nav.watermarks": "العلامات المائية",
   "nav.plan": "الخطة",
   "nav.admin": "لوحة الإدارة",
+  "shell.menu": "القائمة",
+  "shell.closeMenu": "إغلاق القائمة",
   "shell.signOut": "تسجيل الخروج",
   "shell.lightTheme": "المظهر الفاتح",
   "shell.darkTheme": "المظهر الداكن",

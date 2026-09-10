@@ -11,6 +11,8 @@ export const ptBR: Catalog = {
   "nav.watermarks": "Marcas d'água",
   "nav.plan": "Plano",
   "nav.admin": "Console de administração",
+  "shell.menu": "Menu",
+  "shell.closeMenu": "Fechar o menu",
   "shell.signOut": "Sair",
   "shell.lightTheme": "Tema claro",
   "shell.darkTheme": "Tema escuro",

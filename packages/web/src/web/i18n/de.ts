@@ -11,6 +11,8 @@ export const de: Catalog = {
   "nav.watermarks": "Wasserzeichen",
   "nav.plan": "Tarif",
   "nav.admin": "Admin-Konsole",
+  "shell.menu": "Menü",
+  "shell.closeMenu": "Menü schließen",
   "shell.signOut": "Abmelden",
   "shell.lightTheme": "Helles Design",
   "shell.darkTheme": "Dunkles Design",

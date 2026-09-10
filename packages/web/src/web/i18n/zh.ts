@@ -11,6 +11,8 @@ export const zh: Catalog = {
   "nav.watermarks": "水印",
   "nav.plan": "套餐",
   "nav.admin": "管理控制台",
+  "shell.menu": "菜单",
+  "shell.closeMenu": "关闭菜单",
   "shell.signOut": "退出登录",
   "shell.lightTheme": "浅色主题",
   "shell.darkTheme": "深色主题",

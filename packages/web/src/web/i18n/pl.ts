@@ -11,6 +11,8 @@ export const pl: Catalog = {
   "nav.watermarks": "Znaki wodne",
   "nav.plan": "Plan",
   "nav.admin": "Konsola administratora",
+  "shell.menu": "Menu",
+  "shell.closeMenu": "Zamknij menu",
   "shell.signOut": "Wyloguj się",
   "shell.lightTheme": "Motyw jasny",
   "shell.darkTheme": "Motyw ciemny",

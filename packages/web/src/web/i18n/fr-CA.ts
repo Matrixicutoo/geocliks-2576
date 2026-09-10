@@ -11,6 +11,8 @@ export const frCA: Catalog = {
   "nav.watermarks": "Filigranes",
   "nav.plan": "Forfait",
   "nav.admin": "Console d'administration",
+  "shell.menu": "Menu",
+  "shell.closeMenu": "Fermer le menu",
   "shell.signOut": "Se déconnecter",
   "shell.lightTheme": "Thème clair",
   "shell.darkTheme": "Thème sombre",

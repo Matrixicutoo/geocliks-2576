@@ -11,6 +11,8 @@ export const vi: Catalog = {
   "nav.watermarks": "Hình mờ",
   "nav.plan": "Gói",
   "nav.admin": "Bảng quản trị",
+  "shell.menu": "Menu",
+  "shell.closeMenu": "Đóng menu",
   "shell.signOut": "Đăng xuất",
   "shell.lightTheme": "Giao diện sáng",
   "shell.darkTheme": "Giao diện tối",

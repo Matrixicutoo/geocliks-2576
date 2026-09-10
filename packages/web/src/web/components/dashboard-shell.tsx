@@ -36,6 +36,7 @@ import { type TKey, useLocale, useWorkspaceLocale } from "../lib/i18n";
 import { Logo } from "./logo";
 import { LanguageSelect } from "./language-select";
 import { AccountMenu } from "./account-menu";
+import { NavMenu } from "./nav-menu";
 import { canManageWatermarks, canManageWorkspace, canUseDelivery, canUseField } from "../lib/roles";
 
 /** Nav entries a field member can't act on — the pages are manager/owner only. */
@@ -396,23 +397,16 @@ export function DashboardShell({
                 </button>
               )}
               <LanguageSelect compact />
+              {/* Destinations below `lg`, where the sidebar is hidden. One dropdown instead of
+                  the sideways-scrolling pill strip this used to be, so nothing is off-screen. */}
+              <NavMenu
+                items={nav}
+                unread={unread.data?.total ?? 0}
+                showAdmin={Boolean(me.data?.staffRole)}
+              />
               <AccountMenu />
             </div>
           </div>
-          <nav className="scrollbar-none flex gap-1 overflow-x-auto border-t border-line px-3 py-2 lg:hidden">
-            {nav.map((item) => (
-              <Link
-                key={item.href}
-                to={item.href}
-                className={cn(
-                  "rounded-[6px] mono whitespace-nowrap border border-amber bg-amber px-2.5 py-1 text-[10px] uppercase tracking-widest text-on-amber",
-                  location === item.href ? "font-bold" : "font-medium",
-                )}
-              >
-                {t(item.label)}
-              </Link>
-            ))}
-          </nav>
         </header>
 
         <main className="px-4 py-5 sm:px-5 sm:py-6 lg:px-8">{children}</main>

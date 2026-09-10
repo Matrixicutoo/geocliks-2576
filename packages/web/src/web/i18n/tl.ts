@@ -11,6 +11,8 @@ export const tl: Catalog = {
   "nav.watermarks": "Mga watermark",
   "nav.plan": "Plano",
   "nav.admin": "Admin console",
+  "shell.menu": "Menu",
+  "shell.closeMenu": "Isara ang menu",
   "shell.signOut": "Mag-sign out",
   "shell.lightTheme": "Maliwanag na tema",
   "shell.darkTheme": "Madilim na tema",

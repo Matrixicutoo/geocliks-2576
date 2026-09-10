@@ -17,6 +17,8 @@ export const en = {
   "nav.watermarks": "Watermarks",
   "nav.plan": "Plan",
   "nav.admin": "Admin console",
+  "shell.menu": "Menu",
+  "shell.closeMenu": "Close menu",
   "shell.signOut": "Sign out",
   "shell.lightTheme": "Light theme",
   "shell.darkTheme": "Dark theme",
