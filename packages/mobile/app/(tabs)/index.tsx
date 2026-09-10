@@ -772,7 +772,10 @@ export default function Capture() {
                   styles.modeText,
                   {
                     color: active ? colors.amber : colors.mutedForeground,
-                    fontFamily: Fonts?.mono,
+                    // Sora bold rather than the mono face: these are the three words that say
+                    // what the shutter is about to do, so they carry the same weight as the
+                    // REQUIRE SIGNATURE tab instead of reading as small print.
+                    fontFamily: Fonts?.display,
                   },
                 ]}
               >
@@ -782,6 +785,13 @@ export default function Capture() {
           );
         })}
       </View>
+
+      {/* What the seal actually guarantees, sitting with the mode tabs it describes. At the foot
+          of the scroller it was below the fold on a short phone, so the one line explaining why
+          the timestamp can be trusted was the line nobody read. */}
+      <Text style={[styles.hint, { color: colors.mutedForeground }]}>
+        {tr("capture.hintSeal")}
+      </Text>
 
       <ScrollView
         style={styles.controls}
@@ -1202,9 +1212,6 @@ export default function Capture() {
           </Pressable>
         </View>
 
-        <Text style={[styles.hint, { color: colors.mutedForeground }]}>
-          {tr("capture.hintSeal")}
-        </Text>
       </ScrollView>
     </SafeAreaView>
   );
@@ -1430,7 +1437,7 @@ const styles = StyleSheet.create({
     paddingVertical: 9,
     borderBottomWidth: 2,
   },
-  modeText: { fontSize: 10.5, letterSpacing: 1.2 },
+  modeText: { fontSize: 12.5, letterSpacing: 1.2 },
   videoNote: {
     flexDirection: "row",
     alignItems: "flex-start",
@@ -1453,5 +1460,11 @@ const styles = StyleSheet.create({
     borderRadius: 8,
   },
   clockBtnText: { fontSize: 13, fontWeight: "600" },
-  hint: { fontSize: 11, textAlign: "center", marginTop: 12, lineHeight: 17 },
+  hint: {
+    fontSize: 11,
+    textAlign: "center",
+    marginTop: 8,
+    marginHorizontal: 16,
+    lineHeight: 16,
+  },
 });
