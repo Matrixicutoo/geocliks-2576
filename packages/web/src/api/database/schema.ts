@@ -28,7 +28,7 @@ export const members = sqliteTable(
     id: text("id").primaryKey(),
     orgId: text("org_id").notNull(),
     userId: text("user_id").notNull(),
-    role: text("role").notNull().default("field"), // owner | admin | manager | field
+    role: text("role").notNull().default("field"), // owner | admin | manager | dispatcher | field
     title: text("title"),
     // Set when the user deliberately lands in this workspace (accepting a crew invite). It wins
     // over ownership when resolving which workspace a multi-membership user is working in, so an
@@ -126,7 +126,14 @@ export const photos = sqliteTable(
     capturedAt: integer("captured_at", { mode: "timestamp_ms" }).notNull(),
     verifiedAt: integer("verified_at", { mode: "timestamp_ms" }).notNull().$defaultFn(now),
     timeSource: text("time_source").notNull().default("network"), // network | device
+    /**
+     * Device clock error: deviceTime - serverTime, measured from a trusted sync.
+     * NOT the upload delay — a photo drained from the offline queue hours later
+     * still has near-zero skew if the phone's clock was right when it was taken.
+     */
     clockSkewMs: integer("clock_skew_ms").notNull().default(0),
+    /** How long the photo sat before it reached the server (queue/dead-zone time). */
+    uploadDelayMs: integer("upload_delay_ms").notNull().default(0),
     lat: real("lat"),
     lng: real("lng"),
     accuracyM: real("accuracy_m"),

@@ -9,10 +9,10 @@
  * The coordinates it plots are already printed on the same page in the LOCATION field, so this
  * exposes nothing the code lookup did not already return.
  */
-import { eq } from "drizzle-orm";
+import { inArray } from "drizzle-orm";
 import { db } from "../database";
 import * as schema from "../database/schema";
-import { normalizeCode } from "./photo-code";
+import { codeCandidates, normalizeCode } from "./photo-code";
 import { fetchStaticMap, placeholderSvg, staticMapUrl } from "./static-map";
 
 const clamp = (value: number, min: number, max: number) => Math.min(max, Math.max(min, value));
@@ -27,13 +27,16 @@ export async function verifyMapImage(rawCode: string, url: URL): Promise<Respons
   const width = clamp(Number(url.searchParams.get("w")) || 1280, 200, 640 * 2);
   const height = clamp(Number(url.searchParams.get("h")) || 320, 120, 640 * 2);
 
+  // Canonical form for the cache key; both prefixes for the lookup, so a code
+  // printed before the GeoCliks rename still resolves to its map.
   const code = normalizeCode(rawCode);
-  if (!code) return svg("UNKNOWN CODE", width, height, 404);
+  const candidates = codeCandidates(rawCode);
+  if (candidates.length === 0) return svg("UNKNOWN CODE", width, height, 404);
 
   const [photo] = await db
     .select({ lat: schema.photos.lat, lng: schema.photos.lng })
     .from(schema.photos)
-    .where(eq(schema.photos.photoCode, code));
+    .where(inArray(schema.photos.photoCode, candidates));
   if (!photo) return svg("UNKNOWN CODE", width, height, 404);
   if (typeof photo.lat !== "number" || typeof photo.lng !== "number") {
     return svg("NO GPS FIX", width, height, 200);

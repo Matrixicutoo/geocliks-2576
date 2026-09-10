@@ -46,4 +46,13 @@ export async function loadSocialLinks(): Promise<SocialLinks> {
  */
 export const site = {
   socials: base.handler(async () => loadSocialLinks()),
+  /**
+   * Which optional social sign-ins are actually configured, so the auth pages never render a
+   * button that would fail the moment someone pressed it. The flag is computed inline rather
+   * than imported from api/auth.ts on purpose: importing that module here would drag the whole
+   * betterAuth() construction into this route and risk an import cycle.
+   */
+  authProviders: base.handler(async () => ({
+    x: Boolean(process.env.TWITTER_CLIENT_ID && process.env.TWITTER_CLIENT_SECRET),
+  })),
 };

@@ -305,7 +305,7 @@ export default function VerifyPage() {
               aria-label={t("verify.lookupLabel")}
               value={input}
               onChange={(e) => setInput(e.target.value)}
-              placeholder="TM-XXXX-XXXX-XXXX"
+              placeholder="GC-XXXX-XXXX-XXXX"
               className="mono min-w-[220px] flex-1 rounded-[8px] border border-line bg-ink px-3 py-3 text-[13px] tracking-widest text-chalk outline-none placeholder:text-fog/60 focus:border-amber"
             />
             <button

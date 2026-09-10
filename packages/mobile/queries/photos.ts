@@ -1,8 +1,12 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { orpc } from "@/lib/api";
+import { useHasSession } from "@/hooks/use-session";
 
 export function usePhotos(filter: {
   projectId?: string | null;
+  /** Personal captures — everything not filed under a project yet. */
+  unassigned?: boolean;
+  kind?: "photo" | "video";
   tag?:
     | "general"
     | "before"
@@ -30,8 +34,13 @@ export function usePhoto(id: string | null) {
   );
 }
 
+// Off until signed in — the capture screen reads it, and video allowance is a plan
+// question, so there is nothing to ask about before there is a workspace.
 export function useVideoPolicy() {
-  return useQuery(orpc.photos.videoPolicy.queryOptions({ staleTime: 60_000 }));
+  const { hasSession } = useHasSession();
+  return useQuery(
+    orpc.photos.videoPolicy.queryOptions({ staleTime: 60_000, enabled: hasSession }),
+  );
 }
 
 export function usePhotoStats() {
@@ -54,4 +63,14 @@ export function useVerifyPhoto() {
 export function useRemovePhoto() {
   const invalidate = useInvalidatePhotos();
   return useMutation(orpc.photos.remove.mutationOptions({ onSuccess: invalidate }));
+}
+
+/**
+ * File personal captures under a project (or send them back to the personal page with
+ * `projectId: null`). Takes a list because the same call serves one capture from the
+ * detail sheet and a whole selection later.
+ */
+export function useMovePhotos() {
+  const invalidate = useInvalidatePhotos();
+  return useMutation(orpc.photos.move.mutationOptions({ onSuccess: invalidate }));
 }

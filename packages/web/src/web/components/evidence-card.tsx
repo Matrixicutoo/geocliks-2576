@@ -1,14 +1,22 @@
-import { Check, Clock, MapPin, Play, ShieldAlert, ShieldCheck } from "lucide-react";
+import { Check, FolderOpen, MapPin, Play, ShieldAlert, ShieldCheck } from "lucide-react";
 import { type TKey, useT } from "../lib/i18n";
 import { cn } from "../lib/utils";
 import { PhotoShareButton } from "./share-menu";
+
+/**
+ * A timestamp as it can legitimately reach the client. The API layer hands back real `Date`
+ * objects, cached/serialized payloads hand back ISO strings, and locally-computed values are
+ * epoch milliseconds. All three are valid `new Date(...)` inputs, so display helpers accept
+ * the union rather than forcing every call site to normalize.
+ */
+export type Stamp = number | string | Date;
 
 export type EvidencePhoto = {
   id: string;
   photoCode: string;
   url: string;
-  capturedAt: number;
-  verifiedAt?: number | null;
+  capturedAt: Stamp;
+  verifiedAt?: Stamp | null;
   lat?: number | null;
   lng?: number | null;
   address?: string | null;
@@ -43,7 +51,7 @@ export const TAG_LABEL: Record<string, TKey> = {
   delivery: "tag.delivery",
 };
 
-export function formatStamp(ms: number) {
+export function formatStamp(ms: Stamp) {
   return new Date(ms).toLocaleString("en-US", {
     year: "numeric",
     month: "2-digit",
@@ -172,7 +180,8 @@ export function EvidenceCard({
           <span className="line-clamp-1">{photo.address ?? t("photo.addressUnavailable")}</span>
         </p>
         <p className="flex items-center gap-1.5 text-[11px] text-fog">
-          <Clock className="size-3 shrink-0" />
+          {/* Project line, not a time field — the icon has to say "job", not "clock". */}
+          <FolderOpen className="size-3 shrink-0" />
           <span className="truncate">{photo.projectName || t("queue.unassigned")}</span>
         </p>
       </div>

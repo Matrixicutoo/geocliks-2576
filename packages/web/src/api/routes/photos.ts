@@ -1,14 +1,14 @@
 import { z } from "zod";
 import { ORPCError } from "@orpc/server";
-import { and, count, desc, eq, gte, inArray, lte, sql } from "drizzle-orm";
-import { orgProc, requireRole, visibleProjectIds } from "../middleware/auth";
+import { and, count, desc, eq, gte, inArray, isNull, lte, or, sql } from "drizzle-orm";
+import { fieldProc, isManager, orgProc, requireRole, visibleProjectIds } from "../middleware/auth";
 import { db } from "../database";
 import * as schema from "../database/schema";
 import { id, photoCode } from "../lib/ids";
 import { planOf, videoAllowance } from "../lib/plans";
 import { photoUrl } from "../lib/media";
 import { deleteObject, getObjectBytes } from "../lib/s3";
-import { SKEW_TOLERANCE_MS, sha256, sign, timeSourceFor, verifySignature } from "../lib/verify";
+import { resolveClock, sha256, sign, verifySignature } from "../lib/verify";
 import { burnStamp, hasFfmpeg, posterFrame } from "../lib/video";
 
 const tagEnum = z.enum([
@@ -42,6 +42,25 @@ export async function decoratePhotos(rows: PhotoRow[]) {
   );
 }
 
+/**
+ * Cards show the project a capture is filed under. The photo row only carries `projectId`, so
+ * without this lookup every card fell back to "Unassigned" even after the photo was filed.
+ * One extra query for the whole page, not one per row.
+ */
+async function withProjectNames<T extends { projectId: string | null }>(rows: T[]) {
+  const ids = [...new Set(rows.map((r) => r.projectId).filter((v): v is string => !!v))];
+  if (ids.length === 0) return rows.map((r) => ({ ...r, projectName: null as string | null }));
+  const found = await db
+    .select({ id: schema.projects.id, name: schema.projects.name })
+    .from(schema.projects)
+    .where(inArray(schema.projects.id, ids));
+  const names = new Map(found.map((p) => [p.id, p.name]));
+  return rows.map((r) => ({
+    ...r,
+    projectName: r.projectId ? (names.get(r.projectId) ?? null) : null,
+  }));
+}
+
 export const photos = {
   /** Teamspace feed — every crew photo, newest first, with filters. */
   list: orgProc
@@ -49,6 +68,15 @@ export const photos = {
       z
         .object({
           projectId: z.string().nullish(),
+          /**
+           * Personal captures: everything not filed under a project yet. Anything shot
+           * without an account arrives this way, and so does a signed-in capture left on
+           * "Unassigned". Kept as a filter rather than an auto-created project so it never
+           * eats one of the three projects a free workspace is allowed.
+           */
+          unassigned: z.boolean().optional(),
+          /** Split the personal page into stills and clips. */
+          kind: z.enum(["photo", "video"]).optional(),
           userId: z.string().nullish(),
           tag: tagEnum.nullish(),
           search: z.string().nullish(),
@@ -63,6 +91,8 @@ export const photos = {
       const allowed = await visibleProjectIds(context.org.id, context.user.id, context.role);
       const filters = [eq(schema.photos.orgId, context.org.id)];
       if (input?.projectId) filters.push(eq(schema.photos.projectId, input.projectId));
+      if (input?.unassigned) filters.push(isNull(schema.photos.projectId));
+      if (input?.kind) filters.push(eq(schema.photos.kind, input.kind));
       if (input?.userId) filters.push(eq(schema.photos.userId, input.userId));
       if (input?.tag) filters.push(eq(schema.photos.tag, input.tag));
       if (input?.from) filters.push(gte(schema.photos.capturedAt, new Date(input.from)));
@@ -74,8 +104,18 @@ export const photos = {
         );
       }
       if (allowed) {
-        if (allowed.length === 0) return { photos: [], total: 0 };
-        filters.push(inArray(schema.photos.projectId, allowed));
+        // A field member sees the projects they are assigned to, PLUS their own personal
+        // captures — anything they shot that is not filed under a project yet, which is how
+        // everything captured before signing in arrives. Never anyone else's unfiled work,
+        // and note a field member with no project assignments still has a personal page,
+        // so this can no longer return early on an empty assignment list.
+        const own = and(
+          isNull(schema.photos.projectId),
+          eq(schema.photos.userId, context.user.id),
+        )!;
+        filters.push(
+          allowed.length === 0 ? own : or(inArray(schema.photos.projectId, allowed), own)!,
+        );
       }
 
       const where = and(...filters);
@@ -88,7 +128,10 @@ export const photos = {
         .offset(input?.offset ?? 0);
       const [total] = await db.select({ value: count() }).from(schema.photos).where(where);
 
-      return { photos: await decoratePhotos(rows), total: total?.value ?? 0 };
+      return {
+        photos: await withProjectNames(await decoratePhotos(rows)),
+        total: total?.value ?? 0,
+      };
     }),
 
   get: orgProc.input(z.object({ id: z.string() })).handler(async ({ input, context }) => {
@@ -97,6 +140,19 @@ export const photos = {
       .from(schema.photos)
       .where(and(eq(schema.photos.id, input.id), eq(schema.photos.orgId, context.org.id)));
     if (!photo) throw new ORPCError("NOT_FOUND", { message: "Photo not found" });
+
+    // Scope-restricted roles (field crew, drivers) may only open a photo they could already
+    // see in their own feed: one filed under a project they are assigned to, or one they shot
+    // themselves. Without this, knowing an id was enough to read any photo in the workspace.
+    // NOT_FOUND rather than FORBIDDEN so the reply never confirms the id exists.
+    const scoped = await visibleProjectIds(context.org.id, context.user.id, context.role);
+    if (
+      scoped &&
+      photo.userId !== context.user.id &&
+      !(photo.projectId && scoped.includes(photo.projectId))
+    ) {
+      throw new ORPCError("NOT_FOUND", { message: "Photo not found" });
+    }
 
     const events = await db
       .select()
@@ -130,6 +186,13 @@ export const photos = {
         storageKey: z.string(),
         projectId: z.string().nullish(),
         capturedAt: z.number(),
+        /**
+         * serverTime - deviceTime, measured by the device against the server while
+         * online. Optional so older app builds keep uploading.
+         */
+        clockOffsetMs: z.number().nullish(),
+        /** Device clock when that offset was measured. */
+        clockSyncedAt: z.number().nullish(),
         lat: z.number().nullish(),
         lng: z.number().nullish(),
         accuracyM: z.number().nullish(),
@@ -168,7 +231,7 @@ export const photos = {
           );
         if ((used?.value ?? 0) >= plan.limits.photosPerMonth) {
           throw new ORPCError("PAYMENT_REQUIRED", {
-          status: 402,
+            status: 402,
             message: `${plan.name} covers ${plan.limits.photosPerMonth} photos per month. Upgrade to keep capturing.`,
           });
         }
@@ -181,21 +244,27 @@ export const photos = {
         const allowance = videoAllowance(plan, context.org.createdAt);
         if (!allowance.enabled) {
           throw new ORPCError("PAYMENT_REQUIRED", {
-          status: 402,
+            status: 402,
             message: `Verified video on ${plan.name} runs for the first ${allowance.trialDays} days. Upgrade to keep recording clips.`,
           });
         }
         const seconds = (input.durationMs ?? 0) / 1000;
         if (seconds > allowance.maxSeconds + 1) {
           throw new ORPCError("PAYMENT_REQUIRED", {
-          status: 402,
+            status: 402,
             message: `${plan.name} clips are capped at ${allowance.maxSeconds}s. This one is ${Math.round(seconds)}s.`,
           });
         }
       }
 
       const verifiedAt = Date.now();
-      const skew = input.capturedAt - verifiedAt;
+      const clock = resolveClock({
+        capturedAt: input.capturedAt,
+        verifiedAt,
+        clockOffsetMs: input.clockOffsetMs,
+        clockSyncedAt: input.clockSyncedAt,
+      });
+      const skew = clock.skewMs;
       const code = photoCode();
 
       const stampData = {
@@ -249,7 +318,8 @@ export const photos = {
           capturedAt: new Date(input.capturedAt),
           verifiedAt: new Date(verifiedAt),
           clockSkewMs: skew,
-          timeSource: timeSourceFor(skew),
+          uploadDelayMs: clock.uploadDelayMs,
+          timeSource: clock.timeSource,
           lat: input.lat ?? null,
           lng: input.lng ?? null,
           accuracyM: input.accuracyM ?? null,
@@ -276,7 +346,7 @@ export const photos = {
           stampBurned: burn?.burned ?? false,
           stampData,
           signature,
-          integrity: Math.abs(skew) <= SKEW_TOLERANCE_MS ? "verified" : "unverified",
+          integrity: clock.integrity,
         })
         .returning();
 
@@ -296,7 +366,7 @@ export const photos = {
           orgId: context.org.id,
           type: "verified",
           actor: "GeoCliks server",
-          detail: `Network time stamped, skew ${Math.round(skew / 1000)}s, signature ${signature.slice(0, 16)}…`,
+          detail: `Network time stamped, clock skew ${Math.round(skew / 1000)}s, upload delay ${Math.round(clock.uploadDelayMs / 1000)}s, signature ${signature.slice(0, 16)}…`,
           at: new Date(verifiedAt),
         },
       ]);
@@ -383,7 +453,7 @@ export const photos = {
     };
   }),
 
-  update: orgProc
+  update: fieldProc
     .input(
       z.object({
         id: z.string(),
@@ -404,15 +474,13 @@ export const photos = {
       return photo;
     }),
 
-  move: orgProc
+  move: fieldProc
     .input(z.object({ ids: z.array(z.string()).min(1), projectId: z.string().nullable() }))
     .handler(async ({ input, context }) => {
       await db
         .update(schema.photos)
         .set({ projectId: input.projectId })
-        .where(
-          and(eq(schema.photos.orgId, context.org.id), inArray(schema.photos.id, input.ids)),
-        );
+        .where(and(eq(schema.photos.orgId, context.org.id), inArray(schema.photos.id, input.ids)));
       return { moved: input.ids.length };
     }),
 
@@ -423,7 +491,9 @@ export const photos = {
    * workspace. Demo photos live in the web bundle, so their keys are never touched.
    */
   remove: orgProc.input(z.object({ id: z.string() })).handler(async ({ input, context }) => {
-    if (context.role === "field") throw new ORPCError("FORBIDDEN", { message: DELETE_DENIED });
+    // Field crew and dispatchers can never delete evidence - a dispatcher runs the delivery
+    // board, which is not the same authority as destroying proof of work.
+    if (!isManager(context.role)) throw new ORPCError("FORBIDDEN", { message: DELETE_DENIED });
     const [photo] = await db
       .select()
       .from(schema.photos)
@@ -446,7 +516,7 @@ export const photos = {
   removeMany: orgProc
     .input(z.object({ ids: z.array(z.string()).min(1).max(200) }))
     .handler(async ({ input, context }) => {
-      if (context.role === "field") throw new ORPCError("FORBIDDEN", { message: DELETE_DENIED });
+      if (!isManager(context.role)) throw new ORPCError("FORBIDDEN", { message: DELETE_DENIED });
       const rows = await db
         .select()
         .from(schema.photos)
@@ -455,7 +525,11 @@ export const photos = {
       let deleted = 0;
       let skipped = 0;
       for (const photo of rows) {
-        if (photo.userId !== context.user.id && context.role !== "admin" && context.role !== "owner") {
+        if (
+          photo.userId !== context.user.id &&
+          context.role !== "admin" &&
+          context.role !== "owner"
+        ) {
           skipped += 1;
           continue;
         }
@@ -471,7 +545,7 @@ export const photos = {
     }),
 
   /** Map pins for the dashboard map view. */
-  map: orgProc
+  map: fieldProc
     .input(z.object({ projectId: z.string().nullish() }).optional())
     .handler(async ({ input, context }) => {
       // Field crews only see pins from the projects they are assigned to — same rule the
@@ -511,7 +585,7 @@ export const photos = {
     }),
 
   /** Dashboard headline stats. */
-  stats: orgProc.handler(async ({ context }) => {
+  stats: fieldProc.handler(async ({ context }) => {
     // A field member's counters cover the projects they are assigned to, never the whole
     // workspace — otherwise the Teamspace tiles leak how much work exists on other jobs.
     const allowed = await visibleProjectIds(context.org.id, context.user.id, context.role);
@@ -619,9 +693,9 @@ export const photos = {
           const afterProject = row.after?.projectId;
           return Boolean(
             beforeProject &&
-              afterProject &&
-              visibleProjects.has(beforeProject) &&
-              visibleProjects.has(afterProject),
+            afterProject &&
+            visibleProjects.has(beforeProject) &&
+            visibleProjects.has(afterProject),
           );
         });
       }),

@@ -1,6 +1,15 @@
 import { useState } from "react";
 import { Link } from "wouter";
-import { Camera, ShieldCheck, Users, MapPin, Search, ImageOff, Loader2, Trash2 } from "lucide-react";
+import {
+  Camera,
+  ShieldCheck,
+  Users,
+  MapPin,
+  Search,
+  ImageOff,
+  Loader2,
+  Trash2,
+} from "lucide-react";
 import { DashboardShell } from "../components/dashboard-shell";
 import { StatTile } from "../components/stat-tile";
 import { EvidenceCard, EvidenceSkeleton } from "../components/evidence-card";
@@ -13,6 +22,7 @@ import { useOrg, useUpdateOrg } from "../queries/orgs";
 import { useSeedDemo } from "../queries/demo";
 import { cn } from "../lib/utils";
 import { useT, type TKey } from "../lib/i18n";
+import { canManageWorkspace } from "../lib/roles";
 
 const TAGS = [
   "all",
@@ -58,7 +68,7 @@ export default function TeamspacePage() {
    */
   const askOrgName = Boolean(org.data?.needsName) && canRenameOrg && !hideNamePrompt;
   /** Field crews capture evidence; only manager and above can remove it. */
-  const canDelete = org.data?.role !== "field";
+  const canDelete = canManageWorkspace(org.data?.role);
 
   const stats = usePhotoStats();
   const projects = useProjects();
@@ -285,10 +295,7 @@ export default function TeamspacePage() {
                       type="button"
                       disabled={removeMany.isPending}
                       onClick={() => {
-                        removeMany.mutate(
-                          { ids: selected },
-                          { onSuccess: () => setSelected([]) },
-                        );
+                        removeMany.mutate({ ids: selected }, { onSuccess: () => setSelected([]) });
                       }}
                       className="rounded-[8px] mono flex items-center gap-1.5 border border-alert/60 bg-alert/10 px-3 py-1.5 text-[11px] uppercase tracking-widest text-alert hover:bg-alert/20 disabled:opacity-60"
                     >

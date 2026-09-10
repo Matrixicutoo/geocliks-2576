@@ -2,6 +2,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import {
   ActivityIndicator,
   Image,
+  Modal,
   Platform,
   Pressable,
   ScrollView,
@@ -23,7 +24,9 @@ import { useT, type TKey } from "@/lib/i18n";
 import { LanguageMenu } from "@/components/language-menu";
 import { ProfileMenu } from "@/components/profile-menu";
 import { useInvalidatePhotos, useVideoPolicy } from "@/queries/photos";
-import { drainQueue, enqueue, readQueue, type QueuedPhoto } from "@/lib/queue";
+import { useHasSession } from "@/hooks/use-session";
+import { drainQueue, enqueue, readQueue, subscribeQueue, type QueuedPhoto } from "@/lib/queue";
+import { clockStampForCapture, ensureClockSync } from "@/lib/clock";
 import { SignaturePad } from "@/components/signature-pad";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
@@ -106,10 +109,8 @@ export default function Capture() {
     requireSignature?: string;
   }>();
   const stopId = typeof params.stopId === "string" && params.stopId ? params.stopId : null;
-  const stopRouteId =
-    typeof params.routeId === "string" && params.routeId ? params.routeId : null;
-  const stopOutcome: "delivered" | "failed" =
-    params.outcome === "failed" ? "failed" : "delivered";
+  const stopRouteId = typeof params.routeId === "string" && params.routeId ? params.routeId : null;
+  const stopOutcome: "delivered" | "failed" = params.outcome === "failed" ? "failed" : "delivered";
 
   const [permission, requestPermission] = useCameraPermissions();
   const [micPermission, requestMicPermission] = useMicrophonePermissions();
@@ -118,6 +119,10 @@ export default function Capture() {
   const [mode, setMode] = useState<Mode>("photo");
   const [tagOpen, setTagOpen] = useState(false);
   const [projectOpen, setProjectOpen] = useState(false);
+  // Hover only fires on web (Expo web preview / desktop); on a phone the same darkening is
+  // driven by Pressable's `pressed` state, so the bars react to both a mouse and a finger.
+  const [projectHover, setProjectHover] = useState(false);
+  const [tagHover, setTagHover] = useState(false);
   const [tag, setTag] = useState<QueuedPhoto["tag"]>("general");
   // Last tag used outside CLOCK mode — restored on launch and when returning to photo/video.
   const [photoTag, setPhotoTag] = useState<QueuedPhoto["tag"]>("general");
@@ -155,6 +160,9 @@ export default function Capture() {
   const invalidate = useInvalidatePhotos();
   const policy = useVideoPolicy();
   const tr = useT();
+  const { hasSession } = useHasSession();
+  // Photos work signed out; video does not, because the plan that governs clip length lives
+  // on the workspace. A signed-out record press opens the register/login prompt.
 
   const template = templates.data?.find((t) => t.isDefault) ?? templates.data?.[0] ?? null;
   const project = projects.data?.find((p) => p.id === projectId) ?? null;
@@ -167,8 +175,12 @@ export default function Capture() {
     return () => clearInterval(timer);
   }, []);
 
+  // Read the count once, then follow it. The queue also drains from the root layout the
+  // moment someone signs in, and without the subscription the badge kept showing the
+  // pre-sign-in count over an already empty queue.
   useEffect(() => {
     void readQueue().then((items) => setPending(items.length));
+    return subscribeQueue((items) => setPending(items.length));
   }, []);
 
   // Restore the remembered evidence type. Validated against TAGS so a value left behind by an
@@ -265,6 +277,12 @@ export default function Capture() {
     void refreshFix();
   }, [refreshFix]);
 
+  // Re-measure the device clock against the server whenever the capture screen opens.
+  // Offline this is a no-op that keeps the last good offset.
+  useEffect(() => {
+    void ensureClockSync();
+  }, []);
+
   useEffect(() => {
     if (isNative && permission && !permission.granted && permission.canAskAgain) {
       void requestPermission();
@@ -276,15 +294,24 @@ export default function Capture() {
       uri: string,
       width: number | null,
       height: number | null,
-      extra: { kind?: "photo" | "video"; durationMs?: number | null; tag?: QueuedPhoto["tag"] } = {},
+      extra: {
+        kind?: "photo" | "video";
+        durationMs?: number | null;
+        tag?: QueuedPhoto["tag"];
+      } = {},
     ) => {
       const capturedAt = Date.now();
+      // Stamp the capture with the clock offset that was true at shutter time. Read
+      // from storage, so it works with no signal — that is the whole point.
+      const clockStamp = await clockStampForCapture();
       const finalTag = extra.tag ?? tag;
       const pod = finalTag === "pickup" || finalTag === "delivery";
       const item: QueuedPhoto = {
         id: `q_${capturedAt}_${Math.random().toString(36).slice(2, 8)}`,
         uri,
         capturedAt,
+        clockOffsetMs: clockStamp.clockOffsetMs,
+        clockSyncedAt: clockStamp.clockSyncedAt,
         projectId,
         projectName: project?.name ?? null,
         tag: finalTag,
@@ -321,6 +348,14 @@ export default function Capture() {
         setSignatureBox(null);
       }
       if ((extra.kind ?? "photo") === "photo") setLastShot(uri);
+      // Signed out the camera still works, but there is no session to presign or seal an
+      // upload with. The capture stays in the same offline queue a dead-zone photo uses and
+      // drains by itself the moment an account exists — see hooks/use-drain-on-signin.ts.
+      if (!hasSession) {
+        setStatus(tr("capture.savedLocal"));
+        setTimeout(() => setStatus(null), 4000);
+        return;
+      }
       setStatus(tr("capture.uploadingQueued"));
       const result = await drainQueue();
       const left = await readQueue();
@@ -341,6 +376,7 @@ export default function Capture() {
     },
     [
       fix,
+      hasSession,
       invalidate,
       params.note,
       params.reason,
@@ -402,6 +438,13 @@ export default function Capture() {
 
   const record = async () => {
     if (busy) return;
+    /*
+      Signed out, video records and queues exactly like a photo — no account gate.
+      There is no plan to read without a session, so `maxSeconds` falls back to 30,
+      which is the Free cap, and `videoLocked` computes false. The clip is sealed on
+      sign-in; if that workspace's Free video window has already lapsed the server
+      refuses it and drainQueue marks the item with the error rather than dropping it.
+    */
     if (videoLocked) {
       setStatus(
         policy.data?.reason === "trial_expired"
@@ -485,6 +528,9 @@ export default function Capture() {
     address: fix.address,
     project: project?.name ?? null,
     company: template?.companyLine ?? org.data?.org.name ?? null,
+    // A template without its own logo falls back to the workspace's business logo, so the
+    // one upload in settings is enough for the stamp to carry the brand.
+    logoUrl: template?.showLogo ? (template.logoUrl ?? org.data?.org?.logoUrl ?? null) : null,
     verified: true,
   };
 
@@ -508,10 +554,7 @@ export default function Capture() {
         </View>
         <View style={styles.headerRight}>
           <View
-            style={[
-              styles.chip,
-              { borderColor: pending > 0 ? colors.amber : colors.verified },
-            ]}
+            style={[styles.chip, { borderColor: pending > 0 ? colors.amber : colors.verified }]}
           >
             <Ionicons
               name={pending > 0 ? "cloud-upload-outline" : "shield-checkmark-outline"}
@@ -556,7 +599,9 @@ export default function Capture() {
         </Pressable>
       ) : null}
 
-      <View style={[styles.viewfinder, { borderColor: colors.border, backgroundColor: colors.card }]}>
+      <View
+        style={[styles.viewfinder, { borderColor: colors.border, backgroundColor: colors.card }]}
+      >
         {isNative && permission?.granted ? (
           <CameraView
             ref={camera}
@@ -568,7 +613,11 @@ export default function Capture() {
             mode={isVideo ? "video" : "picture"}
           />
         ) : lastShot ? (
-          <Image source={{ uri: lastShot }} style={StyleSheet.absoluteFillObject} resizeMode="cover" />
+          <Image
+            source={{ uri: lastShot }}
+            style={StyleSheet.absoluteFillObject}
+            resizeMode="cover"
+          />
         ) : (
           <View style={[StyleSheet.absoluteFillObject, styles.fallback]}>
             <Ionicons
@@ -657,9 +706,7 @@ export default function Capture() {
 
       <View style={styles.shutterRow}>
         <Pressable
-          onPress={() =>
-            isVideo ? (recording ? stopRecording() : void record()) : void shoot()
-          }
+          onPress={() => (isVideo ? (recording ? stopRecording() : void record()) : void shoot())}
           disabled={busy && !recording}
           style={[
             styles.shutter,
@@ -736,7 +783,9 @@ export default function Capture() {
         showsVerticalScrollIndicator={false}
       >
         {isVideo ? (
-          <View style={[styles.videoNote, { borderColor: videoLocked ? colors.alert : colors.border }]}>
+          <View
+            style={[styles.videoNote, { borderColor: videoLocked ? colors.alert : colors.border }]}
+          >
             <Ionicons
               name={videoLocked ? "lock-closed-outline" : "videocam-outline"}
               size={14}
@@ -778,142 +827,255 @@ export default function Capture() {
           </View>
         ) : null}
 
-        <Pressable
-          onPress={() => setProjectOpen((v) => !v)}
-          accessibilityLabel={tr("common.project")}
-          style={[styles.dropdownHead, { borderColor: projectOpen ? colors.amber : colors.border }]}
-        >
-          <Text style={[styles.label, { color: colors.mutedForeground, fontFamily: Fonts?.mono, marginTop: 0 }]}>
-            {tr("common.project").toUpperCase()}
-          </Text>
-          <View style={styles.dropdownValue}>
-            <Ionicons name="briefcase-outline" size={14} color={colors.amber} />
-            <Text numberOfLines={1} style={[styles.dropdownValueText, { color: colors.amber, maxWidth: 170 }]}>
-              {projects.data?.find((p) => p.id === projectId)?.name ?? tr("queue.unassigned")}
-            </Text>
-            <Ionicons
-              name={projectOpen ? "chevron-up" : "chevron-down"}
-              size={15}
-              color={colors.mutedForeground}
-            />
-          </View>
-        </Pressable>
-        <View style={[styles.tagGrid, projectOpen ? null : styles.hidden]}>
+        <View style={styles.selectorRow}>
           <Pressable
-            onPress={() => {
-              setProjectId(null);
-              rememberProject(null);
-              setProjectOpen(false);
-            }}
-            style={[
-              styles.pill,
+            onPress={() => setProjectOpen((v) => !v)}
+            onHoverIn={() => setProjectHover(true)}
+            onHoverOut={() => setProjectHover(false)}
+            accessibilityLabel={tr("common.project")}
+            style={({ pressed }) => [
+              styles.dropdownHead,
+              styles.selectorHalf,
+              // Filled amber like the drawer tiles: the two selectors are the controls that
+              // decide where a shot is filed, so they read as actions rather than labels.
+              // Deeper amber while hovered or held so the bar answers the pointer.
               {
-                borderColor: projectId === null ? colors.amber : colors.border,
-                backgroundColor: projectId === null ? "rgba(255,176,33,0.12)" : colors.card,
+                borderColor: pressed || projectHover ? colors.amberDeep : colors.amber,
+                backgroundColor: pressed || projectHover ? colors.amberDeep : colors.amber,
               },
             ]}
           >
-            <Text
-              style={[styles.pillText, { color: projectId === null ? colors.amber : colors.mutedForeground }]}
-            >
-              {tr("queue.unassigned")}
-            </Text>
-          </Pressable>
-          {projects.data?.map((p) => (
-            <Pressable
-              key={p.id}
-              onPress={() => {
-                setProjectId(p.id);
-                rememberProject(p.id);
-                setProjectOpen(false);
-              }}
-              style={[
-                styles.pill,
-                {
-                  borderColor: projectId === p.id ? colors.amber : colors.border,
-                  backgroundColor: projectId === p.id ? "rgba(255,176,33,0.12)" : colors.card,
-                },
-              ]}
-            >
+            <View style={styles.selectorLabelRow}>
               <Text
-                style={[styles.pillText, { color: projectId === p.id ? colors.amber : colors.foreground }]}
-              >
-                {p.name}
-              </Text>
-            </Pressable>
-          ))}
-        </View>
-
-        <Pressable
-          onPress={() => setTagOpen((v) => !v)}
-          accessibilityLabel={tr("capture.evidenceType")}
-          style={[styles.dropdownHead, { borderColor: tagOpen ? colors.amber : colors.border }]}
-        >
-          <Text style={[styles.label, { color: colors.mutedForeground, fontFamily: Fonts?.mono, marginTop: 0 }]}>
-            {tr("capture.evidenceType").toUpperCase()}
-          </Text>
-          <View style={styles.dropdownValue}>
-            <Ionicons
-              name={TAGS.find((e) => e.key === tag)?.icon ?? "hammer-outline"}
-              size={14}
-              color={colors.amber}
-            />
-            <Text style={[styles.dropdownValueText, { color: colors.amber }]}>
-              {tr(TAGS.find((e) => e.key === tag)?.label ?? "tag.work")}
-            </Text>
-            <Ionicons
-              name={tagOpen ? "chevron-up" : "chevron-down"}
-              size={15}
-              color={colors.mutedForeground}
-            />
-          </View>
-        </Pressable>
-        <View style={[styles.tagGrid, tagOpen ? null : styles.hidden]}>
-          {TAGS.map((entry) => {
-            const active = tag === entry.key;
-            return (
-              <Pressable
-                key={entry.key}
-                onPress={() => {
-                  setTag(entry.key);
-                  if (mode !== "clock") rememberTag(entry.key);
-                  setTagOpen(false);
-                }}
                 style={[
-                  styles.tag,
-                  {
-                    borderColor: active ? colors.amber : colors.border,
-                    backgroundColor: active ? "rgba(255,176,33,0.12)" : colors.card,
-                  },
+                  styles.selectorLabel,
+                  { color: colors.primaryForeground, fontFamily: Fonts?.mono },
                 ]}
               >
-                <Ionicons
-                  name={entry.icon}
-                  size={14}
-                  color={active ? colors.amber : colors.mutedForeground}
-                />
-                <Text style={[styles.tagText, { color: active ? colors.amber : colors.foreground }]}>
-                  {tr(entry.label)}
-                </Text>
-              </Pressable>
-            );
-          })}
+                {tr("common.project").toUpperCase()}
+              </Text>
+              <Ionicons
+                name={projectOpen ? "chevron-up" : "chevron-down"}
+                size={14}
+                color={colors.primaryForeground}
+              />
+            </View>
+          </Pressable>
 
           <Pressable
-            onPress={() => {
-              setTagOpen(false);
-              router.push("/teamspace");
-            }}
-            accessibilityLabel={tr("capture.mode.reports")}
-            style={[styles.tag, { borderColor: colors.border, backgroundColor: colors.card }]}
+            onPress={() => setTagOpen((v) => !v)}
+            onHoverIn={() => setTagHover(true)}
+            onHoverOut={() => setTagHover(false)}
+            accessibilityLabel={tr("capture.evidenceType")}
+            style={({ pressed }) => [
+              styles.dropdownHead,
+              styles.selectorHalf,
+              {
+                borderColor: pressed || tagHover ? colors.amberDeep : colors.amber,
+                backgroundColor: pressed || tagHover ? colors.amberDeep : colors.amber,
+              },
+            ]}
           >
-            <Ionicons name="document-text-outline" size={14} color={colors.mutedForeground} />
-            <Text style={[styles.tagText, { color: colors.foreground }]}>
-              {tr("capture.mode.reports")}
-            </Text>
-            <Ionicons name="chevron-forward" size={13} color={colors.mutedForeground} />
+            <View style={styles.selectorLabelRow}>
+              <Text
+                style={[
+                  styles.selectorLabel,
+                  { color: colors.primaryForeground, fontFamily: Fonts?.mono },
+                ]}
+              >
+                {tr("capture.evidenceType").toUpperCase()}
+              </Text>
+              <Ionicons
+                name={tagOpen ? "chevron-up" : "chevron-down"}
+                size={14}
+                color={colors.primaryForeground}
+              />
+            </View>
           </Pressable>
         </View>
+        {/*
+          The two lists used to render inline under the selector bar, which grew the panel and
+          pushed the viewfinder and the shutter up the screen - with a long project list the
+          shutter went off-screen entirely. They are half-screen bottom sheets now, so the camera
+          never moves, a long list scrolls inside the sheet, and picking an option closes it.
+        */}
+        <Modal
+          visible={projectOpen}
+          transparent
+          animationType="slide"
+          onRequestClose={() => setProjectOpen(false)}
+        >
+          <Pressable style={styles.sheetBackdrop} onPress={() => setProjectOpen(false)} />
+          <View
+            style={[
+              styles.sheet,
+              { backgroundColor: colors.background, borderColor: colors.border },
+            ]}
+          >
+            <View style={[styles.sheetHead, { borderColor: colors.border }]}>
+              <Text
+                style={[styles.sheetTitle, { color: colors.foreground, fontFamily: Fonts?.mono }]}
+              >
+                {tr("common.project").toUpperCase()}
+              </Text>
+              <Pressable
+                onPress={() => setProjectOpen(false)}
+                accessibilityLabel={tr("common.close")}
+                hitSlop={10}
+              >
+                <Ionicons name="close" size={20} color={colors.mutedForeground} />
+              </Pressable>
+            </View>
+            <ScrollView
+              contentContainerStyle={styles.sheetBody}
+              showsVerticalScrollIndicator={false}
+            >
+              <View style={styles.tagGrid}>
+                <Pressable
+                  onPress={() => {
+                    setProjectId(null);
+                    rememberProject(null);
+                    setProjectOpen(false);
+                  }}
+                  style={[
+                    styles.pill,
+                    {
+                      borderColor: projectId === null ? colors.amber : colors.border,
+                      backgroundColor: projectId === null ? "rgba(255,176,33,0.12)" : colors.card,
+                    },
+                  ]}
+                >
+                  <Text
+                    style={[
+                      styles.pillText,
+                      { color: projectId === null ? colors.amber : colors.mutedForeground },
+                    ]}
+                  >
+                    {tr("queue.unassigned")}
+                  </Text>
+                </Pressable>
+                {projects.data?.map((p) => (
+                  <Pressable
+                    key={p.id}
+                    onPress={() => {
+                      setProjectId(p.id);
+                      rememberProject(p.id);
+                      setProjectOpen(false);
+                    }}
+                    style={[
+                      styles.pill,
+                      {
+                        borderColor: projectId === p.id ? colors.amber : colors.border,
+                        backgroundColor: projectId === p.id ? "rgba(255,176,33,0.12)" : colors.card,
+                      },
+                    ]}
+                  >
+                    <Text
+                      style={[
+                        styles.pillText,
+                        { color: projectId === p.id ? colors.amber : colors.foreground },
+                      ]}
+                    >
+                      {p.name}
+                    </Text>
+                  </Pressable>
+                ))}
+              </View>
+            </ScrollView>
+          </View>
+        </Modal>
+
+        {/*
+          The two lists used to render inline under the selector bar, which grew the panel and
+          pushed the viewfinder and the shutter up the screen - with a long project list the
+          shutter went off-screen entirely. They are half-screen bottom sheets now, so the camera
+          never moves, a long list scrolls inside the sheet, and picking an option closes it.
+        */}
+        <Modal
+          visible={tagOpen}
+          transparent
+          animationType="slide"
+          onRequestClose={() => setTagOpen(false)}
+        >
+          <Pressable style={styles.sheetBackdrop} onPress={() => setTagOpen(false)} />
+          <View
+            style={[
+              styles.sheet,
+              { backgroundColor: colors.background, borderColor: colors.border },
+            ]}
+          >
+            <View style={[styles.sheetHead, { borderColor: colors.border }]}>
+              <Text
+                style={[styles.sheetTitle, { color: colors.foreground, fontFamily: Fonts?.mono }]}
+              >
+                {tr("capture.evidenceType").toUpperCase()}
+              </Text>
+              <Pressable
+                onPress={() => setTagOpen(false)}
+                accessibilityLabel={tr("common.close")}
+                hitSlop={10}
+              >
+                <Ionicons name="close" size={20} color={colors.mutedForeground} />
+              </Pressable>
+            </View>
+            <ScrollView
+              contentContainerStyle={styles.sheetBody}
+              showsVerticalScrollIndicator={false}
+            >
+              <View style={styles.tagGrid}>
+                {TAGS.map((entry) => {
+                  const active = tag === entry.key;
+                  return (
+                    <Pressable
+                      key={entry.key}
+                      onPress={() => {
+                        setTag(entry.key);
+                        if (mode !== "clock") rememberTag(entry.key);
+                        setTagOpen(false);
+                      }}
+                      style={[
+                        styles.tag,
+                        {
+                          borderColor: active ? colors.amber : colors.border,
+                          backgroundColor: active ? "rgba(255,176,33,0.12)" : colors.card,
+                        },
+                      ]}
+                    >
+                      <Ionicons
+                        name={entry.icon}
+                        size={14}
+                        color={active ? colors.amber : colors.mutedForeground}
+                      />
+                      <Text
+                        style={[
+                          styles.tagText,
+                          { color: active ? colors.amber : colors.foreground },
+                        ]}
+                      >
+                        {tr(entry.label)}
+                      </Text>
+                    </Pressable>
+                  );
+                })}
+
+                <Pressable
+                  onPress={() => {
+                    setTagOpen(false);
+                    router.push("/teamspace");
+                  }}
+                  accessibilityLabel={tr("capture.mode.reports")}
+                  style={[styles.tag, { borderColor: colors.border, backgroundColor: colors.card }]}
+                >
+                  <Ionicons name="document-text-outline" size={14} color={colors.mutedForeground} />
+                  <Text style={[styles.tagText, { color: colors.foreground }]}>
+                    {tr("capture.mode.reports")}
+                  </Text>
+                  <Ionicons name="chevron-forward" size={13} color={colors.mutedForeground} />
+                </Pressable>
+              </View>
+            </ScrollView>
+          </View>
+        </Modal>
 
         {isPod ? (
           <View style={styles.pod}>
@@ -937,8 +1099,7 @@ export default function Capture() {
               style={[
                 styles.podInput,
                 {
-                  borderColor:
-                    podError && !recipient.trim() ? colors.alert : colors.border,
+                  borderColor: podError && !recipient.trim() ? colors.alert : colors.border,
                   color: colors.foreground,
                   backgroundColor: colors.card,
                 },
@@ -1003,7 +1164,11 @@ export default function Capture() {
           <Text style={[styles.gps, { color: colors.foreground, fontFamily: Fonts?.mono }]}>
             {locDenied ? tr("capture.locationOff") : formatCoords(fix.lat, fix.lng)}
           </Text>
-          <Pressable onPress={() => void refreshFix()} hitSlop={10} accessibilityLabel={tr("capture.refreshFix")}>
+          <Pressable
+            onPress={() => void refreshFix()}
+            hitSlop={10}
+            accessibilityLabel={tr("capture.refreshFix")}
+          >
             <Ionicons name="refresh" size={15} color={colors.mutedForeground} />
           </Pressable>
         </View>
@@ -1117,19 +1282,57 @@ const styles = StyleSheet.create({
   pill: { borderWidth: 1, paddingHorizontal: 12, paddingVertical: 7, borderRadius: 8 },
   pillText: { fontSize: 12 },
   tagGrid: { flexDirection: "row", flexWrap: "wrap", gap: 8 },
-  hidden: { display: "none" },
-  dropdownHead: {
+  sheetBackdrop: { flex: 1, backgroundColor: "rgba(0,0,0,0.55)" },
+  sheet: {
+    position: "absolute",
+    left: 0,
+    right: 0,
+    bottom: 0,
+    // Fixed half of the screen, not "up to half": the list has to start above the shutter
+    // button, so the sheet must always be that tall even when few options are configured.
+    height: "50%",
+    borderTopWidth: 1,
+    borderTopLeftRadius: 16,
+    borderTopRightRadius: 16,
+  },
+  sheetHead: {
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
+    paddingHorizontal: 14,
+    paddingVertical: 12,
+    borderBottomWidth: 1,
+  },
+  sheetTitle: { fontSize: 12, letterSpacing: 1 },
+  sheetBody: { padding: 14, paddingBottom: 26 },
+  // Project and Evidence type sit side by side on one row. Each half now shows only its
+  // title plus a chevron, centred, so the two bars stay short and read as dropdowns.
+  selectorRow: { flexDirection: "row", gap: 8, marginTop: 6 },
+  selectorHalf: {
+    flex: 1,
+    minWidth: 0,
+    flexDirection: "column",
+    alignItems: "center",
+    justifyContent: "center",
+    marginTop: 0,
+  },
+  selectorLabelRow: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
+    gap: 5,
+  },
+  selectorLabel: { fontSize: 13, letterSpacing: 1.2, textAlign: "center" },
+  dropdownHead: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
     borderWidth: 1,
-    paddingHorizontal: 12,
-    paddingVertical: 10,
+    paddingHorizontal: 10,
+    paddingVertical: 6,
     marginTop: 6,
     borderRadius: 8,
   },
-  dropdownValue: { flexDirection: "row", alignItems: "center", gap: 6 },
-  dropdownValueText: { fontSize: 12.5 },
   tag: {
     flexDirection: "row",
     alignItems: "center",
@@ -1175,14 +1378,14 @@ const styles = StyleSheet.create({
   status: { fontSize: 11, marginTop: 6, textAlign: "center", paddingHorizontal: 16 },
   shutterRow: { alignItems: "center", marginTop: 12 },
   shutter: {
-    width: 68,
-    height: 68,
-    borderRadius: 34,
+    width: 58,
+    height: 58,
+    borderRadius: 29,
     borderWidth: 2,
     alignItems: "center",
     justifyContent: "center",
   },
-  shutterCore: { width: 52, height: 52, borderRadius: 26 },
+  shutterCore: { width: 44, height: 44, borderRadius: 22 },
   stopCore: { width: 26, height: 26, borderRadius: 3 },
   modeTabs: {
     flexDirection: "row",

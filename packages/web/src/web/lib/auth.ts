@@ -2,9 +2,16 @@ import { createAuthClient } from "better-auth/react";
 import { twoFactorClient } from "better-auth/client/plugins";
 import { managedAuthClient } from "@runablehq/managed-auth/client";
 
+/**
+ * Both values come from the root `.env` and are present in every real deployment, but Vite types
+ * `import.meta.env.*` as possibly-undefined because it cannot prove that at compile time.
+ * ManagedAuthClientConfig requires both as plain strings, so fall back to empty strings: managed
+ * auth is simply inactive without them, which is the same outcome as passing undefined, minus the
+ * type error.
+ */
 const config = {
-  applicationId: import.meta.env.VITE_APPLICATION_ID,
-  issuer: import.meta.env.VITE_RUNABLE_AUTH_ISSUER,
+  applicationId: import.meta.env.VITE_APPLICATION_ID ?? "",
+  issuer: import.meta.env.VITE_RUNABLE_AUTH_ISSUER ?? "",
 };
 
 /**

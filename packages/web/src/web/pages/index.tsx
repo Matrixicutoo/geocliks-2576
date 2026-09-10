@@ -15,6 +15,9 @@ import {
   Camera,
   GitCompareArrows,
   Layers,
+  Route,
+  Truck,
+  Bell,
   ChevronDown,
   Menu as MenuIcon,
   X as CloseIcon,
@@ -25,7 +28,7 @@ import { usePlans } from "../queries/billing";
 import { authClient } from "../lib/auth";
 import { type TKey, useLocale, useT } from "../lib/i18n";
 import { cn } from "../lib/utils";
-import { SUPPORT_EMAIL } from "../lib/support";
+import { SALES_EMAIL, SUPPORT_EMAIL } from "../lib/support";
 import { SiteFooter } from "../components/site-footer";
 
 const INDUSTRIES: TKey[] = [
@@ -137,17 +140,17 @@ const RESOURCE_ITEMS: MenuItem[] = [
   { label: "getapp.ctaPrimary", href: "/get-app" },
   { label: "verify.navLink", href: "/verify" },
   { label: "home.nav.website", href: "https://www.geocliks.com/", external: true },
-  { label: "home.nav.help", href: "https://help.geocliks.com/", external: true },
+  { label: "home.nav.help", href: "/help" },
   { label: "home.footer.terms", href: "/terms" },
   { label: "home.footer.privacy", href: "/privacy" },
 ];
 
 const SUPPORT_ITEMS: MenuItem[] = [
   { label: "home.nav.emailSupport", href: `mailto:${SUPPORT_EMAIL}` },
-  { label: "home.nav.help", href: "https://help.geocliks.com/", external: true },
+  { label: "home.nav.help", href: "/help" },
   {
     label: "home.nav.contactSales",
-    href: `mailto:${SUPPORT_EMAIL}?subject=GeoCliks%20Enterprise`,
+    href: `mailto:${SALES_EMAIL}?subject=GeoCliks%20Enterprise`,
   },
 ];
 
@@ -225,6 +228,12 @@ function Nav() {
           </a>
           <NavMenu label="home.nav.features" items={FEATURE_ITEMS} />
           <a
+            href="#delivery"
+            className="py-2 text-[14px] font-semibold text-white transition-colors hover:text-amber"
+          >
+            {t("home.nav.delivery")}
+          </a>
+          <a
             href="#pricing"
             className="py-2 text-[14px] font-semibold text-white transition-colors hover:text-amber"
           >
@@ -268,6 +277,9 @@ function Nav() {
               {t("home.nav.home")}
             </a>
             <MobileGroup label="home.nav.features" items={FEATURE_ITEMS} onNavigate={close} />
+            <a href="#delivery" onClick={close} className={mobileLink}>
+              {t("home.nav.delivery")}
+            </a>
             <a href="#pricing" onClick={close} className={mobileLink}>
               {t("home.nav.pricing")}
             </a>
@@ -287,26 +299,18 @@ function Nav() {
   );
 }
 
+/**
+ * Fixed, not `new Date()`. A live clock in a marketing screenshot re-renders on
+ * every load and reads as a gimmick; a settled capture time reads like real EXIF.
+ */
+const HERO_STAMP = "2026-08-26 14:31:07";
+
 function Hero() {
   const t = useT();
-  const now = new Date();
-  const stamp = now
-    .toLocaleString("en-US", {
-      year: "numeric",
-      month: "2-digit",
-      day: "2-digit",
-      hour: "2-digit",
-      minute: "2-digit",
-      second: "2-digit",
-      hour12: false,
-    })
-    .replace(",", "");
 
   return (
     <section className="hero-band relative overflow-hidden border-b border-line">
       <div className="absolute inset-0 blueprint opacity-60" />
-      <div className="absolute -left-40 top-[-10%] size-[520px] rounded-full bg-amber/8 blur-[120px]" />
-      <div className="absolute right-[-10%] bottom-[-30%] size-[460px] rounded-full bg-sky/6 blur-[130px]" />
 
       <motion.div
         variants={stagger}
@@ -331,7 +335,10 @@ function Hero() {
             <span className="text-amber">{t("home.hero.title2")}</span>
           </motion.h1>
 
-          <motion.p variants={riseIn} className="mt-6 max-w-xl text-[17px] leading-relaxed text-fog">
+          <motion.p
+            variants={riseIn}
+            className="mt-6 max-w-xl text-[17px] leading-relaxed text-fog"
+          >
             {t("home.hero.body")}
           </motion.p>
         </div>
@@ -341,36 +348,18 @@ function Hero() {
           variants={riseIn}
           className="relative mx-auto w-full max-w-[440px] lg:col-start-2 lg:row-span-2 lg:row-start-1 lg:self-center"
         >
-          <div className="absolute -left-6 top-8 hidden w-[78%] rotate-[-6deg] rounded-[12px] border border-line bg-ink-2 p-2 shadow-2xl sm:block">
-            <img
-              src="/images/samples/hvac-rooftop.jpg"
-              alt={t("home.hero.altRooftop")}
-              className="aspect-[4/3] w-full object-cover opacity-70"
-            />
-          </div>
-          <div className="absolute -right-4 -top-4 hidden w-[62%] rotate-[7deg] rounded-[12px] border border-line bg-ink-2 p-2 shadow-2xl sm:block">
-            <img
-              src="/images/samples/roof-damage.jpg"
-              alt={t("home.hero.altRoof")}
-              className="aspect-[4/3] w-full object-cover opacity-70"
-            />
-          </div>
-
           <div className="relative rounded-[12px] border border-line bg-ink-2 p-2.5 shadow-[0_30px_80px_-20px_rgba(0,0,0,0.9)]">
             <div className="relative overflow-hidden">
               <img
-                src="/images/samples/fiber-splice-closure.jpg"
-                alt={t("home.hero.altFiber")}
-                className="aspect-[4/3] w-full object-cover"
+                src="/images/samples/crew-collage.jpg"
+                alt={t("home.hero.altCollage")}
+                className="aspect-[3/4] w-full object-cover"
               />
               <div className="absolute inset-x-0 bottom-0 flex items-stretch bg-black/72 backdrop-blur-[2px]">
                 <div className="w-[3px] bg-amber" />
                 <div className="px-3 py-2">
-                  <p className="mono text-[12px] font-semibold text-white">{stamp}</p>
-                  <p className="mono text-[10px] text-white/85">39.76610° N 105.02120° W</p>
-                  <p className="mono text-[10px] text-white/70">
-                    1420 Ridgeline Dr, Denver, CO 80211
-                  </p>
+                  <p className="mono text-[12px] font-semibold text-white">{HERO_STAMP}</p>
+                  <p className="mono text-[10px] text-white/70">{t("home.hero.stampNote")}</p>
                 </div>
               </div>
               <span className="rounded-[6px] mono absolute left-2.5 top-2.5 border border-verified/50 bg-black/70 px-1.5 py-0.5 text-[9.5px] uppercase tracking-widest text-verified">
@@ -379,7 +368,7 @@ function Hero() {
             </div>
             <div className="flex items-center justify-between px-1 pt-2.5 pb-1">
               <span className="mono text-[10.5px] tracking-widest text-amber">
-                TM-8QF2-40XR-91KD
+                GC-8QF2-40XR-91KD
               </span>
               <span className="mono text-[10px] text-fog">SHA-256 LOCKED</span>
             </div>
@@ -389,7 +378,7 @@ function Hero() {
           <motion.div variants={riseIn} className="flex flex-wrap items-center gap-3">
             <Link
               to="/sign-up"
-              className="rounded-[8px] mono inline-flex items-center gap-2 bg-amber px-5 py-3 text-[12px] font-bold uppercase tracking-widest text-ink transition-colors hover:bg-amber-deep"
+              className="rounded-[8px] mono inline-flex items-center gap-2 bg-amber px-5 py-3 text-[12px] font-bold uppercase tracking-widest text-on-amber transition-colors hover:bg-amber-deep"
             >
               {t("home.nav.startFree")} <ArrowRight className="size-4" />
             </Link>
@@ -413,7 +402,6 @@ function Hero() {
             </span>
           </motion.div>
         </div>
-
       </motion.div>
     </section>
   );
@@ -432,13 +420,13 @@ function Evidence() {
       icon: MapPin,
       title: "home.evidence.r2.title",
       body: "home.evidence.r2.body",
-      mono: "39.76610° N  105.02120° W · ±4 m",
+      mono: "43.65107° N  79.34015° W · ±4 m",
     },
     {
       icon: Fingerprint,
       title: "home.evidence.r3.title",
       body: "home.evidence.r3.body",
-      mono: "TM-8QF2-40XR-91KD · integrity: intact",
+      mono: "GC-8QF2-40XR-91KD · integrity: intact",
     },
   ];
 
@@ -449,7 +437,7 @@ function Evidence() {
         <h2 className="mt-3 max-w-2xl font-display text-[32px] font-bold leading-tight tracking-tight text-chalk sm:text-[40px]">
           {t("home.evidence.h2")}
         </h2>
-        <p className="mt-4 max-w-xl text-[16px] text-fog">
+        <p className="mt-4 max-w-xl text-[16px] leading-relaxed text-fog">
           {t("home.evidence.body")}
         </p>
 
@@ -482,9 +470,7 @@ function Teamspace() {
           <h2 className="mt-3 font-display text-[32px] font-bold leading-tight tracking-tight text-chalk sm:text-[40px]">
             {t("home.team.h2")}
           </h2>
-          <p className="mt-4 text-[16px] leading-relaxed text-fog">
-            {t("home.team.body")}
-          </p>
+          <p className="mt-4 text-[16px] leading-relaxed text-fog">{t("home.team.body")}</p>
           <ul className="mt-7 space-y-3">
             {[
               { icon: Users, text: "home.team.b1" as TKey },
@@ -501,24 +487,43 @@ function Teamspace() {
         </div>
 
         <div className="relative">
+          {/* Codes are literals in the real GC-XXXX-XXXX-XXXX shape. The old grid
+              derived them arithmetically and produced GC-3E8-VERIFIED, which is not
+              a shape this product ever emits — bad look on a proof-of-work page. */}
           <div className="grid grid-cols-2 gap-3">
             {[
-              "fiber-technician.jpg",
-              "construction-framing.jpg",
-              "property-walkthrough.jpg",
-              "hvac-install.jpg",
-            ].map((file, i) => (
-              <div
-                key={file}
-                className="rounded-[12px] border border-line bg-ink-2 p-1.5"
-                style={{ transform: `translateY(${i % 2 === 0 ? 0 : 22}px)` }}
-              >
+              {
+                file: "fiber-technician.jpg",
+                alt: "industry.fiber" as TKey,
+                code: "GC-7QM4-18RT-04KP",
+              },
+              {
+                file: "construction-framing.jpg",
+                alt: "industry.construction" as TKey,
+                code: "GC-2XD9-73BV-51HN",
+              },
+              {
+                file: "property-walkthrough.jpg",
+                alt: "industry.property" as TKey,
+                code: "GC-9FA6-20LC-88YW",
+              },
+              {
+                file: "hvac-install.jpg",
+                alt: "industry.hvac" as TKey,
+                code: "GC-4RJ1-65NE-37TQ",
+              },
+            ].map((shot) => (
+              <div key={shot.file} className="rounded-[12px] border border-line bg-ink-2 p-1.5">
                 <div className="relative overflow-hidden">
-                  <img src={`/images/samples/${file}`} alt="" className="aspect-square w-full object-cover" />
+                  <img
+                    src={`/images/samples/${shot.file}`}
+                    alt={t(shot.alt)}
+                    className="aspect-square w-full object-cover"
+                  />
                   <div className="absolute inset-x-0 bottom-0 flex items-stretch bg-black/70">
                     <div className="w-[2px] bg-amber" />
-                    <p className="mono px-1.5 py-1 text-[8.5px] text-white/90">
-                      TM-{(1000 + i * 373).toString(16).toUpperCase()}-VERIFIED
+                    <p className="mono px-1.5 py-1 text-[8.5px] tracking-wide text-white/90">
+                      {shot.code}
                     </p>
                   </div>
                 </div>
@@ -549,9 +554,7 @@ function Reports() {
             <h2 className="mt-3 font-display text-[32px] font-bold leading-tight tracking-tight text-chalk sm:text-[40px]">
               {t("home.reports.headline")}
             </h2>
-            <p className="mt-4 text-[16px] leading-relaxed text-fog">
-              {t("home.reports.body")}
-            </p>
+            <p className="mt-4 text-[16px] leading-relaxed text-fog">{t("home.reports.body")}</p>
             <div className="mt-7 grid grid-cols-2 gap-px bg-line">
               {formats.map((f) => (
                 <div key={f.name} className="bg-ink px-4 py-3.5">
@@ -578,7 +581,7 @@ function Reports() {
                     alt={t(label)}
                     className="aspect-[3/4] w-full object-cover"
                   />
-                  <span className="rounded-[6px] mono absolute left-2 top-2 bg-amber px-1.5 py-0.5 text-[9.5px] font-bold uppercase tracking-widest text-ink">
+                  <span className="rounded-[6px] mono absolute left-2 top-2 bg-amber px-1.5 py-0.5 text-[9.5px] font-bold uppercase tracking-widest text-on-amber">
                     {t(label)}
                   </span>
                 </div>
@@ -605,7 +608,7 @@ function Reports() {
 function Field() {
   const t = useT();
   return (
-    <section id="field" className="border-b border-line bg-ink-2/40">
+    <section id="field" className="border-b border-line">
       <div className="mx-auto max-w-[1180px] px-5 py-20">
         <p className="label">{t("home.field.label")}</p>
         <div className="mt-3 grid gap-10 lg:grid-cols-[1fr_1fr]">
@@ -664,10 +667,157 @@ function Field() {
   );
 }
 
+function Delivery() {
+  const t = useT();
+
+  const benefits = [
+    {
+      icon: Route,
+      title: "home.delivery.b1.title" as TKey,
+      body: "home.delivery.b1.body" as TKey,
+    },
+    {
+      icon: Truck,
+      title: "home.delivery.b2.title" as TKey,
+      body: "home.delivery.b2.body" as TKey,
+    },
+    {
+      icon: Camera,
+      title: "home.delivery.b3.title" as TKey,
+      body: "home.delivery.b3.body" as TKey,
+    },
+    {
+      icon: Bell,
+      title: "home.delivery.b4.title" as TKey,
+      body: "home.delivery.b4.body" as TKey,
+    },
+  ];
+
+  /* Three types carry a photo; the remaining four stay text-only so the section
+     reads in one screen instead of turning into a wall of stock imagery. */
+  const tiles = [
+    {
+      file: "fleet-vans.jpg",
+      name: "home.delivery.t1.name" as TKey,
+      body: "home.delivery.t1.body" as TKey,
+    },
+    {
+      file: "restaurant-pickup.jpg",
+      name: "home.delivery.t2.name" as TKey,
+      body: "home.delivery.t2.body" as TKey,
+    },
+    {
+      file: "grocery-totes.jpg",
+      name: "home.delivery.t3.name" as TKey,
+      body: "home.delivery.t3.body" as TKey,
+    },
+  ];
+
+  const more = ([4, 5, 6, 7] as const).map((n) => ({
+    name: `home.delivery.t${n}.name` as TKey,
+    body: `home.delivery.t${n}.body` as TKey,
+  }));
+
+  return (
+    <section id="delivery" className="border-b border-line bg-ink-2/40">
+      <div className="mx-auto max-w-[1180px] px-5 py-20">
+        <p className="label">{t("home.delivery.label")}</p>
+
+        <div className="mt-3 grid items-start gap-10 lg:grid-cols-[1fr_1fr]">
+          <div>
+            <h2 className="font-display text-[32px] font-bold leading-tight tracking-tight text-chalk sm:text-[40px]">
+              {t("home.delivery.h2")}
+            </h2>
+            <p className="mt-4 text-[16px] leading-relaxed text-fog">{t("home.delivery.intro")}</p>
+          </div>
+          <div className="rounded-[12px] border border-line bg-ink-2 p-2">
+            <img
+              src="/images/delivery/doorstep-proof.jpg"
+              alt={t("home.delivery.heroAlt")}
+              className="aspect-[4/3] w-full rounded-[8px] object-cover"
+            />
+          </div>
+        </div>
+
+        <div className="mt-14 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+          {benefits.map((item) => (
+            <div key={item.title}>
+              <item.icon className="size-4.5 text-amber" />
+              <h3 className="mt-3 font-display text-[15px] font-semibold text-chalk">
+                {t(item.title)}
+              </h3>
+              <p className="mt-1.5 text-[13.5px] leading-relaxed text-fog">{t(item.body)}</p>
+            </div>
+          ))}
+        </div>
+
+        <div className="mt-14 border-t border-line pt-8">
+          <p className="label">{t("home.delivery.types")}</p>
+
+          <div className="mt-4 grid gap-3 sm:grid-cols-3">
+            {tiles.map((tile) => (
+              <div
+                key={tile.file}
+                className="overflow-hidden rounded-[12px] border border-line bg-ink-2"
+              >
+                <img
+                  src={`/images/delivery/${tile.file}`}
+                  alt={t(tile.name)}
+                  className="aspect-[4/3] w-full object-cover"
+                />
+                <div className="px-4 py-3.5">
+                  <h3 className="font-display text-[15px] font-semibold text-chalk">
+                    {t(tile.name)}
+                  </h3>
+                  <p className="mt-1.5 text-[13px] leading-relaxed text-fog">{t(tile.body)}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+
+          <div className="mt-3 grid gap-px bg-line sm:grid-cols-2 lg:grid-cols-4">
+            {more.map((m) => (
+              <div key={m.name} className="bg-ink px-4 py-3.5">
+                <h3 className="font-display text-[14px] font-semibold text-chalk">{t(m.name)}</h3>
+                <p className="mt-1.5 text-[12.5px] leading-relaxed text-fog">{t(m.body)}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        <div className="mt-10">
+          <a
+            href="#pricing"
+            className="mono inline-flex items-center gap-2 rounded-[8px] bg-amber px-4 py-3 text-[11px] font-bold uppercase tracking-widest text-on-amber transition-colors hover:bg-on-amber hover:text-amber"
+          >
+            {t("home.delivery.cta")}
+            <ArrowRight className="size-3.5" />
+          </a>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+/** Delivery plans are sold alongside the evidence plans, not inside them. */
+const isDeliveryPlan = (id: string) => id.startsWith("delivery-");
+
+type PlanView = NonNullable<ReturnType<typeof usePlans>["data"]>[number];
+
 function Pricing() {
   const t = useT();
   const { locale } = useLocale();
   const plans = usePlans(locale);
+
+  // This page groups plans itself and never reads sortOrder, so Enterprise has to
+  // be placed explicitly. It is the custom top of the ladder ("Everything in
+  // Delivery Fleet") and trails every self-serve plan — but it is NOT a delivery
+  // plan. Dropping it into the 3-column delivery grid left two dead cells that
+  // rendered as a grey slab, so it gets its own full-width band under the same
+  // heading instead.
+  const evidence = (plans.data ?? []).filter((p) => !isDeliveryPlan(p.id) && p.id !== "enterprise");
+  const delivery = (plans.data ?? []).filter((p) => isDeliveryPlan(p.id));
+  const custom = (plans.data ?? []).find((p) => p.id === "enterprise") ?? null;
 
   return (
     <section id="pricing" className="border-b border-line">
@@ -684,60 +834,177 @@ function Pricing() {
             ))}
           </div>
         ) : (
-          <div className="mt-12 grid gap-px bg-line sm:grid-cols-2 md:grid-cols-3">
-            {plans.data?.map((plan) => (
-              <div
-                key={plan.id}
-                className={
-                  plan.id === "business" ? "relative bg-ink-2 p-6" : "relative bg-ink p-6"
-                }
-              >
-                {plan.id === "business" && (
-                  <span className="rounded-[6px] mono absolute right-0 top-0 bg-amber px-2 py-1 text-[9.5px] font-bold uppercase tracking-widest text-ink">
-                    {t("home.pricing.popular")}
-                  </span>
-                )}
-                <p className="mono text-[11px] uppercase tracking-[0.2em] text-amber">{plan.name}</p>
-                <p className="mt-3 font-display text-3xl font-bold text-chalk">{plan.priceLabel}</p>
-                <p className="mono mt-1 text-[10.5px] uppercase tracking-widest text-fog">
-                  {plan.priceCents > 0 ? plan.period : " "}
-                </p>
-                <p className="mt-2 min-h-10 text-[13px] text-fog">{plan.tagline}</p>
-                <ul className="mt-5 space-y-2">
-                  {plan.features.map((feature) => (
-                    <li key={feature} className="flex gap-2 text-[13px] text-chalk">
-                      <Check className="mt-0.5 size-3.5 shrink-0 text-verified" />
-                      {feature}
-                    </li>
-                  ))}
-                </ul>
-                {/* Enterprise has no self-serve checkout — its CTA opens a mail
-                    draft to support instead of the sign-in flow. */}
-                {plan.id === "enterprise" ? (
-                  <a
-                    href={`mailto:${SUPPORT_EMAIL}?subject=${encodeURIComponent("GeoCliks Enterprise plan")}`}
-                    className="mono mt-6 block rounded-[8px] border border-line px-3 py-2.5 text-center text-[11px] uppercase tracking-widest text-chalk transition-colors hover:border-amber/60"
-                  >
-                    {t("home.pricing.talk")}
-                  </a>
-                ) : (
-                  <Link
-                    to="/sign-up"
-                    className={
-                      plan.id === "business"
-                        ? "mono mt-6 block bg-amber px-3 py-2.5 text-center text-[11px] font-bold uppercase tracking-widest text-ink transition-colors hover:bg-amber-deep"
-                        : "mono mt-6 block rounded-[8px] border border-line px-3 py-2.5 text-center text-[11px] uppercase tracking-widest text-chalk transition-colors hover:border-amber/60"
-                    }
-                  >
-                    {t("home.pricing.choose")}
-                  </Link>
-                )}
-              </div>
-            ))}
-          </div>
+          <>
+            <PlanGroup
+              title={t("home.pricing.evidenceGroup")}
+              note={t("home.pricing.evidenceNote")}
+              plans={evidence}
+              t={t}
+            />
+            {delivery.length > 0 && (
+              <PlanGroup
+                title={t("home.pricing.deliveryGroup")}
+                note={t("home.pricing.deliveryNote")}
+                plans={delivery}
+                trailing={custom}
+                t={t}
+              />
+            )}
+          </>
         )}
       </div>
     </section>
+  );
+}
+
+function PlanGroup({
+  title,
+  note,
+  plans,
+  trailing = null,
+  t,
+}: {
+  title: string;
+  note: string;
+  plans: PlanView[];
+  /** Optional custom plan rendered as a full-width band under the grid, so it
+      never leaves dead cells in the 3-column layout. Optional on purpose: the
+      evidence group passes nothing. */
+  trailing?: PlanView | null;
+  t: ReturnType<typeof useT>;
+}) {
+  // The grid paints its hairlines by letting the container's `bg-line` show through
+  // 1px gaps, so an incomplete last row renders every missing cell as a solid grey
+  // slab (what Luc reported). Pad the last row with card-coloured fillers instead.
+  // The number needed differs per breakpoint, so both sets are rendered and toggled
+  // with `display` — a hidden grid item occupies no cell.
+  const fill2 = (2 - (plans.length % 2)) % 2;
+  const fill3 = (3 - (plans.length % 3)) % 3;
+
+  return (
+    <div className="mt-12">
+      <div className="flex flex-wrap items-baseline gap-x-3 gap-y-1">
+        {/* Group headings ("Photo & video evidence", "Delivery routes") are the
+            section titles for each plan family, so they read at heading scale
+            rather than as a small kicker. */}
+        <p className="mono text-[15px] uppercase tracking-[0.18em] text-amber sm:text-[18px]">
+          {title}
+        </p>
+        <p className="text-[13px] text-fog">{note}</p>
+      </div>
+      <div className="mt-5 grid gap-px bg-line sm:grid-cols-2 md:grid-cols-3">
+        {plans.map((plan) => (
+          <div
+            key={plan.id}
+            className={plan.id === "business" ? "relative bg-ink-2 p-6" : "relative bg-ink p-6"}
+          >
+            {plan.id === "business" && (
+              <span className="rounded-[6px] mono absolute right-0 top-0 bg-amber px-2 py-1 text-[9.5px] font-bold uppercase tracking-widest text-on-amber">
+                {t("home.pricing.popular")}
+              </span>
+            )}
+            <p className="mono text-[11px] uppercase tracking-[0.2em] text-amber">{plan.name}</p>
+            <p className="mt-3 font-display text-3xl font-bold text-chalk">{plan.priceLabel}</p>
+            <p className="mono mt-1 text-[10.5px] uppercase tracking-widest text-fog">
+              {plan.priceCents > 0 ? plan.period : " "}
+            </p>
+            <p className="mt-2 min-h-10 text-[13px] text-fog">{plan.tagline}</p>
+            <ul className="mt-5 space-y-2">
+              {plan.features.map((feature) => (
+                <li key={feature} className="flex gap-2 text-[13px] text-chalk">
+                  <Check className="mt-0.5 size-3.5 shrink-0 text-verified" />
+                  {feature}
+                </li>
+              ))}
+            </ul>
+            {/* A custom-priced plan (Enterprise, Enterprise Field) has no self-serve
+                    checkout — its CTA opens a mail draft to sales instead of the sign-in
+                    flow. The address is printed under the button so it can be copied or
+                    dialled by people who don't use a mail client on that device.
+                    Keyed off the price, not the id, so any future custom plan gets the
+                    right CTA without another edit here. */}
+            {plan.priceCents < 0 ? (
+              <>
+                <a
+                  href={`mailto:${SALES_EMAIL}?subject=${encodeURIComponent(`GeoCliks ${plan.name} plan`)}`}
+                  className="mono mt-6 block rounded-[8px] border border-line px-3 py-2.5 text-center text-[11px] uppercase tracking-widest text-chalk transition-colors hover:border-amber/60"
+                >
+                  {t("home.pricing.talk")}
+                </a>
+                <a
+                  href={`mailto:${SALES_EMAIL}`}
+                  className="mono mt-2 block text-center text-[11px] text-amber transition-colors hover:text-chalk"
+                >
+                  {SALES_EMAIL}
+                </a>
+              </>
+            ) : (
+              /* Every plan CTA is a solid amber button that inverts to near-black
+                     on hover, so no plan's button reads as secondary.
+                     `on-amber` (#0b0e13) not `ink`: the palette is theme-aware and
+                     `ink` is #ffffff in the light theme this page pins, so `text-ink`
+                     here would be white-on-orange and `hover:bg-ink` would fade the
+                     button to white instead of black. `on-amber` and `amber` are the
+                     only two tokens that hold the same value in both themes. */
+              <Link
+                to="/sign-up"
+                className="mono mt-6 block rounded-[8px] bg-amber px-3 py-2.5 text-center text-[11px] font-bold uppercase tracking-widest text-on-amber transition-colors hover:bg-on-amber hover:text-amber"
+              >
+                {/* Delivery plans carry a 7-day free trial in Autumn, so their
+                        CTA names the trial rather than a generic "Choose". */}
+                {plan.id.startsWith("delivery-")
+                  ? t("home.pricing.freeTrial")
+                  : t("home.pricing.choose")}
+              </Link>
+            )}
+          </div>
+        ))}
+        {Array.from({ length: fill2 }, (_, i) => (
+          <div key={`fill2-${i}`} aria-hidden className="hidden bg-ink sm:block md:hidden" />
+        ))}
+        {Array.from({ length: fill3 }, (_, i) => (
+          <div key={`fill3-${i}`} aria-hidden className="hidden bg-ink md:block" />
+        ))}
+      </div>
+      {trailing && (
+        <div className="border-t border-line bg-ink p-6 md:p-8">
+          <div className="flex flex-col gap-6 md:flex-row md:items-start md:justify-between">
+            <div className="md:max-w-[320px]">
+              <p className="mono text-[11px] uppercase tracking-[0.2em] text-amber">
+                {trailing.name}
+              </p>
+              <p className="mt-3 font-display text-3xl font-bold text-chalk">
+                {trailing.priceLabel}
+              </p>
+              <p className="mt-2 text-[13px] text-fog">{trailing.tagline}</p>
+            </div>
+            <ul className="grid flex-1 gap-2 sm:grid-cols-2 md:mx-8">
+              {trailing.features.map((feature) => (
+                <li key={feature} className="flex gap-2 text-[13px] text-chalk">
+                  <Check className="mt-0.5 size-3.5 shrink-0 text-verified" />
+                  {feature}
+                </li>
+              ))}
+            </ul>
+            <div className="md:w-[220px] md:shrink-0">
+              {/* No self-serve checkout on the custom plan — the CTA opens a mail draft. */}
+              <a
+                href={`mailto:${SALES_EMAIL}?subject=${encodeURIComponent("GeoCliks Enterprise plan")}`}
+                className="mono block rounded-[8px] bg-amber px-3 py-2.5 text-center text-[11px] font-bold uppercase tracking-widest text-on-amber transition-colors hover:bg-on-amber hover:text-amber"
+              >
+                {t("home.pricing.talk")}
+              </a>
+              <a
+                href={`mailto:${SALES_EMAIL}`}
+                className="mono mt-2 block text-center text-[11px] text-amber transition-colors hover:text-chalk"
+              >
+                {SALES_EMAIL}
+              </a>
+            </div>
+          </div>
+        </div>
+      )}
+    </div>
   );
 }
 
@@ -761,6 +1028,7 @@ export default function Index() {
       <Evidence />
       <Teamspace />
       <Reports />
+      <Delivery />
       <Field />
       <Pricing />
       <SiteFooter />

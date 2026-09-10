@@ -83,3 +83,82 @@ export const SKEW_TOLERANCE_MS = 5 * 60 * 1000;
 export function timeSourceFor(skewMs: number): "network" | "device" {
   return Math.abs(skewMs) <= SKEW_TOLERANCE_MS ? "network" : "device";
 }
+
+/**
+ * A clock offset measured longer ago than this is no longer trusted: phones drift,
+ * and the user may have changed the clock since the last sync.
+ */
+export const CLOCK_SYNC_MAX_AGE_MS = 24 * 60 * 60 * 1000;
+
+/** An offset larger than this is not a plausible measurement, it is a broken client. */
+const MAX_PLAUSIBLE_OFFSET_MS = 365 * 24 * 60 * 60 * 1000;
+
+export interface ClockInput {
+  /** Device clock at capture. */
+  capturedAt: number;
+  /** Server clock at upload. */
+  verifiedAt: number;
+  /** serverTime - deviceTime, measured by the device against the server while online. */
+  clockOffsetMs?: number | null;
+  /** Device clock when that offset was measured. */
+  clockSyncedAt?: number | null;
+}
+
+export interface ClockResult {
+  /** deviceTime - serverTime: how wrong the phone's clock was at capture. */
+  skewMs: number;
+  /** How long the capture sat in the offline queue before it reached the server. */
+  uploadDelayMs: number;
+  timeSource: "network" | "device";
+  integrity: "verified" | "unverified";
+}
+
+/**
+ * Separates two things the old code confused for each other:
+ *  - the device clock being wrong (real evidence problem), and
+ *  - the upload arriving late (normal in a dead zone, not a problem at all).
+ *
+ * Before this, a delivery photo taken underground and drained an hour later was
+ * stamped "unverified" purely because of the queue delay.
+ *
+ * The device's own offset is only trusted when it was measured against the server
+ * recently. A client could always claim `offset = 0`, so a capture stamped in the
+ * future relative to the server is rejected no matter what offset it sends.
+ */
+export function resolveClock(input: ClockInput): ClockResult {
+  const uploadDelayMs = Math.max(0, input.verifiedAt - input.capturedAt);
+  const legacySkew = input.capturedAt - input.verifiedAt;
+
+  // Claiming a capture time ahead of the server clock cannot be explained by an
+  // upload delay — the server has already passed that moment.
+  if (input.capturedAt > input.verifiedAt + SKEW_TOLERANCE_MS) {
+    return {
+      skewMs: legacySkew,
+      uploadDelayMs,
+      timeSource: "device",
+      integrity: "unverified",
+    };
+  }
+
+  const offset = input.clockOffsetMs;
+  const syncedAt = input.clockSyncedAt;
+  const usable =
+    typeof offset === "number" &&
+    Number.isFinite(offset) &&
+    Math.abs(offset) <= MAX_PLAUSIBLE_OFFSET_MS &&
+    typeof syncedAt === "number" &&
+    Number.isFinite(syncedAt) &&
+    input.capturedAt - syncedAt >= -SKEW_TOLERANCE_MS &&
+    input.capturedAt - syncedAt <= CLOCK_SYNC_MAX_AGE_MS;
+
+  // Old app builds send no offset at all. Fall back to the previous formula rather
+  // than silently trusting a client that never proved its clock.
+  const skewMs = usable ? -offset! : legacySkew;
+
+  return {
+    skewMs,
+    uploadDelayMs,
+    timeSource: timeSourceFor(skewMs),
+    integrity: Math.abs(skewMs) <= SKEW_TOLERANCE_MS ? "verified" : "unverified",
+  };
+}

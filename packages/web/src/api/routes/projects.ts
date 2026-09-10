@@ -1,17 +1,18 @@
 import { z } from "zod";
 import { ORPCError } from "@orpc/server";
 import { and, count, desc, eq, inArray, max, min, sql } from "drizzle-orm";
-import { orgProc, requireRole, visibleProjectIds } from "../middleware/auth";
+import { fieldProc, requireRole, visibleProjectIds } from "../middleware/auth";
 import { db } from "../database";
 import * as schema from "../database/schema";
 import { id } from "../lib/ids";
+import { assertFieldEnabled } from "../lib/plan-guards";
 import { planOf } from "../lib/plans";
 import { photoUrl } from "../lib/media";
 
 const statusEnum = z.enum(["active", "on_hold", "complete", "archived"]);
 
 export const projects = {
-  list: orgProc
+  list: fieldProc
     .input(z.object({ status: statusEnum.optional() }).optional())
     .handler(async ({ input, context }) => {
       const allowed = await visibleProjectIds(context.org.id, context.user.id, context.role);
@@ -77,7 +78,7 @@ export const projects = {
       }));
     }),
 
-  get: orgProc.input(z.object({ id: z.string() })).handler(async ({ input, context }) => {
+  get: fieldProc.input(z.object({ id: z.string() })).handler(async ({ input, context }) => {
     const [project] = await db
       .select()
       .from(schema.projects)
@@ -106,7 +107,7 @@ export const projects = {
     };
   }),
 
-  create: orgProc
+  create: fieldProc
     .input(
       z.object({
         name: z.string().min(1).max(90),
@@ -123,6 +124,7 @@ export const projects = {
     .handler(async ({ input, context }) => {
       requireRole(context.role, "manager");
       const plan = planOf(context.org.plan);
+      assertFieldEnabled(plan);
       const [used] = await db
         .select({ value: count() })
         .from(schema.projects)
@@ -140,7 +142,7 @@ export const projects = {
       return project;
     }),
 
-  update: orgProc
+  update: fieldProc
     .input(
       z.object({
         id: z.string(),
@@ -167,7 +169,7 @@ export const projects = {
     }),
 
   /** Soft delete: the project drops out of the active lists but keeps all of its evidence. */
-  remove: orgProc.input(z.object({ id: z.string() })).handler(async ({ input, context }) => {
+  remove: fieldProc.input(z.object({ id: z.string() })).handler(async ({ input, context }) => {
     requireRole(context.role, "admin");
     await db
       .update(schema.projects)
@@ -181,7 +183,7 @@ export const projects = {
    * stay in the teamspace, because deleting a folder must not silently destroy evidence.
    * Share links and reports scoped to the project become workspace-wide instead of dangling.
    */
-  destroy: orgProc
+  destroy: fieldProc
     .input(z.object({ id: z.string() }))
     .handler(async ({ input, context }): Promise<{ ok: true; detachedPhotos: number }> => {
       requireRole(context.role, "admin");

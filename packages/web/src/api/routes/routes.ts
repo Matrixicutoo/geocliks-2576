@@ -1,13 +1,16 @@
 import { ORPCError } from "@orpc/server";
-import { and, asc, count, desc, eq, inArray } from "drizzle-orm";
+import { and, asc, count, desc, eq, gte, inArray } from "drizzle-orm";
 import { z } from "zod";
 import { db } from "../database";
 import * as schema from "../database/schema";
 import { geocodeAll, geocodingAvailable } from "../lib/geocode";
 import { id, shareToken } from "../lib/ids";
 import { insertionIndex, optimizeStops } from "../lib/optimize";
+import { assertDeliveryEnabled } from "../lib/plan-guards";
+import { type Plan, planOf } from "../lib/plans";
 import { notifyRouteStarted, notifyStopDelivered, notifyUpcoming } from "../lib/route-notify";
-import { orgProc, requireRole } from "../middleware/auth";
+import { suggestAddresses } from "../lib/places";
+import { orgProc, requireDelivery, requireRole, type Role } from "../middleware/auth";
 
 /**
  * Delivery routes — the office builds an ordered list of stops, a driver runs it,
@@ -35,6 +38,42 @@ function hasPin(stop: { lat: number | null; lng: number | null; geocodeStatus: s
     typeof stop.lng === "number" &&
     (stop.geocodeStatus === "ok" || stop.geocodeStatus === "manual")
   );
+}
+
+const startOfMonth = () => {
+  const d = new Date();
+  return new Date(d.getFullYear(), d.getMonth(), 1).getTime();
+};
+
+/**
+ * Plan enforcement for delivery.
+ *
+ * Only the things that cost real money are enforced: Google bills per stop on every
+ * optimize, so the monthly stop count is the meter. Everything else about a route is
+ * free for us to run, and a driver mid-shift should never be stopped by billing.
+ * `assertDeliveryEnabled` lives in `lib/plan-guards` next to its field-side twin.
+ */
+async function assertStopBudget(plan: Plan, orgId: string, adding: number): Promise<void> {
+  const cap = plan.limits.deliveryStopsPerMonth;
+  if (cap === -1) return;
+  assertDeliveryEnabled(plan);
+  const [used] = await db
+    .select({ value: count() })
+    .from(schema.routeStops)
+    .where(
+      and(
+        eq(schema.routeStops.orgId, orgId),
+        gte(schema.routeStops.createdAt, new Date(startOfMonth())),
+      ),
+    );
+  const already = used?.value ?? 0;
+  if (already + adding > cap) {
+    const left = Math.max(0, cap - already);
+    throw new ORPCError("PAYMENT_REQUIRED", {
+      status: 402,
+      message: `${plan.name} covers ${cap} delivery stops per month. ${left} left this month — upgrade to add ${adding} more.`,
+    });
+  }
 }
 
 async function loadRoute(orgId: string, routeId: string) {
@@ -134,12 +173,54 @@ async function runState(routeId: string, orgId: string) {
   };
 }
 
+/**
+ * Who may tack an extra delivery onto a run in progress.
+ *
+ * Dispatchers and above may add one to any run at any time — that is the delivery board,
+ * and it is their job. A field driver may add one too, but strictly to the run assigned to
+ * them and strictly while it is moving: the "customer just rang, squeeze them in" case and
+ * nothing wider. A driver therefore cannot touch a draft, someone else's run, or a run that
+ * has not been started, which keeps the board itself out of reach of the whole crew.
+ */
+function assertCanAddLiveStop(
+  route: { driverId: string | null; status: string },
+  context: { role: Role; user: { id: string } },
+) {
+  requireDelivery(context.role);
+  if (!isOwnRoutesOnly(context.role)) {
+    requireRole(context.role, "dispatcher");
+    return;
+  }
+  if (route.driverId !== context.user.id) {
+    throw new ORPCError("FORBIDDEN", { message: "Not your route" });
+  }
+  if (route.status !== "active") {
+    throw new ORPCError("FORBIDDEN", { message: "Start the route before adding a stop" });
+  }
+}
+
 /** A field member may only ever touch the route they were assigned. */
+/**
+ * Crew roles only ever reach the runs assigned to them.
+ *
+ * This used to be spelled `role !== "field"` in three separate places, which quietly became
+ * WRONG the moment `driver` was added: a driver is not `field`, so every one of those checks
+ * waved them through to the whole workspace's routes. The concept now lives here alone, so
+ * adding another crew role later is a one-line decision instead of a hunt.
+ *
+ * `field` is not listed because it never reaches the delivery side at all — `requireDelivery`
+ * refuses it before this is consulted.
+ */
+function isOwnRoutesOnly(role: Role): boolean {
+  return role === "driver";
+}
+
 function assertRouteAccess(
   route: { driverId: string | null },
-  context: { role: string; user: { id: string } },
+  context: { role: Role; user: { id: string } },
 ) {
-  if (context.role !== "field") return;
+  requireDelivery(context.role);
+  if (!isOwnRoutesOnly(context.role)) return;
   if (route.driverId !== context.user.id) {
     throw new ORPCError("FORBIDDEN", { message: "Not your route" });
   }
@@ -150,10 +231,13 @@ export const routes = {
   list: orgProc
     .input(z.object({ date: z.string().optional(), status: statusEnum.optional() }).optional())
     .handler(async ({ input, context }) => {
+      requireDelivery(context.role);
       const filters = [eq(schema.routes.orgId, context.org.id)];
       if (input?.date) filters.push(eq(schema.routes.date, input.date));
       if (input?.status) filters.push(eq(schema.routes.status, input.status));
-      if (context.role === "field") filters.push(eq(schema.routes.driverId, context.user.id));
+      if (isOwnRoutesOnly(context.role)) {
+        filters.push(eq(schema.routes.driverId, context.user.id));
+      }
 
       const rows = await db
         .select()
@@ -239,7 +323,15 @@ export const routes = {
       }),
     )
     .handler(async ({ input, context }) => {
-      requireRole(context.role, "manager");
+      requireRole(context.role, "dispatcher");
+      const plan = planOf(context.org.plan);
+      assertDeliveryEnabled(plan);
+      if (input.mode === "dispatch" && !plan.limits.deliveryDispatch) {
+        throw new ORPCError("PAYMENT_REQUIRED", {
+          status: 402,
+          message: `Live dispatch routes need Delivery Pro or higher. ${plan.name} covers planned routes.`,
+        });
+      }
 
       const routeId = id("rte");
       await db.insert(schema.routes).values({
@@ -293,7 +385,7 @@ export const routes = {
       }),
     )
     .handler(async ({ input, context }) => {
-      requireRole(context.role, "manager");
+      requireRole(context.role, "dispatcher");
       const route = await loadRoute(context.org.id, input.id);
 
       const { id: _ignored, ...rest } = input;
@@ -328,8 +420,9 @@ export const routes = {
       }),
     )
     .handler(async ({ input, context }) => {
-      requireRole(context.role, "manager");
+      requireRole(context.role, "dispatcher");
       const route = await loadRoute(context.org.id, input.routeId);
+      await assertStopBudget(planOf(context.org.plan), context.org.id, input.stops.length);
 
       const existing = await loadStops(route.id);
       let seq = existing.length;
@@ -386,11 +479,12 @@ export const routes = {
       }),
     )
     .handler(async ({ input, context }) => {
-      requireRole(context.role, "manager");
       const route = await loadRoute(context.org.id, input.routeId);
+      assertCanAddLiveStop(route, context);
       if (route.status === "completed" || route.status === "cancelled") {
         throw new ORPCError("BAD_REQUEST", { message: "This route is finished" });
       }
+      await assertStopBudget(planOf(context.org.plan), context.org.id, 1);
 
       const stops = await loadStops(route.id);
 
@@ -494,7 +588,7 @@ export const routes = {
   geocodeStops: orgProc
     .input(z.object({ routeId: z.string(), force: z.boolean().default(false) }))
     .handler(async ({ input, context }) => {
-      requireRole(context.role, "manager");
+      requireRole(context.role, "dispatcher");
       const route = await loadRoute(context.org.id, input.routeId);
 
       const stops = await loadStops(route.id);
@@ -543,7 +637,7 @@ export const routes = {
       }),
     )
     .handler(async ({ input, context }) => {
-      requireRole(context.role, "manager");
+      requireRole(context.role, "dispatcher");
       const [stop] = await db
         .select()
         .from(schema.routeStops)
@@ -582,7 +676,7 @@ export const routes = {
       }),
     )
     .handler(async ({ input, context }) => {
-      requireRole(context.role, "manager");
+      requireRole(context.role, "dispatcher");
       const [stop] = await db
         .select()
         .from(schema.routeStops)
@@ -613,7 +707,7 @@ export const routes = {
   removeStop: orgProc
     .input(z.object({ stopId: z.string() }))
     .handler(async ({ input, context }) => {
-      requireRole(context.role, "manager");
+      requireRole(context.role, "dispatcher");
       const [stop] = await db
         .select()
         .from(schema.routeStops)
@@ -647,7 +741,7 @@ export const routes = {
   reorder: orgProc
     .input(z.object({ routeId: z.string(), order: z.array(z.string()).min(1) }))
     .handler(async ({ input, context }) => {
-      requireRole(context.role, "manager");
+      requireRole(context.role, "dispatcher");
       const route = await loadRoute(context.org.id, input.routeId);
 
       const stops = await loadStops(route.id);
@@ -659,10 +753,7 @@ export const routes = {
       for (let i = 0; i < input.order.length; i++) {
         const stopId = input.order[i];
         if (!stopId) continue;
-        await db
-          .update(schema.routeStops)
-          .set({ seq: i })
-          .where(eq(schema.routeStops.id, stopId));
+        await db.update(schema.routeStops).set({ seq: i }).where(eq(schema.routeStops.id, stopId));
       }
 
       await db
@@ -684,12 +775,17 @@ export const routes = {
    * deliberate, metered dispatcher action because Google bills per stop.
    */
   optimize: orgProc
-    .input(
-      z.object({ routeId: z.string(), backend: z.enum(["local", "google"]).default("local") }),
-    )
+    .input(z.object({ routeId: z.string(), backend: z.enum(["local", "google"]).default("local") }))
     .handler(async ({ input, context }) => {
-      requireRole(context.role, "manager");
+      requireRole(context.role, "dispatcher");
       const route = await loadRoute(context.org.id, input.routeId);
+
+      // The smart (Google) optimizer is the metered one. On a plan without it we
+      // quietly run the free local solver instead — the dispatcher still gets an
+      // ordered route, which matters more than an error message.
+      const plan = planOf(context.org.plan);
+      const backend =
+        input.backend === "google" && !plan.limits.deliverySmartOptimize ? "local" : input.backend;
 
       const stops = await loadStops(route.id);
       const routable = stops.filter(hasPin);
@@ -714,7 +810,7 @@ export const routes = {
         })),
         start,
         returnToStart: route.returnToStart,
-        backend: input.backend,
+        backend,
       });
 
       // Stops with no pin keep their place at the end rather than vanishing.
@@ -722,10 +818,7 @@ export const routes = {
       for (let i = 0; i < finalOrder.length; i++) {
         const stopId = finalOrder[i];
         if (!stopId) continue;
-        await db
-          .update(schema.routeStops)
-          .set({ seq: i })
-          .where(eq(schema.routeStops.id, stopId));
+        await db.update(schema.routeStops).set({ seq: i }).where(eq(schema.routeStops.id, stopId));
       }
 
       await db
@@ -759,7 +852,7 @@ export const routes = {
   assign: orgProc
     .input(z.object({ routeId: z.string(), driverId: z.string().nullable() }))
     .handler(async ({ input, context }) => {
-      requireRole(context.role, "manager");
+      requireRole(context.role, "dispatcher");
       const route = await loadRoute(context.org.id, input.routeId);
 
       if (input.driverId) {
@@ -822,7 +915,11 @@ export const routes = {
     });
 
     // Recipients hear about it once, here. Never allowed to fail the start itself.
-    await notifyRouteStarted({ ...route, status: "active", startedAt: route.startedAt ?? new Date() });
+    await notifyRouteStarted({
+      ...route,
+      status: "active",
+      startedAt: route.startedAt ?? new Date(),
+    });
 
     return { ok: true, alreadyRunning: false };
   }),
@@ -898,7 +995,10 @@ export const routes = {
         orgId: context.org.id,
         stopId: stop.id,
         event: input.outcome === "delivered" ? "delivered" : "failed",
-        detail: input.outcome === "failed" ? (input.failedReason ?? null) : (stop.address ?? stop.addressRaw),
+        detail:
+          input.outcome === "failed"
+            ? (input.failedReason ?? null)
+            : (stop.address ?? stop.addressRaw),
         actorId: context.user.id,
       });
 
@@ -986,6 +1086,8 @@ export const routes = {
   }),
 
   remove: orgProc.input(z.object({ id: z.string() })).handler(async ({ input, context }) => {
+    // Owner, admin and manager can delete a run; field crew cannot. Hiding the button alone would
+    // still leave the endpoint open, so the rule lives here.
     requireRole(context.role, "manager");
     const route = await loadRoute(context.org.id, input.id);
     if (route.status === "active") {
@@ -999,6 +1101,21 @@ export const routes = {
 
     return { ok: true };
   }),
+
+  /**
+   * Address suggestions while anyone types a start address or a stop.
+   *
+   * Open to every workspace member, not just the board: a driver adding a live stop on the
+   * phone needs the same dropdown, and an address search leaks nothing about the workspace.
+   * Proxied so the Google key stays on the server. Returns an empty list rather than an error
+   * when suggestions are unavailable, so the field stays a plain text box until Places API (New)
+   * is switched on for the Cloud project.
+   */
+  suggestAddress: orgProc
+    .input(z.object({ query: z.string(), region: z.string().length(2).optional() }))
+    .handler(async ({ input }) => {
+      return suggestAddresses(input.query, { region: input.region });
+    }),
 
   /** Reasons a stop can be closed without a delivery. Kept server-side so both apps agree. */
   failedReasons: orgProc.handler(async () => failedReasonEnum.options),

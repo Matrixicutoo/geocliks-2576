@@ -28,6 +28,48 @@ export async function avatarUrl(image: string | null | undefined) {
   }
 }
 
+/**
+ * Recovers the storage key from a full URL that points at our own bucket. Rows written before
+ * logos were stored as bare keys hold an expired presigned URL, which would stay broken forever.
+ * Anything pointing somewhere else is left alone.
+ */
+function ownBucketKey(url: string) {
+  try {
+    const parsed = new URL(url);
+    const endpointHost = process.env.S3_ENDPOINT ? new URL(process.env.S3_ENDPOINT).host : null;
+    const bucket = process.env.S3_BUCKET ?? "";
+    const ours =
+      parsed.host === endpointHost ||
+      (!!endpointHost && parsed.host === `${bucket}.${endpointHost}`) ||
+      (!!bucket && parsed.host.startsWith(`${bucket}.`));
+    if (!ours) return null;
+    let key = decodeURIComponent(parsed.pathname).replace(/^\/+/, "");
+    if (bucket && key.startsWith(`${bucket}/`)) key = key.slice(bucket.length + 1);
+    return key || null;
+  } catch {
+    return null;
+  }
+}
+
+/**
+ * Business and watermark logos follow the same rule as avatars: the column holds a bare storage
+ * key and the link is minted on read. Older rows hold a full expired URL, so when that URL is
+ * one of ours we recover the key from it and mint a fresh link instead of serving a dead image.
+ */
+export async function brandLogoUrl(value: string | null | undefined) {
+  if (!value) return null;
+  if (value.startsWith("http://") || value.startsWith("https://")) {
+    const key = ownBucketKey(value);
+    if (!key) return value;
+    try {
+      return await presignGet(key, 60 * 60 * 12);
+    } catch {
+      return null;
+    }
+  }
+  return avatarUrl(value);
+}
+
 export const account = {
   /**
    * Password reset by email for someone who is already signed in - the alternative to typing the

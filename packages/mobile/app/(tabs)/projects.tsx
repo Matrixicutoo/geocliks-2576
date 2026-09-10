@@ -1,11 +1,4 @@
-import {
-  ActivityIndicator,
-  FlatList,
-  Image,
-  Pressable,
-  StyleSheet,
-  View,
-} from "react-native";
+import { ActivityIndicator, FlatList, Image, Pressable, StyleSheet, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useState } from "react";
 import { Ionicons } from "@expo/vector-icons";
@@ -19,6 +12,7 @@ import { useT } from "@/lib/i18n";
 import { formatStamp } from "@/components/stamp";
 import { useOrg } from "@/queries/orgs";
 import { useCreateProject, useDestroyProject, useProjects } from "@/queries/projects";
+import { canManageWorkspace } from "../../lib/roles";
 
 const FORM_FIELDS = [
   ["name", "projects.fName"],
@@ -46,7 +40,7 @@ export default function Projects() {
   const createProject = useCreateProject();
   const org = useOrg();
   // Field crews work inside projects; creating and deleting them is manager and above.
-  const canManage = org.data?.role !== "field";
+  const canManage = canManageWorkspace(org.data?.role);
   const [confirmId, setConfirmId] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [showForm, setShowForm] = useState(false);
@@ -115,7 +109,10 @@ export default function Projects() {
       {canManage && showForm ? (
         <View style={[styles.form, { borderColor: colors.border, backgroundColor: colors.card }]}>
           <Text
-            style={[styles.formTitle, { color: colors.foreground, fontFamily: Fonts?.displayMedium }]}
+            style={[
+              styles.formTitle,
+              { color: colors.foreground, fontFamily: Fonts?.displayMedium },
+            ]}
           >
             {t("projects.new")}
           </Text>
@@ -154,7 +151,9 @@ export default function Projects() {
             ) : (
               <Ionicons name="add" size={16} color={colors.background} />
             )}
-            <Text style={[styles.primaryText, { color: colors.background, fontFamily: Fonts?.mono }]}>
+            <Text
+              style={[styles.primaryText, { color: colors.background, fontFamily: Fonts?.mono }]}
+            >
               {t("projects.create").toUpperCase()}
             </Text>
           </Pressable>
@@ -181,7 +180,9 @@ export default function Projects() {
           renderItem={({ item }) => {
             const cover = item.coverUrl;
             return (
-              <View style={[styles.card, { borderColor: colors.border, backgroundColor: colors.card }]}>
+              <View
+                style={[styles.card, { borderColor: colors.border, backgroundColor: colors.card }]}
+              >
                 <Pressable
                   accessibilityLabel={item.name}
                   onPress={() =>
@@ -197,28 +198,49 @@ export default function Projects() {
                     </View>
                   )}
                   <View style={styles.body}>
-                  <Text numberOfLines={1} style={[styles.name, { color: colors.foreground, fontFamily: Fonts?.displayMedium }]}>
-                    {item.name}
-                  </Text>
-                  <Text numberOfLines={1} style={[styles.client, { color: colors.mutedForeground }]}>
-                    {[item.client, item.locationLabel ?? item.address].filter(Boolean).join(" · ") ||
-                      "No client set"}
-                  </Text>
-                  <View style={styles.metaRow}>
-                    <Text style={[styles.badge, { color: colors.amber, fontFamily: Fonts?.mono }]}>
-                      {item.code ?? STATUS_LABEL[item.status] ?? item.status.toUpperCase()}
+                    <Text
+                      numberOfLines={1}
+                      style={[
+                        styles.name,
+                        { color: colors.foreground, fontFamily: Fonts?.displayMedium },
+                      ]}
+                    >
+                      {item.name}
                     </Text>
-                    <Text style={[styles.badge, { color: colors.verified, fontFamily: Fonts?.mono }]}>
-                      {item.photoCount} PHOTOS
+                    <Text
+                      numberOfLines={1}
+                      style={[styles.client, { color: colors.mutedForeground }]}
+                    >
+                      {[item.client, item.locationLabel ?? item.address]
+                        .filter(Boolean)
+                        .join(" · ") || "No client set"}
                     </Text>
-                  </View>
+                    <View style={styles.metaRow}>
+                      <Text
+                        style={[styles.badge, { color: colors.amber, fontFamily: Fonts?.mono }]}
+                      >
+                        {item.code ?? STATUS_LABEL[item.status] ?? item.status.toUpperCase()}
+                      </Text>
+                      <Text
+                        style={[styles.badge, { color: colors.verified, fontFamily: Fonts?.mono }]}
+                      >
+                        {item.photoCount} PHOTOS
+                      </Text>
+                    </View>
                     {item.lastPhotoAt ? (
-                      <Text style={[styles.last, { color: colors.mutedForeground, fontFamily: Fonts?.mono }]}>
+                      <Text
+                        style={[
+                          styles.last,
+                          { color: colors.mutedForeground, fontFamily: Fonts?.mono },
+                        ]}
+                      >
                         LAST {formatStamp(new Date(item.lastPhotoAt))}
                       </Text>
                     ) : null}
                     <View style={styles.openRow}>
-                      <Text style={[styles.openText, { color: colors.sky, fontFamily: Fonts?.mono }]}>
+                      <Text
+                        style={[styles.openText, { color: colors.sky, fontFamily: Fonts?.mono }]}
+                      >
                         {t("projects.openPhotos").toUpperCase()}
                       </Text>
                       <Ionicons name="chevron-forward" size={13} color={colors.sky} />
@@ -327,11 +349,24 @@ const styles = StyleSheet.create({
   last: { fontSize: 9, letterSpacing: 0.8 },
   trash: { paddingHorizontal: 4, paddingTop: 2 },
   iconBtn: { borderWidth: 1, paddingHorizontal: 7, paddingVertical: 5, borderRadius: 8 },
-  form: { borderWidth: 1, marginHorizontal: 16, marginTop: 12, padding: 12, gap: 8, borderRadius: 12 },
+  form: {
+    borderWidth: 1,
+    marginHorizontal: 16,
+    marginTop: 12,
+    padding: 12,
+    gap: 8,
+    borderRadius: 12,
+  },
   formTitle: { fontSize: 13.5 },
   formField: { gap: 4 },
   formLabel: { fontSize: 10.5 },
-  input: { borderWidth: 1, paddingHorizontal: 10, paddingVertical: 8, fontSize: 13, borderRadius: 8 },
+  input: {
+    borderWidth: 1,
+    paddingHorizontal: 10,
+    paddingVertical: 8,
+    fontSize: 13,
+    borderRadius: 8,
+  },
   formError: { fontSize: 11, lineHeight: 16 },
   primary: {
     flexDirection: "row",

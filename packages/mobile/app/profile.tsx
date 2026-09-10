@@ -21,7 +21,7 @@ import { authClient } from "@/lib/auth";
 import { client } from "@/lib/api";
 import { signOutCompletely } from "@/lib/sign-out";
 import { usesAppStoreBilling } from "@/lib/purchases";
-import { useOrg } from "@/queries/orgs";
+import { useOrg, useUpdateOrg } from "@/queries/orgs";
 import { useDeleteAccount, useUpdateProfile } from "@/queries/account";
 
 function initials(name: string | null | undefined, email: string | null | undefined) {
@@ -42,10 +42,12 @@ export default function Profile() {
   const tr = useT();
   const org = useOrg();
   const updateProfile = useUpdateProfile();
+  const updateOrg = useUpdateOrg();
   const deleteAccount = useDeleteAccount();
 
   const [name, setName] = useState("");
   const [uploading, setUploading] = useState(false);
+  const [logoBusy, setLogoBusy] = useState(false);
   const [currentPassword, setCurrentPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
   const [changingPassword, setChangingPassword] = useState(false);
@@ -59,6 +61,13 @@ export default function Profile() {
   const user = org.data?.user;
   // Invited field crews don't own the plan and can't remove themselves — the owner does that.
   const isField = org.data?.role === "field";
+  /**
+   * The business logo belongs to the workspace, so it sits on this screen next to the personal
+   * photo: the top of the drawer shows the photo, the workspace row below it shows this logo.
+   * Only owners and admins may change it, the same rule the server enforces on `orgs.update`.
+   */
+  const canEditOrg = org.data?.role === "owner" || org.data?.role === "admin";
+  const orgLogo = org.data?.org?.logoUrl ?? null;
 
   useEffect(() => {
     if (user?.name) setName((prev) => (prev ? prev : user.name));
@@ -105,6 +114,49 @@ export default function Profile() {
       setError(err instanceof Error ? err.message : String(err));
     } finally {
       setUploading(false);
+    }
+  };
+
+  const pickLogo = async () => {
+    setError(null);
+    // No pre-flight permission check: the picker raises the OS prompt itself and simply comes
+    // back cancelled if the phone says no.
+    const picked = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ["images"],
+      quality: 1,
+    });
+    const asset = picked.canceled ? null : picked.assets?.[0];
+    if (!asset) return;
+    setLogoBusy(true);
+    try {
+      const contentType = asset.mimeType ?? "image/png";
+      const presigned = await client.upload.presignLogo({
+        filename: asset.fileName ?? "logo.png",
+        contentType,
+      });
+      const blob = await (await fetch(asset.uri)).blob();
+      const put = await fetch(presigned.url, {
+        method: "PUT",
+        body: blob,
+        headers: { "Content-Type": contentType },
+      });
+      if (!put.ok) throw new Error(`Storage rejected the upload (${put.status})`);
+      await updateOrg.mutateAsync({ logoUrl: presigned.key });
+      flash(tr("profile.saved"));
+    } catch (err) {
+      setError(err instanceof Error ? err.message : String(err));
+    } finally {
+      setLogoBusy(false);
+    }
+  };
+
+  const removeLogo = async () => {
+    setError(null);
+    try {
+      await updateOrg.mutateAsync({ logoUrl: null });
+      flash(tr("profile.saved"));
+    } catch (err) {
+      setError(err instanceof Error ? err.message : String(err));
     }
   };
 
@@ -196,7 +248,11 @@ export default function Profile() {
       style={{ flex: 1, backgroundColor: colors.background }}
     >
       <View style={styles.topBar}>
-        <Pressable onPress={() => router.back()} hitSlop={10} accessibilityLabel={tr("common.close")}>
+        <Pressable
+          onPress={() => router.back()}
+          hitSlop={10}
+          accessibilityLabel={tr("common.close")}
+        >
           <Ionicons name="chevron-back" size={22} color={colors.foreground} />
         </Pressable>
         <Text style={[styles.topTitle, { color: colors.amber, fontFamily: Fonts?.display }]}>
@@ -206,7 +262,13 @@ export default function Profile() {
       </View>
 
       <ScrollView contentContainerStyle={styles.content} showsVerticalScrollIndicator={false}>
-        <View style={[styles.card, styles.avatarCard, { borderColor: colors.border, backgroundColor: colors.card }]}>
+        <View
+          style={[
+            styles.card,
+            styles.avatarCard,
+            { borderColor: colors.border, backgroundColor: colors.card },
+          ]}
+        >
           {avatar ? (
             <Image source={{ uri: avatar }} style={styles.avatarImage} resizeMode="cover" />
           ) : (
@@ -254,11 +316,78 @@ export default function Profile() {
           </View>
         </View>
 
+        {canEditOrg ? (
+          <>
+            <Text
+              style={[styles.section, { color: colors.mutedForeground, fontFamily: Fonts?.mono }]}
+            >
+              {tr("profile.workspace").toUpperCase()}
+            </Text>
+            <View
+              style={[styles.card, { borderColor: colors.border, backgroundColor: colors.card }]}
+            >
+              <Text
+                style={[
+                  styles.fieldLabel,
+                  { color: colors.mutedForeground, fontFamily: Fonts?.mono },
+                ]}
+              >
+                {tr("templates.logo").toUpperCase()}
+              </Text>
+              <View style={styles.logoRow}>
+                {orgLogo ? (
+                  <Image
+                    source={{ uri: orgLogo }}
+                    style={[styles.logoBox, { borderColor: colors.border }]}
+                    resizeMode="contain"
+                  />
+                ) : (
+                  <View style={[styles.logoBox, { borderColor: colors.border }]}>
+                    <Ionicons name="image-outline" size={20} color={colors.mutedForeground} />
+                  </View>
+                )}
+                <Pressable
+                  accessibilityLabel={tr("templates.upload")}
+                  onPress={() => void pickLogo()}
+                  disabled={logoBusy}
+                  style={[styles.btn, { borderColor: colors.amber, opacity: logoBusy ? 0.6 : 1 }]}
+                >
+                  {logoBusy ? (
+                    <ActivityIndicator color={colors.amber} size="small" />
+                  ) : (
+                    <Ionicons name="image-outline" size={15} color={colors.amber} />
+                  )}
+                  <Text style={[styles.btnText, { color: colors.amber }]}>
+                    {tr("templates.upload")}
+                  </Text>
+                </Pressable>
+                {orgLogo ? (
+                  <Pressable
+                    accessibilityLabel={tr("common.delete")}
+                    onPress={() => void removeLogo()}
+                    style={[styles.btn, { borderColor: colors.border }]}
+                  >
+                    <Ionicons name="trash-outline" size={15} color={colors.mutedForeground} />
+                    <Text style={[styles.btnText, { color: colors.mutedForeground }]}>
+                      {tr("common.delete")}
+                    </Text>
+                  </Pressable>
+                ) : null}
+              </View>
+              <Text style={[styles.meta, { color: colors.mutedForeground }]}>
+                {tr("profile.workspaceHint")}
+              </Text>
+            </View>
+          </>
+        ) : null}
+
         <Text style={[styles.section, { color: colors.mutedForeground, fontFamily: Fonts?.mono }]}>
           {tr("profile.account").toUpperCase()}
         </Text>
         <View style={[styles.card, { borderColor: colors.border, backgroundColor: colors.card }]}>
-          <Text style={[styles.fieldLabel, { color: colors.mutedForeground, fontFamily: Fonts?.mono }]}>
+          <Text
+            style={[styles.fieldLabel, { color: colors.mutedForeground, fontFamily: Fonts?.mono }]}
+          >
             {tr("profile.displayName").toUpperCase()}
           </Text>
           <TextInput
@@ -315,7 +444,10 @@ export default function Profile() {
           <Pressable
             onPress={() => void changePassword()}
             disabled={changingPassword}
-            style={[styles.outline, { borderColor: colors.amber, opacity: changingPassword ? 0.6 : 1 }]}
+            style={[
+              styles.outline,
+              { borderColor: colors.amber, opacity: changingPassword ? 0.6 : 1 },
+            ]}
           >
             <Text style={[styles.outlineText, { color: colors.amber }]}>
               {tr("profile.changePassword")}
@@ -341,31 +473,35 @@ export default function Profile() {
         </View>
 
         {isField ? null : (
-        <>
-        <Text style={[styles.section, { color: colors.mutedForeground, fontFamily: Fonts?.mono }]}>
-          {tr("profile.planSection").toUpperCase()}
-        </Text>
-        <View style={[styles.card, { borderColor: colors.border, backgroundColor: colors.card }]}>
-          <View style={styles.planRow}>
-            <Ionicons name="sparkles" size={16} color={colors.amber} />
-            <Text style={[styles.planText, { color: colors.amber, fontFamily: Fonts?.mono }]}>
-              {(org.data?.plan.name ?? "").toUpperCase()}
+          <>
+            <Text
+              style={[styles.section, { color: colors.mutedForeground, fontFamily: Fonts?.mono }]}
+            >
+              {tr("profile.planSection").toUpperCase()}
             </Text>
-          </View>
-          <Pressable
-            onPress={() => router.push("/plans")}
-            style={[styles.primary, { backgroundColor: colors.amber }]}
-          >
-            <Ionicons name="arrow-up-circle-outline" size={16} color={colors.background} />
-            <Text style={[styles.primaryText, { color: colors.background }]}>
-              {tr("profile.upgrade")}
-            </Text>
-          </Pressable>
-          <Text style={[styles.meta, { color: colors.mutedForeground }]}>
-            {tr(usesAppStoreBilling() ? "plans.appleNote" : "plans.stripeNote")}
-          </Text>
-        </View>
-        </>
+            <View
+              style={[styles.card, { borderColor: colors.border, backgroundColor: colors.card }]}
+            >
+              <View style={styles.planRow}>
+                <Ionicons name="sparkles" size={16} color={colors.amber} />
+                <Text style={[styles.planText, { color: colors.amber, fontFamily: Fonts?.mono }]}>
+                  {(org.data?.plan.name ?? "").toUpperCase()}
+                </Text>
+              </View>
+              <Pressable
+                onPress={() => router.push("/plans")}
+                style={[styles.primary, { backgroundColor: colors.amber }]}
+              >
+                <Ionicons name="arrow-up-circle-outline" size={16} color={colors.background} />
+                <Text style={[styles.primaryText, { color: colors.background }]}>
+                  {tr("profile.upgrade")}
+                </Text>
+              </Pressable>
+              <Text style={[styles.meta, { color: colors.mutedForeground }]}>
+                {tr(usesAppStoreBilling() ? "plans.appleNote" : "plans.stripeNote")}
+              </Text>
+            </View>
+          </>
         )}
 
         <Pressable
@@ -449,9 +585,7 @@ export default function Profile() {
             {note}
           </Text>
         ) : null}
-        {error ? (
-          <Text style={[styles.note, { color: colors.alert }]}>{error}</Text>
-        ) : null}
+        {error ? <Text style={[styles.note, { color: colors.alert }]}>{error}</Text> : null}
       </ScrollView>
     </SafeAreaView>
   );
@@ -482,7 +616,13 @@ const styles = StyleSheet.create({
   avatarImage: { width: 84, height: 84, borderRadius: 12 },
   avatarText: { fontSize: 24, letterSpacing: 1 },
   avatarActions: { flexDirection: "row", gap: 8, flexWrap: "wrap", justifyContent: "center" },
-  roleBadge: { borderWidth: 1, paddingHorizontal: 8, paddingVertical: 3, alignSelf: "center", borderRadius: 6 },
+  roleBadge: {
+    borderWidth: 1,
+    paddingHorizontal: 8,
+    paddingVertical: 3,
+    alignSelf: "center",
+    borderRadius: 6,
+  },
   roleBadgeText: { fontSize: 10, letterSpacing: 1.6 },
   btn: {
     flexDirection: "row",
@@ -494,9 +634,24 @@ const styles = StyleSheet.create({
     borderRadius: 8,
   },
   btnText: { fontSize: 12 },
+  logoRow: { flexDirection: "row", alignItems: "center", flexWrap: "wrap", gap: 10 },
+  logoBox: {
+    width: 48,
+    height: 48,
+    borderRadius: 10,
+    borderWidth: 1,
+    alignItems: "center",
+    justifyContent: "center",
+  },
   section: { fontSize: 10, letterSpacing: 2, marginTop: 8 },
   fieldLabel: { fontSize: 10, letterSpacing: 1.6 },
-  input: { borderWidth: 1, paddingHorizontal: 12, paddingVertical: 11, fontSize: 13, borderRadius: 8 },
+  input: {
+    borderWidth: 1,
+    paddingHorizontal: 12,
+    paddingVertical: 11,
+    fontSize: 13,
+    borderRadius: 8,
+  },
   meta: { fontSize: 11.5, lineHeight: 17 },
   primary: {
     flexDirection: "row",

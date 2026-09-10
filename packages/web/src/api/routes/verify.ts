@@ -1,12 +1,12 @@
 import { z } from "zod";
 import { ORPCError } from "@orpc/server";
-import { and, desc, eq, gt, isNull, or } from "drizzle-orm";
+import { and, desc, eq, gt, inArray, isNull, or } from "drizzle-orm";
 import { base } from "../__core/app";
 import { db } from "../database";
 import * as schema from "../database/schema";
 import { id } from "../lib/ids";
 import { photoUrl } from "../lib/media";
-import { normalizeCode } from "../lib/photo-code";
+import { codeCandidates } from "../lib/photo-code";
 
 /** One "viewed" row per photo per half hour; refreshes and re-opens inside that window fold in. */
 const VIEW_DEDUPE_MS = 30 * 60 * 1000;
@@ -21,13 +21,15 @@ export const verify = {
   byCode: base
     .input(z.object({ code: z.string().min(4).max(64) }))
     .handler(async ({ input }) => {
-      const code = normalizeCode(input.code);
-      if (!code) throw new ORPCError("NOT_FOUND", { message: "Unknown photo code" });
+      // Both prefixes, so a code printed before the GeoCliks rename still resolves.
+      const candidates = codeCandidates(input.code);
+      if (candidates.length === 0)
+        throw new ORPCError("NOT_FOUND", { message: "Unknown photo code" });
 
       const [photo] = await db
         .select()
         .from(schema.photos)
-        .where(eq(schema.photos.photoCode, code));
+        .where(inArray(schema.photos.photoCode, candidates));
       if (!photo) throw new ORPCError("NOT_FOUND", { message: "Unknown photo code" });
 
       const [project] = photo.projectId
@@ -90,7 +92,7 @@ export const verify = {
             orgId: photo.orgId,
             type: "viewed",
             actor: "Public code lookup",
-            detail: `Verified ${code} on the public page`,
+            detail: `Verified ${photo.photoCode} on the public page`,
           });
         }
       } catch {

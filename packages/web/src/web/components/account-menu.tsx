@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { Link } from "wouter";
-import { CreditCard, LogOut, Moon, ShieldCheck, Sun, UserCircle } from "lucide-react";
+import { CreditCard, LifeBuoy, LogOut, Moon, ShieldCheck, Sun, UserCircle } from "lucide-react";
 import { authClient } from "../lib/auth";
 import { useOrg } from "../queries/orgs";
 import { useAdminMe } from "../queries/admin";
@@ -101,6 +101,13 @@ export function AccountMenu() {
               className="rounded-[8px] flex items-center gap-2.5 px-2.5 py-2 text-[12.5px] text-fog transition-colors hover:bg-ink-3 hover:text-chalk"
             >
               <CreditCard className="size-4 text-amber" /> {t("nav.plan")}
+            </Link>
+            <Link
+              to="/help"
+              onClick={() => setOpen(false)}
+              className="rounded-[8px] flex items-center gap-2.5 px-2.5 py-2 text-[12.5px] text-fog transition-colors hover:bg-ink-3 hover:text-chalk"
+            >
+              <LifeBuoy className="size-4 text-amber" /> {t("home.nav.help")}
             </Link>
             {me.data?.staffRole && (
               <Link

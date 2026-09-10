@@ -14,6 +14,7 @@ import {
 import { orpc } from "../lib/api";
 import { cn } from "../lib/utils";
 import { type TKey, useT } from "../lib/i18n";
+import { canManageWatermarks } from "../lib/roles";
 
 const SAMPLE = "/images/samples/fiber-splice-closure.jpg";
 
@@ -42,16 +43,27 @@ export default function AppTemplates() {
   const setDefault = useSetDefaultTemplate();
   const remove = useRemoveTemplate();
   const fileRef = useRef<HTMLInputElement>(null);
-  // Field crews capture with the stamps; curating them is manager and above.
-  const canManage = org.data?.role !== "field";
+  // Every role captures with the stamps; curating them is the owner and admins only.
+  const canManage = canManageWatermarks(org.data?.role);
 
   const [layout, setLayout] = useState<WatermarkLayout>("detailed");
   const [name, setName] = useState("");
   const [accentColor, setAccentColor] = useState("#FFB021");
   const [companyLine, setCompanyLine] = useState("");
-  const [logoUrl, setLogoUrl] = useState<string | null>(null);
+  // The template column holds the bare storage key; the presigned link is only for the preview
+  // image on this page, so the two are kept apart and never written into the database together.
+  const [logoKey, setLogoKey] = useState<string | null>(null);
+  const [logoPreview, setLogoPreview] = useState<string | null>(null);
   const [uploading, setUploading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  // Delete and promote can both legitimately fail when another manager got there first.
+  const [rowError, setRowError] = useState<string | null>(null);
+
+  /** Both row actions fail the same way: the row is stale, so say so and re-pull the list. */
+  function rowGone() {
+    setRowError(t("templates.gone"));
+    templates.refetch();
+  }
 
   async function uploadLogo(file: File) {
     setUploading(true);
@@ -67,7 +79,8 @@ export default function AppTemplates() {
         headers: { "Content-Type": file.type || "image/png" },
       });
       if (!res.ok) throw new Error(`Upload failed (${res.status})`);
-      setLogoUrl(presign.publicUrl);
+      setLogoKey(presign.key);
+      setLogoPreview(presign.publicUrl);
     } catch (err) {
       setError(err instanceof Error ? err.message : String(err));
     } finally {
@@ -76,10 +89,7 @@ export default function AppTemplates() {
   }
 
   return (
-    <DashboardShell
-      title={t("templates.title")}
-      subtitle={t("templates.subtitle")}
-    >
+    <DashboardShell title={t("templates.title")} subtitle={t("templates.subtitle")}>
       <div className="grid gap-6 xl:grid-cols-[minmax(0,1fr)_380px]">
         <div className="min-w-0 space-y-6">
           <div className="rounded-[12px] border border-line bg-ink-2 p-4">
@@ -93,7 +103,7 @@ export default function AppTemplates() {
               data={{
                 ...DEMO,
                 company: companyLine || org.data?.org.name,
-                logoUrl,
+                logoUrl: logoPreview,
                 accentColor,
               }}
             />
@@ -143,208 +153,223 @@ export default function AppTemplates() {
                       {t("templates.preview")}
                     </button>
                     {canManage && (
-                    <>
-                    <button
-                      type="button"
-                      disabled={tpl.isDefault || setDefault.isPending}
-                      onClick={() => setDefault.mutate({ id: tpl.id })}
-                      className="inline-flex items-center gap-1.5 rounded-[8px] border border-line px-2.5 py-1.5 text-[11.5px] text-chalk transition-colors hover:border-amber/60 hover:text-amber disabled:opacity-30"
-                    >
-                      <Star className="size-3.5" /> {t("templates.defaultBadge")}
-                    </button>
-                    <button
-                      type="button"
-                      onClick={() =>
-                        update.mutate({ id: tpl.id, showLogo: !tpl.showLogo, logoUrl })
-                      }
-                      className="rounded-[12px] border border-line px-2.5 py-1.5 text-[11.5px] text-fog transition-colors hover:text-chalk"
-                    >
-                      {tpl.showLogo ? t("templates.hideLogo") : t("templates.showLogo")}
-                    </button>
-                    <button
-                      type="button"
-                      disabled={tpl.isDefault}
-                      onClick={() => remove.mutate({ id: tpl.id })}
-                      aria-label={t("common.delete")}
-                      className="rounded-[12px] border border-line p-1.5 text-fog transition-colors hover:border-alert/50 hover:text-alert disabled:opacity-30"
-                    >
-                      <Trash2 className="size-3.5" />
-                    </button>
-                    </>
+                      <>
+                        <button
+                          type="button"
+                          disabled={tpl.isDefault || setDefault.isPending}
+                          onClick={() => {
+                            setRowError(null);
+                            setDefault.mutate({ id: tpl.id }, { onError: rowGone });
+                          }}
+                          className="inline-flex items-center gap-1.5 rounded-[8px] border border-line px-2.5 py-1.5 text-[11.5px] text-chalk transition-colors hover:border-amber/60 hover:text-amber disabled:opacity-30"
+                        >
+                          <Star className="size-3.5" /> {t("templates.defaultBadge")}
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() =>
+                            update.mutate({
+                              id: tpl.id,
+                              showLogo: !tpl.showLogo,
+                              ...(logoKey ? { logoUrl: logoKey } : {}),
+                            })
+                          }
+                          className="rounded-[12px] border border-line px-2.5 py-1.5 text-[11.5px] text-fog transition-colors hover:text-chalk"
+                        >
+                          {tpl.showLogo ? t("templates.hideLogo") : t("templates.showLogo")}
+                        </button>
+                        <button
+                          type="button"
+                          disabled={tpl.isDefault}
+                          onClick={() => {
+                            setRowError(null);
+                            remove.mutate({ id: tpl.id }, { onError: rowGone });
+                          }}
+                          aria-label={t("common.delete")}
+                          className="rounded-[12px] border border-line p-1.5 text-fog transition-colors hover:border-alert/50 hover:text-alert disabled:opacity-30"
+                        >
+                          <Trash2 className="size-3.5" />
+                        </button>
+                      </>
                     )}
                   </li>
                 ))}
               </ul>
+            )}
+            {rowError && (
+              <p className="mono border-t border-line px-4 py-2.5 text-[11px] text-alert">
+                {rowError}
+              </p>
             )}
           </div>
         </div>
 
         {!canManage ? (
           <div className="h-fit rounded-[12px] border border-line bg-ink-2 p-4">
-            <p className="font-display text-[15px] font-semibold">{t("perm.managerOnly")}</p>
+            <p className="font-display text-[15px] font-semibold">{t("perm.adminOnly")}</p>
             <p className="mt-2 text-[12.5px] leading-relaxed text-fog">{t("perm.templatesNote")}</p>
           </div>
         ) : (
-        <form
-          onSubmit={async (event) => {
-            event.preventDefault();
-            setError(null);
-            try {
-              await create.mutateAsync({
-                name,
-                layout,
-                accentColor,
-                showLogo: Boolean(logoUrl),
-                logoUrl,
-                companyLine: companyLine || null,
-                fields: ["time", "coords", "address", "project"],
-              });
-              setName("");
-            } catch (err) {
-              setError(err instanceof Error ? err.message : String(err));
-            }
-          }}
-          className="h-fit rounded-[12px] border border-line bg-ink-2"
-        >
-          <div className="border-b border-line px-4 py-3">
-            <p className="font-display text-[15px] font-semibold">{t("templates.new")}</p>
-          </div>
+          <form
+            onSubmit={async (event) => {
+              event.preventDefault();
+              setError(null);
+              try {
+                await create.mutateAsync({
+                  name,
+                  layout,
+                  accentColor,
+                  showLogo: Boolean(logoKey),
+                  logoUrl: logoKey,
+                  companyLine: companyLine || null,
+                  fields: ["time", "coords", "address", "project"],
+                });
+                setName("");
+              } catch (err) {
+                setError(err instanceof Error ? err.message : String(err));
+              }
+            }}
+            className="h-fit rounded-[12px] border border-line bg-ink-2"
+          >
+            <div className="border-b border-line px-4 py-3">
+              <p className="font-display text-[15px] font-semibold">{t("templates.new")}</p>
+            </div>
 
-          <div className="space-y-4 p-4">
-            <label className="block">
-              <span className="label mb-1.5 block text-fog">{t("templates.name")}</span>
-              <input
-                aria-label={t("templates.name")}
-                required
-                value={name}
-                onChange={(e) => setName(e.target.value)}
-                placeholder="Fiber as-built stamp"
-                className="w-full rounded-[12px] border border-line bg-ink px-3 py-2 text-sm text-chalk outline-none focus:border-amber"
-              />
-            </label>
+            <div className="space-y-4 p-4">
+              <label className="block">
+                <span className="label mb-1.5 block text-fog">{t("templates.name")}</span>
+                <input
+                  aria-label={t("templates.name")}
+                  required
+                  value={name}
+                  onChange={(e) => setName(e.target.value)}
+                  placeholder="Fiber as-built stamp"
+                  className="w-full rounded-[12px] border border-line bg-ink px-3 py-2 text-sm text-chalk outline-none focus:border-amber"
+                />
+              </label>
 
-            <div>
-              <span className="label mb-1.5 block text-fog">{t("templates.layout")}</span>
-              <div className="space-y-1.5">
-                {LAYOUTS.map((item) => (
-                  <button
-                    key={item.id}
-                    type="button"
-                    onClick={() => setLayout(item.id)}
-                    className={cn(
-                      "rounded-[8px] flex w-full items-start gap-2 border px-3 py-2 text-left transition-colors",
-                      layout === item.id
-                        ? "border-amber bg-amber/10"
-                        : "border-line bg-ink hover:border-fog/50",
-                    )}
-                  >
-                    <Check
+              <div>
+                <span className="label mb-1.5 block text-fog">{t("templates.layout")}</span>
+                <div className="space-y-1.5">
+                  {LAYOUTS.map((item) => (
+                    <button
+                      key={item.id}
+                      type="button"
+                      onClick={() => setLayout(item.id)}
                       className={cn(
-                        "mt-0.5 size-3.5 shrink-0",
-                        layout === item.id ? "text-amber" : "text-transparent",
+                        "rounded-[8px] flex w-full items-start gap-2 border px-3 py-2 text-left transition-colors",
+                        layout === item.id
+                          ? "border-amber bg-amber/10"
+                          : "border-line bg-ink hover:border-fog/50",
+                      )}
+                    >
+                      <Check
+                        className={cn(
+                          "mt-0.5 size-3.5 shrink-0",
+                          layout === item.id ? "text-amber" : "text-transparent",
+                        )}
+                      />
+                      <span className="min-w-0">
+                        <span className="mono block text-[11px] uppercase tracking-widest text-chalk">
+                          {t(item.label)}
+                        </span>
+                        <span className="block text-[11.5px] text-fog">{t(item.hint)}</span>
+                      </span>
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              <div>
+                <span className="label mb-1.5 block text-fog">{t("templates.accent")}</span>
+                <div className="flex gap-2">
+                  {ACCENTS.map((color) => (
+                    <button
+                      key={color}
+                      type="button"
+                      aria-label={t("templates.accentColor", { color })}
+                      onClick={() => setAccentColor(color)}
+                      style={{ background: color }}
+                      className={cn(
+                        "rounded-[8px] size-7 border transition-transform",
+                        accentColor === color
+                          ? "scale-110 border-chalk"
+                          : "border-transparent hover:scale-105",
                       )}
                     />
-                    <span className="min-w-0">
-                      <span className="mono block text-[11px] uppercase tracking-widest text-chalk">
-                        {t(item.label)}
-                      </span>
-                      <span className="block text-[11.5px] text-fog">{t(item.hint)}</span>
-                    </span>
-                  </button>
-                ))}
+                  ))}
+                </div>
               </div>
-            </div>
 
-            <div>
-              <span className="label mb-1.5 block text-fog">{t("templates.accent")}</span>
-              <div className="flex gap-2">
-                {ACCENTS.map((color) => (
-                  <button
-                    key={color}
-                    type="button"
-                    aria-label={t("templates.accentColor", { color })}
-                    onClick={() => setAccentColor(color)}
-                    style={{ background: color }}
-                    className={cn(
-                      "rounded-[8px] size-7 border transition-transform",
-                      accentColor === color
-                        ? "scale-110 border-chalk"
-                        : "border-transparent hover:scale-105",
-                    )}
-                  />
-                ))}
-              </div>
-            </div>
-
-            <label className="block">
-              <span className="label mb-1.5 block text-fog">{t("templates.company")}</span>
-              <input
-                aria-label={t("templates.company")}
-                value={companyLine}
-                onChange={(e) => setCompanyLine(e.target.value)}
-                placeholder={org.data?.org.name ?? "Northline Communications"}
-                className="w-full rounded-[12px] border border-line bg-ink px-3 py-2 text-sm text-chalk outline-none focus:border-amber"
-              />
-            </label>
-
-            <div>
-              <span className="label mb-1.5 block text-fog">{t("templates.logo")}</span>
-              <div className="flex items-center gap-3">
-                {logoUrl ? (
-                  <img
-                    src={logoUrl}
-                    alt={t("templates.logo")}
-                    className="size-11 rounded-[12px] border border-line bg-ink object-contain p-1"
-                  />
-                ) : (
-                  <span className="rounded-[8px] grid size-11 place-items-center border border-dashed border-line text-fog">
-                    <ImagePlus className="size-4" />
-                  </span>
-                )}
+              <label className="block">
+                <span className="label mb-1.5 block text-fog">{t("templates.company")}</span>
                 <input
-                  aria-label={t("templates.upload")}
-                  ref={fileRef}
-                  type="file"
-                  accept="image/*"
-                  className="hidden"
-                  onChange={(e) => {
-                    const file = e.target.files?.[0];
-                    if (file) void uploadLogo(file);
-                  }}
+                  aria-label={t("templates.company")}
+                  value={companyLine}
+                  onChange={(e) => setCompanyLine(e.target.value)}
+                  placeholder={org.data?.org.name ?? "Northline Communications"}
+                  className="w-full rounded-[12px] border border-line bg-ink px-3 py-2 text-sm text-chalk outline-none focus:border-amber"
                 />
-                <button
-                  type="button"
-                  disabled={uploading}
-                  onClick={() => fileRef.current?.click()}
-                  className="inline-flex items-center gap-2 rounded-[8px] border border-line px-3 py-2 text-[12px] text-chalk transition-colors hover:border-amber/60 hover:text-amber disabled:opacity-60"
-                >
-                  {uploading && <Loader2 className="size-3.5 animate-spin" />}
-                  {logoUrl ? t("templates.replace") : t("templates.upload")}
-                </button>
+              </label>
+
+              <div>
+                <span className="label mb-1.5 block text-fog">{t("templates.logo")}</span>
+                <div className="flex items-center gap-3">
+                  {logoPreview ? (
+                    <img
+                      src={logoPreview}
+                      alt={t("templates.logo")}
+                      className="size-11 rounded-[12px] border border-line bg-ink object-contain p-1"
+                    />
+                  ) : (
+                    <span className="rounded-[8px] grid size-11 place-items-center border border-dashed border-line text-fog">
+                      <ImagePlus className="size-4" />
+                    </span>
+                  )}
+                  <input
+                    aria-label={t("templates.upload")}
+                    ref={fileRef}
+                    type="file"
+                    accept="image/*"
+                    className="hidden"
+                    onChange={(e) => {
+                      const file = e.target.files?.[0];
+                      if (file) void uploadLogo(file);
+                    }}
+                  />
+                  <button
+                    type="button"
+                    disabled={uploading}
+                    onClick={() => fileRef.current?.click()}
+                    className="inline-flex items-center gap-2 rounded-[8px] border border-line px-3 py-2 text-[12px] text-chalk transition-colors hover:border-amber/60 hover:text-amber disabled:opacity-60"
+                  >
+                    {uploading && <Loader2 className="size-3.5 animate-spin" />}
+                    {logoPreview ? t("templates.replace") : t("templates.upload")}
+                  </button>
+                </div>
               </div>
+
+              {error && <p className="mono text-[11px] text-alert">{error}</p>}
+
+              <button
+                type="submit"
+                disabled={create.isPending}
+                className="rounded-[8px] inline-flex w-full items-center justify-center gap-2 bg-amber px-4 py-2.5 text-[13px] font-semibold text-ink disabled:opacity-60"
+              >
+                {create.isPending ? (
+                  <Loader2 className="size-4 animate-spin" />
+                ) : (
+                  <Plus className="size-4" />
+                )}
+                {t("templates.save")}
+              </button>
+
+              <p className="flex items-start gap-2 text-[11.5px] leading-relaxed text-fog">
+                <Stamp className="mt-0.5 size-3.5 shrink-0 text-amber" />
+                {t("templates.hint")}
+              </p>
             </div>
-
-            {error && <p className="mono text-[11px] text-alert">{error}</p>}
-
-            <button
-              type="submit"
-              disabled={create.isPending}
- className="rounded-[8px] inline-flex w-full items-center justify-center gap-2 bg-amber px-4 py-2.5 text-[13px] font-semibold text-ink disabled:opacity-60"
-            >
-              {create.isPending ? (
-                <Loader2 className="size-4 animate-spin" />
-              ) : (
-                <Plus className="size-4" />
-              )}
-              {t("templates.save")}
-            </button>
-
-            <p className="flex items-start gap-2 text-[11.5px] leading-relaxed text-fog">
-              <Stamp className="mt-0.5 size-3.5 shrink-0 text-amber" />
-              {t("templates.hint")}
-            </p>
-          </div>
-        </form>
+          </form>
         )}
       </div>
     </DashboardShell>

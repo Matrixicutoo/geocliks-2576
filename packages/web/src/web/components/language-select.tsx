@@ -12,10 +12,16 @@ import { useLocale } from "../lib/i18n";
 export function LanguageSelect({
   compact = false,
   bare = false,
+  drop = "down",
 }: {
   compact?: boolean;
   /** Borderless variant for the dark marketing header. */
   bare?: boolean;
+  /**
+   * Which way the compact panel opens. The sidebar copy sits near the bottom of the
+   * screen, so it must open upward or the last few languages fall off-screen.
+   */
+  drop?: "up" | "down";
 }) {
   const { locale, override, t, setLocale, useWorkspaceDefault } = useLocale();
   const [open, setOpen] = useState(false);
@@ -68,8 +74,14 @@ export function LanguageSelect({
       {open && (
         <div
           className={cn(
-            "absolute z-50 max-h-[320px] w-[220px] overflow-y-auto rounded-[12px] border border-line bg-ink-2 shadow-xl",
-            compact ? "top-full mt-1 end-0" : "bottom-full mb-1 start-0",
+            // 70vh instead of a fixed height: all 12 rows (~406px) fit on a normal screen
+            // rather than the last few being hidden behind an easy-to-miss inner scrollbar.
+            "absolute z-50 max-h-[70vh] w-[220px] overflow-y-auto rounded-[12px] border border-line bg-ink-2 shadow-xl",
+            compact
+              ? drop === "up"
+                ? "bottom-full mb-1 end-0"
+                : "top-full mt-1 end-0"
+              : "bottom-full mb-1 start-0",
           )}
         >
           <button

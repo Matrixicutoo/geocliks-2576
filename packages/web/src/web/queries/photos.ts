@@ -4,7 +4,21 @@ import { orpc } from "../lib/api";
 export type PhotoFilter = {
   projectId?: string | null;
   userId?: string | null;
-  tag?: "general" | "before" | "after" | "issue" | "arrival" | "departure" | null;
+  /**
+   * Must stay in step with `tagEnum` in api/routes/photos.ts. "pickup" and "delivery" were added
+   * there with the delivery-routes feature but never mirrored here, so the Teamspace tag filter
+   * could not be typed against them.
+   */
+  tag?:
+    | "general"
+    | "before"
+    | "after"
+    | "issue"
+    | "arrival"
+    | "departure"
+    | "pickup"
+    | "delivery"
+    | null;
   search?: string | null;
   limit?: number;
   offset?: number;

@@ -2,7 +2,9 @@ import { useState } from "react";
 import {
   ActivityIndicator,
   Image,
+  Linking,
   Modal,
+  Platform,
   Pressable,
   ScrollView,
   Share,
@@ -13,6 +15,8 @@ import { Ionicons } from "@expo/vector-icons";
 import Svg, { Path } from "react-native-svg";
 import Constants from "expo-constants";
 import { useVideoPlayer, VideoView } from "expo-video";
+import { Directory, File, Paths } from "expo-file-system";
+import * as Sharing from "expo-sharing";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { Text } from "@/components/app-text";
 import { useColors } from "@/hooks/use-colors";
@@ -20,9 +24,11 @@ import { Fonts } from "@/constants/theme";
 import { formatCoords, formatStamp } from "@/components/stamp";
 import FieldMap from "@/components/field-map";
 import { useOrg } from "@/queries/orgs";
-import { usePhoto, useRemovePhoto, useVerifyPhoto } from "@/queries/photos";
+import { useMovePhotos, usePhoto, useRemovePhoto, useVerifyPhoto } from "@/queries/photos";
+import { useProjects } from "@/queries/projects";
 import { useCreatePhotoShareLink } from "@/queries/share";
 import { useT, type TKey } from "@/lib/i18n";
+import { canManageWorkspace } from "../lib/roles";
 
 const apiUrl = (Constants.expoConfig?.extra?.apiUrl as string | undefined) ?? "";
 
@@ -105,9 +111,17 @@ export function PhotoDetail({ photoId, onClose }: { photoId: string | null; onCl
   const remove = useRemovePhoto();
   const shareLink = useCreatePhotoShareLink();
   const org = useOrg();
+  const projects = useProjects();
+  const move = useMovePhotos();
   /** Field crews capture evidence; only manager and above can remove it. */
-  const canDelete = org.data?.role !== "field";
+  const canDelete = canManageWorkspace(org.data?.role);
   const [confirmDelete, setConfirmDelete] = useState(false);
+  const [assignOpen, setAssignOpen] = useState(false);
+  /**
+   * Download state. The picker is rendered inline rather than as a nested Modal:
+   * PhotoDetail is itself a Modal, and stacking modals is unreliable on iOS.
+   */
+  const [download, setDownload] = useState<"idle" | "busy" | "ok" | "fail">("idle");
   const data = photo.data;
 
   const rows: [string, string][] = data
@@ -258,14 +272,21 @@ export function PhotoDetail({ photoId, onClose }: { photoId: string | null; onCl
               <Text style={[styles.note, { color: colors.foreground }]}>{data.note}</Text>
             ) : null}
 
-            <Text style={[styles.label, { color: colors.mutedForeground, fontFamily: Fonts?.mono }]}>
+            <Text
+              style={[styles.label, { color: colors.mutedForeground, fontFamily: Fonts?.mono }]}
+            >
               {t("evidence.verificationRecord").toUpperCase()}
             </Text>
-            <View style={[styles.record, { borderColor: colors.border, backgroundColor: colors.card }]}>
+            <View
+              style={[styles.record, { borderColor: colors.border, backgroundColor: colors.card }]}
+            >
               {rows.map(([term, value]) => (
                 <View key={term} style={styles.recordRow}>
                   <Text
-                    style={[styles.term, { color: colors.mutedForeground, fontFamily: Fonts?.mono }]}
+                    style={[
+                      styles.term,
+                      { color: colors.mutedForeground, fontFamily: Fonts?.mono },
+                    ]}
                   >
                     {term}
                   </Text>
@@ -282,10 +303,7 @@ export function PhotoDetail({ photoId, onClose }: { photoId: string | null; onCl
             {data.signaturePath ? (
               <>
                 <Text
-                  style={[
-                    styles.label,
-                    { color: colors.mutedForeground, fontFamily: Fonts?.mono },
-                  ]}
+                  style={[styles.label, { color: colors.mutedForeground, fontFamily: Fonts?.mono }]}
                 >
                   {t("evidence.signature").toUpperCase()}
                 </Text>
@@ -295,11 +313,7 @@ export function PhotoDetail({ photoId, onClose }: { photoId: string | null; onCl
                     { borderColor: colors.border, backgroundColor: colors.card },
                   ]}
                 >
-                  <Svg
-                    width="100%"
-                    height="100%"
-                    viewBox={data.signatureBox ?? "0 0 320 150"}
-                  >
+                  <Svg width="100%" height="100%" viewBox={data.signatureBox ?? "0 0 320 150"}>
                     <Path
                       d={data.signaturePath}
                       stroke={colors.foreground}
@@ -330,23 +344,55 @@ export function PhotoDetail({ photoId, onClose }: { photoId: string | null; onCl
                   height={220}
                 />
                 <Text
-                  style={[styles.caption, { color: colors.mutedForeground, fontFamily: Fonts?.mono }]}
+                  style={[
+                    styles.caption,
+                    { color: colors.mutedForeground, fontFamily: Fonts?.mono },
+                  ]}
                 >
                   {t("photo.captureLocation").toUpperCase()} · {formatCoords(data.lat, data.lng)}
                 </Text>
+                {/* Directions with no origin, so Maps routes from wherever the viewer is
+                    standing right now. Opens the Google Maps app when it is installed. */}
+                <Pressable
+                  onPress={() => {
+                    void Linking.openURL(
+                      `https://www.google.com/maps/dir/?api=1&destination=${data.lat},${data.lng}`,
+                    );
+                  }}
+                  style={[
+                    styles.action,
+                    { borderColor: colors.amber, backgroundColor: colors.amber },
+                  ]}
+                >
+                  <Ionicons name="navigate-outline" size={14} color={colors.primaryForeground} />
+                  <Text
+                    style={[
+                      styles.actionText,
+                      { color: colors.primaryForeground, fontFamily: Fonts?.mono },
+                    ]}
+                  >
+                    {t("photo.directions").toUpperCase()}
+                  </Text>
+                </Pressable>
               </>
             ) : (
               <Text
                 style={[
                   styles.noFix,
-                  { color: colors.mutedForeground, borderColor: colors.border, fontFamily: Fonts?.mono },
+                  {
+                    color: colors.mutedForeground,
+                    borderColor: colors.border,
+                    fontFamily: Fonts?.mono,
+                  },
                 ]}
               >
                 {t("photo.noGps").toUpperCase()}
               </Text>
             )}
 
-            <Text style={[styles.label, { color: colors.mutedForeground, fontFamily: Fonts?.mono }]}>
+            <Text
+              style={[styles.label, { color: colors.mutedForeground, fontFamily: Fonts?.mono }]}
+            >
               {t("evidence.chainOfCustody").toUpperCase()}
             </Text>
             <View style={[styles.chain, { borderColor: colors.border }]}>
@@ -403,6 +449,162 @@ export function PhotoDetail({ photoId, onClose }: { photoId: string | null; onCl
                 {t("shareMenu.title").toUpperCase()}
               </Text>
             </Pressable>
+
+            {/*
+              Download. On web a cross-origin presigned URL makes the browser ignore the
+              anchor "download" attribute, so the bytes are pulled into a blob first to
+              force a real save; if CORS refuses the read it falls back to opening the
+              signed URL. On the device build the file lands in the app cache and is handed to
+              the system sheet via expo-sharing, where "Save Image" / "Save to Files" files it
+              away. React Native's own Share.share ignores `url` on Android — it would send the
+              text only and silently leave the file behind — so Sharing.shareAsync carries the
+              real file on both platforms, with Share.share kept only as a last-resort fallback.
+              expo-sharing is a native module, so shipping this needs a full rebuild rather than
+              an over-the-air JS publish. Luc accepted that cost explicitly (2026-09-09).
+            */}
+            <Pressable
+              disabled={download === "busy"}
+              onPress={async () => {
+                setDownload("busy");
+                const name = `${data.photoCode}.${data.kind === "video" ? "mp4" : "jpg"}`;
+                const src = resolve(data.url);
+                try {
+                  if (Platform.OS === "web") {
+                    let href = src;
+                    let revoke: string | null = null;
+                    try {
+                      const blob = await (await fetch(src)).blob();
+                      href = URL.createObjectURL(blob);
+                      revoke = href;
+                    } catch {
+                      // CORS refused the read — fall back to opening the signed URL.
+                    }
+                    const a = document.createElement("a");
+                    a.href = href;
+                    a.download = name;
+                    a.rel = "noopener";
+                    document.body.appendChild(a);
+                    a.click();
+                    a.remove();
+                    if (revoke) {
+                      const done = revoke;
+                      setTimeout(() => URL.revokeObjectURL(done), 30_000);
+                    }
+                  } else {
+                    const file = await File.downloadFileAsync(src, new Directory(Paths.cache));
+                    if (await Sharing.isAvailableAsync()) {
+                      await Sharing.shareAsync(file.uri, {
+                        dialogTitle: name,
+                        mimeType: data.kind === "video" ? "video/mp4" : "image/jpeg",
+                        UTI: data.kind === "video" ? "public.mpeg-4" : "public.jpeg",
+                      });
+                    } else {
+                      await Share.share({ title: name, url: file.uri });
+                    }
+                  }
+                  setDownload("ok");
+                } catch {
+                  setDownload("fail");
+                }
+                setTimeout(() => setDownload("idle"), 4000);
+              }}
+              accessibilityLabel={t("mine.download")}
+              style={[styles.action, { borderColor: colors.border, backgroundColor: colors.card }]}
+            >
+              {download === "busy" ? (
+                <ActivityIndicator size="small" color={colors.accent} />
+              ) : (
+                <Ionicons name="download-outline" size={14} color={colors.accent} />
+              )}
+              <Text
+                style={[styles.actionText, { color: colors.foreground, fontFamily: Fonts?.mono }]}
+              >
+                {t("mine.download").toUpperCase()}
+              </Text>
+            </Pressable>
+
+            {download === "ok" || download === "fail" ? (
+              <Text
+                style={[
+                  styles.verifyOut,
+                  {
+                    color: download === "ok" ? colors.verified : colors.alert,
+                    borderColor: download === "ok" ? colors.verified : colors.alert,
+                    fontFamily: Fonts?.mono,
+                  },
+                ]}
+              >
+                {download === "ok" ? t("mine.downloadOk") : t("mine.downloadFail")}
+              </Text>
+            ) : null}
+
+            {/*
+              Assign to a project. projectId is NOT part of the signed payload (see
+              canonical() in api/lib/verify.ts), so refiling a capture never breaks its
+              seal — which is exactly why unfiled captures can live on the My captures
+              page and be moved into a real project whenever the crew decides.
+            */}
+            <Pressable
+              disabled={move.isPending}
+              onPress={() => setAssignOpen((open) => !open)}
+              accessibilityLabel={t("mine.assign")}
+              style={[styles.action, { borderColor: colors.border, backgroundColor: colors.card }]}
+            >
+              {move.isPending ? (
+                <ActivityIndicator size="small" color={colors.sky} />
+              ) : (
+                <Ionicons name="folder-outline" size={14} color={colors.sky} />
+              )}
+              <Text
+                style={[styles.actionText, { color: colors.foreground, fontFamily: Fonts?.mono }]}
+              >
+                {t("mine.assign").toUpperCase()}
+              </Text>
+            </Pressable>
+
+            {assignOpen ? (
+              <View
+                style={[
+                  styles.picker,
+                  { borderColor: colors.border, backgroundColor: colors.card },
+                ]}
+              >
+                <Text
+                  style={[
+                    styles.sheetTitle,
+                    { color: colors.mutedForeground, fontFamily: Fonts?.mono },
+                  ]}
+                >
+                  {t("mine.assignPick").toUpperCase()}
+                </Text>
+                {(projects.data ?? []).map((p) => {
+                  const active = data.projectId === p.id;
+                  return (
+                    <Pressable
+                      key={p.id}
+                      onPress={() =>
+                        move.mutate(
+                          { ids: [data.id], projectId: p.id },
+                          { onSuccess: () => setAssignOpen(false) },
+                        )
+                      }
+                      style={[styles.option, { borderColor: colors.border }]}
+                    >
+                      <Text
+                        numberOfLines={1}
+                        style={[
+                          styles.optionText,
+                          { color: active ? colors.sky : colors.foreground },
+                        ]}
+                      >
+                        {p.name}
+                      </Text>
+                      {active ? <Ionicons name="checkmark" size={17} color={colors.sky} /> : null}
+                    </Pressable>
+                  );
+                })}
+              </View>
+            ) : null}
 
             <Pressable
               disabled={verify.isPending}
@@ -535,7 +737,14 @@ const styles = StyleSheet.create({
   term: { width: 108, fontSize: 9, letterSpacing: 0.8 },
   value: { flex: 1, fontSize: 10 },
   caption: { fontSize: 9, letterSpacing: 1.2, marginTop: 2 },
-  noFix: { borderWidth: 1, paddingHorizontal: 10, paddingVertical: 9, fontSize: 9.5, letterSpacing: 1.1, borderRadius: 8 },
+  noFix: {
+    borderWidth: 1,
+    paddingHorizontal: 10,
+    paddingVertical: 9,
+    fontSize: 9.5,
+    letterSpacing: 1.1,
+    borderRadius: 8,
+  },
   chain: { borderLeftWidth: 1, paddingLeft: 12, gap: 10, marginLeft: 4 },
   event: { flexDirection: "row", gap: 8 },
   dot: { position: "absolute", left: -16, top: 6, width: 7, height: 7 },
@@ -554,4 +763,21 @@ const styles = StyleSheet.create({
   },
   actionText: { fontSize: 10, letterSpacing: 1.4 },
   verifyOut: { borderWidth: 1, padding: 10, fontSize: 10.5, lineHeight: 15, borderRadius: 8 },
+  picker: {
+    borderWidth: 1,
+    paddingVertical: 12,
+    marginTop: 8,
+    borderRadius: 8,
+    overflow: "hidden",
+  },
+  sheetTitle: { fontSize: 9, letterSpacing: 1.4, paddingHorizontal: 16, paddingBottom: 10 },
+  option: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 8,
+    borderTopWidth: 1,
+    paddingHorizontal: 16,
+    paddingVertical: 13,
+  },
+  optionText: { flex: 1, fontSize: 14 },
 });

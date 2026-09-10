@@ -30,8 +30,8 @@ export default function Terms() {
         <p>
           You are responsible for your account credentials and for everything done through your
           account. Each account belongs to a workspace. The workspace owner and administrators can
-          invite members, assign roles (owner, admin, manager, field), assign projects, remove
-          members and change the workspace plan. Roles decide what a member can see and do —
+          invite members, assign roles (owner, admin, manager, dispatcher, field), assign projects,
+          remove members and change the workspace plan. Roles decide what a member can see and do —
           notably, field members only see the projects assigned to them.
         </p>
         <p>
@@ -49,13 +49,11 @@ export default function Terms() {
           undetected tampering hard and to help you show that a capture has not changed since it was
           uploaded.
         </p>
-        <p>
-          You accept the following limits, which are important:
-        </p>
+        <p>You accept the following limits, which are important:</p>
         <LegalList
           items={[
             "GeoCliks is not a notary, a surveyor, a laboratory or a legal service, and nothing it produces is legal advice or a certified legal instrument.",
-            "A \"network-verified\" timestamp means our server recorded the time it received the upload. When a device clock differs from ours by more than a few minutes, the capture is marked as device-timed instead.",
+            'A "network-verified" timestamp means our server recorded the time it received the upload. When a device clock differs from ours by more than a few minutes, the capture is marked as device-timed instead.',
             "Location accuracy depends on the device, its sensors and its surroundings; indoor and obstructed locations can be materially inaccurate.",
             "We cannot guarantee that any court, insurer, client or authority will accept a GeoCliks record as evidence. That decision is theirs.",
             "Captures made while offline are queued on the device and stamped as verified only when they reach our servers.",
@@ -150,10 +148,10 @@ export default function Terms() {
 
       <LegalSection title="11. Disclaimers">
         <p>
-          To the fullest extent permitted by law, the Service is provided "as is" and "as available",
-          without warranties of any kind, express or implied, including merchantability, fitness for
-          a particular purpose, non-infringement, and any warranty that a record produced by the
-          Service will be accepted by a third party.
+          To the fullest extent permitted by law, the Service is provided "as is" and "as
+          available", without warranties of any kind, express or implied, including merchantability,
+          fitness for a particular purpose, non-infringement, and any warranty that a record
+          produced by the Service will be accepted by a third party.
         </p>
       </LegalSection>
 
@@ -166,8 +164,8 @@ export default function Terms() {
           for the Service in the twelve months before the event giving rise to the claim.
         </p>
         <p>
-          Some jurisdictions do not allow certain exclusions; in those places these limits apply only
-          as far as the law permits.
+          Some jurisdictions do not allow certain exclusions; in those places these limits apply
+          only as far as the law permits.
         </p>
       </LegalSection>
 

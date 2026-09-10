@@ -17,7 +17,10 @@ import { Fonts } from "@/constants/theme";
 import { LanguageMenu } from "@/components/language-menu";
 import { useT, type TKey } from "@/lib/i18n";
 import { drainQueue, readQueue, type FailedReason } from "@/lib/queue";
-import { useRoute, useSkipStop, useStartRoute } from "@/queries/routes";
+import { useAddLiveStop, useRoute, useSkipStop, useStartRoute } from "@/queries/routes";
+import { useOrg } from "@/queries/orgs";
+import { AddressInput } from "@/components/address-input";
+import { canRunDeliveries } from "../../lib/roles";
 
 const REASONS: { key: FailedReason; label: TKey }[] = [
   { key: "nobody_home", label: "run.reason.nobody_home" },
@@ -59,6 +62,13 @@ export default function RouteRun() {
   const [retrying, setRetrying] = useState(false);
   const [reason, setReason] = useState<FailedReason | null>(null);
   const [note, setNote] = useState("");
+  const [liveOpen, setLiveOpen] = useState(false);
+  const [liveAddress, setLiveAddress] = useState("");
+  const [liveRecipient, setLiveRecipient] = useState("");
+  const [liveNote, setLiveNote] = useState<string | null>(null);
+  const [liveError, setLiveError] = useState<string | null>(null);
+  const org = useOrg();
+  const addLiveStop = useAddLiveStop();
 
   const refreshQueue = useCallback(async () => {
     const items = await readQueue();
@@ -83,8 +93,7 @@ export default function RouteRun() {
   const stops = useMemo(() => query.data?.stops ?? [], [query.data]);
 
   const isClosed = useCallback(
-    (stop: (typeof stops)[number]) =>
-      stop.status !== "pending" || queuedStopIds.includes(stop.id),
+    (stop: (typeof stops)[number]) => stop.status !== "pending" || queuedStopIds.includes(stop.id),
     [queuedStopIds],
   );
 
@@ -144,6 +153,36 @@ export default function RouteRun() {
 
   const started = route?.status === "active" || route?.status === "completed";
 
+  // A dispatcher can tack a stop onto any run that is still open. A driver can only do it on a
+  // run that is already moving - which is also exactly what the server allows, so the button is
+  // never shown to someone it would refuse.
+  const canAddLive =
+    route !== null &&
+    route.status !== "completed" &&
+    route.status !== "cancelled" &&
+    (canRunDeliveries(org.data?.role) || route.status === "active");
+
+  const submitLiveStop = async () => {
+    if (!routeId || !liveAddress.trim()) return;
+    setLiveError(null);
+    try {
+      const added = await addLiveStop.mutateAsync({
+        routeId,
+        addressRaw: liveAddress.trim(),
+        recipientName: liveRecipient.trim() || null,
+      });
+      const placed = t("routes.liveAdded", { n: added.position, total: added.total });
+      // The server slots the stop by distance, but only if it could place the address on the map.
+      setLiveNote(added.located ? placed : `${placed} ${t("routes.liveNotLocated")}`);
+      setLiveAddress("");
+      setLiveRecipient("");
+      setLiveOpen(false);
+    } catch (e) {
+      // Shown as-is. "Start the route before adding a stop" is the one a driver will actually hit.
+      setLiveError(e instanceof Error ? e.message : String(e));
+    }
+  };
+
   return (
     <SafeAreaView
       edges={["top", "left", "right"]}
@@ -178,7 +217,9 @@ export default function RouteRun() {
       ) : (
         <ScrollView contentContainerStyle={styles.body} keyboardShouldPersistTaps="handled">
           {stops.length === 0 ? (
-            <View style={[styles.card, { borderColor: colors.border, backgroundColor: colors.card }]}>
+            <View
+              style={[styles.card, { borderColor: colors.border, backgroundColor: colors.card }]}
+            >
               <Text style={[styles.emptyText, { color: colors.mutedForeground }]}>
                 {t("run.noStops")}
               </Text>
@@ -202,7 +243,9 @@ export default function RouteRun() {
           ) : null}
 
           {current ? (
-            <View style={[styles.card, { borderColor: colors.amber, backgroundColor: colors.card }]}>
+            <View
+              style={[styles.card, { borderColor: colors.amber, backgroundColor: colors.card }]}
+            >
               <Text style={[styles.stopOf, { color: colors.amber, fontFamily: Fonts?.mono }]}>
                 {t("run.stopOf", { n: current.seq + 1, total: stops.length }).toUpperCase()}
               </Text>
@@ -215,7 +258,9 @@ export default function RouteRun() {
                 </Text>
               ) : null}
               {current.reference ? (
-                <Text style={[styles.meta, { color: colors.mutedForeground, fontFamily: Fonts?.mono }]}>
+                <Text
+                  style={[styles.meta, { color: colors.mutedForeground, fontFamily: Fonts?.mono }]}
+                >
                   {t("run.ref").toUpperCase()} · {current.reference}
                 </Text>
               ) : null}
@@ -345,10 +390,7 @@ export default function RouteRun() {
                     placeholder={t("run.notes")}
                     placeholderTextColor={colors.mutedForeground}
                     accessibilityLabel={t("run.notes")}
-                    style={[
-                      styles.input,
-                      { borderColor: colors.border, color: colors.foreground },
-                    ]}
+                    style={[styles.input, { borderColor: colors.border, color: colors.foreground }]}
                   />
                   <Pressable
                     onPress={() => goShoot("failed")}
@@ -366,7 +408,9 @@ export default function RouteRun() {
               ) : null}
             </View>
           ) : stops.length > 0 ? (
-            <View style={[styles.card, { borderColor: colors.verified, backgroundColor: colors.card }]}>
+            <View
+              style={[styles.card, { borderColor: colors.verified, backgroundColor: colors.card }]}
+            >
               <Ionicons name="checkmark-circle" size={30} color={colors.verified} />
               <Text style={[styles.doneTitle, { color: colors.foreground }]}>
                 {t("run.doneTitle")}
@@ -387,7 +431,9 @@ export default function RouteRun() {
               key={stop.id}
               style={[styles.row, { borderColor: colors.border, backgroundColor: colors.card }]}
             >
-              <Text style={[styles.seq, { color: colors.mutedForeground, fontFamily: Fonts?.mono }]}>
+              <Text
+                style={[styles.seq, { color: colors.mutedForeground, fontFamily: Fonts?.mono }]}
+              >
                 {stop.seq + 1}
               </Text>
               <View style={styles.rowBody}>
@@ -402,6 +448,87 @@ export default function RouteRun() {
               </View>
             </View>
           ))}
+
+          {canAddLive ? (
+            <View style={styles.liveWrap}>
+              {liveOpen ? (
+                <View style={[styles.sheet, { borderColor: colors.border }]}>
+                  <Text style={[styles.sheetTitle, { color: colors.foreground }]}>
+                    {t("routes.liveTitle")}
+                  </Text>
+                  <AddressInput
+                    label={t("routes.liveAddress")}
+                    value={liveAddress}
+                    onChangeText={(next) => {
+                      setLiveAddress(next);
+                      setLiveError(null);
+                    }}
+                    hint={t("routes.liveHint")}
+                  />
+                  <TextInput
+                    value={liveRecipient}
+                    onChangeText={setLiveRecipient}
+                    placeholder={t("routes.liveRecipient")}
+                    placeholderTextColor={colors.mutedForeground}
+                    accessibilityLabel={t("routes.liveRecipient")}
+                    style={[styles.input, { borderColor: colors.border, color: colors.foreground }]}
+                  />
+                  {liveError ? (
+                    <Text style={[styles.meta, { color: colors.destructive }]}>{liveError}</Text>
+                  ) : null}
+                  <Pressable
+                    onPress={() => void submitLiveStop()}
+                    disabled={addLiveStop.isPending || !liveAddress.trim()}
+                    accessibilityLabel={t("routes.liveAdd")}
+                    style={[
+                      styles.primary,
+                      {
+                        backgroundColor: colors.amber,
+                        opacity: addLiveStop.isPending || !liveAddress.trim() ? 0.45 : 1,
+                      },
+                    ]}
+                  >
+                    {addLiveStop.isPending ? (
+                      <ActivityIndicator size="small" color={colors.primaryForeground} />
+                    ) : (
+                      <Text style={[styles.primaryText, { color: colors.primaryForeground }]}>
+                        {t("routes.liveAdd").toUpperCase()}
+                      </Text>
+                    )}
+                  </Pressable>
+                  <Pressable
+                    onPress={() => {
+                      setLiveOpen(false);
+                      setLiveError(null);
+                    }}
+                    accessibilityLabel={t("common.cancel")}
+                    style={[styles.outline, { borderColor: colors.border }]}
+                  >
+                    <Text style={[styles.outlineText, { color: colors.mutedForeground }]}>
+                      {t("common.cancel")}
+                    </Text>
+                  </Pressable>
+                </View>
+              ) : (
+                <Pressable
+                  onPress={() => {
+                    setLiveOpen(true);
+                    setLiveNote(null);
+                  }}
+                  accessibilityLabel={t("routes.liveTitle")}
+                  style={[styles.outline, { borderColor: colors.amber }]}
+                >
+                  <Ionicons name="add" size={16} color={colors.amber} />
+                  <Text style={[styles.outlineText, { color: colors.amber }]}>
+                    {t("routes.liveTitle")}
+                  </Text>
+                </Pressable>
+              )}
+              {liveNote ? (
+                <Text style={[styles.meta, { color: colors.mutedForeground }]}>{liveNote}</Text>
+              ) : null}
+            </View>
+          ) : null}
 
           {stops.filter((s) => isClosed(s)).length > 0 ? (
             <Text style={[styles.section, { color: colors.mutedForeground }]}>
@@ -462,7 +589,10 @@ export default function RouteRun() {
                       onPress={() => void retrySync()}
                       disabled={retrying}
                       accessibilityLabel={t("run.retry")}
-                      style={[styles.chip, { borderColor: colors.amber, opacity: retrying ? 0.5 : 1 }]}
+                      style={[
+                        styles.chip,
+                        { borderColor: colors.amber, opacity: retrying ? 0.5 : 1 },
+                      ]}
                     >
                       {retrying ? (
                         <ActivityIndicator size="small" color={colors.amber} />
@@ -521,11 +651,18 @@ const styles = StyleSheet.create({
   },
   outlineText: { fontSize: 13, fontWeight: "600" },
   sheet: { borderWidth: 1, borderRadius: 12, padding: 12, gap: 10 },
+  liveWrap: { gap: 8, paddingTop: 4 },
   sheetTitle: { fontSize: 14, fontWeight: "700" },
   chips: { flexDirection: "row", flexWrap: "wrap", gap: 8 },
   chip: { borderWidth: 1, borderRadius: 6, paddingHorizontal: 10, paddingVertical: 7 },
   chipText: { fontSize: 12, fontWeight: "600" },
-  input: { borderWidth: 1, borderRadius: 8, paddingHorizontal: 10, paddingVertical: 10, fontSize: 13 },
+  input: {
+    borderWidth: 1,
+    borderRadius: 8,
+    paddingHorizontal: 10,
+    paddingVertical: 10,
+    fontSize: 13,
+  },
   section: { fontSize: 10, letterSpacing: 1.2, paddingTop: 8 },
   row: {
     flexDirection: "row",

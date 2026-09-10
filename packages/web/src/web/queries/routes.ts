@@ -78,3 +78,23 @@ export function useRemoveRoute() {
   const invalidate = useRouteInvalidate();
   return useMutation(orpc.routes.remove.mutationOptions({ onSuccess: invalidate }));
 }
+
+/**
+ * Address suggestions for a partial query, debounced by the caller.
+ *
+ * `staleTime: Infinity` because the same three letters always produce the same list, and every
+ * miss is a billed Google request. An empty array is a normal answer — it means suggestions are
+ * unavailable, and the field carries on as a plain text box.
+ */
+export function useAddressSuggestions(query: string) {
+  return useQuery(
+    orpc.routes.suggestAddress.queryOptions({
+      input: { query },
+      enabled: query.trim().length >= 3,
+      staleTime: Infinity,
+      gcTime: 10 * 60_000,
+      retry: false,
+      placeholderData: (prev) => prev,
+    }),
+  );
+}

@@ -1,6 +1,7 @@
 import { useState } from "react";
 import {
   ActivityIndicator,
+  Image,
   Platform,
   Pressable,
   ScrollView,
@@ -25,18 +26,21 @@ import {
   useSetRole,
   useTeam,
 } from "@/queries/team";
+import { canManageWorkspace } from "../lib/roles";
 
 /**
  * Owner is deliberately missing: the workspace keeps exactly one owner and the server refuses to
  * change the owner's row, so offering it here would only produce an error.
  */
-const ROLES = ["admin", "manager", "field"] as const;
+const ROLES = ["admin", "manager", "dispatcher", "driver", "field"] as const;
 type Role = (typeof ROLES)[number];
 
 const ROLE_HINT: Record<string, string> = {
   owner: "Billing, plan and everything below.",
   admin: "Invites, roles, projects, exports.",
   manager: "Projects, reports and share links.",
+  dispatcher: "Builds and runs delivery routes only.",
+  driver: "Delivers assigned routes. No projects or job photos.",
   field: "Captures photos, sees assigned projects only.",
 };
 
@@ -73,7 +77,7 @@ export default function Team() {
 
   const myRole = org.data?.role;
   const isAdmin = myRole === "owner" || myRole === "admin";
-  const isField = myRole === "field";
+  const isField = !canManageWorkspace(myRole);
   const myId = org.data?.user.id;
   const seats = org.data?.plan.limits.seats ?? 0;
   const members = (team.data ?? []).length;
@@ -85,7 +89,9 @@ export default function Team() {
       ? colors.amber
       : value === "manager"
         ? colors.sky
-        : colors.mutedForeground;
+        : value === "dispatcher" || value === "driver"
+          ? colors.amberDeep
+          : colors.mutedForeground;
 
   /** Open (or reuse) the 1:1 thread with a teammate and jump straight into it. */
   const contact = async (userId: string) => {
@@ -167,7 +173,11 @@ export default function Team() {
       style={{ flex: 1, backgroundColor: colors.background }}
     >
       <View style={styles.topBar}>
-        <Pressable onPress={() => router.back()} hitSlop={10} accessibilityLabel={tr("common.close")}>
+        <Pressable
+          onPress={() => router.back()}
+          hitSlop={10}
+          accessibilityLabel={tr("common.close")}
+        >
           <Ionicons name="chevron-back" size={22} color={colors.foreground} />
         </Pressable>
         <Text style={[styles.topTitle, { color: colors.amber, fontFamily: Fonts?.display }]}>
@@ -185,15 +195,15 @@ export default function Team() {
 
         {isField ? null : (
           <View style={[styles.seatChip, { borderColor: colors.border }]}>
-            <Text style={[styles.seatText, { color: colors.mutedForeground, fontFamily: Fonts?.mono }]}>
+            <Text
+              style={[styles.seatText, { color: colors.mutedForeground, fontFamily: Fonts?.mono }]}
+            >
               {used} / {seats} SEATS{pending > 0 ? ` · ${pending} PENDING` : ""}
             </Text>
           </View>
         )}
 
-        {notice ? (
-          <Text style={[styles.notice, { color: colors.verified }]}>{notice}</Text>
-        ) : null}
+        {notice ? <Text style={[styles.notice, { color: colors.verified }]}>{notice}</Text> : null}
         {error ? <Text style={[styles.error, { color: colors.alert }]}>{error}</Text> : null}
 
         <Text style={[styles.section, { color: colors.mutedForeground, fontFamily: Fonts?.mono }]}>
@@ -216,13 +226,24 @@ export default function Team() {
                 style={[styles.card, { borderColor: colors.border, backgroundColor: colors.card }]}
               >
                 <View style={styles.memberRow}>
-                  <View style={[styles.avatar, { borderColor: colors.amber }]}>
-                    <Text
-                      style={[styles.avatarText, { color: colors.amber, fontFamily: Fonts?.mono }]}
-                    >
-                      {initials(member.user?.name, member.user?.email)}
-                    </Text>
-                  </View>
+                  {member.user?.image ? (
+                    <Image
+                      source={{ uri: member.user.image }}
+                      style={[styles.avatar, { borderColor: colors.amber }]}
+                      resizeMode="cover"
+                    />
+                  ) : (
+                    <View style={[styles.avatar, { borderColor: colors.amber }]}>
+                      <Text
+                        style={[
+                          styles.avatarText,
+                          { color: colors.amber, fontFamily: Fonts?.mono },
+                        ]}
+                      >
+                        {initials(member.user?.name, member.user?.email)}
+                      </Text>
+                    </View>
+                  )}
                   <View style={styles.memberBody}>
                     <Text
                       numberOfLines={1}
@@ -236,13 +257,19 @@ export default function Team() {
                     </Text>
                     <Text
                       numberOfLines={1}
-                      style={[styles.memberMeta, { color: colors.mutedForeground, fontFamily: Fonts?.mono }]}
+                      style={[
+                        styles.memberMeta,
+                        { color: colors.mutedForeground, fontFamily: Fonts?.mono },
+                      ]}
                     >
                       {member.user?.email ?? "—"}
                     </Text>
                     <Text
                       numberOfLines={1}
-                      style={[styles.memberMeta, { color: colors.mutedForeground, fontFamily: Fonts?.mono }]}
+                      style={[
+                        styles.memberMeta,
+                        { color: colors.mutedForeground, fontFamily: Fonts?.mono },
+                      ]}
                     >
                       {member.photoCount} PHOTOS · JOINED{" "}
                       {formatStamp(new Date(member.createdAt)).slice(0, 10)}
@@ -250,7 +277,10 @@ export default function Team() {
                   </View>
                   <View style={[styles.roleBadge, { borderColor: roleColor(member.role) }]}>
                     <Text
-                      style={[styles.roleBadgeText, { color: roleColor(member.role), fontFamily: Fonts?.mono }]}
+                      style={[
+                        styles.roleBadgeText,
+                        { color: roleColor(member.role), fontFamily: Fonts?.mono },
+                      ]}
                     >
                       {member.role.toUpperCase()}
                     </Text>
@@ -262,10 +292,18 @@ export default function Team() {
                     <Pressable
                       onPress={() => void contact(member.userId)}
                       disabled={openChat.isPending}
-                      style={[styles.smallBtn, { borderColor: colors.border, opacity: openChat.isPending ? 0.5 : 1 }]}
+                      style={[
+                        styles.smallBtn,
+                        { borderColor: colors.border, opacity: openChat.isPending ? 0.5 : 1 },
+                      ]}
                     >
                       <Ionicons name="chatbubble-outline" size={13} color={colors.foreground} />
-                      <Text style={[styles.smallBtnText, { color: colors.foreground, fontFamily: Fonts?.mono }]}>
+                      <Text
+                        style={[
+                          styles.smallBtnText,
+                          { color: colors.foreground, fontFamily: Fonts?.mono },
+                        ]}
+                      >
                         MESSAGE
                       </Text>
                     </Pressable>
@@ -289,7 +327,10 @@ export default function Team() {
                       <Text
                         style={[
                           styles.smallBtnText,
-                          { color: open ? colors.amber : colors.foreground, fontFamily: Fonts?.mono },
+                          {
+                            color: open ? colors.amber : colors.foreground,
+                            fontFamily: Fonts?.mono,
+                          },
                         ]}
                       >
                         MANAGE
@@ -343,7 +384,12 @@ export default function Team() {
                           disabled={removeMember.isPending}
                           style={[styles.smallBtn, { borderColor: colors.alert }]}
                         >
-                          <Text style={[styles.smallBtnText, { color: colors.alert, fontFamily: Fonts?.mono }]}>
+                          <Text
+                            style={[
+                              styles.smallBtnText,
+                              { color: colors.alert, fontFamily: Fonts?.mono },
+                            ]}
+                          >
                             CONFIRM REMOVE
                           </Text>
                         </Pressable>
@@ -351,7 +397,12 @@ export default function Team() {
                           onPress={() => setConfirmId(null)}
                           style={[styles.smallBtn, { borderColor: colors.border }]}
                         >
-                          <Text style={[styles.smallBtnText, { color: colors.foreground, fontFamily: Fonts?.mono }]}>
+                          <Text
+                            style={[
+                              styles.smallBtnText,
+                              { color: colors.foreground, fontFamily: Fonts?.mono },
+                            ]}
+                          >
                             CANCEL
                           </Text>
                         </Pressable>
@@ -362,7 +413,12 @@ export default function Team() {
                         style={[styles.smallBtn, styles.removeBtn, { borderColor: colors.border }]}
                       >
                         <Ionicons name="trash-outline" size={13} color={colors.alert} />
-                        <Text style={[styles.smallBtnText, { color: colors.alert, fontFamily: Fonts?.mono }]}>
+                        <Text
+                          style={[
+                            styles.smallBtnText,
+                            { color: colors.alert, fontFamily: Fonts?.mono },
+                          ]}
+                        >
                           REMOVE FROM WORKSPACE
                         </Text>
                       </Pressable>
@@ -386,7 +442,9 @@ export default function Team() {
 
         {isField ? null : (
           <>
-            <Text style={[styles.section, { color: colors.mutedForeground, fontFamily: Fonts?.mono }]}>
+            <Text
+              style={[styles.section, { color: colors.mutedForeground, fontFamily: Fonts?.mono }]}
+            >
               PENDING INVITES
             </Text>
             {pending === 0 ? (
@@ -397,19 +455,28 @@ export default function Team() {
               (invites.data ?? []).map((row) => (
                 <View
                   key={row.id}
-                  style={[styles.card, { borderColor: colors.border, backgroundColor: colors.card }]}
+                  style={[
+                    styles.card,
+                    { borderColor: colors.border, backgroundColor: colors.card },
+                  ]}
                 >
                   <View style={styles.memberRow}>
                     <Ionicons name="mail-outline" size={16} color={colors.mutedForeground} />
                     <View style={styles.memberBody}>
                       <Text
                         numberOfLines={1}
-                        style={[styles.memberName, { color: colors.foreground, fontFamily: Fonts?.mono }]}
+                        style={[
+                          styles.memberName,
+                          { color: colors.foreground, fontFamily: Fonts?.mono },
+                        ]}
                       >
                         {row.email}
                       </Text>
                       <Text
-                        style={[styles.memberMeta, { color: colors.mutedForeground, fontFamily: Fonts?.mono }]}
+                        style={[
+                          styles.memberMeta,
+                          { color: colors.mutedForeground, fontFamily: Fonts?.mono },
+                        ]}
                       >
                         {row.role.toUpperCase()} · CODE {row.code}
                       </Text>
@@ -423,7 +490,12 @@ export default function Team() {
                         style={[styles.smallBtn, { borderColor: colors.border }]}
                       >
                         <Ionicons name="close-circle-outline" size={13} color={colors.alert} />
-                        <Text style={[styles.smallBtnText, { color: colors.alert, fontFamily: Fonts?.mono }]}>
+                        <Text
+                          style={[
+                            styles.smallBtnText,
+                            { color: colors.alert, fontFamily: Fonts?.mono },
+                          ]}
+                        >
                           REVOKE
                         </Text>
                       </Pressable>
@@ -437,10 +509,14 @@ export default function Team() {
 
         {isAdmin ? (
           <>
-            <Text style={[styles.section, { color: colors.mutedForeground, fontFamily: Fonts?.mono }]}>
+            <Text
+              style={[styles.section, { color: colors.mutedForeground, fontFamily: Fonts?.mono }]}
+            >
               INVITE A CREW MEMBER
             </Text>
-            <View style={[styles.card, { borderColor: colors.border, backgroundColor: colors.card }]}>
+            <View
+              style={[styles.card, { borderColor: colors.border, backgroundColor: colors.card }]}
+            >
               <Text style={[styles.label, { color: colors.mutedForeground }]}>Work email</Text>
               <TextInput
                 value={email}
@@ -452,7 +528,11 @@ export default function Team() {
                 accessibilityLabel="Work email"
                 style={[
                   styles.input,
-                  { borderColor: colors.border, color: colors.foreground, backgroundColor: colors.background },
+                  {
+                    borderColor: colors.border,
+                    color: colors.foreground,
+                    backgroundColor: colors.background,
+                  },
                 ]}
               />
               <Text style={[styles.label, { color: colors.mutedForeground }]}>Role</Text>
@@ -487,16 +567,24 @@ export default function Team() {
                 })}
               </View>
               {role ? (
-                <Text style={[styles.hint, { color: colors.mutedForeground }]}>{ROLE_HINT[role]}</Text>
+                <Text style={[styles.hint, { color: colors.mutedForeground }]}>
+                  {ROLE_HINT[role]}
+                </Text>
               ) : null}
               <Pressable
                 onPress={() => void send()}
                 disabled={invite.isPending}
-                style={[styles.primary, { backgroundColor: colors.amber, opacity: invite.isPending ? 0.6 : 1 }]}
+                style={[
+                  styles.primary,
+                  { backgroundColor: colors.amber, opacity: invite.isPending ? 0.6 : 1 },
+                ]}
               >
                 <Ionicons name="person-add-outline" size={15} color={colors.primaryForeground} />
                 <Text
-                  style={[styles.primaryText, { color: colors.primaryForeground, fontFamily: Fonts?.mono }]}
+                  style={[
+                    styles.primaryText,
+                    { color: colors.primaryForeground, fontFamily: Fonts?.mono },
+                  ]}
                 >
                   {invite.isPending ? "SENDING…" : "SEND INVITE"}
                 </Text>

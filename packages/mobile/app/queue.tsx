@@ -18,6 +18,7 @@ import { useT } from "@/lib/i18n";
 import { formatCoords, formatStamp } from "@/components/stamp";
 import { dequeue, drainQueue, readQueue, type QueuedPhoto } from "@/lib/queue";
 import { useInvalidatePhotos } from "@/queries/photos";
+import { useHasSession } from "@/hooks/use-session";
 
 export default function Queue() {
   const colors = useColors();
@@ -27,6 +28,7 @@ export default function Queue() {
   const [busy, setBusy] = useState(false);
   const [result, setResult] = useState<string | null>(null);
   const invalidate = useInvalidatePhotos();
+  const { hasSession } = useHasSession();
 
   const refresh = useCallback(async () => {
     setItems(await readQueue());
@@ -39,6 +41,10 @@ export default function Queue() {
   }, [refresh]);
 
   const drain = async () => {
+    // Signed out there is no session to presign or seal an upload with, so trying would
+    // only produce failures. The captures wait here until an account exists, then
+    // hooks/use-drain-on-signin.ts drains them by itself.
+    if (!hasSession) return;
     setBusy(true);
     setResult(null);
     try {
@@ -80,10 +86,13 @@ export default function Queue() {
         <LanguageMenu />
         <Pressable
           onPress={drain}
-          disabled={busy || items.length === 0}
+          disabled={busy || items.length === 0 || !hasSession}
           style={[
             styles.btn,
-            { backgroundColor: colors.amber, opacity: busy || items.length === 0 ? 0.45 : 1 },
+            {
+              backgroundColor: colors.amber,
+              opacity: busy || items.length === 0 || !hasSession ? 0.45 : 1,
+            },
           ]}
         >
           {busy ? (
@@ -96,7 +105,7 @@ export default function Queue() {
       </View>
 
       <Text style={[styles.sub, { color: colors.mutedForeground }]}>
-        {t("queue.note")}
+        {hasSession ? t("queue.note") : t("queue.signedOutBody")}
       </Text>
 
       {result ? (

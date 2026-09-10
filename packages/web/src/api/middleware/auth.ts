@@ -9,9 +9,72 @@ import { loadPlans } from "../lib/plans";
 import { SUPPORT_EMAIL } from "../lib/support";
 import { defaultOrgName } from "../lib/workspaces";
 
-export type Role = "owner" | "admin" | "manager" | "field";
+export type Role = "owner" | "admin" | "manager" | "dispatcher" | "driver" | "field";
 
-const RANK: Record<Role, number> = { owner: 4, admin: 3, manager: 2, field: 1 };
+/**
+ * Roles are a ladder for SENIORITY, plus a separate check for which PRODUCT you belong to.
+ *
+ * The ladder (`RANK`, read only by `requireRole`) answers "how much authority": manager and
+ * above run the whole workspace, `dispatcher` sits below them so someone can run the delivery
+ * board (build runs, add stops, assign drivers, start and stop them) without inheriting the
+ * manager's reach over projects, templates, messages, billing and the roster.
+ *
+ * `driver` and `field` are the two crew roles and are deliberately PEERS at rank 1 — neither
+ * outranks the other, they simply work on different products. Seniority alone therefore cannot
+ * decide access: a driver must never reach the job-photo side and a field member must never
+ * reach the delivery side, even though both sit at the same rung. That is what
+ * `canUseDelivery` / `canUseField` are for, and every product gate must consult them INSTEAD OF
+ * (or as well as) `requireRole`. Never gate a delivery route on `requireRole(role, "field")` —
+ * that passes for a field member.
+ */
+const RANK: Record<Role, number> = {
+  owner: 5,
+  admin: 4,
+  manager: 3,
+  dispatcher: 2,
+  driver: 1,
+  field: 1,
+};
+
+/**
+ * Which product each role belongs to. These are ALLOWLISTS on purpose: a role added later gets
+ * no access to either side until it is named here, which fails closed rather than open.
+ */
+const DELIVERY_ROLES: readonly Role[] = ["owner", "admin", "manager", "dispatcher", "driver"];
+const FIELD_ROLES: readonly Role[] = ["owner", "admin", "manager", "dispatcher", "field"];
+
+/** True when the role includes the delivery system — routes, stops, dispatch. */
+export function canUseDelivery(role: Role): boolean {
+  return DELIVERY_ROLES.includes(role);
+}
+
+/** True when the role includes the field system — projects and job-site photos. */
+export function canUseField(role: Role): boolean {
+  return FIELD_ROLES.includes(role);
+}
+
+/** Guard for any delivery-side endpoint. Refuses a `field` member. */
+export function requireDelivery(role: Role): void {
+  if (!canUseDelivery(role)) {
+    throw new ORPCError("FORBIDDEN", {
+      message: "Your role does not include the delivery system",
+    });
+  }
+}
+
+/** Guard for any field-side endpoint. Refuses a `driver`. */
+export function requireField(role: Role): void {
+  if (!canUseField(role)) {
+    throw new ORPCError("FORBIDDEN", {
+      message: "Your role does not include the job photo system",
+    });
+  }
+}
+
+/** True when the role is manager or above — the "runs the whole workspace" tier. */
+export function isManager(role: Role): boolean {
+  return RANK[role] >= RANK.manager;
+}
 
 export type StaffRole = "superadmin" | "admin";
 
@@ -286,6 +349,28 @@ export const orgProc = authed.use(async ({ context, next }) => {
   return next({ context: { org: org!, role: "owner" as Role, member: member! } });
 });
 
+/**
+ * Product-scoped procedures. Prefer these over calling the `require*` guards by hand: swapping
+ * `orgProc` for one of these gates a whole router uniformly, so a new endpoint added later
+ * inherits the gate instead of being forgotten.
+ *
+ * Note that `photos` deliberately does NOT use `fieldProc`. Proof-of-delivery is a photo, so a
+ * driver has to be able to create and read photos even though they have no field access — that
+ * router is mixed and is gated per endpoint instead.
+ */
+
+/** Field side — projects and job-site photos. Refuses a `driver`. */
+export const fieldProc = orgProc.use(async ({ context, next }) => {
+  requireField(context.role);
+  return next();
+});
+
+/** Delivery side — routes, stops, dispatch. Refuses a `field` member. */
+export const deliveryProc = orgProc.use(async ({ context, next }) => {
+  requireDelivery(context.role);
+  return next();
+});
+
 export function requireRole(role: Role, min: Role) {
   if (RANK[role] < RANK[min]) {
     throw new ORPCError("FORBIDDEN", { message: `Requires ${min} access or above` });
@@ -328,15 +413,18 @@ export async function visibleProjectIds(
   userId: string,
   role: Role,
 ): Promise<string[] | null> {
+  // A driver has NO job photo system, so they get an EMPTY project list rather than the
+  // unrestricted `null`. That leaves them exactly their own unfiled captures — the
+  // proof-of-delivery shots they took themselves — and nothing filed under anyone's job.
+  // Returning `null` here is what let a driver's Teamspace render the whole workspace's
+  // photos even though the nav link was hidden.
+  if (role === "driver") return [];
   if (role !== "field") return null;
   const rows = await db
     .select({ projectId: schema.projectAssignments.projectId })
     .from(schema.projectAssignments)
     .where(
-      and(
-        eq(schema.projectAssignments.orgId, orgId),
-        eq(schema.projectAssignments.userId, userId),
-      ),
+      and(eq(schema.projectAssignments.orgId, orgId), eq(schema.projectAssignments.userId, userId)),
     );
   return rows.map((r) => r.projectId);
 }

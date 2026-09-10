@@ -27,6 +27,7 @@ export const en = {
 
   // Common
   "common.save": "Save",
+  "common.today": "Today",
   "common.cancel": "Cancel",
   "common.close": "Close",
   "common.loading": "Loading",
@@ -63,6 +64,7 @@ export const en = {
   "signin.title": "Sign in to GeoCliks",
   "signin.subtitle": "Tamper-proof photo documentation for field teams.",
   "signin.google": "Continue with Google",
+  "signin.x": "Continue with X",
   "signin.tabSignIn": "Sign in",
   "signin.tabSignUp": "Sign up",
   "signin.name": "Name",
@@ -157,7 +159,8 @@ export const en = {
   "teamspace.projectFilter": "Project filter",
   "teamspace.searchPlaceholder": "Search code, address, note",
   "teamspace.noMatch.title": "No photos match those filters",
-  "teamspace.noMatch.body": "Capture from the GeoCliks mobile app, or clear the filters to see the whole Teamspace.",
+  "teamspace.noMatch.body":
+    "Capture from the GeoCliks mobile app, or clear the filters to see the whole Teamspace.",
   "teamspace.loadingField": "Loading field data",
   "teamspace.newestFirst": "{n} photos · newest first",
   "teamspace.photosCount": "{n} photos",
@@ -170,7 +173,8 @@ export const en = {
   "tag.departure": "Departure",
   "queue.title": "Upload queue",
   "queue.uploadAll": "Upload all",
-  "queue.note": "Captures are written to the device first, so nothing is lost in a trench, a basement or a dead zone. They upload the moment signal returns.",
+  "queue.note":
+    "Captures are written to the device first, so nothing is lost in a trench, a basement or a dead zone. They upload the moment signal returns.",
   "queue.clear": "Queue is clear",
   "queue.clearBody": "Every capture on this device has been uploaded and verified.",
   "queue.unassigned": "Unassigned",
@@ -189,31 +193,39 @@ export const en = {
   "home.hero.eyebrow": "Network-verified photo evidence",
   "home.hero.title1": "Proof your work",
   "home.hero.title2": "happened.",
-  "home.hero.body": "GeoCliks stamps every field photo with a network-verified timestamp, GPS coordinates and the street address — then locks it with a unique photo code nobody can edit. Crews capture, the office gets a closeout report the same day.",
+  "home.hero.body":
+    "GeoCliks stamps every field photo with a network-verified timestamp, GPS coordinates and the street address — then locks it with a unique photo code nobody can edit. Crews capture, the office gets a closeout report the same day.",
   "home.hero.liveTeamspace": "See a live Teamspace",
   "home.hero.noSignal": "Works with no signal",
   "home.hero.altRooftop": "Rooftop RTU documentation",
   "home.hero.altRoof": "Roof damage documentation",
   "home.hero.altFiber": "Fiber splice closure with GeoCliks stamp",
+  "home.hero.altCollage": "Field crews documenting their work with GeoCliks",
   "home.evidence.label": "01 — Tamper-proof",
   "home.evidence.h2": "Evidence that holds up in a dispute",
-  "home.evidence.body": "A screenshot proves nothing. GeoCliks photos carry a verification chain from the moment the shutter fires.",
+  "home.evidence.body":
+    "A screenshot proves nothing. GeoCliks photos carry a verification chain from the moment the shutter fires.",
   "home.evidence.r1.title": "Network-verified time",
-  "home.evidence.r1.body": "GeoCliks stamps the time from the network, not the handset. Change the device clock and the app flags the skew instead of trusting it — the photo is marked unverified, and everyone can see it.",
+  "home.evidence.r1.body":
+    "GeoCliks stamps the time from the network, not the handset. Change the device clock and the app flags the skew instead of trusting it — the photo is marked unverified, and everyone can see it.",
   "home.evidence.r2.title": "GPS + street address",
-  "home.evidence.r2.body": "Every capture carries coordinates, accuracy radius and the reverse-geocoded address burned into the image and stored as metadata. Proof of arrival, proof of work, proof of departure.",
+  "home.evidence.r2.body":
+    "Every capture carries coordinates, accuracy radius and the reverse-geocoded address burned into the image and stored as metadata. Proof of arrival, proof of work, proof of departure.",
   "home.evidence.r3.title": "Unique photo code",
-  "home.evidence.r3.body": "Each photo gets a code linked to its original metadata plus a SHA-256 hash of the image bytes and an HMAC signature. Re-check any photo at any time — one altered pixel breaks the seal.",
+  "home.evidence.r3.body":
+    "Each photo gets a code linked to its original metadata plus a SHA-256 hash of the image bytes and an HMAC signature. Re-check any photo at any time — one altered pixel breaks the seal.",
   "home.team.label": "02 — Teamspace",
   "home.team.h2": "The whole crew's photos, in one place, instantly",
-  "home.team.body": "Every photo a technician takes syncs to a shared workspace organized by project, client and location. Send a live share link and the customer sees the work as it happens — no app, no login.",
+  "home.team.body":
+    "Every photo a technician takes syncs to a shared workspace organized by project, client and location. Send a live share link and the customer sees the work as it happens — no app, no login.",
   "home.team.b1": "Role-based permissions: owner, admin, manager, field",
   "home.team.b2": "Group by project, client, site or job code",
   "home.team.b3": "Live share links viewable in any browser",
   "home.team.b4": "Photos appear seconds after capture",
   "home.reports.label": "03 — One click",
   "home.reports.h2": "Closeout reports without the evening paperwork",
-  "home.reports.body": "Pick a project, pick a format. GeoCliks assembles the as-built record — every photo with its stamp, code and location — and hands you a file the client can accept.",
+  "home.reports.body":
+    "Pick a project, pick a format. GeoCliks assembles the as-built record — every photo with its stamp, code and location — and hands you a file the client can accept.",
   "home.reports.f1": "Branded closeout package",
   "home.reports.f2": "Photo log with metadata",
   "home.reports.f3": "Originals + CSV manifest",
@@ -223,13 +235,17 @@ export const en = {
   "home.field.label": "04 — Built for the field",
   "home.field.h2": "No signal, no problem, no training",
   "home.field.i1.title": "Offline capture",
-  "home.field.i1.body": "Shoot in a basement or a trench. Photos queue on the device and upload themselves the moment there's a connection.",
+  "home.field.i1.body":
+    "Shoot in a basement or a trench. Photos queue on the device and upload themselves the moment there's a connection.",
   "home.field.i2.title": "One-tap capture",
-  "home.field.i2.body": "Open, shoot, done. New hires figure it out on day one without a walkthrough.",
+  "home.field.i2.body":
+    "Open, shoot, done. New hires figure it out on day one without a walkthrough.",
   "home.field.i3.title": "Lightweight",
-  "home.field.i3.body": "Small install, low battery draw, works on the cheap phones crews actually carry.",
+  "home.field.i3.body":
+    "Small install, low battery draw, works on the cheap phones crews actually carry.",
   "home.field.i4.title": "Your branding",
-  "home.field.i4.body": "Watermark templates with your logo and company line, applied across the whole team.",
+  "home.field.i4.body":
+    "Watermark templates with your logo and company line, applied across the whole team.",
   "home.field.industries": "Industries on GeoCliks",
   "industry.construction": "Construction",
   "industry.fiber": "Fiber optic",
@@ -246,7 +262,9 @@ export const en = {
   "home.pricing.popular": "Most crews",
   "home.pricing.talk": "Talk to us",
   "home.pricing.choose": "Choose",
-  "home.footer.desc": "Tamper-proof photo documentation for field teams. Network-verified timestamps, GPS and street address on every photo, professional reports in one click.",
+  "home.pricing.freeTrial": "Free trial",
+  "home.footer.desc":
+    "Tamper-proof photo documentation for field teams. Network-verified timestamps, GPS and street address on every photo, professional reports in one click.",
   "home.footer.product": "Product",
   "home.footer.company": "Company",
   "home.footer.evidence": "Tamper-proof evidence",
@@ -273,7 +291,8 @@ export const en = {
   "projects.status.complete": "complete",
   "projects.status.archived": "archived",
   "map.title": "Site map",
-  "map.subtitle": "Every geotagged capture on a live Google map, with each crew's path through the day",
+  "map.subtitle":
+    "Every geotagged capture on a live Google map, with each crew's path through the day",
   "map.route": "Route",
   "map.empty.title": "No geotagged photos yet",
   "map.empty.hint": "Photos captured with location enabled appear here as pins.",
@@ -304,7 +323,8 @@ export const en = {
   "compare.savePair": "Save pair",
   "compare.noPhotos": "No photos here yet.",
   "compare.empty.title": "No comparisons yet",
-  "compare.empty.hint": "Pair a before photo with an after photo to show progress that can't be argued with.",
+  "compare.empty.hint":
+    "Pair a before photo with an after photo to show progress that can't be argued with.",
   "compare.createFirst": "Create first pair",
   "compare.noProject": "No project",
   "compare.created": "created {stamp}",
@@ -326,7 +346,8 @@ export const en = {
   "share.off": "Off",
   "share.createLink": "Create link",
   "share.empty.title": "No share links yet",
-  "share.empty.hint": "Create a link and send it to a client, inspector or GC. They see verified photos as your crew uploads them.",
+  "share.empty.hint":
+    "Create a link and send it to a client, inspector or GC. They see verified photos as your crew uploads them.",
   "share.downloadsOn": "downloads on",
   "share.viewOnly": "view only",
   "share.revoked": "revoked",
@@ -348,7 +369,8 @@ export const en = {
   "reports.building": "Building package…",
   "reports.generate": "Generate report",
   "reports.empty.title": "No reports generated yet",
-  "reports.empty.hint": "Pick a project and a format on the left — the package is built server-side and stored here.",
+  "reports.empty.hint":
+    "Pick a project and a format on the left — the package is built server-side and stored here.",
   "reports.generated": "Generated packages",
   "reports.saveFolder": "Save to folder",
   "reports.hint.pdf": "Closeout package — stamped photos, one page per set.",
@@ -362,7 +384,8 @@ export const en = {
   "templates.title": "Watermark templates",
   "templates.subtitle": "The stamp burned into every photo your crew captures.",
   "templates.livePreview": "Live preview",
-  "templates.sampleNote": "Values shown are a sample. On capture, the time comes from the server clock, the coordinates from the device GPS fix, and the address from reverse geocoding.",
+  "templates.sampleNote":
+    "Values shown are a sample. On capture, the time comes from the server clock, the coordinates from the device GPS fix, and the address from reverse geocoding.",
   "templates.saved": "Saved templates",
   "templates.defaultBadge": "Default",
   "templates.preview": "Preview",
@@ -380,7 +403,9 @@ export const en = {
   "templates.replace": "Replace",
   "templates.upload": "Upload logo",
   "templates.save": "Save template",
-  "templates.hint": "The default template is what the mobile camera uses when a tech opens the app.",
+  "templates.hint":
+    "The default template is what the mobile camera uses when a tech opens the app.",
+  "templates.gone": "That template no longer exists. The list has been refreshed.",
   "templates.accentColor": "Accent color {color}",
   "templates.l.classic": "Classic",
   "templates.l.compact": "Compact",
@@ -408,7 +433,8 @@ export const en = {
   "shareView.gone.title": "This link isn't available",
   "shareView.gone.hint": "It may have been revoked or expired. Ask the sender for a fresh link.",
   "shareView.heading": "Field evidence — {n} photos",
-  "shareView.note": "Each photo carries a server-verified timestamp, GPS fix and unique photo code.",
+  "shareView.note":
+    "Each photo carries a server-verified timestamp, GPS fix and unique photo code.",
   "shareView.expires": "Link expires {when}.",
   "shareView.downloads": "Downloads enabled",
   "shareView.empty": "No photos have been uploaded to this view yet.",
@@ -421,6 +447,7 @@ export const en = {
   "shareView.documented": "Documented with GeoCliks",
   "shareView.refreshing": "Refreshing",
   "photo.addressUnavailable": "Address unavailable",
+  "photo.directions": "Get directions",
   "photo.clip": "Verified clip {code}",
   "photo.deviceTime": "Device time",
   "photo.networkTime": "Network time",
@@ -446,14 +473,17 @@ export const en = {
   "map.fixes": "{n} fixes",
   "map.filterProject": "Filter by project",
   "signin.mobileHeadline": "Proof that holds up.",
-  "signin.mobileSub": "Network-verified timestamps, GPS coordinates and a unique code on every field photo.",
+  "signin.mobileSub":
+    "Network-verified timestamps, GPS coordinates and a unique code on every field photo.",
   "signin.switchNew": "New crew? Create an account",
   "signin.switchHave": "Already have an account? Sign in",
   "capture.locationOff": "Location permission off",
   "capture.camPermission": "Camera permission needed to record evidence",
   "capture.micPermission": "Microphone permission needed to record video evidence",
-  "capture.hintRecording": "Recording runs on the device build. The record button queues a sample clip so you can test the verify + sync flow.",
-  "capture.hintCamera": "Live camera runs on the device build. Shutter still captures a sample frame so you can test the full verify + sync flow.",
+  "capture.hintRecording":
+    "Recording runs on the device build. The record button queues a sample clip so you can test the verify + sync flow.",
+  "capture.hintCamera":
+    "Live camera runs on the device build. Shutter still captures a sample frame so you can test the full verify + sync flow.",
   "capture.sampleClip": "Recording runs on the device build — queueing a sample clip instead",
   "capture.failed": "Capture failed",
   "capture.recordFailed": "Recording failed",
@@ -473,7 +503,8 @@ export const en = {
   "capture.clockIn": "Clock in — arrival",
   "capture.clockOut": "Clock out — departure",
   "capture.enableCamera": "Enable camera",
-  "capture.hintSeal": "Timestamp is verified against the network at upload — changing the device clock cannot fake it. Photos and clips carry the same seal.",
+  "capture.hintSeal":
+    "Timestamp is verified against the network the moment you press the shutter — changing the device clock cannot fake it. Photos and clips carry the same seal.",
   "admin.console": "operator console",
   "admin.backToWorkspace": "Back to workspace",
   "admin.nav.overview": "Overview",
@@ -522,7 +553,8 @@ export const en = {
   "admin.us.confirmDelete": "Delete {email} and everything it owns?",
   "admin.us.suspendReason": "Suspended by platform staff",
   "admin.us.noMatch": "No accounts match “{q}”.",
-  "admin.us.footnote": "Only superadmins can change platform roles or delete accounts. Every action here is written to the audit log on the overview page.",
+  "admin.us.footnote":
+    "Only superadmins can change platform roles or delete accounts. Every action here is written to the audit log on the overview page.",
   "admin.ws.subtitle": "Plan, seats and usage for every team account.",
   "admin.ws.searchLabel": "Search workspaces",
   "admin.ws.searchPlaceholder": "Search workspace",
@@ -537,7 +569,8 @@ export const en = {
   "admin.ws.apply": "Apply",
   "admin.ws.planFailed": "Could not change plan",
   "admin.ws.noMatch": "No workspaces match “{q}”.",
-  "admin.pl.subtitle": "Prices, limits and visibility for every plan — live across the app and marketing page.",
+  "admin.pl.subtitle":
+    "Prices, limits and visibility for every plan — live across the app and marketing page.",
   "admin.pl.newPlan": "New plan",
   "admin.pl.draft": "draft",
   "admin.pl.hidden": "hidden",
@@ -575,9 +608,12 @@ export const en = {
   "admin.pl.capBranding": "branding",
   "admin.pl.capRoles": "roles",
   "admin.pl.confirmDelete": "Delete the {name} plan?",
-  "admin.pl.footnote": "Hidden plans disappear from the marketing pricing table but keep working for workspaces already on them.",
-  "admin.pl.i18nNote": "Plan copy ships translated into all 11 languages. Editing a name, tagline or feature bullet here replaces the translation with your English text in every language.",
-  "admin.pl.processorNote": "Price and limit edits here drive display and in-app enforcement immediately. The amount actually charged lives with the payment processor (Autumn/Stripe) and must be pushed with the Autumn CLI after you change it here.",
+  "admin.pl.footnote":
+    "Hidden plans disappear from the marketing pricing table but keep working for workspaces already on them.",
+  "admin.pl.i18nNote":
+    "Plan copy ships translated into all 11 languages. Editing a name, tagline or feature bullet here replaces the translation with your English text in every language.",
+  "admin.pl.processorNote":
+    "Price and limit edits here drive display and in-app enforcement immediately. The amount actually charged lives with the payment processor (Autumn/Stripe) and must be pushed with the Autumn CLI after you change it here.",
   "common.confirm": "Confirm",
   "photo.deleteConfirm": "Delete permanently?",
   "photo.deleteHint": "The file and its evidence trail are deleted for good.",
@@ -617,7 +653,8 @@ export const en = {
   "profile.openBilling": "Manage billing on the web dashboard",
   "profile.danger": "Danger zone",
   "profile.deleteAccount": "Delete account",
-  "profile.deleteWarning": "This permanently deletes your account, your workspace and every photo in it. It cannot be undone.",
+  "profile.deleteWarning":
+    "This permanently deletes your account, your workspace and every photo in it. It cannot be undone.",
   "profile.deleteConfirm": "Type DELETE to confirm",
   "profile.deleting": "Deleting…",
   "profile.account": "Account",
@@ -631,16 +668,19 @@ export const en = {
   "plans.checkoutOpening": "Opening secure checkout…",
   "plans.checkoutDone": "Plan updated. Your new limits are active.",
   "plans.applied": "Plan changed.",
-  "plans.unavailable": "Checkout is not available right now. Finish on the web dashboard or contact support.",
+  "plans.unavailable":
+    "Checkout is not available right now. Finish on the web dashboard or contact support.",
   "plans.ownerOnly": "Only the workspace owner can change the plan.",
   "plans.stripeNote": "Secure checkout by Stripe. Cancel anytime.",
-  "plans.appleNote": "Billed through your Apple ID. Manage or cancel it in your App Store settings.",
+  "plans.appleNote":
+    "Billed through your Apple ID. Manage or cancel it in your App Store settings.",
   "plans.restore": "Restore purchases",
   "plans.restored": "Purchase restored.",
   "plans.nothingToRestore": "No purchase found to restore.",
   "plans.iapUnavailable": "Paid plans are purchased in the App Store build of GeoCliks.",
   "plans.storeError": "The store did not return a valid receipt.",
-  "plans.checkoutPending": "Nothing changed yet. If you completed the payment it will appear here shortly.",
+  "plans.checkoutPending":
+    "Nothing changed yet. If you completed the payment it will appear here shortly.",
   "home.nav.registerFree": "Register free",
   "teamspace.loadSample": "Load sample data",
   "home.nav.home": "Home",
@@ -656,7 +696,8 @@ export const en = {
   "home.nav.contactSales": "Contact sales",
   "join.checking": "Checking the invite…",
   "join.closedTitle": "This invite is no longer open",
-  "join.closedBody": "It was already used, revoked, or the code is wrong. Ask whoever invited you to send a fresh one from the Team screen.",
+  "join.closedBody":
+    "It was already used, revoked, or the code is wrong. Ask whoever invited you to send a fresh one from the Team screen.",
   "join.goSignIn": "Go to sign in",
   "join.eyebrow": "You have been invited",
   "join.headline": "{inviter} invited you to {workspace}",
@@ -666,8 +707,10 @@ export const en = {
   "join.accept": "Join {workspace}",
   "join.signedInAs": "Signed in as {email}.",
   "join.signInToAccept": "Sign in to accept",
-  "join.createHint": "Create your account with {email} or sign in with Google, then you land back here.",
-  "join.footer": "Every photo you take carries a verified time, GPS coordinates and a street address.",
+  "join.createHint":
+    "Create your account with {email} or sign in with Google, then you land back here.",
+  "join.footer":
+    "Every photo you take carries a verified time, GPS coordinates and a street address.",
   "reset.sendError": "Could not send the reset email.",
   "reset.tokenError": "That reset link is expired or used.",
   "reset.doneTitle": "Password changed",
@@ -678,7 +721,8 @@ export const en = {
   "reset.newPasswordHint": "At least 8 characters",
   "reset.save": "Save password",
   "reset.sentTitle": "Check your inbox",
-  "reset.sentBody": "If an account exists for {email}, a reset link is on its way. The link works once and expires in an hour.",
+  "reset.sentBody":
+    "If an account exists for {email}, a reset link is on its way. The link works once and expires in an hour.",
   "reset.sentTag": "sent",
   "reset.eyebrow": "Forgot your password",
   "reset.title": "Reset your password",
@@ -701,7 +745,8 @@ export const en = {
   "getapp.title": "Get the GeoCliks app — Proof your work happened",
   "getapp.pill": "Network-verified photo evidence",
   "getapp.headline": "Proof your work happened.",
-  "getapp.subhead": "Time, GPS, and street address stamped on the photo — then locked with a unique code nobody can edit. Works with no signal.",
+  "getapp.subhead":
+    "Time, GPS, and street address stamped on the photo — then locked with a unique code nobody can edit. Works with no signal.",
   "getapp.ctaPrimary": "Get the app",
   "getapp.ctaSecondary": "Open camera in browser",
   "getapp.underButtons": "Free to capture. First locked photo in under a minute.",
@@ -714,9 +759,11 @@ export const en = {
   "getapp.step2Title": "Shoot the work",
   "getapp.step2Body": "One tap. Use the job camera — not the phone gallery.",
   "getapp.step3Title": "The photo locks",
-  "getapp.step3Body": "Network-verified time, GPS, street address, and a unique photo code are stamped. SHA-256 lock. Nobody edits it after.",
+  "getapp.step3Body":
+    "Network-verified time, GPS, street address, and a unique photo code are stamped. SHA-256 lock. Nobody edits it after.",
   "getapp.step4Title": "Office gets the closeout",
-  "getapp.step4Body": "Same day when you have signal. Client can scan the code and see the locked file.",
+  "getapp.step4Body":
+    "Same day when you have signal. Client can scan the code and see the locked file.",
   "getapp.whyTitle": "Why not the regular camera",
   "getapp.rollTitle": "Camera roll",
   "getapp.roll1": "Date and location can be stripped or changed",
@@ -735,11 +782,13 @@ export const en = {
   "getapp.office2": "PDF, Excel, ZIP, KMZ when you upgrade",
   "getapp.office3": "Share a link the client can't argue with",
   "getapp.storeTitle": "Get it on the truck",
-  "getapp.storeBody": "Free plan stamps verified time, GPS, address, and a unique code. $5/month when you need unlimited exports and before/after layouts.",
+  "getapp.storeBody":
+    "Free plan stamps verified time, GPS, address, and a unique code. $5/month when you need unlimited exports and before/after layouts.",
   "getapp.storeIos": "Download on the App Store",
   "getapp.storeAndroid": "Get it on Google Play",
   "getapp.comingSoon": "Store listings coming soon — use the browser camera meanwhile",
-  "getapp.webCaveat": "Web camera capture is for signed-in crews. Use the app when you need offline lock.",
+  "getapp.webCaveat":
+    "Web camera capture is for signed-in crews. Use the app when you need offline lock.",
   "getapp.terms": "Terms",
   "getapp.footerCopy": "© 2026 GeoCliks Field Evidence",
   "verify.navLink": "Verify a photo code",
@@ -748,14 +797,17 @@ export const en = {
   "verify.getFieldApp": "Get the field app",
   "verify.loading": "Checking the photo code…",
   "verify.notFoundTitle": "No locked photo for this code",
-  "verify.notFoundBody": "Check the code and try again. Photo codes look like TM-XXXX-XXXX-XXXX and are printed on the photo and in the closeout report.",
+  "verify.notFoundBody":
+    "Check the code and try again. Photo codes look like GC-XXXX-XXXX-XXXX and are printed on the photo and in the closeout report.",
   "verify.chipLocked": "Record locked",
   "verify.chipOriginal": "Network-verified original",
   "verify.headline": "Photo verified",
   "verify.headlineUnverified": "Record found — time not network-verified",
-  "verify.subhead": "This page shows the locked file. The image, stamp, and hash below are the original capture — not a camera-roll copy.",
+  "verify.subhead":
+    "This page shows the locked file. The image, stamp, and hash below are the original capture — not a camera-roll copy.",
   "verify.notPublishedTitle": "Image not published",
-  "verify.notPublishedBody": "The record is locked and verified, but the workspace that owns it has not published the file publicly. Ask them for a share link to see the image.",
+  "verify.notPublishedBody":
+    "The record is locked and verified, but the workspace that owns it has not published the file publicly. Ask them for a share link to see the image.",
   "verify.statusLabel": "Status",
   "verify.statusVerified": "Locked & verified",
   "verify.statusUnverified": "Locked, time unverified",
@@ -770,12 +822,14 @@ export const en = {
   "verify.workspaceLabel": "Workspace",
   "verify.download": "Download original",
   "verify.openRecord": "Open the shared record",
-  "verify.disclaimer": "If this code was forwarded as a screenshot, treat it as a copy. Only this page (or a matching hash) is the locked original.",
+  "verify.disclaimer":
+    "If this code was forwarded as a screenshot, treat it as a copy. Only this page (or a matching hash) is the locked original.",
   "verify.lookupLabel": "Look up another photo code",
   "verify.submit": "Verify",
   "verify.footerNote": "GeoCliks does not alter locked files after capture.",
   "verify.emptyTitle": "Verify a locked photo",
-  "verify.emptyBody": "Enter the photo code printed on the photo or in the closeout report. It looks like TM-XXXX-XXXX-XXXX.",
+  "verify.emptyBody":
+    "Enter the photo code printed on the photo or in the closeout report. It looks like GC-XXXX-XXXX-XXXX.",
   "getapp.officeSite": "Office site",
   "getapp.crewOfficeTitle": "Crew and office",
   "home.hero.ctaFieldApp": "Get the field app",
@@ -783,16 +837,19 @@ export const en = {
   "invite.enterCode": "Have an invite code?",
   "invite.codePlaceholder": "Invite code",
   "invite.join": "Join workspace",
-  "invite.codeHelp": "Scanned a QR or got an invite email? Paste the code to join your crew's workspace.",
+  "invite.codeHelp":
+    "Scanned a QR or got an invite email? Paste the code to join your crew's workspace.",
   "invite.codeInvalid": "That invite code was not found. Check it, or ask for a new invite.",
   "join.openApp": "Open in the GeoCliks app",
   "join.appHint": "No app yet? Install GeoCliks, then enter code {code}.",
   "join.continueWeb": "Continue in the browser",
   "perm.managerOnly": "Manager access required",
   "perm.planNote": "Only the workspace owner can view or change the plan.",
-  "perm.templatesNote": "Only managers and above can create or change stamp templates. You can still capture with them.",
+  "perm.templatesNote":
+    "Only the owner and admins can create or change stamp templates. You can still capture with them.",
   "perm.projectsNote": "Only managers and above can create or delete projects.",
-  "perm.selfDeleteNote": "Only the workspace owner can remove you from this Teamspace. Your photos and videos stay in the workspace.",
+  "perm.selfDeleteNote":
+    "Only the workspace owner can remove you from this Teamspace. Your photos and videos stay in the workspace.",
 
   // Internal messaging
   "nav.messages": "Messages",
@@ -832,13 +889,17 @@ export const en = {
   "signin.showPassword": "Show password",
   "signin.hidePassword": "Hide password",
   "signin.accountCreated": "Account created. Enter your password to sign in.",
-  "signin.signUpWebBody": "New accounts are created on geocliks.com so we can run a quick anti-bot check. It opens in your browser, takes a minute, then come back here and sign in.",
+  "signin.signUpWebBody":
+    "New accounts are created on geocliks.com so we can run a quick anti-bot check. It opens in your browser, takes a minute, then come back here and sign in.",
   "signin.signUpWebButton": "Create account on the web",
   "signin.captchaMissing": "Please finish the anti-bot check above, then try again.",
-  "signin.captchaFailed": "That anti-bot check could not be verified. Refresh the page and try again.",
+  "signin.captchaFailed":
+    "That anti-bot check could not be verified. Refresh the page and try again.",
   "twofa.section": "TWO-STEP SIGN-IN",
-  "twofa.intro": "Add a second step to your sign-in. After your password, you type a 6-digit code from an app on your phone. Even if someone steals your password, they can't get in.",
-  "twofa.apps": "Works with Google Authenticator, Microsoft Authenticator, Authy or 1Password — any of them is fine.",
+  "twofa.intro":
+    "Add a second step to your sign-in. After your password, you type a 6-digit code from an app on your phone. Even if someone steals your password, they can't get in.",
+  "twofa.apps":
+    "Works with Google Authenticator, Microsoft Authenticator, Authy or 1Password — any of them is fine.",
   "twofa.password": "Your GeoCliks password",
   "twofa.start": "Turn on two-step sign-in",
   "twofa.scan": "1. Open your authenticator app and scan this square.",
@@ -846,12 +907,15 @@ export const en = {
   "twofa.code": "2. Type the 6-digit code the app shows",
   "twofa.confirm": "Confirm and turn on",
   "twofa.backupTitle": "Save these backup codes",
-  "twofa.backupBody": "Each code works once, and only these get you in if you lose your phone. Print them or keep them somewhere other than the phone. They are shown once.",
-  "twofa.on": "Two-step sign-in is on. You'll be asked for a code on the website and in the phone app.",
+  "twofa.backupBody":
+    "Each code works once, and only these get you in if you lose your phone. Print them or keep them somewhere other than the phone. They are shown once.",
+  "twofa.on":
+    "Two-step sign-in is on. You'll be asked for a code on the website and in the phone app.",
   "twofa.disable": "Turn off two-step sign-in",
   "twofa.error": "That didn't work. Check your password or the 6-digit code and try again.",
   "signin.twoFactorTitle": "Enter your 6-digit code",
-  "signin.twoFactorBody": "Open your authenticator app and type the code it shows for GeoCliks. It changes every 30 seconds.",
+  "signin.twoFactorBody":
+    "Open your authenticator app and type the code it shows for GeoCliks. It changes every 30 seconds.",
   "signin.twoFactorCode": "6-digit code",
   "signin.twoFactorVerify": "Verify and sign in",
   "signin.twoFactorBackup": "Lost your phone? Use a backup code",
@@ -862,10 +926,12 @@ export const en = {
   "profile.emailReset": "Email me a reset link",
   "profile.emailResetSent": "Reset link sent. Check your email — the link works for one hour.",
   "join.mismatchTitle": "This invite is for a different email",
-  "join.mismatchBody": "It was sent to {invited}, but you are signed in as {current}. Sign out and open the link again with the invited address, or ask for a fresh invite to {current}.",
+  "join.mismatchBody":
+    "It was sent to {invited}, but you are signed in as {current}. Sign out and open the link again with the invited address, or ask for a fresh invite to {current}.",
   "join.signOutUse": "Sign out and use {email}",
   "signin.inviteLocked": "This address comes from your invite and cannot be changed.",
-  "signin.existsSignIn": "You already have a GeoCliks account with this email. Enter your password below to sign in and join.",
+  "signin.existsSignIn":
+    "You already have a GeoCliks account with this email. Enter your password below to sign in and join.",
   "signin.joinEyebrow": "You've been invited",
   "signin.joinTitle": "Join the team",
   "signin.submitJoin": "Join the team",
@@ -875,12 +941,15 @@ export const en = {
   "signin.haveAccount": "Already have an account?",
   "signin.goSignIn": "Sign in",
   "signin.businessName": "Business name",
-  "signin.businessNameHelp": "This becomes your Teamspace name. You can change it later in your profile.",
+  "signin.businessNameHelp":
+    "This becomes your Teamspace name. You can change it later in your profile.",
   "profile.workspace": "Teamspace",
   "profile.businessName": "Business name",
-  "profile.workspaceHint": "Everyone in the workspace sees this name. Owners and admins can change it.",
+  "profile.workspaceHint":
+    "Everyone in the workspace sees this name. Owners and admins can change it.",
   "teamspace.nameOrgTitle": "Name your Teamspace",
-  "teamspace.nameOrgBody": "Your workspace still uses a default name. Add your business name so your crew and clients recognize it.",
+  "teamspace.nameOrgBody":
+    "Your workspace still uses a default name. Add your business name so your crew and clients recognize it.",
   "teamspace.nameOrgSave": "Save name",
   "teamspace.nameOrgDismiss": "Not now",
   "home.footer.terms": "Terms of service",
@@ -901,7 +970,8 @@ export const en = {
   "routes.subtitle": "Build a route, assign a driver, and prove every drop with a photo.",
   "routes.new": "New route",
   "routes.empty": "No routes yet",
-  "routes.emptyHint": "Create a route, paste your delivery addresses, and GeoCliks will put them in driving order.",
+  "routes.emptyHint":
+    "Create a route, paste your delivery addresses, and GeoCliks will put them in driving order.",
   "routes.emptyHintDriver": "Routes assigned to you will show up here.",
   "routes.progress": "{n} of {total} done",
   "routes.status.draft": "Draft",
@@ -914,6 +984,8 @@ export const en = {
   "routes.fName": "Route name",
   "routes.fDate": "Date",
   "routes.fStartTime": "Start time",
+  "routes.fDispatcher": "Dispatcher",
+  "routes.fDispatcherHint": "Filled in automatically — the person creating this run.",
   "routes.fStartAddress": "Start address",
   "routes.fStartHint": "Where the driver loads up. Leave blank to start at the first stop.",
   "routes.fServiceMinutes": "Minutes per stop",
@@ -931,7 +1003,8 @@ export const en = {
   "routes.optimize": "Optimize order",
   "routes.optimized": "{n} stops ordered, {km} km",
   "routes.noKey": "Address lookup is not set up yet.",
-  "routes.noKeyHint": "Address lookup is not set up yet, so stops stay unresolved until you drop their pins by hand.",
+  "routes.noKeyHint":
+    "Address lookup is not set up yet, so stops stay unresolved until you drop their pins by hand.",
   "routes.needsAttention": "{n} addresses need attention",
   "routes.pin.ok": "Located",
   "routes.pin.manual": "Manual pin",
@@ -943,14 +1016,17 @@ export const en = {
   "routes.fMode": "Route type",
   "routes.modePlanned": "Planned - the whole day is built up front",
   "routes.modeDispatch": "Dispatch - orders arrive through the day",
-  "routes.modePlannedHint": "Best for courier work: load every stop, order them once, hand the run to a driver.",
-  "routes.modeDispatchHint": "Best for restaurant work: the driver starts, and new orders slot into the stops he has not reached yet.",
+  "routes.modePlannedHint":
+    "Best for courier work: load every stop, order them once, hand the run to a driver.",
+  "routes.modeDispatchHint":
+    "Best for restaurant work: the driver starts, and new orders slot into the stops he has not reached yet.",
   "routes.badgeDispatch": "Dispatch",
   "routes.liveTitle": "Add order now",
   "routes.liveAddress": "Delivery address",
   "routes.liveRecipient": "Recipient name",
   "routes.liveAdd": "Add to run",
-  "routes.liveHint": "It slots into the stops the driver has not reached yet. Nothing already delivered moves.",
+  "routes.liveHint":
+    "It slots into the stops the driver has not reached yet. Nothing already delivered moves.",
   "routes.liveAdded": "Added as stop {n} of {total}",
   "routes.liveNotLocated": "Added at the end - that address could not be placed on the map.",
   "routes.mapEmpty": "No stops on the map yet - resolve the addresses first.",
@@ -958,7 +1034,8 @@ export const en = {
   "routes.mapUnlocated": "{n} stops not on the map yet",
   "routes.dragHint": "Drag a stop to reorder, or use the arrows.",
   "routes.addTitle": "Add stops",
-  "routes.addHint": "One per line. Paste straight from a spreadsheet - tabs, commas or semicolons, with or without a header row.",
+  "routes.addHint":
+    "One per line. Paste straight from a spreadsheet - tabs, commas or semicolons, with or without a header row.",
   "routes.addStops": "Add stops",
   "routes.added": "{n} stops added",
   "routes.previewTitle": "What will be added",
@@ -1006,7 +1083,8 @@ export const en = {
   "run.reason.other": "Other",
   "run.skip": "Skip this stop",
   "run.skipTitle": "Skip without a photo?",
-  "run.skipHint": "Only skip when there is nothing to deliver here. No photo is taken, and the office sees this stop as skipped.",
+  "run.skipHint":
+    "Only skip when there is nothing to deliver here. No photo is taken, and the office sees this stop as skipped.",
   "run.skipConfirm": "Yes, skip it",
   "run.skipped": "Skipped",
   "run.retry": "Retry",
@@ -1014,23 +1092,29 @@ export const en = {
   "track.title": "Delivery tracking",
   "track.loading": "Checking this delivery…",
   "track.notFoundTitle": "We couldn't find that delivery",
-  "track.notFoundBody": "This tracking link may have been mistyped or removed. Check the link in your email, or contact the business that sent it.",
+  "track.notFoundBody":
+    "This tracking link may have been mistyped or removed. Check the link in your email, or contact the business that sent it.",
   "track.chip": "Delivery status",
   "track.headPending": "Your delivery is on the way",
   "track.headNext": "You're next",
   "track.headNotStarted": "Your delivery is scheduled",
   "track.headDelivered": "Delivered",
   "track.headFailed": "We couldn't complete this delivery",
-  "track.subPending": "{org} is running today's route. This page updates on its own as the driver gets closer.",
-  "track.subNotStarted": "{org} has this stop on the run for {date}. You'll get an email the moment the driver sets off.",
+  "track.subPending":
+    "{org} is running today's route. This page updates on its own as the driver gets closer.",
+  "track.subNotStarted":
+    "{org} has this stop on the run for {date}. You'll get an email the moment the driver sets off.",
   "track.subDelivered": "{org} completed this delivery and captured the proof below.",
-  "track.subFailed": "The driver attempted this delivery but couldn't complete it. {org} will be in touch.",
+  "track.subFailed":
+    "The driver attempted this delivery but couldn't complete it. {org} will be in touch.",
   "track.youreNext": "Yours is the next stop",
   "track.stopsAway": "{n} stops ahead of yours",
-  "track.etaHint": "Traffic and access can change this, so treat it as a heads-up rather than an exact time.",
+  "track.etaHint":
+    "Traffic and access can change this, so treat it as a heads-up rather than an exact time.",
   "track.reasonLabel": "What happened",
   "track.proofTitle": "Proof of delivery",
-  "track.proofBody": "This photo was taken at the door and sealed with a tamper-evident hash the moment it was captured.",
+  "track.proofBody":
+    "This photo was taken at the door and sealed with a tamper-evident hash the moment it was captured.",
   "track.signature": "Signature",
   "track.addressLabel": "Delivery address",
   "track.forLabel": "For",
@@ -1042,12 +1126,14 @@ export const en = {
   "track.senderLabel": "Sent by",
   "track.sealed": "Time-verified and sealed",
   "track.verifyLink": "Verify this photo",
-  "track.privacy": "This page shows only your own delivery. No other stop on the route is visible here.",
+  "track.privacy":
+    "This page shows only your own delivery. No other stop on the route is visible here.",
   "track.mapTitle": "Where this delivery goes",
   "track.mapTitleDone": "Where this delivery was made",
   "track.mapEmpty": "This address isn't on the map yet.",
   "track.mapNoKey": "The map isn't set up yet, so this address can't be shown here.",
-  "track.mapNote": "The pin is the delivery address on file. Your driver's location is never shown here.",
+  "track.mapNote":
+    "The pin is the delivery address on file. Your driver's location is never shown here.",
   "track.mapNoteProof": "The green pin is where the delivery photo was taken.",
   "track.mapLegendAddress": "Delivery address",
   "track.mapLegendProof": "Photo location",
@@ -1057,6 +1143,26 @@ export const en = {
   "track.reason.closed": "Closed",
   "track.reason.inaccessible": "Couldn't get access",
   "track.reason.other": "Other",
+  "capture.savedLocal": "Saved on this phone — sign in to save it to your Teamspace",
+  "queue.signedOut": "Saved on this phone",
+  "queue.signedOutBody":
+    "These captures stay on this device. Create an account or sign in and they upload to your Teamspace automatically.",
+  "gate.title": "Create an account to continue",
+  "gate.body":
+    "The camera works without an account. Teamspace, projects, routes and messages need one.",
+  "gate.cancel": "Not now",
+  "nav.mine": "My captures",
+  "mine.title": "My captures",
+  "mine.body": "Photos and clips not filed under a project yet.",
+  "mine.photos": "Pictures",
+  "mine.videos": "Videos",
+  "mine.emptyBody":
+    "Captures you take without choosing a project land here, including everything shot before you signed in.",
+  "mine.assign": "Assign to project",
+  "mine.assignPick": "Choose a project",
+  "mine.download": "Download",
+  "mine.downloadOk": "Saved to your phone",
+  "mine.downloadFail": "Could not save this file",
 } as const;
 
 export type Catalog = Record<keyof typeof en, string>;

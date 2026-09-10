@@ -29,6 +29,35 @@ export default defineConfig(({ mode }) => {
         "@": path.resolve(__dirname, "./src/web"),
       },
     },
+    build: {
+      // This box has ~4 GB of RAM and the dev server holds a large share of it.
+      // The gzip-size report compresses every emitted chunk in memory purely to
+      // print a number, and a single 3 MB bundle has to be minified in one
+      // piece — together that pushed `vite build` over the limit and the kernel
+      // OOM-killed it mid-bundle, surfacing as a publish timeout. Dropping the
+      // report and splitting vendors into several smaller chunks lowers the
+      // peak footprint enough for a build to coexist with the dev server.
+      reportCompressedSize: false,
+      chunkSizeWarningLimit: 1500,
+      rollupOptions: {
+        output: {
+          manualChunks(id: string) {
+            if (!id.includes("node_modules")) return;
+            if (/[\\/]node_modules[\\/](react|react-dom|scheduler)[\\/]/.test(id))
+              return "vendor-react";
+            if (id.includes("react-icons") || id.includes("lucide-react"))
+              return "vendor-icons";
+            if (id.includes("@vis.gl") || id.includes("google-maps"))
+              return "vendor-maps";
+            if (id.includes("motion")) return "vendor-motion";
+            if (id.includes("zod")) return "vendor-zod";
+            if (id.includes("@tanstack") || id.includes("@orpc"))
+              return "vendor-data";
+            return "vendor";
+          },
+        },
+      },
+    },
     server: {
       port: ports.website,
       strictPort: true,

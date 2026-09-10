@@ -102,7 +102,7 @@ function StampedPhoto() {
         </div>
       </div>
       <figcaption className="flex items-center justify-between gap-2 border-t border-line px-3 py-2.5">
-        <span className="mono text-[10.5px] tracking-widest text-amber">TM-8QF2-40XR-91KD</span>
+        <span className="mono text-[10.5px] tracking-widest text-amber">GC-8QF2-40XR-91KD</span>
         <span className="mono text-[10px] text-fog">SHA-256 LOCKED</span>
       </figcaption>
     </figure>

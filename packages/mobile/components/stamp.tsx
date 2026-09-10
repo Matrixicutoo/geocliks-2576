@@ -1,4 +1,4 @@
-import { View, StyleSheet } from "react-native";
+import { View, StyleSheet, Image } from "react-native";
 import { FixedText as Text } from "@/components/app-text";
 import { Colors, Fonts } from "@/constants/theme";
 
@@ -11,6 +11,8 @@ export type StampData = {
   project: string | null;
   code?: string | null;
   company?: string | null;
+  /** Presigned link to the workspace logo. Null hides the slot, same as the web overlay. */
+  logoUrl?: string | null;
   verified?: boolean;
 };
 
@@ -45,40 +47,54 @@ export function Stamp({ data, compact = false }: { data: StampData; compact?: bo
 
   return (
     <View style={[styles.wrap, { borderColor: "rgba(255,176,33,0.5)" }]}>
-      <View style={styles.rowTop}>
-        <View style={[styles.tick, { backgroundColor: data.verified === false ? c.alert : c.verified }]} />
-        <Text style={[styles.time, { color: c.foreground, fontFamily: Fonts?.mono }]}>
-          {formatStamp(data.at)}
-        </Text>
-        <Text style={[styles.tz, { color: c.amber, fontFamily: Fonts?.mono }]}>{tz}</Text>
-      </View>
-
-      <Text style={[styles.mono, { color: c.foreground, fontFamily: Fonts?.mono }]}>
-        {formatCoords(data.lat, data.lng)}
-        {data.accuracyM != null ? `  ±${Math.round(data.accuracyM)}m` : ""}
-      </Text>
-
-      <Text
-        numberOfLines={compact ? 1 : 2}
-        style={[styles.address, { color: c.mutedForeground }]}
-      >
-        {data.address ?? "Resolving street address…"}
-      </Text>
-
-      <View style={styles.rowBottom}>
-        <Text numberOfLines={1} style={[styles.project, { color: c.amber }]}>
-          {data.project ?? "Unassigned"}
-        </Text>
-        {data.code ? (
-          <Text style={[styles.code, { color: c.mutedForeground, fontFamily: Fonts?.mono }]}>
-            {data.code}
-          </Text>
+      <View style={styles.body}>
+        {data.logoUrl ? (
+          <Image source={{ uri: data.logoUrl }} style={styles.logo} resizeMode="contain" />
         ) : null}
-      </View>
+        <View style={styles.lines}>
+          <View style={styles.rowTop}>
+            <View
+              style={[
+                styles.tick,
+                {
+                  backgroundColor: data.verified === false ? c.alert : c.verified,
+                },
+              ]}
+            />
+            <Text style={[styles.time, { color: c.foreground, fontFamily: Fonts?.mono }]}>
+              {formatStamp(data.at)}
+            </Text>
+            <Text style={[styles.tz, { color: c.amber, fontFamily: Fonts?.mono }]}>{tz}</Text>
+          </View>
 
-      {data.company ? (
-        <Text style={[styles.company, { color: c.mutedForeground }]}>{data.company}</Text>
-      ) : null}
+          <Text style={[styles.mono, { color: c.foreground, fontFamily: Fonts?.mono }]}>
+            {formatCoords(data.lat, data.lng)}
+            {data.accuracyM != null ? `  ±${Math.round(data.accuracyM)}m` : ""}
+          </Text>
+
+          <Text
+            numberOfLines={compact ? 1 : 2}
+            style={[styles.address, { color: c.mutedForeground }]}
+          >
+            {data.address ?? "Resolving street address…"}
+          </Text>
+
+          <View style={styles.rowBottom}>
+            <Text numberOfLines={1} style={[styles.project, { color: c.amber }]}>
+              {data.project ?? "Unassigned"}
+            </Text>
+            {data.code ? (
+              <Text style={[styles.code, { color: c.mutedForeground, fontFamily: Fonts?.mono }]}>
+                {data.code}
+              </Text>
+            ) : null}
+          </View>
+
+          {data.company ? (
+            <Text style={[styles.company, { color: c.mutedForeground }]}>{data.company}</Text>
+          ) : null}
+        </View>
+      </View>
     </View>
   );
 }
@@ -89,9 +105,16 @@ const styles = StyleSheet.create({
     backgroundColor: "rgba(11,14,19,0.78)",
     paddingVertical: 8,
     paddingHorizontal: 10,
-    gap: 3,
   },
-  rowTop: { flexDirection: "row", alignItems: "center", gap: 6, flexWrap: "wrap" },
+  body: { flexDirection: "row", alignItems: "center", gap: 10 },
+  lines: { flex: 1, gap: 3 },
+  logo: { width: 34, height: 34, flexShrink: 0 },
+  rowTop: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 6,
+    flexWrap: "wrap",
+  },
   tick: { width: 7, height: 7, borderRadius: 4 },
   time: { fontSize: 13, letterSpacing: 0.4, flexShrink: 1 },
   tz: { fontSize: 10, letterSpacing: 0.6 },
@@ -104,7 +127,12 @@ const styles = StyleSheet.create({
     gap: 8,
     marginTop: 2,
   },
-  project: { fontSize: 11, textTransform: "uppercase", letterSpacing: 1, flexShrink: 1 },
+  project: {
+    fontSize: 11,
+    textTransform: "uppercase",
+    letterSpacing: 1,
+    flexShrink: 1,
+  },
   code: { fontSize: 10, letterSpacing: 0.5 },
   company: { fontSize: 10, letterSpacing: 0.5 },
 });

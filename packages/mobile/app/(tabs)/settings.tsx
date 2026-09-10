@@ -1,10 +1,12 @@
 import { useCallback, useEffect, useRef, useState } from "react";
-import { ActivityIndicator, Pressable, ScrollView, StyleSheet, View } from "react-native";
+import { ActivityIndicator, Image, Pressable, ScrollView, StyleSheet, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Ionicons } from "@expo/vector-icons";
 import { useLocalSearchParams, useRouter } from "expo-router";
 import { useQueryClient } from "@tanstack/react-query";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import * as ImagePicker from "expo-image-picker";
+import { client } from "@/lib/api";
 import { Text, TextInput } from "@/components/app-text";
 import { useColors } from "@/hooks/use-colors";
 import { Fonts } from "@/constants/theme";
@@ -24,6 +26,7 @@ import {
   useUpdateOrg,
 } from "@/queries/orgs";
 import { SUPPORT_EMAIL } from "../../constants/support";
+import { canManageWatermarks } from "../../lib/roles";
 
 export default function Settings() {
   const colors = useColors();
@@ -50,8 +53,8 @@ export default function Settings() {
   }, []);
   useEffect(loadPushStatus, [loadPushStatus]);
   const isAdmin = org.data?.role === "owner" || org.data?.role === "admin";
-  // Field crews capture with the stamp; curating templates is manager and above.
-  const canManageTemplates = org.data?.role !== "field";
+  // Every role captures with the stamp; curating templates is the owner and admins only.
+  const canManageTemplates = canManageWatermarks(org.data?.role);
 
   // Renaming the teamspace to the business name. Owner and admin only, same as on the web.
   const updateOrg = useUpdateOrg();
@@ -62,6 +65,54 @@ export default function Settings() {
     if (workspaceName) setOrgName((prev) => (prev ? prev : workspaceName));
   }, [workspaceName]);
   const orgNameDirty = orgName.trim().length >= 2 && orgName.trim() !== workspaceName;
+
+  /**
+   * The business logo belongs to the workspace, not to one watermark template: it labels the
+   * workspace in the menu and is stamped by any template that has no logo of its own. Arrives
+   * as a ready-to-use link; the column itself keeps only the bare storage key.
+   */
+  const orgLogo = org.data?.org?.logoUrl ?? null;
+  const [logoBusy, setLogoBusy] = useState(false);
+  const [logoError, setLogoError] = useState<string | null>(null);
+  const pickLogo = async () => {
+    setLogoError(null);
+    // No pre-flight permission check: the picker raises the OS prompt itself and simply
+    // comes back cancelled if the phone says no, so there is nothing extra to explain.
+    const picked = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ["images"],
+      quality: 1,
+    });
+    const asset = picked.canceled ? null : picked.assets[0];
+    if (!asset) return;
+    setLogoBusy(true);
+    try {
+      const contentType = asset.mimeType ?? "image/png";
+      const presigned = await client.upload.presignLogo({
+        filename: asset.fileName ?? "logo.png",
+        contentType,
+      });
+      const blob = await (await fetch(asset.uri)).blob();
+      const put = await fetch(presigned.url, {
+        method: "PUT",
+        body: blob,
+        headers: { "Content-Type": contentType },
+      });
+      if (!put.ok) throw new Error(`Storage rejected the upload (${put.status})`);
+      await updateOrg.mutateAsync({ logoUrl: presigned.key });
+    } catch (err) {
+      setLogoError(err instanceof Error ? err.message : String(err));
+    } finally {
+      setLogoBusy(false);
+    }
+  };
+  const removeLogo = async () => {
+    setLogoError(null);
+    try {
+      await updateOrg.mutateAsync({ logoUrl: null });
+    } catch (err) {
+      setLogoError(err instanceof Error ? err.message : String(err));
+    }
+  };
   const saveOrgName = async () => {
     if (!orgNameDirty) return;
     await updateOrg.mutateAsync({ name: orgName.trim() });
@@ -115,10 +166,17 @@ export default function Settings() {
             <ActivityIndicator color={colors.amber} />
           ) : (
             <>
-              <Text style={[styles.label, { color: colors.mutedForeground, fontFamily: Fonts?.mono }]}>
+              <Text
+                style={[styles.label, { color: colors.mutedForeground, fontFamily: Fonts?.mono }]}
+              >
                 WORKSPACE
               </Text>
-              <Text style={[styles.value, { color: colors.foreground, fontFamily: Fonts?.displayMedium }]}>
+              <Text
+                style={[
+                  styles.value,
+                  { color: colors.foreground, fontFamily: Fonts?.displayMedium },
+                ]}
+              >
                 {org.data?.org.name}
               </Text>
               <Text style={[styles.meta, { color: colors.mutedForeground }]}>
@@ -128,7 +186,12 @@ export default function Settings() {
                 <Text style={[styles.plan, { color: colors.amber, fontFamily: Fonts?.mono }]}>
                   {org.data?.plan.name.toUpperCase()} PLAN
                 </Text>
-                <Text style={[styles.planUsage, { color: colors.mutedForeground, fontFamily: Fonts?.mono }]}>
+                <Text
+                  style={[
+                    styles.planUsage,
+                    { color: colors.mutedForeground, fontFamily: Fonts?.mono },
+                  ]}
+                >
                   {org.data?.usage.photos} PHOTOS · {org.data?.usage.projects} PROJECTS
                 </Text>
               </View>
@@ -143,9 +206,60 @@ export default function Settings() {
             >
               {lang.t("profile.workspace").toUpperCase()}
             </Text>
-            <View style={[styles.card, { borderColor: colors.border, backgroundColor: colors.card }]}>
+            <View
+              style={[styles.card, { borderColor: colors.border, backgroundColor: colors.card }]}
+            >
               <Text
                 style={[styles.label, { color: colors.mutedForeground, fontFamily: Fonts?.mono }]}
+              >
+                {lang.t("templates.logo").toUpperCase()}
+              </Text>
+              <View style={styles.logoRow}>
+                {orgLogo ? (
+                  <Image
+                    source={{ uri: orgLogo }}
+                    style={[styles.logoBox, { borderColor: colors.border }]}
+                    resizeMode="contain"
+                  />
+                ) : (
+                  <View style={[styles.logoBox, { borderColor: colors.border }]}>
+                    <Ionicons name="image-outline" size={20} color={colors.mutedForeground} />
+                  </View>
+                )}
+                <Pressable
+                  accessibilityLabel={lang.t("templates.upload")}
+                  onPress={() => void pickLogo()}
+                  disabled={logoBusy}
+                  style={[
+                    styles.logoButton,
+                    { borderColor: colors.amber, opacity: logoBusy ? 0.5 : 1 },
+                  ]}
+                >
+                  <Text style={[styles.logoButtonText, { color: colors.amber }]}>
+                    {logoBusy ? lang.t("common.loading") : lang.t("templates.upload")}
+                  </Text>
+                </Pressable>
+                {orgLogo ? (
+                  <Pressable
+                    accessibilityLabel={lang.t("common.delete")}
+                    onPress={() => void removeLogo()}
+                    style={[styles.logoButton, { borderColor: colors.border }]}
+                  >
+                    <Text style={[styles.logoButtonText, { color: colors.mutedForeground }]}>
+                      {lang.t("common.delete")}
+                    </Text>
+                  </Pressable>
+                ) : null}
+              </View>
+              {logoError ? (
+                <Text style={[styles.meta, { color: colors.destructive }]}>{logoError}</Text>
+              ) : null}
+              <Text
+                style={[
+                  styles.label,
+                  styles.labelSpaced,
+                  { color: colors.mutedForeground, fontFamily: Fonts?.mono },
+                ]}
               >
                 {lang.t("profile.businessName").toUpperCase()}
               </Text>
@@ -161,7 +275,9 @@ export default function Settings() {
                 {lang.t("profile.workspaceHint")}
               </Text>
               {orgSaved ? (
-                <Text style={[styles.savedNote, { color: colors.verified, fontFamily: Fonts?.mono }]}>
+                <Text
+                  style={[styles.savedNote, { color: colors.verified, fontFamily: Fonts?.mono }]}
+                >
                   {lang.t("profile.saved").toUpperCase()}
                 </Text>
               ) : null}
@@ -221,44 +337,52 @@ export default function Settings() {
               accuracyM: 4,
               address: "1250 René-Lévesque Blvd W, Montreal, QC",
               project: "Fiber Run — Sector 4",
-              code: "TM-4K7Q-88ZR-1MPD",
+              code: "GC-4K7Q-88ZR-1MPD",
               company: active?.companyLine ?? org.data?.org.name ?? null,
+              logoUrl: active?.showLogo ? (active.logoUrl ?? orgLogo ?? null) : null,
               verified: true,
             }}
           />
         </View>
 
         {canManageTemplates ? (
-        <View style={styles.templateList}>
-          {templates.data?.map((t) => {
-            const isActive = active?.id === t.id;
-            return (
-              <Pressable
-                key={t.id}
-                onPress={() => setDefault.mutate({ id: t.id })}
-                style={[
-                  styles.template,
-                  {
-                    borderColor: isActive ? colors.amber : colors.border,
-                    backgroundColor: colors.card,
-                  },
-                ]}
-              >
-                <Ionicons
-                  name={isActive ? "radio-button-on" : "radio-button-off"}
-                  size={16}
-                  color={isActive ? colors.amber : colors.mutedForeground}
-                />
-                <View style={{ flex: 1 }}>
-                  <Text style={[styles.templateName, { color: colors.foreground }]}>{t.name}</Text>
-                  <Text style={[styles.meta, { color: colors.mutedForeground, fontFamily: Fonts?.mono }]}>
-                    {t.layout.toUpperCase()} · {t.fields.length} FIELDS
-                  </Text>
-                </View>
-              </Pressable>
-            );
-          })}
-        </View>
+          <View style={styles.templateList}>
+            {templates.data?.map((t) => {
+              const isActive = active?.id === t.id;
+              return (
+                <Pressable
+                  key={t.id}
+                  onPress={() => setDefault.mutate({ id: t.id })}
+                  style={[
+                    styles.template,
+                    {
+                      borderColor: isActive ? colors.amber : colors.border,
+                      backgroundColor: colors.card,
+                    },
+                  ]}
+                >
+                  <Ionicons
+                    name={isActive ? "radio-button-on" : "radio-button-off"}
+                    size={16}
+                    color={isActive ? colors.amber : colors.mutedForeground}
+                  />
+                  <View style={{ flex: 1 }}>
+                    <Text style={[styles.templateName, { color: colors.foreground }]}>
+                      {t.name}
+                    </Text>
+                    <Text
+                      style={[
+                        styles.meta,
+                        { color: colors.mutedForeground, fontFamily: Fonts?.mono },
+                      ]}
+                    >
+                      {t.layout.toUpperCase()} · {t.fields.length} FIELDS
+                    </Text>
+                  </View>
+                </Pressable>
+              );
+            })}
+          </View>
         ) : (
           <Text style={[styles.meta, { color: colors.mutedForeground }]}>
             {lang.t("perm.templatesNote")}
@@ -270,7 +394,10 @@ export default function Settings() {
           accessibilityLabel={lang.t("appearance.title")}
           style={[
             styles.dropdownHead,
-            { borderColor: appearanceOpen ? colors.amber : colors.border, backgroundColor: colors.card },
+            {
+              borderColor: appearanceOpen ? colors.amber : colors.border,
+              backgroundColor: colors.card,
+            },
           ]}
         >
           <Text style={[styles.label, { color: colors.mutedForeground, fontFamily: Fonts?.mono }]}>
@@ -282,7 +409,9 @@ export default function Settings() {
               size={14}
               color={colors.amber}
             />
-            <Text style={[styles.dropdownValueText, { color: colors.amber, fontFamily: Fonts?.mono }]}>
+            <Text
+              style={[styles.dropdownValueText, { color: colors.amber, fontFamily: Fonts?.mono }]}
+            >
               {(override ?? "AUTO").toUpperCase()}
             </Text>
             <Ionicons
@@ -309,10 +438,7 @@ export default function Settings() {
                 <Pressable
                   key={s}
                   onPress={() => setTheme(s)}
-                  style={[
-                    styles.segmentItem,
-                    { borderColor: on ? colors.amber : colors.border },
-                  ]}
+                  style={[styles.segmentItem, { borderColor: on ? colors.amber : colors.border }]}
                 >
                   <Ionicons
                     name={s === "light" ? "sunny-outline" : "moon-outline"}
@@ -322,7 +448,10 @@ export default function Settings() {
                   <Text
                     style={[
                       styles.segmentText,
-                      { color: on ? colors.amber : colors.mutedForeground, fontFamily: Fonts?.mono },
+                      {
+                        color: on ? colors.amber : colors.mutedForeground,
+                        fontFamily: Fonts?.mono,
+                      },
                     ]}
                   >
                     {s.toUpperCase()}
@@ -406,7 +535,10 @@ export default function Settings() {
           accessibilityLabel={lang.t("language.title")}
           style={[
             styles.dropdownHead,
-            { borderColor: languageOpen ? colors.amber : colors.border, backgroundColor: colors.card },
+            {
+              borderColor: languageOpen ? colors.amber : colors.border,
+              backgroundColor: colors.card,
+            },
           ]}
         >
           <Text style={[styles.label, { color: colors.mutedForeground, fontFamily: Fonts?.mono }]}>
@@ -518,10 +650,10 @@ export default function Settings() {
         </Text>
         <View style={[styles.card, { borderColor: colors.border, backgroundColor: colors.card }]}>
           <Text style={[styles.body, { color: colors.mutedForeground }]}>
-            Every capture is hashed (SHA-256) on upload and signed together with its time, GPS fix and
-            photo code. The verified time comes from the server, not the phone, so changing device
-            settings cannot fake it. If the device clock is more than 5 minutes off, the photo is
-            flagged as device-timed instead of network-verified.
+            Every capture is hashed (SHA-256) on upload and signed together with its time, GPS fix
+            and photo code. The verified time comes from the server, not the phone, so changing
+            device settings cannot fake it. If the device clock is more than 5 minutes off, the
+            photo is flagged as device-timed instead of network-verified.
           </Text>
         </View>
 
@@ -558,6 +690,18 @@ const styles = StyleSheet.create({
   title: { fontSize: 15, letterSpacing: 3 },
   card: { borderWidth: 1, padding: 14, gap: 4, borderRadius: 12 },
   label: { fontSize: 9, letterSpacing: 1.5 },
+  labelSpaced: { marginTop: 14 },
+  logoRow: { flexDirection: "row", alignItems: "center", flexWrap: "wrap", gap: 10, marginTop: 8 },
+  logoBox: {
+    width: 48,
+    height: 48,
+    borderRadius: 10,
+    borderWidth: 1,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  logoButton: { borderWidth: 1, borderRadius: 8, paddingHorizontal: 12, paddingVertical: 9 },
+  logoButtonText: { fontSize: 13, fontWeight: "600" },
   value: { fontSize: 17 },
   meta: { fontSize: 11 },
   planRow: {
@@ -594,7 +738,14 @@ const styles = StyleSheet.create({
   dropdownValueText: { fontSize: 12.5 },
   previewBox: { borderWidth: 1, padding: 12, borderRadius: 12 },
   templateList: { gap: 8 },
-  template: { flexDirection: "row", alignItems: "center", gap: 10, borderWidth: 1, padding: 12, borderRadius: 8 },
+  template: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 10,
+    borderWidth: 1,
+    padding: 12,
+    borderRadius: 8,
+  },
   templateName: { fontSize: 13, fontWeight: "600" },
   body: { fontSize: 12, lineHeight: 19 },
   segment: { flexDirection: "row", gap: 8, marginTop: 8 },
@@ -613,7 +764,14 @@ const styles = StyleSheet.create({
   segmentText: { fontSize: 10, letterSpacing: 1.2 },
   signOut: { borderWidth: 1, padding: 14, alignItems: "center", marginTop: 18, borderRadius: 8 },
   signOutText: { fontSize: 13, fontWeight: "700" },
-  input: { borderWidth: 1, paddingHorizontal: 12, paddingVertical: 11, fontSize: 13, marginTop: 4, borderRadius: 8 },
+  input: {
+    borderWidth: 1,
+    paddingHorizontal: 12,
+    paddingVertical: 11,
+    fontSize: 13,
+    marginTop: 4,
+    borderRadius: 8,
+  },
   primary: { paddingVertical: 12, alignItems: "center", marginTop: 8, borderRadius: 8 },
   primaryText: { fontSize: 13, fontWeight: "700" },
   savedNote: { fontSize: 10, letterSpacing: 1.2, marginTop: 4 },

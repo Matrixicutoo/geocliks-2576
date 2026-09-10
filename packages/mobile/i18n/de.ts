@@ -20,6 +20,7 @@ export const de: Catalog = {
   "shell.stopImpersonating": "Identitätsübernahme beenden",
 
   "common.save": "Speichern",
+  "common.today": "Heute",
   "common.cancel": "Abbrechen",
   "common.close": "Schließen",
   "common.loading": "Wird geladen",
@@ -49,12 +50,12 @@ export const de: Catalog = {
   "language.thisDeviceMobile": "Dieses Gerät",
   "language.workspaceDefault": "Workspace-Standard",
   "language.followWorkspace": "Workspace folgen",
-  "language.note":
-    "Nachweis-Stempel behalten in jeder Sprache das ursprüngliche Aufnahmeformat.",
+  "language.note": "Nachweis-Stempel behalten in jeder Sprache das ursprüngliche Aufnahmeformat.",
 
   "signin.title": "Bei GeoCliks anmelden",
   "signin.subtitle": "Fälschungssichere Fotodokumentation für Außendienstteams.",
   "signin.google": "Mit Google fortfahren",
+  "signin.x": "Mit X fortfahren",
   "signin.tabSignIn": "Anmelden",
   "signin.tabSignUp": "Registrieren",
   "signin.name": "Name",
@@ -111,7 +112,8 @@ export const de: Catalog = {
   "capture.videoCap": "{plan} — Clips bis {cap}.",
   "capture.videoTrial": "{days} Tage in der kostenlosen Video-Testphase übrig.",
   "capture.burned": "Der Stempel wird beim Upload in die Videopixel eingebrannt.",
-  "capture.overlay": "Der Stempel ist signiert und wird auf diesem Server über der Wiedergabe angezeigt.",
+  "capture.overlay":
+    "Der Stempel ist signiert und wird auf diesem Server über der Wiedergabe angezeigt.",
 
   "settings.title": "Einstellungen",
   "settings.account": "Konto",
@@ -147,7 +149,8 @@ export const de: Catalog = {
   "teamspace.projectFilter": "Projektfilter",
   "teamspace.searchPlaceholder": "Code, Adresse, Notiz suchen",
   "teamspace.noMatch.title": "Keine Fotos passen zu diesen Filtern",
-  "teamspace.noMatch.body": "Nehmen Sie mit der GeoCliks-App auf oder setzen Sie die Filter zurück, um den ganzen Teamspace zu sehen.",
+  "teamspace.noMatch.body":
+    "Nehmen Sie mit der GeoCliks-App auf oder setzen Sie die Filter zurück, um den ganzen Teamspace zu sehen.",
   "teamspace.loadingField": "Felddaten werden geladen",
   "teamspace.newestFirst": "{n} Fotos · neueste zuerst",
   "teamspace.photosCount": "{n} Fotos",
@@ -160,7 +163,8 @@ export const de: Catalog = {
   "tag.departure": "Abfahrt",
   "queue.title": "Upload-Warteschlange",
   "queue.uploadAll": "Alle senden",
-  "queue.note": "Aufnahmen werden zuerst auf dem Gerät gespeichert — nichts geht im Graben, Keller oder Funkloch verloren. Der Upload startet, sobald das Signal zurück ist.",
+  "queue.note":
+    "Aufnahmen werden zuerst auf dem Gerät gespeichert — nichts geht im Graben, Keller oder Funkloch verloren. Der Upload startet, sobald das Signal zurück ist.",
   "queue.clear": "Warteschlange ist leer",
   "queue.clearBody": "Alle Aufnahmen dieses Geräts wurden hochgeladen und geprüft.",
   "queue.unassigned": "Nicht zugewiesen",
@@ -179,31 +183,39 @@ export const de: Catalog = {
   "home.hero.eyebrow": "Netzwerkverifizierte Fotobeweise",
   "home.hero.title1": "Der Beweis, dass Ihre Arbeit",
   "home.hero.title2": "erledigt ist.",
-  "home.hero.body": "GeoCliks versieht jedes Feldfoto mit einem netzwerkverifizierten Zeitstempel, GPS-Koordinaten und der Straßenadresse — und sperrt es dann mit einem einmaligen Fotocode, den niemand ändern kann. Die Teams fotografieren, das Büro bekommt den Abschlussbericht am selben Tag.",
+  "home.hero.body":
+    "GeoCliks versieht jedes Feldfoto mit einem netzwerkverifizierten Zeitstempel, GPS-Koordinaten und der Straßenadresse — und sperrt es dann mit einem einmaligen Fotocode, den niemand ändern kann. Die Teams fotografieren, das Büro bekommt den Abschlussbericht am selben Tag.",
   "home.hero.liveTeamspace": "Live-Teamspace ansehen",
   "home.hero.noSignal": "Funktioniert ohne Empfang",
   "home.hero.altRooftop": "Dokumentation eines Dachlüftungsgeräts",
   "home.hero.altRoof": "Dokumentation eines Dachschadens",
   "home.hero.altFiber": "Glasfaser-Spleißmuffe mit GeoCliks-Stempel",
+  "home.hero.altCollage": "Aussendienstteams dokumentieren ihre Arbeit mit GeoCliks",
   "home.evidence.label": "01 — Manipulationssicher",
   "home.evidence.h2": "Beweise, die einem Streitfall standhalten",
-  "home.evidence.body": "Ein Screenshot beweist nichts. GeoCliks-Fotos tragen ab dem Auslösen eine Verifizierungskette.",
+  "home.evidence.body":
+    "Ein Screenshot beweist nichts. GeoCliks-Fotos tragen ab dem Auslösen eine Verifizierungskette.",
   "home.evidence.r1.title": "Netzwerkverifizierte Zeit",
-  "home.evidence.r1.body": "GeoCliks nimmt die Zeit aus dem Netz, nicht vom Handy. Wer die Geräteuhr verstellt, dem meldet die App die Abweichung statt ihr zu glauben — das Foto wird als unverifiziert markiert, sichtbar für alle.",
+  "home.evidence.r1.body":
+    "GeoCliks nimmt die Zeit aus dem Netz, nicht vom Handy. Wer die Geräteuhr verstellt, dem meldet die App die Abweichung statt ihr zu glauben — das Foto wird als unverifiziert markiert, sichtbar für alle.",
   "home.evidence.r2.title": "GPS + Straßenadresse",
-  "home.evidence.r2.body": "Jede Aufnahme trägt Koordinaten, Genauigkeitsradius und die geokodierte Adresse — ins Bild gebrannt und als Metadaten gespeichert. Nachweis der Ankunft, der Arbeit und des Abgangs.",
+  "home.evidence.r2.body":
+    "Jede Aufnahme trägt Koordinaten, Genauigkeitsradius und die geokodierte Adresse — ins Bild gebrannt und als Metadaten gespeichert. Nachweis der Ankunft, der Arbeit und des Abgangs.",
   "home.evidence.r3.title": "Einmaliger Fotocode",
-  "home.evidence.r3.body": "Jedes Foto bekommt einen Code, der mit seinen Original-Metadaten verknüpft ist, plus einen SHA-256-Hash der Bilddaten und eine HMAC-Signatur. Prüfen Sie jedes Foto jederzeit erneut — ein geändertes Pixel bricht das Siegel.",
+  "home.evidence.r3.body":
+    "Jedes Foto bekommt einen Code, der mit seinen Original-Metadaten verknüpft ist, plus einen SHA-256-Hash der Bilddaten und eine HMAC-Signatur. Prüfen Sie jedes Foto jederzeit erneut — ein geändertes Pixel bricht das Siegel.",
   "home.team.label": "02 — Teamspace",
   "home.team.h2": "Die Fotos des ganzen Teams, an einem Ort, sofort",
-  "home.team.body": "Jedes Foto eines Technikers landet in einem gemeinsamen Arbeitsbereich, sortiert nach Projekt, Kunde und Standort. Schicken Sie einen Live-Freigabelink, und der Kunde sieht die Arbeit in Echtzeit — ohne App, ohne Login.",
+  "home.team.body":
+    "Jedes Foto eines Technikers landet in einem gemeinsamen Arbeitsbereich, sortiert nach Projekt, Kunde und Standort. Schicken Sie einen Live-Freigabelink, und der Kunde sieht die Arbeit in Echtzeit — ohne App, ohne Login.",
   "home.team.b1": "Rollenbasierte Rechte: Inhaber, Admin, Manager, Feld",
   "home.team.b2": "Gruppieren nach Projekt, Kunde, Standort oder Auftragsnummer",
   "home.team.b3": "Live-Freigabelinks, in jedem Browser sichtbar",
   "home.team.b4": "Fotos erscheinen Sekunden nach der Aufnahme",
   "home.reports.label": "03 — Ein Klick",
   "home.reports.h2": "Abschlussberichte ohne Papierkram am Abend",
-  "home.reports.body": "Projekt wählen, Format wählen. GeoCliks stellt die Bestandsdokumentation zusammen — jedes Foto mit Stempel, Code und Standort — und liefert eine Datei, die der Kunde akzeptiert.",
+  "home.reports.body":
+    "Projekt wählen, Format wählen. GeoCliks stellt die Bestandsdokumentation zusammen — jedes Foto mit Stempel, Code und Standort — und liefert eine Datei, die der Kunde akzeptiert.",
   "home.reports.f1": "Abschlusspaket mit Ihrem Branding",
   "home.reports.f2": "Fotoprotokoll mit Metadaten",
   "home.reports.f3": "Originale + CSV-Manifest",
@@ -213,13 +225,17 @@ export const de: Catalog = {
   "home.field.label": "04 — Für den Außeneinsatz gebaut",
   "home.field.h2": "Kein Empfang, kein Problem, keine Schulung",
   "home.field.i1.title": "Offline-Aufnahme",
-  "home.field.i1.body": "Fotografieren Sie im Keller oder im Graben. Die Fotos warten auf dem Gerät und laden sich hoch, sobald eine Verbindung besteht.",
+  "home.field.i1.body":
+    "Fotografieren Sie im Keller oder im Graben. Die Fotos warten auf dem Gerät und laden sich hoch, sobald eine Verbindung besteht.",
   "home.field.i2.title": "Aufnahme mit einem Tipp",
-  "home.field.i2.body": "Öffnen, auslösen, fertig. Neue verstehen es am ersten Tag ohne Einweisung.",
+  "home.field.i2.body":
+    "Öffnen, auslösen, fertig. Neue verstehen es am ersten Tag ohne Einweisung.",
   "home.field.i3.title": "Leichtgewichtig",
-  "home.field.i3.body": "Kleine Installation, geringer Akkuverbrauch, läuft auf den billigen Handys, die Teams tatsächlich dabeihaben.",
+  "home.field.i3.body":
+    "Kleine Installation, geringer Akkuverbrauch, läuft auf den billigen Handys, die Teams tatsächlich dabeihaben.",
   "home.field.i4.title": "Ihr Branding",
-  "home.field.i4.body": "Wasserzeichen-Vorlagen mit Ihrem Logo und Firmenzeile, für das ganze Team.",
+  "home.field.i4.body":
+    "Wasserzeichen-Vorlagen mit Ihrem Logo und Firmenzeile, für das ganze Team.",
   "home.field.industries": "Branchen auf GeoCliks",
   "industry.construction": "Bau",
   "industry.fiber": "Glasfaser",
@@ -236,7 +252,9 @@ export const de: Catalog = {
   "home.pricing.popular": "Beliebteste Wahl",
   "home.pricing.talk": "Sprechen Sie mit uns",
   "home.pricing.choose": "Wählen",
-  "home.footer.desc": "Manipulationssichere Fotodokumentation für Außenteams. Netzwerkverifizierte Zeitstempel, GPS und Straßenadresse auf jedem Foto, professionelle Berichte mit einem Klick.",
+  "home.pricing.freeTrial": "Kostenlos testen",
+  "home.footer.desc":
+    "Manipulationssichere Fotodokumentation für Außenteams. Netzwerkverifizierte Zeitstempel, GPS und Straßenadresse auf jedem Foto, professionelle Berichte mit einem Klick.",
   "home.footer.product": "Produkt",
   "home.footer.company": "Unternehmen",
   "home.footer.evidence": "Manipulationssichere Beweise",
@@ -244,7 +262,8 @@ export const de: Catalog = {
   "home.footer.privacy": "Datenschutz & Richtlinien",
   "home.footer.sealed": "© {year} GeoCliks · Feldbeweise, versiegelt",
   "home.footer.trusted": "Vertraut in über 100 Ländern",
-  "projects.subtitle": "Aufträge, Standorte und Arbeitsaufträge, unter denen Fotos gruppiert werden",
+  "projects.subtitle":
+    "Aufträge, Standorte und Arbeitsaufträge, unter denen Fotos gruppiert werden",
   "projects.new": "Neues Projekt",
   "projects.fName": "Projektname",
   "projects.fCode": "Auftragsnummer",
@@ -255,7 +274,8 @@ export const de: Catalog = {
   "projects.fNotes": "Leistungsumfang",
   "projects.create": "Projekt erstellen",
   "projects.empty.title": "Noch keine Projekte",
-  "projects.empty.hint": "Erstellen Sie ein Projekt, damit Teams jedes Foto dem richtigen Auftrag zuordnen.",
+  "projects.empty.hint":
+    "Erstellen Sie ein Projekt, damit Teams jedes Foto dem richtigen Auftrag zuordnen.",
   "projects.photosN": "{n} Fotos",
   "projects.last": "letzte {stamp}",
   "projects.status.active": "aktiv",
@@ -263,10 +283,12 @@ export const de: Catalog = {
   "projects.status.complete": "abgeschlossen",
   "projects.status.archived": "archiviert",
   "map.title": "Standortkarte",
-  "map.subtitle": "Jede geotaggte Aufnahme auf einer Live-Google-Karte, mit dem Tagesweg jedes Teams",
+  "map.subtitle":
+    "Jede geotaggte Aufnahme auf einer Live-Google-Karte, mit dem Tagesweg jedes Teams",
   "map.route": "Route",
   "map.empty.title": "Noch keine geotaggten Fotos",
-  "map.empty.hint": "Fotos, die mit aktivierter Ortung aufgenommen wurden, erscheinen hier als Pins.",
+  "map.empty.hint":
+    "Fotos, die mit aktivierter Ortung aufgenommen wurden, erscheinen hier als Pins.",
   "map.coordLog": "Koordinatenprotokoll",
   "project.fallbackTitle": "Projekt",
   "project.loading": "Projekt wird geladen",
@@ -275,7 +297,8 @@ export const de: Catalog = {
   "project.contributors": "Mitwirkende",
   "project.evidenceCount": "Beweise — {n} Fotos",
   "project.empty.title": "Noch keine Fotos in diesem Projekt",
-  "project.empty.hint": "Weisen Sie ein Teammitglied zu, dann sieht es das Projekt in der mobilen App.",
+  "project.empty.hint":
+    "Weisen Sie ein Teammitglied zu, dann sieht es das Projekt in der mobilen App.",
   "project.site": "Standort",
   "project.noAddress": "Keine Adresse",
   "project.noCoords": "Keine Koordinaten",
@@ -294,14 +317,16 @@ export const de: Catalog = {
   "compare.savePair": "Paar speichern",
   "compare.noPhotos": "Hier noch keine Fotos.",
   "compare.empty.title": "Noch keine Vergleiche",
-  "compare.empty.hint": "Kombinieren Sie ein Vorher- mit einem Nachher-Foto und zeigen Sie unbestreitbaren Fortschritt.",
+  "compare.empty.hint":
+    "Kombinieren Sie ein Vorher- mit einem Nachher-Foto und zeigen Sie unbestreitbaren Fortschritt.",
   "compare.createFirst": "Erstes Paar erstellen",
   "compare.noProject": "Kein Projekt",
   "compare.created": "erstellt {stamp}",
   "compare.remove": "Entfernen",
   "compare.photoRemoved": "Foto entfernt",
   "share.title": "Freigabelinks",
-  "share.subtitle": "Live-Ansichten, die Ihr Kunde im Browser öffnet — keine App, kein Login, immer aktuell.",
+  "share.subtitle":
+    "Live-Ansichten, die Ihr Kunde im Browser öffnet — keine App, kein Login, immer aktuell.",
   "share.newLink": "Neuer Live-Link",
   "share.label": "Bezeichnung",
   "share.scope": "Umfang",
@@ -316,7 +341,8 @@ export const de: Catalog = {
   "share.off": "Aus",
   "share.createLink": "Link erstellen",
   "share.empty.title": "Noch keine Freigabelinks",
-  "share.empty.hint": "Erstellen Sie einen Link und senden Sie ihn an Kunden, Prüfer oder Generalunternehmer. Sie sehen verifizierte Fotos, sobald Ihr Team sie hochlädt.",
+  "share.empty.hint":
+    "Erstellen Sie einen Link und senden Sie ihn an Kunden, Prüfer oder Generalunternehmer. Sie sehen verifizierte Fotos, sobald Ihr Team sie hochlädt.",
   "share.downloadsOn": "Downloads aktiv",
   "share.viewOnly": "nur Ansicht",
   "share.revoked": "widerrufen",
@@ -338,7 +364,8 @@ export const de: Catalog = {
   "reports.building": "Paket wird erstellt…",
   "reports.generate": "Bericht erstellen",
   "reports.empty.title": "Noch keine Berichte erstellt",
-  "reports.empty.hint": "Wählen Sie links Projekt und Format — das Paket wird serverseitig erstellt und hier gespeichert.",
+  "reports.empty.hint":
+    "Wählen Sie links Projekt und Format — das Paket wird serverseitig erstellt und hier gespeichert.",
   "reports.generated": "Erstellte Pakete",
   "reports.saveFolder": "In Ordner speichern",
   "reports.hint.pdf": "Abschlusspaket — gestempelte Fotos, eine Seite pro Satz.",
@@ -352,7 +379,8 @@ export const de: Catalog = {
   "templates.title": "Wasserzeichen-Vorlagen",
   "templates.subtitle": "Der Stempel, der in jedes Foto Ihres Teams eingebrannt wird.",
   "templates.livePreview": "Live-Vorschau",
-  "templates.sampleNote": "Die angezeigten Werte sind ein Beispiel. Bei der Aufnahme kommt die Zeit von der Serveruhr, die Koordinaten vom GPS des Geräts und die Adresse aus der Rückwärts-Geokodierung.",
+  "templates.sampleNote":
+    "Die angezeigten Werte sind ein Beispiel. Bei der Aufnahme kommt die Zeit von der Serveruhr, die Koordinaten vom GPS des Geräts und die Adresse aus der Rückwärts-Geokodierung.",
   "templates.saved": "Gespeicherte Vorlagen",
   "templates.defaultBadge": "Standard",
   "templates.preview": "Vorschau",
@@ -370,7 +398,9 @@ export const de: Catalog = {
   "templates.replace": "Ersetzen",
   "templates.upload": "Logo hochladen",
   "templates.save": "Vorlage speichern",
-  "templates.hint": "Die Standardvorlage nutzt die mobile Kamera, sobald ein Techniker die App öffnet.",
+  "templates.hint":
+    "Die Standardvorlage nutzt die mobile Kamera, sobald ein Techniker die App öffnet.",
+  "templates.gone": "Diese Vorlage existiert nicht mehr. Die Liste wurde aktualisiert.",
   "templates.accentColor": "Akzentfarbe {color}",
   "templates.l.classic": "Klassisch",
   "templates.l.compact": "Kompakt",
@@ -396,9 +426,11 @@ export const de: Catalog = {
   "shareView.views": "{n} Aufrufe",
   "shareView.verified": "Netzwerk-verifiziert",
   "shareView.gone.title": "Dieser Link ist nicht verfügbar",
-  "shareView.gone.hint": "Er wurde möglicherweise widerrufen oder ist abgelaufen. Bitten Sie den Absender um einen neuen Link.",
+  "shareView.gone.hint":
+    "Er wurde möglicherweise widerrufen oder ist abgelaufen. Bitten Sie den Absender um einen neuen Link.",
   "shareView.heading": "Feldnachweise — {n} Fotos",
-  "shareView.note": "Jedes Foto trägt einen serverseitig verifizierten Zeitstempel, GPS-Position und einen eindeutigen Foto-Code.",
+  "shareView.note":
+    "Jedes Foto trägt einen serverseitig verifizierten Zeitstempel, GPS-Position und einen eindeutigen Foto-Code.",
   "shareView.expires": "Der Link läuft am {when} ab.",
   "shareView.downloads": "Downloads aktiviert",
   "shareView.empty": "In diese Ansicht wurden noch keine Fotos hochgeladen.",
@@ -411,6 +443,7 @@ export const de: Catalog = {
   "shareView.documented": "Dokumentiert mit GeoCliks",
   "shareView.refreshing": "Aktualisieren",
   "photo.addressUnavailable": "Adresse nicht verfügbar",
+  "photo.directions": "Route anzeigen",
   "photo.clip": "Verifizierter Clip {code}",
   "photo.deviceTime": "Gerätezeit",
   "photo.networkTime": "Netzwerkzeit",
@@ -423,7 +456,8 @@ export const de: Catalog = {
   "photo.captureLocation": "Aufnahmeort",
   "photo.noGps": "Für diese Aufnahme wurde keine GPS-Position erfasst",
   "photo.sealIntact": "Siegel intakt — die Metadaten entsprechen der Originalsignatur.",
-  "photo.sealBroken": "Siegel gebrochen — dieses Foto entspricht nicht mehr seinen Originalmetadaten.",
+  "photo.sealBroken":
+    "Siegel gebrochen — dieses Foto entspricht nicht mehr seinen Originalmetadaten.",
   "event.captured": "Auf dem Gerät aufgenommen",
   "event.verified": "Server-Verifizierung",
   "event.reverified": "Erneut verifiziert",
@@ -436,15 +470,19 @@ export const de: Catalog = {
   "map.fixes": "{n} Positionen",
   "map.filterProject": "Nach Projekt filtern",
   "signin.mobileHeadline": "Beweise, die halten.",
-  "signin.mobileSub": "Netzwerkgeprüfte Zeitstempel, GPS-Koordinaten und ein eindeutiger Code auf jedem Feldfoto.",
+  "signin.mobileSub":
+    "Netzwerkgeprüfte Zeitstempel, GPS-Koordinaten und ein eindeutiger Code auf jedem Feldfoto.",
   "signin.switchNew": "Neues Team? Konto erstellen",
   "signin.switchHave": "Schon ein Konto? Anmelden",
   "capture.locationOff": "Standortberechtigung aus",
   "capture.camPermission": "Kamerazugriff nötig, um Beweise aufzunehmen",
   "capture.micPermission": "Mikrofonzugriff nötig, um Videobeweise aufzunehmen",
-  "capture.hintRecording": "Die Aufnahme läuft in der installierten App. Der Aufnahmeknopf stellt einen Beispielclip in die Warteschlange, damit Prüfung und Sync getestet werden können.",
-  "capture.hintCamera": "Die Live-Kamera läuft in der installierten App. Der Auslöser nimmt ein Beispielbild auf, damit der komplette Prüf- und Sync-Ablauf getestet werden kann.",
-  "capture.sampleClip": "Aufnahme läuft in der installierten App — stattdessen wird ein Beispielclip eingereiht",
+  "capture.hintRecording":
+    "Die Aufnahme läuft in der installierten App. Der Aufnahmeknopf stellt einen Beispielclip in die Warteschlange, damit Prüfung und Sync getestet werden können.",
+  "capture.hintCamera":
+    "Die Live-Kamera läuft in der installierten App. Der Auslöser nimmt ein Beispielbild auf, damit der komplette Prüf- und Sync-Ablauf getestet werden kann.",
+  "capture.sampleClip":
+    "Aufnahme läuft in der installierten App — stattdessen wird ein Beispielclip eingereiht",
   "capture.failed": "Aufnahme fehlgeschlagen",
   "capture.recordFailed": "Aufnahme fehlgeschlagen",
   "capture.syncedOk": "Geprüft und mit dem Teamspace synchronisiert",
@@ -463,7 +501,8 @@ export const de: Catalog = {
   "capture.clockIn": "Ankunft erfassen",
   "capture.clockOut": "Abfahrt erfassen",
   "capture.enableCamera": "Kamera aktivieren",
-  "capture.hintSeal": "Der Zeitstempel wird beim Upload gegen das Netzwerk geprüft — eine geänderte Geräteuhr kann ihn nicht fälschen. Fotos und Clips tragen dasselbe Siegel.",
+  "capture.hintSeal":
+    "Der Zeitstempel wird in dem Moment gegen das Netzwerk geprüft, in dem Sie auslösen – eine geänderte Geräteuhr kann ihn nicht fälschen. Fotos und Clips tragen dasselbe Siegel.",
   "admin.console": "Betreiber-Konsole",
   "admin.backToWorkspace": "Zurück zum Workspace",
   "admin.nav.overview": "Übersicht",
@@ -512,7 +551,8 @@ export const de: Catalog = {
   "admin.us.confirmDelete": "{email} und alle zugehörigen Daten löschen?",
   "admin.us.suspendReason": "Von Plattform-Team gesperrt",
   "admin.us.noMatch": "Keine Konten passen zu „{q}“.",
-  "admin.us.footnote": "Nur Superadmins können Rollen ändern oder Konten löschen. Jede Aktion wird im Audit-Log erfasst.",
+  "admin.us.footnote":
+    "Nur Superadmins können Rollen ändern oder Konten löschen. Jede Aktion wird im Audit-Log erfasst.",
   "admin.ws.subtitle": "Plan, Lizenzen und Nutzung jedes Team-Kontos.",
   "admin.ws.searchLabel": "Workspaces suchen",
   "admin.ws.searchPlaceholder": "Workspace suchen",
@@ -527,7 +567,8 @@ export const de: Catalog = {
   "admin.ws.apply": "Anwenden",
   "admin.ws.planFailed": "Plan konnte nicht geändert werden",
   "admin.ws.noMatch": "Keine Workspaces passen zu „{q}“.",
-  "admin.pl.subtitle": "Preise, Limits und Sichtbarkeit jedes Plans — live in App und Marketingseite.",
+  "admin.pl.subtitle":
+    "Preise, Limits und Sichtbarkeit jedes Plans — live in App und Marketingseite.",
   "admin.pl.newPlan": "Neuer Plan",
   "admin.pl.draft": "Entwurf",
   "admin.pl.hidden": "versteckt",
@@ -565,9 +606,12 @@ export const de: Catalog = {
   "admin.pl.capBranding": "Branding",
   "admin.pl.capRoles": "Rollen",
   "admin.pl.confirmDelete": "Den Plan {name} löschen?",
-  "admin.pl.footnote": "Versteckte Pläne verschwinden aus der Preistabelle, funktionieren aber weiter für Workspaces, die sie nutzen.",
-  "admin.pl.i18nNote": "Plan-Texte werden in alle 11 Sprachen übersetzt geliefert. Wer hier Name, Slogan oder Feature ändert, ersetzt die Übersetzung in allen Sprachen durch den englischen Text.",
-  "admin.pl.processorNote": "Änderungen an Preisen und Limits wirken sofort auf Anzeige und Durchsetzung in der App. Der tatsächlich berechnete Betrag liegt beim Zahlungsdienstleister (Autumn/Stripe) und muss nach einer Änderung hier mit der Autumn-CLI übertragen werden.",
+  "admin.pl.footnote":
+    "Versteckte Pläne verschwinden aus der Preistabelle, funktionieren aber weiter für Workspaces, die sie nutzen.",
+  "admin.pl.i18nNote":
+    "Plan-Texte werden in alle 11 Sprachen übersetzt geliefert. Wer hier Name, Slogan oder Feature ändert, ersetzt die Übersetzung in allen Sprachen durch den englischen Text.",
+  "admin.pl.processorNote":
+    "Änderungen an Preisen und Limits wirken sofort auf Anzeige und Durchsetzung in der App. Der tatsächlich berechnete Betrag liegt beim Zahlungsdienstleister (Autumn/Stripe) und muss nach einer Änderung hier mit der Autumn-CLI übertragen werden.",
   "common.confirm": "Bestätigen",
   "photo.deleteConfirm": "Endgültig löschen?",
   "photo.deleteHint": "Die Datei und ihr Nachweisverlauf werden endgültig gelöscht.",
@@ -607,7 +651,8 @@ export const de: Catalog = {
   "profile.openBilling": "Abrechnung im Web-Dashboard verwalten",
   "profile.danger": "Gefahrenzone",
   "profile.deleteAccount": "Konto löschen",
-  "profile.deleteWarning": "Damit werden Ihr Konto, Ihr Arbeitsbereich und alle Fotos endgültig gelöscht. Nicht widerrufbar.",
+  "profile.deleteWarning":
+    "Damit werden Ihr Konto, Ihr Arbeitsbereich und alle Fotos endgültig gelöscht. Nicht widerrufbar.",
   "profile.deleteConfirm": "Geben Sie DELETE ein, um zu bestätigen",
   "profile.deleting": "Wird gelöscht…",
   "profile.account": "Konto",
@@ -621,16 +666,19 @@ export const de: Catalog = {
   "plans.checkoutOpening": "Sichere Kasse wird geöffnet…",
   "plans.checkoutDone": "Tarif aktualisiert. Ihre neuen Limits sind aktiv.",
   "plans.applied": "Tarif geändert.",
-  "plans.unavailable": "Die Kasse ist gerade nicht verfügbar. Schließen Sie im Web-Dashboard ab oder kontaktieren Sie den Support.",
+  "plans.unavailable":
+    "Die Kasse ist gerade nicht verfügbar. Schließen Sie im Web-Dashboard ab oder kontaktieren Sie den Support.",
   "plans.ownerOnly": "Nur der Workspace-Inhaber kann den Tarif ändern.",
   "plans.stripeNote": "Sichere Zahlung über Stripe. Jederzeit kündbar.",
-  "plans.appleNote": "Abrechnung über deine Apple-ID. Verwaltung und Kündigung in den App-Store-Einstellungen.",
+  "plans.appleNote":
+    "Abrechnung über deine Apple-ID. Verwaltung und Kündigung in den App-Store-Einstellungen.",
   "plans.restore": "Käufe wiederherstellen",
   "plans.restored": "Kauf wiederhergestellt.",
   "plans.nothingToRestore": "Kein wiederherstellbarer Kauf gefunden.",
   "plans.iapUnavailable": "Bezahlte Pakete werden in der App-Store-Version von GeoCliks gekauft.",
   "plans.storeError": "Der Store hat keinen gültigen Kaufbeleg zurückgegeben.",
-  "plans.checkoutPending": "Noch keine Änderung. Wenn die Zahlung abgeschlossen ist, erscheint sie in Kürze hier.",
+  "plans.checkoutPending":
+    "Noch keine Änderung. Wenn die Zahlung abgeschlossen ist, erscheint sie in Kürze hier.",
   "home.nav.registerFree": "Kostenlos registrieren",
   "teamspace.loadSample": "Beispieldaten laden",
   "home.nav.home": "Start",
@@ -646,7 +694,8 @@ export const de: Catalog = {
   "home.nav.contactSales": "Vertrieb kontaktieren",
   "join.checking": "Einladung wird geprüft…",
   "join.closedTitle": "Diese Einladung ist nicht mehr gültig",
-  "join.closedBody": "Sie wurde bereits verwendet, widerrufen, oder der Code ist falsch. Bitten Sie die einladende Person, über den Team-Bildschirm eine neue zu senden.",
+  "join.closedBody":
+    "Sie wurde bereits verwendet, widerrufen, oder der Code ist falsch. Bitten Sie die einladende Person, über den Team-Bildschirm eine neue zu senden.",
   "join.goSignIn": "Zur Anmeldung",
   "join.eyebrow": "Sie wurden eingeladen",
   "join.headline": "{inviter} hat Sie zu {workspace} eingeladen",
@@ -656,7 +705,8 @@ export const de: Catalog = {
   "join.accept": "{workspace} beitreten",
   "join.signedInAs": "Angemeldet als {email}.",
   "join.signInToAccept": "Zum Annehmen anmelden",
-  "join.createHint": "Erstellen Sie Ihr Konto mit {email} oder melden Sie sich mit Google an — Sie landen wieder hier.",
+  "join.createHint":
+    "Erstellen Sie Ihr Konto mit {email} oder melden Sie sich mit Google an — Sie landen wieder hier.",
   "join.footer": "Jedes Foto trägt eine verifizierte Uhrzeit, GPS-Koordinaten und eine Adresse.",
   "reset.sendError": "Die Zurücksetzungs-E-Mail konnte nicht gesendet werden.",
   "reset.tokenError": "Dieser Link ist abgelaufen oder wurde bereits verwendet.",
@@ -668,7 +718,8 @@ export const de: Catalog = {
   "reset.newPasswordHint": "Mindestens 8 Zeichen",
   "reset.save": "Passwort speichern",
   "reset.sentTitle": "Prüfen Sie Ihr Postfach",
-  "reset.sentBody": "Falls ein Konto für {email} existiert, ist ein Link unterwegs. Er funktioniert einmal und läuft in einer Stunde ab.",
+  "reset.sentBody":
+    "Falls ein Konto für {email} existiert, ist ein Link unterwegs. Er funktioniert einmal und läuft in einer Stunde ab.",
   "reset.sentTag": "gesendet",
   "reset.eyebrow": "Passwort vergessen",
   "reset.title": "Passwort zurücksetzen",
@@ -691,7 +742,8 @@ export const de: Catalog = {
   "getapp.title": "GeoCliks-App holen — Der Beweis, dass Ihre Arbeit erledigt wurde",
   "getapp.pill": "Netzwerkverifizierter Fotonachweis",
   "getapp.headline": "Der Beweis, dass Ihre Arbeit erledigt wurde.",
-  "getapp.subhead": "Zeit, GPS und Straßenadresse werden auf das Foto gestempelt — und mit einem einmaligen Code gesperrt, den niemand ändern kann. Funktioniert ohne Signal.",
+  "getapp.subhead":
+    "Zeit, GPS und Straßenadresse werden auf das Foto gestempelt — und mit einem einmaligen Code gesperrt, den niemand ändern kann. Funktioniert ohne Signal.",
   "getapp.ctaPrimary": "App holen",
   "getapp.ctaSecondary": "Kamera im Browser öffnen",
   "getapp.underButtons": "Aufnehmen ist kostenlos. Erstes gesperrtes Foto in unter einer Minute.",
@@ -704,9 +756,11 @@ export const de: Catalog = {
   "getapp.step2Title": "Die Arbeit fotografieren",
   "getapp.step2Body": "Ein Tipp. Nutzen Sie die Job-Kamera — nicht die Handy-Galerie.",
   "getapp.step3Title": "Das Foto wird gesperrt",
-  "getapp.step3Body": "Netzwerkverifizierte Zeit, GPS, Straßenadresse und ein einmaliger Fotocode werden gestempelt. SHA-256-Sperre. Danach ändert es niemand.",
+  "getapp.step3Body":
+    "Netzwerkverifizierte Zeit, GPS, Straßenadresse und ein einmaliger Fotocode werden gestempelt. SHA-256-Sperre. Danach ändert es niemand.",
   "getapp.step4Title": "Das Büro erhält die Abschlussdoku",
-  "getapp.step4Body": "Am selben Tag, sobald Signal da ist. Der Kunde scannt den Code und sieht die gesperrte Datei.",
+  "getapp.step4Body":
+    "Am selben Tag, sobald Signal da ist. Der Kunde scannt den Code und sieht die gesperrte Datei.",
   "getapp.whyTitle": "Warum nicht die normale Kamera",
   "getapp.rollTitle": "Handy-Galerie",
   "getapp.roll1": "Datum und Standort können entfernt oder geändert werden",
@@ -725,11 +779,13 @@ export const de: Catalog = {
   "getapp.office2": "PDF, Excel, ZIP, KMZ nach Upgrade",
   "getapp.office3": "Teilen Sie einen Link, den der Kunde nicht bestreiten kann",
   "getapp.storeTitle": "Aufs Fahrzeug holen",
-  "getapp.storeBody": "Der Gratis-Plan stempelt verifizierte Zeit, GPS, Adresse und einen einmaligen Code. 5 $/Monat für unbegrenzte Exporte und Vorher/Nachher-Layouts.",
+  "getapp.storeBody":
+    "Der Gratis-Plan stempelt verifizierte Zeit, GPS, Adresse und einen einmaligen Code. 5 $/Monat für unbegrenzte Exporte und Vorher/Nachher-Layouts.",
   "getapp.storeIos": "Im App Store laden",
   "getapp.storeAndroid": "Bei Google Play",
   "getapp.comingSoon": "Store-Einträge folgen bald — nutzen Sie bis dahin die Browser-Kamera",
-  "getapp.webCaveat": "Die Browser-Kamera ist für angemeldete Teams. Für Offline-Sperre die App nutzen.",
+  "getapp.webCaveat":
+    "Die Browser-Kamera ist für angemeldete Teams. Für Offline-Sperre die App nutzen.",
   "getapp.terms": "Nutzungsbedingungen",
   "getapp.footerCopy": "© 2026 GeoCliks Field Evidence",
   "verify.navLink": "Fotocode prüfen",
@@ -738,14 +794,17 @@ export const de: Catalog = {
   "verify.getFieldApp": "Feld-App holen",
   "verify.loading": "Fotocode wird geprüft…",
   "verify.notFoundTitle": "Kein gesperrtes Foto für diesen Code",
-  "verify.notFoundBody": "Prüfen Sie den Code und versuchen Sie es erneut. Fotocodes sehen aus wie TM-XXXX-XXXX-XXXX und stehen auf dem Foto und im Abschlussbericht.",
+  "verify.notFoundBody":
+    "Prüfen Sie den Code und versuchen Sie es erneut. Fotocodes sehen aus wie GC-XXXX-XXXX-XXXX und stehen auf dem Foto und im Abschlussbericht.",
   "verify.chipLocked": "Datensatz gesperrt",
   "verify.chipOriginal": "Netzwerkverifiziertes Original",
   "verify.headline": "Foto verifiziert",
   "verify.headlineUnverified": "Datensatz gefunden — Zeit nicht netzwerkverifiziert",
-  "verify.subhead": "Diese Seite zeigt die gesperrte Datei. Bild, Stempel und Hash unten sind die Originalaufnahme — keine Galerie-Kopie.",
+  "verify.subhead":
+    "Diese Seite zeigt die gesperrte Datei. Bild, Stempel und Hash unten sind die Originalaufnahme — keine Galerie-Kopie.",
   "verify.notPublishedTitle": "Bild nicht veröffentlicht",
-  "verify.notPublishedBody": "Der Datensatz ist gesperrt und verifiziert, aber der Eigentümer-Workspace hat die Datei nicht veröffentlicht. Fragen Sie nach einem Freigabelink, um das Bild zu sehen.",
+  "verify.notPublishedBody":
+    "Der Datensatz ist gesperrt und verifiziert, aber der Eigentümer-Workspace hat die Datei nicht veröffentlicht. Fragen Sie nach einem Freigabelink, um das Bild zu sehen.",
   "verify.statusLabel": "Status",
   "verify.statusVerified": "Gesperrt und verifiziert",
   "verify.statusUnverified": "Gesperrt, Zeit unbestätigt",
@@ -760,12 +819,14 @@ export const de: Catalog = {
   "verify.workspaceLabel": "Workspace",
   "verify.download": "Original herunterladen",
   "verify.openRecord": "Geteilten Datensatz öffnen",
-  "verify.disclaimer": "Wenn dieser Code als Screenshot weitergeleitet wurde, behandeln Sie ihn als Kopie. Nur diese Seite (oder ein übereinstimmender Hash) ist das gesperrte Original.",
+  "verify.disclaimer":
+    "Wenn dieser Code als Screenshot weitergeleitet wurde, behandeln Sie ihn als Kopie. Nur diese Seite (oder ein übereinstimmender Hash) ist das gesperrte Original.",
   "verify.lookupLabel": "Weiteren Fotocode nachschlagen",
   "verify.submit": "Prüfen",
   "verify.footerNote": "GeoCliks verändert gesperrte Dateien nach der Aufnahme nicht.",
   "verify.emptyTitle": "Gesperrtes Foto prüfen",
-  "verify.emptyBody": "Geben Sie den Fotocode ein, der auf dem Foto oder im Abschlussbericht steht. Er sieht so aus: TM-XXXX-XXXX-XXXX.",
+  "verify.emptyBody":
+    "Geben Sie den Fotocode ein, der auf dem Foto oder im Abschlussbericht steht. Er sieht so aus: GC-XXXX-XXXX-XXXX.",
   "getapp.officeSite": "Büro-Website",
   "getapp.crewOfficeTitle": "Team und Büro",
   "home.hero.ctaFieldApp": "Feld-App holen",
@@ -773,16 +834,21 @@ export const de: Catalog = {
   "invite.enterCode": "Haben Sie einen Einladungscode?",
   "invite.codePlaceholder": "Einladungscode",
   "invite.join": "Workspace beitreten",
-  "invite.codeHelp": "QR-Code gescannt oder eine Einladung per E-Mail erhalten? Code einfügen, um dem Workspace Ihres Teams beizutreten.",
-  "invite.codeInvalid": "Dieser Einladungscode wurde nicht gefunden. Prüfen Sie ihn oder fordern Sie eine neue Einladung an.",
+  "invite.codeHelp":
+    "QR-Code gescannt oder eine Einladung per E-Mail erhalten? Code einfügen, um dem Workspace Ihres Teams beizutreten.",
+  "invite.codeInvalid":
+    "Dieser Einladungscode wurde nicht gefunden. Prüfen Sie ihn oder fordern Sie eine neue Einladung an.",
   "join.openApp": "In der GeoCliks-App offnen",
-  "join.appHint": "Noch keine App? Installieren Sie GeoCliks und geben Sie dann den Code {code} ein.",
+  "join.appHint":
+    "Noch keine App? Installieren Sie GeoCliks und geben Sie dann den Code {code} ein.",
   "join.continueWeb": "Im Browser fortfahren",
   "perm.managerOnly": "Manager-Zugriff erforderlich",
   "perm.planNote": "Nur der Workspace-Inhaber kann den Tarif ansehen oder ändern.",
-  "perm.templatesNote": "Nur Manager und höher können Stempelvorlagen erstellen oder ändern. Aufnehmen können Sie damit weiterhin.",
+  "perm.templatesNote":
+    "Nur der Inhaber und Admins können Stempelvorlagen erstellen oder ändern. Aufnehmen können Sie damit weiterhin.",
   "perm.projectsNote": "Nur Manager und höher können Projekte erstellen oder löschen.",
-  "perm.selfDeleteNote": "Nur der Workspace-Inhaber kann Sie aus diesem Teamspace entfernen. Ihre Fotos und Videos bleiben im Workspace.",
+  "perm.selfDeleteNote":
+    "Nur der Workspace-Inhaber kann Sie aus diesem Teamspace entfernen. Ihre Fotos und Videos bleiben im Workspace.",
 
   // Internal messaging
   "nav.messages": "Nachrichten",
@@ -815,20 +881,26 @@ export const de: Catalog = {
   "notify.off": "Desktop-Benachrichtigungen ausschalten",
   "notify.blocked": "Benachrichtigungen sind in den Browsereinstellungen blockiert",
   "notify.testTitle": "Desktop-Benachrichtigungen sind aktiv",
-  "notify.testBody": "Das ist ein Test. Sie erhalten so ein Fenster, wenn ein Teammitglied Ihnen schreibt.",
+  "notify.testBody":
+    "Das ist ein Test. Sie erhalten so ein Fenster, wenn ein Teammitglied Ihnen schreibt.",
   "msg.openMedia": "In voller Größe öffnen",
   "msg.closeViewer": "Schließen",
   "msg.emoji": "Emoji",
   "signin.showPassword": "Passwort anzeigen",
   "signin.hidePassword": "Passwort verbergen",
   "signin.accountCreated": "Konto erstellt. Geben Sie Ihr Passwort ein, um sich anzumelden.",
-  "signin.signUpWebBody": "Neue Konten werden auf geocliks.com erstellt, damit wir eine kurze Bot-Prüfung durchführen können. Die Seite öffnet sich im Browser, dauert eine Minute, danach kommen Sie hierher zurück und melden sich an.",
+  "signin.signUpWebBody":
+    "Neue Konten werden auf geocliks.com erstellt, damit wir eine kurze Bot-Prüfung durchführen können. Die Seite öffnet sich im Browser, dauert eine Minute, danach kommen Sie hierher zurück und melden sich an.",
   "signin.signUpWebButton": "Konto im Web erstellen",
-  "signin.captchaMissing": "Bitte schließen Sie die Bot-Prüfung oben ab und versuchen Sie es erneut.",
-  "signin.captchaFailed": "Die Bot-Prüfung konnte nicht bestätigt werden. Laden Sie die Seite neu und versuchen Sie es erneut.",
+  "signin.captchaMissing":
+    "Bitte schließen Sie die Bot-Prüfung oben ab und versuchen Sie es erneut.",
+  "signin.captchaFailed":
+    "Die Bot-Prüfung konnte nicht bestätigt werden. Laden Sie die Seite neu und versuchen Sie es erneut.",
   "twofa.section": "ZWEI-SCHRITT-ANMELDUNG",
-  "twofa.intro": "Fügen Sie Ihrer Anmeldung einen zweiten Schritt hinzu. Nach dem Passwort geben Sie einen 6-stelligen Code aus einer App auf Ihrem Handy ein. Selbst wenn jemand Ihr Passwort stiehlt, kommt er nicht hinein.",
-  "twofa.apps": "Funktioniert mit Google Authenticator, Microsoft Authenticator, Authy oder 1Password — jede davon geht.",
+  "twofa.intro":
+    "Fügen Sie Ihrer Anmeldung einen zweiten Schritt hinzu. Nach dem Passwort geben Sie einen 6-stelligen Code aus einer App auf Ihrem Handy ein. Selbst wenn jemand Ihr Passwort stiehlt, kommt er nicht hinein.",
+  "twofa.apps":
+    "Funktioniert mit Google Authenticator, Microsoft Authenticator, Authy oder 1Password — jede davon geht.",
   "twofa.password": "Ihr GeoCliks-Passwort",
   "twofa.start": "Zwei-Schritt-Anmeldung aktivieren",
   "twofa.scan": "1. Öffnen Sie Ihre Authenticator-App und scannen Sie dieses Quadrat.",
@@ -836,41 +908,52 @@ export const de: Catalog = {
   "twofa.code": "2. Geben Sie den 6-stelligen Code aus der App ein",
   "twofa.confirm": "Bestätigen und aktivieren",
   "twofa.backupTitle": "Bewahren Sie diese Ersatzcodes auf",
-  "twofa.backupBody": "Jeder Code funktioniert einmal, und nur damit kommen Sie hinein, wenn Sie Ihr Handy verlieren. Drucken Sie sie aus oder bewahren Sie sie nicht auf dem Handy auf. Sie werden nur einmal angezeigt.",
-  "twofa.on": "Die Zwei-Schritt-Anmeldung ist aktiv. Sie werden auf der Website und in der Handy-App nach einem Code gefragt.",
+  "twofa.backupBody":
+    "Jeder Code funktioniert einmal, und nur damit kommen Sie hinein, wenn Sie Ihr Handy verlieren. Drucken Sie sie aus oder bewahren Sie sie nicht auf dem Handy auf. Sie werden nur einmal angezeigt.",
+  "twofa.on":
+    "Die Zwei-Schritt-Anmeldung ist aktiv. Sie werden auf der Website und in der Handy-App nach einem Code gefragt.",
   "twofa.disable": "Zwei-Schritt-Anmeldung ausschalten",
-  "twofa.error": "Das hat nicht funktioniert. Prüfen Sie Ihr Passwort oder den 6-stelligen Code und versuchen Sie es erneut.",
+  "twofa.error":
+    "Das hat nicht funktioniert. Prüfen Sie Ihr Passwort oder den 6-stelligen Code und versuchen Sie es erneut.",
   "signin.twoFactorTitle": "Geben Sie Ihren 6-stelligen Code ein",
-  "signin.twoFactorBody": "Öffnen Sie Ihre Authenticator-App und geben Sie den Code für GeoCliks ein. Er wechselt alle 30 Sekunden.",
+  "signin.twoFactorBody":
+    "Öffnen Sie Ihre Authenticator-App und geben Sie den Code für GeoCliks ein. Er wechselt alle 30 Sekunden.",
   "signin.twoFactorCode": "6-stelliger Code",
   "signin.twoFactorVerify": "Prüfen und anmelden",
   "signin.twoFactorBackup": "Handy verloren? Nutzen Sie einen Ersatzcode",
   "signin.twoFactorUseApp": "Stattdessen den App-Code verwenden",
-  "signin.twoFactorError": "Dieser Code hat nicht funktioniert. Warten Sie auf den nächsten und versuchen Sie es erneut.",
+  "signin.twoFactorError":
+    "Dieser Code hat nicht funktioniert. Warten Sie auf den nächsten und versuchen Sie es erneut.",
   "signin.twoFactorBackupPlaceholder": "Ersatzcode",
   "profile.emailResetOr": "Sie erinnern sich nicht an Ihr aktuelles Passwort?",
   "profile.emailReset": "Link per E-Mail senden",
   "profile.emailResetSent": "Link gesendet. Prüfen Sie Ihre E-Mails — der Link gilt eine Stunde.",
   "join.mismatchTitle": "Diese Einladung gilt für eine andere E-Mail",
-  "join.mismatchBody": "Sie wurde an {invited} gesendet, aber Sie sind als {current} angemeldet. Melden Sie sich ab und öffnen Sie den Link mit der eingeladenen Adresse, oder bitten Sie um eine neue Einladung für {current}.",
+  "join.mismatchBody":
+    "Sie wurde an {invited} gesendet, aber Sie sind als {current} angemeldet. Melden Sie sich ab und öffnen Sie den Link mit der eingeladenen Adresse, oder bitten Sie um eine neue Einladung für {current}.",
   "join.signOutUse": "Abmelden und {email} verwenden",
   "signin.inviteLocked": "Diese Adresse stammt aus Ihrer Einladung und kann nicht geändert werden.",
-  "signin.existsSignIn": "Sie haben bereits ein GeoCliks-Konto mit dieser E-Mail. Geben Sie unten Ihr Passwort ein, um sich anzumelden und beizutreten.",
+  "signin.existsSignIn":
+    "Sie haben bereits ein GeoCliks-Konto mit dieser E-Mail. Geben Sie unten Ihr Passwort ein, um sich anzumelden und beizutreten.",
   "signin.joinEyebrow": "Sie wurden eingeladen",
   "signin.joinTitle": "Dem Team beitreten",
   "signin.submitJoin": "Team beitreten",
   "signin.noAccount": "Neu bei GeoCliks?",
   "signin.goCreate": "Konto erstellen",
-  "signin.openInBrowser": "Der Browser konnte nicht geöffnet werden. Öffnen Sie diese Adresse, um Ihr Konto zu erstellen:",
+  "signin.openInBrowser":
+    "Der Browser konnte nicht geöffnet werden. Öffnen Sie diese Adresse, um Ihr Konto zu erstellen:",
   "signin.haveAccount": "Sie haben bereits ein Konto?",
   "signin.goSignIn": "Anmelden",
   "signin.businessName": "Firmenname",
-  "signin.businessNameHelp": "Das wird der Name Ihres Teambereichs. Sie können ihn später im Profil ändern.",
+  "signin.businessNameHelp":
+    "Das wird der Name Ihres Teambereichs. Sie können ihn später im Profil ändern.",
   "profile.workspace": "Teambereich",
   "profile.businessName": "Firmenname",
-  "profile.workspaceHint": "Alle im Arbeitsbereich sehen diesen Namen. Inhaber und Administratoren können ihn ändern.",
+  "profile.workspaceHint":
+    "Alle im Arbeitsbereich sehen diesen Namen. Inhaber und Administratoren können ihn ändern.",
   "teamspace.nameOrgTitle": "Benennen Sie Ihren Teambereich",
-  "teamspace.nameOrgBody": "Ihr Arbeitsbereich verwendet noch einen Standardnamen. Fügen Sie Ihren Firmennamen hinzu, damit Team und Kunden ihn erkennen.",
+  "teamspace.nameOrgBody":
+    "Ihr Arbeitsbereich verwendet noch einen Standardnamen. Fügen Sie Ihren Firmennamen hinzu, damit Team und Kunden ihn erkennen.",
   "teamspace.nameOrgSave": "Namen speichern",
   "teamspace.nameOrgDismiss": "Nicht jetzt",
   "home.footer.terms": "Nutzungsbedingungen",
@@ -891,7 +974,8 @@ export const de: Catalog = {
   "routes.subtitle": "Tour erstellen, Fahrer zuweisen und jede Zustellung mit einem Foto belegen.",
   "routes.new": "Neue Tour",
   "routes.empty": "Noch keine Touren",
-  "routes.emptyHint": "Erstellen Sie eine Tour, fügen Sie Ihre Lieferadressen ein, und GeoCliks bringt sie in Fahrreihenfolge.",
+  "routes.emptyHint":
+    "Erstellen Sie eine Tour, fügen Sie Ihre Lieferadressen ein, und GeoCliks bringt sie in Fahrreihenfolge.",
   "routes.emptyHintDriver": "Ihnen zugewiesene Touren erscheinen hier.",
   "routes.progress": "{n} von {total} erledigt",
   "routes.status.draft": "Entwurf",
@@ -904,6 +988,8 @@ export const de: Catalog = {
   "routes.fName": "Tourname",
   "routes.fDate": "Datum",
   "routes.fStartTime": "Startzeit",
+  "routes.fDispatcher": "Dispatcher",
+  "routes.fDispatcherHint": "Wird automatisch ausgefüllt — die Person, die diese Fahrt erstellt.",
   "routes.fStartAddress": "Startadresse",
   "routes.fStartHint": "Wo der Fahrer lädt. Leer lassen, um am ersten Stopp zu beginnen.",
   "routes.fServiceMinutes": "Minuten pro Stopp",
@@ -921,7 +1007,8 @@ export const de: Catalog = {
   "routes.optimize": "Reihenfolge optimieren",
   "routes.optimized": "{n} Stopps sortiert, {km} km",
   "routes.noKey": "Die Adresssuche ist noch nicht eingerichtet.",
-  "routes.noKeyHint": "Die Adresssuche ist nicht eingerichtet, daher bleiben Stopps ohne Position, bis Sie die Punkte von Hand setzen.",
+  "routes.noKeyHint":
+    "Die Adresssuche ist nicht eingerichtet, daher bleiben Stopps ohne Position, bis Sie die Punkte von Hand setzen.",
   "routes.needsAttention": "{n} Adressen zu prüfen",
   "routes.pin.ok": "Gefunden",
   "routes.pin.manual": "Manueller Punkt",
@@ -933,22 +1020,28 @@ export const de: Catalog = {
   "routes.fMode": "Routentyp",
   "routes.modePlanned": "Geplant - der ganze Tag wird vorab erstellt",
   "routes.modeDispatch": "Disposition - Aufträge kommen im Tagesverlauf",
-  "routes.modePlannedHint": "Ideal für Kurierfahrten: alle Stopps laden, einmal sortieren, die Tour dem Fahrer übergeben.",
-  "routes.modeDispatchHint": "Ideal für Restaurants: der Fahrer startet, und neue Aufträge werden zwischen die noch nicht erreichten Stopps eingefügt.",
+  "routes.modePlannedHint":
+    "Ideal für Kurierfahrten: alle Stopps laden, einmal sortieren, die Tour dem Fahrer übergeben.",
+  "routes.modeDispatchHint":
+    "Ideal für Restaurants: der Fahrer startet, und neue Aufträge werden zwischen die noch nicht erreichten Stopps eingefügt.",
   "routes.badgeDispatch": "Disposition",
   "routes.liveTitle": "Auftrag jetzt hinzufügen",
   "routes.liveAddress": "Lieferadresse",
   "routes.liveRecipient": "Name des Empfängers",
   "routes.liveAdd": "Zur Tour hinzufügen",
-  "routes.liveHint": "Er wird zwischen die Stopps eingefügt, die der Fahrer noch nicht erreicht hat. Bereits Zugestelltes bleibt unverändert.",
+  "routes.liveHint":
+    "Er wird zwischen die Stopps eingefügt, die der Fahrer noch nicht erreicht hat. Bereits Zugestelltes bleibt unverändert.",
   "routes.liveAdded": "Als Stopp {n} von {total} hinzugefügt",
-  "routes.liveNotLocated": "Am Ende hinzugefügt - diese Adresse konnte nicht auf der Karte platziert werden.",
+  "routes.liveNotLocated":
+    "Am Ende hinzugefügt - diese Adresse konnte nicht auf der Karte platziert werden.",
   "routes.mapEmpty": "Noch keine Stopps auf der Karte - lösen Sie zuerst die Adressen auf.",
-  "routes.mapNoKey": "Die Karte ist noch nicht eingerichtet, daher können hier keine Stopps angezeigt werden.",
+  "routes.mapNoKey":
+    "Die Karte ist noch nicht eingerichtet, daher können hier keine Stopps angezeigt werden.",
   "routes.mapUnlocated": "{n} Stopps noch nicht auf der Karte",
   "routes.dragHint": "Ziehen Sie einen Stopp zum Umsortieren oder nutzen Sie die Pfeile.",
   "routes.addTitle": "Stopps hinzufügen",
-  "routes.addHint": "Eine pro Zeile. Fügen Sie direkt aus einer Tabelle ein - Tabulatoren, Kommas oder Semikolons, mit oder ohne Kopfzeile.",
+  "routes.addHint":
+    "Eine pro Zeile. Fügen Sie direkt aus einer Tabelle ein - Tabulatoren, Kommas oder Semikolons, mit oder ohne Kopfzeile.",
   "routes.addStops": "Stopps hinzufügen",
   "routes.added": "{n} Stopps hinzugefügt",
   "routes.previewTitle": "Was hinzugefügt wird",
@@ -978,7 +1071,8 @@ export const de: Catalog = {
   "run.doneBody": "Alle Stopps sind abgeschlossen. Gute Arbeit.",
   "run.pendingSync": "Wartet auf Synchronisierung",
   "run.reasonTitle": "Was ist passiert?",
-  "run.reasonHint": "Wähle einen Grund. Ein Foto der Tür oder der Adresse ist trotzdem als Nachweis nötig.",
+  "run.reasonHint":
+    "Wähle einen Grund. Ein Foto der Tür oder der Adresse ist trotzdem als Nachweis nötig.",
   "run.reasonPhoto": "Weiter zum Foto",
   "run.notes": "Notizen",
   "run.ref": "Referenz",
@@ -996,7 +1090,8 @@ export const de: Catalog = {
   "run.reason.other": "Sonstiges",
   "run.skip": "Stopp überspringen",
   "run.skipTitle": "Ohne Foto überspringen?",
-  "run.skipHint": "Überspringen Sie nur, wenn hier nichts zuzustellen ist. Es wird kein Foto aufgenommen und das Büro sieht diesen Stopp als übersprungen.",
+  "run.skipHint":
+    "Überspringen Sie nur, wenn hier nichts zuzustellen ist. Es wird kein Foto aufgenommen und das Büro sieht diesen Stopp als übersprungen.",
   "run.skipConfirm": "Ja, überspringen",
   "run.skipped": "Übersprungen",
   "run.retry": "Erneut versuchen",
@@ -1004,23 +1099,30 @@ export const de: Catalog = {
   "track.title": "Liefer-Tracking",
   "track.loading": "Lieferung wird geprüft…",
   "track.notFoundTitle": "Diese Lieferung wurde nicht gefunden",
-  "track.notFoundBody": "Der Tracking-Link ist möglicherweise falsch eingegeben oder entfernt worden. Prüfen Sie den Link in Ihrer E-Mail oder wenden Sie sich an das Unternehmen, das ihn gesendet hat.",
+  "track.notFoundBody":
+    "Der Tracking-Link ist möglicherweise falsch eingegeben oder entfernt worden. Prüfen Sie den Link in Ihrer E-Mail oder wenden Sie sich an das Unternehmen, das ihn gesendet hat.",
   "track.chip": "Lieferstatus",
   "track.headPending": "Ihre Lieferung ist unterwegs",
   "track.headNext": "Sie sind als Nächstes dran",
   "track.headNotStarted": "Ihre Lieferung ist eingeplant",
   "track.headDelivered": "Zugestellt",
   "track.headFailed": "Diese Lieferung konnte nicht abgeschlossen werden",
-  "track.subPending": "{org} fährt gerade die heutige Tour. Diese Seite aktualisiert sich selbst, während der Fahrer näher kommt.",
-  "track.subNotStarted": "{org} hat diesen Stopp für die Tour am {date} eingeplant. Sie erhalten eine E-Mail, sobald der Fahrer losfährt.",
-  "track.subDelivered": "{org} hat diese Lieferung abgeschlossen und den unten stehenden Nachweis erfasst.",
-  "track.subFailed": "Der Fahrer war vor Ort, konnte die Lieferung aber nicht abschließen. {org} meldet sich bei Ihnen.",
+  "track.subPending":
+    "{org} fährt gerade die heutige Tour. Diese Seite aktualisiert sich selbst, während der Fahrer näher kommt.",
+  "track.subNotStarted":
+    "{org} hat diesen Stopp für die Tour am {date} eingeplant. Sie erhalten eine E-Mail, sobald der Fahrer losfährt.",
+  "track.subDelivered":
+    "{org} hat diese Lieferung abgeschlossen und den unten stehenden Nachweis erfasst.",
+  "track.subFailed":
+    "Der Fahrer war vor Ort, konnte die Lieferung aber nicht abschließen. {org} meldet sich bei Ihnen.",
   "track.youreNext": "Ihre Adresse ist der nächste Stopp",
   "track.stopsAway": "{n} Stopps vor Ihrem",
-  "track.etaHint": "Verkehr und Zugang können das verschieben – sehen Sie es als Hinweis, nicht als exakte Uhrzeit.",
+  "track.etaHint":
+    "Verkehr und Zugang können das verschieben – sehen Sie es als Hinweis, nicht als exakte Uhrzeit.",
   "track.reasonLabel": "Was passiert ist",
   "track.proofTitle": "Liefernachweis",
-  "track.proofBody": "Dieses Foto wurde an der Tür aufgenommen und im Moment der Aufnahme mit einem manipulationssicheren Hash versiegelt.",
+  "track.proofBody":
+    "Dieses Foto wurde an der Tür aufgenommen und im Moment der Aufnahme mit einem manipulationssicheren Hash versiegelt.",
   "track.signature": "Unterschrift",
   "track.addressLabel": "Lieferadresse",
   "track.forLabel": "Für",
@@ -1032,12 +1134,15 @@ export const de: Catalog = {
   "track.senderLabel": "Gesendet von",
   "track.sealed": "Zeit geprüft und versiegelt",
   "track.verifyLink": "Dieses Foto prüfen",
-  "track.privacy": "Diese Seite zeigt nur Ihre eigene Lieferung. Kein anderer Stopp der Tour ist hier sichtbar.",
+  "track.privacy":
+    "Diese Seite zeigt nur Ihre eigene Lieferung. Kein anderer Stopp der Tour ist hier sichtbar.",
   "track.mapTitle": "Wohin diese Lieferung geht",
   "track.mapTitleDone": "Wo diese Lieferung erfolgte",
   "track.mapEmpty": "Diese Adresse ist noch nicht auf der Karte.",
-  "track.mapNoKey": "Die Karte ist noch nicht konfiguriert, daher kann diese Adresse hier nicht angezeigt werden.",
-  "track.mapNote": "Die Markierung ist die hinterlegte Lieferadresse. Der Standort Ihres Fahrers wird hier nie angezeigt.",
+  "track.mapNoKey":
+    "Die Karte ist noch nicht konfiguriert, daher kann diese Adresse hier nicht angezeigt werden.",
+  "track.mapNote":
+    "Die Markierung ist die hinterlegte Lieferadresse. Der Standort Ihres Fahrers wird hier nie angezeigt.",
   "track.mapNoteProof": "Die grüne Markierung zeigt, wo das Lieferfoto aufgenommen wurde.",
   "track.mapLegendAddress": "Lieferadresse",
   "track.mapLegendProof": "Fotostandort",
@@ -1047,4 +1152,25 @@ export const de: Catalog = {
   "track.reason.closed": "Geschlossen",
   "track.reason.inaccessible": "Kein Zugang",
   "track.reason.other": "Sonstiges",
+  "capture.savedLocal":
+    "Auf diesem Telefon gespeichert – melden Sie sich an, um es im Teamspace zu sichern",
+  "queue.signedOut": "Auf diesem Telefon gespeichert",
+  "queue.signedOutBody":
+    "Diese Aufnahmen bleiben auf diesem Gerät. Erstellen Sie ein Konto oder melden Sie sich an, dann werden sie automatisch in Ihren Teamspace hochgeladen.",
+  "gate.title": "Konto erstellen, um fortzufahren",
+  "gate.body":
+    "Die Kamera funktioniert ohne Konto. Teamspace, Projekte, Touren und Nachrichten brauchen eines.",
+  "gate.cancel": "Jetzt nicht",
+  "nav.mine": "Meine Aufnahmen",
+  "mine.title": "Meine Aufnahmen",
+  "mine.body": "Fotos und Clips, die noch keinem Projekt zugeordnet sind.",
+  "mine.photos": "Bilder",
+  "mine.videos": "Videos",
+  "mine.emptyBody":
+    "Aufnahmen ohne ausgewähltes Projekt landen hier, einschließlich allem, was vor Ihrer Anmeldung aufgenommen wurde.",
+  "mine.assign": "Projekt zuordnen",
+  "mine.assignPick": "Projekt auswählen",
+  "mine.download": "Herunterladen",
+  "mine.downloadOk": "Auf Ihrem Telefon gespeichert",
+  "mine.downloadFail": "Diese Datei konnte nicht gespeichert werden",
 };

@@ -7,8 +7,41 @@ import { Logo } from "./logo";
 import { Turnstile } from "./turnstile";
 import { TwoFactorStep } from "./two-factor-step";
 import { useT } from "../lib/i18n";
+import { useAuthProviders } from "../queries/site";
 
 export type AuthMode = "sign-in" | "sign-up";
+
+/**
+ * Pulls the OAuth failure code out of the current query string.
+ *
+ * A failed social sign-in comes back through `errorCallbackURL`, and better-auth appends its own
+ * `error=` parameter to whatever URL it was given. Our error URL already carries `?notice=social`,
+ * so depending on the version that code can arrive glued onto the notice value rather than as a
+ * clean parameter - a regex over the raw search string catches both shapes. The value is an OAuth
+ * error identifier such as `state_not_found` or `EMAIL_NOT_FOUND`, never a credential, so showing
+ * it turns a dead-end message into something a person can actually act on.
+ */
+function oauthErrorCode(search: string): string | null {
+  const match = /[?&]error(?:_description)?=([^&]+)/.exec(search);
+  if (!match) return null;
+  try {
+    return decodeURIComponent(match[1]).slice(0, 80);
+  } catch {
+    return match[1].slice(0, 80);
+  }
+}
+
+/**
+ * lucide-react ships no X (Twitter) brand mark, so the glyph is drawn inline. The same path data
+ * is duplicated verbatim in site-footer.tsx and admin-settings.tsx - keep the three identical.
+ */
+function XIcon({ className }: { className?: string }) {
+  return (
+    <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" className={className}>
+      <path d="M17.53 3h3.06l-6.69 7.64L21.75 21h-6.16l-4.82-6.3L5.25 21H2.19l7.15-8.17L2.25 3h6.31l4.36 5.77L17.53 3Zm-1.07 16.13h1.7L7.62 4.78H5.8l10.66 14.35Z" />
+    </svg>
+  );
+}
 
 /**
  * Shared body of /sign-in and /sign-up.
@@ -50,9 +83,19 @@ export function AuthForm({ mode }: { mode: AuthMode }) {
   const invitedEmail = searchParams.get("email")?.trim() ?? "";
   // Set when the phone app sent us here, so a success returns to the app rather than to /app.
   const appReturn = searchParams.get("app") === "1";
-  // Set when /sign-up bounced someone here because their account already existed.
+  // Set when /sign-up bounced someone here because their account already existed, or when a
+  // social sign-in came back failed (X hands control back through errorCallbackURL, not a promise).
+  // The notice value can arrive with the OAuth code glued on, so compare only the leading word.
+  const notice = (searchParams.get("notice") ?? "").split("?")[0];
+  const socialError = oauthErrorCode(
+    typeof window === "undefined" ? "" : window.location.search,
+  );
   const [error, setError] = useState<string | null>(
-    searchParams.get("notice") === "exists" ? t("signin.existsSignIn") : null,
+    notice === "exists"
+      ? t("signin.existsSignIn")
+      : notice === "social" || socialError
+        ? `${t("signin.authError")}${socialError ? ` (${socialError})` : ""}`
+        : null,
   );
   // Sign-up reached from an invite is a join, not a workspace creation: the person is landing
   // in someone else's Teamspace, so asking them to name a business and pressing "create
@@ -65,7 +108,9 @@ export function AuthForm({ mode }: { mode: AuthMode }) {
   const [email, setEmail] = useState(invitedEmail);
   const [password, setPassword] = useState("");
   const [showPw, setShowPw] = useState(false);
-  const [busy, setBusy] = useState<"google" | "email" | null>(null);
+  const [busy, setBusy] = useState<"google" | "x" | "email" | null>(null);
+  // Hides the X button unless the server actually holds X credentials.
+  const providers = useAuthProviders();
   // Turnstile tokens are single-use. Bumping this remounts the widget for the next attempt.
   const [captchaNonce, setCaptchaNonce] = useState(0);
   /**
@@ -110,6 +155,29 @@ export function AuthForm({ mode }: { mode: AuthMode }) {
     } catch (err) {
       const message = err instanceof Error ? err.message : String(err);
       if (!message.includes("POPUP_CLOSED")) setError(message);
+    } finally {
+      setBusy(null);
+    }
+  }
+
+  /**
+   * X is a full-page redirect, so nothing after the call runs on success - control comes back on
+   * /api/auth/callback/twitter and then on to callbackURL. The app-return case hands over
+   * `created=1` with no address: X never tells us the email before sign-in, and appCallbackUrl
+   * already omits a blank one. The deep-link scheme is in TRUSTED_ORIGINS, which is what
+   * better-auth validates callbackURL against.
+   */
+  async function withX() {
+    setError(null);
+    setBusy("x");
+    try {
+      await authClient.signIn.social({
+        provider: "twitter",
+        callbackURL: appReturn ? appCallbackUrl("") : next,
+        errorCallbackURL: "/sign-in?notice=social",
+      });
+    } catch (err) {
+      setError(err instanceof Error ? err.message : String(err));
     } finally {
       setBusy(null);
     }
@@ -169,34 +237,33 @@ export function AuthForm({ mode }: { mode: AuthMode }) {
   if (needsCode) return <TwoFactorStep onVerified={finish} />;
 
   return (
-    <div className="grid min-h-screen bg-ink text-chalk lg:grid-cols-[1.05fr_0.95fr]">
+    <div
+      data-theme="dark"
+      className="grid min-h-screen bg-ink text-chalk lg:grid-cols-[1.05fr_0.95fr]"
+    >
       {/* Evidence panel */}
-      <div className="relative hidden overflow-hidden border-r border-line lg:block">
-        <img
-          src="/images/samples/fiber-technician.jpg"
-          alt=""
-          className="absolute inset-0 h-full w-full object-cover opacity-25"
-        />
-        <div className="absolute inset-0 bg-gradient-to-t from-ink via-ink/85 to-ink/60" />
-        <div className="absolute inset-0 blueprint opacity-40" />
-        <div className="relative flex h-full flex-col justify-between p-10">
+      <div className="relative hidden overflow-hidden border-r border-line bg-[#0d2137] lg:block">
+        <div className="relative flex h-full flex-col justify-between gap-8 p-10">
           <Link to="/">
             <Logo />
           </Link>
+          <img
+            src="/images/samples/crew-collage.jpg"
+            alt=""
+            className="edge-fade mx-auto max-h-[62vh] w-auto max-w-[520px] object-contain opacity-90"
+          />
           <div>
+            <p className="mono mb-4 flex items-center gap-2 text-[10.5px] uppercase tracking-widest text-amber">
+              <ShieldCheck className="size-3.5" />
+              {t("signin.integrityIntact")}
+            </p>
             <h2 className="max-w-md font-display text-[34px] font-extrabold leading-[1.08] tracking-tight">
               {t("signin.panelHeadline")}
             </h2>
-            <div className="mono mt-8 space-y-2 border-l-2 border-amber pl-4 text-[11.5px] text-fog">
-              <p>network time 2026-08-28 07:41:12 · skew 1s</p>
-              <p>39.76610° N 105.02120° W · ±4 m</p>
-              <p>1420 Ridgeline Dr, Denver, CO 80211</p>
-              <p className="text-verified">TM-8QF2-40XR-91KD · {t("signin.integrityIntact")}</p>
-            </div>
+            <p className="mt-5 max-w-sm text-[13px] leading-relaxed text-fog">
+              {t("getapp.underButtons")}
+            </p>
           </div>
-          <p className="mono text-[10.5px] uppercase tracking-widest text-fog">
-            {t("getapp.underButtons")}
-          </p>
         </div>
       </div>
 
@@ -209,20 +276,20 @@ export function AuthForm({ mode }: { mode: AuthMode }) {
             </Link>
           </div>
 
-          <p className="label mt-8 lg:mt-0">
+          <h1 className="mt-8 font-display text-[27px] font-bold tracking-tight lg:mt-0">
             {joining
               ? t("signin.joinEyebrow")
               : mode === "sign-in"
                 ? t("signin.welcomeBack")
                 : t("signin.createYourWorkspace")}
-          </p>
-          <h1 className="mt-2 font-display text-[27px] font-bold tracking-tight">
+          </h1>
+          <p className="mt-2 text-[13.5px] leading-relaxed text-fog">
             {joining
               ? t("signin.joinTitle")
               : mode === "sign-in"
-                ? t("signin.title")
+                ? t("signin.subtitle")
                 : t("signin.startDocumenting")}
-          </h1>
+          </p>
 
           <button
             type="button"
@@ -254,6 +321,22 @@ export function AuthForm({ mode }: { mode: AuthMode }) {
             )}
             {t("signin.google")}
           </button>
+
+          {providers.data?.x ? (
+            <button
+              type="button"
+              onClick={withX}
+              disabled={busy !== null}
+              className="mt-3 flex w-full items-center justify-center gap-2.5 rounded-[12px] border border-line bg-ink-2 px-4 py-3 text-[13.5px] font-semibold text-chalk transition-colors hover:border-fog disabled:opacity-60"
+            >
+              {busy === "x" ? (
+                <Loader2 className="size-4 animate-spin" />
+              ) : (
+                <XIcon className="size-4" />
+              )}
+              {t("signin.x")}
+            </button>
+          ) : null}
 
           <div className="my-6 flex items-center gap-3">
             <span className="h-px flex-1 bg-line" />
@@ -294,7 +377,9 @@ export function AuthForm({ mode }: { mode: AuthMode }) {
               </>
             )}
             <label className="block">
-              <span className="label">{t("signin.workEmail")}</span>
+              {mode === "sign-up" ? (
+                <span className="label">{t("signin.workEmail")}</span>
+              ) : null}
               <input
                 aria-label={t("signin.workEmail")}
                 type="email"
@@ -314,7 +399,9 @@ export function AuthForm({ mode }: { mode: AuthMode }) {
               ) : null}
             </label>
             <label className="block">
-              <span className="label">{t("signin.password")}</span>
+              {mode === "sign-up" ? (
+                <span className="label">{t("signin.password")}</span>
+              ) : null}
               <div className="relative mt-1.5">
                 <input
                   aria-label={t("signin.password")}
@@ -350,7 +437,7 @@ export function AuthForm({ mode }: { mode: AuthMode }) {
             <button
               type="submit"
               disabled={busy !== null}
-              className="rounded-[8px] mono flex w-full items-center justify-center gap-2 bg-amber px-4 py-3 text-[11.5px] font-bold uppercase tracking-widest text-ink transition-colors hover:bg-amber-deep disabled:opacity-60"
+              className="flex w-full items-center justify-center gap-2 rounded-[8px] bg-amber px-4 py-3 text-[14px] font-bold text-ink transition-colors hover:bg-amber-deep disabled:opacity-60"
             >
               {busy === "email" ? (
                 <Loader2 className="size-4 animate-spin" />

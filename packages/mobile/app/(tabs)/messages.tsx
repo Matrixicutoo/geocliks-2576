@@ -1,12 +1,5 @@
 import { useState } from "react";
-import {
-  ActivityIndicator,
-  FlatList,
-  Modal,
-  Pressable,
-  StyleSheet,
-  View,
-} from "react-native";
+import { ActivityIndicator, FlatList, Modal, Pressable, StyleSheet, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Ionicons } from "@expo/vector-icons";
 import { useRouter } from "expo-router";
@@ -23,6 +16,7 @@ import {
   useConversations,
   useOpenConversation,
 } from "@/queries/messages";
+import { canManageWorkspace } from "../../lib/roles";
 
 function initials(name: string | null | undefined) {
   const source = (name ?? "").trim() || "?";
@@ -57,7 +51,7 @@ export default function Messages() {
   const [text, setText] = useState("");
 
   // Only owners/admins/managers can push one message to the whole crew.
-  const canBroadcast = org.data?.role !== "field";
+  const canBroadcast = canManageWorkspace(org.data?.role);
 
   const start = async (userId: string) => {
     setPicker(false);
@@ -111,9 +105,7 @@ export default function Messages() {
         </View>
       </View>
 
-      {note ? (
-        <Text style={[styles.note, { color: colors.success }]}>{note}</Text>
-      ) : null}
+      {note ? <Text style={[styles.note, { color: colors.success }]}>{note}</Text> : null}
 
       {conversations.isLoading ? (
         <View style={styles.center}>
@@ -161,7 +153,9 @@ export default function Messages() {
               </View>
               {item.unread > 0 ? (
                 <View style={[styles.badge, { backgroundColor: colors.amber }]}>
-                  <Text style={[styles.badgeText, { color: colors.background }]}>{item.unread}</Text>
+                  <Text style={[styles.badgeText, { color: colors.background }]}>
+                    {item.unread}
+                  </Text>
                 </View>
               ) : null}
             </Pressable>
@@ -169,9 +163,16 @@ export default function Messages() {
         />
       )}
 
-      <Modal visible={picker} transparent animationType="slide" onRequestClose={() => setPicker(false)}>
+      <Modal
+        visible={picker}
+        transparent
+        animationType="slide"
+        onRequestClose={() => setPicker(false)}
+      >
         <View style={[styles.sheetStage, { backgroundColor: "rgba(0,0,0,0.5)" }]}>
-          <View style={[styles.sheet, { backgroundColor: colors.card, borderColor: colors.border }]}>
+          <View
+            style={[styles.sheet, { backgroundColor: colors.card, borderColor: colors.border }]}
+          >
             <View style={styles.sheetHead}>
               <Text style={[styles.sheetTitle, { color: colors.foreground }]}>{t("msg.pick")}</Text>
               <Pressable accessibilityLabel={t("common.close")} onPress={() => setPicker(false)}>
@@ -201,7 +202,9 @@ export default function Messages() {
                     <Text style={[styles.name, { color: colors.foreground }]}>
                       {item.name ?? item.email}
                     </Text>
-                    <Text style={[styles.time, { color: colors.mutedForeground }]}>{item.role}</Text>
+                    <Text style={[styles.time, { color: colors.mutedForeground }]}>
+                      {item.role}
+                    </Text>
                   </View>
                   <Ionicons name="chevron-forward" size={18} color={colors.mutedForeground} />
                 </Pressable>
@@ -211,9 +214,16 @@ export default function Messages() {
         </View>
       </Modal>
 
-      <Modal visible={caster} transparent animationType="slide" onRequestClose={() => setCaster(false)}>
+      <Modal
+        visible={caster}
+        transparent
+        animationType="slide"
+        onRequestClose={() => setCaster(false)}
+      >
         <View style={[styles.sheetStage, { backgroundColor: "rgba(0,0,0,0.5)" }]}>
-          <View style={[styles.sheet, { backgroundColor: colors.card, borderColor: colors.border }]}>
+          <View
+            style={[styles.sheet, { backgroundColor: colors.card, borderColor: colors.border }]}
+          >
             <View style={styles.sheetHead}>
               <Text style={[styles.sheetTitle, { color: colors.foreground }]}>
                 {t("msg.broadcast")}
@@ -231,7 +241,11 @@ export default function Messages() {
               placeholderTextColor={colors.mutedForeground}
               style={[
                 styles.input,
-                { color: colors.foreground, borderColor: colors.border, backgroundColor: colors.background },
+                {
+                  color: colors.foreground,
+                  borderColor: colors.border,
+                  backgroundColor: colors.background,
+                },
               ]}
             />
             <Pressable
@@ -240,7 +254,10 @@ export default function Messages() {
               disabled={broadcast.isPending || !text.trim()}
               style={[
                 styles.send,
-                { backgroundColor: colors.amber, opacity: broadcast.isPending || !text.trim() ? 0.45 : 1 },
+                {
+                  backgroundColor: colors.amber,
+                  opacity: broadcast.isPending || !text.trim() ? 0.45 : 1,
+                },
               ]}
             >
               <Text style={[styles.sendText, { color: colors.background }]}>
@@ -284,12 +301,25 @@ const styles = StyleSheet.create({
     borderBottomWidth: StyleSheet.hairlineWidth,
   },
   rowTop: { flexDirection: "row", alignItems: "center", justifyContent: "space-between", gap: 8 },
-  avatar: { width: 42, height: 42, borderRadius: 8, alignItems: "center", justifyContent: "center" },
+  avatar: {
+    width: 42,
+    height: 42,
+    borderRadius: 8,
+    alignItems: "center",
+    justifyContent: "center",
+  },
   avatarText: { fontSize: 14, letterSpacing: 0.5 },
   name: { fontSize: 15, flexShrink: 1 },
   time: { fontSize: 11 },
   preview: { fontSize: 13, marginTop: 2 },
-  badge: { minWidth: 22, height: 22, borderRadius: 6, alignItems: "center", justifyContent: "center", paddingHorizontal: 6 },
+  badge: {
+    minWidth: 22,
+    height: 22,
+    borderRadius: 6,
+    alignItems: "center",
+    justifyContent: "center",
+    paddingHorizontal: 6,
+  },
   badgeText: { fontSize: 11 },
   sheetStage: { flex: 1, justifyContent: "flex-end" },
   sheet: {

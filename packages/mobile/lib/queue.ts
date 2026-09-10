@@ -17,6 +17,14 @@ export type QueuedPhoto = {
   id: string;
   uri: string;
   capturedAt: number;
+  /**
+   * The device clock offset measured against the server the last time this phone had
+   * signal, captured at shutter time and carried through the queue. It is what lets a
+   * photo uploaded hours later still prove its capture time was honest. Older queued
+   * items predate these keys, so they are optional.
+   */
+  clockOffsetMs?: number | null;
+  clockSyncedAt?: number | null;
   projectId: string | null;
   projectName: string | null;
   tag:
@@ -67,8 +75,26 @@ export async function readQueue(): Promise<QueuedPhoto[]> {
   }
 }
 
+/**
+ * Anything showing a queue count has to hear about changes it did not make itself.
+ *
+ * The capture screen reads the count when it mounts, but the queue can also drain from
+ * somewhere else entirely — signing in drains it from the root layout, so the badge was
+ * left claiming "2 queued" over an empty queue. Every mutation goes through writeQueue,
+ * so notifying here covers enqueue, dequeue and markError with no caller changes.
+ */
+const listeners = new Set<(items: QueuedPhoto[]) => void>();
+
+export function subscribeQueue(fn: (items: QueuedPhoto[]) => void) {
+  listeners.add(fn);
+  return () => {
+    listeners.delete(fn);
+  };
+}
+
 async function writeQueue(items: QueuedPhoto[]) {
   await AsyncStorage.setItem(KEY, JSON.stringify(items));
+  for (const fn of listeners) fn(items);
 }
 
 export async function enqueue(item: QueuedPhoto) {
@@ -139,6 +165,10 @@ export async function uploadOne(item: QueuedPhoto) {
     storageKey: presigned.key,
     projectId: item.projectId,
     capturedAt: item.capturedAt,
+    // Measured at capture, not now: judging the clock by upload time is what used to
+    // stamp dead-zone deliveries "unverified".
+    clockOffsetMs: item.clockOffsetMs ?? null,
+    clockSyncedAt: item.clockSyncedAt ?? null,
     lat: item.lat,
     lng: item.lng,
     accuracyM: item.accuracyM,

@@ -9,7 +9,7 @@ import * as schema from "../database/schema";
 import { allPlans, loadPlans, planOf, visiblePlans } from "../lib/plans";
 import { localizePlan } from "../lib/plan-copy";
 import { applyProcessorState } from "../lib/billing-sync";
-import { SUPPORT_EMAIL } from "../lib/support";
+import { SALES_EMAIL, SUPPORT_EMAIL } from "../lib/support";
 
 
 /** Reads AUTUMN_SECRET_KEY from the root .env automatically. */
@@ -22,7 +22,7 @@ function appOrigin(): string {
 
 /** Prefilled "talk to sales" mail for the custom-priced plans. */
 function contactMailto(planName: string, orgName: string): string {
-  return `mailto:${SUPPORT_EMAIL}?subject=${encodeURIComponent(
+  return `mailto:${SALES_EMAIL}?subject=${encodeURIComponent(
     `${planName} plan — ${orgName}`,
   )}&body=${encodeURIComponent(
     `Hi GeoCliks team,\n\nWe'd like to talk about the ${planName} plan.\n\nTeam size:\nIndustry:\nRegions:\n`,
@@ -120,10 +120,13 @@ export const billing = {
         throw new ORPCError("NOT_FOUND", { message: "Unknown plan" });
       }
 
-      if (target.priceCents < 0) {
+      // A paid plan with no processor product behind it (the Delivery plans, until
+      // they are pushed with the Autumn CLI) must never be switched on here — that
+      // would hand the workspace a paid plan for free. Route it to sales instead.
+      if (target.priceCents < 0 || (target.priceCents > 0 && !target.autumnPlanId)) {
         return {
           contact: true,
-          mailto: `mailto:${SUPPORT_EMAIL}?subject=${encodeURIComponent(
+          mailto: `mailto:${SALES_EMAIL}?subject=${encodeURIComponent(
             `${target.name} plan — ${context.org.name}`,
           )}&body=${encodeURIComponent(
             `Hi GeoCliks team,\n\nWe'd like to talk about the ${target.name} plan.\n\nTeam size:\nIndustry:\nRegions:\n`,

@@ -17,6 +17,15 @@ const limitsSchema = z.object({
   exports: z.array(z.enum(["pdf", "xlsx", "zip", "kmz"])),
   branding: z.boolean(),
   roles: z.boolean(),
+  // Optional so an older admin client cannot wipe them; absent means "keep what
+  // the row already has" (see the merge in `save` below).
+  fieldEnabled: z.boolean().optional(),
+  deliveryStopsPerMonth: z.number().int().min(-1).optional(),
+  deliveryDrivers: z.number().int().min(-1).optional(),
+  deliveryDispatch: z.boolean().optional(),
+  deliverySmartOptimize: z.boolean().optional(),
+  deliveryTracking: z.boolean().optional(),
+  deliverySignature: z.boolean().optional(),
 });
 
 const planInput = z.object({
@@ -65,6 +74,15 @@ export const adminPlans = {
         .limit(1);
       if (!existing) throw new ORPCError("NOT_FOUND", { message: "Plan not found" });
 
+      // The delivery limits are optional in the input. When a client omits them the
+      // row keeps what it already had, so an edit of price or copy can never silently
+      // strip a workspace's delivery allowance.
+      const priorLimits = (existing.limits ?? {}) as Record<string, unknown>;
+      const mergedLimits: Record<string, unknown> = {
+        ...priorLimits,
+        ...(values.limits as unknown as Record<string, unknown>),
+      };
+
       const [row] = await db
         .update(schema.plans)
         .set({
@@ -73,7 +91,7 @@ export const adminPlans = {
           period: values.period,
           tagline: values.tagline,
           features: values.features,
-          limits: values.limits as unknown as Record<string, unknown>,
+          limits: mergedLimits,
           visible: values.visible,
           sortOrder: values.sortOrder,
           autumnPlanId: values.autumnPlanId,
@@ -139,7 +157,11 @@ export const adminPlans = {
 
   remove: staffProc.input(z.object({ id: z.string() })).handler(async ({ input, context }) => {
     requireSuperadmin(context.staffRole);
-    const [row] = await db.select().from(schema.plans).where(eq(schema.plans.id, input.id)).limit(1);
+    const [row] = await db
+      .select()
+      .from(schema.plans)
+      .where(eq(schema.plans.id, input.id))
+      .limit(1);
     if (!row) throw new ORPCError("NOT_FOUND", { message: "Plan not found" });
     if (!row.isCustom) {
       throw new ORPCError("BAD_REQUEST", {

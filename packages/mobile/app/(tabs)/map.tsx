@@ -1,6 +1,7 @@
 import { useMemo, useState } from "react";
 import {
   ActivityIndicator,
+  Linking,
   Modal,
   Pressable,
   ScrollView,
@@ -38,6 +39,12 @@ export default function MapScreen() {
     () => projects.data?.find((p) => p.id === projectId),
     [projects.data, projectId],
   );
+
+  /** Coordinates route exactly; a typed address is the fallback Maps can still resolve. */
+  const siteDestination =
+    activeProject?.lat != null && activeProject?.lng != null
+      ? `${activeProject.lat},${activeProject.lng}`
+      : (activeProject?.address ?? null);
 
   return (
     <SafeAreaView
@@ -107,6 +114,36 @@ export default function MapScreen() {
           />
         )}
 
+        {/* Route to the job site itself, not to a photo. Only a picked project has a site to
+            drive to, so this stays hidden on "all projects". No mouse-over on a phone, so the
+            press state carries the feedback instead. */}
+        {siteDestination ? (
+          <View style={styles.directionsRow}>
+            <Pressable
+              accessibilityLabel={t("photo.directions")}
+              onPress={() => {
+                void Linking.openURL(
+                  `https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(siteDestination)}`,
+                );
+              }}
+              style={({ pressed }) => [
+                styles.directions,
+                { backgroundColor: pressed ? colors.amberDeep : colors.amber },
+              ]}
+            >
+              <Ionicons name="navigate-outline" size={14} color={colors.primaryForeground} />
+              <Text
+                style={[
+                  styles.directionsText,
+                  { color: colors.primaryForeground, fontFamily: Fonts?.mono },
+                ]}
+              >
+                {t("photo.directions").toUpperCase()}
+              </Text>
+            </Pressable>
+          </View>
+        ) : null}
+
         <Text style={[styles.section, { color: colors.mutedForeground, fontFamily: Fonts?.mono }]}>
           {t("map.coordLog").toUpperCase()}
         </Text>
@@ -153,38 +190,44 @@ export default function MapScreen() {
         onRequestClose={() => setPickerOpen(false)}
       >
         <Pressable style={styles.backdrop} onPress={() => setPickerOpen(false)}>
-          <View style={[styles.sheet, { backgroundColor: colors.card, borderColor: colors.border }]}>
+          <View
+            style={[styles.sheet, { backgroundColor: colors.card, borderColor: colors.border }]}
+          >
             <Text
-              style={[styles.sheetTitle, { color: colors.mutedForeground, fontFamily: Fonts?.mono }]}
+              style={[
+                styles.sheetTitle,
+                { color: colors.mutedForeground, fontFamily: Fonts?.mono },
+              ]}
             >
               {t("map.filterProject").toUpperCase()}
             </Text>
             <ScrollView style={styles.sheetScroll}>
-              {[{ id: null as string | null, name: t("common.allProjects").toUpperCase() }, ...(projects.data ?? [])].map(
-                (p) => (
-                  <Pressable
-                    key={p.id ?? "all"}
-                    style={styles.option}
-                    onPress={() => {
-                      setProjectId(p.id);
-                      setPickerOpen(false);
-                    }}
+              {[
+                { id: null as string | null, name: t("common.allProjects").toUpperCase() },
+                ...(projects.data ?? []),
+              ].map((p) => (
+                <Pressable
+                  key={p.id ?? "all"}
+                  style={styles.option}
+                  onPress={() => {
+                    setProjectId(p.id);
+                    setPickerOpen(false);
+                  }}
+                >
+                  <Text
+                    numberOfLines={1}
+                    style={[
+                      styles.optionText,
+                      { color: colors.foreground, fontFamily: Fonts?.mono },
+                    ]}
                   >
-                    <Text
-                      numberOfLines={1}
-                      style={[
-                        styles.optionText,
-                        { color: colors.foreground, fontFamily: Fonts?.mono },
-                      ]}
-                    >
-                      {p.name}
-                    </Text>
-                    {projectId === p.id ? (
-                      <Ionicons name="checkmark" size={15} color={colors.amber} />
-                    ) : null}
-                  </Pressable>
-                ),
-              )}
+                    {p.name}
+                  </Text>
+                  {projectId === p.id ? (
+                    <Ionicons name="checkmark" size={15} color={colors.amber} />
+                  ) : null}
+                </Pressable>
+              ))}
             </ScrollView>
           </View>
         </Pressable>
@@ -224,6 +267,16 @@ const styles = StyleSheet.create({
   body: { paddingHorizontal: 16, paddingBottom: 32, gap: 8 },
   loading: { height: 340, alignItems: "center", justifyContent: "center" },
   section: { fontSize: 9, letterSpacing: 1.4, marginTop: 14, marginBottom: 2 },
+  directionsRow: { alignItems: "center", marginTop: 10 },
+  directions: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 8,
+    paddingHorizontal: 16,
+    paddingVertical: 10,
+    borderRadius: 8,
+  },
+  directionsText: { fontSize: 10, letterSpacing: 1.4 },
   row: { borderWidth: 1, padding: 10, gap: 3, borderRadius: 8 },
   code: { fontSize: 10, letterSpacing: 1.1 },
   meta: { fontSize: 9.5, letterSpacing: 0.4 },

@@ -30,6 +30,7 @@ import {
   restoreSubscriptions,
   usesAppStoreBilling,
 } from "@/lib/purchases";
+import { canManageWorkspace } from "../lib/roles";
 
 /**
  * Native plan picker. Lists the same plans as the web pricing table and hands off straight to
@@ -56,7 +57,7 @@ export default function Plans() {
   const activeId = current.data?.plan.id ?? null;
   const activePrice = current.data?.plan.priceCents ?? 0;
   const isOwner = current.data?.role === "owner";
-  const isField = current.data?.role === "field";
+  const isField = !canManageWorkspace(current.data?.role);
   const appleSkus = storeProducts.data?.apple ?? [];
   const skuFor = (planId: string) => appleSkus.find((p) => p.plan === planId)?.sku ?? null;
 
@@ -108,9 +109,7 @@ export default function Plans() {
     } catch (err) {
       const message = err instanceof Error ? err.message : String(err);
       if (message === "cancelled") return;
-      setError(
-        message === "in_app_purchase_unavailable" ? tr("plans.iapUnavailable") : message,
-      );
+      setError(message === "in_app_purchase_unavailable" ? tr("plans.iapUnavailable") : message);
     }
   };
 
@@ -122,7 +121,10 @@ export default function Plans() {
       let applied = 0;
       for (const purchase of owned) {
         if (!purchase.purchaseToken) continue;
-        await applyApple.mutateAsync({ jws: purchase.purchaseToken, productId: purchase.productId });
+        await applyApple.mutateAsync({
+          jws: purchase.purchaseToken,
+          productId: purchase.productId,
+        });
         applied += 1;
       }
       flash(applied > 0 ? tr("plans.restored") : tr("plans.nothingToRestore"));
@@ -187,9 +189,14 @@ export default function Plans() {
       <ScrollView contentContainerStyle={styles.content} showsVerticalScrollIndicator={false}>
         {/* Only the workspace owner changes the plan — field crews get the reason, not the grid. */}
         {isField ? (
-          <View style={[styles.lockCard, { borderColor: colors.border, backgroundColor: colors.card }]}>
+          <View
+            style={[styles.lockCard, { borderColor: colors.border, backgroundColor: colors.card }]}
+          >
             <Text
-              style={[styles.lockTitle, { color: colors.foreground, fontFamily: Fonts?.displayMedium }]}
+              style={[
+                styles.lockTitle,
+                { color: colors.foreground, fontFamily: Fonts?.displayMedium },
+              ]}
             >
               {tr("perm.managerOnly")}
             </Text>
@@ -199,144 +206,175 @@ export default function Plans() {
           </View>
         ) : (
           <>
-        <Text style={[styles.lede, { color: colors.mutedForeground }]}>{tr("plans.choose")}</Text>
+            <Text style={[styles.lede, { color: colors.mutedForeground }]}>
+              {tr("plans.choose")}
+            </Text>
 
-        {current.isLoading ? (
-          <View style={styles.loading}>
-            <ActivityIndicator color={colors.amber} />
-          </View>
-        ) : null}
+            {current.isLoading ? (
+              <View style={styles.loading}>
+                <ActivityIndicator color={colors.amber} />
+              </View>
+            ) : null}
 
-        {plans.map((plan) => {
-          const isCurrent = plan.id === activeId;
-          const isContact = plan.priceCents < 0;
-          const isDowngrade = !isContact && plan.priceCents < activePrice;
-          const cta = isCurrent
-            ? tr("plans.current")
-            : isContact
-              ? tr("plans.contactSales")
-              : isDowngrade
-                ? tr("plans.downgrade")
-                : tr("plans.upgrade");
-          const disabled = isCurrent || !isOwner || busy !== null;
+            {plans.map((plan) => {
+              const isCurrent = plan.id === activeId;
+              const isContact = plan.priceCents < 0;
+              const isDowngrade = !isContact && plan.priceCents < activePrice;
+              // Delivery plans carry a 7-day free trial in Autumn, so an upgrade into
+              // one is sold as the trial. Downgrades and the current plan are unchanged.
+              const cta = isCurrent
+                ? tr("plans.current")
+                : isContact
+                  ? tr("plans.contactSales")
+                  : isDowngrade
+                    ? tr("plans.downgrade")
+                    : plan.id.startsWith("delivery-")
+                      ? tr("home.pricing.freeTrial")
+                      : tr("plans.upgrade");
+              const disabled = isCurrent || !isOwner || busy !== null;
 
-          return (
-            <View
-              key={plan.id}
-              style={[
-                styles.card,
-                {
-                  borderColor: isCurrent ? colors.amber : colors.border,
-                  backgroundColor: colors.card,
-                },
-              ]}
-            >
-              <View style={styles.cardHead}>
-                <Text
-                  style={[styles.planName, { color: colors.foreground, fontFamily: Fonts?.display }]}
+              return (
+                <View
+                  key={plan.id}
+                  style={[
+                    styles.card,
+                    {
+                      borderColor: isCurrent ? colors.amber : colors.border,
+                      backgroundColor: colors.card,
+                    },
+                  ]}
                 >
-                  {plan.name.toUpperCase()}
-                </Text>
-                {isCurrent ? (
-                  <View style={[styles.chip, { borderColor: colors.amber }]}>
-                    <Text style={[styles.chipText, { color: colors.amber, fontFamily: Fonts?.mono }]}>
-                      {tr("plans.current").toUpperCase()}
+                  <View style={styles.cardHead}>
+                    <Text
+                      style={[
+                        styles.planName,
+                        { color: colors.foreground, fontFamily: Fonts?.display },
+                      ]}
+                    >
+                      {plan.name.toUpperCase()}
+                    </Text>
+                    {isCurrent ? (
+                      <View style={[styles.chip, { borderColor: colors.amber }]}>
+                        <Text
+                          style={[
+                            styles.chipText,
+                            { color: colors.amber, fontFamily: Fonts?.mono },
+                          ]}
+                        >
+                          {tr("plans.current").toUpperCase()}
+                        </Text>
+                      </View>
+                    ) : null}
+                  </View>
+
+                  <View style={styles.priceRow}>
+                    <Text
+                      style={[styles.price, { color: colors.amber, fontFamily: Fonts?.display }]}
+                    >
+                      {plan.priceLabel}
+                    </Text>
+                    <Text
+                      style={[
+                        styles.period,
+                        { color: colors.mutedForeground, fontFamily: Fonts?.mono },
+                      ]}
+                    >
+                      {isContact ? plan.period : tr("plans.perMonth")}
                     </Text>
                   </View>
-                ) : null}
-              </View>
 
-              <View style={styles.priceRow}>
-                <Text style={[styles.price, { color: colors.amber, fontFamily: Fonts?.display }]}>
-                  {plan.priceLabel}
-                </Text>
-                <Text style={[styles.period, { color: colors.mutedForeground, fontFamily: Fonts?.mono }]}>
-                  {isContact ? plan.period : tr("plans.perMonth")}
-                </Text>
-              </View>
+                  <Text style={[styles.tagline, { color: colors.mutedForeground }]}>
+                    {plan.tagline}
+                  </Text>
 
-              <Text style={[styles.tagline, { color: colors.mutedForeground }]}>{plan.tagline}</Text>
-
-              <View style={styles.features}>
-                {plan.features.map((feature) => (
-                  <View key={feature} style={styles.featureRow}>
-                    <Ionicons name="checkmark" size={14} color={colors.verified} />
-                    <Text style={[styles.feature, { color: colors.foreground }]}>{feature}</Text>
+                  <View style={styles.features}>
+                    {plan.features.map((feature) => (
+                      <View key={feature} style={styles.featureRow}>
+                        <Ionicons name="checkmark" size={14} color={colors.verified} />
+                        <Text style={[styles.feature, { color: colors.foreground }]}>
+                          {feature}
+                        </Text>
+                      </View>
+                    ))}
                   </View>
-                ))}
-              </View>
 
-              <Pressable
-                onPress={() => void pick(plan.id)}
-                disabled={disabled}
-                accessibilityLabel={`${cta} ${plan.name}`}
-                style={[
-                  isCurrent || isDowngrade || isContact ? styles.outline : styles.primary,
-                  isCurrent || isDowngrade || isContact
-                    ? { borderColor: isCurrent ? colors.amber : colors.border }
-                    : { backgroundColor: colors.amber },
-                  { opacity: disabled && !isCurrent ? 0.5 : 1 },
-                ]}
-              >
-                {busy === plan.id ? (
-                  <ActivityIndicator
-                    size="small"
-                    color={isCurrent || isDowngrade || isContact ? colors.amber : colors.background}
-                  />
-                ) : (
-                  <Text
+                  <Pressable
+                    onPress={() => void pick(plan.id)}
+                    disabled={disabled}
+                    accessibilityLabel={`${cta} ${plan.name}`}
                     style={[
-                      isCurrent || isDowngrade || isContact ? styles.outlineText : styles.primaryText,
-                      {
-                        color: isCurrent
-                          ? colors.amber
-                          : isDowngrade || isContact
-                            ? colors.foreground
-                            : colors.background,
-                      },
+                      isCurrent || isDowngrade || isContact ? styles.outline : styles.primary,
+                      isCurrent || isDowngrade || isContact
+                        ? { borderColor: isCurrent ? colors.amber : colors.border }
+                        : { backgroundColor: colors.amber },
+                      { opacity: disabled && !isCurrent ? 0.5 : 1 },
                     ]}
                   >
-                    {cta}
+                    {busy === plan.id ? (
+                      <ActivityIndicator
+                        size="small"
+                        color={
+                          isCurrent || isDowngrade || isContact ? colors.amber : colors.background
+                        }
+                      />
+                    ) : (
+                      <Text
+                        style={[
+                          isCurrent || isDowngrade || isContact
+                            ? styles.outlineText
+                            : styles.primaryText,
+                          {
+                            color: isCurrent
+                              ? colors.amber
+                              : isDowngrade || isContact
+                                ? colors.foreground
+                                : colors.background,
+                          },
+                        ]}
+                      >
+                        {cta}
+                      </Text>
+                    )}
+                  </Pressable>
+                </View>
+              );
+            })}
+
+            {!current.isLoading && !isOwner ? (
+              <Text style={[styles.note, { color: colors.mutedForeground }]}>
+                {tr("plans.ownerOnly")}
+              </Text>
+            ) : null}
+
+            {appStore ? (
+              <Pressable
+                onPress={() => void restore()}
+                disabled={busy !== null}
+                accessibilityLabel={tr("plans.restore")}
+                style={[styles.outline, { borderColor: colors.border, opacity: busy ? 0.5 : 1 }]}
+              >
+                {busy === "__restore" ? (
+                  <ActivityIndicator size="small" color={colors.amber} />
+                ) : (
+                  <Text style={[styles.outlineText, { color: colors.foreground }]}>
+                    {tr("plans.restore")}
                   </Text>
                 )}
               </Pressable>
-            </View>
-          );
-        })}
+            ) : null}
 
-        {!current.isLoading && !isOwner ? (
-          <Text style={[styles.note, { color: colors.mutedForeground }]}>
-            {tr("plans.ownerOnly")}
-          </Text>
-        ) : null}
+            <Text
+              style={[styles.footer, { color: colors.mutedForeground, fontFamily: Fonts?.mono }]}
+            >
+              {appStore ? tr("plans.appleNote") : tr("plans.stripeNote")}
+            </Text>
 
-        {appStore ? (
-          <Pressable
-            onPress={() => void restore()}
-            disabled={busy !== null}
-            accessibilityLabel={tr("plans.restore")}
-            style={[styles.outline, { borderColor: colors.border, opacity: busy ? 0.5 : 1 }]}
-          >
-            {busy === "__restore" ? (
-              <ActivityIndicator size="small" color={colors.amber} />
-            ) : (
-              <Text style={[styles.outlineText, { color: colors.foreground }]}>
-                {tr("plans.restore")}
+            {note ? (
+              <Text style={[styles.note, { color: colors.verified, fontFamily: Fonts?.mono }]}>
+                {note}
               </Text>
-            )}
-          </Pressable>
-        ) : null}
-
-        <Text style={[styles.footer, { color: colors.mutedForeground, fontFamily: Fonts?.mono }]}>
-          {appStore ? tr("plans.appleNote") : tr("plans.stripeNote")}
-        </Text>
-
-        {note ? (
-          <Text style={[styles.note, { color: colors.verified, fontFamily: Fonts?.mono }]}>
-            {note}
-          </Text>
-        ) : null}
-        {error ? <Text style={[styles.note, { color: colors.alert }]}>{error}</Text> : null}
+            ) : null}
+            {error ? <Text style={[styles.note, { color: colors.alert }]}>{error}</Text> : null}
           </>
         )}
       </ScrollView>

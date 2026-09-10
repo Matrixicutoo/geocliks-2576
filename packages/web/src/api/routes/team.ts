@@ -9,10 +9,11 @@ import * as schema from "../database/schema";
 import { id, random } from "../lib/ids";
 import { planOf } from "../lib/plans";
 import { dropEmptyPersonalWorkspace, seatUsage } from "../lib/workspaces";
+import { avatarUrl } from "./account";
 import { inviteEmail } from "../services/email-templates";
 import { emailConfigured } from "../services/email";
 
-const roleEnum = z.enum(["owner", "admin", "manager", "field"]);
+const roleEnum = z.enum(["owner", "admin", "manager", "dispatcher", "driver", "field"]);
 
 /** `invites.projectIds` is a JSON array in one text column; never trust its shape. */
 function parseProjectIds(raw: string | null): string[] {
@@ -78,11 +79,15 @@ export const team = {
       ? rows.filter((row) => teammates.userIds.has(row.member.userId))
       : rows;
 
-    return visible.map((row) => ({
-      ...row.member,
-      user: row.user,
-      photoCount: byUser.get(row.member.userId) ?? 0,
-    }));
+    // `user.image` is a bare storage key. Handing it to the client raw is why the roster only
+    // ever drew initials - the browser had nothing loadable to point an <img> at.
+    return Promise.all(
+      visible.map(async (row) => ({
+        ...row.member,
+        user: row.user ? { ...row.user, image: await avatarUrl(row.user.image) } : row.user,
+        photoCount: byUser.get(row.member.userId) ?? 0,
+      })),
+    );
   }),
 
   invites: orgProc.handler(async ({ context }) => {
@@ -172,48 +177,43 @@ export const team = {
     }),
 
   /** Public lookup so an invite link can show who is inviting whom before the person signs in. */
-  inviteInfo: base
-    .input(z.object({ code: z.string().min(4) }))
-    .handler(async ({ input }) => {
-      const [invite] = await db
-        .select()
-        .from(schema.invites)
-        .where(eq(schema.invites.code, input.code.trim().toLowerCase()));
-      if (!invite || invite.status !== "pending") throw new ORPCError("NOT_FOUND");
-      const [org] = await db
-        .select({ id: schema.organizations.id, name: schema.organizations.name })
-        .from(schema.organizations)
-        .where(eq(schema.organizations.id, invite.orgId));
-      const [inviter] = await db
-        .select({ name: schema.user.name, email: schema.user.email })
-        .from(schema.user)
-        .where(eq(schema.user.id, invite.invitedBy));
-      // Smart routing: an invited person who already has a GeoCliks account is sent to the
-      // sign-in page instead of sign-up. Only the holder of a live invite code reaches this, and
-      // the response already carries the invited email, so this leaks nothing new.
-      const [existing] = await db
-        .select({ id: schema.user.id })
-        .from(schema.user)
-        .where(eq(sql`lower(${schema.user.email})`, invite.email.trim().toLowerCase()));
+  inviteInfo: base.input(z.object({ code: z.string().min(4) })).handler(async ({ input }) => {
+    const [invite] = await db
+      .select()
+      .from(schema.invites)
+      .where(eq(schema.invites.code, input.code.trim().toLowerCase()));
+    if (!invite || invite.status !== "pending") throw new ORPCError("NOT_FOUND");
+    const [org] = await db
+      .select({ id: schema.organizations.id, name: schema.organizations.name })
+      .from(schema.organizations)
+      .where(eq(schema.organizations.id, invite.orgId));
+    const [inviter] = await db
+      .select({ name: schema.user.name, email: schema.user.email })
+      .from(schema.user)
+      .where(eq(schema.user.id, invite.invitedBy));
+    // Smart routing: an invited person who already has a GeoCliks account is sent to the
+    // sign-in page instead of sign-up. Only the holder of a live invite code reaches this, and
+    // the response already carries the invited email, so this leaks nothing new.
+    const [existing] = await db
+      .select({ id: schema.user.id })
+      .from(schema.user)
+      .where(eq(sql`lower(${schema.user.email})`, invite.email.trim().toLowerCase()));
 
-      return {
-        email: invite.email,
-        role: invite.role,
-        workspace: org?.name ?? "a GeoCliks workspace",
-        inviterName: inviter?.name || inviter?.email || "A teammate",
-        hasAccount: Boolean(existing),
-      };
-    }),
+    return {
+      email: invite.email,
+      role: invite.role,
+      workspace: org?.name ?? "a GeoCliks workspace",
+      inviterName: inviter?.name || inviter?.email || "A teammate",
+      hasAccount: Boolean(existing),
+    };
+  }),
 
   /** Signed-in acceptance: joins the inviting workspace and marks the invite used. */
   acceptInvite: authed
     .input(z.object({ code: z.string().min(4) }))
     .handler(async ({ input, context }) => {
       const code = input.code.trim().toLowerCase();
-      const [invite] = await db
-        .select()
-        .from(schema.invites)
-        .where(eq(schema.invites.code, code));
+      const [invite] = await db.select().from(schema.invites).where(eq(schema.invites.code, code));
       if (!invite || invite.status !== "pending") throw new ORPCError("NOT_FOUND");
 
       // An invite names one person. Without this check the code is a bearer token: whoever
@@ -239,10 +239,7 @@ export const team = {
         .select()
         .from(schema.members)
         .where(
-          and(
-            eq(schema.members.orgId, invite.orgId),
-            eq(schema.members.userId, context.user.id),
-          ),
+          and(eq(schema.members.orgId, invite.orgId), eq(schema.members.userId, context.user.id)),
         );
       const joinedAt = new Date();
       if (!existing) {
@@ -283,10 +280,7 @@ export const team = {
           .select({ id: schema.projects.id })
           .from(schema.projects)
           .where(
-            and(
-              eq(schema.projects.orgId, invite.orgId),
-              inArray(schema.projects.id, preAssigned),
-            ),
+            and(eq(schema.projects.orgId, invite.orgId), inArray(schema.projects.id, preAssigned)),
           );
         if (live.length) {
           await db

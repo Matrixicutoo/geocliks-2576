@@ -2,7 +2,7 @@ import { Link } from "wouter";
 import { Facebook, Instagram, Linkedin, Youtube } from "lucide-react";
 import { Logo } from "./logo";
 import { useT } from "../lib/i18n";
-import { SUPPORT_EMAIL } from "../lib/support";
+import { SALES_EMAIL, SUPPORT_EMAIL } from "../lib/support";
 import { useSocialLinks } from "../queries/site";
 
 /**
@@ -106,8 +106,14 @@ export function SiteFooter() {
               <Link to="/verify" className="transition-colors hover:text-chalk">
                 {t("verify.navLink")}
               </Link>
+              <Link to="/help" className="transition-colors hover:text-chalk">
+                {t("home.nav.help")}
+              </Link>
               <a href={`mailto:${SUPPORT_EMAIL}`} className="transition-colors hover:text-chalk">
                 {SUPPORT_EMAIL}
+              </a>
+              <a href={`mailto:${SALES_EMAIL}`} className="transition-colors hover:text-chalk">
+                {SALES_EMAIL}
               </a>
             </div>
           </div>

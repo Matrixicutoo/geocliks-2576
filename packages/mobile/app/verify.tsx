@@ -88,7 +88,7 @@ export default function Verify() {
             onChangeText={setInput}
             autoCapitalize="characters"
             autoCorrect={false}
-            placeholder="TM-XXXX-XXXX-XXXX"
+            placeholder="GC-XXXX-XXXX-XXXX"
             placeholderTextColor={colors.mutedForeground}
             accessibilityLabel={tr("verify.lookupLabel")}
             style={[

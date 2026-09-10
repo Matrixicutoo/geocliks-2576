@@ -10,6 +10,7 @@ import {
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Ionicons } from "@expo/vector-icons";
+import Svg, { Path } from "react-native-svg";
 import { router, useLocalSearchParams } from "expo-router";
 import { Text, TextInput } from "@/components/app-text";
 import { useColors } from "@/hooks/use-colors";
@@ -19,6 +20,24 @@ import { useT } from "@/lib/i18n";
 import { LogoMark } from "@/components/logo";
 import { openWebSignUp as openSignUpUrl } from "@/lib/web-signup";
 import { SUPPORT_EMAIL } from "../constants/support";
+
+/**
+ * X brand mark, drawn inline.
+ *
+ * The bundled @expo/vector-icons is 14.1.0, whose Ionicons set has no `logo-x` — only the retired
+ * `logo-twitter` bird. Rather than ship the wrong logo (or bump an icon font on the auth screen),
+ * the glyph is drawn with react-native-svg using the SAME path data as the web app.
+ *
+ * That path is duplicated verbatim in web's auth-form.tsx, site-footer.tsx and admin-settings.tsx
+ * — keep all four identical.
+ */
+function XIcon({ size, color }: { size: number; color: string }) {
+  return (
+    <Svg width={size} height={size} viewBox="0 0 24 24" fill={color}>
+      <Path d="M17.53 3h3.06l-6.69 7.64L21.75 21h-6.16l-4.82-6.3L5.25 21H2.19l7.15-8.17L2.25 3h6.31l4.36 5.77L17.53 3Zm-1.07 16.13h1.7L7.62 4.78H5.8l10.66 14.35Z" />
+    </Svg>
+  );
+}
 
 export type AuthMode = "sign-in" | "sign-up";
 
@@ -53,7 +72,7 @@ export function AuthForm({ mode }: { mode: AuthMode }) {
   const [email, setEmail] = useState(invitedEmail);
   const [password, setPassword] = useState("");
   const [showPw, setShowPw] = useState(false);
-  const [busy, setBusy] = useState<null | "google" | "email">(null);
+  const [busy, setBusy] = useState<null | "google" | "x" | "email">(null);
   const [error, setError] = useState<string | null>(null);
   /**
    * Owners and admins can turn on authenticator 2FA from the website. For those accounts
@@ -81,6 +100,31 @@ export function AuthForm({ mode }: { mode: AuthMode }) {
     } catch (err) {
       const message = err instanceof Error ? err.message : String(err);
       if (!message.includes("AUTH_SESSION_DISMISSED")) setError(message);
+    } finally {
+      setBusy(null);
+    }
+  };
+
+  /**
+   * X sign-in, the one social provider that does NOT use the managed broker.
+   *
+   * Google above goes through `managedAuth.signIn`, which runs its own browser round trip. X is a
+   * plain better-auth social provider, so it needs the Expo client plugin (see lib/auth.ts) to open
+   * the browser, catch our scheme on the way back, and store the session. `callbackURL` is a path
+   * on the API host, not a deep link: the plugin rewrites the return hop to the app itself.
+   *
+   * A cancelled browser session is not an error worth showing — the person tapped "Done".
+   */
+  const withX = async () => {
+    setError(null);
+    setBusy("x");
+    try {
+      await authClient.signIn.social({ provider: "twitter", callbackURL: "/app" });
+    } catch (err) {
+      const message = err instanceof Error ? err.message : String(err);
+      if (!message.includes("AUTH_SESSION_DISMISSED") && !/dismiss|cancel/i.test(message)) {
+        setError(message);
+      }
     } finally {
       setBusy(null);
     }
@@ -200,6 +244,28 @@ export function AuthForm({ mode }: { mode: AuthMode }) {
                     <Ionicons name="logo-google" size={18} color={colors.background} />
                     <Text style={[styles.googleText, { color: colors.background }]}>
                       {t("signin.google")}
+                    </Text>
+                  </>
+                )}
+              </Pressable>
+
+              <Pressable
+                onPress={withX}
+                disabled={busy !== null}
+                accessibilityRole="button"
+                accessibilityLabel={t("signin.x")}
+                style={[
+                  styles.x,
+                  { borderColor: colors.border, opacity: busy ? 0.7 : 1 },
+                ]}
+              >
+                {busy === "x" ? (
+                  <ActivityIndicator color={colors.foreground} />
+                ) : (
+                  <>
+                    <XIcon size={18} color={colors.foreground} />
+                    <Text style={[styles.xText, { color: colors.foreground }]}>
+                      {t("signin.x")}
                     </Text>
                   </>
                 )}
@@ -458,6 +524,21 @@ const styles = StyleSheet.create({
     borderRadius: 8,
   },
   googleText: { fontSize: 15, fontWeight: "600" },
+  /**
+   * X is the secondary provider, so it reads as an outline button against Google's solid fill
+   * rather than competing with it. Same height and radius so the pair still looks like one stack.
+   */
+  x: {
+    height: 52,
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
+    gap: 10,
+    borderRadius: 8,
+    borderWidth: 1,
+    marginTop: 10,
+  },
+  xText: { fontSize: 15, fontWeight: "600" },
   dividerRow: { flexDirection: "row", alignItems: "center", gap: 10, marginVertical: 6 },
   rule: { height: 1, flex: 1 },
   or: { fontSize: 11, letterSpacing: 2 },

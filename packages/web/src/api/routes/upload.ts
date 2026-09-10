@@ -57,6 +57,8 @@ export const upload = {
     .handler(async ({ input, context }) => {
       const key = `orgs/${context.org.id}/brand/${id("logo")}-${safeName(input.filename)}`;
       const url = await presignPut(key, input.contentType);
-      return { url, key, publicUrl: await presignGet(key, 60 * 60 * 24 * 30) };
+      // SigV4 caps presigned GETs at 7 days, so a 30-day preview link threw and the upload
+      // failed with a 500. The template stores the bare `key`; `publicUrl` is a short preview only.
+      return { url, key, publicUrl: await presignGet(key, 60 * 60 * 12) };
     }),
 };

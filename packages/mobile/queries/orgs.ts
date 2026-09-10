@@ -1,12 +1,19 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { orpc } from "@/lib/api";
+import { useHasSession } from "@/hooks/use-session";
 
+// The capture screen runs before sign-up, so these have to stay switched off until there
+// is a session. Firing them anonymously would only produce a wall of rejected requests.
 export function useOrg() {
-  return useQuery(orpc.orgs.current.queryOptions({ staleTime: 30_000 }));
+  const { hasSession } = useHasSession();
+  return useQuery(orpc.orgs.current.queryOptions({ staleTime: 30_000, enabled: hasSession }));
 }
 
 export function useTemplates() {
-  return useQuery(orpc.orgs.templates.list.queryOptions({ staleTime: 60_000 }));
+  const { hasSession } = useHasSession();
+  return useQuery(
+    orpc.orgs.templates.list.queryOptions({ staleTime: 60_000, enabled: hasSession }),
+  );
 }
 
 /** Renaming the teamspace (business name). Owners and admins only. */

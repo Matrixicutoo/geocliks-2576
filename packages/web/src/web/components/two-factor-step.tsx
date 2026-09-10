@@ -45,7 +45,11 @@ export function TwoFactorStep({
   }
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-ink px-5 py-12 text-chalk">
+    // Pinned dark to match the sign-in page this step continues from.
+    <div
+      data-theme="dark"
+      className="flex min-h-screen items-center justify-center bg-ink px-5 py-12 text-chalk"
+    >
       <div className="w-full max-w-[380px]">
         <Link to="/">
           <Logo />

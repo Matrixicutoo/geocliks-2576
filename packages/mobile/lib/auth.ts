@@ -1,5 +1,6 @@
 import { createAuthClient } from "better-auth/react";
 import { twoFactorClient } from "better-auth/client/plugins";
+import { expoClient } from "@better-auth/expo/client";
 import { managedAuthExpoClient } from "@runablehq/managed-auth/native";
 import Constants from "expo-constants";
 import { Platform } from "react-native";
@@ -7,6 +8,16 @@ import * as SecureStore from "expo-secure-store";
 
 // Platform-managed identity: never edit `expo.extra` or `expo.scheme` in app.json.
 const extra = (Constants.expoConfig?.extra ?? {}) as Record<string, string | undefined>;
+
+/**
+ * The app's own URL scheme, used by the native social flow as the address the browser session
+ * watches for. `expo.scheme` can be declared as either a string or an array, so normalise it the
+ * same way `lib/web-signup.ts` does rather than assuming one shape.
+ */
+const nativeScheme = (() => {
+  const scheme = Constants.expoConfig?.scheme;
+  return (Array.isArray(scheme) ? scheme[0] : scheme) ?? "runable-timemar-nt1ia4s";
+})();
 
 /**
  * Email/password sign-in returns its bearer in the `set-auth-token` header rather than through the
@@ -98,6 +109,23 @@ export const authClient = createAuthClient({
     managedAuthExpoClient({
       applicationId: extra.applicationId as string,
       issuer: extra.runableAuthIssuer as string,
+    }),
+    /**
+     * Native social sign-in (X). Google does NOT come through here — it goes through the managed
+     * broker above, which owns its own browser round trip and token store. This plugin exists only
+     * so `authClient.signIn.social({ provider: "twitter" })` can complete on a phone: it opens the
+     * system browser, watches for our own scheme coming back, and stores the returned session.
+     *
+     * The server half was already in place (`expo()` in api/auth.ts, plus `twitter` in both
+     * `socialProviders` and `trustedProviders`), so only this client half was missing.
+     *
+     * The scheme is read from app.json rather than written here — `expo.scheme` is
+     * platform-managed identity and must never be edited or duplicated as a literal.
+     */
+    expoClient({
+      scheme: nativeScheme,
+      storagePrefix: "geocliks",
+      storage: SecureStore,
     }),
     twoFactorClient(),
   ],

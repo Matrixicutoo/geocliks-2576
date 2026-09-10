@@ -1,6 +1,17 @@
 import { useState } from "react";
 import { Link, useLocation, useParams } from "wouter";
-import { ArrowLeft, Archive, ImageOff, Link2, FileStack, Loader2, MapPin, Trash2, Users } from "lucide-react";
+import {
+  ArrowLeft,
+  Archive,
+  ImageOff,
+  Link2,
+  FileStack,
+  Loader2,
+  MapPin,
+  Navigation,
+  Trash2,
+  Users,
+} from "lucide-react";
 import { DashboardShell } from "../components/dashboard-shell";
 import { PageTitle } from "../components/page-title";
 import { EvidenceCard, EvidenceSkeleton, formatStamp } from "../components/evidence-card";
@@ -13,6 +24,7 @@ import { useTeam, useAssignments, useAssignMember } from "../queries/team";
 import { useOrg } from "../queries/orgs";
 import { cn } from "../lib/utils";
 import { type TKey, useT } from "../lib/i18n";
+import { canManageWorkspace } from "../lib/roles";
 
 const STATUS_LABEL: Record<string, TKey> = {
   active: "projects.status.active",
@@ -36,9 +48,15 @@ export default function ProjectPage() {
   const destroy = useDestroyProject();
   const [confirmDelete, setConfirmDelete] = useState(false);
   // Field crews work inside projects; only manager and above archive or delete them.
-  const canManage = org.data?.role !== "field";
+  const canManage = canManageWorkspace(org.data?.role);
 
   const assigned = new Set(assignments.data?.map((a) => a.userId) ?? []);
+
+  /** Coordinates route exactly; a typed address is the fallback Maps can still resolve. */
+  const siteDestination =
+    project.data?.lat != null && project.data?.lng != null
+      ? `${project.data.lat},${project.data.lng}`
+      : (project.data?.address ?? null);
 
   return (
     <DashboardShell
@@ -69,14 +87,14 @@ export default function ProjectPage() {
           )}
           {/* Hard delete only removes the folder — the API detaches photos instead of destroying them. */}
           {canManage && (
-          <button
-            type="button"
-            disabled={destroy.isPending}
-            onClick={() => setConfirmDelete(true)}
-            className="mono flex items-center gap-1.5 rounded-[8px] border border-line px-3 py-2 text-[11px] uppercase tracking-widest text-fog hover:border-alert/60 hover:text-alert disabled:opacity-60"
-          >
-            <Trash2 className="size-3.5" /> {t("project.delete")}
-          </button>
+            <button
+              type="button"
+              disabled={destroy.isPending}
+              onClick={() => setConfirmDelete(true)}
+              className="mono flex items-center gap-1.5 rounded-[8px] border border-line px-3 py-2 text-[11px] uppercase tracking-widest text-fog hover:border-alert/60 hover:text-alert disabled:opacity-60"
+            >
+              <Trash2 className="size-3.5" /> {t("project.delete")}
+            </button>
           )}
         </>
       }
@@ -94,12 +112,7 @@ export default function ProjectPage() {
           <button
             type="button"
             disabled={destroy.isPending}
-            onClick={() =>
-              destroy.mutate(
-                { id },
-                { onSuccess: () => navigate("/app/projects") },
-              )
-            }
+            onClick={() => destroy.mutate({ id }, { onSuccess: () => navigate("/app/projects") })}
             className="rounded-[8px] mono flex items-center gap-2 border border-alert/60 bg-alert/15 px-3 py-2 text-[11px] uppercase tracking-widest text-alert hover:bg-alert/25 disabled:opacity-60"
           >
             {destroy.isPending ? (
@@ -199,6 +212,22 @@ export default function ProjectPage() {
               zoomControl={false}
               className="mt-3 h-[200px]"
             />
+            {/* Route to the job site itself, not to a photo. Coordinates win when the site has
+                them; otherwise the typed address is good enough for Maps to resolve. No origin,
+                so Maps starts from wherever the person actually is. */}
+            {siteDestination && (
+              <div className="mt-3 flex justify-center">
+                <a
+                  href={`https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(siteDestination)}`}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="mono inline-flex items-center gap-2 rounded-[8px] bg-amber px-4 py-2 text-[10.5px] font-bold uppercase tracking-widest text-on-amber transition-colors hover:bg-amber-deep"
+                >
+                  <Navigation className="size-3.5" />
+                  {t("photo.directions")}
+                </a>
+              </div>
+            )}
             {project.data?.firstPhotoAt && (
               <p className="mono mt-3 border-t border-line pt-2 text-[10.5px] text-fog">
                 {t("project.first", { stamp: formatStamp(project.data.firstPhotoAt).slice(0, 16) })}

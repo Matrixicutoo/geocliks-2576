@@ -1,3 +1,5 @@
+import { CODE_PREFIX } from "./photo-code";
+
 const ALPHABET = "0123456789ABCDEFGHJKMNPQRSTVWXYZ"; // Crockford-ish, no I/L/O/U
 
 /** Random id, url safe, sortable-ish by time prefix. */
@@ -13,9 +15,15 @@ export function random(length: number): string {
   return out;
 }
 
-/** Human-readable evidence code printed on every photo, e.g. TM-4K9Q-7XR2-B3TD. */
+/**
+ * Human-readable evidence code printed on every photo, e.g. GC-4K9Q-7XR2-B3TD.
+ *
+ * Codes minted before the GeoCliks rename carry a TM prefix and are left alone —
+ * the code is part of the signed payload in lib/verify.ts, so rewriting stored
+ * codes would invalidate every historical signature. See lib/photo-code.ts.
+ */
 export function photoCode(): string {
-  return `TM-${random(4)}-${random(4)}-${random(4)}`;
+  return `${CODE_PREFIX}-${random(4)}-${random(4)}-${random(4)}`;
 }
 
 export function slugify(input: string): string {

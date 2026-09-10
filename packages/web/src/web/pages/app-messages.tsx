@@ -29,15 +29,54 @@ import {
 } from "../queries/messages";
 import { cn } from "../lib/utils";
 import { useT } from "../lib/i18n";
+import { canManageWorkspace } from "../lib/roles";
 
 /** Field-first emoji set: the ones a crew actually uses, then the usual faces. */
 const EMOJI = [
-  "👍", "👌", "🙏", "💪", "✅", "❌", "⚠️", "🔥",
-  "🚧", "🦺", "🧰", "🔧", "🔨", "🪜", "🏗️", "🚚",
-  "📷", "📍", "📅", "⏰", "☀️", "🌧️", "❄️", "💨",
-  "😀", "😄", "😅", "😂", "🙂", "😉", "😎", "🤔",
-  "😐", "😕", "😢", "😡", "🎉", "👏", "🙌", "🤝",
-  "👋", "💯", "⭐", "❤️",
+  "👍",
+  "👌",
+  "🙏",
+  "💪",
+  "✅",
+  "❌",
+  "⚠️",
+  "🔥",
+  "🚧",
+  "🦺",
+  "🧰",
+  "🔧",
+  "🔨",
+  "🪜",
+  "🏗️",
+  "🚚",
+  "📷",
+  "📍",
+  "📅",
+  "⏰",
+  "☀️",
+  "🌧️",
+  "❄️",
+  "💨",
+  "😀",
+  "😄",
+  "😅",
+  "😂",
+  "🙂",
+  "😉",
+  "😎",
+  "🤔",
+  "😐",
+  "😕",
+  "😢",
+  "😡",
+  "🎉",
+  "👏",
+  "🙌",
+  "🤝",
+  "👋",
+  "💯",
+  "⭐",
+  "❤️",
 ];
 
 function initials(name: string) {
@@ -63,7 +102,7 @@ function stamp(value: Date | string) {
 export default function AppMessages() {
   const t = useT();
   const org = useOrg();
-  const canBroadcast = org.data?.role !== "field";
+  const canBroadcast = canManageWorkspace(org.data?.role);
   const conversations = useConversations();
   const contacts = useContacts();
   const projects = useProjects();
@@ -252,7 +291,7 @@ export default function AppMessages() {
           {picking ? (
             <div className="max-h-72 overflow-y-auto border-b border-line">
               {contactList.length === 0 ? (
-                <p className="px-4 py-3 text-[13px] text-fog">{t("team.noMembers")}</p>
+                <p className="px-4 py-3 text-[13px] text-fog">{t("msg.noPeople")}</p>
               ) : (
                 contactList.map((person) => (
                   <button
@@ -413,7 +452,11 @@ export default function AppMessages() {
                               }
                               className="group relative mb-2 block w-full cursor-zoom-in overflow-hidden rounded-[8px]"
                             >
-                              <img src={chatImage} alt="" className="max-h-56 w-full object-cover" />
+                              <img
+                                src={chatImage}
+                                alt=""
+                                className="max-h-56 w-full object-cover"
+                              />
                               <span className="absolute inset-0 flex items-center justify-center transition-colors group-hover:bg-ink/30">
                                 <Maximize2 className="size-6 text-chalk opacity-0 drop-shadow-lg transition-opacity group-hover:opacity-100" />
                               </span>

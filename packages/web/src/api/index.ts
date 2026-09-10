@@ -2,6 +2,7 @@ import type { RouterClient } from "@orpc/server";
 import { createApp } from "./__core/app";
 import { auth, withNativeOrigin } from "./auth";
 import { ping } from "./routes/ping";
+import { clock } from "./routes/clock";
 import { orgs } from "./routes/orgs";
 import { team } from "./routes/team";
 import { projects } from "./routes/projects";
@@ -31,6 +32,7 @@ import { handleBillingWebhook } from "./lib/billing-webhook";
 // (web: src/web/lib/api.ts, mobile: lib/api.ts).
 export const router = {
   ping,
+  clock,
   orgs,
   team,
   projects,

@@ -1,11 +1,13 @@
 import { useState } from "react";
-import { X, ShieldCheck, RefreshCw, Trash2, Loader2 } from "lucide-react";
+import { X, ShieldAlert, ShieldCheck, RefreshCw, Trash2, Loader2, Navigation } from "lucide-react";
 import { type TKey, useT } from "../lib/i18n";
-import { usePhoto, useVerifyPhoto, useRemovePhoto } from "../queries/photos";
+import { usePhoto, useVerifyPhoto, useRemovePhoto, useMovePhoto } from "../queries/photos";
+import { useProjects } from "../queries/projects";
 import { useOrg } from "../queries/orgs";
 import { formatCoords, formatStamp, TAG_LABEL, VerifiedBadge } from "./evidence-card";
 import { EvidenceMap } from "./evidence-map";
 import { PhotoShareButton } from "./share-menu";
+import { canManageWorkspace } from "../lib/roles";
 
 const EVENT_LABEL: Record<string, TKey> = {
   captured: "event.captured",
@@ -45,10 +47,12 @@ export function PhotoDrawer({ photoId, onClose }: { photoId: string | null; onCl
   const photo = usePhoto(photoId);
   const verify = useVerifyPhoto();
   const remove = useRemovePhoto();
+  const move = useMovePhoto();
+  const projects = useProjects();
   const org = useOrg();
   const [confirmDelete, setConfirmDelete] = useState(false);
   /** Field crews capture evidence; only manager and above can remove it. */
-  const canDelete = org.data?.role !== "field";
+  const canDelete = canManageWorkspace(org.data?.role);
 
   if (!photoId) return null;
 
@@ -56,7 +60,12 @@ export function PhotoDrawer({ photoId, onClose }: { photoId: string | null; onCl
 
   return (
     <div className="fixed inset-0 z-50 flex justify-end bg-ink/80 backdrop-blur-sm">
-      <button type="button" aria-label={t("common.close")} className="flex-1 cursor-default" onClick={onClose} />
+      <button
+        type="button"
+        aria-label={t("common.close")}
+        className="flex-1 cursor-default"
+        onClick={onClose}
+      />
       <div className="h-full w-full max-w-[560px] overflow-y-auto border-l border-line bg-ink-2">
         <div className="sticky top-0 flex items-center justify-between border-b border-line bg-ink-2 px-5 py-3">
           <p className="mono text-[11px] uppercase tracking-widest text-amber">
@@ -99,7 +108,9 @@ export function PhotoDrawer({ photoId, onClose }: { photoId: string | null; onCl
                   <p className="mono text-[10px] text-white/85">
                     {formatCoords(data.lat, data.lng)}
                   </p>
-                  <p className="mono text-[10px] text-white/70">{data.address ?? t("project.noAddress")}</p>
+                  <p className="mono text-[10px] text-white/70">
+                    {data.address ?? t("project.noAddress")}
+                  </p>
                 </div>
               </div>
             </div>
@@ -114,6 +125,26 @@ export function PhotoDrawer({ photoId, onClose }: { photoId: string | null; onCl
                   {data.project.name}
                 </span>
               )}
+            </div>
+
+            {/* Filing a capture under a project was only possible from the phone; the website
+                had no control at all. Same server call the phone makes. */}
+            <div>
+              <p className="label">{t("mine.assign")}</p>
+              <select
+                value={data.projectId ?? ""}
+                disabled={move.isPending}
+                onChange={(e) => move.mutate({ ids: [data.id], projectId: e.target.value || null })}
+                className="mono mt-2 w-full rounded-[8px] border border-line bg-ink px-3 py-2 text-[12px] text-chalk outline-none focus:border-amber disabled:opacity-60"
+                aria-label={t("mine.assign")}
+              >
+                <option value="">{t("queue.unassigned")}</option>
+                {projects.data?.map((project) => (
+                  <option key={project.id} value={project.id}>
+                    {project.name}
+                  </option>
+                ))}
+              </select>
             </div>
 
             {data.note && <p className="text-sm leading-relaxed text-chalk">{data.note}</p>}
@@ -191,6 +222,19 @@ export function PhotoDrawer({ photoId, onClose }: { photoId: string | null; onCl
                   <p className="mono mt-1.5 text-[10px] uppercase tracking-widest text-fog">
                     {t("photo.captureLocation")} · {formatCoords(data.lat, data.lng)}
                   </p>
+                  {/* Directions open in Google Maps with no origin, so Maps uses whatever
+                      location the viewer is at right now. No API key, no extra permission. */}
+                  <div className="mt-2 flex justify-center">
+                    <a
+                      href={`https://www.google.com/maps/dir/?api=1&destination=${data.lat},${data.lng}`}
+                      target="_blank"
+                      rel="noreferrer"
+                      className="mono inline-flex items-center gap-2 rounded-[8px] bg-amber px-4 py-2 text-[10.5px] font-bold uppercase tracking-widest text-on-amber transition-colors hover:bg-amber-deep"
+                    >
+                      <Navigation className="size-3.5" />
+                      {t("photo.directions")}
+                    </a>
+                  </div>
                 </>
               ) : (
                 <p className="mono mt-2 rounded-[8px] border border-line bg-ink px-3 py-2 text-[10.5px] uppercase tracking-widest text-fog">
@@ -240,37 +284,37 @@ export function PhotoDrawer({ photoId, onClose }: { photoId: string | null; onCl
               {/* Deleting evidence is irreversible, so the button arms a confirm step first. */}
               {canDelete &&
                 (confirmDelete ? (
-                <>
+                  <>
+                    <button
+                      type="button"
+                      disabled={remove.isPending}
+                      onClick={() => {
+                        remove.mutate({ id: data.id });
+                        onClose();
+                      }}
+                      className="rounded-[8px] mono flex items-center gap-2 border border-alert/60 bg-alert/10 px-3 py-2 text-[10.5px] uppercase tracking-widest text-alert transition-colors hover:bg-alert/20 disabled:opacity-60"
+                    >
+                      {remove.isPending ? (
+                        <Loader2 className="size-3.5 animate-spin" />
+                      ) : (
+                        <Trash2 className="size-3.5" />
+                      )}
+                      {t("common.confirm")}
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => setConfirmDelete(false)}
+                      className="mono rounded-[8px] border border-line px-3 py-2 text-[10.5px] uppercase tracking-widest text-fog transition-colors hover:text-chalk"
+                    >
+                      {t("common.cancel")}
+                    </button>
+                  </>
+                ) : (
                   <button
                     type="button"
-                    disabled={remove.isPending}
-                    onClick={() => {
-                      remove.mutate({ id: data.id });
-                      onClose();
-                    }}
-                    className="rounded-[8px] mono flex items-center gap-2 border border-alert/60 bg-alert/10 px-3 py-2 text-[10.5px] uppercase tracking-widest text-alert transition-colors hover:bg-alert/20 disabled:opacity-60"
+                    onClick={() => setConfirmDelete(true)}
+                    className="mono flex items-center gap-2 rounded-[8px] border border-line px-3 py-2 text-[10.5px] uppercase tracking-widest text-fog transition-colors hover:border-alert/60 hover:text-alert"
                   >
-                    {remove.isPending ? (
-                      <Loader2 className="size-3.5 animate-spin" />
-                    ) : (
-                      <Trash2 className="size-3.5" />
-                    )}
-                    {t("common.confirm")}
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => setConfirmDelete(false)}
-                    className="mono rounded-[8px] border border-line px-3 py-2 text-[10.5px] uppercase tracking-widest text-fog transition-colors hover:text-chalk"
-                  >
-                    {t("common.cancel")}
-                  </button>
-                </>
-              ) : (
-                <button
-                  type="button"
-                  onClick={() => setConfirmDelete(true)}
-                  className="mono flex items-center gap-2 rounded-[8px] border border-line px-3 py-2 text-[10.5px] uppercase tracking-widest text-fog transition-colors hover:border-alert/60 hover:text-alert"
-                >
                     <Trash2 className="size-3.5" /> {t("common.delete")}
                   </button>
                 ))}
@@ -282,14 +326,25 @@ export function PhotoDrawer({ photoId, onClose }: { photoId: string | null; onCl
               </p>
             )}
 
-            {verify.data && (
-              <p className="rounded-[8px] mono flex items-center gap-2 border border-verified/40 bg-verified/10 px-3 py-2 text-[11px] text-verified">
-                <ShieldCheck className="size-3.5" />
-                {verify.data.integrity === "verified"
-                  ? t("photo.sealIntact")
-                  : t("photo.sealBroken")}
-              </p>
-            )}
+            {/*
+              `photos.verify` re-checks the HMAC signature and returns that verdict as `ok`; it has
+              no `integrity` field. Reading `.ok` is also the more current answer than the stored
+              `integrity` column, because it reflects the check that just ran.
+              The banner used to be hard-coded green with a shield-check even when the seal was
+              broken — it now follows the verdict.
+            */}
+            {verify.data &&
+              (verify.data.ok ? (
+                <p className="rounded-[8px] mono flex items-center gap-2 border border-verified/40 bg-verified/10 px-3 py-2 text-[11px] text-verified">
+                  <ShieldCheck className="size-3.5" />
+                  {t("photo.sealIntact")}
+                </p>
+              ) : (
+                <p className="rounded-[8px] mono flex items-center gap-2 border border-alert/40 bg-alert/10 px-3 py-2 text-[11px] text-alert">
+                  <ShieldAlert className="size-3.5" />
+                  {t("photo.sealBroken")}
+                </p>
+              ))}
           </div>
         )}
       </div>

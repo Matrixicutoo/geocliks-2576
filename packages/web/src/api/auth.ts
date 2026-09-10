@@ -117,6 +117,25 @@ const captchaPlugins = process.env.TURNSTILE_SECRET_KEY
     ]
   : [];
 
+/**
+ * "Continue with X" is a plain OAuth 2.0 provider, not part of Runable's managed broker (which
+ * supports google/apple/microsoft only), so it needs this app's own X developer credentials.
+ *
+ * Guarded on both keys being present: without them the provider is simply absent, so the endpoint
+ * 404s instead of the whole auth handler throwing on boot. The client asks `site.authProviders`
+ * whether to render the button, so a missing key hides the button rather than shipping a control
+ * that fails when pressed.
+ *
+ * Scopes are deliberately left at the library default. X rejects the entire authorization request
+ * if a scope string is wrong, and the email address is not granted by a scope at all - it is
+ * switched on in the X app settings ("Request email from users"), which is what better-auth's own
+ * docs instruct. That setting is not optional here: the email address is this app's account key
+ * (invites, membership, delivery notifications), so an X account with no address cannot be used.
+ */
+const xLoginConfigured = Boolean(
+  process.env.TWITTER_CLIENT_ID && process.env.TWITTER_CLIENT_SECRET,
+);
+
 export const auth = betterAuth({
   basePath: "/api/auth",
   baseURL: process.env.WEBSITE_URL,
@@ -125,6 +144,35 @@ export const auth = betterAuth({
     enabled: true,
     sendResetPassword: async ({ user, url }) => {
       await resetPasswordEmail({ to: user.email, url });
+    },
+  },
+  socialProviders: xLoginConfigured
+    ? {
+        twitter: {
+          clientId: process.env.TWITTER_CLIENT_ID as string,
+          clientSecret: process.env.TWITTER_CLIENT_SECRET as string,
+        },
+      }
+    : undefined,
+  /**
+   * Without this, "Continue with X" fails with `account_not_linked` for anyone who already has a
+   * GeoCliks account on the same address - which is most people, since the website is where
+   * everybody registers. Better Auth refuses to attach a social login to an existing user unless
+   * the provider is named trusted, precisely because auto-linking on a matching email means the
+   * provider's word decides who gets in.
+   *
+   * X is trusted here for one reason: it only releases an address that the account holder has
+   * confirmed on X's side (the app must ask for it explicitly, and X withholds unconfirmed
+   * addresses). So an X login carrying `luc@example.com` is X asserting that person controls that
+   * mailbox, which is the same assurance the password reset flow relies on.
+   *
+   * Only `twitter` is listed. Google arrives through the managed broker and is unaffected, and no
+   * provider whose id could be chosen by a user is trusted - that is what launders trust.
+   */
+  account: {
+    accountLinking: {
+      enabled: true,
+      trustedProviders: ["twitter"],
     },
   },
   secret: process.env.BETTER_AUTH_SECRET,

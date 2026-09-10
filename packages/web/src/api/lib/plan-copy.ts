@@ -1,4 +1,5 @@
 import { type LocaleCode, asLocale } from "./locales";
+import { LEGACY_SHIPPED } from "./plans-legacy";
 import { DEFAULT_PLANS, type Plan, priceLabel } from "./plans";
 
 /**
@@ -528,6 +529,406 @@ export const PLAN_COPY: Record<string, Partial<Record<LocaleCode, PlanCopy>>> = 
   },
 };
 
+/**
+ * Copy revised for the Delivery Routes release, kept apart from the block above so
+ * the original translations stay readable and reviewable.
+ *
+ * Taglines had to be re-translated: `localizePlan` substitutes a tagline whenever the
+ * DB row still matches the shipped English, so a stale translation attached to revised
+ * English would quietly say the wrong thing. Bullets are safe — they translate one by
+ * one and an unknown bullet simply stays in English.
+ */
+const DELIVERY_ERA_COPY: Record<string, Partial<Record<LocaleCode, PlanCopy>>> = {
+  free: {
+    "fr-CA": {
+      tagline: "Photos et vidéos de chantier vérifiées, gratuit pour toujours.",
+    },
+    es: {
+      tagline: "Fotos y vídeo de obra verificados, gratis para siempre.",
+    },
+    "pt-BR": {
+      tagline: "Fotos e vídeos de obra verificados, grátis para sempre.",
+    },
+    de: {
+      tagline: "Verifizierte Baustellenfotos und Videos – dauerhaft kostenlos.",
+    },
+    it: {
+      tagline: "Foto e video di cantiere verificati, gratis per sempre.",
+    },
+    zh: {
+      tagline: "经过验证的工地照片和视频，永久免费。",
+    },
+    vi: {
+      tagline: "Ảnh và video công trường đã xác minh, miễn phí trọn đời.",
+    },
+    tl: {
+      tagline: "Beripikadong larawan at video ng trabaho, libre habambuhay.",
+    },
+    ar: {
+      tagline: "صور وفيديو موثّقة للعمل، مجاناً إلى الأبد.",
+    },
+    pl: {
+      tagline: "Zweryfikowane zdjęcia i wideo z prac, darmowe na zawsze.",
+    },
+  },
+  plus: {
+    "fr-CA": {
+      tagline: "Photos vérifiées illimitées et vidéo pleine durée, pour une personne.",
+    },
+    es: {
+      tagline: "Fotos verificadas ilimitadas y vídeo completo, para una persona.",
+    },
+    "pt-BR": {
+      tagline: "Fotos verificadas ilimitadas e vídeo completo, para uma pessoa.",
+    },
+    de: {
+      tagline: "Unbegrenzte verifizierte Fotos und Videos in voller Länge – für eine Person.",
+    },
+    it: {
+      tagline: "Foto verificate illimitate e video a lunghezza piena, per una persona.",
+    },
+    zh: {
+      tagline: "无限量验证照片和完整时长视频，单人使用。",
+    },
+    vi: {
+      tagline: "Ảnh đã xác minh không giới hạn và video đầy đủ, cho một người.",
+    },
+    tl: {
+      tagline: "Walang limitasyong beripikadong larawan at buong haba na video, para sa isang tao.",
+    },
+    ar: {
+      tagline: "صور موثّقة غير محدودة وفيديو بطول كامل، لشخص واحد.",
+    },
+    pl: {
+      tagline: "Nielimitowane zweryfikowane zdjęcia i pełne wideo, dla jednej osoby.",
+    },
+  },
+  business: {
+    "fr-CA": {
+      period: "par mois",
+      tagline:
+        "Espace équipe pour une petite équipe. 5 sièges, vidéo pleine durée, une seule facture.",
+    },
+    es: {
+      period: "por mes",
+      tagline:
+        "Espacio de equipo para una cuadrilla pequeña. 5 puestos, vídeo completo, una sola factura.",
+    },
+    "pt-BR": {
+      period: "por mês",
+      tagline:
+        "Espaço de equipe para uma equipe pequena. 5 assentos, vídeo completo, uma fatura única.",
+    },
+    de: {
+      period: "pro Monat",
+      tagline: "Teamspace für ein kleines Team. 5 Plätze, Video in voller Länge, eine Rechnung.",
+    },
+    it: {
+      period: "al mese",
+      tagline:
+        "Spazio team per una piccola squadra. 5 postazioni, video a lunghezza piena, una sola fattura.",
+    },
+    zh: {
+      period: "每月",
+      tagline: "小团队协作空间。5 个席位、完整时长视频、一张账单。",
+    },
+    vi: {
+      period: "mỗi tháng",
+      tagline: "Không gian nhóm cho đội nhỏ. 5 chỗ, video đầy đủ, một hóa đơn duy nhất.",
+    },
+    tl: {
+      period: "kada buwan",
+      tagline: "Teamspace para sa maliit na crew. 5 puwesto, buong haba na video, isang bayarin.",
+    },
+    ar: {
+      period: "شهريًا",
+      tagline: "مساحة فريق لطاقم صغير. 5 مقاعد وفيديو بطول كامل وفاتورة واحدة.",
+    },
+    pl: {
+      period: "miesięcznie",
+      tagline: "Przestrzeń zespołu dla małej ekipy. 5 stanowisk, pełne wideo, jeden rachunek.",
+    },
+  },
+  enterprise: {
+    "fr-CA": {
+      tagline: "Forfaits sur mesure pour les grandes flottes et organisations.",
+    },
+    es: {
+      tagline: "Planes a medida para grandes flotas y organizaciones.",
+    },
+    "pt-BR": {
+      tagline: "Planos sob medida para grandes frotas e organizações.",
+    },
+    de: {
+      tagline: "Individuelle Tarife für große Flotten und Organisationen.",
+    },
+    it: {
+      tagline: "Piani su misura per grandi flotte e organizzazioni.",
+    },
+    zh: {
+      tagline: "为大型车队和机构定制的方案。",
+    },
+    vi: {
+      tagline: "Gói tùy chỉnh cho đội xe lớn và tổ chức.",
+    },
+    tl: {
+      tagline: "Pasadyang plano para sa malalaking fleet at organisasyon.",
+    },
+    ar: {
+      tagline: "خطط مخصّصة للأساطيل الكبيرة والمؤسسات.",
+    },
+    pl: {
+      tagline: "Indywidualne plany dla dużych flot i organizacji.",
+    },
+  },
+  crew10: {
+    "fr-CA": {
+      tagline: "Dix sièges pour une équipe en croissance. La même facture chaque mois.",
+    },
+    es: {
+      tagline: "Diez puestos para una cuadrilla en crecimiento. La misma factura cada mes.",
+    },
+    "pt-BR": {
+      tagline: "Dez assentos para uma equipe em crescimento. A mesma fatura todo mês.",
+    },
+    de: {
+      tagline: "Zehn Plätze für ein wachsendes Team. Jeden Monat dieselbe Rechnung.",
+    },
+    it: {
+      tagline: "Dieci postazioni per una squadra in crescita. La stessa fattura ogni mese.",
+    },
+    zh: {
+      tagline: "为成长中的团队提供十个席位。每月账单固定。",
+    },
+    vi: {
+      tagline: "Mười chỗ cho đội đang phát triển. Hóa đơn cố định mỗi tháng.",
+    },
+    tl: {
+      tagline: "Sampung puwesto para sa lumalaking crew. Parehong bayarin bawat buwan.",
+    },
+    ar: {
+      tagline: "عشرة مقاعد لطاقم متنامٍ. الفاتورة نفسها كل شهر.",
+    },
+    pl: {
+      tagline: "Dziesięć stanowisk dla rosnącej ekipy. Ten sam rachunek co miesiąc.",
+    },
+  },
+  crew25: {
+    "fr-CA": {
+      tagline: "Vingt-cinq sièges pour plusieurs équipes sous un même compte.",
+    },
+    es: {
+      tagline: "Veinticinco puestos para varias cuadrillas en una sola cuenta.",
+    },
+    "pt-BR": {
+      tagline: "Vinte e cinco assentos para várias equipes em uma só conta.",
+    },
+    de: {
+      tagline: "Fünfundzwanzig Plätze für mehrere Teams unter einem Konto.",
+    },
+    it: {
+      tagline: "Venticinque postazioni per più squadre in un solo account.",
+    },
+    zh: {
+      tagline: "二十五个席位，多支团队共用一个账户。",
+    },
+    vi: {
+      tagline: "Hai mươi lăm chỗ cho nhiều đội trong một tài khoản.",
+    },
+    tl: {
+      tagline: "Dalawampu't limang puwesto para sa maraming crew sa isang account.",
+    },
+    ar: {
+      tagline: "خمسة وعشرون مقعداً لعدة أطقم ضمن حساب واحد.",
+    },
+    pl: {
+      tagline: "Dwadzieścia pięć stanowisk dla wielu ekip na jednym koncie.",
+    },
+  },
+  "delivery-lite": {
+    "fr-CA": {
+      tagline: "Tournées avec preuve de livraison pour une petite flotte. 500 arrêts par mois.",
+      features: [
+        "500 arrêts de livraison par mois, 2 chauffeurs",
+        "Générateur de tournée : saisissez, collez une liste ou importez un CSV",
+        "Ordre des arrêts optimisé — sans frais par arrêt",
+        "Preuve photo verrouillée à chaque arrêt, signature en option",
+        "Lien de suivi privé et courriel de livraison pour chaque destinataire",
+        "Photos vérifiées illimitées et vidéo de 3 minutes",
+        "Espace équipe, rôles et exports PDF, Excel, ZIP, KMZ",
+      ],
+    },
+    es: {
+      tagline: "Rutas con prueba de entrega para una flota pequeña. 500 paradas al mes.",
+    },
+    "pt-BR": {
+      tagline: "Rotas com comprovante de entrega para uma frota pequena. 500 paradas por mês.",
+    },
+    de: {
+      tagline: "Touren mit Liefernachweis für eine kleine Flotte. 500 Stopps pro Monat.",
+    },
+    it: {
+      tagline: "Giri con prova di consegna per una piccola flotta. 500 fermate al mese.",
+    },
+    zh: {
+      tagline: "小型车队的送货凭证路线。每月 500 个站点。",
+    },
+    vi: {
+      tagline: "Tuyến giao hàng có bằng chứng cho đội xe nhỏ. 500 điểm dừng mỗi tháng.",
+    },
+    tl: {
+      tagline:
+        "Mga ruta na may patunay ng paghahatid para sa maliit na fleet. 500 hinto kada buwan.",
+    },
+    ar: {
+      tagline: "مسارات بإثبات تسليم لأسطول صغير. 500 محطة شهرياً.",
+    },
+    pl: {
+      tagline: "Trasy z potwierdzeniem dostawy dla małej floty. 500 przystanków miesięcznie.",
+    },
+  },
+  "delivery-pro": {
+    "fr-CA": {
+      tagline:
+        "Le poste de répartition complet : 2 000 arrêts, répartition en direct, optimiseur intelligent.",
+      features: [
+        "2 000 arrêts de livraison par mois, 5 chauffeurs",
+        "Optimiseur intelligent — trajet le plus court, réoptimisation en tout temps",
+        "Répartition en direct : ajoutez des commandes à une tournée en cours",
+        "Courriels en route, vous êtes le prochain et livré, avec la photo",
+        "Capture de signature et motifs d'échec de livraison",
+        "Chaque arrêt scellé par empreinte et vérifiable par code",
+        "Tout ce qui est inclus dans Crew 10 pour le bureau",
+      ],
+    },
+    es: {
+      tagline:
+        "La central de reparto completa: 2.000 paradas, despacho en vivo, optimizador inteligente.",
+    },
+    "pt-BR": {
+      tagline:
+        "A central de entregas completa: 2.000 paradas, despacho ao vivo, otimizador inteligente.",
+    },
+    de: {
+      tagline: "Die komplette Disposition: 2.000 Stopps, Live-Dispatch, smarter Optimierer.",
+    },
+    it: {
+      tagline:
+        "La centrale consegne completa: 2.000 fermate, dispatch in tempo reale, ottimizzatore intelligente.",
+    },
+    zh: {
+      tagline: "完整的配送调度台：2,000 个站点、实时调度、智能优化。",
+    },
+    vi: {
+      tagline:
+        "Bàn điều phối giao hàng đầy đủ: 2.000 điểm dừng, điều phối trực tiếp, tối ưu thông minh.",
+    },
+    tl: {
+      tagline: "Buong delivery desk: 2,000 hinto, live dispatch, smart optimizer.",
+    },
+    ar: {
+      tagline: "مكتب توصيل متكامل: 2000 محطة، إرسال مباشر، محسّن ذكي.",
+    },
+    pl: {
+      tagline:
+        "Pełna dyspozytornia dostaw: 2000 przystanków, dyspozycja na żywo, inteligentny optymalizator.",
+    },
+  },
+  "delivery-fleet": {
+    "fr-CA": {
+      tagline: "Plusieurs équipes sur la route. 6 000 arrêts par mois, 15 chauffeurs.",
+      features: [
+        "6 000 arrêts de livraison par mois, 15 chauffeurs",
+        "Tout ce qui est inclus dans Delivery Pro",
+        "Optimiseur intelligent et répartition en direct sur chaque tournée",
+        "Rapport d'exceptions quotidien : arrêts échoués, sautés et en retard",
+        "Dossiers de clôture et exports pour toutes les équipes",
+        "Soutien prioritaire",
+      ],
+    },
+    es: {
+      tagline: "Varias cuadrillas en ruta. 6.000 paradas al mes, 15 conductores.",
+    },
+    "pt-BR": {
+      tagline: "Várias equipes na estrada. 6.000 paradas por mês, 15 motoristas.",
+    },
+    de: {
+      tagline: "Mehrere Teams unterwegs. 6.000 Stopps pro Monat, 15 Fahrer.",
+    },
+    it: {
+      tagline: "Più squadre su strada. 6.000 fermate al mese, 15 autisti.",
+    },
+    zh: {
+      tagline: "多支车队同时上路。每月 6,000 个站点，15 名司机。",
+    },
+    vi: {
+      tagline: "Nhiều đội trên đường. 6.000 điểm dừng mỗi tháng, 15 tài xế.",
+    },
+    tl: {
+      tagline: "Maraming crew sa kalsada. 6,000 hinto kada buwan, 15 driver.",
+    },
+    ar: {
+      tagline: "عدة أطقم على الطريق. 6000 محطة شهرياً و15 سائقاً.",
+    },
+    pl: {
+      tagline: "Kilka ekip w trasie. 6000 przystanków miesięcznie, 15 kierowców.",
+    },
+  },
+  "enterprise-field": {
+    "fr-CA": {
+      tagline: "Forfaits sur mesure pour les grandes équipes de terrain et organisations.",
+    },
+    es: {
+      tagline: "Planes a medida para grandes equipos de campo y organizaciones.",
+    },
+    "pt-BR": {
+      tagline: "Planos sob medida para grandes equipes de campo e organizações.",
+    },
+    de: {
+      tagline: "Individuelle Tarife für große Außendienstteams und Organisationen.",
+    },
+    it: {
+      tagline: "Piani su misura per grandi squadre sul campo e organizzazioni.",
+    },
+    zh: {
+      tagline: "为大型现场团队和机构定制的方案。",
+    },
+    vi: {
+      tagline: "Gói tùy chỉnh cho đội hiện trường lớn và tổ chức.",
+    },
+    tl: {
+      tagline: "Pasadyang plano para sa malalaking field team at organisasyon.",
+    },
+    ar: {
+      tagline: "خطط مخصّصة لفرق العمل الميدانية الكبيرة والمؤسسات.",
+    },
+    pl: {
+      tagline: "Indywidualne plany dla dużych zespołów terenowych i organizacji.",
+    },
+  },
+};
+
+// Plans that had no localized entry at all still need a localized billing period;
+// every one of them bills monthly, exactly like Plus.
+const MONTHLY_PERIOD_INHERIT = [
+  "crew10",
+  "crew25",
+  "delivery-lite",
+  "delivery-pro",
+  "delivery-fleet",
+];
+
+for (const [planId, byLocale] of Object.entries(DELIVERY_ERA_COPY)) {
+  const target = (PLAN_COPY[planId] ??= {});
+  for (const [code, copy] of Object.entries(byLocale)) {
+    const locale = code as LocaleCode;
+    const period = MONTHLY_PERIOD_INHERIT.includes(planId)
+      ? PLAN_COPY.plus?.[locale]?.period
+      : undefined;
+    target[locale] = { ...(period ? { period } : {}), ...target[locale], ...copy };
+  }
+}
+
 const DEFAULTS = Object.fromEntries(DEFAULT_PLANS.map((p) => [p.id, p]));
 
 /**
@@ -537,14 +938,81 @@ const DEFAULTS = Object.fromEntries(DEFAULT_PLANS.map((p) => [p.id, p]));
  */
 const FEATURE_COPY: Partial<Record<LocaleCode, Record<string, string>>> = {};
 for (const plan of DEFAULT_PLANS) {
+  // A translated array is zipped against the English array it was written for.
+  // When a plan's English bullets are revised, older translations still line up
+  // with the legacy snapshot, so every unchanged bullet keeps its translation and
+  // only genuinely new bullets fall back to English. Zipping a stale translation
+  // against a reordered English list would silently mislabel bullets.
+  const legacy = LEGACY_SHIPPED.find((l) => l.id === plan.id)?.features;
   for (const [code, copy] of Object.entries(PLAN_COPY[plan.id] ?? {})) {
     const translated = (copy as PlanCopy).features;
-    if (!translated || translated.length !== plan.features.length) continue;
+    if (!translated) continue;
+    // Legacy wins the tie: `free` kept six bullets but reordered them, so matching
+    // on length alone against the current list would attach the wrong translation.
+    const english =
+      legacy && translated.length === legacy.length
+        ? legacy
+        : translated.length === plan.features.length
+          ? plan.features
+          : null;
+    if (!english) continue;
     const bucket = (FEATURE_COPY[code as LocaleCode] ??= {});
-    plan.features.forEach((english, i) => {
+    english.forEach((source, i) => {
       const value = translated[i];
-      if (value && !bucket[english]) bucket[english] = value;
+      if (value && !bucket[source]) bucket[source] = value;
     });
+  }
+}
+
+/**
+ * Bullets introduced by the delivery/field split. They are new English strings, so no
+ * shipped translation array lines up with them by index and the zip above cannot reach
+ * them. Mapped explicitly here, then merged in without overwriting anything already
+ * resolved. Plan names stay English on purpose, exactly like the rest of the catalog.
+ */
+const SPLIT_ERA_BULLETS: Record<string, Partial<Record<LocaleCode, string>>> = {
+  "Delivery routes come with the Delivery plans": {
+    "fr-CA": "Les tournées de livraison sont incluses dans les forfaits Delivery",
+    es: "Las rutas de entrega vienen con los planes Delivery",
+    "pt-BR": "As rotas de entrega vêm nos planos Delivery",
+    de: "Lieferrouten gibt es in den Delivery-Tarifen",
+    it: "I giri di consegna sono nei piani Delivery",
+    zh: "配送路线包含在 Delivery 方案中",
+    vi: "Lộ trình giao hàng có trong các gói Delivery",
+    tl: "Kasama ang delivery routes sa mga Delivery plan",
+    ar: "مسارات التوصيل متوفّرة في خطط Delivery",
+    pl: "Trasy dostaw są w planach Delivery",
+  },
+  "Unlimited proof-of-delivery photos on every stop": {
+    "fr-CA": "Photos de preuve de livraison illimitées à chaque arrêt",
+    es: "Fotos de prueba de entrega ilimitadas en cada parada",
+    "pt-BR": "Fotos de comprovação de entrega ilimitadas em cada parada",
+    de: "Unbegrenzte Liefernachweis-Fotos an jedem Stopp",
+    it: "Foto di prova di consegna illimitate a ogni fermata",
+    zh: "每个站点均可无限拍摄送达凭证照片",
+    vi: "Ảnh xác thực giao hàng không giới hạn ở mọi điểm dừng",
+    tl: "Walang limitasyong proof-of-delivery na litrato sa bawat hinto",
+    ar: "صور إثبات تسليم غير محدودة في كل محطة",
+    pl: "Nieograniczone zdjęcia potwierdzenia dostawy na każdym przystanku",
+  },
+  "Everything in Delivery Lite": {
+    "fr-CA": "Tout ce qu'offre Delivery Lite",
+    es: "Todo lo de Delivery Lite",
+    "pt-BR": "Tudo do Delivery Lite",
+    de: "Alles aus Delivery Lite",
+    it: "Tutto ciò che offre Delivery Lite",
+    zh: "包含 Delivery Lite 全部功能",
+    vi: "Mọi thứ trong Delivery Lite",
+    tl: "Lahat ng nasa Delivery Lite",
+    ar: "كل ما في Delivery Lite",
+    pl: "Wszystko z planu Delivery Lite",
+  },
+};
+
+for (const [source, byLocale] of Object.entries(SPLIT_ERA_BULLETS)) {
+  for (const [code, value] of Object.entries(byLocale)) {
+    const bucket = (FEATURE_COPY[code as LocaleCode] ??= {});
+    bucket[source] ??= value;
   }
 }
 

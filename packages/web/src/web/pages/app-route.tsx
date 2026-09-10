@@ -31,6 +31,7 @@ import { useT } from "../lib/i18n";
 import { parseStops } from "../lib/parse-stops";
 import { RouteMap } from "../components/route-map";
 import { STATUS_LABEL, STATUS_STYLE } from "./app-routes";
+import { canRunDeliveries } from "../lib/roles";
 
 const FIELD =
   "w-full rounded-[8px] border border-line bg-ink px-3 py-2 text-[13.5px] text-chalk outline-none focus:border-amber";
@@ -61,7 +62,7 @@ export default function AppRoutePage() {
   const org = useOrg();
   const team = useTeam();
   const detail = useRoute(routeId);
-  const canManage = org.data?.role !== "field";
+  const canManage = canRunDeliveries(org.data?.role);
 
   const addStops = useAddStops();
   const liveStop = useAddLiveStop();
@@ -190,9 +191,7 @@ export default function AppRoutePage() {
               </span>
             )}
 
-            <p className="text-[13px] text-fog">
-              {t("routes.stopsCount", { n: stops.length })}
-            </p>
+            <p className="text-[13px] text-fog">{t("routes.stopsCount", { n: stops.length })}</p>
 
             {typeof route.planMetres === "number" && route.planMetres > 0 && (
               <p className="text-[13px] text-fog">
@@ -417,9 +416,7 @@ export default function AppRoutePage() {
                     </span>
 
                     <div className="min-w-[200px] flex-1">
-                      <p className="text-[13.5px] text-chalk">
-                        {stop.address ?? stop.addressRaw}
-                      </p>
+                      <p className="text-[13.5px] text-chalk">{stop.address ?? stop.addressRaw}</p>
                       {(stop.recipientName || stop.reference) && (
                         <p className="text-[12.5px] text-fog">
                           {[stop.recipientName, stop.reference].filter(Boolean).join(" · ")}
@@ -508,9 +505,54 @@ export default function AppRoutePage() {
                 value={paste}
                 onChange={(e) => setPaste(e.target.value)}
                 rows={5}
-                placeholder={"12 Main St, Moncton NB, Jane Doe, jane@example.com\n88 Elm Ave, Moncton NB"}
+                placeholder={
+                  "12 Main St, Moncton NB, Jane Doe, jane@example.com\n88 Elm Ave, Moncton NB"
+                }
                 className={cn(FIELD, "mt-3 font-mono text-[12.5px]")}
               />
+
+              {/*
+                A CSV file lands in the same box the dispatcher can type into, so the
+                existing parser, preview and 300-stop cap all apply unchanged — and the
+                dispatcher can fix a bad row before creating anything.
+              */}
+              <div className="mt-2 flex flex-wrap items-center gap-2">
+                <label
+                  className={cn(
+                    "cursor-pointer rounded-[8px] border border-line px-3 py-1.5 text-[12px] text-fog transition-colors",
+                    "hover:border-amber/60 hover:text-chalk",
+                  )}
+                >
+                  <input
+                    type="file"
+                    aria-label={t("routes.csvChoose")}
+                    accept=".csv,.txt,text/csv,text/plain"
+                    className="hidden"
+                    onChange={async (e) => {
+                      const file = e.target.files?.[0];
+                      // Reset first: picking the same file twice must fire onChange again.
+                      e.target.value = "";
+                      if (!file) return;
+                      if (file.size > 1_000_000) {
+                        setError(t("routes.csvError"));
+                        return;
+                      }
+                      try {
+                        const text = (await file.text()).replace(/\r\n?/g, "\n");
+                        setError(null);
+                        setNotice(t("routes.csvLoaded", { file: file.name }));
+                        setPaste((prev) =>
+                          prev.trim().length > 0 ? `${prev.replace(/\n*$/, "")}\n${text}` : text,
+                        );
+                      } catch {
+                        setError(t("routes.csvError"));
+                      }
+                    }}
+                  />
+                  {t("routes.csvChoose")}
+                </label>
+                <span className="text-[11.5px] text-fog">{t("routes.csvHint")}</span>
+              </div>
 
               {paste.trim().length > 0 && (
                 <div className="mt-3 rounded-[8px] border border-line bg-ink p-3">

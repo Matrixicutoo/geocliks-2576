@@ -1,5 +1,6 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { orpc } from "@/lib/api";
+import { useHasSession } from "@/hooks/use-session";
 
 /** No websockets in this stack — threads and badges poll on a short interval instead. */
 const POLL_MS = 15_000;
@@ -11,8 +12,15 @@ export function useConversations() {
 }
 
 export function useUnreadMessages() {
+  // The tab bar mounts this on every screen, including the signed-out capture screen.
+  // Without the gate it would poll an unauthenticated endpoint every 15 seconds.
+  const { hasSession } = useHasSession();
   return useQuery(
-    orpc.messages.unreadCount.queryOptions({ staleTime: 5_000, refetchInterval: POLL_MS }),
+    orpc.messages.unreadCount.queryOptions({
+      enabled: hasSession,
+      staleTime: 5_000,
+      refetchInterval: POLL_MS,
+    }),
   );
 }
 
