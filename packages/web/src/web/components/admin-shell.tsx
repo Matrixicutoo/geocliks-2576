@@ -65,7 +65,7 @@ export function AdminShell({
             </div>
             <div className="flex shrink-0 flex-wrap items-center justify-end gap-2">
               {actions}
-              <LanguageSelect compact />
+              <LanguageSelect compact tone="amber" />
             </div>
           </div>
         </header>

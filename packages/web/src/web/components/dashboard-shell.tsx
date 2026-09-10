@@ -197,7 +197,7 @@ export function DashboardShell({
                   {notify.enabled ? <Bell className="size-4" /> : <BellOff className="size-4" />}
                 </button>
               )}
-              <LanguageSelect compact />
+              <LanguageSelect compact tone="amber" />
               <AccountMenu />
             </div>
           </div>

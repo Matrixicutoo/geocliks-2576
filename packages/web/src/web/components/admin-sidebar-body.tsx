@@ -1,6 +1,7 @@
 import { Link, useLocation } from "wouter";
 import { ArrowLeft } from "lucide-react";
 import { cn } from "../lib/utils";
+import { amberFill } from "../lib/chrome";
 import { type TKey, useT } from "../lib/i18n";
 import { useAdminMe } from "../queries/admin";
 
@@ -47,8 +48,7 @@ export function AdminSidebarBody({
               to={item.href}
               className={cn(
                 "flex items-center rounded-[8px] gap-2 border-l-2 bg-amber px-2.5 py-1.5 text-[12.5px] leading-tight text-on-amber",
-                "transition-[background-color,box-shadow] duration-150",
-                "hover:bg-amber-hover hover:shadow-[inset_0_0_0_1px_var(--c-on-amber)]",
+                amberFill,
                 active ? "border-on-amber font-bold" : "border-transparent font-medium",
               )}
             >

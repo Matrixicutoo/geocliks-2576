@@ -3,6 +3,7 @@ import { Link, useLocation } from "wouter";
 import { Menu, X } from "lucide-react";
 import { useLocale } from "../lib/i18n";
 import { cn } from "../lib/utils";
+import { amberFill, amberRing } from "../lib/chrome";
 import { Logo } from "./logo";
 
 /**
@@ -83,11 +84,16 @@ export function MenuDrawer({
         aria-label={t("shell.menu")}
         aria-expanded={open}
         aria-haspopup="menu"
-        className="rounded-[8px] relative flex size-9 shrink-0 items-center justify-center border border-line text-fog transition-colors hover:border-amber hover:text-amber lg:hidden"
+        className={cn(
+          "rounded-[8px] relative flex size-9 shrink-0 items-center justify-center",
+          "border border-transparent lg:hidden",
+          amberFill,
+          open && amberRing,
+        )}
       >
         <Menu className="size-[18px]" />
         {badge > 0 && (
-          <span className="mono absolute -right-1 -top-1 min-w-[16px] rounded-[5px] bg-amber px-1 text-[10px] font-bold leading-[16px] text-on-amber">
+          <span className="mono absolute -right-1 -top-1 min-w-[16px] rounded-[5px] border border-amber bg-on-amber px-1 text-[10px] font-bold leading-[16px] text-amber">
             {badge}
           </span>
         )}

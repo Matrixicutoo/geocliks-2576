@@ -13,6 +13,7 @@ import { useOrg } from "../queries/orgs";
 import { useAdminMe } from "../queries/admin";
 import { useUnreadMessages } from "../queries/messages";
 import { cn } from "../lib/utils";
+import { amberFill } from "../lib/chrome";
 import { SUPPORT_EMAIL } from "../lib/support";
 import { useTheme } from "../lib/theme";
 import { type TKey, useLocale } from "../lib/i18n";
@@ -146,8 +147,7 @@ export function SidebarBody({
                   // Orange fill on every tile, so the pointer needs its own answer: the fill
                   // deepens and an ink hairline rings the tile. `amber-hover` stays light
                   // enough for the ink label, which `amber-deep` is not.
-                  "transition-[background-color,box-shadow] duration-150",
-                  "hover:bg-amber-hover hover:shadow-[inset_0_0_0_1px_var(--c-on-amber)]",
+                  amberFill,
                   // Every row is filled now, so the current page is marked by weight and an ink
                   // edge instead of by background.
                   active ? "border-on-amber font-bold" : "border-transparent font-medium",

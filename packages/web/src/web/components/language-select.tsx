@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { Check, ChevronDown, Globe } from "lucide-react";
 import { LOCALES } from "../../api/lib/locales";
 import { cn } from "../lib/utils";
+import { amberFill, amberRing, amberRow } from "../lib/chrome";
 import { useLocale } from "../lib/i18n";
 
 /**
@@ -13,10 +14,17 @@ export function LanguageSelect({
   compact = false,
   bare = false,
   drop = "down",
+  tone = "outline",
 }: {
   compact?: boolean;
   /** Borderless variant for the dark marketing header. */
   bare?: boolean;
+  /**
+   * `amber` fills the trigger like the menu tiles it sits beside — that is what the app
+   * headers use. `outline` is the quiet version for the sidebar's settings card, where the
+   * control is one row of a bordered list and a fill would shout over the rows around it.
+   */
+  tone?: "outline" | "amber";
   /**
    * Which way the compact panel opens. The sidebar copy sits near the bottom of the
    * screen, so it must open upward or the last few languages fall off-screen.
@@ -52,14 +60,29 @@ export function LanguageSelect({
         aria-label={t("language.title")}
         aria-expanded={open}
         className={cn(
-          "flex items-center gap-1.5 transition-colors",
-          bare
-            ? "px-1 py-2 text-[13px] font-semibold text-white hover:text-amber"
-            : "gap-2 rounded-[12px] border border-line text-fog hover:border-amber/60 hover:text-chalk",
+          "flex items-center gap-1.5",
+          bare && "px-1 py-2 text-[13px] font-semibold text-white transition-colors hover:text-amber",
+          !bare && "gap-2 rounded-[12px]",
+          !bare &&
+            tone === "amber" && [
+              amberFill,
+              "border border-transparent font-semibold",
+              open && amberRing,
+            ],
+          !bare &&
+            tone === "outline" &&
+            "border border-line text-fog transition-colors hover:border-amber/60 hover:text-chalk",
           !bare && (compact ? "px-2 py-1.5 text-[11px]" : "w-full px-3 py-2 text-[12px]"),
         )}
       >
-        <Globe className={cn("size-4 shrink-0", bare ? "text-white" : "size-3.5 text-amber")} />
+        <Globe
+          className={cn(
+            "size-4 shrink-0",
+            bare && "text-white",
+            !bare && "size-3.5",
+            !bare && (tone === "amber" ? "text-on-amber" : "text-amber"),
+          )}
+        />
         <span
           className={cn(
             "truncate",
@@ -90,10 +113,14 @@ export function LanguageSelect({
               useWorkspaceDefault();
               setOpen(false);
             }}
-            className="rounded-[8px] mono flex w-full items-center justify-between gap-2 border-b border-line px-3 py-2 text-start text-[10px] uppercase tracking-widest text-fog hover:bg-ink-3 hover:text-chalk"
+            className={cn(
+              "rounded-[8px] mono flex w-full items-center justify-between gap-2 border-b border-line",
+              "px-3 py-2 text-start text-[10px] uppercase tracking-widest text-fog",
+              amberRow,
+            )}
           >
             {t("language.followWorkspace")}
-            {!override && <Check className="size-3.5 text-amber" />}
+            {!override && <Check className="size-3.5 text-amber group-hover:text-on-amber" />}
           </button>
           {LOCALES.map((l) => (
             <button
@@ -104,17 +131,20 @@ export function LanguageSelect({
                 setOpen(false);
               }}
               className={cn(
-                "flex w-full items-center justify-between gap-2 px-3 py-2 text-start text-[12px] hover:bg-ink-3",
-                override === l.code ? "text-chalk" : "text-fog",
+                "flex w-full items-center justify-between gap-2 px-3 py-2 text-start text-[12px]",
+                amberRow,
+                override === l.code ? "font-semibold text-chalk" : "text-fog",
               )}
             >
               <span className="truncate">
                 {l.native}
-                <span className="mono ms-2 text-[10px] uppercase tracking-widest text-fog">
+                <span className="mono ms-2 text-[10px] uppercase tracking-widest text-fog group-hover:text-on-amber">
                   {l.code}
                 </span>
               </span>
-              {override === l.code && <Check className="size-3.5 shrink-0 text-amber" />}
+              {override === l.code && (
+                <Check className="size-3.5 shrink-0 text-amber group-hover:text-on-amber" />
+              )}
             </button>
           ))}
         </div>
