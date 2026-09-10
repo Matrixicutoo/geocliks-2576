@@ -331,6 +331,18 @@
   animation: tm-rise 0.6s cubic-bezier(0.16, 1, 0.3, 1) both;
 }
 
+/* The dashboard nav sheet slides in from the left edge it is docked to. Named rather than a
+   `@utility` because it is referenced through an arbitrary `animate-[...]` value that is
+   already wrapped in `motion-safe:`. */
+@keyframes nav-drawer-in {
+  from {
+    transform: translateX(-100%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+
 @keyframes tm-pulse-ring {
   0% {
     box-shadow: 0 0 0 0 color-mix(in oklab, var(--c-verified) 40%, transparent);
