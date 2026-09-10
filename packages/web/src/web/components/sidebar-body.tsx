@@ -142,12 +142,15 @@ export function SidebarBody({
                 key={item.href}
                 to={item.href}
                 className={cn(
-                  "flex items-center rounded-[8px] gap-2 border-l-2 bg-amber px-2.5 py-1.5 text-[12px] leading-tight text-on-amber transition-colors",
+                  "flex items-center rounded-[8px] gap-2 border-l-2 bg-amber px-2.5 py-1.5 text-[12px] leading-tight text-on-amber",
+                  // Orange fill on every tile, so the pointer needs its own answer: the fill
+                  // deepens and an ink hairline rings the tile. `amber-hover` stays light
+                  // enough for the ink label, which `amber-deep` is not.
+                  "transition-[background-color,box-shadow] duration-150",
+                  "hover:bg-amber-hover hover:shadow-[inset_0_0_0_1px_var(--c-on-amber)]",
                   // Every row is filled now, so the current page is marked by weight and an ink
                   // edge instead of by background.
-                  active
-                    ? "border-on-amber font-bold"
-                    : "border-transparent font-medium hover:bg-amber-deep",
+                  active ? "border-on-amber font-bold" : "border-transparent font-medium",
                 )}
               >
                 <item.icon className="size-4 shrink-0 text-on-amber" />

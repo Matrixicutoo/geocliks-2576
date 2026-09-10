@@ -22,6 +22,9 @@
   --c-chalk: #0b0e13;
   --c-amber: #ffb021;
   --c-amber-deep: #b06c00;
+  /* Hover fill for amber-filled controls: a deeper orange that still reads as a light fill,
+     so `on-amber` ink text keeps its contrast where `amber-deep` would swallow it. */
+  --c-amber-hover: #ff8f00;
   --c-verified: #0f9d58;
   --c-alert: #d93a28;
   --c-sky: #1b7fd4;
@@ -47,6 +50,7 @@
   --c-chalk: #e8edf4;
   --c-amber: #ffb021;
   --c-amber-deep: #e08a00;
+  --c-amber-hover: #ff8f00;
   --c-verified: #1fc16b;
   --c-alert: #ff5a47;
   --c-sky: #48a9ff;
@@ -73,6 +77,7 @@
   --color-line: var(--c-line);
   --color-amber: var(--c-amber);
   --color-amber-deep: var(--c-amber-deep);
+  --color-amber-hover: var(--c-amber-hover);
   --color-verified: var(--c-verified);
   --color-alert: var(--c-alert);
   --color-sky: var(--c-sky);
