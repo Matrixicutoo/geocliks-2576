@@ -865,7 +865,9 @@ export default function Capture() {
               <Text
                 style={[
                   styles.selectorLabel,
-                  { color: colors.primaryForeground, fontFamily: Fonts?.mono },
+                  // Sora bold, like the mode tabs and the signature tab: the amber bars are
+                  // controls, and their labels should carry a control's weight.
+                  { color: colors.primaryForeground, fontFamily: Fonts?.display },
                 ]}
               >
                 {tr("common.project").toUpperCase()}
@@ -896,7 +898,9 @@ export default function Capture() {
               <Text
                 style={[
                   styles.selectorLabel,
-                  { color: colors.primaryForeground, fontFamily: Fonts?.mono },
+                  // Sora bold, like the mode tabs and the signature tab: the amber bars are
+                  // controls, and their labels should carry a control's weight.
+                  { color: colors.primaryForeground, fontFamily: Fonts?.display },
                 ]}
               >
                 {tr("capture.evidenceType").toUpperCase()}
@@ -1396,7 +1400,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderRadius: 8,
     paddingHorizontal: 12,
-    paddingVertical: 12,
+    paddingVertical: 7,
     marginTop: 10,
   },
   podToggleText: { fontSize: 15.5, fontWeight: "700", letterSpacing: 0.2, textAlign: "center" },
