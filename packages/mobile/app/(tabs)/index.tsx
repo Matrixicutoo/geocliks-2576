@@ -123,6 +123,7 @@ export default function Capture() {
   // driven by Pressable's `pressed` state, so the bars react to both a mouse and a finger.
   const [projectHover, setProjectHover] = useState(false);
   const [tagHover, setTagHover] = useState(false);
+  const [signHover, setSignHover] = useState(false);
   const [tag, setTag] = useState<QueuedPhoto["tag"]>("general");
   // Last tag used outside CLOCK mode — restored on launch and when returning to photo/video.
   const [photoTag, setPhotoTag] = useState<QueuedPhoto["tag"]>("general");
@@ -1113,39 +1114,69 @@ export default function Capture() {
                 // Ticking it on is the moment the crew member wants to collect a signature, so
                 // open the pad right there instead of making them hunt for it.
                 if (next && !signaturePath) setSignOpen(true);
+                // Unticking takes the pad off the screen, so whatever was drawn on it goes too.
+                // A signature nobody can see before sealing is not one anybody should be sending.
+                if (!next) {
+                  setSignOpen(false);
+                  setSignaturePath(null);
+                  setSignatureBox(null);
+                  setPodError(false);
+                }
               }}
+              onHoverIn={() => setSignHover(true)}
+              onHoverOut={() => setSignHover(false)}
+              accessibilityRole="checkbox"
+              accessibilityState={{ checked: requireSignature }}
               accessibilityLabel={tr("capture.requireSignature")}
-              style={[
+              // The same amber tab as the project and evidence-type selectors above: this is the
+              // control that decides whether a signature gets collected at all, so it reads as an
+              // action rather than a line of fine print. Ticked fills solid, unticked is the same
+              // tab left outlined, and both deepen under a pointer.
+              style={({ pressed }) => [
                 styles.podToggle,
-                { borderColor: requireSignature ? colors.amber : colors.border },
+                {
+                  borderColor: pressed || signHover ? colors.amberDeep : colors.amber,
+                  backgroundColor: requireSignature
+                    ? pressed || signHover
+                      ? colors.amberDeep
+                      : colors.amber
+                    : pressed || signHover
+                      ? "rgba(255,176,33,0.14)"
+                      : "transparent",
+                },
               ]}
             >
               <Ionicons
                 name={requireSignature ? "checkbox" : "square-outline"}
                 size={16}
-                color={requireSignature ? colors.amber : colors.mutedForeground}
+                color={requireSignature ? colors.primaryForeground : colors.amber}
               />
               <Text
                 style={[
                   styles.podToggleText,
-                  { color: requireSignature ? colors.amber : colors.foreground },
+                  { color: requireSignature ? colors.primaryForeground : colors.amber },
                 ]}
               >
                 {tr("capture.requireSignature")}
               </Text>
             </Pressable>
 
-            <SignaturePad
-              value={signaturePath}
-              valueBox={signatureBox}
-              open={signOpen}
-              setOpen={setSignOpen}
-              onChange={(path, box) => {
-                setSignaturePath(path);
-                setSignatureBox(box);
-                setPodError(false);
-              }}
-            />
+            {/* The pad only exists once a signature is actually being collected. It used to sit
+                there open on every delivery, so every crew member scrolled past an empty box they
+                had no intention of using. */}
+            {requireSignature ? (
+              <SignaturePad
+                value={signaturePath}
+                valueBox={signatureBox}
+                open={signOpen}
+                setOpen={setSignOpen}
+                onChange={(path, box) => {
+                  setSignaturePath(path);
+                  setSignatureBox(box);
+                  setPodError(false);
+                }}
+              />
+            ) : null}
 
             {podError ? (
               <Text style={[styles.podError, { color: colors.alert }]}>
@@ -1355,6 +1386,7 @@ const styles = StyleSheet.create({
   podToggle: {
     flexDirection: "row",
     alignItems: "center",
+    justifyContent: "center",
     gap: 8,
     borderWidth: 1,
     borderRadius: 8,
@@ -1362,7 +1394,7 @@ const styles = StyleSheet.create({
     paddingVertical: 10,
     marginTop: 10,
   },
-  podToggleText: { fontSize: 12.5 },
+  podToggleText: { fontSize: 12.5, textAlign: "center" },
   podError: { fontSize: 11.5, marginTop: 8, lineHeight: 16 },
   gpsRow: {
     flexDirection: "row",
