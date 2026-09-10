@@ -1172,21 +1172,33 @@ export default function Capture() {
           </View>
         ) : null}
 
-        <View style={[styles.gpsRow, { borderColor: colors.border }]}>
+        {/* The fix that is about to be sealed into the shot. It is a readout, not a control, so
+            it is a quiet line rather than a boxed row competing with the tabs above it — except
+            when location is off, where it is the only warning that the proof will carry no
+            coordinates and it keeps the amber. */}
+        <View style={styles.gpsRow}>
           <Ionicons
             name={fix.lat != null ? "location" : "location-outline"}
-            size={14}
+            size={12}
             color={fix.lat != null ? colors.verified : colors.amber}
           />
-          <Text style={[styles.gps, { color: colors.foreground, fontFamily: Fonts?.mono }]}>
+          <Text
+            style={[
+              styles.gps,
+              {
+                color: locDenied ? colors.amber : colors.mutedForeground,
+                fontFamily: Fonts?.mono,
+              },
+            ]}
+          >
             {locDenied ? tr("capture.locationOff") : formatCoords(fix.lat, fix.lng)}
           </Text>
           <Pressable
             onPress={() => void refreshFix()}
-            hitSlop={10}
+            hitSlop={12}
             accessibilityLabel={tr("capture.refreshFix")}
           >
-            <Ionicons name="refresh" size={15} color={colors.mutedForeground} />
+            <Ionicons name="refresh" size={13} color={colors.mutedForeground} />
           </Pressable>
         </View>
 
@@ -1385,14 +1397,12 @@ const styles = StyleSheet.create({
   gpsRow: {
     flexDirection: "row",
     alignItems: "center",
-    gap: 8,
-    borderWidth: 1,
-    paddingHorizontal: 10,
-    paddingVertical: 9,
-    marginTop: 8,
-    borderRadius: 8,
+    gap: 6,
+    paddingHorizontal: 2,
+    paddingVertical: 2,
+    marginTop: 10,
   },
-  gps: { fontSize: 11, flex: 1 },
+  gps: { fontSize: 10.5, flex: 1 },
   status: { fontSize: 11, marginTop: 6, textAlign: "center", paddingHorizontal: 16 },
   shutterRow: { alignItems: "center", marginTop: 12 },
   shutter: {
