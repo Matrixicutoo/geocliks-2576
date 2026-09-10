@@ -85,12 +85,17 @@ export default function AppBilling() {
             <div className="rounded-[12px] border border-amber/40 bg-amber/10 p-4">
               <p className="label text-amber">{t("billing.current")}</p>
               <p className="mt-1 font-display text-2xl font-bold text-chalk">{current.name}</p>
-              <p className="mono mt-1 text-[11px] text-fog">
-                {current.priceCents > 0
-                  ? `${current.priceLabel} / ${current.period}`
-                  : current.priceLabel}
+              {/* The price is what people come to this page to check, so it is set at the
+                  same weight as on the public pricing table instead of being a footnote
+                  under the plan name. The period sits on its own line — "$29 / per month"
+                  on one line breaks badly in the languages with long period wording. */}
+              <p className="mt-2 font-display text-3xl font-bold leading-none text-chalk">
+                {current.priceLabel}
               </p>
-              <p className="mt-2 text-[12.5px] leading-relaxed text-fog">{current.tagline}</p>
+              <p className="mono mt-1.5 text-[10.5px] uppercase tracking-widest text-fog">
+                {current.period}
+              </p>
+              <p className="mt-3 text-[12.5px] leading-relaxed text-fog">{current.tagline}</p>
             </div>
             <div className="grid gap-4 sm:grid-cols-2">
               <Meter
@@ -158,13 +163,16 @@ export default function AppBilling() {
                       active ? "border-amber" : "border-line",
                     )}
                   >
-                    <p className="font-display text-[17px] font-bold text-chalk">{plan.name}</p>
-                    <p className="mono mt-1 text-[11px] uppercase tracking-widest text-amber">
-                      {plan.priceCents > 0
-                        ? `${plan.priceLabel} / ${plan.period}`
-                        : plan.priceLabel}
+                    <p className="mono text-[11px] uppercase tracking-[0.2em] text-amber">
+                      {plan.name}
                     </p>
-                    <p className="mt-2 text-[12.5px] leading-relaxed text-fog">{plan.tagline}</p>
+                    <p className="mt-2.5 font-display text-3xl font-bold leading-none text-chalk">
+                      {plan.priceLabel}
+                    </p>
+                    <p className="mono mt-1.5 text-[10.5px] uppercase tracking-widest text-fog">
+                      {plan.period}
+                    </p>
+                    <p className="mt-2.5 text-[12.5px] leading-relaxed text-fog">{plan.tagline}</p>
 
                     <ul className="mt-4 flex-1 space-y-1.5">
                       {plan.features.map((feature) => (
