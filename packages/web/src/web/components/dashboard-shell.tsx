@@ -26,7 +26,6 @@ import { useWorkspaceTheme } from "../lib/theme";
 import { type TKey, useLocale, useWorkspaceLocale } from "../lib/i18n";
 import { Logo } from "./logo";
 import { LanguageSelect } from "./language-select";
-import { AccountMenu } from "./account-menu";
 import { NavDrawer } from "./nav-drawer";
 import { SidebarBody } from "./sidebar-body";
 import { canManageWatermarks, canManageWorkspace, canUseDelivery, canUseField } from "../lib/roles";
@@ -198,7 +197,6 @@ export function DashboardShell({
                 </button>
               )}
               <LanguageSelect compact tone="amber" />
-              <AccountMenu />
             </div>
           </div>
         </header>
