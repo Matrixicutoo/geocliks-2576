@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { Link } from "wouter";
 import { FolderKanban, Plus, Loader2, X, Trash2, Archive } from "lucide-react";
 import { DashboardShell } from "../components/dashboard-shell";
@@ -14,6 +14,10 @@ import { formatStamp } from "../components/evidence-card";
 import { cn } from "../lib/utils";
 import { type TKey, useT } from "../lib/i18n";
 import { canManageWorkspace } from "../lib/roles";
+import { useInfiniteScroll } from "../lib/use-infinite-scroll";
+
+/** Project cards revealed per scroll batch. */
+const PAGE = 12;
 
 const CATEGORIES = [
   "construction",
@@ -187,6 +191,21 @@ export default function ProjectsPage() {
   const [rowError, setRowError] = useState<string | null>(null);
   const destroy = useDestroyProject();
   const archive = useRemoveProject();
+  /**
+   * Cover photos are heavy, so the list reveals a screenful at a time and grows as you scroll
+   * rather than painting every project's image at once.
+   */
+  const [shown, setShown] = useState(PAGE);
+  const all = projects.data ?? [];
+  const visible = all.slice(0, shown);
+  const showMore = useCallback(() => setShown((n) => n + PAGE), []);
+  const sentinel = useInfiniteScroll({
+    hasMore: shown < all.length,
+    loading: projects.isLoading,
+    onLoadMore: showMore,
+  });
+  // A filter or a deletion can shrink the list under what is already revealed; start over.
+  useEffect(() => setShown(PAGE), [all.length]);
 
   return (
     <DashboardShell
@@ -221,7 +240,7 @@ export default function ProjectsPage() {
         />
       ) : (
         <div className="grid gap-3 grid-cols-[repeat(auto-fill,minmax(380px,1fr))]">
-          {projects.data?.map((project) => (
+          {visible.map((project) => (
             <div
               key={project.id}
               className="group overflow-hidden rounded-[12px] border border-line bg-ink-2 transition-colors hover:border-amber/50"
@@ -232,6 +251,7 @@ export default function ProjectsPage() {
                     <img
                       src={project.coverUrl}
                       alt=""
+                      loading="lazy"
                       className="h-full w-full object-cover opacity-80 transition-transform duration-500 group-hover:scale-105"
                     />
                   ) : (
@@ -349,6 +369,13 @@ export default function ProjectsPage() {
               )}
             </div>
           ))}
+        </div>
+      )}
+      {/* Scrolling near this reveals the next batch of projects. */}
+      <div ref={sentinel} className="h-px" />
+      {shown < all.length && (
+        <div className="mono mt-4 flex items-center justify-center gap-2 text-[11px] uppercase tracking-widest text-fog">
+          <Loader2 className="size-3.5 animate-spin" /> {t("common.loading")}
         </div>
       )}
 

@@ -1,4 +1,9 @@
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import {
+  useInfiniteQuery,
+  useMutation,
+  useQuery,
+  useQueryClient,
+} from "@tanstack/react-query";
 import { orpc } from "../lib/api";
 
 export type PhotoFilter = {
@@ -26,6 +31,24 @@ export type PhotoFilter = {
 
 export function usePhotos(filter: PhotoFilter = {}) {
   return useQuery(orpc.photos.list.queryOptions({ input: filter, staleTime: 10_000 }));
+}
+
+/**
+ * Same feed as `usePhotos`, paged in as the grid scrolls. A workspace with a few hundred
+ * captures should not fetch and render every tile on first paint.
+ */
+export function useInfinitePhotos(filter: PhotoFilter = {}, pageSize = 36) {
+  return useInfiniteQuery(
+    orpc.photos.list.infiniteOptions({
+      input: (offset: number) => ({ ...filter, limit: pageSize, offset }),
+      initialPageParam: 0,
+      getNextPageParam: (lastPage, allPages) => {
+        const loaded = allPages.reduce((sum, page) => sum + page.photos.length, 0);
+        return loaded < lastPage.total ? loaded : null;
+      },
+      staleTime: 10_000,
+    }),
+  );
 }
 
 export function usePhoto(id: string | null) {

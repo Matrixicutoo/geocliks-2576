@@ -16,11 +16,12 @@ import { EvidenceCard, EvidenceSkeleton } from "../components/evidence-card";
 import { EmptyState } from "../components/empty-state";
 import { PageTitle } from "../components/page-title";
 import { PhotoDrawer } from "../components/photo-drawer";
-import { usePhotos, usePhotoStats, useRemovePhotos } from "../queries/photos";
+import { useInfinitePhotos, usePhotoStats, useRemovePhotos } from "../queries/photos";
 import { useProjects } from "../queries/projects";
 import { useOrg, useUpdateOrg } from "../queries/orgs";
 import { useSeedDemo } from "../queries/demo";
 import { cn } from "../lib/utils";
+import { useInfiniteScroll } from "../lib/use-infinite-scroll";
 import { useT, type TKey } from "../lib/i18n";
 import { canManageWorkspace } from "../lib/roles";
 
@@ -72,18 +73,24 @@ export default function TeamspacePage() {
 
   const stats = usePhotoStats();
   const projects = useProjects();
-  const photos = usePhotos({
+  const photos = useInfinitePhotos({
     tag: tag === "all" ? null : tag,
     projectId,
     search: search.trim() ? search.trim() : null,
-    limit: 60,
+  });
+  const loaded = photos.data?.pages.flatMap((page) => page.photos) ?? [];
+  const total = photos.data?.pages[0]?.total ?? 0;
+  const sentinel = useInfiniteScroll({
+    hasMore: Boolean(photos.hasNextPage),
+    loading: photos.isFetchingNextPage,
+    onLoadMore: photos.fetchNextPage,
   });
   const seed = useSeedDemo();
 
   // A brand-new workspace stays empty until the owner asks for sample data — real evidence only.
   const workspaceEmpty =
     !photos.isLoading &&
-    photos.data?.total === 0 &&
+    total === 0 &&
     !projects.isLoading &&
     (projects.data?.length ?? 0) === 0;
 
@@ -260,7 +267,7 @@ export default function TeamspacePage() {
               <EvidenceSkeleton key={i} />
             ))}
           </div>
-        ) : (photos.data?.photos.length ?? 0) === 0 ? (
+        ) : loaded.length === 0 ? (
           <EmptyState
             icon={ImageOff}
             title={t("teamspace.noMatch.title")}
@@ -284,7 +291,7 @@ export default function TeamspacePage() {
         ) : (
           <>
             <div className="mb-3 flex flex-wrap items-center justify-between gap-2">
-              <p className="label">{t("teamspace.newestFirst", { n: photos.data?.total ?? 0 })}</p>
+              <p className="label">{t("teamspace.newestFirst", { n: total })}</p>
               <div className="flex items-center gap-2">
                 {canDelete && selectMode && selected.length > 0 && (
                   <>
@@ -323,7 +330,7 @@ export default function TeamspacePage() {
               </div>
             </div>
             <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6">
-              {photos.data?.photos.map((photo) => (
+              {loaded.map((photo) => (
                 <EvidenceCard
                   key={photo.id}
                   photo={photo}
@@ -344,6 +351,13 @@ export default function TeamspacePage() {
                 />
               ))}
             </div>
+            {/* Scrolling near this pulls the next page in. */}
+            <div ref={sentinel} className="h-px" />
+            {photos.isFetchingNextPage && (
+              <div className="mono mt-4 flex items-center justify-center gap-2 text-[11px] uppercase tracking-widest text-fog">
+                <Loader2 className="size-3.5 animate-spin" /> {t("common.loading")}
+              </div>
+            )}
           </>
         )}
       </div>
