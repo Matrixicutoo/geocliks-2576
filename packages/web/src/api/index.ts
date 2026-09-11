@@ -23,6 +23,7 @@ import { adminUsers } from "./routes/admin-users";
 import { adminPlans } from "./routes/admin-plans";
 import { adminSite } from "./routes/admin-site";
 import { site } from "./routes/site";
+import { inviteQrImage } from "./lib/invite-qr";
 import { shareMapImage } from "./lib/share-map";
 import { verifyMapImage } from "./lib/verify-map";
 import { handleBillingWebhook } from "./lib/billing-webhook";
@@ -73,6 +74,10 @@ app.get("/api/share/:token/map.png", (c) =>
 app.get("/api/verify/:code/map.png", (c) =>
   verifyMapImage(c.req.param("code"), new URL(c.req.url)),
 );
+
+// The QR square inside an invite email. Public because a mail client fetches it with no session;
+// it encodes the join link for the code in the path and reads nothing from the database.
+app.get("/api/invite/:code/qr.png", (c) => inviteQrImage(c.req.param("code")));
 
 // Push side of billing: Autumn/Stripe calls this when a subscription is created, renewed or
 // cancelled, so a cancellation downgrades the workspace immediately instead of lingering as paid.

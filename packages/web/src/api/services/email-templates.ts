@@ -50,6 +50,25 @@ export function button(href: string, label: string): string {
   </p>`;
 }
 
+/**
+ * The invite QR, pointed at the public `/api/invite/:code/qr.png` route. It has to be a hosted
+ * image rather than an inline data URL or a CID attachment: Gmail strips data URLs outright, and
+ * an attached image turns a one-line invite into a message with a paperclip, which reads as spam.
+ *
+ * Outlook and most desktop clients hide remote images until the reader allows them, so the square
+ * is never the only way in — the button, the pasteable link and the typed code all still work.
+ */
+export function qrBlock(code: string): string {
+  const src = `${siteUrl()}/api/invite/${encodeURIComponent(code)}/qr.png`;
+  return `<p style="margin:18px 0 0;font-size:13px;line-height:1.65;color:#374151">
+       Reading this on a computer? Point your phone camera at this square:
+     </p>
+     <p style="margin:10px 0 0">
+       <img src="${src}" width="150" height="150" alt="QR code to join — or use the invite code below"
+            style="display:block;width:150px;height:150px;border:1px solid #e5e7eb;border-radius:10px" />
+     </p>`;
+}
+
 const ROLE_COPY: Record<string, string> = {
   admin: "Admin — invites, roles, projects and exports.",
   manager: "Manager — projects, reports and share links.",
@@ -96,6 +115,7 @@ export function inviteEmail(params: {
        <a href="${appLink}" style="color:#0d1117;font-weight:600">Open the app with your code already filled in</a>
        — then tap the arrow to create your account.
      </p>
+     ${qrBlock(params.code)}
      <p style="margin:16px 0 0;font-size:12px;color:#6b7280">Invite code: <strong>${params.code.toUpperCase()}</strong></p>`,
     `${params.inviterName} invited ${params.to} to the ${params.workspace} workspace.`,
   );
@@ -103,7 +123,8 @@ export function inviteEmail(params: {
 Role: ${roleLine}${projectsText}
 Accept: ${link}
 Already have the app? Open it prefilled: ${appLink}
-Invite code: ${params.code.toUpperCase()}`;
+Invite code: ${params.code.toUpperCase()}
+Scannable QR: ${siteUrl()}/api/invite/${params.code}/qr.png`;
   return sendEmail({
     to: params.to,
     subject: `${params.inviterName} invited you to ${params.workspace} on GeoCliks`,
