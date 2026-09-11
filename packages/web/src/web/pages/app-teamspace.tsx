@@ -255,7 +255,7 @@ export default function TeamspacePage() {
       {/* Grid */}
       <div className="mt-4">
         {photos.isLoading || seed.isPending ? (
-          <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4">
+          <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6">
             {Array.from({ length: 8 }).map((_, i) => (
               <EvidenceSkeleton key={i} />
             ))}
@@ -322,7 +322,7 @@ export default function TeamspacePage() {
                 )}
               </div>
             </div>
-            <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4">
+            <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6">
               {photos.data?.photos.map((photo) => (
                 <EvidenceCard
                   key={photo.id}
