@@ -1421,7 +1421,7 @@ const styles = StyleSheet.create({
   stopCore: { width: 26, height: 26, borderRadius: 3 },
   modeTabs: {
     flexDirection: "row",
-    marginTop: 12,
+    marginTop: 10,
     marginHorizontal: 16,
     borderWidth: 1,
     borderRadius: 8,
@@ -1431,10 +1431,10 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: "center",
     justifyContent: "center",
-    paddingVertical: 9,
+    paddingVertical: 6,
     borderBottomWidth: 2,
   },
-  modeText: { fontSize: 12.5, letterSpacing: 1.2 },
+  modeText: { fontSize: 11, letterSpacing: 0.6 },
   videoNote: {
     flexDirection: "row",
     alignItems: "flex-start",
