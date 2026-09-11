@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { GitCompareArrows, Loader2, Plus, Trash2, X } from "lucide-react";
 import { DashboardShell } from "../components/dashboard-shell";
 import { EmptyState } from "../components/empty-state";
@@ -6,12 +6,16 @@ import { formatCoords, formatStamp, VerifiedBadge } from "../components/evidence
 import {
   useComparisons,
   useCreateComparison,
-  usePhotos,
+  useInfinitePhotos,
   useRemoveComparison,
 } from "../queries/photos";
 import { useProjects } from "../queries/projects";
 import { cn } from "../lib/utils";
+import { useInfiniteScroll } from "../lib/use-infinite-scroll";
 import { useT } from "../lib/i18n";
+
+/** Comparison pairs revealed per scroll batch. */
+const PAGE = 6;
 
 type PickerPhoto = {
   id: string;
@@ -28,14 +32,21 @@ function PhotoPicker({
   onPick,
   label,
   loading,
+  hasMore,
+  loadingMore,
+  onLoadMore,
 }: {
   photos: PickerPhoto[];
   value: string | null;
   onPick: (id: string) => void;
   label: string;
   loading: boolean;
+  hasMore: boolean;
+  loadingMore: boolean;
+  onLoadMore: () => void;
 }) {
   const t = useT();
+  const sentinel = useInfiniteScroll({ hasMore, loading: loadingMore, onLoadMore });
   return (
     <div className="min-w-0">
       <p className="label mb-2 text-fog">{label}</p>
@@ -62,12 +73,24 @@ function PhotoPicker({
                     : "border-line hover:border-fog/60",
                 )}
               >
-                <img src={photo.url} alt={photo.photoCode} className="h-full w-full object-cover" />
+                <img
+                  src={photo.url}
+                  alt={photo.photoCode}
+                  loading="lazy"
+                  className="h-full w-full object-cover"
+                />
                 <span className="mono absolute inset-x-0 bottom-0 truncate bg-black/70 px-1 py-0.5 text-[8.5px] text-white">
                   {formatStamp(photo.capturedAt)}
                 </span>
               </button>
             ))}
+            {/* Scrolling this box to the bottom pulls the next page of photos. */}
+            <div ref={sentinel} className="col-span-full h-px" />
+            {loadingMore && (
+              <div className="col-span-full flex items-center justify-center py-2 text-fog">
+                <Loader2 className="size-3.5 animate-spin" />
+              </div>
+            )}
           </div>
         )}
       </div>
@@ -85,8 +108,11 @@ function NewComparisonDialog({ onClose }: { onClose: () => void }) {
   const [error, setError] = useState<string | null>(null);
   const create = useCreateComparison();
 
-  const pool = usePhotos({ projectId: projectId || null, limit: 120 });
-  const all = useMemo(() => (pool.data?.photos ?? []) as PickerPhoto[], [pool.data]);
+  const pool = useInfinitePhotos({ projectId: projectId || null }, 48);
+  const all = useMemo(
+    () => (pool.data?.pages.flatMap((page) => page.photos) ?? []) as PickerPhoto[],
+    [pool.data],
+  );
   const beforePool = useMemo(
     () => all.filter((p) => p.tag !== "after"),
     [all],
@@ -166,6 +192,9 @@ function NewComparisonDialog({ onClose }: { onClose: () => void }) {
               value={before}
               onPick={setBefore}
               loading={pool.isLoading}
+              hasMore={Boolean(pool.hasNextPage)}
+              loadingMore={pool.isFetchingNextPage}
+              onLoadMore={pool.fetchNextPage}
             />
             <PhotoPicker
               label={t("tag.after")}
@@ -173,6 +202,9 @@ function NewComparisonDialog({ onClose }: { onClose: () => void }) {
               value={after}
               onPick={setAfter}
               loading={pool.isLoading}
+              hasMore={Boolean(pool.hasNextPage)}
+              loadingMore={pool.isFetchingNextPage}
+              onLoadMore={pool.fetchNextPage}
             />
           </div>
 
@@ -223,7 +255,12 @@ function Slab({
   return (
     <figure className="min-w-0">
       <div className="relative aspect-[4/3] overflow-hidden border border-line bg-ink-3">
-        <img src={photo.url} alt={photo.photoCode} className="h-full w-full object-cover" />
+        <img
+          src={photo.url}
+          alt={photo.photoCode}
+          loading="lazy"
+          className="h-full w-full object-cover"
+        />
         <span className="rounded-[6px] mono absolute left-2 top-2 border border-white/25 bg-black/65 px-1.5 py-0.5 text-[9.5px] uppercase tracking-widest text-white">
           {side}
         </span>
@@ -254,6 +291,18 @@ export default function AppCompare() {
   const [open, setOpen] = useState(false);
   const comparisons = useComparisons();
   const remove = useRemoveComparison();
+  /** Every pair is two full photos, so the page reveals a few at a time as you scroll. */
+  const [shown, setShown] = useState(PAGE);
+  const all = comparisons.data ?? [];
+  const visible = all.slice(0, shown);
+  const showMore = useCallback(() => setShown((n) => n + PAGE), []);
+  const sentinel = useInfiniteScroll({
+    hasMore: shown < all.length,
+    loading: comparisons.isLoading,
+    onLoadMore: showMore,
+  });
+  // Deleting a pair shrinks the list under what is already revealed; start the batches over.
+  useEffect(() => setShown(PAGE), [all.length]);
 
   return (
     <DashboardShell
@@ -275,7 +324,7 @@ export default function AppCompare() {
             <div key={i} className="h-64 animate-pulse rounded-[12px] border border-line bg-ink-2" />
           ))}
         </div>
-      ) : (comparisons.data ?? []).length === 0 ? (
+      ) : all.length === 0 ? (
         <EmptyState
           icon={GitCompareArrows}
           title={t("compare.empty.title")}
@@ -291,8 +340,8 @@ export default function AppCompare() {
           }
         />
       ) : (
-        <div className="space-y-5">
-          {(comparisons.data ?? []).map((row) => (
+        <div className="grid gap-5 grid-cols-[repeat(auto-fill,minmax(560px,1fr))]">
+          {visible.map((row) => (
             <article key={row.id} className="rounded-[12px] border border-line bg-ink-2">
               <header className="flex flex-wrap items-center justify-between gap-2 border-b border-line px-4 py-3">
                 <div className="min-w-0">
@@ -318,6 +367,13 @@ export default function AppCompare() {
               </div>
             </article>
           ))}
+          {/* Scrolling near this reveals the next batch of pairs. */}
+          <div ref={sentinel} className="col-span-full h-px" />
+          {shown < all.length && (
+            <div className="mono col-span-full flex items-center justify-center gap-2 text-[11px] uppercase tracking-widest text-fog">
+              <Loader2 className="size-3.5 animate-spin" /> {t("common.loading")}
+            </div>
+          )}
         </div>
       )}
 
