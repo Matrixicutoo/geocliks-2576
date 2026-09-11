@@ -2,6 +2,7 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 import { GitCompareArrows, Loader2, Plus, Trash2, X } from "lucide-react";
 import { DashboardShell } from "../components/dashboard-shell";
 import { EmptyState } from "../components/empty-state";
+import { PhotoDrawer } from "../components/photo-drawer";
 import { formatCoords, formatStamp, VerifiedBadge } from "../components/evidence-card";
 import {
   useComparisons,
@@ -232,9 +233,12 @@ function NewComparisonDialog({ onClose }: { onClose: () => void }) {
 function Slab({
   side,
   photo,
+  onOpen,
 }: {
   side: string;
+  onOpen: (id: string) => void;
   photo: {
+    id: string;
     url: string;
     photoCode: string;
     capturedAt: Date | number;
@@ -254,7 +258,13 @@ function Slab({
   }
   return (
     <figure className="min-w-0">
-      <div className="relative aspect-[4/3] overflow-hidden border border-line bg-ink-3">
+      {/* The tile opens the same evidence drawer as Teamspace, with the full stamp detail. */}
+      <button
+        type="button"
+        onClick={() => onOpen(photo.id)}
+        aria-label={photo.photoCode}
+        className="relative block aspect-[4/3] w-full overflow-hidden border border-line bg-ink-3 text-left transition-colors hover:border-amber/60"
+      >
         <img
           src={photo.url}
           alt={photo.photoCode}
@@ -278,7 +288,7 @@ function Slab({
             </p>
           </div>
         </div>
-      </div>
+      </button>
       <figcaption className="mono mt-1.5 truncate text-[10px] tracking-widest text-amber">
         {photo.photoCode}
       </figcaption>
@@ -289,6 +299,7 @@ function Slab({
 export default function AppCompare() {
   const t = useT();
   const [open, setOpen] = useState(false);
+  const [openPhoto, setOpenPhoto] = useState<string | null>(null);
   const comparisons = useComparisons();
   const remove = useRemoveComparison();
   /** Every pair is two full photos, so the page reveals a few at a time as you scroll. */
@@ -362,8 +373,8 @@ export default function AppCompare() {
                 </button>
               </header>
               <div className="grid gap-4 p-4 md:grid-cols-2">
-                <Slab side={t("tag.before")} photo={row.before} />
-                <Slab side={t("tag.after")} photo={row.after} />
+                <Slab side={t("tag.before")} photo={row.before} onOpen={setOpenPhoto} />
+                <Slab side={t("tag.after")} photo={row.after} onOpen={setOpenPhoto} />
               </div>
             </article>
           ))}
@@ -378,6 +389,7 @@ export default function AppCompare() {
       )}
 
       {open && <NewComparisonDialog onClose={() => setOpen(false)} />}
+      <PhotoDrawer photoId={openPhoto} onClose={() => setOpenPhoto(null)} />
     </DashboardShell>
   );
 }
