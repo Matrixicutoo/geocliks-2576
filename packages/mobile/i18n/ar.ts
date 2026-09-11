@@ -8,6 +8,7 @@ export const ar: Catalog = {
   "nav.reports": "التقارير",
   "nav.share": "روابط المشاركة",
   "nav.team": "الفريق",
+  "nav.invite": "دعوة",
   "nav.watermarks": "العلامات المائية",
   "nav.plan": "الخطة",
   "nav.admin": "لوحة الإدارة",

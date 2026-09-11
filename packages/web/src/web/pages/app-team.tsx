@@ -12,7 +12,6 @@ import {
   Sun,
   FolderOpen,
   Trash2,
-  UserPlus,
   Users,
 } from "lucide-react";
 import { DashboardShell } from "../components/dashboard-shell";
@@ -20,7 +19,6 @@ import { EmptyState } from "../components/empty-state";
 import { formatStamp } from "../components/evidence-card";
 import {
   useAssignMember,
-  useInviteMember,
   useInviteQr,
   useInvites,
   useMemberProjects,
@@ -38,30 +36,11 @@ import { LOCALES, asLocale } from "../../api/lib/locales";
 import { RoleBadge } from "../components/role-badge";
 import { cn } from "../lib/utils";
 import { canManageWorkspace } from "../lib/roles";
+import { InviteForm, useGrantableRoles } from "../components/invite-form";
 
 const ROLES = ["owner", "admin", "manager", "dispatcher", "driver", "field"] as const;
 type Role = (typeof ROLES)[number];
 
-/**
- * Module-level constant, so it cannot call `t()` itself — it holds catalog keys and the
- * component translates at the call site.
- */
-const ROLE_HINT: Record<
-  Role,
-  | "team.hintOwner"
-  | "team.hintAdmin"
-  | "team.hintManager"
-  | "team.hintDispatcher"
-  | "team.hintDriver"
-  | "team.hintField"
-> = {
-  owner: "team.hintOwner",
-  admin: "team.hintAdmin",
-  manager: "team.hintManager",
-  dispatcher: "team.hintDispatcher",
-  driver: "team.hintDriver",
-  field: "team.hintField",
-};
 
 /** `invites.projectIds` arrives as a JSON array in one text column. */
 function parseInviteProjects(raw: string | null): string[] {
@@ -80,7 +59,6 @@ export default function AppTeam() {
   const invites = useInvites();
   const [qrFor, setQrFor] = useState<string | null>(null);
   const qr = useInviteQr(qrFor);
-  const invite = useInviteMember();
   const projects = useProjects({ status: "active" });
   const memberProjects = useMemberProjects();
   const assign = useAssignMember();
@@ -93,9 +71,7 @@ export default function AppTeam() {
   const { theme, override, workspace, setTheme, useWorkspaceDefault } = useTheme();
   const lang = useLocale();
 
-  const [email, setEmail] = useState("");
-  // No default on purpose: the owner has to state the role before the invite can go out.
-  const [role, setRole_] = useState<Role | null>(null);
+  const grantable = useGrantableRoles();
   // Projects ticked on the invite form, applied the moment the invite is accepted.
   // Which member's project list is expanded in the members table.
   const [projectsFor, setProjectsFor] = useState<string | null>(null);
@@ -216,7 +192,15 @@ export default function AppTeam() {
                           }}
                           className="mono rounded-[8px] border border-line bg-ink px-2 py-1.5 text-[11px] uppercase tracking-widest text-chalk outline-none focus:border-amber"
                         >
-                          {ROLES.map((item) => (
+                          {/* Only what this operator may actually grant, plus whatever the
+                              member already is so the control shows the truth. Admin and owner
+                              are GeoCliks-granted — the server refuses them from anyone else. */}
+                          {[
+                            ...(grantable.includes(member.role as Role)
+                              ? []
+                              : [member.role as Role]),
+                            ...grantable,
+                          ].map((item) => (
                             <option key={item} value={item}>
                               {item}
                             </option>
@@ -322,6 +306,13 @@ export default function AppTeam() {
             )}
             {error && (
               <p className="mono border-t border-line px-4 py-2 text-[11px] text-alert">{error}</p>
+            )}
+            {/* Revoked invites and copied links report here — the invite form owns its own
+                result line, so this one is for the actions in the lists above. */}
+            {notice && (
+              <p className="mono border-t border-line px-4 py-2 text-[11px] text-verified">
+                {notice}
+              </p>
             )}
             {isField && (team.data ?? []).length <= 1 ? (
               <p className="border-t border-line px-4 py-3 text-[11.5px] text-fog">
@@ -448,95 +439,16 @@ export default function AppTeam() {
 
         <div className="space-y-4">
           {isField ? null : (
-            <form
-              onSubmit={async (event) => {
-                event.preventDefault();
-                setError(null);
-                setNotice(null);
-                if (!role) {
-                  setError(lang.t("team.pickRole"));
-                  return;
-                }
-                try {
-                  const res = await invite.mutateAsync({ email, role });
-                  const sentTo = email;
-                  setEmail("");
-                  setNotice(
-                    res.emailSent
-                      ? lang.t("team.inviteEmailed", { email: sentTo, code: res.code })
-                      : lang.t("team.inviteCreated", {
-                          code: res.code,
-                          reason: res.emailReason ? ` (${res.emailReason})` : "",
-                        }),
-                  );
-                } catch (err) {
-                  setError(err instanceof Error ? err.message : String(err));
-                }
-              }}
-              className="rounded-[12px] border border-line bg-ink-2"
-            >
+            <div className="rounded-[12px] border border-line bg-ink-2">
               <div className="border-b border-line px-4 py-3">
                 <p className="font-display text-[15px] font-semibold">
                   {lang.t("team.inviteTitle")}
                 </p>
               </div>
-              <div className="space-y-3 p-4">
-                <label className="block">
-                  <span className="label mb-1.5 block text-fog">{lang.t("team.workEmail")}</span>
-                  <input
-                    aria-label={lang.t("team.workEmail")}
-                    required
-                    type="email"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    placeholder="tech@northline.com"
-                    className="w-full rounded-[12px] border border-line bg-ink px-3 py-2 text-sm text-chalk outline-none focus:border-amber"
-                  />
-                </label>
-                <div>
-                  <span className="label mb-1.5 block text-fog">
-                    {lang.t("team.role")} <span className="text-alert">*</span>
-                  </span>
-                  <div className="space-y-1.5">
-                    {ROLES.filter((r) => r !== "owner").map((item) => (
-                      <button
-                        key={item}
-                        type="button"
-                        onClick={() => setRole_(item)}
-                        className={cn(
-                          "rounded-[8px] block w-full border px-3 py-2 text-left transition-colors",
-                          role === item
-                            ? "border-amber bg-amber/10"
-                            : "border-line bg-ink hover:border-fog/50",
-                        )}
-                      >
-                        <span className="mono text-[11px] uppercase tracking-widest text-chalk">
-                          {item}
-                        </span>
-                        <span className="mt-0.5 block text-[11.5px] text-fog">
-                          {lang.t(ROLE_HINT[item])}
-                        </span>
-                      </button>
-                    ))}
-                  </div>
-                </div>
-
-                {notice && <p className="mono text-[11px] text-verified">{notice}</p>}
-
-                <button
-                  type="submit"
-                  disabled={invite.isPending || !role}
-                  className="rounded-[8px] inline-flex w-full items-center justify-center gap-2 bg-amber px-4 py-2.5 text-[13px] font-semibold text-ink disabled:opacity-60"
-                >
-                  {invite.isPending ? (
-                    <Loader2 className="size-4 animate-spin" />
-                  ) : (
-                    <UserPlus className="size-4" />
-                  )}
-                  {lang.t("team.sendInvite")}
-                </button>
+              <div className="p-4">
+                <InviteForm />
               </div>
-            </form>
+            </div>
           )}
 
           <div className="rounded-[12px] border border-line bg-ink-2">

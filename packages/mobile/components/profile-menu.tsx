@@ -25,6 +25,7 @@ import { webHelpUrl, webUrl } from "@/lib/web-help";
 import { useHasSession } from "@/hooks/use-session";
 import { AuthGate } from "@/components/auth-gate";
 import { LanguageMenu } from "@/components/language-menu";
+import { InviteSheet } from "@/components/invite-sheet";
 import { useAppTheme } from "@/lib/theme";
 import { SUPPORT_EMAIL } from "../constants/support";
 import { canManageWatermarks, canManageWorkspace, canUseField } from "../lib/roles";
@@ -106,6 +107,9 @@ export function ProfileMenu({ showStamp, onToggleStamp }: Props) {
   // Signed out every destination in this drawer is locked. Tapping one explains why and
   // offers the two doors instead of failing silently.
   const [gateOpen, setGateOpen] = useState(false);
+  // Invite opens over whatever screen you were on, so it is a sheet of its own rather than a
+  // destination. It is rendered outside the drawer's Modal, which unmounts when the drawer shuts.
+  const [inviteOpen, setInviteOpen] = useState(false);
 
   // Panel covers 3/4 of the screen and slides in horizontally, left -> right.
   const width = Dimensions.get("window").width;
@@ -387,6 +391,30 @@ export function ProfileMenu({ showStamp, onToggleStamp }: Props) {
                     </Text>
                   </Pressable>
                 ))}
+                {/* Adding a crew member is the workspace action people go looking for from any
+                    screen, so it sits with the destinations instead of only inside Team. */}
+                {hasSession && !isField ? (
+                  <Pressable
+                    accessibilityLabel={tr("nav.invite")}
+                    onPress={() => {
+                      setOpen(false);
+                      setInviteOpen(true);
+                    }}
+                    style={[styles.tile, { borderColor: colors.amber, backgroundColor: colors.amber }]}
+                  >
+                    <Ionicons
+                      name="mail-open-outline"
+                      size={18}
+                      color={colors.primaryForeground}
+                    />
+                    <Text
+                      numberOfLines={1}
+                      style={[styles.tileText, { color: colors.primaryForeground }]}
+                    >
+                      {tr("nav.invite")}
+                    </Text>
+                  </Pressable>
+                ) : null}
               </View>
 
               <View
@@ -499,6 +527,7 @@ export function ProfileMenu({ showStamp, onToggleStamp }: Props) {
       </Modal>
 
       <AuthGate visible={gateOpen} onClose={() => setGateOpen(false)} />
+      <InviteSheet visible={inviteOpen} onClose={() => setInviteOpen(false)} />
     </>
   );
 }

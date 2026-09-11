@@ -2,6 +2,7 @@ import { Link, useLocation } from "wouter";
 import {
   Camera,
   LogOut,
+  UserPlus,
   ExternalLink,
   ShieldCheck,
   ChevronRight,
@@ -10,6 +11,7 @@ import {
 } from "lucide-react";
 import { authClient } from "../lib/auth";
 import { useOrg } from "../queries/orgs";
+import { canManageWorkspace } from "../lib/roles";
 import { useAdminMe } from "../queries/admin";
 import { useUnreadMessages } from "../queries/messages";
 import { cn } from "../lib/utils";
@@ -46,6 +48,7 @@ export function SidebarBody({
   nav,
   languageDrop = "up",
   onNavigate,
+  onInvite,
 }: {
   nav: { href: string; label: TKey; icon: typeof Camera }[];
   languageDrop?: "up" | "down";
@@ -55,6 +58,12 @@ export function SidebarBody({
    * would close it. The docked sidebar has nothing to dismiss and leaves it unset.
    */
   onNavigate?: () => void;
+  /**
+   * Opens the invite sheet. The shell owns that state rather than this body, because the
+   * drawer unmounts its copy of the menu the moment it dismisses — a dialog owned here would
+   * go with it.
+   */
+  onInvite?: () => void;
 }) {
   const [location] = useLocation();
   const org = useOrg();
@@ -163,6 +172,25 @@ export function SidebarBody({
               </Link>
             );
           })}
+          {/* Invite sits with the destinations rather than buried in Team, because adding a
+              crew member is the one workspace action people go looking for from any page. It
+              is a sheet, not a route, so it opens over whatever they were doing. */}
+          {onInvite && canManageWorkspace(org.data?.role) && (
+            <button
+              type="button"
+              onClick={() => {
+                onNavigate?.();
+                onInvite();
+              }}
+              className={cn(
+                "flex items-center rounded-[8px] gap-2 border-l-2 border-transparent bg-amber px-2.5 py-1.5 text-left text-[12px] font-medium leading-tight text-on-amber",
+                amberFill,
+              )}
+            >
+              <UserPlus className="size-4 shrink-0 text-on-amber" />
+              <span className="min-w-0 flex-1">{t("nav.invite")}</span>
+            </button>
+          )}
           {me.data?.staffRole && (
             <Link
               onClick={onNavigate}

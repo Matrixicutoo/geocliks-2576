@@ -8,6 +8,7 @@ export const ptBR: Catalog = {
   "nav.reports": "Relatórios",
   "nav.share": "Links de compartilhamento",
   "nav.team": "Equipe",
+  "nav.invite": "Convidar",
   "nav.watermarks": "Marcas d'água",
   "nav.plan": "Plano",
   "nav.admin": "Console de administração",

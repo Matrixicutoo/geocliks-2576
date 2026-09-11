@@ -8,6 +8,7 @@ export const it: Catalog = {
   "nav.reports": "Report",
   "nav.share": "Link di condivisione",
   "nav.team": "Team",
+  "nav.invite": "Invita",
   "nav.watermarks": "Filigrane",
   "nav.plan": "Piano",
   "nav.admin": "Console di amministrazione",

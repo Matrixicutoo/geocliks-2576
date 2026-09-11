@@ -12,7 +12,14 @@ import { SidebarBody } from "./sidebar-body";
  * help, legal and sign out are all present and can never drift from the sidebar. Only the
  * container differs, and that is `MenuDrawer`'s job.
  */
-export function NavDrawer({ nav }: { nav: { href: string; label: TKey; icon: typeof Camera }[] }) {
+export function NavDrawer({
+  nav,
+  onInvite,
+}: {
+  nav: { href: string; label: TKey; icon: typeof Camera }[];
+  /** Forwarded to the menu body; the shell owns the sheet so it survives this drawer closing. */
+  onInvite?: () => void;
+}) {
   const unread = useUnreadMessages();
 
   return (
@@ -24,7 +31,7 @@ export function NavDrawer({ nav }: { nav: { href: string; label: TKey; icon: typ
            pinned to the foot of a full-height column. Following any link inside dismisses
            the sheet — language and appearance are buttons, not links, so changing a setting
            deliberately leaves it open. */
-        <SidebarBody nav={nav} languageDrop="down" onNavigate={close} />
+        <SidebarBody nav={nav} languageDrop="down" onNavigate={close} onInvite={onInvite} />
       )}
     </MenuDrawer>
   );

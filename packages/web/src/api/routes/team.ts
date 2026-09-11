@@ -3,7 +3,7 @@ import QRCode from "qrcode";
 import { ORPCError } from "@orpc/server";
 import { and, count, eq, inArray, sql } from "drizzle-orm";
 import { base } from "../__core/app";
-import { authed, orgProc, requireRole, visibleTeammates } from "../middleware/auth";
+import { authed, orgProc, requireRole, staffRoleOf, visibleTeammates } from "../middleware/auth";
 import { db } from "../database";
 import * as schema from "../database/schema";
 import { id, random } from "../lib/ids";
@@ -23,6 +23,25 @@ function parseProjectIds(raw: string | null): string[] {
     return Array.isArray(parsed) ? parsed.filter((v): v is string => typeof v === "string") : [];
   } catch {
     return [];
+  }
+}
+
+/**
+ * Admin (and owner) is a GeoCliks-granted tier, not something a workspace hands out to itself.
+ * A workspace owner runs their own crew — managers, dispatchers, drivers, field — but promoting
+ * anyone to admin goes through the platform console, so support can never be socially
+ * engineered into existence from inside a customer account.
+ *
+ * The check runs on the real signed-in operator (`actor`), not the impersonated user, so a
+ * superadmin helping a customer over the shoulder still has it.
+ */
+async function assertMayGrant(role: string, actorId: string) {
+  if (role !== "admin" && role !== "owner") return;
+  const staffRole = await staffRoleOf(actorId);
+  if (staffRole !== "superadmin") {
+    throw new ORPCError("FORBIDDEN", {
+      message: "Only GeoCliks can grant admin access. Contact support to have an admin added.",
+    });
   }
 }
 
@@ -110,6 +129,7 @@ export const team = {
     )
     .handler(async ({ input, context }) => {
       requireRole(context.role, "admin");
+      await assertMayGrant(input.role, context.actor.id);
       const plan = planOf(context.org.plan);
       if (!plan.limits.teamspace) {
         throw new ORPCError("PAYMENT_REQUIRED", {
@@ -349,6 +369,7 @@ export const team = {
     .input(z.object({ memberId: z.string(), role: roleEnum }))
     .handler(async ({ input, context }) => {
       requireRole(context.role, "admin");
+      await assertMayGrant(input.role, context.actor.id);
       const [member] = await db
         .select()
         .from(schema.members)

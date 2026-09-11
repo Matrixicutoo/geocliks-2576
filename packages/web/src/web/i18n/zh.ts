@@ -8,6 +8,7 @@ export const zh: Catalog = {
   "nav.reports": "报告",
   "nav.share": "分享链接",
   "nav.team": "团队",
+  "nav.invite": "邀请",
   "nav.watermarks": "水印",
   "nav.plan": "套餐",
   "nav.admin": "管理控制台",

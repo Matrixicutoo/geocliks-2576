@@ -29,10 +29,14 @@ import {
 import { canManageWorkspace } from "../lib/roles";
 
 /**
+ * What a workspace hands out to its own crew.
+ *
  * Owner is deliberately missing: the workspace keeps exactly one owner and the server refuses to
- * change the owner's row, so offering it here would only produce an error.
+ * change the owner's row. Admin is missing for the same reason — it is a GeoCliks-granted tier
+ * now, so `assertMayGrant` on the server refuses it from anyone but a platform superadmin, who
+ * grants it from the web console. Offering either here would only produce an error.
  */
-const ROLES = ["admin", "manager", "dispatcher", "driver", "field"] as const;
+const ROLES = ["manager", "dispatcher", "driver", "field"] as const;
 type Role = (typeof ROLES)[number];
 
 const ROLE_HINT: Record<string, string> = {

@@ -8,6 +8,7 @@ export const frCA: Catalog = {
   "nav.reports": "Rapports",
   "nav.share": "Liens de partage",
   "nav.team": "Équipe",
+  "nav.invite": "Inviter",
   "nav.watermarks": "Filigranes",
   "nav.plan": "Forfait",
   "nav.admin": "Console d'administration",

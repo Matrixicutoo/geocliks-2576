@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { Link } from "wouter";
 import {
   Bell,
@@ -28,6 +28,7 @@ import { Logo } from "./logo";
 import { LanguageSelect } from "./language-select";
 import { NavDrawer } from "./nav-drawer";
 import { SidebarBody } from "./sidebar-body";
+import { InviteDialog } from "./invite-form";
 import { canManageWatermarks, canManageWorkspace, canUseDelivery, canUseField } from "../lib/roles";
 
 /** Nav entries a field member can't act on — the pages are manager/owner only. */
@@ -83,6 +84,8 @@ export function DashboardShell({
 }) {
   const org = useOrg();
   const me = useAdminMe();
+  // The invite sheet lives here, not in the menu: the drawer unmounts its menu when it closes.
+  const [inviting, setInviting] = useState(false);
   // Desktop message alerts, live on every dashboard page rather than only on Messages.
   const notify = useMessageNotifications();
   const impersonating = me.data?.impersonating;
@@ -115,7 +118,7 @@ export function DashboardShell({
           </Link>
         </div>
 
-        <SidebarBody nav={nav} languageDrop="up" />
+        <SidebarBody nav={nav} languageDrop="up" onInvite={() => setInviting(true)} />
       </aside>
 
       <div className="min-w-0 flex-1">
@@ -145,7 +148,7 @@ export function DashboardShell({
           <div className="flex flex-wrap items-center justify-between gap-x-3 gap-y-2 px-4 py-3 sm:px-5 lg:h-[68px] lg:flex-nowrap lg:py-0 lg:px-8">
             {/* Left corner, ahead of the title: the hamburger that stands in for the sidebar
                 below `lg`, sitting where that sidebar would otherwise start. */}
-            <NavDrawer nav={nav} />
+            <NavDrawer nav={nav} onInvite={() => setInviting(true)} />
             <div className="min-w-0 flex-1">
               <h1 className="truncate font-display text-[17px] font-bold tracking-tight text-amber sm:text-xl">
                 {title}
@@ -203,6 +206,8 @@ export function DashboardShell({
 
         <main className="px-4 py-5 sm:px-5 sm:py-6 lg:px-8">{children}</main>
       </div>
+
+      <InviteDialog open={inviting} onClose={() => setInviting(false)} />
     </div>
   );
 }
