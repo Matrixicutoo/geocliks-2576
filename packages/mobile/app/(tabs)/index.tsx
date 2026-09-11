@@ -786,13 +786,6 @@ export default function Capture() {
         })}
       </View>
 
-      {/* What the seal actually guarantees, sitting with the mode tabs it describes. At the foot
-          of the scroller it was below the fold on a short phone, so the one line explaining why
-          the timestamp can be trusted was the line nobody read. */}
-      <Text style={[styles.hint, { color: colors.mutedForeground }]}>
-        {tr("capture.hintSeal")}
-      </Text>
-
       <ScrollView
         style={styles.controls}
         contentContainerStyle={styles.controlsInner}
@@ -1464,11 +1457,4 @@ const styles = StyleSheet.create({
     borderRadius: 8,
   },
   clockBtnText: { fontSize: 13, fontWeight: "600" },
-  hint: {
-    fontSize: 11,
-    textAlign: "center",
-    marginTop: 8,
-    marginHorizontal: 16,
-    lineHeight: 16,
-  },
 });
