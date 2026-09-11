@@ -495,6 +495,7 @@ export const tl: Catalog = {
   "photo.close": "Isara ang larawan",
   "photo.verifiedClip": "Verified na clip",
   "capture.evidenceType": "Uri ng ebidensya",
+  "capture.evidenceShort": "Ebidensya",
   "capture.clockIn": "Clock in — pagdating",
   "capture.clockOut": "Clock out — pag-alis",
   "capture.enableCamera": "I-enable ang camera",

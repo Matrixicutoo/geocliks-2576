@@ -479,6 +479,7 @@ export const ar: Catalog = {
   "photo.close": "إغلاق الصورة",
   "photo.verifiedClip": "مقطع موثّق",
   "capture.evidenceType": "نوع الدليل",
+  "capture.evidenceShort": "الدليل",
   "capture.clockIn": "تسجيل الوصول",
   "capture.clockOut": "تسجيل المغادرة",
   "capture.enableCamera": "تشغيل الكاميرا",

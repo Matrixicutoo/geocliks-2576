@@ -474,6 +474,7 @@ export const zh: Catalog = {
   "photo.close": "关闭照片",
   "photo.verifiedClip": "已验证片段",
   "capture.evidenceType": "证据类型",
+  "capture.evidenceShort": "证据",
   "capture.clockIn": "签到 — 到场",
   "capture.clockOut": "签退 — 离场",
   "capture.enableCamera": "启用相机",

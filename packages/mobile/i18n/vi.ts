@@ -488,6 +488,7 @@ export const vi: Catalog = {
   "photo.close": "Đóng ảnh",
   "photo.verifiedClip": "Đoạn video đã xác thực",
   "capture.evidenceType": "Loại bằng chứng",
+  "capture.evidenceShort": "Bằng chứng",
   "capture.clockIn": "Chấm công — đến",
   "capture.clockOut": "Chấm công — rời đi",
   "capture.enableCamera": "Bật máy ảnh",

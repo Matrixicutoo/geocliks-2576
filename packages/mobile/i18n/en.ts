@@ -500,6 +500,7 @@ export const en = {
   "photo.close": "Close photo",
   "photo.verifiedClip": "Verified clip",
   "capture.evidenceType": "Evidence type",
+  "capture.evidenceShort": "Evidence",
   "capture.clockIn": "Clock in — arrival",
   "capture.clockOut": "Clock out — departure",
   "capture.enableCamera": "Enable camera",

@@ -499,6 +499,7 @@ export const frCA: Catalog = {
   "photo.close": "Fermer la photo",
   "photo.verifiedClip": "Clip vérifié",
   "capture.evidenceType": "Type de preuve",
+  "capture.evidenceShort": "Preuve",
   "capture.clockIn": "Pointer l'arrivée",
   "capture.clockOut": "Pointer le départ",
   "capture.enableCamera": "Activer la caméra",

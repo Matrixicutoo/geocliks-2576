@@ -498,6 +498,7 @@ export const de: Catalog = {
   "photo.close": "Foto schließen",
   "photo.verifiedClip": "Geprüfter Clip",
   "capture.evidenceType": "Nachweistyp",
+  "capture.evidenceShort": "Nachweis",
   "capture.clockIn": "Ankunft erfassen",
   "capture.clockOut": "Abfahrt erfassen",
   "capture.enableCamera": "Kamera aktivieren",

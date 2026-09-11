@@ -491,6 +491,7 @@ export const ptBR: Catalog = {
   "photo.close": "Fechar foto",
   "photo.verifiedClip": "Clipe verificado",
   "capture.evidenceType": "Tipo de evidência",
+  "capture.evidenceShort": "Evidência",
   "capture.clockIn": "Registrar chegada",
   "capture.clockOut": "Registrar saída",
   "capture.enableCamera": "Ativar câmera",

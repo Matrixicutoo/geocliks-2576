@@ -492,6 +492,7 @@ export const pl: Catalog = {
   "photo.close": "Zamknij zdjęcie",
   "photo.verifiedClip": "Zweryfikowany klip",
   "capture.evidenceType": "Typ dowodu",
+  "capture.evidenceShort": "Dowód",
   "capture.clockIn": "Rejestruj przyjazd",
   "capture.clockOut": "Rejestruj wyjazd",
   "capture.enableCamera": "Włącz kamerę",

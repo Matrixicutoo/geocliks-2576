@@ -867,7 +867,7 @@ export default function Capture() {
               </Text>
               <Ionicons
                 name={projectOpen ? "chevron-up" : "chevron-down"}
-                size={14}
+                size={12}
                 color={colors.primaryForeground}
               />
             </View>
@@ -896,11 +896,11 @@ export default function Capture() {
                   { color: colors.primaryForeground, fontFamily: Fonts?.display },
                 ]}
               >
-                {tr("capture.evidenceType").toUpperCase()}
+                {tr("capture.evidenceShort").toUpperCase()}
               </Text>
               <Ionicons
                 name={tagOpen ? "chevron-up" : "chevron-down"}
-                size={14}
+                size={12}
                 color={colors.primaryForeground}
               />
             </View>
@@ -1353,16 +1353,16 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "center",
-    gap: 5,
+    gap: 4,
   },
-  selectorLabel: { fontSize: 13, letterSpacing: 1.2, textAlign: "center" },
+  selectorLabel: { fontSize: 11, letterSpacing: 0.6, textAlign: "center" },
   dropdownHead: {
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "center",
     borderWidth: 1,
     paddingHorizontal: 10,
-    paddingVertical: 6,
+    paddingVertical: 4,
     marginTop: 6,
     borderRadius: 8,
   },

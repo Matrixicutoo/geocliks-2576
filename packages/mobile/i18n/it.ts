@@ -494,6 +494,7 @@ export const it: Catalog = {
   "photo.close": "Chiudi foto",
   "photo.verifiedClip": "Clip verificata",
   "capture.evidenceType": "Tipo di prova",
+  "capture.evidenceShort": "Prova",
   "capture.clockIn": "Timbra arrivo",
   "capture.clockOut": "Timbra uscita",
   "capture.enableCamera": "Attiva fotocamera",
