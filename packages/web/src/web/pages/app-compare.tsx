@@ -351,7 +351,7 @@ export default function AppCompare() {
           }
         />
       ) : (
-        <div className="grid gap-5 grid-cols-[repeat(auto-fill,minmax(1000px,1fr))]">
+        <div className="grid gap-5 grid-cols-[repeat(auto-fill,minmax(min(100%,1000px),1fr))]">
           {visible.map((row) => (
             <article key={row.id} className="rounded-[12px] border border-line bg-ink-2">
               <header className="flex flex-wrap items-center justify-between gap-2 border-b border-line px-4 py-3">

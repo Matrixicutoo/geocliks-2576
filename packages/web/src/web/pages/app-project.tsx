@@ -167,7 +167,7 @@ export default function ProjectPage() {
         <div>
           <p className="label mb-3">{t("project.evidenceCount", { n: photos.data?.total ?? 0 })}</p>
           {photos.isLoading ? (
-            <div className="grid gap-3 grid-cols-[repeat(auto-fill,minmax(440px,1fr))]">
+            <div className="grid gap-3 grid-cols-[repeat(auto-fill,minmax(min(100%,440px),1fr))]">
               {Array.from({ length: 6 }).map((_, i) => (
                 <EvidenceSkeleton key={i} />
               ))}
@@ -179,7 +179,7 @@ export default function ProjectPage() {
               hint={t("project.empty.hint")}
             />
           ) : (
-            <div className="grid gap-3 grid-cols-[repeat(auto-fill,minmax(440px,1fr))]">
+            <div className="grid gap-3 grid-cols-[repeat(auto-fill,minmax(min(100%,440px),1fr))]">
               {photos.data?.photos.map((photo) => (
                 <EvidenceCard
                   key={photo.id}

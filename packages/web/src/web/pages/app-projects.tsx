@@ -224,7 +224,7 @@ export default function ProjectsPage() {
       }
     >
       {projects.isLoading ? (
-        <div className="grid gap-3 grid-cols-[repeat(auto-fill,minmax(380px,1fr))]">
+        <div className="grid gap-3 grid-cols-[repeat(auto-fill,minmax(min(100%,380px),1fr))]">
           {Array.from({ length: 6 }).map((_, i) => (
             <div
               key={i}
@@ -239,7 +239,7 @@ export default function ProjectsPage() {
           hint={t("projects.empty.hint")}
         />
       ) : (
-        <div className="grid gap-3 grid-cols-[repeat(auto-fill,minmax(380px,1fr))]">
+        <div className="grid gap-3 grid-cols-[repeat(auto-fill,minmax(min(100%,380px),1fr))]">
           {visible.map((project) => (
             <div
               key={project.id}
