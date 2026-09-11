@@ -1393,10 +1393,10 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderRadius: 8,
     paddingHorizontal: 12,
-    paddingVertical: 7,
+    paddingVertical: 5,
     marginTop: 10,
   },
-  podToggleText: { fontSize: 15.5, fontWeight: "700", letterSpacing: 0.2, textAlign: "center" },
+  podToggleText: { fontSize: 11, fontWeight: "700", letterSpacing: 0.6, textAlign: "center" },
   podError: { fontSize: 11.5, marginTop: 8, lineHeight: 16 },
   gpsRow: {
     flexDirection: "row",
