@@ -1,6 +1,6 @@
-import { useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { Link } from "wouter";
-import { Plus, Route as RouteIcon, Trash2 } from "lucide-react";
+import { Loader2, Plus, Route as RouteIcon, Trash2 } from "lucide-react";
 import { DashboardShell } from "../components/dashboard-shell";
 import { EmptyState } from "../components/empty-state";
 import { useOrg } from "../queries/orgs";
@@ -8,6 +8,10 @@ import { useRemoveRoute, useRoutes } from "../queries/routes";
 import { cn } from "../lib/utils";
 import { type TKey, useT } from "../lib/i18n";
 import { canManageWorkspace, canRunDeliveries } from "../lib/roles";
+import { useInfiniteScroll } from "../lib/use-infinite-scroll";
+
+/** Runs revealed per scroll batch. */
+const PAGE = 25;
 
 export const STATUS_LABEL: Record<string, TKey> = {
   draft: "routes.status.draft",
@@ -47,6 +51,19 @@ export default function AppRoutes() {
   // Owner, admin and manager can delete a run; field crew cannot. The server enforces the same
   // rule - this only decides whether the button is drawn.
   const canDelete = canManageWorkspace(org.data?.role);
+
+  /** Long-running workspaces pile up hundreds of runs, so the list grows as you scroll. */
+  const [shown, setShown] = useState(PAGE);
+  const all = routes.data ?? [];
+  const visible = all.slice(0, shown);
+  const showMore = useCallback(() => setShown((n) => n + PAGE), []);
+  const sentinel = useInfiniteScroll({
+    hasMore: shown < all.length,
+    loading: routes.isLoading,
+    onLoadMore: showMore,
+  });
+  // Deleting a run shrinks the list under what is already revealed; start the batches over.
+  useEffect(() => setShown(PAGE), [all.length]);
 
   // Two-step confirm: the whole row is a link, so a single stray click must never delete a run.
   const [confirmId, setConfirmId] = useState<string | null>(null);
@@ -97,7 +114,7 @@ export default function AppRoutes() {
         />
       ) : (
         <div className="grid gap-3">
-          {routes.data?.map((route) => (
+          {visible.map((route) => (
             <div
               key={route.id}
               className="flex flex-wrap items-center gap-x-5 gap-y-2 rounded-[12px] border border-transparent bg-amber px-4 py-2 transition-colors hover:bg-amber-deep"
@@ -170,6 +187,13 @@ export default function AppRoutes() {
                 ))}
             </div>
           ))}
+          {/* Scrolling near this reveals the next batch of runs. */}
+          <div ref={sentinel} className="h-px" />
+          {shown < all.length && (
+            <div className="mono flex items-center justify-center gap-2 text-[11px] uppercase tracking-widest text-fog">
+              <Loader2 className="size-3.5 animate-spin" /> {t("common.loading")}
+            </div>
+          )}
         </div>
       )}
     </DashboardShell>
