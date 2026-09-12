@@ -14,7 +14,7 @@ export const en = {
   "nav.reports": "Reports",
   "nav.share": "Share links",
   "nav.team": "Team",
-  "nav.invite": "Invite Team Member",
+  "nav.invite": "Invite New Team Member",
   "nav.watermarks": "Watermarks",
   "nav.plan": "Plan",
   "nav.admin": "Admin console",

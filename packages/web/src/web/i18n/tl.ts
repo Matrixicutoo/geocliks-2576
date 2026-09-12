@@ -8,7 +8,7 @@ export const tl: Catalog = {
   "nav.reports": "Mga report",
   "nav.share": "Mga share link",
   "nav.team": "Team",
-  "nav.invite": "Mag-imbita ng miyembro",
+  "nav.invite": "Mag-imbita ng bagong miyembro",
   "nav.watermarks": "Mga watermark",
   "nav.plan": "Plano",
   "nav.admin": "Admin console",
