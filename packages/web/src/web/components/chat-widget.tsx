@@ -2,12 +2,16 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { useLocation } from "wouter";
 import { useChat } from "@ai-sdk/react";
 import { DefaultChatTransport, type UIMessage } from "ai";
-import { MessageSquare, Send, Square, Trash2, X } from "lucide-react";
+import { Send, Square, Trash2, X } from "lucide-react";
 import { useT } from "../lib/i18n";
 import { amberFill } from "../lib/chrome";
+import { ASSISTANT_NAME, onAssistantOpen, useAssistantAccess } from "../lib/assistant";
 
 /**
- * The assistant panel, docked to the right edge on every surface except /admin.
+ * The assistant panel, docked to the right edge of the signed-in app.
+ *
+ * It has no floating tab of its own: it is opened from the "GeoCliks AI Assistant" link in the
+ * site footer and in the account menu, and only for a workspace whose plan includes it.
  *
  * Mounted once at the app root, outside the router's Switch, so the transcript survives
  * navigation. It also survives a reload: messages are mirrored into localStorage, versioned so
@@ -120,6 +124,7 @@ function Inline({ text }: { text: string }) {
 export function ChatWidget() {
   const t = useT();
   const [location] = useLocation();
+  const allowed = useAssistantAccess();
   const [open, setOpen] = useState(false);
   const [input, setInput] = useState("");
   const initial = useMemo(readStored, []);
@@ -168,6 +173,9 @@ export function ChatWidget() {
     if (open) box.current?.focus();
   }, [open]);
 
+  // Opened from the footer link / account menu, which are rendered far from here.
+  useEffect(() => onAssistantOpen(() => setOpen(true)), []);
+
   // Escape closes, matching the other overlays in the app.
   useEffect(() => {
     if (!open) return;
@@ -179,8 +187,9 @@ export function ChatWidget() {
   }, [open]);
 
   // The admin console is an internal staff surface; a customer-facing assistant has no place in
-  // it, and the panel would cover the tables.
-  if (location.startsWith("/admin")) return null;
+  // it, and the panel would cover the tables. Plans that do not include the assistant never get
+  // the panel at all — the links that open it are hidden by the same check.
+  if (location.startsWith("/admin") || !allowed) return null;
 
   const busy = status === "streaming" || status === "submitted";
 
@@ -205,19 +214,8 @@ export function ChatWidget() {
     t("assistant.suggest3"),
   ];
 
-  if (!open) {
-    return (
-      <button
-        type="button"
-        onClick={() => setOpen(true)}
-        aria-label={t("assistant.open")}
-        className={`mono fixed end-0 top-1/2 z-[55] flex -translate-y-1/2 items-center gap-2 rounded-s-[10px] px-2.5 py-3 text-[11px] font-bold uppercase tracking-widest shadow-[0_2px_12px_rgba(0,0,0,0.25)] ${amberFill}`}
-      >
-        <MessageSquare className="size-4" aria-hidden />
-        <span className="hidden sm:inline">{t("assistant.tab")}</span>
-      </button>
-    );
-  }
+  // Closed, the widget shows nothing: the footer link is its only handle.
+  if (!open) return null;
 
   return (
     <>
@@ -232,16 +230,15 @@ export function ChatWidget() {
       />
       <dialog
         open
-        aria-label={t("assistant.title")}
+        aria-label={ASSISTANT_NAME}
         className="fixed inset-y-0 end-0 start-auto z-[65] m-0 flex h-auto max-h-none w-full max-w-none flex-col border-s border-line bg-ink-2 p-0 text-chalk shadow-[-8px_0_28px_rgba(0,0,0,0.28)] sm:w-[380px]"
       >
         <header className="flex items-start gap-3 border-b border-line px-4 py-3">
+          {/* The brand is in the name itself, so the old "GeoCliks" eyebrow above it would only
+              have said it twice. */}
           <div className="min-w-0 flex-1">
-            <p className="mono text-[10px] uppercase tracking-widest text-amber">
-              {t("assistant.eyebrow")}
-            </p>
             <p className="truncate font-display text-[15px] font-bold text-chalk">
-              {t("assistant.title")}
+              {ASSISTANT_NAME}
             </p>
           </div>
           {messages.length > 0 && (

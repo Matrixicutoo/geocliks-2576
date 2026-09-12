@@ -1,6 +1,7 @@
 import { Link } from "wouter";
 import { Facebook, Instagram, Linkedin, Youtube } from "lucide-react";
 import { Logo } from "./logo";
+import { ASSISTANT_NAME, openAssistant, useAssistantAccess } from "../lib/assistant";
 import { useT } from "../lib/i18n";
 import { SALES_EMAIL, SUPPORT_EMAIL } from "../lib/support";
 import { useSocialLinks } from "../queries/site";
@@ -55,6 +56,9 @@ function SocialRow() {
 
 export function SiteFooter() {
   const t = useT();
+  // The assistant is a signed-in, plan-gated feature, so the link only exists for a workspace
+  // that actually has it — no dead link and no upsell teaser for everyone else.
+  const hasAssistant = useAssistantAccess();
   return (
     <footer className="bg-ink">
       <div className="mx-auto max-w-[1180px] px-5 py-14">
@@ -81,6 +85,16 @@ export function SiteFooter() {
               <a href="/#pricing" className="transition-colors hover:text-chalk">
                 {t("home.nav.pricing")}
               </a>
+              {hasAssistant && (
+                <button
+                  type="button"
+                  onClick={openAssistant}
+                  title={t("assistant.open")}
+                  className="text-start transition-colors hover:text-chalk"
+                >
+                  {ASSISTANT_NAME}
+                </button>
+              )}
             </div>
           </div>
           <div>

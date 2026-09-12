@@ -17,6 +17,7 @@ import { useUnreadMessages } from "../queries/messages";
 import { cn } from "../lib/utils";
 import { amberFill } from "../lib/chrome";
 import { SUPPORT_EMAIL } from "../lib/support";
+import { ASSISTANT_NAME, openAssistant, planHasAssistant } from "../lib/assistant";
 import { useTheme } from "../lib/theme";
 import { type TKey, useLocale } from "../lib/i18n";
 import { LanguageSelect } from "./language-select";
@@ -244,6 +245,21 @@ export function SidebarBody({
                 {/* Help / support / legal, in the same order the mobile drawer lists them and
                     styled the same way: plain label, no leading icon, a small muted hint icon on
                     the right. Terms and Privacy are public routes, so they work signed in or out. */}
+                {/* The workspace has no footer of its own, so the assistant's handle lives here,
+                    beside help and support — the same plan grant as the footer link. */}
+                {planHasAssistant(org.data?.plan.id) && (
+                  <button
+                    type="button"
+                    onClick={() => {
+                      onNavigate?.();
+                      openAssistant();
+                    }}
+                    className="flex w-full items-center justify-between gap-2 border-t border-line px-3 py-1.5 transition-colors hover:bg-ink-3/60"
+                  >
+                    <span className="text-[12.5px] text-chalk">{ASSISTANT_NAME}</span>
+                    <ChevronRight className="size-3.5 shrink-0 text-fog" />
+                  </button>
+                )}
                 <Link
                   onClick={onNavigate}
                   to="/help"

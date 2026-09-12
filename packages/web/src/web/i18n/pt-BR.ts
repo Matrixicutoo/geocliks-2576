@@ -1294,12 +1294,9 @@ export const ptBR: Catalog = {
   "download.failed": "Não foi possível gerar o arquivo. Tente novamente.",
   "team.noMembers": "Ainda não há membros",
   // Assistant chat panel
-  "assistant.tab": "Perguntar",
   "assistant.open": "Abrir o assistente",
   "assistant.close": "Fechar o assistente",
   "assistant.clear": "Limpar esta conversa",
-  "assistant.eyebrow": "GeoCliks",
-  "assistant.title": "Assistente",
   "assistant.greeting": "Pergunte o que quiser: como o GeoCliks funciona ou qualquer outro assunto.",
   "assistant.suggest1": "Para que serve o GeoCliks?",
   "assistant.suggest2": "Como funciona a verificação das fotos?",

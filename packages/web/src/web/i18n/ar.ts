@@ -1250,12 +1250,9 @@ export const ar: Catalog = {
   "download.failed": "تعذّر إنشاء الملف. حاول مرة أخرى.",
   "team.noMembers": "لا يوجد أعضاء بعد",
   // Assistant chat panel
-  "assistant.tab": "اسأل",
   "assistant.open": "فتح المساعد",
   "assistant.close": "إغلاق المساعد",
   "assistant.clear": "مسح هذه المحادثة",
-  "assistant.eyebrow": "GeoCliks",
-  "assistant.title": "المساعد",
   "assistant.greeting": "اسألني عن أي شيء — كيف يعمل GeoCliks أو أي موضوع آخر.",
   "assistant.suggest1": "ما فائدة GeoCliks؟",
   "assistant.suggest2": "كيف يعمل التحقق من الصور؟",

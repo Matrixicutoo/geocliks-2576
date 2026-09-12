@@ -1293,12 +1293,9 @@ export const pl: Catalog = {
   "download.failed": "Nie udało się utworzyć pliku. Spróbuj ponownie.",
   "team.noMembers": "Nie ma jeszcze członków",
   // Assistant chat panel
-  "assistant.tab": "Zapytaj",
   "assistant.open": "Otwórz asystenta",
   "assistant.close": "Zamknij asystenta",
   "assistant.clear": "Wyczyść tę rozmowę",
-  "assistant.eyebrow": "GeoCliks",
-  "assistant.title": "Asystent",
   "assistant.greeting": "Pytaj o cokolwiek — jak działa GeoCliks albo o zupełnie inną sprawę.",
   "assistant.suggest1": "Do czego służy GeoCliks?",
   "assistant.suggest2": "Jak działa weryfikacja zdjęć?",

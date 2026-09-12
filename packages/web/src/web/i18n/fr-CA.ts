@@ -1314,12 +1314,9 @@ export const frCA: Catalog = {
   "download.failed": "Ce fichier n'a pas pu être généré. Réessayez.",
   "team.noMembers": "Aucun membre pour le moment",
   // Assistant chat panel
-  "assistant.tab": "Demander",
   "assistant.open": "Ouvrir l'assistant",
   "assistant.close": "Fermer l'assistant",
   "assistant.clear": "Effacer cette conversation",
-  "assistant.eyebrow": "GeoCliks",
-  "assistant.title": "Assistant",
   "assistant.greeting": "Demandez-moi n'importe quoi : le fonctionnement de GeoCliks ou tout autre sujet.",
   "assistant.suggest1": "À quoi sert GeoCliks?",
   "assistant.suggest2": "Comment fonctionne la vérification des photos?",

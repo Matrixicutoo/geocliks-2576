@@ -1214,12 +1214,9 @@ export const zh: Catalog = {
   "download.failed": "无法生成该文件，请重试。",
   "team.noMembers": "还没有成员",
   // Assistant chat panel
-  "assistant.tab": "提问",
   "assistant.open": "打开助手",
   "assistant.close": "关闭助手",
   "assistant.clear": "清空此对话",
-  "assistant.eyebrow": "GeoCliks",
-  "assistant.title": "助手",
   "assistant.greeting": "随便问——GeoCliks 怎么用，或者其他任何问题。",
   "assistant.suggest1": "GeoCliks 有什么用？",
   "assistant.suggest2": "照片验证是怎么实现的？",

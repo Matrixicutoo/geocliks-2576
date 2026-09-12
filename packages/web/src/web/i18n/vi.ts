@@ -1281,12 +1281,9 @@ export const vi: Catalog = {
   "download.failed": "Không tạo được tệp đó. Hãy thử lại.",
   "team.noMembers": "Chưa có thành viên nào",
   // Assistant chat panel
-  "assistant.tab": "Hỏi",
   "assistant.open": "Mở trợ lý",
   "assistant.close": "Đóng trợ lý",
   "assistant.clear": "Xóa cuộc trò chuyện này",
-  "assistant.eyebrow": "GeoCliks",
-  "assistant.title": "Trợ lý",
   "assistant.greeting": "Hỏi tôi bất cứ điều gì — cách GeoCliks hoạt động, hay bất cứ chuyện gì khác.",
   "assistant.suggest1": "GeoCliks dùng để làm gì?",
   "assistant.suggest2": "Việc xác minh ảnh hoạt động thế nào?",

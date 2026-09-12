@@ -1307,12 +1307,9 @@ export const tl: Catalog = {
   "download.failed": "Hindi nabuo ang file. Subukan muli.",
   "team.noMembers": "Wala pa pong miyembro",
   // Assistant chat panel
-  "assistant.tab": "Magtanong",
   "assistant.open": "Buksan ang assistant",
   "assistant.close": "Isara ang assistant",
   "assistant.clear": "I-clear ang chat na ito",
-  "assistant.eyebrow": "GeoCliks",
-  "assistant.title": "Assistant",
   "assistant.greeting": "Magtanong po kayo ng kahit ano — kung paano gumagana ang GeoCliks, o anumang bagay.",
   "assistant.suggest1": "Para saan po ang GeoCliks?",
   "assistant.suggest2": "Paano gumagana ang photo verification?",

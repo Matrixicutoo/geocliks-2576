@@ -1302,12 +1302,9 @@ export const it: Catalog = {
   "download.failed": "Impossibile generare il file. Riprova.",
   "team.noMembers": "Ancora nessun membro",
   // Assistant chat panel
-  "assistant.tab": "Chiedi",
   "assistant.open": "Apri l'assistente",
   "assistant.close": "Chiudi l'assistente",
   "assistant.clear": "Cancella questa chat",
-  "assistant.eyebrow": "GeoCliks",
-  "assistant.title": "Assistente",
   "assistant.greeting": "Chiedimi qualsiasi cosa: come funziona GeoCliks o qualunque altro argomento.",
   "assistant.suggest1": "A cosa serve GeoCliks?",
   "assistant.suggest2": "Come funziona la verifica delle foto?",
