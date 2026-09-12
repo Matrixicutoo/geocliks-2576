@@ -413,11 +413,7 @@ export function ProfileMenu({ showStamp, onToggleStamp }: Props) {
                     />
                     <Text
                       numberOfLines={1}
-                      style={[
-                        styles.tileText,
-                        styles.inviteTileText,
-                        { color: colors.primaryForeground },
-                      ]}
+                      style={[styles.inviteTileText, { color: colors.primaryForeground }]}
                     >
                       {tr("nav.invite")}
                     </Text>
@@ -603,7 +599,9 @@ const styles = StyleSheet.create({
   // Invite spans the full row instead of sharing one with a destination: it is an action, not
   // a place, and the longer label needs the width. Centred so it reads as a button.
   inviteTile: { width: "100%", justifyContent: "center" },
-  inviteTileText: { flex: 0, textAlign: "center" },
+  // Deliberately not built on `tileText`: that sets flex:1, and RN reads flex:0 as
+  // flexBasis:0 with no grow, which collapses the label to zero width. Shrink-only instead.
+  inviteTileText: { fontSize: 12, flexShrink: 1, textAlign: "center" },
   card: { borderWidth: 1, borderRadius: 12, overflow: "hidden" },
   cardRow: {
     flexDirection: "row",
