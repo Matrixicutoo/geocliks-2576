@@ -62,3 +62,12 @@ export function useRemoveMember() {
   const invalidate = useTeamInvalidate();
   return useMutation(orpc.team.remove.mutationOptions({ onSuccess: invalidate }));
 }
+
+/**
+ * Is this account GeoCliks platform staff? Only a superadmin may grant the `admin` role, so the
+ * invite sheet asks this before deciding whether to offer that chip. `authed`, not staff-only,
+ * so a normal crew account gets `staffRole: null` rather than a 403.
+ */
+export function useStaffRole() {
+  return useQuery(orpc.admin.me.queryOptions({ staleTime: 60_000, retry: false }));
+}

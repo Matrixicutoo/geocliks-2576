@@ -5,17 +5,20 @@ import { Text } from "@/components/app-text";
 import { useColors } from "@/hooks/use-colors";
 import { Fonts } from "@/constants/theme";
 import { useT } from "@/lib/i18n";
-import { useInviteMember } from "@/queries/team";
+import { useInviteMember, useStaffRole } from "@/queries/team";
 
 /**
- * The roles a workspace hands out to its own crew — the same list the Team screen offers.
- * Owner and admin are absent on purpose: the server (`assertMayGrant` in `api/routes/team.ts`)
- * only lets a GeoCliks superadmin grant those, from the web console.
+ * The roles a workspace hands out to its own crew.
+ * Owner is absent on purpose, and `admin` is added only for GeoCliks superadmins: the server
+ * (`assertMayGrant` in `api/routes/team.ts`) refuses both from anyone else, so offering them
+ * to a normal owner would only produce a 403.
  */
-const ROLES = ["manager", "dispatcher", "driver", "field"] as const;
+const CREW_ROLES = ["manager", "dispatcher", "driver", "field"] as const;
+const ROLES = ["admin", ...CREW_ROLES] as const;
 type Role = (typeof ROLES)[number];
 
 const ROLE_HINT: Record<Role, string> = {
+  admin: "Full workspace control. GeoCliks-granted support tier.",
   manager: "Projects, reports and share links.",
   dispatcher: "Builds and runs delivery routes only.",
   driver: "Delivers assigned routes. No projects or job photos.",
@@ -30,6 +33,9 @@ export function InviteSheet({ visible, onClose }: { visible: boolean; onClose: (
   const colors = useColors();
   const tr = useT();
   const invite = useInviteMember();
+  // Hiding the chip is presentation only; `assertMayGrant` on the server is the actual guard.
+  const staff = useStaffRole();
+  const roles: readonly Role[] = staff.data?.staffRole === "superadmin" ? ROLES : CREW_ROLES;
   const [email, setEmail] = useState("");
   const [role, setRole] = useState<Role | null>(null);
   const [error, setError] = useState<string | null>(null);
@@ -101,7 +107,7 @@ export function InviteSheet({ visible, onClose }: { visible: boolean; onClose: (
 
             <Text style={[styles.label, { color: colors.mutedForeground }]}>Role</Text>
             <View style={styles.chips}>
-              {ROLES.map((item) => {
+              {roles.map((item) => {
                 const on = role === item;
                 return (
                   <Pressable

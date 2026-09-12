@@ -1,7 +1,4 @@
 {
-  "cli": {
-    "appVersionSource": "remote"
-  },
   "build": {
     "production": {
       "autoIncrement": true,
@@ -32,5 +29,8 @@
         "track": "internal"
       }
     }
+  },
+  "cli": {
+    "appVersionSource": "remote"
   }
 }
