@@ -13,13 +13,20 @@
  *
  * Both are best-effort about the map: no Maps key, no GPS fix or a Google outage degrades to a
  * placeholder (PDF) or to no inset at all (image), never to a failed download.
+ *
+ * Pixel work goes through jimp rather than sharp on purpose: production runs a single bundled
+ * server file, and sharp's native binding does not survive that bundle — it throws while
+ * initialising its own format table and takes the boot down with it. jimp is pure JS, so the
+ * bundle is just code. The trade is that jimp has no text rendering worth using, which is why the
+ * stamp is drawn by ./stamp-font instead of by rasterising SVG.
  */
 
-import sharp from "sharp";
+import { Jimp } from "jimp";
 import { PDFDocument, StandardFonts, rgb } from "pdf-lib";
 import type { photos as photosTable, projects as projectsTable } from "../database/schema";
 import { photoBytes, stillKey } from "./exports";
 import { fetchStaticMap, staticMapUrl } from "./static-map";
+import { drawText, fillRect, fitChars, strokeRect, type Surface } from "./stamp-font";
 
 type Photo = typeof photosTable.$inferSelect;
 type Project = typeof projectsTable.$inferSelect;
@@ -128,8 +135,9 @@ async function embed(pdf: PDFDocument, bytes: Uint8Array) {
     return isPng ? await pdf.embedPng(bytes) : await pdf.embedJpg(bytes);
   } catch {
     try {
-      // A mislabelled or progressive JPEG still goes through once sharp re-encodes it.
-      const re = await sharp(bytes).jpeg({ quality: 88 }).toBuffer();
+      // A mislabelled image still goes through once it is decoded and re-encoded as baseline JPEG.
+      const image = await Jimp.fromBuffer(Buffer.from(bytes));
+      const re = await image.getBuffer("image/jpeg", { quality: 88 });
       return await pdf.embedJpg(new Uint8Array(re));
     } catch {
       return null;
@@ -311,17 +319,33 @@ export async function buildEvidencePdf(ctx: EvidenceContext): Promise<Uint8Array
   return pdf.save();
 }
 
-const esc = (s: string) => s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+const STAMP_WHITE = { r: 255, g: 255, b: 255 };
+const STAMP_AMBER = { r: 224, g: 138, b: 0 };
+const STAMP_BLACK = { r: 0, g: 0, b: 0 };
+
+/** Cap-line top for a run whose SVG baseline sat at `baseline`. */
+const capTop = (baseline: number, size: number) => baseline - 0.72 * size;
 
 /**
- * The stamp overlay as SVG, sized to the photo so it reads the same on a 12MP capture and a
- * 720p one. Mirrors the on-screen overlay in packages/mobile/components/stamp.tsx.
+ * Burn the stamp bar into the bottom of a capture, sized to the photo so it reads the same on a
+ * 12MP capture and a 720p one. Mirrors the on-screen overlay in packages/mobile/components/stamp.tsx,
+ * and keeps the layout the SVG version used so old and new downloads look alike.
+ *
+ * `mapW` is the width of the map inset already placed bottom-right, so the org line stops short
+ * of it instead of running underneath.
  */
-function stampSvg(photo: Photo, orgName: string, width: number, height: number, mapW: number) {
+function drawStamp(
+  surface: Surface,
+  photo: Photo,
+  orgName: string,
+  width: number,
+  height: number,
+  mapW: number,
+) {
   const s = Math.max(1, width / 1200);
   const pad = Math.round(18 * s);
   const line1 = fmtTime(photo.capturedAt);
-  const line2 = `${coordLabel(photo)}${photo.accuracyM ? `  +/-${Math.round(photo.accuracyM)}m` : ""}`;
+  const line2 = `${coordLabel(photo)}  ${photo.accuracyM ? `+/-${Math.round(photo.accuracyM)}m` : ""}`.trim();
   const line3 = photo.address ?? "";
   const line4 = `${photo.photoCode}  ·  ${orgName}`;
   const f1 = Math.round(30 * s);
@@ -331,20 +355,44 @@ function stampSvg(photo: Photo, orgName: string, width: number, height: number, 
   const textX = pad + Math.round(14 * s);
   const right = mapW ? mapW + Math.round(24 * s) : 0;
 
-  return Buffer.from(`<svg xmlns="http://www.w3.org/2000/svg" width="${width}" height="${height}">
-  <rect x="0" y="${barY}" width="${width}" height="${barH}" fill="rgba(0,0,0,0.62)"/>
-  <rect x="0" y="${barY}" width="${Math.round(6 * s)}" height="${barH}" fill="#E08A00"/>
-  <g font-family="DejaVu Sans Mono, Courier New, monospace" fill="#ffffff">
-    <text x="${textX}" y="${barY + f1 + Math.round(16 * s)}" font-size="${f1}" font-weight="bold">${esc(line1)}</text>
-    <text x="${textX}" y="${barY + f1 + f2 + Math.round(26 * s)}" font-size="${f2}" fill="#ffffff" opacity="0.92">${esc(line2)}</text>
-    ${
-      line3
-        ? `<text x="${textX}" y="${barY + f1 + f2 * 2 + Math.round(34 * s)}" font-size="${f2}" opacity="0.82">${esc(line3.slice(0, Math.floor((width - right - textX) / (f2 * 0.62)))) }</text>`
-        : ""
-    }
-    <text x="${width - right - pad}" y="${barY + barH - Math.round(16 * s)}" font-size="${f2}" opacity="0.8" text-anchor="end">${esc(line4)}</text>
-  </g>
-</svg>`);
+  fillRect(surface, 0, barY, width, barH, STAMP_BLACK, 0.62);
+  fillRect(surface, 0, barY, Math.round(6 * s), barH, STAMP_AMBER, 1);
+
+  // Every line is clipped to the space left of the inset, so a long address or a small capture
+  // truncates instead of running off the frame.
+  const clip = (text: string, size: number) => text.slice(0, fitChars(width - right - textX, size));
+
+  drawText(surface, clip(line1, f1), {
+    x: textX,
+    y: capTop(barY + f1 + Math.round(16 * s), f1),
+    size: f1,
+    color: STAMP_WHITE,
+    weight: 0.12,
+  });
+  drawText(surface, clip(line2, f2), {
+    x: textX,
+    y: capTop(barY + f1 + f2 + Math.round(26 * s), f2),
+    size: f2,
+    color: STAMP_WHITE,
+    alpha: 0.92,
+  });
+  if (line3) {
+    drawText(surface, clip(line3, f2), {
+      x: textX,
+      y: capTop(barY + f1 + f2 * 2 + Math.round(34 * s), f2),
+      size: f2,
+      color: STAMP_WHITE,
+      alpha: 0.82,
+    });
+  }
+  drawText(surface, clip(line4, f2), {
+    x: width - right - pad,
+    y: capTop(barY + barH - Math.round(16 * s), f2),
+    size: f2,
+    color: STAMP_WHITE,
+    alpha: 0.8,
+    align: "end",
+  });
 }
 
 /**
@@ -357,54 +405,51 @@ export async function buildStampedImage(ctx: EvidenceContext): Promise<Uint8Arra
   const source = still ? await photoBytes(still) : null;
   if (!source) return null;
 
+  // fromBuffer applies the EXIF orientation, so a phone capture held sideways stamps the right
+  // way up rather than with the bar down one edge.
+  let image: Awaited<ReturnType<typeof Jimp.fromBuffer>>;
+  try {
+    image = await Jimp.fromBuffer(Buffer.from(source));
+  } catch {
+    return null;
+  }
+
   // Cap the long edge: a 12MP original makes a 6MB download nobody needs, and the stamp text
   // scales with the width anyway.
-  const base = sharp(source, { failOn: "none" }).rotate().resize({
-    width: 2400,
-    height: 2400,
-    fit: "inside",
-    withoutEnlargement: true,
-  });
-  const buf = await base.jpeg({ quality: 90 }).toBuffer();
-  const meta = await sharp(buf).metadata();
-  const width = meta.width ?? 1200;
-  const height = meta.height ?? 900;
-
-  const composites: sharp.OverlayOptions[] = [];
+  if (image.bitmap.width > 2400 || image.bitmap.height > 2400) {
+    image.scaleToFit({ w: 2400, h: 2400 });
+  }
+  const width = image.bitmap.width;
+  const height = image.bitmap.height;
 
   // Map inset first so the stamp bar draws over its bottom edge, not under it.
   const insetW = Math.round(Math.min(320, Math.max(150, width * 0.24)));
   const insetH = Math.round(insetW * 0.72);
-  const map = await mapBytes(photo, { width: insetW, height: insetH, scale: 2 });
+  // On a small capture the inset would cover the stamp text, so it is dropped instead.
+  const map =
+    insetW <= width * 0.3 && insetH <= height * 0.3
+      ? await mapBytes(photo, { width: insetW, height: insetH, scale: 2 })
+      : null;
   let insetPlaced = 0;
   if (map) {
     try {
-      const inset = await sharp(map).resize(insetW, insetH, { fit: "cover" }).png().toBuffer();
-      const frame = Buffer.from(
-        `<svg xmlns="http://www.w3.org/2000/svg" width="${insetW}" height="${insetH}"><rect x="0.5" y="0.5" width="${insetW - 1}" height="${insetH - 1}" fill="none" stroke="#E08A00" stroke-width="3"/></svg>`,
-      );
-      const framed = await sharp(inset)
-        .composite([{ input: frame, top: 0, left: 0 }])
-        .png()
-        .toBuffer();
+      const inset = await Jimp.fromBuffer(Buffer.from(map));
+      inset.cover({ w: insetW, h: insetH });
+      strokeRect(inset.bitmap as Surface, 0, 0, insetW, insetH, STAMP_AMBER, 3);
       const margin = Math.round(width * 0.015);
-      composites.push({
-        input: framed,
-        top: Math.max(0, height - insetH - margin - Math.round(height * 0.14)),
-        left: Math.max(0, width - insetW - margin),
-      });
+      image.composite(
+        inset,
+        Math.max(0, width - insetW - margin),
+        Math.max(0, height - insetH - margin - Math.round(height * 0.14)),
+      );
       insetPlaced = insetW;
     } catch {
       insetPlaced = 0;
     }
   }
 
-  composites.push({
-    input: stampSvg(photo, orgName, width, height, insetPlaced),
-    top: 0,
-    left: 0,
-  });
+  drawStamp(image.bitmap as Surface, photo, orgName, width, height, insetPlaced);
 
-  const out = await sharp(buf).composite(composites).jpeg({ quality: 90 }).toBuffer();
+  const out = await image.getBuffer("image/jpeg", { quality: 90 });
   return new Uint8Array(out);
 }

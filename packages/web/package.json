@@ -38,6 +38,7 @@
     "drizzle-orm": "^0.45.2",
     "exceljs": "^4.4.0",
     "hono": "^4.12.10",
+    "jimp": "^1.6.1",
     "jszip": "^3.10.1",
     "lucide-react": "^0.577.0",
     "motion": "^13.1.1",
