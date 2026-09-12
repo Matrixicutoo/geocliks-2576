@@ -8,7 +8,7 @@ export const vi: Catalog = {
   "nav.reports": "Báo cáo",
   "nav.share": "Liên kết chia sẻ",
   "nav.team": "Nhóm",
-  "nav.invite": "Mời",
+  "nav.invite": "Mời thành viên",
   "nav.watermarks": "Hình mờ",
   "nav.plan": "Gói",
   "nav.admin": "Bảng quản trị",

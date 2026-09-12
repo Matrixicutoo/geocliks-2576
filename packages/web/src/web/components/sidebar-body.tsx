@@ -185,12 +185,13 @@ export function SidebarBody({
               className={cn(
                 // Full width across both columns: inviting is the one action here that is not
                 // a destination, and the wider tile keeps it from reading as a sixth nav item.
-                "col-span-2 flex items-center rounded-[8px] gap-2 border-l-2 border-transparent bg-amber px-2.5 py-1.5 text-left text-[12px] font-medium leading-tight text-on-amber",
+                // Centred rather than left-aligned, so it reads as a button instead of a row.
+                "col-span-2 flex items-center justify-center rounded-[8px] gap-2 border-l-2 border-transparent bg-amber px-2.5 py-1.5 text-center text-[12px] font-medium leading-tight text-on-amber",
                 amberFill,
               )}
             >
               <UserPlus className="size-4 shrink-0 text-on-amber" />
-              <span className="min-w-0 flex-1">{t("nav.invite")}</span>
+              <span className="min-w-0 truncate">{t("nav.invite")}</span>
             </button>
           )}
           {me.data?.staffRole && (

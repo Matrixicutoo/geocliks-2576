@@ -400,7 +400,11 @@ export function ProfileMenu({ showStamp, onToggleStamp }: Props) {
                       setOpen(false);
                       setInviteOpen(true);
                     }}
-                    style={[styles.tile, { borderColor: colors.amber, backgroundColor: colors.amber }]}
+                    style={[
+                      styles.tile,
+                      styles.inviteTile,
+                      { borderColor: colors.amber, backgroundColor: colors.amber },
+                    ]}
                   >
                     <Ionicons
                       name="mail-open-outline"
@@ -409,7 +413,11 @@ export function ProfileMenu({ showStamp, onToggleStamp }: Props) {
                     />
                     <Text
                       numberOfLines={1}
-                      style={[styles.tileText, { color: colors.primaryForeground }]}
+                      style={[
+                        styles.tileText,
+                        styles.inviteTileText,
+                        { color: colors.primaryForeground },
+                      ]}
                     >
                       {tr("nav.invite")}
                     </Text>
@@ -592,6 +600,10 @@ const styles = StyleSheet.create({
     borderRadius: 8,
   },
   tileText: { fontSize: 12, flex: 1 },
+  // Invite spans the full row instead of sharing one with a destination: it is an action, not
+  // a place, and the longer label needs the width. Centred so it reads as a button.
+  inviteTile: { width: "100%", justifyContent: "center" },
+  inviteTileText: { flex: 0, textAlign: "center" },
   card: { borderWidth: 1, borderRadius: 12, overflow: "hidden" },
   cardRow: {
     flexDirection: "row",
