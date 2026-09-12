@@ -22,11 +22,11 @@
   },
   "submit": {
     "production": {
-      "android": {
-        "track": "internal"
-      },
       "ios": {
         "ascApiKeyPath": "./keys/AuthKey.p8"
+      },
+      "android": {
+        "track": "internal"
       }
     }
   }

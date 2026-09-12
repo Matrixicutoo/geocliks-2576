@@ -20,17 +20,22 @@ function joinUrl(code: string): string {
   return `${base}/join/${code}`;
 }
 
-export async function inviteQrImage(rawCode: string): Promise<Response> {
-  const code = rawCode.replace(/\.png$/i, "").trim().toLowerCase();
-  if (!CODE.test(code)) return new Response("bad code", { status: 400 });
-
-  const png = await QRCode.toBuffer(joinUrl(code), {
+/** The QR square for an invite code as PNG bytes. Shared by the public route and the email. */
+export function inviteQrPng(code: string): Promise<Buffer> {
+  return QRCode.toBuffer(joinUrl(code), {
     type: "png",
     width: 480,
     margin: 1,
     errorCorrectionLevel: "M",
     color: { dark: "#0d2137ff", light: "#ffffffff" },
   });
+}
+
+export async function inviteQrImage(rawCode: string): Promise<Response> {
+  const code = rawCode.replace(/\.png$/i, "").trim().toLowerCase();
+  if (!CODE.test(code)) return new Response("bad code", { status: 400 });
+
+  const png = await inviteQrPng(code);
 
   return new Response(new Uint8Array(png), {
     headers: {

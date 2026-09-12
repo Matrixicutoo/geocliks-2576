@@ -1,5 +1,6 @@
 import { sendEmail, siteUrl, type SendResult } from "./email";
 import { SUPPORT_EMAIL } from "../lib/support";
+import { inviteQrPng } from "../lib/invite-qr";
 
 /**
  * HTML for every transactional message GeoCliks sends. Kept as plain template strings so the
@@ -50,21 +51,24 @@ export function button(href: string, label: string): string {
   </p>`;
 }
 
+/** Content-ID of the inline QR image, referenced from the invite HTML as `cid:`. */
+const QR_CID = "geocliks-invite-qr";
+
 /**
- * The invite QR, pointed at the public `/api/invite/:code/qr.png` route. It has to be a hosted
- * image rather than an inline data URL or a CID attachment: Gmail strips data URLs outright, and
- * an attached image turns a one-line invite into a message with a paperclip, which reads as spam.
+ * The invite QR. It rides along as an inline (CID) attachment rather than a remote `<img src>`,
+ * because a remote image is exactly what mail clients refuse to load: Outlook hides remote content
+ * until the reader clicks "download pictures", and for a message in the Junk folder it blocks it
+ * outright with no prompt at all. A CID image is part of the message, so it renders in both cases.
  *
- * Outlook and most desktop clients hide remote images until the reader allows them, so the square
- * is never the only way in — the button, the pasteable link and the typed code all still work.
+ * The public `/api/invite/:code/qr.png` route still exists and is linked from the plain-text part,
+ * for the rare client that drops inline attachments.
  */
-export function qrBlock(code: string): string {
-  const src = `${siteUrl()}/api/invite/${encodeURIComponent(code)}/qr.png`;
+export function qrBlock(): string {
   return `<p style="margin:18px 0 0;font-size:13px;line-height:1.65;color:#374151">
        Reading this on a computer? Point your phone camera at this square:
      </p>
      <p style="margin:10px 0 0">
-       <img src="${src}" width="150" height="150" alt="QR code to join — or use the invite code below"
+       <img src="cid:${QR_CID}" width="150" height="150" alt="QR code to join — or use the invite code below"
             style="display:block;width:150px;height:150px;border:1px solid #e5e7eb;border-radius:10px" />
      </p>`;
 }
@@ -76,7 +80,7 @@ const ROLE_COPY: Record<string, string> = {
   owner: "Owner — full access to the workspace.",
 };
 
-export function inviteEmail(params: {
+export async function inviteEmail(params: {
   to: string;
   workspace: string;
   inviterName: string;
@@ -115,7 +119,7 @@ export function inviteEmail(params: {
        <a href="${appLink}" style="color:#0d1117;font-weight:600">Open the app with your code already filled in</a>
        — then tap the arrow to create your account.
      </p>
-     ${qrBlock(params.code)}
+     ${qrBlock()}
      <p style="margin:16px 0 0;font-size:12px;color:#6b7280">Invite code: <strong>${params.code.toUpperCase()}</strong></p>`,
     `${params.inviterName} invited ${params.to} to the ${params.workspace} workspace.`,
   );
@@ -130,6 +134,14 @@ Scannable QR: ${siteUrl()}/api/invite/${params.code}/qr.png`;
     subject: `${params.inviterName} invited you to ${params.workspace} on GeoCliks`,
     html,
     text,
+    attachments: [
+      {
+        filename: "join-qr.png",
+        content: (await inviteQrPng(params.code)).toString("base64"),
+        contentType: "image/png",
+        contentId: QR_CID,
+      },
+    ],
   });
 }
 

@@ -62,6 +62,16 @@ export interface SendEmailOptions {
   replyTo?: string;
   /** Override the sender. Recipient-facing mail passes `notifyFrom()`. */
   from?: string;
+  /**
+   * Inline images. An attachment carrying a `contentId` is referenced from the HTML as
+   * `cid:<id>` and travels inside the message, so it renders where a remote `<img src="https://…">`
+   * would not — Outlook blocks remote images until the reader allows them, and blocks them
+   * outright, with no prompt, for anything sitting in the Junk folder.
+   *
+   * `content` is base64. A raw Buffer would go over the wire as `{"type":"Buffer","data":[…]}`,
+   * which is both larger and at the mercy of how the API chooses to read it.
+   */
+  attachments?: { filename: string; content: string; contentType?: string; contentId?: string }[];
 }
 
 export async function sendEmail(options: SendEmailOptions): Promise<SendResult> {
@@ -78,6 +88,7 @@ export async function sendEmail(options: SendEmailOptions): Promise<SendResult> 
       html: options.html,
       text: options.text,
       replyTo: options.replyTo ?? SUPPORT_EMAIL,
+      ...(options.attachments?.length ? { attachments: options.attachments } : {}),
     });
     if (error) {
       console.error("[email] send failed:", options.subject, error);
