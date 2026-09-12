@@ -52,8 +52,7 @@ export function CookieNotice() {
   };
 
   return (
-    <div
-      role="region"
+    <section
       aria-label={t("cookies.title")}
       className="fixed inset-x-0 bottom-0 z-[60] border-t border-line bg-ink-2/95 backdrop-blur-sm"
     >
@@ -83,6 +82,6 @@ export function CookieNotice() {
           </button>
         </div>
       </div>
-    </div>
+    </section>
   );
 }

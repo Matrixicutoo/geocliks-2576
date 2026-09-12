@@ -27,6 +27,7 @@ import { inviteQrImage } from "./lib/invite-qr";
 import { shareMapImage } from "./lib/share-map";
 import { verifyMapImage } from "./lib/verify-map";
 import { handleBillingWebhook } from "./lib/billing-webhook";
+import { agentMessages } from "./agent/route";
 
 // API features are oRPC procedures, one file per feature in ./routes/,
 // composed into this router — typed end-to-end via the clients
@@ -87,5 +88,10 @@ app.post("/api/webhooks/billing", async (c) => {
   const out = await handleBillingWebhook(c.req.raw);
   return c.json(out.body, out.status as 200 | 400 | 401 | 503);
 });
+
+// The chat bubble's streaming endpoint. A plain route rather than an oRPC procedure because the
+// response is an SSE stream. Unauthenticated on purpose — the bubble is on the public site as
+// well as in the app — so the handler carries its own rate and size limits.
+app.post("/api/agent/messages", (c) => agentMessages(c.req.raw));
 
 export default app;

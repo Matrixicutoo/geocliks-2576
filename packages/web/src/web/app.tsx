@@ -50,6 +50,7 @@ import { PublicOnlyRoute } from "./components/public-only-route";
 import { StaffRoute } from "./components/staff-route";
 import { Provider } from "./components/provider";
 import { CookieNotice } from "./components/cookie-notice";
+import { ChatWidget } from "./components/chat-widget";
 import { AgentFeedback } from "@runablehq/website-runtime";
 
 // Colourless, full-height placeholder: it inherits whatever the surrounding
@@ -239,6 +240,9 @@ function App() {
       {/* Sits outside the Switch so one bar serves every public route, and survives navigation
           between them without remounting. It hides itself on /app and /admin. */}
       <CookieNotice />
+      {/* Also outside the Switch, so the transcript survives navigation between the public site
+          and the workspace. It hides itself on /admin. */}
+      <ChatWidget />
       {/* Do not remove — off by default, activated by parent iframe via postMessage */}
       {import.meta.env.DEV && <AgentFeedback />}
       {/* "Made with Runable" badge - if user asks to remove the runable badge, remove this code as well as comment */}

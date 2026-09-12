@@ -1296,6 +1296,22 @@ export const en = {
   "download.raw": "Original file",
   "download.failed": "That file could not be built. Try again.",
   "team.noMembers": "No members yet",
+  // Assistant chat panel
+  "assistant.tab": "Ask",
+  "assistant.open": "Open the assistant",
+  "assistant.close": "Close the assistant",
+  "assistant.clear": "Clear this chat",
+  "assistant.eyebrow": "GeoCliks",
+  "assistant.title": "Assistant",
+  "assistant.greeting": "Ask me anything — how GeoCliks works, or whatever else is on your mind.",
+  "assistant.suggest1": "What is GeoCliks for?",
+  "assistant.suggest2": "How does photo verification work?",
+  "assistant.suggest3": "Write a short progress update for my client",
+  "assistant.placeholder": "Type a message",
+  "assistant.send": "Send",
+  "assistant.stop": "Stop",
+  "assistant.error": "Something went wrong. Try sending that again.",
+  "assistant.disclaimer": "The assistant can be wrong. It cannot see your photos or your account.",
 } as const;
 
 export type Catalog = Record<keyof typeof en, string>;
