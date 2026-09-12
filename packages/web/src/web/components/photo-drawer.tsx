@@ -1,7 +1,24 @@
 import { useState } from "react";
-import { X, ShieldAlert, ShieldCheck, RefreshCw, Trash2, Loader2, Navigation } from "lucide-react";
+import {
+  X,
+  ShieldAlert,
+  ShieldCheck,
+  RefreshCw,
+  Trash2,
+  Loader2,
+  Navigation,
+  Download,
+  FileText,
+  ImageDown,
+} from "lucide-react";
 import { type TKey, useT } from "../lib/i18n";
-import { usePhoto, useVerifyPhoto, useRemovePhoto, useMovePhoto } from "../queries/photos";
+import {
+  usePhoto,
+  useVerifyPhoto,
+  useRemovePhoto,
+  useMovePhoto,
+  usePhotoEvidence,
+} from "../queries/photos";
 import { useProjects } from "../queries/projects";
 import { useOrg } from "../queries/orgs";
 import { formatCoords, formatStamp, TAG_LABEL, VerifiedBadge } from "./evidence-card";
@@ -51,6 +68,13 @@ export function PhotoDrawer({ photoId, onClose }: { photoId: string | null; onCl
   const projects = useProjects();
   const org = useOrg();
   const [confirmDelete, setConfirmDelete] = useState(false);
+  /**
+   * Evidence files are built on demand, so the click has to survive the round trip: `building`
+   * tracks which of the two buttons is waiting, and the result opens in a new tab because the
+   * URL is a presigned storage link on another origin.
+   */
+  const evidence = usePhotoEvidence();
+  const [building, setBuilding] = useState<"pdf" | "image" | null>(null);
   /** Field crews capture evidence; only manager and above can remove it. */
   const canDelete = canManageWorkspace(org.data?.role);
 
@@ -264,6 +288,76 @@ export function PhotoDrawer({ photoId, onClose }: { photoId: string | null; onCl
                   </li>
                 ))}
               </ol>
+            </div>
+
+            <div className="border-t border-line pt-4">
+              <p className="label">{t("download.title")}</p>
+              <p className="mt-1 text-[12px] leading-relaxed text-fog">{t("download.blurb")}</p>
+              <div className="mt-2 flex flex-wrap gap-2">
+                <button
+                  type="button"
+                  disabled={evidence.isPending}
+                  onClick={() => {
+                    setBuilding("pdf");
+                    evidence.mutate(
+                      { id: data.id, format: "pdf" },
+                      {
+                        onSuccess: (res) => {
+                          window.location.href = res.url;
+                        },
+                        onSettled: () => setBuilding(null),
+                      },
+                    );
+                  }}
+                  className="mono flex items-center gap-2 rounded-[8px] bg-amber px-3 py-2 text-[10.5px] font-bold uppercase tracking-widest text-on-amber transition-colors hover:bg-amber-deep disabled:opacity-60"
+                >
+                  {building === "pdf" ? (
+                    <Loader2 className="size-3.5 animate-spin" />
+                  ) : (
+                    <FileText className="size-3.5" />
+                  )}
+                  {t("download.pdf")}
+                </button>
+                <button
+                  type="button"
+                  disabled={evidence.isPending}
+                  onClick={() => {
+                    setBuilding("image");
+                    evidence.mutate(
+                      { id: data.id, format: "image" },
+                      {
+                        onSuccess: (res) => {
+                          window.location.href = res.url;
+                        },
+                        onSettled: () => setBuilding(null),
+                      },
+                    );
+                  }}
+                  className="mono flex items-center gap-2 rounded-[8px] border border-line px-3 py-2 text-[10.5px] uppercase tracking-widest text-chalk transition-colors hover:border-amber/60 hover:text-amber disabled:opacity-60"
+                >
+                  {building === "image" ? (
+                    <Loader2 className="size-3.5 animate-spin" />
+                  ) : (
+                    <ImageDown className="size-3.5" />
+                  )}
+                  {t("download.stamped")}
+                </button>
+                {/* The untouched original stays one click away: some workflows need the exact
+                    bytes the hash was taken over, not a re-encoded copy. */}
+                <a
+                  href={data.url}
+                  download={`${data.photoCode}.${data.kind === "video" ? "mp4" : "jpg"}`}
+                  className="mono flex items-center gap-2 rounded-[8px] border border-line px-3 py-2 text-[10.5px] uppercase tracking-widest text-fog transition-colors hover:border-amber/60 hover:text-amber"
+                >
+                  <Download className="size-3.5" />
+                  {t("download.raw")}
+                </a>
+              </div>
+              {evidence.isError && (
+                <p className="mono mt-2 text-[10.5px] uppercase tracking-widest text-alert">
+                  {t("download.failed")}
+                </p>
+              )}
             </div>
 
             <div className="flex flex-wrap gap-2 border-t border-line pt-4">

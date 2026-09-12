@@ -1284,5 +1284,13 @@ export const ptBR: Catalog = {
   "cookies.accept": "Aceitar",
   "cookies.policy": "Ler a política de privacidade",
   "cookies.dismiss": "Fechar",
+  // Evidence download
+  "download.title": "Baixar",
+  "download.blurb":
+    "O certificado e a cópia com selo trazem hora, GPS, endereço, mapa, código da foto e assinatura. O arquivo original não traz nada disso.",
+  "download.pdf": "PDF de evidência",
+  "download.stamped": "Imagem com selo",
+  "download.raw": "Arquivo original",
+  "download.failed": "Não foi possível gerar o arquivo. Tente novamente.",
   "team.noMembers": "Ainda não há membros",
 };

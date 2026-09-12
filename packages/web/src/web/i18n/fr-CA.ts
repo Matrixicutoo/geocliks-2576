@@ -1304,5 +1304,13 @@ export const frCA: Catalog = {
   "cookies.accept": "Accepter",
   "cookies.policy": "Lire la politique de confidentialité",
   "cookies.dismiss": "Fermer",
+  // Evidence download
+  "download.title": "Télécharger",
+  "download.blurb":
+    "Le certificat et la copie estampillée portent l'heure, le GPS, l'adresse, la carte, le code photo et la signature. Le fichier original n'en porte rien.",
+  "download.pdf": "PDF de preuve",
+  "download.stamped": "Image estampillée",
+  "download.raw": "Fichier original",
+  "download.failed": "Ce fichier n'a pas pu être généré. Réessayez.",
   "team.noMembers": "Aucun membre pour le moment",
 };

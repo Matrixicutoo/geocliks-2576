@@ -1292,5 +1292,13 @@ export const it: Catalog = {
   "cookies.accept": "Accetta",
   "cookies.policy": "Leggi l'informativa sulla privacy",
   "cookies.dismiss": "Chiudi",
+  // Evidence download
+  "download.title": "Scarica",
+  "download.blurb":
+    "Il certificato e la copia timbrata riportano ora, GPS, indirizzo, mappa, codice foto e firma. Il file originale non riporta nulla di tutto questo.",
+  "download.pdf": "PDF di prova",
+  "download.stamped": "Immagine timbrata",
+  "download.raw": "File originale",
+  "download.failed": "Impossibile generare il file. Riprova.",
   "team.noMembers": "Ancora nessun membro",
 };

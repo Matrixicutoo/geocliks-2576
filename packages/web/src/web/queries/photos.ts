@@ -102,6 +102,20 @@ export function useRemovePhotos() {
   return useMutation(orpc.photos.removeMany.mutationOptions({ onSuccess: invalidate }));
 }
 
+/**
+ * Builds a downloadable evidence file for one capture (certificate PDF or stamped JPEG) and
+ * returns a presigned URL. It appends an "exported" event, so the photo's chain of custody is
+ * refetched afterwards.
+ */
+export function usePhotoEvidence() {
+  const queryClient = useQueryClient();
+  return useMutation(
+    orpc.photos.evidence.mutationOptions({
+      onSuccess: () => queryClient.invalidateQueries({ queryKey: orpc.photos.key() }),
+    }),
+  );
+}
+
 export function useCreatePhoto() {
   const invalidate = usePhotoInvalidate();
   return useMutation(orpc.photos.create.mutationOptions({ onSuccess: invalidate }));

@@ -5,6 +5,7 @@ import JSZip from "jszip";
 import { PDFDocument, StandardFonts, rgb } from "pdf-lib";
 import { getObjectBytes } from "./s3";
 import { isLocalAsset } from "./media";
+import { fetchStaticMap, staticMapUrl, type StaticMapPoint } from "./static-map";
 import type { photos as photosTable, projects as projectsTable } from "../database/schema";
 
 export type Photo = typeof photosTable.$inferSelect;
@@ -160,6 +161,37 @@ interface BuildContext {
   logoBytes?: Uint8Array | null;
 }
 
+/**
+ * Static map PNG for a set of fixes. A report that lists coordinates still leaves the reader
+ * geocoding them by hand, so the PDF carries the picture: one overview page for the whole package
+ * and a thumbnail beside every photo's metadata.
+ *
+ * Best effort by design — no Maps key, no GPS fix or a Google outage just means no map, never a
+ * failed export. Repeated pins hit the 5-minute cache in static-map.ts, so a 120-photo report is
+ * not 120 billable map loads when photos share a location.
+ */
+async function mapPng(
+  points: StaticMapPoint[],
+  size: { width: number; height: number; scale: 1 | 2 },
+  showRoute: boolean,
+): Promise<Uint8Array | null> {
+  const pins = points.filter((p) => Number.isFinite(p.lat) && Number.isFinite(p.lng));
+  if (pins.length === 0) return null;
+  const url = staticMapUrl(pins, { ...size, showRoute });
+  if (!url) return null;
+  const key = `export:${size.width}x${size.height}@${size.scale}:${showRoute ? "r" : "p"}:${pins
+    .slice(0, 40)
+    .map((p) => `${p.lat.toFixed(5)},${p.lng.toFixed(5)}`)
+    .join("|")}`;
+  const got = await fetchStaticMap(key, url);
+  return got ? new Uint8Array(got.bytes) : null;
+}
+
+const geoPoints = (photos: Photo[]): StaticMapPoint[] =>
+  photos
+    .filter((p) => p.lat != null && p.lng != null)
+    .map((p) => ({ lat: p.lat!, lng: p.lng!, userId: p.userId, capturedAt: p.capturedAt }));
+
 async function embed(pdf: PDFDocument, bytes: Uint8Array) {
   try {
     return await pdf.embedJpg(bytes as unknown as ArrayBuffer);
@@ -236,7 +268,76 @@ export async function buildPdf(ctx: BuildContext): Promise<Uint8Array> {
     { x: 48, y: 106, size: 9, font, color: FOG },
   );
 
+  // Overview map — every fix in the package on one page, with the capture route drawn per
+  // photographer per day. Skipped entirely when nothing in the package has GPS.
+  const overviewPoints = geoPoints(ctx.photos);
+  const overviewBytes = await mapPng(
+    overviewPoints,
+    // 640 is the Static Maps size ceiling, so the frame is near-square whatever we ask for;
+    // scale 2 buys the print resolution instead of more page coverage.
+    { width: 620, height: 640, scale: 2 },
+    true,
+  );
+  const overviewImage = overviewBytes ? await embed(pdf, overviewBytes) : null;
+  if (overviewImage) {
+    const page = pdf.addPage([W, H]);
+    page.drawRectangle({ x: 0, y: 0, width: W, height: H, color: WHITE });
+    page.drawRectangle({ x: 0, y: H - 46, width: W, height: 46, color: INK });
+    page.drawText("CAPTURE LOCATIONS", {
+      x: 40,
+      y: H - 29,
+      size: 10,
+      font: bold,
+      color: WHITE,
+    });
+    page.drawText("PAGE 2", { x: W - 96, y: H - 29, size: 9, font: mono, color: AMBER });
+
+    const mw = W - 80;
+    const scale = Math.min(mw / overviewImage.width, 660 / overviewImage.height);
+    const w = overviewImage.width * scale;
+    const h = overviewImage.height * scale;
+    // Centred in the page rather than hung off the header: the map cannot be made taller than
+    // its own aspect ratio, so the leftover space reads as a margin instead of a gap.
+    const captionH = 46;
+    const mx = 40 + (mw - w) / 2;
+    const myTop = 46 + (H - 46 - 40 - h - captionH) / 2 + h + captionH;
+    page.drawImage(overviewImage, { x: mx, y: myTop - h, width: w, height: h });
+    page.drawRectangle({
+      x: mx,
+      y: myTop - h,
+      width: w,
+      height: h,
+      borderColor: rgb(0.85, 0.87, 0.9),
+      borderWidth: 1,
+    });
+
+    let ly = myTop - h - 20;
+    page.drawText(
+      `${overviewPoints.length} of ${ctx.photos.length} captures carry a GPS fix.`,
+      { x: 40, y: ly, size: 9, font, color: INK },
+    );
+    ly -= 14;
+    if (overviewPoints.length > 40) {
+      page.drawText("Map shows the first 40 fixes; the log pages list every one.", {
+        x: 40,
+        y: ly,
+        size: 8.5,
+        font,
+        color: FOG,
+      });
+      ly -= 14;
+    }
+    page.drawText("Amber lines trace the capture order for one photographer on one day.", {
+      x: 40,
+      y: ly,
+      size: 8.5,
+      font,
+      color: FOG,
+    });
+  }
+
   // Evidence pages
+  const pageOffset = overviewImage ? 3 : 2;
   const perPage = ctx.layout === "grid" ? 2 : 1;
   for (let i = 0; i < ctx.photos.length; i += perPage) {
     const page = pdf.addPage([W, H]);
@@ -249,7 +350,7 @@ export async function buildPdf(ctx: BuildContext): Promise<Uint8Array> {
       font: bold,
       color: WHITE,
     });
-    page.drawText(`PAGE ${Math.floor(i / perPage) + 2}`, {
+    page.drawText(`PAGE ${Math.floor(i / perPage) + pageOffset}`, {
       x: W - 96,
       y: H - 29,
       size: 9,
@@ -279,7 +380,10 @@ export async function buildPdf(ctx: BuildContext): Promise<Uint8Array> {
         const scale = Math.min(imgW / image.width, imgH / image.height);
         const w = image.width * scale;
         const h = image.height * scale;
-        page.drawImage(image, { x: 40 + (imgW - w) / 2, y: top - h, width: w, height: h });
+        // Centred in the space reserved for it: a landscape frame is width-limited, and hanging it
+        // off the top left a band of white above the metadata block.
+        const iy = top - imgH + (imgH - h) / 2;
+        page.drawImage(image, { x: 40 + (imgW - w) / 2, y: iy, width: w, height: h });
       } else {
         page.drawRectangle({
           x: 40,
@@ -315,10 +419,48 @@ export async function buildPdf(ctx: BuildContext): Promise<Uint8Array> {
       ];
       if (photo.recipient) meta.push(["RECEIVED BY", photo.recipient]);
       if (photo.note) meta.push(["NOTE", photo.note]);
+
+      // Map thumbnail for this fix, in the right margin of the metadata block. Coordinates alone
+      // make a reader open Google Maps in another tab; this puts the place on the page.
+      // Sized to the room actually left between the metadata rows and the page edge, so it can
+      // neither run off the bottom nor ride up over the VERIFIED badge.
+      const thumbTop = my + 8;
+      const thumbH = Math.min(99, thumbTop - 44);
+      const thumbW = Math.round((thumbH * 4) / 3);
+      const thumbBytes =
+        photo.lat != null && photo.lng != null && thumbH >= 56
+          ? await mapPng(
+              [{ lat: photo.lat, lng: photo.lng }],
+              { width: thumbW, height: thumbH, scale: 2 },
+              false,
+            )
+          : null;
+      const thumb = thumbBytes ? await embed(pdf, thumbBytes) : null;
+      if (thumb) {
+        const ty = thumbTop - thumbH;
+        page.drawImage(thumb, { x: W - 40 - thumbW, y: ty, width: thumbW, height: thumbH });
+        page.drawRectangle({
+          x: W - 40 - thumbW,
+          y: ty,
+          width: thumbW,
+          height: thumbH,
+          borderColor: rgb(0.85, 0.87, 0.9),
+          borderWidth: 1,
+        });
+      }
+
+      // Values have to stop short of the thumbnail, or long addresses run underneath it. A note
+      // is the one field worth wrapping — cutting it mid-word reads like a corrupted file.
+      const valueChars = thumb ? 56 : 78;
       for (const [label, value] of meta) {
         page.drawText(label, { x: 40, y: my, size: 7, font: mono, color: FOG });
-        page.drawText(wa(value).slice(0, 78), { x: 100, y: my, size: 8.5, font, color: INK });
-        my -= 13;
+        const lines =
+          label === "NOTE" ? wrap(wa(value), valueChars).slice(0, 2) : [wa(value).slice(0, valueChars)];
+        for (const line of lines) {
+          page.drawText(line, { x: 100, y: my, size: 8.5, font, color: INK });
+          my -= 11;
+        }
+        my -= 2;
       }
 
       // Signature — native PDF line segments, so it stays sharp at any zoom level.

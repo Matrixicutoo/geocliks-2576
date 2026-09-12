@@ -1292,5 +1292,13 @@ export const es: Catalog = {
   "cookies.accept": "Aceptar",
   "cookies.policy": "Leer la política de privacidad",
   "cookies.dismiss": "Descartar",
+  // Evidence download
+  "download.title": "Descargar",
+  "download.blurb":
+    "El certificado y la copia sellada llevan la hora, el GPS, la dirección, el mapa, el código de foto y la firma. El archivo original no lleva nada de eso.",
+  "download.pdf": "PDF de evidencia",
+  "download.stamped": "Imagen sellada",
+  "download.raw": "Archivo original",
+  "download.failed": "No se pudo generar ese archivo. Inténtalo de nuevo.",
   "team.noMembers": "Todavía no hay miembros",
 };

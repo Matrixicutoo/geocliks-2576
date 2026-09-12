@@ -1297,5 +1297,13 @@ export const tl: Catalog = {
   "cookies.accept": "Tanggapin",
   "cookies.policy": "Basahin ang patakaran sa privacy",
   "cookies.dismiss": "Isara",
+  // Evidence download
+  "download.title": "I-download",
+  "download.blurb":
+    "Ang sertipiko at ang naka-stamp na kopya ay may oras, GPS, address, mapa, photo code at lagda. Ang orihinal na file ay wala nito.",
+  "download.pdf": "Evidence PDF",
+  "download.stamped": "Naka-stamp na larawan",
+  "download.raw": "Orihinal na file",
+  "download.failed": "Hindi nabuo ang file. Subukan muli.",
   "team.noMembers": "Wala pa pong miyembro",
 };

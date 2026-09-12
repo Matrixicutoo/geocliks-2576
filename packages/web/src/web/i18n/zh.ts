@@ -1204,5 +1204,13 @@ export const zh: Catalog = {
   "cookies.accept": "接受",
   "cookies.policy": "查看隐私政策",
   "cookies.dismiss": "关闭",
+  // Evidence download
+  "download.title": "下载",
+  "download.blurb":
+    "证书和带戳副本都包含时间、GPS、地址、地图、照片编码和签名。原始文件不含这些信息。",
+  "download.pdf": "证据 PDF",
+  "download.stamped": "带戳图片",
+  "download.raw": "原始文件",
+  "download.failed": "无法生成该文件，请重试。",
   "team.noMembers": "还没有成员",
 };

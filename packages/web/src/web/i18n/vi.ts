@@ -1271,5 +1271,13 @@ export const vi: Catalog = {
   "cookies.accept": "Đồng ý",
   "cookies.policy": "Đọc chính sách bảo mật",
   "cookies.dismiss": "Đóng",
+  // Evidence download
+  "download.title": "Tải xuống",
+  "download.blurb":
+    "Bản chứng nhận và bản có dấu đều kèm thời gian, GPS, địa chỉ, bản đồ, mã ảnh và chữ ký. Tệp gốc thì không có gì trong số đó.",
+  "download.pdf": "PDF bằng chứng",
+  "download.stamped": "Ảnh có dấu",
+  "download.raw": "Tệp gốc",
+  "download.failed": "Không tạo được tệp đó. Hãy thử lại.",
   "team.noMembers": "Chưa có thành viên nào",
 };

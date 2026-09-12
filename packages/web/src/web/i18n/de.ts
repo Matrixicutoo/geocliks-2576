@@ -1299,5 +1299,13 @@ export const de: Catalog = {
   "cookies.accept": "Akzeptieren",
   "cookies.policy": "Datenschutzerklärung lesen",
   "cookies.dismiss": "Schließen",
+  // Evidence download
+  "download.title": "Download",
+  "download.blurb":
+    "Zertifikat und gestempelte Kopie enthalten Zeit, GPS, Adresse, Karte, Foto-Code und Unterschrift. Die Originaldatei enthält davon nichts.",
+  "download.pdf": "Nachweis-PDF",
+  "download.stamped": "Gestempeltes Bild",
+  "download.raw": "Originaldatei",
+  "download.failed": "Diese Datei konnte nicht erstellt werden. Bitte erneut versuchen.",
   "team.noMembers": "Noch keine Mitglieder",
 };

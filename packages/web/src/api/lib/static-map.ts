@@ -11,10 +11,19 @@
  */
 
 /**
- * Prefers a dedicated server key (restrict it by IP in the Google console, not by HTTP referrer).
- * Falls back to the browser key so this keeps working before that key exists.
+ * Prefers a dedicated server key (restrict it by IP in the Google console, not by HTTP referrer),
+ * with the browser key behind it.
+ *
+ * The order alone is not enough: a server key that *exists* but has not had Static Maps enabled on
+ * it answers 403, and preferring it would then break every map even though the browser key works.
+ * So the keys are a list, and a rejection promotes the next one for the rest of the process —
+ * see `fetchStaticMap`.
  */
-const KEY = process.env.GOOGLE_MAPS_SERVER_KEY || process.env.VITE_GOOGLE_MAPS_API_KEY || "";
+const KEYS = [process.env.GOOGLE_MAPS_SERVER_KEY, process.env.VITE_GOOGLE_MAPS_API_KEY].filter(
+  (k): k is string => !!k,
+);
+let keyIndex = 0;
+const KEY = () => KEYS[keyIndex] ?? "";
 
 /** Google rejects very long URLs; well under the 8192-char limit at this count. */
 const MAX_PINS = 40;
@@ -77,7 +86,7 @@ export function staticMapUrl(
   points: StaticMapPoint[],
   opts: { width: number; height: number; scale: 1 | 2; showRoute: boolean },
 ) {
-  if (!KEY || points.length === 0) return null;
+  if (!KEY() || points.length === 0) return null;
   const pins = points.slice(0, MAX_PINS);
   const params = new URLSearchParams();
   params.set("size", `${opts.width}x${opts.height}`);
@@ -86,7 +95,7 @@ export function staticMapUrl(
   params.set("format", "png");
   // No center/zoom: Static Maps fits the markers automatically.
   if (pins.length === 1) params.set("zoom", "16");
-  params.set("key", KEY);
+  params.set("key", KEY());
 
   const query: string[] = [params.toString()];
   for (const s of STYLE) query.push(`style=${encodeURIComponent(s)}`);
@@ -127,7 +136,15 @@ export async function fetchStaticMap(
   const hit = cache.get(cacheKey);
   if (hit && Date.now() - hit.at < TTL_MS) return { bytes: hit.bytes, type: hit.type };
   try {
-    const res = await fetch(url);
+    let res = await fetch(url);
+    // A rejected key is a configuration problem, not a transient one: promote the next key and
+    // retry this request with it, so one bad key does not blank out every map on the site.
+    if (res.status === 403 && keyIndex + 1 < KEYS.length) {
+      const rejected = KEYS[keyIndex]!;
+      keyIndex += 1;
+      console.warn("[static-map] Maps key rejected (403); falling back to the next key.");
+      res = await fetch(url.replace(encodeURIComponent(rejected), encodeURIComponent(KEY())).replace(rejected, KEY()));
+    }
     if (!res.ok) return null;
     const type = res.headers.get("content-type") ?? "image/png";
     if (!type.startsWith("image/")) return null;

@@ -25,8 +25,23 @@ export async function presignPut(key: string, contentType: string, expiresIn = 9
   });
 }
 
-export async function presignGet(key: string, expiresIn = 60 * 60 * 24) {
-  return getSignedUrl(s3, new GetObjectCommand({ Bucket, Key: key }), { expiresIn });
+/**
+ * `downloadName` makes the object come back as an attachment under that filename. The `download`
+ * attribute on an anchor is ignored cross-origin, so a presigned link is the only place the
+ * filename of an evidence download can be set.
+ */
+export async function presignGet(key: string, expiresIn = 60 * 60 * 24, downloadName?: string) {
+  return getSignedUrl(
+    s3,
+    new GetObjectCommand({
+      Bucket,
+      Key: key,
+      ...(downloadName
+        ? { ResponseContentDisposition: `attachment; filename="${downloadName.replace(/"/g, "")}"` }
+        : {}),
+    }),
+    { expiresIn },
+  );
 }
 
 export async function putObject(

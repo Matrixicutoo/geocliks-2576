@@ -1283,5 +1283,13 @@ export const pl: Catalog = {
   "cookies.accept": "Akceptuję",
   "cookies.policy": "Przeczytaj politykę prywatności",
   "cookies.dismiss": "Zamknij",
+  // Evidence download
+  "download.title": "Pobierz",
+  "download.blurb":
+    "Certyfikat i kopia ze stemplem zawierają godzinę, GPS, adres, mapę, kod zdjęcia i podpis. Plik oryginalny nie zawiera żadnej z tych informacji.",
+  "download.pdf": "PDF z dowodem",
+  "download.stamped": "Zdjęcie ze stemplem",
+  "download.raw": "Plik oryginalny",
+  "download.failed": "Nie udało się utworzyć pliku. Spróbuj ponownie.",
   "team.noMembers": "Nie ma jeszcze członków",
 };

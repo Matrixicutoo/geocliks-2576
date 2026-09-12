@@ -1240,5 +1240,13 @@ export const ar: Catalog = {
   "cookies.accept": "موافق",
   "cookies.policy": "اقرأ سياسة الخصوصية",
   "cookies.dismiss": "إغلاق",
+  // Evidence download
+  "download.title": "تنزيل",
+  "download.blurb":
+    "تحمل الشهادة والنسخة المختومة الوقت وإحداثيات GPS والعنوان والخريطة ورمز الصورة والتوقيع. الملف الأصلي لا يحمل أيًّا من ذلك.",
+  "download.pdf": "شهادة PDF",
+  "download.stamped": "صورة مختومة",
+  "download.raw": "الملف الأصلي",
+  "download.failed": "تعذّر إنشاء الملف. حاول مرة أخرى.",
   "team.noMembers": "لا يوجد أعضاء بعد",
 };

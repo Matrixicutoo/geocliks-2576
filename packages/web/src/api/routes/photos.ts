@@ -7,9 +7,11 @@ import * as schema from "../database/schema";
 import { id, photoCode } from "../lib/ids";
 import { planOf, videoAllowance } from "../lib/plans";
 import { photoUrl } from "../lib/media";
-import { deleteObject, getObjectBytes } from "../lib/s3";
+import { deleteObject, getObjectBytes, presignGet, putObject } from "../lib/s3";
 import { resolveClock, sha256, sign, verifySignature } from "../lib/verify";
 import { burnStamp, hasFfmpeg, posterFrame } from "../lib/video";
+import { buildEvidencePdf, buildStampedImage } from "../lib/evidence";
+import { siteUrl } from "../services/email";
 
 const tagEnum = z.enum([
   "general",
@@ -178,6 +180,78 @@ export const photos = {
       author: author ?? null,
     };
   }),
+
+  /**
+   * Download a capture with its evidence attached.
+   *
+   * The raw download (a plain link to the stored file) hands over pixels and nothing else, so
+   * these two formats put the context in the file: `pdf` is a one-page certificate (image, time,
+   * GPS, map, signature, code and hash), `image` is the JPEG with the stamp burned in and a map
+   * inset. Built on demand and stored under the org's prefix, then handed back as a presigned
+   * URL — same shape as a report download, so the browser fetches bytes from storage, not from
+   * an oRPC response.
+   *
+   * Signed-in members only, and scope-restricted roles get the same visibility rule as `get`.
+   */
+  evidence: orgProc
+    .input(z.object({ id: z.string(), format: z.enum(["pdf", "image"]) }))
+    .handler(async ({ input, context }) => {
+      const [photo] = await db
+        .select()
+        .from(schema.photos)
+        .where(and(eq(schema.photos.id, input.id), eq(schema.photos.orgId, context.org.id)));
+      if (!photo) throw new ORPCError("NOT_FOUND", { message: "Photo not found" });
+
+      const scoped = await visibleProjectIds(context.org.id, context.user.id, context.role);
+      if (
+        scoped &&
+        photo.userId !== context.user.id &&
+        !(photo.projectId && scoped.includes(photo.projectId))
+      ) {
+        throw new ORPCError("NOT_FOUND", { message: "Photo not found" });
+      }
+
+      const [project] = photo.projectId
+        ? await db.select().from(schema.projects).where(eq(schema.projects.id, photo.projectId))
+        : [null];
+
+      const ctx = {
+        photo,
+        project: project ?? null,
+        orgName: context.org.name,
+        verifyUrl: `${siteUrl()}/v/${photo.photoCode}`,
+      };
+
+      const bytes =
+        input.format === "pdf" ? await buildEvidencePdf(ctx) : await buildStampedImage(ctx);
+      if (!bytes) {
+        throw new ORPCError("BAD_REQUEST", {
+          message: "The original file could not be read, so a stamped copy can't be built.",
+        });
+      }
+
+      const ext = input.format === "pdf" ? "pdf" : "jpg";
+      const key = `orgs/${context.org.id}/evidence/${photo.photoCode}-${Date.now()}.${ext}`;
+      await putObject(key, bytes, input.format === "pdf" ? "application/pdf" : "image/jpeg");
+
+      await db.insert(schema.photoEvents).values({
+        id: id("evt"),
+        photoId: photo.id,
+        orgId: context.org.id,
+        type: "exported",
+        actor: context.user.id,
+        detail: input.format === "pdf" ? "Evidence PDF" : "Stamped image",
+      });
+
+      const filename = `${photo.photoCode}-evidence.${ext}`;
+      return {
+        // Presigned with an attachment disposition: the click saves the file under its photo code
+        // instead of opening a tab full of PDF, and needs no popup allowance.
+        url: await presignGet(key, 60 * 60 * 24, filename),
+        filename,
+        bytes: bytes.byteLength,
+      };
+    }),
 
   /** Register an uploaded photo. The server stamps verified time and signs the metadata. */
   create: orgProc

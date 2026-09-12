@@ -1287,6 +1287,14 @@ export const en = {
   "cookies.accept": "Accept",
   "cookies.policy": "Read the privacy policy",
   "cookies.dismiss": "Dismiss",
+  // Evidence download
+  "download.title": "Download",
+  "download.blurb":
+    "The certificate and the stamped copy both carry the time, GPS, address, map, photo code and signature. The original file carries none of it.",
+  "download.pdf": "Evidence PDF",
+  "download.stamped": "Stamped image",
+  "download.raw": "Original file",
+  "download.failed": "That file could not be built. Try again.",
   "team.noMembers": "No members yet",
 } as const;
 
