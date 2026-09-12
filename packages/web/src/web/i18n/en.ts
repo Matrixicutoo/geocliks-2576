@@ -1280,6 +1280,13 @@ export const en = {
   "team.projectLevelAccess": "Project-level access",
   "team.projectLevelBody":
     "Field users only see projects they are assigned to. Tick projects on the invite form to have them assigned the moment the invite is accepted, or use the folder button on any member above to change access after they have joined. Each project page also has {crew}.",
+  // Cookie notice
+  "cookies.title": "Cookies",
+  "cookies.body":
+    "GeoCliks uses only the cookies it needs to keep you signed in and to remember your language and theme. No advertising cookies and no third-party tracking.",
+  "cookies.accept": "Accept",
+  "cookies.policy": "Read the privacy policy",
+  "cookies.dismiss": "Dismiss",
   "team.noMembers": "No members yet",
 } as const;
 

@@ -1276,5 +1276,12 @@ export const pl: Catalog = {
   "team.projectLevelAccess": "Dostęp na poziomie projektu",
   "team.projectLevelBody":
     "Użytkownicy z roli Teren widzą tylko projekty, do których są przypisani. Zaznacz projekty w formularzu zaproszenia, aby zostały przypisane w chwili przyjęcia zaproszenia, albo użyj przycisku folderu przy dowolnym członku powyżej, aby zmienić dostęp po jego dołączeniu. Każda strona projektu ma też {crew}.",
+  // Cookie notice
+  "cookies.title": "Pliki cookie",
+  "cookies.body":
+    "GeoCliks używa tylko plików cookie niezbędnych do utrzymania zalogowania oraz zapamiętania języka i motywu. Bez cookie reklamowych i bez śledzenia przez podmioty trzecie.",
+  "cookies.accept": "Akceptuję",
+  "cookies.policy": "Przeczytaj politykę prywatności",
+  "cookies.dismiss": "Zamknij",
   "team.noMembers": "Nie ma jeszcze członków",
 };

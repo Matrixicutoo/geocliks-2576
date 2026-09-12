@@ -1198,5 +1198,11 @@ export const zh: Catalog = {
   "team.projectLevelAccess": "按项目控制权限",
   "team.projectLevelBody":
     "现场用户只能看到分配给自己的项目。在邀请表单里勾选项目，邀请一被接受就会立即分配；也可以点上方任一成员的文件夹按钮，在其加入之后再更改权限。每个项目页面上也有{crew}。",
+  // Cookie notice
+  "cookies.title": "Cookie",
+  "cookies.body": "GeoCliks 仅使用保持登录状态以及记住语言和主题所必需的 Cookie。没有广告 Cookie，也没有第三方追踪。",
+  "cookies.accept": "接受",
+  "cookies.policy": "查看隐私政策",
+  "cookies.dismiss": "关闭",
   "team.noMembers": "还没有成员",
 };

@@ -49,6 +49,7 @@ import { AdminRoute } from "./components/admin-route";
 import { PublicOnlyRoute } from "./components/public-only-route";
 import { StaffRoute } from "./components/staff-route";
 import { Provider } from "./components/provider";
+import { CookieNotice } from "./components/cookie-notice";
 import { AgentFeedback } from "@runablehq/website-runtime";
 
 // Colourless, full-height placeholder: it inherits whatever the surrounding
@@ -235,6 +236,9 @@ function App() {
           </Route>
         </Switch>
       </Suspense>
+      {/* Sits outside the Switch so one bar serves every public route, and survives navigation
+          between them without remounting. It hides itself on /app and /admin. */}
+      <CookieNotice />
       {/* Do not remove — off by default, activated by parent iframe via postMessage */}
       {import.meta.env.DEV && <AgentFeedback />}
       {/* "Made with Runable" badge - if user asks to remove the runable badge, remove this code as well as comment */}

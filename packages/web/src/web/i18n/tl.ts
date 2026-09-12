@@ -1290,5 +1290,12 @@ export const tl: Catalog = {
   "team.projectLevelAccess": "Access kada proyekto",
   "team.projectLevelBody":
     "Ang mga Field user ay nakikita lang ang mga proyektong naka-assign sa kanila. I-tsek ang mga proyekto sa invite form para ma-assign agad sa oras na tanggapin ang imbitasyon, o gamitin ang folder button sa kahit sinong miyembro sa itaas para baguhin ang access pagkatapos nilang sumali. May {crew} din ang bawat pahina ng proyekto.",
+  // Cookie notice
+  "cookies.title": "Cookies",
+  "cookies.body":
+    "Ang GeoCliks ay gumagamit lamang ng cookies na kailangan para manatili kang naka-sign in at matandaan ang iyong wika at tema. Walang cookies para sa advertising at walang third-party tracking.",
+  "cookies.accept": "Tanggapin",
+  "cookies.policy": "Basahin ang patakaran sa privacy",
+  "cookies.dismiss": "Isara",
   "team.noMembers": "Wala pa pong miyembro",
 };

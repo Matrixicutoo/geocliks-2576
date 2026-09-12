@@ -1264,5 +1264,12 @@ export const vi: Catalog = {
   "team.projectLevelAccess": "Quyền theo từng dự án",
   "team.projectLevelBody":
     "Người dùng Hiện trường chỉ thấy những dự án được phân công cho họ. Hãy tích chọn dự án trong biểu mẫu lời mời để phân công ngay khi lời mời được chấp nhận, hoặc dùng nút thư mục ở bất kỳ thành viên phía trên để thay đổi quyền sau khi họ đã tham gia. Mỗi trang dự án cũng có {crew}.",
+  // Cookie notice
+  "cookies.title": "Cookie",
+  "cookies.body":
+    "GeoCliks chỉ dùng những cookie cần thiết để giữ bạn đăng nhập và ghi nhớ ngôn ngữ cùng giao diện. Không có cookie quảng cáo và không theo dõi từ bên thứ ba.",
+  "cookies.accept": "Đồng ý",
+  "cookies.policy": "Đọc chính sách bảo mật",
+  "cookies.dismiss": "Đóng",
   "team.noMembers": "Chưa có thành viên nào",
 };

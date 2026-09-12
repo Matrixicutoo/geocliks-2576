@@ -1292,5 +1292,12 @@ export const de: Catalog = {
   "team.projectLevelAccess": "Zugriff auf Projektebene",
   "team.projectLevelBody":
     "Feld-Nutzer sehen nur Projekte, denen sie zugewiesen sind. Haken Sie Projekte im Einladungsformular an, damit sie beim Annehmen der Einladung sofort zugewiesen werden, oder nutzen Sie die Ordner-Schaltfläche bei einem Mitglied oben, um den Zugriff nachträglich zu ändern. Jede Projektseite hat außerdem {crew}.",
+  // Cookie notice
+  "cookies.title": "Cookies",
+  "cookies.body":
+    "GeoCliks verwendet nur die Cookies, die nötig sind, um dich angemeldet zu halten und Sprache und Design zu speichern. Keine Werbe-Cookies, kein Tracking durch Dritte.",
+  "cookies.accept": "Akzeptieren",
+  "cookies.policy": "Datenschutzerklärung lesen",
+  "cookies.dismiss": "Schließen",
   "team.noMembers": "Noch keine Mitglieder",
 };

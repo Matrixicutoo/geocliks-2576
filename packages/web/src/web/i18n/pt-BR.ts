@@ -1277,5 +1277,12 @@ export const ptBR: Catalog = {
   "team.projectLevelAccess": "Acesso por projeto",
   "team.projectLevelBody":
     "Usuários de Campo só veem os projetos aos quais estão atribuídos. Marque projetos no formulário de convite para atribuí-los no momento em que o convite for aceito, ou use o botão de pasta em qualquer membro acima para mudar o acesso depois que a pessoa entrar. Cada página de projeto também tem {crew}.",
+  // Cookie notice
+  "cookies.title": "Cookies",
+  "cookies.body":
+    "O GeoCliks usa apenas os cookies necessários para manter você conectado e lembrar seu idioma e tema. Sem cookies de publicidade e sem rastreamento de terceiros.",
+  "cookies.accept": "Aceitar",
+  "cookies.policy": "Ler a política de privacidade",
+  "cookies.dismiss": "Fechar",
   "team.noMembers": "Ainda não há membros",
 };

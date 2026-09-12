@@ -1297,5 +1297,12 @@ export const frCA: Catalog = {
   "team.projectLevelAccess": "Accès par projet",
   "team.projectLevelBody":
     "Les utilisateurs Terrain voient seulement les projets qui leur sont assignés. Cochez des projets dans le formulaire d'invitation pour qu'ils soient assignés dès que l'invitation est acceptée, ou utilisez le bouton dossier sur un membre ci-dessus pour changer l'accès après son arrivée. Chaque page de projet a aussi {crew}.",
+  // Cookie notice
+  "cookies.title": "Témoins",
+  "cookies.body":
+    "GeoCliks n'utilise que les témoins nécessaires pour vous garder connecté et retenir votre langue et votre thème. Aucun témoin publicitaire, aucun suivi tiers.",
+  "cookies.accept": "Accepter",
+  "cookies.policy": "Lire la politique de confidentialité",
+  "cookies.dismiss": "Fermer",
   "team.noMembers": "Aucun membre pour le moment",
 };
