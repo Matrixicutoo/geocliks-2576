@@ -5,6 +5,7 @@ import { Logo } from "./logo";
 import { SiteFooter } from "./site-footer";
 import { LanguageSelect } from "./language-select";
 import { useT } from "../lib/i18n";
+import { scrollSiteToTop } from "../lib/site-scroll";
 
 /**
  * Shared chrome for every /help page: the marketing site's pinned-dark header,
@@ -31,7 +32,7 @@ export function HelpShell({
     const root = document.documentElement;
     const previous = root.dataset.theme;
     root.dataset.theme = "light";
-    window.scrollTo(0, 0);
+    scrollSiteToTop();
     return () => {
       if (previous) root.dataset.theme = previous;
       else delete root.dataset.theme;

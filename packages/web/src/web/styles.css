@@ -348,6 +348,17 @@
   }
 }
 
+/* The assistant sheet slides in from the right edge it is docked to, on viewports too narrow to
+   give it a column. Named for the same reason as the nav drawer above. */
+@keyframes assistant-sheet-in {
+  from {
+    transform: translateX(100%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+
 @keyframes tm-pulse-ring {
   0% {
     box-shadow: 0 0 0 0 color-mix(in oklab, var(--c-verified) 40%, transparent);

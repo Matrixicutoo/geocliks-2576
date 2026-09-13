@@ -4,6 +4,7 @@ import { ArrowLeft } from "lucide-react";
 import { Logo } from "./logo";
 import { SiteFooter } from "./site-footer";
 import { LEGAL_EFFECTIVE_DATE } from "../lib/company";
+import { scrollSiteToTop } from "../lib/site-scroll";
 
 /**
  * Shared chrome for /terms and /privacy: the marketing site's pinned-dark header,
@@ -19,7 +20,7 @@ export function LegalPage({ title, children }: { title: string; children: React.
     const root = document.documentElement;
     const previous = root.dataset.theme;
     root.dataset.theme = "light";
-    window.scrollTo(0, 0);
+    scrollSiteToTop();
     return () => {
       if (previous) root.dataset.theme = previous;
       else delete root.dataset.theme;

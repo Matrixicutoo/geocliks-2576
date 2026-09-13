@@ -2,10 +2,17 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { useLocation } from "wouter";
 import { useChat } from "@ai-sdk/react";
 import { DefaultChatTransport, type UIMessage } from "ai";
-import { Send, Square, Trash2, X } from "lucide-react";
+import { MessageSquare, Send, Square, Trash2, X } from "lucide-react";
 import { useT } from "../lib/i18n";
 import { amberFill } from "../lib/chrome";
-import { ASSISTANT_NAME, onAssistantOpen, useAssistantAccess } from "../lib/assistant";
+import {
+  ASSISTANT_NAME,
+  DOCK_MIN_WIDTH,
+  onAssistantOpen,
+  setAssistantDocked,
+  useAssistantAccess,
+  useMinWidth,
+} from "../lib/assistant";
 
 /**
  * The assistant panel, docked to the right edge of the signed-in app.
@@ -126,6 +133,10 @@ export function ChatWidget() {
   const [location] = useLocation();
   const allowed = useAssistantAccess();
   const [open, setOpen] = useState(false);
+  // Narrow viewports have no room for a column, so there the open panel collapses to a tab on
+  // the edge and only slides out over the site while this is set. Deliberately not persisted:
+  // a narrow visit should start with the site unobstructed.
+  const [sheet, setSheet] = useState(false);
   const [input, setInput] = useState("");
   const initial = useMemo(readStored, []);
   const scroller = useRef<HTMLDivElement>(null);
@@ -163,33 +174,71 @@ export function ChatWidget() {
 
   useEffect(() => store(messages), [messages]);
 
-  // Follow the tail while a reply streams in.
+  const wide = useMinWidth(DOCK_MIN_WIDTH);
+  const hidden = location.startsWith("/admin") || !allowed;
+  // Docked: the panel holds a column and the shell lays the site out beside it. Otherwise it is
+  // a sheet over the site, and `sheet` says whether it is out or tucked away as a tab.
+  const docked = open && wide && !hidden;
+  const shown = docked || (open && !wide && sheet);
+
+  useEffect(() => {
+    if (shown) box.current?.focus();
+  }, [shown]);
+
+  // Follow the tail while a reply streams in — and on the pass that first renders the panel,
+  // which is where a transcript restored from storage would otherwise open at its oldest
+  // message with no sign that there is anything below it.
   useEffect(() => {
     const el = scroller.current;
-    if (el) el.scrollTop = el.scrollHeight;
-  }, [messages, status]);
+    if (!el) return;
+    const pin = () => {
+      el.scrollTop = el.scrollHeight;
+    };
+    // Once now, and once more after the browser has laid the panel out: as a docked column its
+    // height comes from the flex row around it, which is not settled on the pass that mounts
+    // it, and pinning a zero-height scroller to its bottom does nothing.
+    pin();
+    const frame = requestAnimationFrame(pin);
+    return () => cancelAnimationFrame(frame);
+  }, [messages, status, shown]);
 
+  // Opened from the footer link / account menu, which are rendered far from here. On a narrow
+  // viewport that means straight out over the site, not just a tab appearing somewhere.
+  useEffect(
+    () =>
+      onAssistantOpen(() => {
+        setOpen(true);
+        setSheet(true);
+      }),
+    [],
+  );
+
+  // Escape closes, matching the other overlays in the app. As a sheet it only tucks back into
+  // its tab, which is the sheet's own close too — the assistant stays a click away.
   useEffect(() => {
-    if (open) box.current?.focus();
-  }, [open]);
-
-  // Opened from the footer link / account menu, which are rendered far from here.
-  useEffect(() => onAssistantOpen(() => setOpen(true)), []);
-
-  // Escape closes, matching the other overlays in the app.
-  useEffect(() => {
-    if (!open) return;
+    if (!shown) return;
     const onKey = (e: KeyboardEvent) => {
-      if (e.key === "Escape") setOpen(false);
+      if (e.key !== "Escape") return;
+      if (docked) setOpen(false);
+      else setSheet(false);
     };
     globalThis.addEventListener("keydown", onKey);
     return () => globalThis.removeEventListener("keydown", onKey);
-  }, [open]);
+  }, [shown, docked]);
+
+  // Narrowing past the breakpoint takes the column away, so the sheet starts tucked in rather
+  // than covering the site the moment it stops fitting beside it.
+  useEffect(() => {
+    if (wide) setSheet(false);
+  }, [wide]);
+
+  // The shell has to know, to give the site the rest of the width and the scrolling.
+  useEffect(() => setAssistantDocked(docked), [docked]);
+  useEffect(() => () => setAssistantDocked(false), []);
 
   // The panel takes a column of the page, but the site's own viewport-positioned chrome — the
   // cookie bar — would still run underneath it. Publishing the panel's width lets that chrome
   // end where the panel begins.
-  const docked = open && allowed && !location.startsWith("/admin");
   useEffect(() => {
     const root = document.documentElement;
     root.style.setProperty("--assistant-w", docked ? "380px" : "0px");
@@ -199,7 +248,7 @@ export function ChatWidget() {
   // The admin console is an internal staff surface; a customer-facing assistant has no place in
   // it, and the panel would cover the tables. Plans that do not include the assistant never get
   // the panel at all — the links that open it are hidden by the same check.
-  if (location.startsWith("/admin") || !allowed) return null;
+  if (hidden) return null;
 
   const busy = status === "streaming" || status === "submitted";
 
@@ -227,24 +276,49 @@ export function ChatWidget() {
   // Closed, the widget shows nothing: the footer link is its only handle.
   if (!open) return null;
 
-  return (
-    <>
-      {/* Scrim on small screens only: the panel is full-width there, so the page behind it is
-          not reachable anyway, and on desktop the page stays usable beside the panel. */}
+  // Too narrow for a column and tucked away: all that is left is the tab that brings it back.
+  if (!shown) {
+    return (
       <button
         type="button"
-        tabIndex={-1}
-        aria-hidden
-        onClick={() => setOpen(false)}
-        className="fixed inset-0 z-[64] bg-ink/60 sm:hidden"
-      />
-      {/* Below `sm` there is no room to give the panel a column of its own, so there it stays a
-          full-screen sheet over the page. From `sm` up it is a column of the app's flex row:
-          sticky rather than fixed, so it keeps pace with the page scroll while its top stays
-          the top of its own column — nothing of the site is ever underneath it. */}
+        onClick={() => setSheet(true)}
+        aria-label={ASSISTANT_NAME}
+        title={ASSISTANT_NAME}
+        className="fixed end-0 top-1/2 z-[63] flex -translate-y-1/2 flex-col items-center gap-1.5 rounded-s-[10px] bg-amber px-2 py-3 text-on-amber shadow-[-4px_0_16px_rgba(0,0,0,0.22)] transition-[filter] hover:brightness-105"
+      >
+        <MessageSquare className="size-4" />
+        <span className="mono text-[10px] font-bold tracking-widest [writing-mode:vertical-rl]">
+          AI
+        </span>
+      </button>
+    );
+  }
+
+  return (
+    <>
+      {/* Scrim while the panel is a sheet: it covers the site rather than sitting beside it, so
+          a tap outside puts it back in its tab. Docked, the site stays usable and there is
+          nothing to dim. */}
+      {!docked && (
+        <button
+          type="button"
+          tabIndex={-1}
+          aria-hidden
+          onClick={() => setSheet(false)}
+          className="fixed inset-0 z-[64] bg-ink/60"
+        />
+      )}
+      {/* Docked, this is a column of the app's flex row, as tall as the row and scrolling its
+          own transcript. As a sheet it is fixed over the site, sliding in from the edge it is
+          docked to, full-width on a phone and 380px as soon as there is room for the site to
+          show through beside it. */}
       <aside
         aria-label={ASSISTANT_NAME}
-        className="fixed inset-0 z-[65] flex w-full flex-col border-s border-line bg-ink-2 text-chalk shadow-[-8px_0_28px_rgba(0,0,0,0.28)] sm:sticky sm:inset-auto sm:top-0 sm:h-[100dvh] sm:w-[380px] sm:shrink-0 sm:self-start"
+        className={
+          docked
+            ? "flex h-full w-[380px] shrink-0 flex-col border-s border-line bg-ink-2 text-chalk shadow-[-8px_0_28px_rgba(0,0,0,0.28)]"
+            : "fixed inset-y-0 end-0 z-[65] flex w-full flex-col border-s border-line bg-ink-2 text-chalk shadow-[-8px_0_28px_rgba(0,0,0,0.28)] motion-safe:animate-[assistant-sheet-in_200ms_ease-out] sm:w-[380px]"
+        }
       >
         <header className="flex shrink-0 items-start gap-3 border-b border-line px-4 py-3">
           {/* The brand is in the name itself, so the old "GeoCliks" eyebrow above it would only
@@ -267,7 +341,7 @@ export function ChatWidget() {
           )}
           <button
             type="button"
-            onClick={() => setOpen(false)}
+            onClick={() => (docked ? setOpen(false) : setSheet(false))}
             aria-label={t("assistant.close")}
             className="rounded-[8px] p-2 text-fog transition-colors hover:bg-ink-3 hover:text-chalk"
           >
@@ -275,7 +349,12 @@ export function ChatWidget() {
           </button>
         </header>
 
-        <div ref={scroller} className="min-h-0 flex-1 space-y-3 overflow-y-auto px-4 py-4">
+        {/* `overscroll-contain`: reaching the end of the transcript stops there instead of
+            handing the wheel on to the site behind it. */}
+        <div
+          ref={scroller}
+          className="min-h-0 flex-1 space-y-3 overflow-y-auto overscroll-contain px-4 py-4"
+        >
           {messages.length === 0 && (
             <div className="space-y-4">
               <p className="text-[13px] leading-relaxed text-fog">{t("assistant.greeting")}</p>

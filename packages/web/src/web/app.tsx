@@ -51,6 +51,8 @@ import { StaffRoute } from "./components/staff-route";
 import { Provider } from "./components/provider";
 import { CookieNotice } from "./components/cookie-notice";
 import { ChatWidget } from "./components/chat-widget";
+import { useAssistantDocked } from "./lib/assistant";
+import { SITE_SCROLL_ID } from "./lib/site-scroll";
 import { AgentFeedback } from "@runablehq/website-runtime";
 
 // Colourless, full-height placeholder: it inherits whatever the surrounding
@@ -58,14 +60,24 @@ import { AgentFeedback } from "@runablehq/website-runtime";
 const routeFallback = <div className="min-h-screen" />;
 
 function App() {
+  // With the panel docked the two of them split the viewport: the shell is exactly one screen
+  // tall and each column scrolls on its own, so the site's scrollbar runs down the left of the
+  // panel and the panel keeps its own scroll. Undocked, nothing changes — the document scrolls,
+  // as it does on a site with no assistant at all.
+  const docked = useAssistantDocked();
   return (
     <Provider>
       {/* Two columns: the site, and the assistant panel beside it. The panel is a real column
           rather than an overlay, so when it is open the site lays out in the width that is left
           instead of disappearing underneath it. Closed, the panel renders nothing and the site
           has the whole viewport. */}
-      <div className="flex min-h-screen">
-        <div className="min-w-0 flex-1">
+      <div className={docked ? "flex h-[100dvh] overflow-hidden" : "flex min-h-screen"}>
+        <div
+          id={SITE_SCROLL_ID}
+          className={
+            docked ? "min-w-0 flex-1 overflow-y-auto overscroll-contain" : "min-w-0 flex-1"
+          }
+        >
           <Suspense fallback={routeFallback}>
             <Switch>
               <Route path="/">
