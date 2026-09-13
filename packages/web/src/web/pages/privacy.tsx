@@ -162,6 +162,11 @@ export default function Privacy() {
           of them needs your consent and the site asks for none. There is nothing to opt out of;
           clearing your browser storage signs you out and forgets your preferences.
         </p>
+        <p>
+          The site loads no third-party scripts, and its fonts are served from our own domain rather
+          than from a font CDN, so loading a page does not disclose your IP address to anyone but
+          us.
+        </p>
       </LegalSection>
 
       <LegalSection title="12. Children">

@@ -28,12 +28,11 @@
 			content="Tamper-proof field photos with network-verified time, GPS coordinates and street address — synced to your crew's Teamspace and exported as closeout reports."
 		/>
 		<meta name="twitter:image" content="/og-image.png" />
-		<link rel="preconnect" href="https://fonts.googleapis.com" />
-		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-		<link
-			href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700;800&family=Manrope:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap"
-			rel="stylesheet"
-		/>
+		<!-- Fonts are self-hosted from /fonts (see src/web/styles.css) — nothing is fetched from
+		     Google, so no visitor IP leaves the site just to load type. These two subsets are what
+		     every page paints with; the rest load on demand by unicode-range. -->
+		<link rel="preload" href="/fonts/manrope-latin.woff2" as="font" type="font/woff2" crossorigin />
+		<link rel="preload" href="/fonts/sora-latin.woff2" as="font" type="font/woff2" crossorigin />
 		<title>GeoCliks — Proof your work happened</title>
 	</head>
 	<body>
