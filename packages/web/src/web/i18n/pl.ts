@@ -1319,4 +1319,12 @@ export const pl: Catalog = {
   "assistant.linkExpires": "Ten link działa 24 godziny. Raport pozostaje też na ekranie Raporty.",
   "assistant.linkExpired": "Ten link do pobrania wygasł. Raport nadal jest na ekranie Raporty.",
   "assistant.reportMeta": "{count} zdjęć · {size}",
+
+  /* My captures — the personal page: anything not filed under a project yet. Mirrors the phone app. */
+  "nav.mine": "Moje ujęcia",
+  "mine.title": "Moje ujęcia",
+  "mine.body": "Zdjęcia i klipy jeszcze nieprzypisane do projektu.",
+  "mine.photos": "Zdjęcia",
+  "mine.videos": "Filmy",
+  "mine.emptyBody": "Ujęcia zrobione bez wyboru projektu trafiają tutaj, łącznie ze wszystkim, co nagrano przed zalogowaniem.",
 };

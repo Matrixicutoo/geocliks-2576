@@ -1241,4 +1241,12 @@ export const zh: Catalog = {
   "assistant.linkExpires": "此链接 24 小时内有效。报告也会保留在“报告”页面。",
   "assistant.linkExpired": "此下载链接已过期。报告仍在“报告”页面。",
   "assistant.reportMeta": "{count} 张照片 · {size}",
+
+  /* My captures — the personal page: anything not filed under a project yet. Mirrors the phone app. */
+  "nav.mine": "我的拍摄",
+  "mine.title": "我的拍摄",
+  "mine.body": "尚未归入任何项目的照片和视频。",
+  "mine.photos": "照片",
+  "mine.videos": "视频",
+  "mine.emptyBody": "未选择项目时拍摄的内容会存放在这里，包括你登录之前拍摄的全部内容。",
 };

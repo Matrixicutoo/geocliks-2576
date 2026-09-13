@@ -18,6 +18,7 @@ const TrackPage = lazy(() => import("./pages/track"));
 const JoinPage = lazy(() => import("./pages/join"));
 const ResetPasswordPage = lazy(() => import("./pages/reset-password"));
 const AppTeamspace = lazy(() => import("./pages/app-teamspace"));
+const AppCaptures = lazy(() => import("./pages/app-captures"));
 const AppProjects = lazy(() => import("./pages/app-projects"));
 const AppProject = lazy(() => import("./pages/app-project"));
 const AppRoutes = lazy(() => import("./pages/app-routes"));
@@ -114,6 +115,16 @@ function App() {
                   <ProductRoute product="field">
                     <AppTeamspace />
                   </ProductRoute>
+                </ProtectedRoute>
+              </Route>
+              {/*
+                No ProductRoute: personal captures belong to the member, not to one product, so
+                a driver keeps their own unfiled delivery shots here just as the phone app's
+                drawer gives it to every role.
+              */}
+              <Route path="/app/captures">
+                <ProtectedRoute>
+                  <AppCaptures />
                 </ProtectedRoute>
               </Route>
               <Route path="/app/profile">

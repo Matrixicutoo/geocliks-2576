@@ -1329,4 +1329,12 @@ export const it: Catalog = {
   "assistant.linkExpires": "Questo link è valido 24 ore. Il report resta anche nella schermata Report.",
   "assistant.linkExpired": "Questo link di download è scaduto. Il report è ancora nella schermata Report.",
   "assistant.reportMeta": "{count} foto · {size}",
+
+  /* My captures — the personal page: anything not filed under a project yet. Mirrors the phone app. */
+  "nav.mine": "Le mie acquisizioni",
+  "mine.title": "Le mie acquisizioni",
+  "mine.body": "Foto e clip non ancora archiviate in un progetto.",
+  "mine.photos": "Foto",
+  "mine.videos": "Video",
+  "mine.emptyBody": "Le acquisizioni fatte senza scegliere un progetto finiscono qui, compreso tutto ciò che è stato ripreso prima dell'accesso.",
 };

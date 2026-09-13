@@ -29,7 +29,7 @@ import { InviteSheet } from "@/components/invite-sheet";
 import { useAppTheme } from "@/lib/theme";
 import { ASSISTANT_NAME, openAssistant, useAssistantAccess } from "@/lib/assistant";
 import { SUPPORT_EMAIL } from "../constants/support";
-import { canManageWatermarks, canManageWorkspace, canUseField } from "../lib/roles";
+import { canManageWatermarks, canManageWorkspace, canUseDelivery, canUseField } from "../lib/roles";
 
 type Props = {
   /** Live stamp preview state on the capture screen — the drawer toggles it. */
@@ -55,6 +55,11 @@ const TILES: {
    * and the server refuses these endpoints anyway. Mirrors FIELD_ONLY in the web sidebar.
    */
   fieldOnly?: boolean;
+  /**
+   * Belongs to the delivery product, so a `field` member never sees it — they have no delivery
+   * access and the server refuses these endpoints. Mirrors DELIVERY_ONLY in the web sidebar.
+   */
+  deliveryOnly?: boolean;
 }[] = [
   { href: "/projects", label: "nav.projects", icon: "briefcase-outline", fieldOnly: true },
   { href: "/teamspace", label: "nav.teamspace", icon: "people-outline", fieldOnly: true },
@@ -62,6 +67,9 @@ const TILES: {
   // crew signed in. Open to every role: a field member's own unfiled shots are their own.
   { href: "/my-captures", label: "nav.mine", icon: "images-outline" },
   { href: "/map", label: "nav.map", icon: "map-outline", fieldOnly: true },
+  // Delivery runs. It is a bottom tab as well, but the drawer is where the other destinations
+  // live, so dispatchers and drivers were left hunting for the one that was only on the bar.
+  { href: "/routes", label: "nav.routes", icon: "navigate-circle-outline", deliveryOnly: true },
   // Messages is a bottom tab too — the drawer lists it so every screen can reach it in one tap.
   { href: "/messages", label: "nav.messages", icon: "chatbubbles-outline" },
   // Team is open to every role, matching the office sidebar: field crews get a contact sheet.
@@ -368,7 +376,8 @@ export function ProfileMenu({ showStamp, onToggleStamp }: Props) {
                   (tile) =>
                     (!tile.managerOnly || !isField) &&
                     (!tile.adminOnly || canManageWatermarks(myRole)) &&
-                    (!tile.fieldOnly || canUseField(myRole)),
+                    (!tile.fieldOnly || canUseField(myRole)) &&
+                    (!tile.deliveryOnly || canUseDelivery(myRole)),
                 ).map((tile) => (
                   <Pressable
                     key={tile.label}

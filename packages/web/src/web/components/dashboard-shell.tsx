@@ -5,6 +5,7 @@ import {
   BellOff,
   Camera,
   FolderKanban,
+  Images,
   Map,
   Route as RouteIcon,
   FileStack,
@@ -55,6 +56,10 @@ const DELIVERY_ONLY = new Set(["/app/routes"]);
 const NAV: { href: string; label: TKey; icon: typeof Camera }[] = [
   { href: "/app", label: "nav.teamspace", icon: Camera },
   { href: "/app/projects", label: "nav.projects", icon: FolderKanban },
+  // Personal captures — anything not filed under a project yet. In NEITHER product set on
+  // purpose: a driver has no field access but their own unfiled delivery shots are still
+  // theirs, which is how the phone app's drawer treats it too.
+  { href: "/app/captures", label: "nav.mine", icon: Images },
   { href: "/app/routes", label: "nav.routes", icon: RouteIcon },
   { href: "/app/map", label: "nav.map", icon: Map },
   { href: "/app/share", label: "nav.share", icon: Link2 },

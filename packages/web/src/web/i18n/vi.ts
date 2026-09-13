@@ -1308,4 +1308,12 @@ export const vi: Catalog = {
   "assistant.linkExpires": "Liên kết này có hiệu lực trong 24 giờ. Báo cáo cũng được lưu ở mục Báo cáo.",
   "assistant.linkExpired": "Liên kết tải xuống này đã hết hiệu lực. Báo cáo vẫn nằm ở mục Báo cáo.",
   "assistant.reportMeta": "{count} ảnh · {size}",
+
+  /* My captures — the personal page: anything not filed under a project yet. Mirrors the phone app. */
+  "nav.mine": "Ảnh chụp của tôi",
+  "mine.title": "Ảnh chụp của tôi",
+  "mine.body": "Ảnh và video clip chưa được xếp vào dự án nào.",
+  "mine.photos": "Ảnh",
+  "mine.videos": "Video",
+  "mine.emptyBody": "Những gì bạn chụp mà chưa chọn dự án sẽ nằm ở đây, kể cả mọi thứ đã quay trước khi bạn đăng nhập.",
 };

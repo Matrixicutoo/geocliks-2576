@@ -1321,6 +1321,14 @@ export const en = {
   "assistant.linkExpires": "This link works for 24 hours. The report also stays on the Reports screen.",
   "assistant.linkExpired": "This download link has expired. The report is still on the Reports screen.",
   "assistant.reportMeta": "{count} photos · {size}",
+
+  /* My captures — the personal page: anything not filed under a project yet. Mirrors the phone app. */
+  "nav.mine": "My captures",
+  "mine.title": "My captures",
+  "mine.body": "Photos and clips not filed under a project yet.",
+  "mine.photos": "Pictures",
+  "mine.videos": "Videos",
+  "mine.emptyBody": "Captures you take without choosing a project land here, including everything shot before you signed in.",
 } as const;
 
 export type Catalog = Record<keyof typeof en, string>;

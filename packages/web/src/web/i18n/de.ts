@@ -1336,4 +1336,12 @@ export const de: Catalog = {
   "assistant.linkExpires": "Dieser Link gilt 24 Stunden. Der Bericht bleibt außerdem im Bereich Berichte.",
   "assistant.linkExpired": "Dieser Download-Link ist abgelaufen. Der Bericht liegt weiterhin im Bereich Berichte.",
   "assistant.reportMeta": "{count} Fotos · {size}",
+
+  /* My captures — the personal page: anything not filed under a project yet. Mirrors the phone app. */
+  "nav.mine": "Meine Aufnahmen",
+  "mine.title": "Meine Aufnahmen",
+  "mine.body": "Fotos und Clips, die noch keinem Projekt zugeordnet sind.",
+  "mine.photos": "Bilder",
+  "mine.videos": "Videos",
+  "mine.emptyBody": "Aufnahmen ohne ausgewähltes Projekt landen hier, einschließlich allem, was vor Ihrer Anmeldung aufgenommen wurde.",
 };

@@ -1334,4 +1334,12 @@ export const tl: Catalog = {
   "assistant.linkExpires": "Gumagana ang link na ito sa loob ng 24 oras. Nananatili rin ang report sa Reports.",
   "assistant.linkExpired": "Expired na ang download link na ito. Nasa Reports pa rin ang report.",
   "assistant.reportMeta": "{count} larawan · {size}",
+
+  /* My captures — the personal page: anything not filed under a project yet. Mirrors the phone app. */
+  "nav.mine": "Mga capture ko",
+  "mine.title": "Mga capture ko",
+  "mine.body": "Mga larawan at clip na wala pa sa anumang proyekto.",
+  "mine.photos": "Mga larawan",
+  "mine.videos": "Mga video",
+  "mine.emptyBody": "Dito napupunta ang mga capture na kinuha nang hindi pumipili ng proyekto, pati na ang lahat ng kinunan bago ka nag-log in.",
 };

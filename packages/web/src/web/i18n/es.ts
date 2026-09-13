@@ -1328,4 +1328,12 @@ export const es: Catalog = {
   "assistant.linkExpires": "Este enlace funciona 24 horas. El informe también queda en la pantalla Informes.",
   "assistant.linkExpired": "Este enlace de descarga ya expiró. El informe sigue en la pantalla Informes.",
   "assistant.reportMeta": "{count} fotos · {size}",
+
+  /* My captures — the personal page: anything not filed under a project yet. Mirrors the phone app. */
+  "nav.mine": "Mis capturas",
+  "mine.title": "Mis capturas",
+  "mine.body": "Fotos y clips que aún no están en ningún proyecto.",
+  "mine.photos": "Fotos",
+  "mine.videos": "Vídeos",
+  "mine.emptyBody": "Las capturas que tomas sin elegir un proyecto llegan aquí, incluido todo lo grabado antes de iniciar sesión.",
 };

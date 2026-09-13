@@ -1282,4 +1282,12 @@ export const ar: Catalog = {
   "assistant.linkExpires": "هذا الرابط صالح لمدة 24 ساعة. يبقى التقرير أيضًا في شاشة التقارير.",
   "assistant.linkExpired": "انتهت صلاحية رابط التنزيل هذا. لا يزال التقرير موجودًا في شاشة التقارير.",
   "assistant.reportMeta": "{count} صورة · {size}",
+
+  /* My captures — the personal page: anything not filed under a project yet. Mirrors the phone app. */
+  "nav.mine": "لقطاتي",
+  "mine.title": "لقطاتي",
+  "mine.body": "صور ومقاطع لم تُصنَّف ضمن أي مشروع بعد.",
+  "mine.photos": "الصور",
+  "mine.videos": "الفيديوهات",
+  "mine.emptyBody": "اللقطات التي تلتقطها دون اختيار مشروع تصل إلى هنا، بما في ذلك كل ما صُوِّر قبل تسجيل دخولك.",
 };

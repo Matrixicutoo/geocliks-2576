@@ -1341,4 +1341,12 @@ export const frCA: Catalog = {
   "assistant.linkExpires": "Ce lien est valide 24 heures. Le rapport reste aussi dans l'écran Rapports.",
   "assistant.linkExpired": "Ce lien de téléchargement est expiré. Le rapport est toujours dans l'écran Rapports.",
   "assistant.reportMeta": "{count} photos · {size}",
+
+  /* My captures — the personal page: anything not filed under a project yet. Mirrors the phone app. */
+  "nav.mine": "Mes captures",
+  "mine.title": "Mes captures",
+  "mine.body": "Photos et clips pas encore classés dans un projet.",
+  "mine.photos": "Photos",
+  "mine.videos": "Vidéos",
+  "mine.emptyBody": "Les captures prises sans choisir de projet arrivent ici, y compris tout ce qui a été pris avant votre connexion.",
 };

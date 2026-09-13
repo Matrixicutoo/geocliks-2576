@@ -10,6 +10,13 @@ export type PhotoFilter = {
   projectId?: string | null;
   userId?: string | null;
   /**
+   * Personal captures: only photos not filed under a project yet. Drives the My captures page
+   * on both clients — the server decides whose unfiled work that means per role.
+   */
+  unassigned?: boolean;
+  /** Splits the personal page into stills and clips. */
+  kind?: "photo" | "video";
+  /**
    * Must stay in step with `tagEnum` in api/routes/photos.ts. "pickup" and "delivery" were added
    * there with the delivery-routes feature but never mirrored here, so the Teamspace tag filter
    * could not be typed against them.

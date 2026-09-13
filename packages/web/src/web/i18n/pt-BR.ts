@@ -1321,4 +1321,12 @@ export const ptBR: Catalog = {
   "assistant.linkExpires": "Este link funciona por 24 horas. O relatório também fica na tela Relatórios.",
   "assistant.linkExpired": "Este link de download expirou. O relatório continua na tela Relatórios.",
   "assistant.reportMeta": "{count} fotos · {size}",
+
+  /* My captures — the personal page: anything not filed under a project yet. Mirrors the phone app. */
+  "nav.mine": "Minhas capturas",
+  "mine.title": "Minhas capturas",
+  "mine.body": "Fotos e clipes ainda não arquivados em um projeto.",
+  "mine.photos": "Fotos",
+  "mine.videos": "Vídeos",
+  "mine.emptyBody": "As capturas feitas sem escolher um projeto chegam aqui, incluindo tudo o que foi gravado antes de você entrar.",
 };
