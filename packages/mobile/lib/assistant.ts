@@ -57,9 +57,18 @@ export function useAssistantAccess(): boolean {
  * `CustomEvent` the website uses.
  */
 const listeners = new Set<() => void>();
+let requested = false;
 
 export function openAssistant() {
+  // Remembered, because the first request is what loads the sheet: it is not mounted yet when
+  // the listeners fire, so it reads this on mount and comes up already open.
+  requested = true;
   for (const listener of listeners) listener();
+}
+
+/** Whether the assistant has been asked for at least once this session. */
+export function assistantWasRequested(): boolean {
+  return requested;
 }
 
 export function onAssistantOpen(handler: () => void): () => void {

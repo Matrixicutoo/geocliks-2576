@@ -23,7 +23,12 @@ import { Text, TextInput } from "@/components/app-text";
 import { useColors } from "@/hooks/use-colors";
 import { Fonts } from "@/constants/theme";
 import { useT } from "@/lib/i18n";
-import { ASSISTANT_NAME, onAssistantOpen, useAssistantAccess } from "@/lib/assistant";
+import {
+  ASSISTANT_NAME,
+  assistantWasRequested,
+  onAssistantOpen,
+  useAssistantAccess,
+} from "@/lib/assistant";
 
 /**
  * The GeoCliks AI Assistant, as a sheet that slides up over whatever screen you are on.
@@ -125,7 +130,9 @@ export function AssistantSheet() {
   const tr = useT();
   const insets = useSafeAreaInsets();
   const allowed = useAssistantAccess();
-  const [open, setOpen] = useState(false);
+  // Loaded on demand by <AssistantHost />, which mounts it the moment someone asks for the
+  // assistant — so it comes up open rather than waiting for a second press.
+  const [open, setOpen] = useState(assistantWasRequested);
   const [mounted, setMounted] = useState(false);
   const [input, setInput] = useState("");
   const scroller = useRef<ScrollView>(null);
