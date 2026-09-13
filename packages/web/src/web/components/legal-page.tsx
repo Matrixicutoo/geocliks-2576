@@ -4,6 +4,7 @@ import { ArrowLeft } from "lucide-react";
 import { Logo } from "./logo";
 import { SiteFooter } from "./site-footer";
 import { LEGAL_EFFECTIVE_DATE } from "../lib/company";
+import { useSeo } from "../lib/seo";
 import { scrollSiteToTop } from "../lib/site-scroll";
 
 /**
@@ -15,7 +16,23 @@ import { scrollSiteToTop } from "../lib/site-scroll";
  * The body copy of both pages is intentionally English-only: machine-translating
  * legal text can change what it means.
  */
-export function LegalPage({ title, children }: { title: string; children: React.ReactNode }) {
+export function LegalPage({
+  title,
+  description,
+  path,
+  children,
+}: {
+  title: string;
+  /** Meta description for search results. */
+  description: string;
+  /** Canonical path, e.g. "/terms". */
+  path: string;
+  children: React.ReactNode;
+}) {
+  // The head lives here rather than in terms.tsx and privacy.tsx so a third
+  // legal page cannot be added without one.
+  useSeo({ title: `${title} — GeoCliks`, description, path });
+
   useEffect(() => {
     const root = document.documentElement;
     const previous = root.dataset.theme;

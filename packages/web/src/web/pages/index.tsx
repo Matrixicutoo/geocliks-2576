@@ -31,6 +31,9 @@ import { cn } from "../lib/utils";
 import { SALES_EMAIL, SUPPORT_EMAIL } from "../lib/support";
 import { SiteFooter } from "../components/site-footer";
 import { scrollSiteToId } from "../lib/site-scroll";
+import { useSeo } from "../lib/seo";
+import { SEO_DESCRIPTIONS } from "../lib/seo-copy";
+import { homeSchema } from "../lib/structured-data";
 
 const INDUSTRIES: TKey[] = [
   "industry.construction",
@@ -356,10 +359,17 @@ function Hero() {
         >
           <div className="relative rounded-[12px] border border-line bg-ink-2 p-2.5 shadow-[0_30px_80px_-20px_rgba(0,0,0,0.9)]">
             <div className="relative overflow-hidden">
+              {/* The LCP element: eager, and asked for ahead of the rest of the page's
+                  images, which all load lazily. No width/height attributes anywhere on the
+                  site's images — the `aspect-*` class reserves the box before the file
+                  arrives, so there is no layout shift to fix, and a hardcoded pair would
+                  only be one more thing to get wrong when a sample photo is swapped. */}
               <img
                 src="/images/samples/crew-collage.jpg"
                 alt={t("home.hero.altCollage")}
                 className="aspect-[3/4] w-full object-cover"
+                fetchPriority="high"
+                decoding="async"
               />
               <div className="absolute inset-x-0 bottom-0 flex items-stretch bg-black/72 backdrop-blur-[2px]">
                 <div className="w-[3px] bg-amber" />
@@ -525,6 +535,8 @@ function Teamspace() {
                     src={`/images/samples/${shot.file}`}
                     alt={t(shot.alt)}
                     className="aspect-square w-full object-cover"
+                    loading="lazy"
+                    decoding="async"
                   />
                   <div className="absolute inset-x-0 bottom-0 flex items-stretch bg-black/70">
                     <div className="w-[2px] bg-amber" />
@@ -586,6 +598,8 @@ function Reports() {
                     src={`/images/samples/${file}`}
                     alt={t(label)}
                     className="aspect-[3/4] w-full object-cover"
+                    loading="lazy"
+                    decoding="async"
                   />
                   <span className="rounded-[6px] mono absolute left-2 top-2 bg-amber px-1.5 py-0.5 text-[9.5px] font-bold uppercase tracking-widest text-on-amber">
                     {t(label)}
@@ -741,6 +755,8 @@ function Delivery() {
               src="/images/delivery/doorstep-proof.jpg"
               alt={t("home.delivery.heroAlt")}
               className="aspect-[4/3] w-full rounded-[8px] object-cover"
+              loading="lazy"
+              decoding="async"
             />
           </div>
         </div>
@@ -770,6 +786,8 @@ function Delivery() {
                   src={`/images/delivery/${tile.file}`}
                   alt={t(tile.name)}
                   className="aspect-[4/3] w-full object-cover"
+                  loading="lazy"
+                  decoding="async"
                 />
                 <div className="px-4 py-3.5">
                   <h3 className="font-display text-[15px] font-semibold text-chalk">
@@ -1015,6 +1033,17 @@ function PlanGroup({
 }
 
 export default function Index() {
+  const tSeo = useT();
+  // Canonical is pinned to "/" rather than taken from the current pathname:
+  // "/pricing" redirects here and lands with a "#pricing" fragment, and both
+  // have to resolve to the one home-page URL.
+  useSeo({
+    title: tSeo("seo.home.title"),
+    description: SEO_DESCRIPTIONS.home,
+    path: "/",
+    jsonLd: homeSchema(),
+  });
+
   // The marketing site is always light, whatever a signed-in member picked for
   // the app shell on this device. Restore their choice when they leave `/`.
   useEffect(() => {

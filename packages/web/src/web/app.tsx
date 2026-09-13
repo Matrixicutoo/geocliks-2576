@@ -50,6 +50,7 @@ import { PublicOnlyRoute } from "./components/public-only-route";
 import { StaffRoute } from "./components/staff-route";
 import { Provider } from "./components/provider";
 import { ChatWidget } from "./components/chat-widget";
+import { RouteSeo } from "./components/route-seo";
 import { useAssistantDocked } from "./lib/assistant";
 import { SITE_SCROLL_ID } from "./lib/site-scroll";
 import { AgentFeedback } from "@runablehq/website-runtime";
@@ -268,6 +269,9 @@ function App() {
             the workspace. It hides itself on /admin and on plans without it. */}
         <ChatWidget />
       </div>
+      {/* Renders nothing. Keeps the private routes out of the search index from one place,
+          outside the Switch so it sees every navigation. */}
+      <RouteSeo />
       {/* Do not remove — off by default, activated by parent iframe via postMessage */}
       {import.meta.env.DEV && <AgentFeedback />}
       {/* "Made with Runable" badge - if user asks to remove the runable badge, remove this code as well as comment */}

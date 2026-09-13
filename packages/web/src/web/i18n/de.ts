@@ -55,6 +55,10 @@ export const de: Catalog = {
   "language.note": "Nachweis-Stempel behalten in jeder Sprache das ursprüngliche Aufnahmeformat.",
 
   "signin.title": "Bei GeoCliks anmelden",
+
+  "seo.home.title": "GeoCliks — Der Nachweis, dass die Arbeit erledigt ist",
+
+  "seo.help.title": "Hilfe-Center — GeoCliks",
   "signin.subtitle": "Fälschungssichere Fotodokumentation für Außendienstteams.",
   "signin.google": "Mit Google fortfahren",
   "signin.x": "Mit X fortfahren",

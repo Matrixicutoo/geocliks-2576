@@ -56,6 +56,10 @@ export const tl: Catalog = {
     "Nananatili sa orihinal na format ng pagkuha ang mga selyo ng ebidensya sa lahat ng wika.",
 
   "signin.title": "Mag-sign in sa GeoCliks",
+
+  "seo.home.title": "GeoCliks — Patunay na nangyari ang trabaho",
+
+  "seo.help.title": "Help Center — GeoCliks",
   "signin.subtitle": "Hindi mapepekeng dokumentasyon ng larawan para sa mga field team.",
   "signin.google": "Magpatuloy sa Google",
   "signin.x": "Magpatuloy sa X",

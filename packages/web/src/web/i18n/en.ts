@@ -64,6 +64,8 @@ export const en = {
 
   // Sign in
   "signin.title": "Sign in to GeoCliks",
+  "seo.home.title": "GeoCliks — Proof your work happened",
+  "seo.help.title": "Help Center — GeoCliks",
   "signin.subtitle": "Tamper-proof photo documentation for field teams.",
   "signin.google": "Continue with Google",
   "signin.x": "Continue with X",

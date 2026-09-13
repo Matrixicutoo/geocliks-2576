@@ -1,0 +1,38 @@
+# GeoCliks — https://geocliks.com
+#
+# The marketing site, the Help Center and the legal pages are meant to be
+# indexed. Everything else here is either behind a sign-in or reachable only
+# with a token, and none of it belongs in search results.
+#
+# Disallow is a crawl instruction, not an access control: a disallowed URL that
+# someone links to publicly can still be indexed without being fetched. The
+# pages below therefore also send `<meta name="robots" content="noindex">` at
+# runtime (see src/web/lib/seo.ts, useNoindex).
+
+User-agent: *
+
+# Signed-in application and workspace admin.
+Disallow: /app
+Disallow: /admin
+
+# Token and code URLs. These address one customer's evidence — a share link, a
+# live delivery track, a single photo's verification page, a workspace invite.
+# Indexing them would publish the token itself in search results.
+Disallow: /share/
+Disallow: /t/
+Disallow: /v/
+Disallow: /join/
+Disallow: /verify
+
+# Account recovery.
+Disallow: /reset-password
+
+# Auth screens. No content to rank, and they duplicate each other's copy.
+Disallow: /sign-in
+Disallow: /sign-up
+
+# /pricing redirects to /#pricing, which is a fragment of the home page. Left
+# crawlable on purpose: it is a URL people type and link to, and the redirect
+# consolidates it onto the home page rather than splitting the signal.
+
+Sitemap: https://geocliks.com/sitemap.xml

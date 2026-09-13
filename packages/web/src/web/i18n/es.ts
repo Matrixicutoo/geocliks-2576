@@ -56,6 +56,10 @@ export const es: Catalog = {
     "Los sellos de evidencia conservan el formato original de captura en todos los idiomas.",
 
   "signin.title": "Inicia sesión en GeoCliks",
+
+  "seo.home.title": "GeoCliks — La prueba de que el trabajo se hizo",
+
+  "seo.help.title": "Centro de ayuda — GeoCliks",
   "signin.subtitle": "Documentación fotográfica inalterable para equipos de campo.",
   "signin.google": "Continuar con Google",
   "signin.x": "Continuar con X",

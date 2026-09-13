@@ -5,6 +5,9 @@ import { HelpContact, HelpShell } from "../components/help-shell";
 import { allArticles, articleHref, helpCategories, iconFor, isUntranslated } from "../help/registry";
 import { articlesOf } from "../help/types";
 import { useLocale, useT } from "../lib/i18n";
+import { useSeo } from "../lib/seo";
+import { SEO_DESCRIPTIONS } from "../lib/seo-copy";
+import { breadcrumbSchema } from "../lib/structured-data";
 
 /** Matches on title, summary, keywords and body text — one pass, no index. */
 function useSearch(query: string) {
@@ -55,6 +58,13 @@ export default function Help() {
   const results = useSearch(query);
   const categories = useMemo(() => helpCategories(locale), [locale]);
   const searching = query.trim().length >= 2;
+
+  useSeo({
+    title: t("seo.help.title"),
+    description: SEO_DESCRIPTIONS.help,
+    path: "/help",
+    jsonLd: breadcrumbSchema([{ name: "Help Center" }]),
+  });
 
   return (
     <HelpShell crumbs={[]} wide>

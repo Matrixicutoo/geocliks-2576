@@ -5,6 +5,8 @@ import { HelpContact, HelpShell } from "../components/help-shell";
 import { articleHref, findCategory, helpCategories, iconFor, isUntranslated } from "../help/registry";
 import { articlesOf } from "../help/types";
 import { useLocale, useT } from "../lib/i18n";
+import { useSeo } from "../lib/seo";
+import { breadcrumbSchema, faqSchema } from "../lib/structured-data";
 
 /** One category: its sections in order, each article as a row. */
 export default function HelpCategory() {
@@ -14,6 +16,34 @@ export default function HelpCategory() {
   const category = useMemo(
     () => findCategory(locale, params.category ?? ""),
     [locale, params.category],
+  );
+
+  // Called before the not-found branch below, because hooks cannot sit behind a
+  // conditional return. An unknown category slug is marked noindex rather than
+  // left to be indexed as a thin duplicate of the Help Center index.
+  const articles = category ? articlesOf(category) : [];
+  useSeo(
+    category
+      ? {
+          title: `${category.title} — GeoCliks Help`,
+          description: category.summary,
+          path: `/help/${category.slug}`,
+          jsonLd: [
+            breadcrumbSchema([
+              { name: "Help Center", path: "/help" },
+              { name: category.title },
+            ]),
+            // Each article's title is the problem and its summary is the
+            // one-line answer, which is exactly a question/answer pair.
+            faqSchema(
+              articles.map((article) => ({
+                question: article.title,
+                answer: article.summary,
+              })),
+            ),
+          ],
+        }
+      : { title: t("help.notFoundTitle"), noindex: true },
   );
 
   if (!category) {

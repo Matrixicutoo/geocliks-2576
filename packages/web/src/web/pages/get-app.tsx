@@ -16,6 +16,8 @@ import { LanguageSelect } from "../components/language-select";
 import { useT, type TKey } from "../lib/i18n";
 import { useInviteInfo } from "../queries/team";
 import { SUPPORT_EMAIL } from "../lib/support";
+import { useSeo } from "../lib/seo";
+import { SEO_DESCRIPTIONS } from "../lib/seo-copy";
 
 /**
  * Crew-facing app landing page — the QR destination printed on trucks, crew
@@ -88,6 +90,8 @@ function StampedPhoto() {
           src="/images/samples/fiber-splice-closure.jpg"
           alt={t("home.hero.altFiber")}
           className="aspect-[4/3] w-full object-cover"
+          fetchPriority="high"
+          decoding="async"
         />
         <span className="rounded-[6px] mono absolute left-2.5 top-2.5 border border-verified/60 bg-black/70 px-1.5 py-0.5 text-[9.5px] font-bold uppercase tracking-widest text-verified">
           {t("evidence.verified")}
@@ -149,9 +153,14 @@ export default function GetApp() {
   const t = useT();
   const invite = new URLSearchParams(useSearch()).get("invite")?.trim() ?? "";
 
-  useEffect(() => {
-    document.title = t("getapp.title");
-  }, [t]);
+  // Canonical drops the "?invite=" parameter: every invite link is a separate
+  // URL for the same page, and without this each one would be crawled and
+  // indexed on its own — publishing the invite codes in the process.
+  useSeo({
+    title: t("getapp.title"),
+    description: SEO_DESCRIPTIONS.getApp,
+    path: "/get-app",
+  });
 
   useEffect(() => {
     const root = document.documentElement;

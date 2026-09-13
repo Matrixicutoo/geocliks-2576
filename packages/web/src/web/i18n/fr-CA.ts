@@ -56,6 +56,10 @@ export const frCA: Catalog = {
     "Les sceaux de preuve conservent le format de capture d'origine dans toutes les langues.",
 
   "signin.title": "Connexion à GeoCliks",
+
+  "seo.home.title": "GeoCliks — La preuve que le travail a été fait",
+
+  "seo.help.title": "Centre d'aide — GeoCliks",
   "signin.subtitle": "Documentation photo infalsifiable pour les équipes de terrain.",
   "signin.google": "Continuer avec Google",
   "signin.x": "Continuer avec X",

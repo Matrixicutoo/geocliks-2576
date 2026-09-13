@@ -251,6 +251,8 @@ export function AuthForm({ mode }: { mode: AuthMode }) {
             src="/images/samples/crew-collage.jpg"
             alt=""
             className="edge-fade mx-auto max-h-[62vh] w-auto max-w-[520px] object-contain opacity-90"
+            loading="lazy"
+            decoding="async"
           />
           <div>
             <p className="mono mb-4 flex items-center gap-2 text-[10.5px] uppercase tracking-widest text-amber">

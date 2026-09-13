@@ -1,5 +1,6 @@
 import { LegalList, LegalPage, LegalSection } from "../components/legal-page";
 import { COMPANY_ADDRESS, JURISDICTION, LEGAL_ENTITY } from "../lib/company";
+import { SEO_DESCRIPTIONS } from "../lib/seo-copy";
 import { SUPPORT_EMAIL } from "../lib/support";
 
 /**
@@ -9,7 +10,11 @@ import { SUPPORT_EMAIL } from "../lib/support";
  */
 export default function Privacy() {
   return (
-    <LegalPage title="Privacy Policy">
+    <LegalPage
+      title="Privacy Policy"
+      description={SEO_DESCRIPTIONS.privacy}
+      path="/privacy"
+    >
       <p className="text-[14.5px] leading-relaxed text-fog">
         This policy explains what {LEGAL_ENTITY} ("we", "us"), {COMPANY_ADDRESS}, collects when you
         use the GeoCliks app, website and desktop app (the "Service"), why we collect it, who we

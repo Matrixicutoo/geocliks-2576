@@ -55,6 +55,10 @@ export const vi: Catalog = {
   "language.note": "Dấu xác thực trên ảnh giữ nguyên định dạng gốc trong mọi ngôn ngữ.",
 
   "signin.title": "Đăng nhập GeoCliks",
+
+  "seo.home.title": "GeoCliks — Bằng chứng công việc đã hoàn thành",
+
+  "seo.help.title": "Trung tâm trợ giúp — GeoCliks",
   "signin.subtitle": "Hồ sơ ảnh chống giả mạo cho đội ngũ hiện trường.",
   "signin.google": "Tiếp tục với Google",
   "signin.x": "Tiếp tục với X",

@@ -56,6 +56,10 @@ export const it: Catalog = {
     "I sigilli di prova mantengono il formato originale di acquisizione in ogni lingua.",
 
   "signin.title": "Accedi a GeoCliks",
+
+  "seo.home.title": "GeoCliks — La prova che il lavoro è stato fatto",
+
+  "seo.help.title": "Centro assistenza — GeoCliks",
   "signin.subtitle": "Documentazione fotografica a prova di manomissione per squadre sul campo.",
   "signin.google": "Continua con Google",
   "signin.x": "Continua con X",

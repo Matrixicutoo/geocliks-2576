@@ -56,6 +56,10 @@ export const ptBR: Catalog = {
     "Os selos de evidência mantêm o formato original de captura em todos os idiomas.",
 
   "signin.title": "Entrar no GeoCliks",
+
+  "seo.home.title": "GeoCliks — A prova de que o trabalho foi feito",
+
+  "seo.help.title": "Central de ajuda — GeoCliks",
   "signin.subtitle": "Documentação fotográfica à prova de fraudes para equipes de campo.",
   "signin.google": "Continuar com o Google",
   "signin.x": "Continuar com X",

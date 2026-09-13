@@ -6,6 +6,8 @@ import { HelpContact, HelpShell } from "../components/help-shell";
 import { articleHref, findArticle, helpCategories, isUntranslated } from "../help/registry";
 import { articlesOf } from "../help/types";
 import { useLocale, useT } from "../lib/i18n";
+import { useSeo } from "../lib/seo";
+import { breadcrumbSchema, techArticleSchema } from "../lib/structured-data";
 
 /** One article, plus an on-page contents list and the rest of its category. */
 export default function HelpArticle() {
@@ -15,6 +17,34 @@ export default function HelpArticle() {
   const found = useMemo(
     () => findArticle(locale, params.category ?? "", params.slug ?? ""),
     [locale, params.category, params.slug],
+  );
+
+  // Before the early return below: hooks cannot sit behind a conditional. An
+  // unknown slug is marked noindex rather than left to be indexed as a thin
+  // "not found" page — those URLs come from typos and stale links, and there are
+  // unboundedly many of them.
+  const path = found ? articleHref(found.category.slug, found.article.slug) : "";
+  useSeo(
+    found
+      ? {
+          title: `${found.article.title} — GeoCliks Help`,
+          description: found.article.summary,
+          path,
+          jsonLd: [
+            breadcrumbSchema([
+              { name: "Help Center", path: "/help" },
+              { name: found.category.title, path: `/help/${found.category.slug}` },
+              { name: found.article.title },
+            ]),
+            techArticleSchema({
+              headline: found.article.title,
+              description: found.article.summary,
+              path,
+              section: found.category.title,
+            }),
+          ],
+        }
+      : { title: t("help.notFoundTitle"), noindex: true },
   );
 
   if (!found) {

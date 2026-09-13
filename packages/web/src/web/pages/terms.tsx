@@ -1,5 +1,6 @@
 import { LegalList, LegalPage, LegalSection } from "../components/legal-page";
 import { COMPANY_ADDRESS, JURISDICTION, LEGAL_ENTITY } from "../lib/company";
+import { SEO_DESCRIPTIONS } from "../lib/seo-copy";
 import { SUPPORT_EMAIL } from "../lib/support";
 
 /**
@@ -9,7 +10,11 @@ import { SUPPORT_EMAIL } from "../lib/support";
  */
 export default function Terms() {
   return (
-    <LegalPage title="Terms of Service">
+    <LegalPage
+      title="Terms of Service"
+      description={SEO_DESCRIPTIONS.terms}
+      path="/terms"
+    >
       <p className="text-[14.5px] leading-relaxed text-fog">
         These Terms of Service (the "Terms") are an agreement between you and {LEGAL_ENTITY} ("
         {LEGAL_ENTITY}", "we", "us"), {COMPANY_ADDRESS}. They govern your use of the GeoCliks mobile

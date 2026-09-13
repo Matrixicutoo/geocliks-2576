@@ -55,6 +55,10 @@ export const pl: Catalog = {
   "language.note": "Pieczęcie dowodowe zachowują oryginalny format zapisu w każdym języku.",
 
   "signin.title": "Zaloguj się do GeoCliks",
+
+  "seo.home.title": "GeoCliks — Dowód, że praca została wykonana",
+
+  "seo.help.title": "Centrum pomocy — GeoCliks",
   "signin.subtitle": "Odporna na manipulacje dokumentacja zdjęciowa dla ekip w terenie.",
   "signin.google": "Kontynuuj z Google",
   "signin.x": "Kontynuuj z X",

@@ -55,6 +55,10 @@ export const ar: Catalog = {
   "language.note": "تبقى أختام الإثبات بتنسيق التصوير الأصلي في جميع اللغات.",
 
   "signin.title": "تسجيل الدخول إلى GeoCliks",
+
+  "seo.home.title": "جيوكليكس — إثبات أن العمل قد أُنجز",
+
+  "seo.help.title": "مركز المساعدة — جيوكليكس",
   "signin.subtitle": "توثيق صور غير قابل للتلاعب لفرق العمل الميدانية.",
   "signin.google": "المتابعة باستخدام Google",
   "signin.x": "المتابعة باستخدام X",

@@ -55,6 +55,10 @@ export const zh: Catalog = {
   "language.note": "无论使用哪种语言，证据水印都保持原始拍摄格式。",
 
   "signin.title": "登录 GeoCliks",
+
+  "seo.home.title": "GeoCliks — 证明工作已完成",
+
+  "seo.help.title": "帮助中心 — GeoCliks",
   "signin.subtitle": "为现场团队提供防篡改的照片记录。",
   "signin.google": "使用 Google 继续",
   "signin.x": "使用 X 继续",
