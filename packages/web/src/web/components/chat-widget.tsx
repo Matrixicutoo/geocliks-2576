@@ -2,8 +2,8 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { useLocation } from "wouter";
 import { useChat } from "@ai-sdk/react";
 import { DefaultChatTransport, type UIMessage } from "ai";
-import { MessageSquare, Send, Square, Trash2, X } from "lucide-react";
-import { useT } from "../lib/i18n";
+import { Check, Download, Link2, MessageSquare, Send, Square, Trash2, X } from "lucide-react";
+import { useT, type TKey } from "../lib/i18n";
 import { amberFill } from "../lib/chrome";
 import { authToken } from "../lib/auth";
 import { PhotoDrawer } from "./photo-drawer";
@@ -60,12 +60,20 @@ function store(messages: UIMessage[]) {
   }
 }
 
-/** The text of a message, joined across its parts. Reasoning and tool parts are ignored. */
+/**
+ * The text of a message, joined across its parts. Reasoning and tool parts are ignored.
+ *
+ * A reply that calls a tool is written in two goes — a line before the call, the answer after
+ * it — and each go is its own text part. Joined edge to edge they ran together mid-sentence
+ * ("Let me pull that count now!8 captures so far"), so the parts are separated by a blank line,
+ * which the Markdown renderer reads as a paragraph break.
+ */
 function textOf(message: UIMessage): string {
   return (message.parts ?? [])
     .filter((p): p is { type: "text"; text: string } => p.type === "text")
-    .map((p) => p.text)
-    .join("");
+    .map((p) => p.text.trim())
+    .filter(Boolean)
+    .join("\n\n");
 }
 
 /**
@@ -120,6 +128,66 @@ function photosOf(message: UIMessage): PhotoHit[] {
     const found = (p.output as { photos?: unknown })?.photos;
     return Array.isArray(found) ? found.filter(isPhotoHit) : [];
   });
+}
+
+/** What `summarizeActivity` counted, as the panel draws it. */
+type Activity = {
+  total: number;
+  cards?: { metric: string; value: number }[];
+  chart?: { dimension: string; bars: { label: string; value: number }[]; hidden: number };
+  range?: { from: string | null; to: string | null };
+  truncated?: boolean;
+};
+
+/** The finished package `exportReport` built. */
+type ReportFile = {
+  id: string;
+  title: string;
+  format: string;
+  photoCount: number;
+  bytes: number;
+  filename: string;
+  url: string;
+};
+
+/**
+ * The counts a reply worked out, pulled out of its settled `summarizeActivity` parts.
+ *
+ * A run that matched nothing comes back as `{ total: 0, note }` with no cards on it. That is
+ * for the model to say in words — four zeroes and an empty chart say nothing — so it is
+ * dropped here.
+ */
+function statsOf(message: UIMessage): Activity[] {
+  return (message.parts ?? []).flatMap((part) => {
+    const p = part as { type: string; state?: string; output?: unknown; preliminary?: boolean };
+    if (p.type !== "tool-summarizeActivity" || p.state !== "output-available" || p.preliminary) {
+      return [];
+    }
+    const out = p.output as Activity | null;
+    return out && Array.isArray(out.cards) && out.cards.length > 0 ? [out] : [];
+  });
+}
+
+/**
+ * The reports a reply built, pulled out of its settled `exportReport` parts.
+ *
+ * A refusal — a format the plan does not include — carries `blocked` instead of `report`, and
+ * is left to the reply's own words, which can offer the formats the workspace does have.
+ */
+function reportsOf(message: UIMessage): ReportFile[] {
+  return (message.parts ?? []).flatMap((part) => {
+    const p = part as { type: string; state?: string; output?: unknown; preliminary?: boolean };
+    if (p.type !== "tool-exportReport" || p.state !== "output-available" || p.preliminary) return [];
+    const file = (p.output as { report?: ReportFile } | null)?.report;
+    return file && typeof file.url === "string" ? [file] : [];
+  });
+}
+
+/** A report's size, in the units the Reports screen uses. */
+function sizeOf(bytes: number): string {
+  if (!bytes) return "—";
+  if (bytes < 1024 * 1024) return `${Math.max(1, Math.round(bytes / 1024))} KB`;
+  return `${(bytes / (1024 * 1024)).toFixed(1)} MB`;
 }
 
 /** When a capture was taken, as short as it can be without losing the day. */
@@ -185,6 +253,167 @@ function Photos({ photos, onOpen }: { photos: PhotoHit[]; onOpen: (id: string) =
           </button>
         );
       })}
+    </div>
+  );
+}
+
+/** Card and chart headings are keys, not words: the server does not pick the panel's wording. */
+const METRICS: Record<string, TKey> = {
+  captures: "assistant.metric.captures",
+  places: "assistant.metric.places",
+  crew: "assistant.metric.crew",
+  days: "assistant.metric.days",
+};
+
+const DIMENSIONS: Record<string, TKey> = {
+  city: "assistant.by.city",
+  day: "assistant.by.day",
+  tag: "assistant.by.tag",
+  person: "assistant.by.person",
+  project: "assistant.by.project",
+};
+
+/** The capture types, which are stored as these words and rendered through `tag.*`. */
+const TAGS = new Set([
+  "arrival",
+  "before",
+  "work",
+  "after",
+  "issue",
+  "departure",
+  "pickup",
+  "delivery",
+]);
+
+/**
+ * What a counts breakdown draws under the reply: four cards and a bar per bucket.
+ *
+ * Horizontal bars rather than columns, because the panel is 380px wide and the buckets are
+ * named things — "Elmwood Drive", "Luc Theriault" — that have nowhere to go under a column.
+ * Bars are sized against the largest bucket, not the total, so a chart of one dominant place
+ * still shows the small ones as visible slivers instead of hairlines.
+ */
+function Stats({ stats }: { stats: Activity }) {
+  const t = useT();
+  const bars = stats.chart?.bars ?? [];
+  const peak = Math.max(1, ...bars.map((b) => b.value));
+  const dimension = stats.chart?.dimension ?? "city";
+
+  const label = (raw: string) => {
+    if (dimension === "day") {
+      // "2026-09-11" as a date, read as a plain calendar day rather than an instant, so a
+      // browser west of the data does not shift every bar back a day.
+      const at = new Date(`${raw}T12:00:00`);
+      return Number.isNaN(at.getTime())
+        ? raw
+        : at.toLocaleDateString(undefined, { month: "short", day: "numeric" });
+    }
+    if (dimension === "tag" && TAGS.has(raw)) return t(`tag.${raw}` as TKey);
+    return raw;
+  };
+
+  return (
+    <div className="space-y-3 pt-1">
+      <div className="grid grid-cols-2 gap-2">
+        {(stats.cards ?? []).map((card) => (
+          <div key={card.metric} className="rounded-[8px] border border-line bg-ink-2 px-2.5 py-2">
+            <p className="mono text-[17px] font-bold leading-tight text-chalk">
+              {card.value.toLocaleString()}
+            </p>
+            <p className="truncate text-[10.5px] text-fog">
+              {METRICS[card.metric] ? t(METRICS[card.metric]!) : card.metric}
+            </p>
+          </div>
+        ))}
+      </div>
+
+      {bars.length > 0 && (
+        <div className="rounded-[8px] border border-line bg-ink-2 px-2.5 py-2.5">
+          <p className="mb-2 text-[10.5px] font-medium uppercase tracking-wide text-fog">
+            {DIMENSIONS[dimension] ? t(DIMENSIONS[dimension]!) : dimension}
+          </p>
+          <div className="space-y-1.5">
+            {bars.map((bar) => (
+              <div key={bar.label} className="flex items-center gap-2">
+                <span className="w-[86px] shrink-0 truncate text-[10.5px] text-fog">
+                  {label(bar.label)}
+                </span>
+                <span className="h-[9px] min-w-0 flex-1 overflow-hidden rounded-full bg-ink-3">
+                  <span
+                    className="block h-full rounded-full bg-amber"
+                    style={{ width: `${Math.max(4, (bar.value / peak) * 100)}%` }}
+                  />
+                </span>
+                <span className="mono w-[26px] shrink-0 text-end text-[10.5px] text-chalk">
+                  {bar.value}
+                </span>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
+
+/**
+ * The finished report, as a file card with the download on it.
+ *
+ * The link is a presigned URL good for a day, so it is never pasted into the reply's text
+ * where it would outlive itself in the stored transcript — it lives on this card, which the
+ * transcript drops on reload along with the thumbnails.
+ */
+function ReportCard({ report }: { report: ReportFile }) {
+  const t = useT();
+  const [copied, setCopied] = useState(false);
+
+  const copy = async () => {
+    try {
+      await navigator.clipboard.writeText(report.url);
+      setCopied(true);
+      globalThis.setTimeout(() => setCopied(false), 2000);
+    } catch {
+      // No clipboard permission: the download button is still there.
+    }
+  };
+
+  return (
+    <div className="space-y-2 pt-1">
+      <div className="rounded-[8px] border border-line bg-ink-2 p-2.5">
+        <div className="flex items-start gap-2.5">
+          <span className="mono grid size-9 shrink-0 place-items-center rounded-[7px] bg-amber/15 text-[9.5px] font-bold uppercase text-amber">
+            {report.format}
+          </span>
+          <div className="min-w-0 flex-1">
+            <p className="truncate text-[12.5px] font-medium text-chalk">{report.title}</p>
+            <p className="truncate text-[10.5px] text-fog">
+              {t("assistant.reportMeta", {
+                count: report.photoCount,
+                size: sizeOf(report.bytes),
+              })}
+            </p>
+          </div>
+        </div>
+        <div className="mt-2.5 flex items-center gap-2">
+          <a
+            href={report.url}
+            download={report.filename}
+            className={`mono flex flex-1 items-center justify-center gap-1.5 rounded-[7px] px-2 py-1.5 text-[11px] font-bold uppercase tracking-wide ${amberFill}`}
+          >
+            <Download className="size-3.5" />
+            {t("assistant.download")}
+          </a>
+          <button
+            type="button"
+            onClick={() => void copy()}
+            className="flex items-center justify-center gap-1.5 rounded-[7px] border border-line bg-ink-3 px-2.5 py-1.5 text-[11px] text-fog transition-colors hover:border-amber hover:text-amber"
+          >
+            {copied ? <Check className="size-3.5" /> : <Link2 className="size-3.5" />}
+            {copied ? t("assistant.copied") : t("assistant.copyLink")}
+          </button>
+        </div>
+      </div>
+      <p className="text-[10px] leading-snug text-fog/70">{t("assistant.linkExpires")}</p>
     </div>
   );
 }
@@ -511,9 +740,13 @@ export function ChatWidget() {
           {messages.map((message) => {
             const text = textOf(message);
             const found = photosOf(message);
-            // A reply is worth a bubble if it has either words or captures in it: the thumbnails
-            // arrive before the sentence that describes them.
-            if (!text && found.length === 0) return null;
+            const counted = statsOf(message);
+            const built = reportsOf(message);
+            // A reply is worth a bubble if it has either words or something it produced: the
+            // thumbnails, cards and file card all arrive before the sentence about them.
+            if (!text && found.length === 0 && counted.length === 0 && built.length === 0) {
+              return null;
+            }
             const mine = message.role === "user";
             return (
               <div key={message.id} className={mine ? "flex justify-end" : "flex justify-start"}>
@@ -529,7 +762,13 @@ export function ChatWidget() {
                   ) : (
                     <>
                       {text && <Rich text={text} />}
+                      {counted.map((stats, i) => (
+                        <Stats key={i} stats={stats} />
+                      ))}
                       {found.length > 0 && <Photos photos={found} onOpen={setOpenPhoto} />}
+                      {built.map((report) => (
+                        <ReportCard key={report.id} report={report} />
+                      ))}
                     </>
                   )}
                 </div>
