@@ -5,6 +5,7 @@ import { DefaultChatTransport, type UIMessage } from "ai";
 import { MessageSquare, Send, Square, Trash2, X } from "lucide-react";
 import { useT } from "../lib/i18n";
 import { amberFill } from "../lib/chrome";
+import { authToken } from "../lib/auth";
 import {
   ASSISTANT_NAME,
   DOCK_MIN_WIDTH,
@@ -65,6 +66,26 @@ function textOf(message: UIMessage): string {
     .map((p) => p.text)
     .join("");
 }
+
+/**
+ * The chat endpoint, reached with the same credentials as every other API call from here.
+ *
+ * Both halves matter. The cookie covers the ordinary browser; the bearer covers the cross-site
+ * preview iframe and the desktop panel, where the `SameSite=Lax` session cookie is dropped and
+ * `lib/auth.ts` keeps the session in a token instead. Without it the panel rendered as signed
+ * in — `useAssistantAccess` reads the client session, which the token satisfies — while this
+ * endpoint saw an anonymous visitor, so the assistant answered every question about the
+ * workspace's own photos with "sign in to the app". Read per request, because the token
+ * changes at sign-in and sign-out and the transport outlives both.
+ */
+const chatTransport = new DefaultChatTransport({
+  api: "/api/agent/messages",
+  credentials: "include",
+  headers: (): Record<string, string> => {
+    const token = authToken();
+    return token ? { Authorization: `Bearer ${token}` } : {};
+  },
+});
 
 /** One capture `findPhotos` returned, as the panel renders it. */
 type PhotoHit = {
@@ -244,7 +265,7 @@ export function ChatWidget() {
 
   const { messages, sendMessage, status, stop, error, setMessages, clearError } = useChat({
     messages: initial,
-    transport: new DefaultChatTransport({ api: "/api/agent/messages" }),
+    transport: chatTransport,
   });
 
   // Restore the open state after mount rather than during render, so the first frame matches
