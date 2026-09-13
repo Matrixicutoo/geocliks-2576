@@ -52,9 +52,11 @@ export function CookieNotice() {
   };
 
   return (
+    // `--assistant-w` is the assistant panel's width while it is open, so this bar ends at the
+    // panel's edge rather than running underneath it.
     <section
       aria-label={t("cookies.title")}
-      className="fixed inset-x-0 bottom-0 z-[60] border-t border-line bg-ink-2/95 backdrop-blur-sm"
+      className="fixed bottom-0 start-0 end-0 z-[60] border-t border-line bg-ink-2/95 backdrop-blur-sm sm:end-[var(--assistant-w,0px)]"
     >
       <div className="mx-auto flex max-w-5xl flex-col gap-3 px-4 py-3.5 sm:flex-row sm:items-center sm:gap-4 sm:px-6">
         <Cookie className="size-5 shrink-0 text-amber" aria-hidden />

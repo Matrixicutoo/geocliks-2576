@@ -60,189 +60,200 @@ const routeFallback = <div className="min-h-screen" />;
 function App() {
   return (
     <Provider>
-      <Suspense fallback={routeFallback}>
-        <Switch>
-          <Route path="/">
-            <PublicOnlyRoute>
-              <Index />
-            </PublicOnlyRoute>
-          </Route>
-          <Route path="/sign-in">
-            <PublicOnlyRoute>
-              <SignIn />
-            </PublicOnlyRoute>
-          </Route>
-          <Route path="/sign-up">
-            <PublicOnlyRoute>
-              <SignUp />
-            </PublicOnlyRoute>
-          </Route>
-          <Route path="/get-app" component={GetApp} />
-          <Route path="/verify" component={VerifyPage} />
-          <Route path="/v/:code" component={VerifyPage} />
-          <Route path="/share/:token" component={ShareView} />
-          <Route path="/t/:token" component={TrackPage} />
-          <Route path="/join/:code" component={JoinPage} />
-          <Route path="/reset-password" component={ResetPasswordPage} />
+      {/* Two columns: the site, and the assistant panel beside it. The panel is a real column
+          rather than an overlay, so when it is open the site lays out in the width that is left
+          instead of disappearing underneath it. Closed, the panel renders nothing and the site
+          has the whole viewport. */}
+      <div className="flex min-h-screen">
+        <div className="min-w-0 flex-1">
+          <Suspense fallback={routeFallback}>
+            <Switch>
+              <Route path="/">
+                <PublicOnlyRoute>
+                  <Index />
+                </PublicOnlyRoute>
+              </Route>
+              <Route path="/sign-in">
+                <PublicOnlyRoute>
+                  <SignIn />
+                </PublicOnlyRoute>
+              </Route>
+              <Route path="/sign-up">
+                <PublicOnlyRoute>
+                  <SignUp />
+                </PublicOnlyRoute>
+              </Route>
+              <Route path="/get-app" component={GetApp} />
+              <Route path="/verify" component={VerifyPage} />
+              <Route path="/v/:code" component={VerifyPage} />
+              <Route path="/share/:token" component={ShareView} />
+              <Route path="/t/:token" component={TrackPage} />
+              <Route path="/join/:code" component={JoinPage} />
+              <Route path="/reset-password" component={ResetPasswordPage} />
 
-          <Route path="/app">
-            <ProtectedRoute>
-              <ProductRoute product="field">
-                <AppTeamspace />
-              </ProductRoute>
-            </ProtectedRoute>
-          </Route>
-          <Route path="/app/profile">
-            <ProtectedRoute>
-              <AppProfile />
-            </ProtectedRoute>
-          </Route>
-          <Route path="/app/projects">
-            <ProtectedRoute>
-              <ProductRoute product="field">
-                <AppProjects />
-              </ProductRoute>
-            </ProtectedRoute>
-          </Route>
-          <Route path="/app/projects/:id">
-            <ProtectedRoute>
-              <ProductRoute product="field">
-                <AppProject />
-              </ProductRoute>
-            </ProtectedRoute>
-          </Route>
-          <Route path="/app/routes">
-            <ProtectedRoute>
-              <ProductRoute product="delivery">
-                <AppRoutes />
-              </ProductRoute>
-            </ProtectedRoute>
-          </Route>
-          <Route path="/app/routes/new">
-            <ProtectedRoute>
-              <ProductRoute product="delivery">
-                <AppRouteNew />
-              </ProductRoute>
-            </ProtectedRoute>
-          </Route>
-          <Route path="/app/routes/:id">
-            <ProtectedRoute>
-              <ProductRoute product="delivery">
-                <AppRoutePage />
-              </ProductRoute>
-            </ProtectedRoute>
-          </Route>
-          <Route path="/app/map">
-            <ProtectedRoute>
-              <ProductRoute product="field">
-                <AppMap />
-              </ProductRoute>
-            </ProtectedRoute>
-          </Route>
-          <Route path="/app/compare">
-            <ProtectedRoute>
-              <ProductRoute product="field">
-                <AppCompare />
-              </ProductRoute>
-            </ProtectedRoute>
-          </Route>
-          <Route path="/app/reports">
-            <ProtectedRoute>
-              <ProductRoute product="field">
-                <AppReports />
-              </ProductRoute>
-            </ProtectedRoute>
-          </Route>
-          <Route path="/app/share">
-            <ProtectedRoute>
-              <AppShare />
-            </ProtectedRoute>
-          </Route>
-          <Route path="/app/team">
-            <ProtectedRoute>
-              <AppTeam />
-            </ProtectedRoute>
-          </Route>
-          <Route path="/app/messages">
-            <ProtectedRoute>
-              <AppMessages />
-            </ProtectedRoute>
-          </Route>
-          <Route path="/app/templates">
-            <ProtectedRoute>
-              <AdminRoute>
-                <AppTemplates />
-              </AdminRoute>
-            </ProtectedRoute>
-          </Route>
-          <Route path="/app/billing">
-            <ProtectedRoute>
-              <AppBilling />
-            </ProtectedRoute>
-          </Route>
+              <Route path="/app">
+                <ProtectedRoute>
+                  <ProductRoute product="field">
+                    <AppTeamspace />
+                  </ProductRoute>
+                </ProtectedRoute>
+              </Route>
+              <Route path="/app/profile">
+                <ProtectedRoute>
+                  <AppProfile />
+                </ProtectedRoute>
+              </Route>
+              <Route path="/app/projects">
+                <ProtectedRoute>
+                  <ProductRoute product="field">
+                    <AppProjects />
+                  </ProductRoute>
+                </ProtectedRoute>
+              </Route>
+              <Route path="/app/projects/:id">
+                <ProtectedRoute>
+                  <ProductRoute product="field">
+                    <AppProject />
+                  </ProductRoute>
+                </ProtectedRoute>
+              </Route>
+              <Route path="/app/routes">
+                <ProtectedRoute>
+                  <ProductRoute product="delivery">
+                    <AppRoutes />
+                  </ProductRoute>
+                </ProtectedRoute>
+              </Route>
+              <Route path="/app/routes/new">
+                <ProtectedRoute>
+                  <ProductRoute product="delivery">
+                    <AppRouteNew />
+                  </ProductRoute>
+                </ProtectedRoute>
+              </Route>
+              <Route path="/app/routes/:id">
+                <ProtectedRoute>
+                  <ProductRoute product="delivery">
+                    <AppRoutePage />
+                  </ProductRoute>
+                </ProtectedRoute>
+              </Route>
+              <Route path="/app/map">
+                <ProtectedRoute>
+                  <ProductRoute product="field">
+                    <AppMap />
+                  </ProductRoute>
+                </ProtectedRoute>
+              </Route>
+              <Route path="/app/compare">
+                <ProtectedRoute>
+                  <ProductRoute product="field">
+                    <AppCompare />
+                  </ProductRoute>
+                </ProtectedRoute>
+              </Route>
+              <Route path="/app/reports">
+                <ProtectedRoute>
+                  <ProductRoute product="field">
+                    <AppReports />
+                  </ProductRoute>
+                </ProtectedRoute>
+              </Route>
+              <Route path="/app/share">
+                <ProtectedRoute>
+                  <AppShare />
+                </ProtectedRoute>
+              </Route>
+              <Route path="/app/team">
+                <ProtectedRoute>
+                  <AppTeam />
+                </ProtectedRoute>
+              </Route>
+              <Route path="/app/messages">
+                <ProtectedRoute>
+                  <AppMessages />
+                </ProtectedRoute>
+              </Route>
+              <Route path="/app/templates">
+                <ProtectedRoute>
+                  <AdminRoute>
+                    <AppTemplates />
+                  </AdminRoute>
+                </ProtectedRoute>
+              </Route>
+              <Route path="/app/billing">
+                <ProtectedRoute>
+                  <AppBilling />
+                </ProtectedRoute>
+              </Route>
 
-          <Route path="/admin">
-            <StaffRoute>
-              <AdminOverview />
-            </StaffRoute>
-          </Route>
-          <Route path="/admin/users">
-            <StaffRoute>
-              <AdminUsers />
-            </StaffRoute>
-          </Route>
-          <Route path="/admin/workspaces">
-            <StaffRoute>
-              <AdminWorkspaces />
-            </StaffRoute>
-          </Route>
-          <Route path="/admin/plans">
-            <StaffRoute>
-              <AdminPlans />
-            </StaffRoute>
-          </Route>
-          <Route path="/admin/settings">
-            <StaffRoute>
-              <AdminSettings />
-            </StaffRoute>
-          </Route>
+              <Route path="/admin">
+                <StaffRoute>
+                  <AdminOverview />
+                </StaffRoute>
+              </Route>
+              <Route path="/admin/users">
+                <StaffRoute>
+                  <AdminUsers />
+                </StaffRoute>
+              </Route>
+              <Route path="/admin/workspaces">
+                <StaffRoute>
+                  <AdminWorkspaces />
+                </StaffRoute>
+              </Route>
+              <Route path="/admin/plans">
+                <StaffRoute>
+                  <AdminPlans />
+                </StaffRoute>
+              </Route>
+              <Route path="/admin/settings">
+                <StaffRoute>
+                  <AdminSettings />
+                </StaffRoute>
+              </Route>
 
-          <Route path="/help">
-            <Help />
-          </Route>
-          <Route path="/help/:category/:slug">
-            <HelpArticle />
-          </Route>
-          <Route path="/help/:category">
-            <HelpCategory />
-          </Route>
+              <Route path="/help">
+                <Help />
+              </Route>
+              <Route path="/help/:category/:slug">
+                <HelpArticle />
+              </Route>
+              <Route path="/help/:category">
+                <HelpCategory />
+              </Route>
 
-          <Route path="/terms">
-            <Terms />
-          </Route>
-          <Route path="/privacy">
-            <Privacy />
-          </Route>
+              <Route path="/terms">
+                <Terms />
+              </Route>
+              <Route path="/privacy">
+                <Privacy />
+              </Route>
 
-          <Route>
-            <div className="grid min-h-screen place-items-center bg-ink px-6 text-center text-chalk">
-              <div>
-                <p className="mono text-[11px] uppercase tracking-widest text-amber">404</p>
-                <p className="mt-2 font-display text-2xl font-bold">Nothing filed here</p>
-                <a href="/" className="mono mt-4 inline-block text-[12px] text-sky hover:underline">
-                  Back to geocliks
-                </a>
-              </div>
-            </div>
-          </Route>
-        </Switch>
-      </Suspense>
-      {/* Sits outside the Switch so one bar serves every public route, and survives navigation
+              <Route>
+                <div className="grid min-h-screen place-items-center bg-ink px-6 text-center text-chalk">
+                  <div>
+                    <p className="mono text-[11px] uppercase tracking-widest text-amber">404</p>
+                    <p className="mt-2 font-display text-2xl font-bold">Nothing filed here</p>
+                    <a
+                      href="/"
+                      className="mono mt-4 inline-block text-[12px] text-sky hover:underline"
+                    >
+                      Back to geocliks
+                    </a>
+                  </div>
+                </div>
+              </Route>
+            </Switch>
+          </Suspense>
+          {/* Sits outside the Switch so one bar serves every public route, and survives navigation
           between them without remounting. It hides itself on /app and /admin. */}
-      <CookieNotice />
-      {/* Also outside the Switch, so the transcript survives navigation between the public site
-          and the workspace. It hides itself on /admin. */}
-      <ChatWidget />
+          <CookieNotice />
+        </div>
+        {/* Outside the Switch, so the transcript survives navigation between the public site and
+            the workspace. It hides itself on /admin and on plans without it. */}
+        <ChatWidget />
+      </div>
       {/* Do not remove — off by default, activated by parent iframe via postMessage */}
       {import.meta.env.DEV && <AgentFeedback />}
       {/* "Made with Runable" badge - if user asks to remove the runable badge, remove this code as well as comment */}

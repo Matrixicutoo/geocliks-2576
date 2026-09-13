@@ -186,6 +186,16 @@ export function ChatWidget() {
     return () => globalThis.removeEventListener("keydown", onKey);
   }, [open]);
 
+  // The panel takes a column of the page, but the site's own viewport-positioned chrome — the
+  // cookie bar — would still run underneath it. Publishing the panel's width lets that chrome
+  // end where the panel begins.
+  const docked = open && allowed && !location.startsWith("/admin");
+  useEffect(() => {
+    const root = document.documentElement;
+    root.style.setProperty("--assistant-w", docked ? "380px" : "0px");
+    return () => root.style.setProperty("--assistant-w", "0px");
+  }, [docked]);
+
   // The admin console is an internal staff surface; a customer-facing assistant has no place in
   // it, and the panel would cover the tables. Plans that do not include the assistant never get
   // the panel at all — the links that open it are hidden by the same check.
@@ -228,12 +238,15 @@ export function ChatWidget() {
         onClick={() => setOpen(false)}
         className="fixed inset-0 z-[64] bg-ink/60 sm:hidden"
       />
-      <dialog
-        open
+      {/* Below `sm` there is no room to give the panel a column of its own, so there it stays a
+          full-screen sheet over the page. From `sm` up it is a column of the app's flex row:
+          sticky rather than fixed, so it keeps pace with the page scroll while its top stays
+          the top of its own column — nothing of the site is ever underneath it. */}
+      <aside
         aria-label={ASSISTANT_NAME}
-        className="fixed inset-y-0 end-0 start-auto z-[65] m-0 flex h-auto max-h-none w-full max-w-none flex-col border-s border-line bg-ink-2 p-0 text-chalk shadow-[-8px_0_28px_rgba(0,0,0,0.28)] sm:w-[380px]"
+        className="fixed inset-0 z-[65] flex w-full flex-col border-s border-line bg-ink-2 text-chalk shadow-[-8px_0_28px_rgba(0,0,0,0.28)] sm:sticky sm:inset-auto sm:top-0 sm:h-[100dvh] sm:w-[380px] sm:shrink-0 sm:self-start"
       >
-        <header className="flex items-start gap-3 border-b border-line px-4 py-3">
+        <header className="flex shrink-0 items-start gap-3 border-b border-line px-4 py-3">
           {/* The brand is in the name itself, so the old "GeoCliks" eyebrow above it would only
               have said it twice. */}
           <div className="min-w-0 flex-1">
@@ -324,7 +337,7 @@ export function ChatWidget() {
           )}
         </div>
 
-        <div className="border-t border-line px-3 py-3">
+        <div className="shrink-0 border-t border-line px-3 py-3">
           <div className="flex items-end gap-2">
             <textarea
               ref={box}
@@ -368,7 +381,7 @@ export function ChatWidget() {
           </div>
           <p className="mt-2 text-[11px] leading-snug text-fog/70">{t("assistant.disclaimer")}</p>
         </div>
-      </dialog>
+      </aside>
     </>
   );
 }
