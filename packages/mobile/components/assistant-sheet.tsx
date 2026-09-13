@@ -145,7 +145,7 @@ function shortAddress(address: string | null): string | null {
 }
 
 /**
- * The captures the assistant found, as a row of tappable thumbnails under its reply.
+ * The captures the assistant found, as a grid of tappable thumbnails under its reply.
  *
  * Tapping one opens the same full photo view Teamspace opens, rather than handing the `/v/<code>`
  * link to the browser and taking the crew out of the app to read their own capture. The view
@@ -156,13 +156,7 @@ function Photos({ photos, onOpen }: { photos: PhotoHit[]; onOpen: (id: string) =
   const colors = useColors();
 
   return (
-    <ScrollView
-      horizontal
-      showsHorizontalScrollIndicator={false}
-      contentContainerStyle={styles.hits}
-      // The sheet's own scroller must not steal a sideways drag on this row.
-      nestedScrollEnabled
-    >
+    <View style={styles.hits}>
       {photos.map((photo) => {
         const place = shortAddress(photo.address);
         return (
@@ -198,7 +192,7 @@ function Photos({ photos, onOpen }: { photos: PhotoHit[]; onOpen: (id: string) =
           </Pressable>
         );
       })}
-    </ScrollView>
+    </View>
   );
 }
 
@@ -415,6 +409,7 @@ export function AssistantSheet() {
                             ? [styles.bubbleMine, { backgroundColor: colors.amber }]
                             : [
                                 styles.bubbleTheirs,
+                                found.length > 0 ? styles.bubbleGrid : null,
                                 { backgroundColor: colors.card, borderColor: colors.border },
                               ],
                         ]}
@@ -578,6 +573,9 @@ const styles = StyleSheet.create({
   bubble: { paddingHorizontal: 12, paddingVertical: 9, borderRadius: 12 },
   bubbleMine: { maxWidth: "85%", borderBottomRightRadius: 4 },
   bubbleTheirs: { maxWidth: "92%", borderWidth: 1, borderBottomLeftRadius: 4 },
+  // A bubble carrying the capture grid takes its full allowance instead of hugging its text:
+  // the grid's columns are a share of the bubble, so the bubble needs a width of its own.
+  bubbleGrid: { width: "92%" },
   thinking: { paddingVertical: 12, paddingHorizontal: 16 },
   body: { fontSize: 13, lineHeight: 20 },
   rich: { gap: 8 },
@@ -586,14 +584,14 @@ const styles = StyleSheet.create({
   bulletDot: { fontSize: 13, lineHeight: 20 },
   bulletText: { flex: 1 },
   error: { fontSize: 12, lineHeight: 18 },
-  // The found captures. A row that scrolls sideways rather than a grid: the bubble is narrow,
-  // and four thumbnails in a line read faster than two rows of two.
-  hits: { gap: 8, paddingTop: 8, paddingRight: 2 },
-  hit: { width: 116, borderRadius: 10, borderWidth: 1, overflow: "hidden" },
-  hitImage: { width: "100%", height: 84, backgroundColor: "#00000014" },
+  // The found captures, as a two-column grid inside the bubble. A sideways row hid the last
+  // cards off the edge of the sheet, so the crew never saw everything the assistant found.
+  hits: { flexDirection: "row", flexWrap: "wrap", gap: 8, paddingTop: 8 },
+  hit: { width: "48%", borderRadius: 10, borderWidth: 1, overflow: "hidden" },
+  hitImage: { width: "100%", height: 96, backgroundColor: "#00000014" },
   hitPlay: {
     position: "absolute",
-    top: 60,
+    top: 72,
     left: 8,
     width: 20,
     height: 20,
