@@ -1160,4 +1160,18 @@ export const pl: Catalog = {
   "mine.download": "Pobierz",
   "mine.downloadOk": "Zapisano w telefonie",
   "mine.downloadFail": "Nie udało się zapisać tego pliku",
+
+  /* The AI assistant sheet, opened from the footer link. Same strings as the website's panel. */
+  "assistant.open": "Otwórz asystenta",
+  "assistant.close": "Zamknij asystenta",
+  "assistant.clear": "Wyczyść tę rozmowę",
+  "assistant.greeting": "Pytaj o cokolwiek — jak działa GeoCliks albo o zupełnie inną sprawę.",
+  "assistant.suggest1": "Do czego służy GeoCliks?",
+  "assistant.suggest2": "Jak działa weryfikacja zdjęć?",
+  "assistant.suggest3": "Napisz krótką informację o postępach dla mojego klienta",
+  "assistant.placeholder": "Napisz wiadomość",
+  "assistant.send": "Wyślij",
+  "assistant.stop": "Zatrzymaj",
+  "assistant.error": "Coś poszło nie tak. Spróbuj wysłać ponownie.",
+  "assistant.disclaimer": "Asystent może się mylić. Nie widzi Twoich zdjęć ani konta.",
 };

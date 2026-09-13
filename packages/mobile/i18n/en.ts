@@ -1165,6 +1165,20 @@ export const en = {
   "mine.download": "Download",
   "mine.downloadOk": "Saved to your phone",
   "mine.downloadFail": "Could not save this file",
+
+  /* The AI assistant sheet, opened from the footer link. Same strings as the website's panel. */
+  "assistant.open": "Open the assistant",
+  "assistant.close": "Close the assistant",
+  "assistant.clear": "Clear this chat",
+  "assistant.greeting": "Ask me anything — how GeoCliks works, or whatever else is on your mind.",
+  "assistant.suggest1": "What is GeoCliks for?",
+  "assistant.suggest2": "How does photo verification work?",
+  "assistant.suggest3": "Write a short progress update for my client",
+  "assistant.placeholder": "Type a message",
+  "assistant.send": "Send",
+  "assistant.stop": "Stop",
+  "assistant.error": "Something went wrong. Try sending that again.",
+  "assistant.disclaimer": "The assistant can be wrong. It cannot see your photos or your account.",
 } as const;
 
 export type Catalog = Record<keyof typeof en, string>;

@@ -1151,4 +1151,18 @@ export const vi: Catalog = {
   "mine.download": "Tải xuống",
   "mine.downloadOk": "Đã lưu vào điện thoại của bạn",
   "mine.downloadFail": "Không thể lưu tệp này",
+
+  /* The AI assistant sheet, opened from the footer link. Same strings as the website's panel. */
+  "assistant.open": "Mở trợ lý",
+  "assistant.close": "Đóng trợ lý",
+  "assistant.clear": "Xóa cuộc trò chuyện này",
+  "assistant.greeting": "Hỏi tôi bất cứ điều gì — cách GeoCliks hoạt động, hay bất cứ chuyện gì khác.",
+  "assistant.suggest1": "GeoCliks dùng để làm gì?",
+  "assistant.suggest2": "Việc xác minh ảnh hoạt động thế nào?",
+  "assistant.suggest3": "Viết một bản cập nhật ngắn cho khách của tôi",
+  "assistant.placeholder": "Nhập tin nhắn",
+  "assistant.send": "Gửi",
+  "assistant.stop": "Dừng",
+  "assistant.error": "Đã có lỗi xảy ra. Hãy thử gửi lại.",
+  "assistant.disclaimer": "Trợ lý có thể sai. Nó không xem được ảnh hay tài khoản của bạn.",
 };

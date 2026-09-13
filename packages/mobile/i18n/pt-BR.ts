@@ -1160,4 +1160,18 @@ export const ptBR: Catalog = {
   "mine.download": "Baixar",
   "mine.downloadOk": "Salvo no seu telefone",
   "mine.downloadFail": "Não foi possível salvar este arquivo",
+
+  /* The AI assistant sheet, opened from the footer link. Same strings as the website's panel. */
+  "assistant.open": "Abrir o assistente",
+  "assistant.close": "Fechar o assistente",
+  "assistant.clear": "Limpar esta conversa",
+  "assistant.greeting": "Pergunte o que quiser: como o GeoCliks funciona ou qualquer outro assunto.",
+  "assistant.suggest1": "Para que serve o GeoCliks?",
+  "assistant.suggest2": "Como funciona a verificação das fotos?",
+  "assistant.suggest3": "Escreva uma atualização curta para o meu cliente",
+  "assistant.placeholder": "Digite uma mensagem",
+  "assistant.send": "Enviar",
+  "assistant.stop": "Parar",
+  "assistant.error": "Algo deu errado. Tente enviar de novo.",
+  "assistant.disclaimer": "O assistente pode errar. Ele não vê suas fotos nem sua conta.",
 };

@@ -27,6 +27,7 @@ import { AuthGate } from "@/components/auth-gate";
 import { LanguageMenu } from "@/components/language-menu";
 import { InviteSheet } from "@/components/invite-sheet";
 import { useAppTheme } from "@/lib/theme";
+import { ASSISTANT_NAME, openAssistant, useAssistantAccess } from "@/lib/assistant";
 import { SUPPORT_EMAIL } from "../constants/support";
 import { canManageWatermarks, canManageWorkspace, canUseField } from "../lib/roles";
 
@@ -100,6 +101,8 @@ export function ProfileMenu({ showStamp, onToggleStamp }: Props) {
   const org = useOrg();
   // Appearance and language are answered in the drawer now, not only in Settings.
   const { scheme, setTheme } = useAppTheme();
+  // Hidden on plans that do not include the assistant, matching the website's footer link.
+  const assistant = useAssistantAccess();
   const [open, setOpen] = useState(false);
   const [mounted, setMounted] = useState(false);
   const [signingOut, setSigningOut] = useState(false);
@@ -406,11 +409,7 @@ export function ProfileMenu({ showStamp, onToggleStamp }: Props) {
                       { borderColor: colors.amber, backgroundColor: colors.amber },
                     ]}
                   >
-                    <Ionicons
-                      name="mail-open-outline"
-                      size={18}
-                      color={colors.primaryForeground}
-                    />
+                    <Ionicons name="mail-open-outline" size={18} color={colors.primaryForeground} />
                     <Text
                       numberOfLines={1}
                       style={[styles.inviteTileText, { color: colors.primaryForeground }]}
@@ -469,6 +468,23 @@ export function ProfileMenu({ showStamp, onToggleStamp }: Props) {
                   </Text>
                   <LanguageMenu />
                 </View>
+                {/* Unlike the three links under it, this one stays in the app: the assistant
+                    slides up over the screen you were on rather than opening the browser. */}
+                {assistant ? (
+                  <Pressable
+                    onPress={() => {
+                      setOpen(false);
+                      openAssistant();
+                    }}
+                    accessibilityLabel={tr("assistant.open")}
+                    style={[styles.cardRow, styles.cardRowTop, { borderColor: colors.border }]}
+                  >
+                    <Text numberOfLines={1} style={[styles.rowText, { color: colors.foreground }]}>
+                      {ASSISTANT_NAME}
+                    </Text>
+                    <Ionicons name="sparkles" size={15} color={colors.amber} />
+                  </Pressable>
+                ) : null}
                 {/* Help articles live on the website, so this hands off to the browser. */}
                 <Pressable
                   onPress={() => void Linking.openURL(webHelpUrl())}

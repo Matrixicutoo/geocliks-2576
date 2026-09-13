@@ -26,10 +26,13 @@ import {
   useUpdateOrg,
 } from "@/queries/orgs";
 import { SUPPORT_EMAIL } from "../../constants/support";
+import { ASSISTANT_NAME, openAssistant, useAssistantAccess } from "@/lib/assistant";
 import { canManageWatermarks } from "../../lib/roles";
 
 export default function Settings() {
   const colors = useColors();
+  // Hidden on plans that do not include the assistant, matching the website's footer link.
+  const assistant = useAssistantAccess();
   const router = useRouter();
   // The drawer's Watermarks tile deep-links here and scrolls straight to the stamp block.
   const params = useLocalSearchParams<{ focus?: string; n?: string }>();
@@ -671,6 +674,21 @@ export default function Settings() {
           )}
         </Pressable>
 
+        {/* Footer: the assistant sits beside the support address, and opens over this screen
+            instead of navigating away from it. */}
+        {assistant ? (
+          <Pressable
+            onPress={openAssistant}
+            accessibilityLabel={lang.t("assistant.open")}
+            style={styles.assistantLink}
+          >
+            <Ionicons name="sparkles" size={14} color={colors.amber} />
+            <Text style={[styles.assistantLinkText, { color: colors.amber }]}>
+              {ASSISTANT_NAME}
+            </Text>
+          </Pressable>
+        ) : null}
+
         <Text style={[styles.support, { color: colors.mutedForeground, fontFamily: Fonts?.mono }]}>
           {SUPPORT_EMAIL}
         </Text>
@@ -775,5 +793,13 @@ const styles = StyleSheet.create({
   primary: { paddingVertical: 12, alignItems: "center", marginTop: 8, borderRadius: 8 },
   primaryText: { fontSize: 13, fontWeight: "700" },
   savedNote: { fontSize: 10, letterSpacing: 1.2, marginTop: 4 },
+  assistantLink: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
+    gap: 6,
+    marginTop: 20,
+  },
+  assistantLinkText: { fontSize: 12.5 },
   support: { fontSize: 10, textAlign: "center", marginTop: 14, letterSpacing: 0.6 },
 });

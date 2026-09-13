@@ -23,6 +23,7 @@ import { usePushToken } from "../hooks/use-push-token";
 import { useDrainOnSignIn } from "../hooks/use-drain-on-signin";
 import { ThemeProvider, useAppTheme } from "../lib/theme";
 import { I18nProvider } from "../lib/i18n";
+import { AssistantSheet } from "../components/assistant-sheet";
 import appJson from "../app.json";
 
 const queryClient = new QueryClient();
@@ -119,6 +120,10 @@ function Gate() {
         <Stack.Screen name="verify" />
         <Stack.Screen name="join" />
       </Stack>
+      {/* Mounted once, above every screen: the assistant slides up over whatever tab you are
+          on, and its transcript survives moving between them. Opened from the drawer footer
+          and the bottom of Settings; it renders nothing until then. */}
+      <AssistantSheet />
     </>
   );
 }

@@ -1099,4 +1099,18 @@ export const zh: Catalog = {
   "mine.download": "下载",
   "mine.downloadOk": "已保存到你的手机",
   "mine.downloadFail": "无法保存此文件",
+
+  /* The AI assistant sheet, opened from the footer link. Same strings as the website's panel. */
+  "assistant.open": "打开助手",
+  "assistant.close": "关闭助手",
+  "assistant.clear": "清空此对话",
+  "assistant.greeting": "随便问——GeoCliks 怎么用，或者其他任何问题。",
+  "assistant.suggest1": "GeoCliks 有什么用？",
+  "assistant.suggest2": "照片验证是怎么实现的？",
+  "assistant.suggest3": "帮我给客户写一段简短的进度说明",
+  "assistant.placeholder": "输入消息",
+  "assistant.send": "发送",
+  "assistant.stop": "停止",
+  "assistant.error": "出了点问题，请再发送一次。",
+  "assistant.disclaimer": "助手可能出错。它看不到你的照片和账户。",
 };

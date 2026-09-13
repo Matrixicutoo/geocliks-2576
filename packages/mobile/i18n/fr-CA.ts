@@ -1180,4 +1180,18 @@ export const frCA: Catalog = {
   "mine.download": "Télécharger",
   "mine.downloadOk": "Enregistré sur votre téléphone",
   "mine.downloadFail": "Impossible d'enregistrer ce fichier",
+
+  /* The AI assistant sheet, opened from the footer link. Same strings as the website's panel. */
+  "assistant.open": "Ouvrir l'assistant",
+  "assistant.close": "Fermer l'assistant",
+  "assistant.clear": "Effacer cette conversation",
+  "assistant.greeting": "Demandez-moi n'importe quoi : le fonctionnement de GeoCliks ou tout autre sujet.",
+  "assistant.suggest1": "À quoi sert GeoCliks?",
+  "assistant.suggest2": "Comment fonctionne la vérification des photos?",
+  "assistant.suggest3": "Rédige un court suivi pour mon client",
+  "assistant.placeholder": "Écrivez un message",
+  "assistant.send": "Envoyer",
+  "assistant.stop": "Arrêter",
+  "assistant.error": "Une erreur est survenue. Essayez d'envoyer de nouveau.",
+  "assistant.disclaimer": "L'assistant peut se tromper. Il ne voit ni vos photos ni votre compte.",
 };
