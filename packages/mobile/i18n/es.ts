@@ -1196,5 +1196,6 @@ export const es: Catalog = {
   "assistant.copied": "Enlace copiado",
   "assistant.share": "Compartir",
   "assistant.linkExpires": "Este enlace funciona 24 horas. El informe también queda en la pantalla Informes.",
+  "assistant.linkExpired": "Este enlace de descarga ya expiró. El informe sigue en la pantalla Informes.",
   "assistant.reportMeta": "{count} fotos · {size}",
 };

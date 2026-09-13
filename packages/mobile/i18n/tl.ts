@@ -1201,5 +1201,6 @@ export const tl: Catalog = {
   "assistant.copied": "Nakopya ang link",
   "assistant.share": "Ibahagi",
   "assistant.linkExpires": "Gumagana ang link na ito sa loob ng 24 oras. Nananatili rin ang report sa Reports.",
+  "assistant.linkExpired": "Expired na ang download link na ito. Nasa Reports pa rin ang report.",
   "assistant.reportMeta": "{count} larawan · {size}",
 };

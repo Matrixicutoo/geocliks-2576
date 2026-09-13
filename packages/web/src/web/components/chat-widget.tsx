@@ -47,14 +47,26 @@ function readStored(): UIMessage[] {
 
 function store(messages: UIMessage[]) {
   try {
-    // Text only. A found photo's thumbnail is a presigned URL with an expiry on it, so a photo
-    // part restored tomorrow would render as a row of broken images — and the reply's own text
-    // already says what was found.
-    const text = messages.slice(-MAX_STORED).map((m) => ({
+    // A found photo's thumbnail is a presigned URL with an expiry on it, so a photo part
+    // restored tomorrow would render as a row of broken images — and the reply's own text
+    // already says what was found. Counts are plain numbers and keep.
+    //
+    // A report is kept too, but stripped of its link, which is only good for a day. The card
+    // then restores in its expired state: the reply says "the download card is right below",
+    // so a card that vanished left that sentence pointing at nothing, and the report itself is
+    // still on the Reports screen where the expired card sends you.
+    const kept = messages.slice(-MAX_STORED).map((m) => ({
       ...m,
-      parts: (m.parts ?? []).filter((p) => p.type === "text"),
+      parts: (m.parts ?? []).flatMap((part) => {
+        const p = part as { type: string; output?: { report?: ReportFile } };
+        if (p.type === "text" || p.type === "tool-summarizeActivity") return [part];
+        if (p.type === "tool-exportReport" && p.output?.report) {
+          return [{ ...p, output: { report: { ...p.output.report, url: null } } } as typeof part];
+        }
+        return [];
+      }),
     }));
-    globalThis.localStorage?.setItem(KEY, JSON.stringify(text));
+    globalThis.localStorage?.setItem(KEY, JSON.stringify(kept));
   } catch {
     // Blocked storage: the chat still works for this page view, it just will not persist.
   }
@@ -139,7 +151,14 @@ type Activity = {
   truncated?: boolean;
 };
 
-/** The finished package `exportReport` built. */
+/**
+ * The finished package `exportReport` built.
+ *
+ * `url` is a presigned link good for a day. It comes back null on a card restored from a
+ * stored transcript, where the link would have outlived itself — the card is still drawn, in
+ * its expired state, so the reply's own "the download is right below" still points at
+ * something.
+ */
 type ReportFile = {
   id: string;
   title: string;
@@ -147,7 +166,7 @@ type ReportFile = {
   photoCount: number;
   bytes: number;
   filename: string;
-  url: string;
+  url: string | null;
 };
 
 /**
@@ -179,7 +198,7 @@ function reportsOf(message: UIMessage): ReportFile[] {
     const p = part as { type: string; state?: string; output?: unknown; preliminary?: boolean };
     if (p.type !== "tool-exportReport" || p.state !== "output-available" || p.preliminary) return [];
     const file = (p.output as { report?: ReportFile } | null)?.report;
-    return file && typeof file.url === "string" ? [file] : [];
+    return file && typeof file.title === "string" ? [file] : [];
   });
 }
 
@@ -360,16 +379,19 @@ function Stats({ stats }: { stats: Activity }) {
  * The finished report, as a file card with the download on it.
  *
  * The link is a presigned URL good for a day, so it is never pasted into the reply's text
- * where it would outlive itself in the stored transcript — it lives on this card, which the
- * transcript drops on reload along with the thumbnails.
+ * where it would outlive itself in the stored transcript — it lives on this card, and the
+ * stored copy of the card drops it. Restored without a link the card keeps its name and size
+ * but loses its buttons, and says where the report itself still is.
  */
 function ReportCard({ report }: { report: ReportFile }) {
   const t = useT();
   const [copied, setCopied] = useState(false);
+  const url = report.url;
 
   const copy = async () => {
+    if (!url) return;
     try {
-      await navigator.clipboard.writeText(report.url);
+      await navigator.clipboard.writeText(url);
       setCopied(true);
       globalThis.setTimeout(() => setCopied(false), 2000);
     } catch {
@@ -381,7 +403,11 @@ function ReportCard({ report }: { report: ReportFile }) {
     <div className="space-y-2 pt-1">
       <div className="rounded-[8px] border border-line bg-ink-2 p-2.5">
         <div className="flex items-start gap-2.5">
-          <span className="mono grid size-9 shrink-0 place-items-center rounded-[7px] bg-amber/15 text-[9.5px] font-bold uppercase text-amber">
+          <span
+            className={`mono grid size-9 shrink-0 place-items-center rounded-[7px] text-[9.5px] font-bold uppercase ${
+              url ? "bg-amber/15 text-amber" : "bg-ink-3 text-fog"
+            }`}
+          >
             {report.format}
           </span>
           <div className="min-w-0 flex-1">
@@ -394,26 +420,30 @@ function ReportCard({ report }: { report: ReportFile }) {
             </p>
           </div>
         </div>
-        <div className="mt-2.5 flex items-center gap-2">
-          <a
-            href={report.url}
-            download={report.filename}
-            className={`mono flex flex-1 items-center justify-center gap-1.5 rounded-[7px] px-2 py-1.5 text-[11px] font-bold uppercase tracking-wide ${amberFill}`}
-          >
-            <Download className="size-3.5" />
-            {t("assistant.download")}
-          </a>
-          <button
-            type="button"
-            onClick={() => void copy()}
-            className="flex items-center justify-center gap-1.5 rounded-[7px] border border-line bg-ink-3 px-2.5 py-1.5 text-[11px] text-fog transition-colors hover:border-amber hover:text-amber"
-          >
-            {copied ? <Check className="size-3.5" /> : <Link2 className="size-3.5" />}
-            {copied ? t("assistant.copied") : t("assistant.copyLink")}
-          </button>
-        </div>
+        {url && (
+          <div className="mt-2.5 flex items-center gap-2">
+            <a
+              href={url}
+              download={report.filename}
+              className={`mono flex flex-1 items-center justify-center gap-1.5 rounded-[7px] px-2 py-1.5 text-[11px] font-bold uppercase tracking-wide ${amberFill}`}
+            >
+              <Download className="size-3.5" />
+              {t("assistant.download")}
+            </a>
+            <button
+              type="button"
+              onClick={() => void copy()}
+              className="flex items-center justify-center gap-1.5 rounded-[7px] border border-line bg-ink-3 px-2.5 py-1.5 text-[11px] text-fog transition-colors hover:border-amber hover:text-amber"
+            >
+              {copied ? <Check className="size-3.5" /> : <Link2 className="size-3.5" />}
+              {copied ? t("assistant.copied") : t("assistant.copyLink")}
+            </button>
+          </div>
+        )}
       </div>
-      <p className="text-[10px] leading-snug text-fog/70">{t("assistant.linkExpires")}</p>
+      <p className="text-[10px] leading-snug text-fog/70">
+        {t(url ? "assistant.linkExpires" : "assistant.linkExpired")}
+      </p>
     </div>
   );
 }

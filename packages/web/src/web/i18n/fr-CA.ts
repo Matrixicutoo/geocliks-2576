@@ -1335,5 +1335,6 @@ export const frCA: Catalog = {
   "assistant.copied": "Lien copié",
   "assistant.share": "Partager",
   "assistant.linkExpires": "Ce lien est valide 24 heures. Le rapport reste aussi dans l'écran Rapports.",
+  "assistant.linkExpired": "Ce lien de téléchargement est expiré. Le rapport est toujours dans l'écran Rapports.",
   "assistant.reportMeta": "{count} photos · {size}",
 };

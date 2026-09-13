@@ -1190,5 +1190,6 @@ export const pl: Catalog = {
   "assistant.copied": "Link skopiowany",
   "assistant.share": "Udostępnij",
   "assistant.linkExpires": "Ten link działa 24 godziny. Raport pozostaje też na ekranie Raporty.",
+  "assistant.linkExpired": "Ten link do pobrania wygasł. Raport nadal jest na ekranie Raporty.",
   "assistant.reportMeta": "{count} zdjęć · {size}",
 };

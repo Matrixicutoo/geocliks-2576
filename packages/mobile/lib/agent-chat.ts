@@ -43,7 +43,14 @@ export type Activity = {
   truncated?: boolean;
 };
 
-/** The finished package `exportReport` built. */
+/**
+ * The finished package `exportReport` built.
+ *
+ * `url` is a presigned link good for a day. It comes back null on a card restored from a
+ * stored transcript, where the link would have outlived itself — the card is still drawn, in
+ * its expired state, so the reply's own "the download is right below" still points at
+ * something.
+ */
 export type ReportFile = {
   id: string;
   title: string;
@@ -51,7 +58,7 @@ export type ReportFile = {
   photoCount: number;
   bytes: number;
   filename: string;
-  url: string;
+  url: string | null;
 };
 
 export type ChatPart =
@@ -109,10 +116,22 @@ export function textOf(message: ChatMessage): string {
  *
  * Thumbnails are presigned URLs with an expiry on them, so a photo part restored days later
  * would render as a row of broken images. The text of the reply already says what was found,
- * and the codes in it still resolve, so the parts are dropped rather than kept stale.
+ * and the codes in it still resolve, so those parts are dropped rather than kept stale.
+ *
+ * Counts are plain numbers and keep as they are. A report keeps everything but its link,
+ * which is only good for a day: the card restores in its expired state rather than vanishing
+ * out from under the reply's "the download is right below", and it says where the report
+ * itself still is.
  */
 export function forStorage(messages: ChatMessage[]): ChatMessage[] {
-  return messages.map((m) => ({ ...m, parts: m.parts.filter((p) => p.type === "text") }));
+  return messages.map((m) => ({
+    ...m,
+    parts: m.parts.flatMap((p): ChatPart[] => {
+      if (p.type === "text" || p.type === "stats") return [p];
+      if (p.type === "report") return [{ ...p, report: { ...p.report, url: null } }];
+      return [];
+    }),
+  }));
 }
 
 /** True for anything that still looks like a message we wrote, so a stale store degrades to empty. */

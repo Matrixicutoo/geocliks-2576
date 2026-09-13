@@ -1276,5 +1276,6 @@ export const ar: Catalog = {
   "assistant.copied": "تم نسخ الرابط",
   "assistant.share": "مشاركة",
   "assistant.linkExpires": "هذا الرابط صالح لمدة 24 ساعة. يبقى التقرير أيضًا في شاشة التقارير.",
+  "assistant.linkExpired": "انتهت صلاحية رابط التنزيل هذا. لا يزال التقرير موجودًا في شاشة التقارير.",
   "assistant.reportMeta": "{count} صورة · {size}",
 };

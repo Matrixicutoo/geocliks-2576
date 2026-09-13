@@ -1315,5 +1315,6 @@ export const ptBR: Catalog = {
   "assistant.copied": "Link copiado",
   "assistant.share": "Compartilhar",
   "assistant.linkExpires": "Este link funciona por 24 horas. O relatório também fica na tela Relatórios.",
+  "assistant.linkExpired": "Este link de download expirou. O relatório continua na tela Relatórios.",
   "assistant.reportMeta": "{count} fotos · {size}",
 };

@@ -1330,5 +1330,6 @@ export const de: Catalog = {
   "assistant.copied": "Link kopiert",
   "assistant.share": "Teilen",
   "assistant.linkExpires": "Dieser Link gilt 24 Stunden. Der Bericht bleibt außerdem im Bereich Berichte.",
+  "assistant.linkExpired": "Dieser Download-Link ist abgelaufen. Der Bericht liegt weiterhin im Bereich Berichte.",
   "assistant.reportMeta": "{count} Fotos · {size}",
 };

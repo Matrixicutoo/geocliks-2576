@@ -1235,5 +1235,6 @@ export const zh: Catalog = {
   "assistant.copied": "链接已复制",
   "assistant.share": "分享",
   "assistant.linkExpires": "此链接 24 小时内有效。报告也会保留在“报告”页面。",
+  "assistant.linkExpired": "此下载链接已过期。报告仍在“报告”页面。",
   "assistant.reportMeta": "{count} 张照片 · {size}",
 };

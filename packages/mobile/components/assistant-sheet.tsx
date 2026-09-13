@@ -321,27 +321,31 @@ function sizeOf(bytes: number): string {
  * does, so the phone's own viewer and its "save to Files" take over from there. Share passes
  * the link to the system sheet, which is how a crew member gets it to the office without
  * retyping it. The link is good for a day and never goes into the reply's text, where it would
- * outlive itself in the stored transcript.
+ * outlive itself in the stored transcript. The stored copy of this card drops the link, so a
+ * restored card keeps its name and size but loses its buttons.
  */
 function ReportCard({ report }: { report: ReportFile }) {
   const colors = useColors();
   const tr = useT();
+  const url = report.url;
 
   const open = async () => {
+    if (!url) return;
     if (Platform.OS === "web") {
-      globalThis.location?.assign(report.url);
+      globalThis.location?.assign(url);
       return;
     }
     try {
-      await WebBrowser.openBrowserAsync(report.url, { dismissButtonStyle: "close" });
+      await WebBrowser.openBrowserAsync(url, { dismissButtonStyle: "close" });
     } catch {
-      if (await Linking.canOpenURL(report.url)) await Linking.openURL(report.url);
+      if (await Linking.canOpenURL(url)) await Linking.openURL(url);
     }
   };
 
   const share = async () => {
+    if (!url) return;
     try {
-      await Share.share({ message: report.url, url: report.url, title: report.title });
+      await Share.share({ message: url, url, title: report.title });
     } catch {
       // Dismissed, or no share sheet. The open button still works.
     }
@@ -353,8 +357,15 @@ function ReportCard({ report }: { report: ReportFile }) {
         style={[styles.file, { borderColor: colors.border, backgroundColor: colors.background }]}
       >
         <View style={styles.fileHead}>
-          <View style={[styles.fileKind, { backgroundColor: `${colors.amber}26` }]}>
-            <Text style={[styles.fileKindText, { color: colors.amber }]}>
+          <View
+            style={[
+              styles.fileKind,
+              { backgroundColor: url ? `${colors.amber}26` : `${colors.mutedForeground}1f` },
+            ]}
+          >
+            <Text
+              style={[styles.fileKindText, { color: url ? colors.amber : colors.mutedForeground }]}
+            >
               {report.format.toUpperCase()}
             </Text>
           </View>
@@ -370,31 +381,33 @@ function ReportCard({ report }: { report: ReportFile }) {
             </Text>
           </View>
         </View>
-        <View style={styles.fileActions}>
-          <Pressable
-            onPress={() => void open()}
-            accessibilityRole="button"
-            style={[styles.fileButton, { backgroundColor: colors.amber }]}
-          >
-            <Ionicons name="download-outline" size={14} color={colors.primaryForeground} />
-            <Text style={[styles.fileButtonText, { color: colors.primaryForeground }]}>
-              {tr("assistant.download")}
-            </Text>
-          </Pressable>
-          <Pressable
-            onPress={() => void share()}
-            accessibilityRole="button"
-            style={[styles.fileButton, { borderWidth: 1, borderColor: colors.border }]}
-          >
-            <Ionicons name="share-outline" size={14} color={colors.mutedForeground} />
-            <Text style={[styles.fileButtonText, { color: colors.mutedForeground }]}>
-              {tr("assistant.share")}
-            </Text>
-          </Pressable>
-        </View>
+        {url ? (
+          <View style={styles.fileActions}>
+            <Pressable
+              onPress={() => void open()}
+              accessibilityRole="button"
+              style={[styles.fileButton, { backgroundColor: colors.amber }]}
+            >
+              <Ionicons name="download-outline" size={14} color={colors.primaryForeground} />
+              <Text style={[styles.fileButtonText, { color: colors.primaryForeground }]}>
+                {tr("assistant.download")}
+              </Text>
+            </Pressable>
+            <Pressable
+              onPress={() => void share()}
+              accessibilityRole="button"
+              style={[styles.fileButton, { borderWidth: 1, borderColor: colors.border }]}
+            >
+              <Ionicons name="share-outline" size={14} color={colors.mutedForeground} />
+              <Text style={[styles.fileButtonText, { color: colors.mutedForeground }]}>
+                {tr("assistant.share")}
+              </Text>
+            </Pressable>
+          </View>
+        ) : null}
       </View>
       <Text style={[styles.fileNote, { color: colors.mutedForeground }]}>
-        {tr("assistant.linkExpires")}
+        {tr(url ? "assistant.linkExpires" : "assistant.linkExpired")}
       </Text>
     </View>
   );

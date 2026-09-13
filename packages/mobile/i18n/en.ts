@@ -1195,6 +1195,7 @@ export const en = {
   "assistant.copied": "Link copied",
   "assistant.share": "Share",
   "assistant.linkExpires": "This link works for 24 hours. The report also stays on the Reports screen.",
+  "assistant.linkExpired": "This download link has expired. The report is still on the Reports screen.",
   "assistant.reportMeta": "{count} photos · {size}",
 } as const;
 

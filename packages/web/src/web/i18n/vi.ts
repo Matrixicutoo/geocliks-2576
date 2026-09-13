@@ -1302,5 +1302,6 @@ export const vi: Catalog = {
   "assistant.copied": "Đã sao chép liên kết",
   "assistant.share": "Chia sẻ",
   "assistant.linkExpires": "Liên kết này có hiệu lực trong 24 giờ. Báo cáo cũng được lưu ở mục Báo cáo.",
+  "assistant.linkExpired": "Liên kết tải xuống này đã hết hiệu lực. Báo cáo vẫn nằm ở mục Báo cáo.",
   "assistant.reportMeta": "{count} ảnh · {size}",
 };
