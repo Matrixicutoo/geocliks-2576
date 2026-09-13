@@ -6,6 +6,7 @@ import { MessageSquare, Send, Square, Trash2, X } from "lucide-react";
 import { useT } from "../lib/i18n";
 import { amberFill } from "../lib/chrome";
 import { authToken } from "../lib/auth";
+import { PhotoDrawer } from "./photo-drawer";
 import {
   ASSISTANT_NAME,
   DOCK_MIN_WIDTH,
@@ -94,6 +95,7 @@ const chatTransport = new DefaultChatTransport({
 
 /** One capture `findPhotos` returned, as the panel renders it. */
 type PhotoHit = {
+  id: string;
   code: string;
   kind: string;
   address: string | null;
@@ -102,13 +104,12 @@ type PhotoHit = {
   capturedAt: string;
   project: string | null;
   takenBy: string | null;
-  link: string;
   thumbnail: string;
 };
 
 function isPhotoHit(value: unknown): value is PhotoHit {
   const p = value as PhotoHit | null;
-  return !!p && typeof p.code === "string" && typeof p.link === "string";
+  return !!p && typeof p.id === "string" && typeof p.thumbnail === "string";
 }
 
 /** The captures a reply found, pulled out of its settled `findPhotos` tool parts. */
@@ -143,21 +144,24 @@ function shortAddress(address: string | null): string | null {
 /**
  * The captures the assistant found, as a grid of thumbnails under its reply.
  *
- * Each one opens that photo's public `/v/<code>` page — the same link the person could forward
- * to a customer, so nothing here reaches further than they already can.
+ * A thumbnail opens the same drawer Teamspace opens — the map, the chain of custody, the
+ * evidence exports — instead of navigating to the public `/v/<code>` page. Leaving the app to
+ * read your own photo, and losing the transcript that found it, was the wrong trade: the link
+ * is for sending to someone else. The drawer loads the photo by id through `photos.get`, which
+ * re-checks the org and the caller's scope on the way in, so the id in the reply opens nothing
+ * the person could not already open from the feed.
  */
-function Photos({ photos }: { photos: PhotoHit[] }) {
+function Photos({ photos, onOpen }: { photos: PhotoHit[]; onOpen: (id: string) => void }) {
   return (
     <div className="grid grid-cols-2 gap-2 pt-1">
       {photos.map((photo) => {
         const place = shortAddress(photo.address);
         return (
-          <a
+          <button
+            type="button"
             key={photo.code}
-            href={photo.link}
-            target="_blank"
-            rel="noreferrer"
-            className="group overflow-hidden rounded-[8px] border border-line bg-ink-2 transition-colors hover:border-amber"
+            onClick={() => onOpen(photo.id)}
+            className="group overflow-hidden rounded-[8px] border border-line bg-ink-2 text-start transition-colors hover:border-amber"
           >
             <div className="relative">
               <img
@@ -178,7 +182,7 @@ function Photos({ photos }: { photos: PhotoHit[] }) {
               </p>
               {place && <p className="line-clamp-2 text-[10px] leading-snug text-fog">{place}</p>}
             </div>
-          </a>
+          </button>
         );
       })}
     </div>
@@ -264,6 +268,8 @@ export function ChatWidget() {
   // a narrow visit should start with the site unobstructed.
   const [sheet, setSheet] = useState(false);
   const [input, setInput] = useState("");
+  /** A capture from a reply, open in the drawer over the panel. */
+  const [openPhoto, setOpenPhoto] = useState<string | null>(null);
   const initial = useMemo(readStored, []);
   const scroller = useRef<HTMLDivElement>(null);
   const box = useRef<HTMLTextAreaElement>(null);
@@ -523,7 +529,7 @@ export function ChatWidget() {
                   ) : (
                     <>
                       {text && <Rich text={text} />}
-                      {found.length > 0 && <Photos photos={found} />}
+                      {found.length > 0 && <Photos photos={found} onOpen={setOpenPhoto} />}
                     </>
                   )}
                 </div>
@@ -597,6 +603,17 @@ export function ChatWidget() {
           <p className="mt-2 text-[11px] leading-snug text-fog/70">{t("assistant.disclaimer")}</p>
         </div>
       </aside>
+      {/* Over the panel, not under it. The panel sits at z-65 and the drawer at z-50, so the
+          drawer needs its own stacking context above it — mounted here as the panel's sibling
+          rather than inside it, because the sheet's slide-in animation leaves a transform that
+          would otherwise become the containing block for the drawer's fixed overlay. Rendered
+          only when a photo is open: its hooks would otherwise fetch the org and the project
+          list behind the marketing site, where there is no session to fetch them with. */}
+      {openPhoto && (
+        <div className="relative z-[70]">
+          <PhotoDrawer photoId={openPhoto} onClose={() => setOpenPhoto(null)} />
+        </div>
+      )}
     </>
   );
 }

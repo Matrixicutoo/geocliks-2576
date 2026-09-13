@@ -21,6 +21,8 @@ import { authToken } from "./auth";
  */
 /** One capture the assistant found, as the sheet renders it. Mirrors `findPhotos`' output. */
 export type PhotoHit = {
+  /** Opens the capture in the app's own photo view; `photos.get` re-checks scope on the way in. */
+  id: string;
   code: string;
   kind: string;
   address: string | null;
@@ -29,7 +31,6 @@ export type PhotoHit = {
   capturedAt: string;
   project: string | null;
   takenBy: string | null;
-  link: string;
   thumbnail: string;
 };
 
@@ -48,7 +49,7 @@ export function photosOf(message: ChatMessage): PhotoHit[] {
 
 function isPhotoHit(value: unknown): value is PhotoHit {
   const p = value as PhotoHit | null;
-  return !!p && typeof p.code === "string" && typeof p.link === "string";
+  return !!p && typeof p.id === "string" && typeof p.thumbnail === "string";
 }
 
 /** `submitted` is waiting on the first token; `streaming` is a reply arriving. */

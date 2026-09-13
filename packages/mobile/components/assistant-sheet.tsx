@@ -6,7 +6,6 @@ import {
   Easing,
   Image,
   KeyboardAvoidingView,
-  Linking,
   Modal,
   Platform,
   Pressable,
@@ -28,6 +27,7 @@ import {
   type PhotoHit,
 } from "@/lib/agent-chat";
 import { Text, TextInput } from "@/components/app-text";
+import { PhotoDetail } from "@/components/photo-detail";
 import { useColors } from "@/hooks/use-colors";
 import { Fonts } from "@/constants/theme";
 import { useT } from "@/lib/i18n";
@@ -147,10 +147,12 @@ function shortAddress(address: string | null): string | null {
 /**
  * The captures the assistant found, as a row of tappable thumbnails under its reply.
  *
- * Tapping one opens that photo's public page in the browser — the same `/v/<code>` link the
- * person could forward to a customer, so nothing here can reach further than they already can.
+ * Tapping one opens the same full photo view Teamspace opens, rather than handing the `/v/<code>`
+ * link to the browser and taking the crew out of the app to read their own capture. The view
+ * loads by id through `photos.get`, which re-checks the org and the caller's scope, so a tap
+ * reaches nothing they could not already open from the feed.
  */
-function Photos({ photos }: { photos: PhotoHit[] }) {
+function Photos({ photos, onOpen }: { photos: PhotoHit[]; onOpen: (id: string) => void }) {
   const colors = useColors();
 
   return (
@@ -166,8 +168,8 @@ function Photos({ photos }: { photos: PhotoHit[] }) {
         return (
           <Pressable
             key={photo.code}
-            onPress={() => void Linking.openURL(photo.link)}
-            accessibilityRole="link"
+            onPress={() => onOpen(photo.id)}
+            accessibilityRole="button"
             accessibilityLabel={`${photo.tag} capture${place ? ` at ${place}` : ""}, ${whenOf(photo.capturedAt)}`}
             style={[styles.hit, { borderColor: colors.border, backgroundColor: colors.card }]}
           >
@@ -210,6 +212,8 @@ export function AssistantSheet() {
   const [open, setOpen] = useState(assistantWasRequested);
   const [mounted, setMounted] = useState(false);
   const [input, setInput] = useState("");
+  /** A capture from a reply, open in the full photo view with the sheet stepped aside. */
+  const [openPhoto, setOpenPhoto] = useState<string | null>(null);
   const scroller = useRef<ScrollView>(null);
 
   const { messages, sendMessage, status, stop, error, setMessages, clearError } = useAgentChat(
@@ -308,203 +312,232 @@ export function AssistantSheet() {
   };
 
   return (
-    <Modal visible={mounted} transparent animationType="none" onRequestClose={() => setOpen(false)}>
-      <View style={styles.stage}>
-        {/* A tap on the strip of screen above the sheet puts it away. */}
-        <Pressable
-          style={styles.backdrop}
-          onPress={() => setOpen(false)}
-          accessibilityLabel={tr("assistant.close")}
-        />
-        <Animated.View
-          style={[
-            styles.panel,
-            {
-              backgroundColor: colors.background,
-              borderColor: colors.border,
-              // Clear of the status bar and the notch: the sheet is the tallest overlay in the
-              // app and its header would otherwise sit under the clock.
-              top: insets.top + 10,
-              transform: [{ translateY: slide }],
-            },
-          ]}
-        >
-          <KeyboardAvoidingView
-            style={styles.fill}
-            behavior={Platform.OS === "ios" ? "padding" : undefined}
+    <>
+      <Modal
+        visible={mounted}
+        transparent
+        animationType="none"
+        onRequestClose={() => setOpen(false)}
+      >
+        <View style={styles.stage}>
+          {/* A tap on the strip of screen above the sheet puts it away. */}
+          <Pressable
+            style={styles.backdrop}
+            onPress={() => setOpen(false)}
+            accessibilityLabel={tr("assistant.close")}
+          />
+          <Animated.View
+            style={[
+              styles.panel,
+              {
+                backgroundColor: colors.background,
+                borderColor: colors.border,
+                // Clear of the status bar and the notch: the sheet is the tallest overlay in the
+                // app and its header would otherwise sit under the clock.
+                top: insets.top + 10,
+                transform: [{ translateY: slide }],
+              },
+            ]}
           >
-            <View style={[styles.head, { borderColor: colors.border }]}>
-              <Ionicons name="sparkles" size={16} color={colors.amber} />
-              <Text
-                numberOfLines={1}
-                style={[styles.title, { color: colors.foreground, fontFamily: Fonts?.display }]}
-              >
-                {ASSISTANT_NAME}
-              </Text>
-              {messages.length > 0 ? (
+            <KeyboardAvoidingView
+              style={styles.fill}
+              behavior={Platform.OS === "ios" ? "padding" : undefined}
+            >
+              <View style={[styles.head, { borderColor: colors.border }]}>
+                <Ionicons name="sparkles" size={16} color={colors.amber} />
+                <Text
+                  numberOfLines={1}
+                  style={[styles.title, { color: colors.foreground, fontFamily: Fonts?.display }]}
+                >
+                  {ASSISTANT_NAME}
+                </Text>
+                {messages.length > 0 ? (
+                  <Pressable
+                    onPress={reset}
+                    hitSlop={8}
+                    accessibilityLabel={tr("assistant.clear")}
+                    style={styles.headBtn}
+                  >
+                    <Ionicons name="trash-outline" size={18} color={colors.mutedForeground} />
+                  </Pressable>
+                ) : null}
                 <Pressable
-                  onPress={reset}
+                  onPress={() => setOpen(false)}
                   hitSlop={8}
-                  accessibilityLabel={tr("assistant.clear")}
+                  accessibilityLabel={tr("assistant.close")}
                   style={styles.headBtn}
                 >
-                  <Ionicons name="trash-outline" size={18} color={colors.mutedForeground} />
+                  <Ionicons name="close" size={20} color={colors.mutedForeground} />
                 </Pressable>
-              ) : null}
-              <Pressable
-                onPress={() => setOpen(false)}
-                hitSlop={8}
-                accessibilityLabel={tr("assistant.close")}
-                style={styles.headBtn}
+              </View>
+
+              <ScrollView
+                ref={scroller}
+                contentContainerStyle={styles.transcript}
+                keyboardShouldPersistTaps="handled"
               >
-                <Ionicons name="close" size={20} color={colors.mutedForeground} />
-              </Pressable>
-            </View>
+                {messages.length === 0 ? (
+                  <View style={styles.empty}>
+                    <Text style={[styles.greeting, { color: colors.mutedForeground }]}>
+                      {tr("assistant.greeting")}
+                    </Text>
+                    {suggestions.map((s) => (
+                      <Pressable
+                        key={s}
+                        onPress={() => ask(s)}
+                        style={[
+                          styles.suggestion,
+                          { borderColor: colors.border, backgroundColor: colors.card },
+                        ]}
+                      >
+                        <Text style={[styles.suggestionText, { color: colors.foreground }]}>{s}</Text>
+                      </Pressable>
+                    ))}
+                  </View>
+                ) : null}
 
-            <ScrollView
-              ref={scroller}
-              contentContainerStyle={styles.transcript}
-              keyboardShouldPersistTaps="handled"
-            >
-              {messages.length === 0 ? (
-                <View style={styles.empty}>
-                  <Text style={[styles.greeting, { color: colors.mutedForeground }]}>
-                    {tr("assistant.greeting")}
-                  </Text>
-                  {suggestions.map((s) => (
-                    <Pressable
-                      key={s}
-                      onPress={() => ask(s)}
-                      style={[
-                        styles.suggestion,
-                        { borderColor: colors.border, backgroundColor: colors.card },
-                      ]}
+                {messages.map((message) => {
+                  const text = textOf(message);
+                  const found = photosOf(message);
+                  // A reply mid-search has neither yet; one that found photos without a word of
+                  // its own still has something to show.
+                  if (!text && found.length === 0) return null;
+                  const mine = message.role === "user";
+                  return (
+                    <View
+                      key={message.id}
+                      style={[styles.row, mine ? styles.rowMine : styles.rowTheirs]}
                     >
-                      <Text style={[styles.suggestionText, { color: colors.foreground }]}>{s}</Text>
-                    </Pressable>
-                  ))}
-                </View>
-              ) : null}
+                      <View
+                        style={[
+                          styles.bubble,
+                          mine
+                            ? [styles.bubbleMine, { backgroundColor: colors.amber }]
+                            : [
+                                styles.bubbleTheirs,
+                                { backgroundColor: colors.card, borderColor: colors.border },
+                              ],
+                        ]}
+                      >
+                        {mine ? (
+                          <Text style={[styles.body, { color: colors.primaryForeground }]}>
+                            {text}
+                          </Text>
+                        ) : (
+                          <>
+                            {text ? <Rich text={text} color={colors.foreground} /> : null}
+                            {found.length > 0 ? (
+                              <Photos
+                                photos={found}
+                                onOpen={(id) => {
+                                  // The sheet steps aside rather than stacking: both it and the
+                                  // photo view are Modals, and stacked Modals are unreliable on
+                                  // iOS. It slides back with the transcript intact on close.
+                                  setOpenPhoto(id);
+                                  setOpen(false);
+                                }}
+                              />
+                            ) : null}
+                          </>
+                        )}
+                      </View>
+                    </View>
+                  );
+                })}
 
-              {messages.map((message) => {
-                const text = textOf(message);
-                const found = photosOf(message);
-                // A reply mid-search has neither yet; one that found photos without a word of
-                // its own still has something to show.
-                if (!text && found.length === 0) return null;
-                const mine = message.role === "user";
-                return (
-                  <View
-                    key={message.id}
-                    style={[styles.row, mine ? styles.rowMine : styles.rowTheirs]}
-                  >
+                {status === "submitted" ? (
+                  <View style={[styles.row, styles.rowTheirs]}>
                     <View
                       style={[
                         styles.bubble,
-                        mine
-                          ? [styles.bubbleMine, { backgroundColor: colors.amber }]
-                          : [
-                              styles.bubbleTheirs,
-                              { backgroundColor: colors.card, borderColor: colors.border },
-                            ],
+                        styles.bubbleTheirs,
+                        styles.thinking,
+                        { backgroundColor: colors.card, borderColor: colors.border },
                       ]}
                     >
-                      {mine ? (
-                        <Text style={[styles.body, { color: colors.primaryForeground }]}>
-                          {text}
-                        </Text>
-                      ) : (
-                        <>
-                          {text ? <Rich text={text} color={colors.foreground} /> : null}
-                          {found.length > 0 ? <Photos photos={found} /> : null}
-                        </>
-                      )}
+                      <ActivityIndicator size="small" color={colors.mutedForeground} />
                     </View>
                   </View>
-                );
-              })}
+                ) : null}
 
-              {status === "submitted" ? (
-                <View style={[styles.row, styles.rowTheirs]}>
-                  <View
-                    style={[
-                      styles.bubble,
-                      styles.bubbleTheirs,
-                      styles.thinking,
-                      { backgroundColor: colors.card, borderColor: colors.border },
-                    ]}
-                  >
-                    <ActivityIndicator size="small" color={colors.mutedForeground} />
-                  </View>
-                </View>
-              ) : null}
+                {error ? (
+                  <Text style={[styles.error, { color: colors.alert }]}>{tr("assistant.error")}</Text>
+                ) : null}
+              </ScrollView>
 
-              {error ? (
-                <Text style={[styles.error, { color: colors.alert }]}>{tr("assistant.error")}</Text>
-              ) : null}
-            </ScrollView>
-
-            <View
-              style={[
-                styles.foot,
-                // The home-bar inset, so the composer is not sitting on the gesture area.
-                { borderColor: colors.border, paddingBottom: Math.max(insets.bottom, 12) },
-              ]}
-            >
-              <View style={styles.composer}>
-                <TextInput
-                  value={input}
-                  onChangeText={setInput}
-                  placeholder={tr("assistant.placeholder")}
-                  placeholderTextColor={colors.mutedForeground}
-                  accessibilityLabel={tr("assistant.placeholder")}
-                  multiline
-                  style={[
-                    styles.input,
-                    {
-                      borderColor: colors.border,
-                      backgroundColor: colors.card,
-                      color: colors.foreground,
-                    },
-                  ]}
-                />
-                {busy ? (
-                  <Pressable
-                    onPress={() => stop()}
-                    accessibilityLabel={tr("assistant.stop")}
+              <View
+                style={[
+                  styles.foot,
+                  // The home-bar inset, so the composer is not sitting on the gesture area.
+                  { borderColor: colors.border, paddingBottom: Math.max(insets.bottom, 12) },
+                ]}
+              >
+                <View style={styles.composer}>
+                  <TextInput
+                    value={input}
+                    onChangeText={setInput}
+                    placeholder={tr("assistant.placeholder")}
+                    placeholderTextColor={colors.mutedForeground}
+                    accessibilityLabel={tr("assistant.placeholder")}
+                    multiline
                     style={[
-                      styles.sendBtn,
-                      { borderColor: colors.border, backgroundColor: colors.card },
-                    ]}
-                  >
-                    <Ionicons name="square" size={16} color={colors.mutedForeground} />
-                  </Pressable>
-                ) : (
-                  <Pressable
-                    onPress={send}
-                    disabled={!input.trim()}
-                    accessibilityLabel={tr("assistant.send")}
-                    style={[
-                      styles.sendBtn,
+                      styles.input,
                       {
-                        borderColor: colors.amber,
-                        backgroundColor: colors.amber,
-                        opacity: input.trim() ? 1 : 0.4,
+                        borderColor: colors.border,
+                        backgroundColor: colors.card,
+                        color: colors.foreground,
                       },
                     ]}
-                  >
-                    <Ionicons name="send" size={16} color={colors.primaryForeground} />
-                  </Pressable>
-                )}
+                  />
+                  {busy ? (
+                    <Pressable
+                      onPress={() => stop()}
+                      accessibilityLabel={tr("assistant.stop")}
+                      style={[
+                        styles.sendBtn,
+                        { borderColor: colors.border, backgroundColor: colors.card },
+                      ]}
+                    >
+                      <Ionicons name="square" size={16} color={colors.mutedForeground} />
+                    </Pressable>
+                  ) : (
+                    <Pressable
+                      onPress={send}
+                      disabled={!input.trim()}
+                      accessibilityLabel={tr("assistant.send")}
+                      style={[
+                        styles.sendBtn,
+                        {
+                          borderColor: colors.amber,
+                          backgroundColor: colors.amber,
+                          opacity: input.trim() ? 1 : 0.4,
+                        },
+                      ]}
+                    >
+                      <Ionicons name="send" size={16} color={colors.primaryForeground} />
+                    </Pressable>
+                  )}
+                </View>
+                <Text style={[styles.disclaimer, { color: colors.mutedForeground }]}>
+                  {tr("assistant.disclaimer")}
+                </Text>
               </View>
-              <Text style={[styles.disclaimer, { color: colors.mutedForeground }]}>
-                {tr("assistant.disclaimer")}
-              </Text>
-            </View>
-          </KeyboardAvoidingView>
-        </Animated.View>
-      </View>
-    </Modal>
+            </KeyboardAvoidingView>
+          </Animated.View>
+        </View>
+      </Modal>
+      {/* Held back until the sheet has finished sliding down, so the two Modals are never up at
+          once. */}
+      {openPhoto && !mounted ? (
+        <PhotoDetail
+          photoId={openPhoto}
+          onClose={() => {
+            setOpenPhoto(null);
+            setOpen(true);
+          }}
+        />
+      ) : null}
+    </>
   );
 }
 
