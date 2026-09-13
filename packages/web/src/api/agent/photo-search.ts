@@ -7,6 +7,7 @@ import { visibleProjectIds } from "../middleware/auth";
 import { photoUrl } from "../lib/media";
 import { siteUrl } from "../services/email";
 import type { Viewer } from "./viewer";
+import { dayBoundsIn } from "./zone";
 
 /**
  * Finding a workspace's own captures from the chat.
@@ -76,14 +77,7 @@ const input = z.object({
   limit: z.number().int().min(1).max(MAX_RESULTS).optional().describe("How many to return."),
 });
 
-/** Midnight-to-midnight, so an inclusive `to` covers the whole day the person named. */
-function dayBounds(value: string | undefined, end: boolean): Date | null {
-  if (!value) return null;
-  const parsed = new Date(`${value}T${end ? "23:59:59.999" : "00:00:00.000"}Z`);
-  return Number.isNaN(parsed.getTime()) ? null : parsed;
-}
-
-export function photoSearchTool(viewer: Viewer) {
+export function photoSearchTool(viewer: Viewer, zone: string) {
   return tool({
     description:
       "Search this workspace's own GeoCliks captures and return a few of them with thumbnails " +
@@ -103,8 +97,10 @@ export function photoSearchTool(viewer: Viewer) {
       }
       if (args.tag) filters.push(eq(schema.photos.tag, args.tag));
 
-      const from = dayBounds(args.from, false);
-      const to = dayBounds(args.to, true);
+      // Midnight to midnight in the caller's own zone, so an inclusive `to` covers the whole
+      // day they named and an evening capture is not counted against the next one.
+      const from = dayBoundsIn(args.from, false, zone);
+      const to = dayBoundsIn(args.to, true, zone);
       if (from) filters.push(gte(schema.photos.capturedAt, from));
       if (to) filters.push(lte(schema.photos.capturedAt, to));
 
@@ -208,6 +204,9 @@ export function photoSearchTool(viewer: Viewer) {
 
       const photos = await Promise.all(
         rows.map(async (row) => ({
+          // The app opens this in its own photo drawer, which re-checks org and scope on the
+          // way in — the id is not a capability, just a handle.
+          id: row.id,
           code: row.photoCode,
           kind: row.kind,
           address: row.address,

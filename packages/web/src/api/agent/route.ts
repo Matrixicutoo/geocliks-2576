@@ -2,6 +2,7 @@ import { createAgentUIStreamResponse, type UIMessage } from "ai";
 import { agentFor } from "./index";
 import { gatewayReady } from "./gateway";
 import { viewerOf } from "./viewer";
+import { zoneOf } from "./zone";
 
 /**
  * The chat bubble is reachable without a session (it sits on the marketing site too), so this
@@ -102,5 +103,9 @@ export async function agentMessages(request: Request): Promise<Response> {
     return Response.json({ error: "Start a new chat to continue." }, { status: 400 });
   }
 
-  return createAgentUIStreamResponse({ agent: agentFor(viewer), uiMessages: history });
+  // A date only means something in the caller's own zone, and nothing on the server knows it,
+  // so the client sends it. Junk or missing falls back to UTC rather than failing the request.
+  const zone = zoneOf(request);
+
+  return createAgentUIStreamResponse({ agent: agentFor(viewer, zone), uiMessages: history });
 }

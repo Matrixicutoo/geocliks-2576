@@ -201,6 +201,9 @@ export function useAgentChat(api: string) {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
+            // "Tuesday" is this phone's Tuesday. The server has no way to know where the crew
+            // is, so the day a date-scoped search bounds comes from here.
+            "x-geocliks-tz": Intl.DateTimeFormat().resolvedOptions().timeZone,
             // Signed in, the assistant can look up this workspace's own captures. Signed out it
             // is the same public assistant the marketing site talks to.
             ...(token ? { Authorization: `Bearer ${token}` } : {}),

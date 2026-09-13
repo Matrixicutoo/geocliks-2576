@@ -83,7 +83,12 @@ const chatTransport = new DefaultChatTransport({
   credentials: "include",
   headers: (): Record<string, string> => {
     const token = authToken();
-    return token ? { Authorization: `Bearer ${token}` } : {};
+    return {
+      // "Tuesday" is this browser's Tuesday. Nothing on the server knows where the caller is,
+      // so the day the search bounds comes from here.
+      "x-geocliks-tz": Intl.DateTimeFormat().resolvedOptions().timeZone,
+      ...(token ? { Authorization: `Bearer ${token}` } : {}),
+    };
   },
 });
 

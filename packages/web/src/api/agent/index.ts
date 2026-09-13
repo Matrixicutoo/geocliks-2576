@@ -3,6 +3,7 @@ import dedent from "dedent";
 import { gateway } from "./gateway";
 import { photoSearchTool } from "./photo-search";
 import type { Viewer } from "./viewer";
+import { todayIn } from "./zone";
 
 /**
  * The assistant behind the chat bubble, on the public site and inside the workspace.
@@ -15,7 +16,7 @@ import type { Viewer } from "./viewer";
  * Any tool added here must follow the same rule: scoped to the caller's session, and absent
  * rather than refusing when there is no session.
  */
-function instructions(viewer: Viewer | null) {
+function instructions(viewer: Viewer | null, zone: string) {
   return dedent`
         You are the GeoCliks assistant — the chat bubble on geocliks.com and inside the
         GeoCliks web app. You talk to field crews, contractors, inspectors and office staff,
@@ -52,7 +53,11 @@ function instructions(viewer: Viewer | null) {
                 shots from Tuesday", "what did Luc take last week". Do not ask permission first,
                 just search. If their wording is vague, search with your best guess and say what
                 you searched for.
-              - Convert dates yourself. Today is ${new Date().toISOString().slice(0, 10)}.
+              - Convert dates yourself, as this person's own calendar. Today is
+                ${todayIn(zone)} where they are (${zone}), so "Tuesday" means the most recent
+                Tuesday on that calendar. Pass dates as YYYY-MM-DD; the search reads a day as
+                their local midnight-to-midnight, so a late-evening capture still counts as the
+                day they worked.
               - The app shows the results as thumbnails under your reply, so do not repeat the
                 list back or paste the links. Say what you found in one line — how many, where,
                 when — and let the thumbnails speak. If nothing matched, say so and suggest a
@@ -91,12 +96,18 @@ function instructions(viewer: Viewer | null) {
   `;
 }
 
-export function agentFor(viewer: Viewer | null) {
+/**
+ * `zone` is the caller's own IANA timezone, sent per request by the client. Dates only mean
+ * anything against it: the model resolves "Tuesday" in it, and the search bounds the day in it.
+ * It defaults to UTC so a client that sends nothing still works, just less precisely near
+ * midnight.
+ */
+export function agentFor(viewer: Viewer | null, zone = "UTC") {
   return new ToolLoopAgent({
     model: gateway("anthropic/claude-sonnet-4.6"),
-    instructions: [{ role: "system", content: instructions(viewer) }],
+    instructions: [{ role: "system", content: instructions(viewer, zone) }],
     // Signed out this is genuinely empty — not a tool that refuses, but no tool at all.
-    tools: viewer ? { findPhotos: photoSearchTool(viewer) } : {},
+    tools: viewer ? { findPhotos: photoSearchTool(viewer, zone) } : {},
     // One extra step over the old limit: a search plus the reply that describes it.
     stopWhen: [stepCountIs(5)],
   });
