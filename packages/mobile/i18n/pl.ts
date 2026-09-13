@@ -93,6 +93,7 @@ export const pl: Catalog = {
   "tabs.projects": "Projekty",
   "tabs.settings": "Ustawienia",
   "tabs.routes": "Trasy",
+  "tabs.assistant": "Asystent",
 
   "capture.title": "Aparat",
   "capture.recordTitle": "Nagrywanie",

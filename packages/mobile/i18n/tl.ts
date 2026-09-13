@@ -94,6 +94,7 @@ export const tl: Catalog = {
   "tabs.projects": "Proyekto",
   "tabs.settings": "Mga setting",
   "tabs.routes": "Mga ruta",
+  "tabs.assistant": "Assistant",
 
   "capture.title": "Kuha",
   "capture.recordTitle": "Mag-record",
@@ -1175,7 +1176,8 @@ export const tl: Catalog = {
   "assistant.open": "Buksan ang assistant",
   "assistant.close": "Isara ang assistant",
   "assistant.clear": "I-clear ang chat na ito",
-  "assistant.greeting": "Magtanong po kayo ng kahit ano — kung paano gumagana ang GeoCliks, o anumang bagay.",
+  "assistant.greeting":
+    "Magtanong po kayo ng kahit ano — kung paano gumagana ang GeoCliks, o anumang bagay.",
   "assistant.suggest1": "Para saan po ang GeoCliks?",
   "assistant.suggest2": "Paano gumagana ang photo verification?",
   "assistant.suggest3": "Gumawa ng maikling update para sa kliyente ko",
@@ -1183,5 +1185,6 @@ export const tl: Catalog = {
   "assistant.send": "Ipadala",
   "assistant.stop": "Itigil",
   "assistant.error": "May nagkamali. Subukan pong ipadala muli.",
-  "assistant.disclaimer": "Maaaring magkamali ang assistant. Hindi nito nakikita ang mga larawan o account mo.",
+  "assistant.disclaimer":
+    "Maaaring magkamali ang assistant. Hindi nito nakikita ang mga larawan o account mo.",
 };

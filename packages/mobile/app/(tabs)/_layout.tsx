@@ -10,6 +10,7 @@ import { useRoutes } from "@/queries/routes";
 import { useHasSession } from "@/hooks/use-session";
 import { AuthGate } from "@/components/auth-gate";
 import { canUseDelivery } from "@/lib/roles";
+import { openAssistant, useAssistantAccess } from "@/lib/assistant";
 
 export default function TabLayout() {
   const colors = useColors();
@@ -30,6 +31,9 @@ export default function TabLayout() {
   // Capture is the one public tab. Every other tab press signed out opens the
   // register/login prompt instead of navigating to a screen with no workspace behind it.
   const { hasSession } = useHasSession();
+  // The assistant is signed-in and plan-gated, so its tab only exists for a workspace that
+  // actually has it — same rule as the drawer link and the Settings footer link.
+  const hasAssistant = useAssistantAccess();
   const [gateOpen, setGateOpen] = useState(false);
   const gateIfSignedOut = {
     tabPress: (e: { preventDefault: () => void }) => {
@@ -124,6 +128,31 @@ export default function TabLayout() {
         />
         {/* Settings keeps its route - it lives in the hamburger drawer now, not the tab bar. */}
         <Tabs.Screen name="settings" options={{ href: null, title: t("tabs.settings") }} />
+        {/*
+        Declared last, so it is the tab furthest to the end of the bar - after Routes. The press
+        is intercepted rather than followed: it slides the chat sheet up over the current screen
+        instead of navigating, so you keep your place and your transcript.
+      */}
+        <Tabs.Screen
+          name="assistant"
+          listeners={{
+            tabPress: (e) => {
+              e.preventDefault();
+              openAssistant();
+            },
+          }}
+          options={{
+            href: hasAssistant ? undefined : null,
+            title: t("tabs.assistant"),
+            tabBarIcon: ({ color, size, focused }) => (
+              <Ionicons
+                name={focused ? "sparkles" : "sparkles-outline"}
+                size={size}
+                color={color}
+              />
+            ),
+          }}
+        />
       </Tabs>
       <AuthGate visible={gateOpen} onClose={() => setGateOpen(false)} />
     </>

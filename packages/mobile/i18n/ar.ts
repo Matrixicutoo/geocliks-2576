@@ -92,6 +92,7 @@ export const ar: Catalog = {
   "tabs.projects": "المشاريع",
   "tabs.settings": "الإعدادات",
   "tabs.routes": "المسارات",
+  "tabs.assistant": "المساعد",
 
   "capture.title": "تصوير",
   "capture.recordTitle": "تسجيل",
@@ -223,7 +224,8 @@ export const ar: Catalog = {
   "home.field.label": "04 — مصمم للعمل الميداني",
   "home.field.h2": "لا إشارة، لا مشكلة، لا تدريب",
   "home.field.i1.title": "التصوير دون اتصال",
-  "home.field.i1.body": "صوّر في قبو أو خندق. تُصطف الصور على الجهاز وتُرفع تلقائيًا بمجرد توفّر اتصال.",
+  "home.field.i1.body":
+    "صوّر في قبو أو خندق. تُصطف الصور على الجهاز وتُرفع تلقائيًا بمجرد توفّر اتصال.",
   "home.field.i2.title": "تصوير بلمسة واحدة",
   "home.field.i2.body": "افتح، صوّر، انتهى. الموظف الجديد يتقنه من اليوم الأول بلا شرح.",
   "home.field.i3.title": "خفيف",
@@ -314,7 +316,8 @@ export const ar: Catalog = {
   "compare.remove": "إزالة",
   "compare.photoRemoved": "تم إزالة الصورة",
   "share.title": "روابط المشاركة",
-  "share.subtitle": "عروض مباشرة يفتحها عميلك في المتصفح — بدون تطبيق ولا تسجيل دخول، ومحدّثة دائمًا.",
+  "share.subtitle":
+    "عروض مباشرة يفتحها عميلك في المتصفح — بدون تطبيق ولا تسجيل دخول، ومحدّثة دائمًا.",
   "share.newLink": "رابط مباشر جديد",
   "share.label": "التسمية",
   "share.scope": "النطاق",
@@ -454,7 +457,8 @@ export const ar: Catalog = {
   "map.fixes": "{n} إحداثية",
   "map.filterProject": "تصفية حسب المشروع",
   "signin.mobileHeadline": "دليل لا يُدحض.",
-  "signin.mobileSub": "طوابع زمنية موثّقة عبر الشبكة، وإحداثيات GPS، ورمز فريد على كل صورة ميدانية.",
+  "signin.mobileSub":
+    "طوابع زمنية موثّقة عبر الشبكة، وإحداثيات GPS، ورمز فريد على كل صورة ميدانية.",
   "signin.switchNew": "فريق جديد؟ أنشئ حسابًا",
   "signin.switchHave": "لديك حساب؟ سجّل الدخول",
   "capture.locationOff": "إذن الموقع مُعطَّل",
@@ -464,7 +468,8 @@ export const ar: Catalog = {
     "التسجيل يعمل في التطبيق المُثبَّت. زر التسجيل يضيف مقطعًا تجريبيًا إلى قائمة الانتظار لتجربة التحقق والمزامنة.",
   "capture.hintCamera":
     "الكاميرا المباشرة تعمل في التطبيق المُثبَّت. زر التصوير يلتقط إطارًا تجريبيًا لتجربة مسار التحقق والمزامنة كاملًا.",
-  "capture.sampleClip": "التسجيل يعمل في التطبيق المُثبَّت — تمت إضافة مقطع تجريبي إلى قائمة الانتظار",
+  "capture.sampleClip":
+    "التسجيل يعمل في التطبيق المُثبَّت — تمت إضافة مقطع تجريبي إلى قائمة الانتظار",
   "capture.failed": "فشل التصوير",
   "capture.recordFailed": "فشل التسجيل",
   "capture.syncedOk": "تم التحقق والمزامنة مع مساحة الفريق",
@@ -633,7 +638,8 @@ export const ar: Catalog = {
   "profile.openBilling": "إدارة الفوترة من لوحة التحكم على الويب",
   "profile.danger": "منطقة الخطر",
   "profile.deleteAccount": "حذف الحساب",
-  "profile.deleteWarning": "سيؤدي هذا إلى حذف حسابك ومساحة عملك وكل الصور نهائيًا. لا يمكن التراجع.",
+  "profile.deleteWarning":
+    "سيؤدي هذا إلى حذف حسابك ومساحة عملك وكل الصور نهائيًا. لا يمكن التراجع.",
   "profile.deleteConfirm": "اكتب DELETE للتأكيد",
   "profile.deleting": "جارٍ الحذف…",
   "profile.account": "الحساب",
@@ -647,7 +653,8 @@ export const ar: Catalog = {
   "plans.checkoutOpening": "جارٍ فتح صفحة الدفع الآمنة…",
   "plans.checkoutDone": "تم تحديث الخطة. حدودك الجديدة سارية الآن.",
   "plans.applied": "تم تغيير الخطة.",
-  "plans.unavailable": "الدفع غير متاح حاليًا. أكمل العملية من لوحة التحكم على الويب أو راسل الدعم.",
+  "plans.unavailable":
+    "الدفع غير متاح حاليًا. أكمل العملية من لوحة التحكم على الويب أو راسل الدعم.",
   "plans.ownerOnly": "يمكن لمالك مساحة العمل فقط تغيير الخطة.",
   "plans.stripeNote": "دفع آمن عبر Stripe. يمكنك الإلغاء في أي وقت.",
   "plans.appleNote":

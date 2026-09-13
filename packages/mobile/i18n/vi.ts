@@ -92,6 +92,7 @@ export const vi: Catalog = {
   "tabs.projects": "Dự án",
   "tabs.settings": "Cài đặt",
   "tabs.routes": "Tuyến",
+  "tabs.assistant": "Trợ lý",
 
   "capture.title": "Chụp",
   "capture.recordTitle": "Ghi hình",
@@ -1156,7 +1157,8 @@ export const vi: Catalog = {
   "assistant.open": "Mở trợ lý",
   "assistant.close": "Đóng trợ lý",
   "assistant.clear": "Xóa cuộc trò chuyện này",
-  "assistant.greeting": "Hỏi tôi bất cứ điều gì — cách GeoCliks hoạt động, hay bất cứ chuyện gì khác.",
+  "assistant.greeting":
+    "Hỏi tôi bất cứ điều gì — cách GeoCliks hoạt động, hay bất cứ chuyện gì khác.",
   "assistant.suggest1": "GeoCliks dùng để làm gì?",
   "assistant.suggest2": "Việc xác minh ảnh hoạt động thế nào?",
   "assistant.suggest3": "Viết một bản cập nhật ngắn cho khách của tôi",

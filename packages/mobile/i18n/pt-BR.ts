@@ -93,6 +93,7 @@ export const ptBR: Catalog = {
   "tabs.projects": "Projetos",
   "tabs.settings": "Ajustes",
   "tabs.routes": "Rotas",
+  "tabs.assistant": "Assistente",
 
   "capture.title": "Capturar",
   "capture.recordTitle": "Gravar",
@@ -1165,7 +1166,8 @@ export const ptBR: Catalog = {
   "assistant.open": "Abrir o assistente",
   "assistant.close": "Fechar o assistente",
   "assistant.clear": "Limpar esta conversa",
-  "assistant.greeting": "Pergunte o que quiser: como o GeoCliks funciona ou qualquer outro assunto.",
+  "assistant.greeting":
+    "Pergunte o que quiser: como o GeoCliks funciona ou qualquer outro assunto.",
   "assistant.suggest1": "Para que serve o GeoCliks?",
   "assistant.suggest2": "Como funciona a verificação das fotos?",
   "assistant.suggest3": "Escreva uma atualização curta para o meu cliente",

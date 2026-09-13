@@ -94,6 +94,7 @@ export const frCA: Catalog = {
   "tabs.projects": "Projets",
   "tabs.settings": "Réglages",
   "tabs.routes": "Tournées",
+  "tabs.assistant": "Assistant",
 
   "capture.title": "Capture",
   "capture.recordTitle": "Enregistrement",
@@ -1185,7 +1186,8 @@ export const frCA: Catalog = {
   "assistant.open": "Ouvrir l'assistant",
   "assistant.close": "Fermer l'assistant",
   "assistant.clear": "Effacer cette conversation",
-  "assistant.greeting": "Demandez-moi n'importe quoi : le fonctionnement de GeoCliks ou tout autre sujet.",
+  "assistant.greeting":
+    "Demandez-moi n'importe quoi : le fonctionnement de GeoCliks ou tout autre sujet.",
   "assistant.suggest1": "À quoi sert GeoCliks?",
   "assistant.suggest2": "Comment fonctionne la vérification des photos?",
   "assistant.suggest3": "Rédige un court suivi pour mon client",

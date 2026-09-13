@@ -93,6 +93,7 @@ export const de: Catalog = {
   "tabs.projects": "Projekte",
   "tabs.settings": "Einstellungen",
   "tabs.routes": "Touren",
+  "tabs.assistant": "Assistent",
 
   "capture.title": "Aufnahme",
   "capture.recordTitle": "Aufzeichnen",
@@ -1180,7 +1181,8 @@ export const de: Catalog = {
   "assistant.open": "Assistenten öffnen",
   "assistant.close": "Assistenten schließen",
   "assistant.clear": "Diesen Chat löschen",
-  "assistant.greeting": "Frag mich alles — wie GeoCliks funktioniert oder was dich sonst beschäftigt.",
+  "assistant.greeting":
+    "Frag mich alles — wie GeoCliks funktioniert oder was dich sonst beschäftigt.",
   "assistant.suggest1": "Wofür ist GeoCliks gedacht?",
   "assistant.suggest2": "Wie funktioniert die Foto-Verifizierung?",
   "assistant.suggest3": "Schreib ein kurzes Update für meinen Kunden",
@@ -1188,5 +1190,6 @@ export const de: Catalog = {
   "assistant.send": "Senden",
   "assistant.stop": "Stopp",
   "assistant.error": "Da ist etwas schiefgegangen. Sende es noch einmal.",
-  "assistant.disclaimer": "Der Assistent kann sich irren. Er sieht weder deine Fotos noch dein Konto.",
+  "assistant.disclaimer":
+    "Der Assistent kann sich irren. Er sieht weder deine Fotos noch dein Konto.",
 };

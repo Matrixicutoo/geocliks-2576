@@ -92,6 +92,7 @@ export const zh: Catalog = {
   "tabs.projects": "项目",
   "tabs.settings": "设置",
   "tabs.routes": "路线",
+  "tabs.assistant": "助手",
 
   "capture.title": "拍摄",
   "capture.recordTitle": "录制",

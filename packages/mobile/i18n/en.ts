@@ -103,6 +103,7 @@ export const en = {
   "tabs.projects": "Projects",
   "tabs.settings": "Settings",
   "tabs.routes": "Routes",
+  "tabs.assistant": "Assistant",
 
   // Capture screen
   "capture.title": "Capture",

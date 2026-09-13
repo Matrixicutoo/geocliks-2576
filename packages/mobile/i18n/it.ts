@@ -94,6 +94,7 @@ export const it: Catalog = {
   "tabs.projects": "Progetti",
   "tabs.settings": "Impostazioni",
   "tabs.routes": "Percorsi",
+  "tabs.assistant": "Assistente",
 
   "capture.title": "Acquisisci",
   "capture.recordTitle": "Registra",
@@ -1171,7 +1172,8 @@ export const it: Catalog = {
   "assistant.open": "Apri l'assistente",
   "assistant.close": "Chiudi l'assistente",
   "assistant.clear": "Cancella questa chat",
-  "assistant.greeting": "Chiedimi qualsiasi cosa: come funziona GeoCliks o qualunque altro argomento.",
+  "assistant.greeting":
+    "Chiedimi qualsiasi cosa: come funziona GeoCliks o qualunque altro argomento.",
   "assistant.suggest1": "A cosa serve GeoCliks?",
   "assistant.suggest2": "Come funziona la verifica delle foto?",
   "assistant.suggest3": "Scrivi un breve aggiornamento per il mio cliente",
