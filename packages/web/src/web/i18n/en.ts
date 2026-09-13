@@ -1301,7 +1301,23 @@ export const en = {
   "assistant.send": "Send",
   "assistant.stop": "Stop",
   "assistant.error": "Something went wrong. Try sending that again.",
-  "assistant.disclaimer": "The assistant can be wrong. It cannot see your photos or your account.",
+  "assistant.disclaimer": "The assistant can be wrong. Check anything important against your photos and reports.",
+  // Assistant stat cards, charts and exports
+  "assistant.metric.captures": "Captures",
+  "assistant.metric.places": "Places",
+  "assistant.metric.crew": "Crew",
+  "assistant.metric.days": "Days",
+  "assistant.by.city": "By place",
+  "assistant.by.day": "By day",
+  "assistant.by.tag": "By capture type",
+  "assistant.by.person": "By crew member",
+  "assistant.by.project": "By project",
+  "assistant.download": "Download",
+  "assistant.copyLink": "Copy link",
+  "assistant.copied": "Link copied",
+  "assistant.share": "Share",
+  "assistant.linkExpires": "This link works for 24 hours. The report also stays on the Reports screen.",
+  "assistant.reportMeta": "{count} photos · {size}",
 } as const;
 
 export type Catalog = Record<keyof typeof en, string>;

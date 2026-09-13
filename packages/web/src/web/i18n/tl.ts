@@ -1312,6 +1312,21 @@ export const tl: Catalog = {
   "assistant.send": "Ipadala",
   "assistant.stop": "Itigil",
   "assistant.error": "May nagkamali. Subukan pong ipadala muli.",
-  "assistant.disclaimer":
-    "Maaaring magkamali ang assistant. Hindi nito nakikita ang mga larawan o account mo.",
+  "assistant.disclaimer": "Maaaring magkamali ang assistant. Tingnan ang mahahalagang bagay sa mga larawan at report mo.",
+  // Assistant stat cards, charts and exports
+  "assistant.metric.captures": "Mga kuha",
+  "assistant.metric.places": "Mga lugar",
+  "assistant.metric.crew": "Tauhan",
+  "assistant.metric.days": "Mga araw",
+  "assistant.by.city": "Ayon sa lugar",
+  "assistant.by.day": "Ayon sa araw",
+  "assistant.by.tag": "Ayon sa uri ng kuha",
+  "assistant.by.person": "Ayon sa tauhan",
+  "assistant.by.project": "Ayon sa proyekto",
+  "assistant.download": "I-download",
+  "assistant.copyLink": "Kopyahin ang link",
+  "assistant.copied": "Nakopya ang link",
+  "assistant.share": "Ibahagi",
+  "assistant.linkExpires": "Gumagana ang link na ito sa loob ng 24 oras. Nananatili rin ang report sa Reports.",
+  "assistant.reportMeta": "{count} larawan · {size}",
 };

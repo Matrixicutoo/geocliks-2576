@@ -1190,6 +1190,21 @@ export const de: Catalog = {
   "assistant.send": "Senden",
   "assistant.stop": "Stopp",
   "assistant.error": "Da ist etwas schiefgegangen. Sende es noch einmal.",
-  "assistant.disclaimer":
-    "Der Assistent kann sich irren. Er sieht weder deine Fotos noch dein Konto.",
+  "assistant.disclaimer": "Der Assistent kann sich irren. Prüfe Wichtiges in deinen Fotos und Berichten nach.",
+  // Assistant stat cards, charts and exports
+  "assistant.metric.captures": "Aufnahmen",
+  "assistant.metric.places": "Orte",
+  "assistant.metric.crew": "Team",
+  "assistant.metric.days": "Tage",
+  "assistant.by.city": "Nach Ort",
+  "assistant.by.day": "Nach Tag",
+  "assistant.by.tag": "Nach Aufnahmetyp",
+  "assistant.by.person": "Nach Teammitglied",
+  "assistant.by.project": "Nach Projekt",
+  "assistant.download": "Herunterladen",
+  "assistant.copyLink": "Link kopieren",
+  "assistant.copied": "Link kopiert",
+  "assistant.share": "Teilen",
+  "assistant.linkExpires": "Dieser Link gilt 24 Stunden. Der Bericht bleibt außerdem im Bereich Berichte.",
+  "assistant.reportMeta": "{count} Fotos · {size}",
 };
