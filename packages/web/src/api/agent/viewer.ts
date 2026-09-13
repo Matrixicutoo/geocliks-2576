@@ -18,6 +18,8 @@ export type Viewer = {
   orgId: string;
   orgName: string;
   role: Role;
+  /** The workspace's plan key, because what a tool may do depends on it — see `exportReport`. */
+  plan: string;
 };
 
 export async function viewerOf(request: Request): Promise<Viewer | null> {
@@ -44,7 +46,11 @@ export async function viewerOf(request: Request): Promise<Viewer | null> {
   if (!chosen) return null;
 
   const [org] = await db
-    .select({ id: schema.organizations.id, name: schema.organizations.name })
+    .select({
+      id: schema.organizations.id,
+      name: schema.organizations.name,
+      plan: schema.organizations.plan,
+    })
     .from(schema.organizations)
     .where(inArray(schema.organizations.id, [chosen.orgId]));
   if (!org) return null;
@@ -61,5 +67,6 @@ export async function viewerOf(request: Request): Promise<Viewer | null> {
     orgId: org.id,
     orgName: org.name,
     role: chosen.role as Role,
+    plan: org.plan,
   };
 }

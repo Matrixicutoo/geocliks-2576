@@ -73,12 +73,24 @@ export function dayBoundsIn(value: string | undefined, end: boolean, zone: strin
   return new Date(settled);
 }
 
-/** Today's date in `zone`, as YYYY-MM-DD — what the model resolves "Tuesday" against. */
-export function todayIn(zone: string): string {
+/**
+ * The calendar day an instant falls on in `zone`, as YYYY-MM-DD.
+ *
+ * The counterpart of `dayBoundsIn`: that turns a local day into instants, this turns an instant
+ * back into the local day it belongs to. Grouping captures by day has to use it rather than
+ * `toISOString().slice(0, 10)`, or the same evening capture that `dayBoundsIn` correctly counts
+ * as the 9th would be bucketed under the 10th.
+ */
+export function dayIn(at: Date, zone: string): string {
   return new Intl.DateTimeFormat("en-CA", {
     timeZone: zone,
     year: "numeric",
     month: "2-digit",
     day: "2-digit",
-  }).format(new Date());
+  }).format(at);
+}
+
+/** Today's date in `zone`, as YYYY-MM-DD — what the model resolves "Tuesday" against. */
+export function todayIn(zone: string): string {
+  return dayIn(new Date(), zone);
 }

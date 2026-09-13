@@ -1,7 +1,9 @@
 import { stepCountIs, ToolLoopAgent } from "ai";
 import dedent from "dedent";
+import { activityStatsTool } from "./activity";
 import { gateway } from "./gateway";
 import { photoSearchTool } from "./photo-search";
+import { reportExportTool } from "./report-export";
 import type { Viewer } from "./viewer";
 import { todayIn } from "./zone";
 
@@ -10,8 +12,10 @@ import { todayIn } from "./zone";
  *
  * Built per request, because what it can do depends entirely on who is asking. Signed out —
  * the marketing site's bubble — it has no tools at all and cannot reach the database, so
- * nothing a visitor types can pull a workspace's photos into a reply. Signed in it gets
- * `findPhotos`, closed over that caller's own viewer and role-scoped inside the tool.
+ * nothing a visitor types can pull a workspace's photos into a reply. Signed in it gets the
+ * three photo tools, each closed over that caller's own viewer and role-scoped inside the
+ * tool: `findPhotos` shows captures, `summarizeActivity` counts them, `exportReport` builds a
+ * real file out of them.
  *
  * Any tool added here must follow the same rule: scoped to the caller's session, and absent
  * rather than refusing when there is no session.
@@ -46,24 +50,40 @@ function instructions(viewer: Viewer | null, zone: string) {
             ? dedent`
               ## This person's captures
               You are talking to ${viewer.name ?? "a signed-in member"} in the "${viewer.orgName}"
-              workspace, and you have \`findPhotos\` for searching that workspace's own captures
-              by place, job, capture type, date or who took them.
+              workspace, and you have three tools over that workspace's own captures. All three
+              take the same filters — place or free text, project, capture type, crew member,
+              and a date range — so the same question can be shown, counted or exported.
 
-              - Use it whenever they ask about their photos — "photos in Moncton", "the before
-                shots from Tuesday", "what did Luc take last week". Do not ask permission first,
-                just search. If their wording is vague, search with your best guess and say what
-                you searched for.
+              - \`findPhotos\` returns a few captures with thumbnails. Use it when they want to
+                see photos: "photos in Moncton", "the before shots from Tuesday", "what did Luc
+                take last week".
+              - \`summarizeActivity\` counts the whole matching set and breaks it down for a
+                chart. Use it for questions about the work rather than about particular photos:
+                how many, where, when, who, "summarise this week", "where have we been". Set
+                \`groupBy\` to whatever the question is about — city, day, tag, person, project.
+                Never answer a "how many" from \`findPhotos\`, which only ever returns a handful:
+                count with this instead.
+              - \`exportReport\` builds a real downloadable file — PDF, Excel, ZIP or KMZ — and
+                returns a link to it. Use it whenever they ask for a report, an export, a PDF,
+                a spreadsheet, or something to send a client. PDF unless they clearly want raw
+                data. If it comes back blocked, their plan does not include that format: offer
+                one it does allow, or the Billing screen.
+              - Do not ask permission before using any of them, and do not ask which filters to
+                use when you can guess. Search or count with your best guess and say what you
+                looked at. Building a report is the one thing worth a quick check first when
+                they have not actually asked for a file.
               - Convert dates yourself, as this person's own calendar. Today is
                 ${todayIn(zone)} where they are (${zone}), so "Tuesday" means the most recent
-                Tuesday on that calendar. Pass dates as YYYY-MM-DD; the search reads a day as
-                their local midnight-to-midnight, so a late-evening capture still counts as the
-                day they worked.
-              - The app shows the results as thumbnails under your reply, so do not repeat the
-                list back or paste the links. Say what you found in one line — how many, where,
-                when — and let the thumbnails speak. If nothing matched, say so and suggest a
-                shorter place name or a wider date range.
-              - It returns only photos this person is already allowed to see, so what comes back
-                is safe to describe. Never claim a count for the whole workspace from it.
+                Tuesday on that calendar. Pass dates as YYYY-MM-DD; a day is read as their local
+                midnight-to-midnight, so a late-evening capture still counts as the day they
+                worked.
+              - The app draws all three results under your reply — thumbnails, stat cards and a
+                bar chart, a file card with a download button — so never repeat them back as a
+                list and never paste a link or a URL into your text. Say what you found in a
+                line or two: how many, where, when, what stands out. For a report, say what went
+                into it and let the card carry the download.
+              - Everything they get back is already limited to what they are allowed to see, so
+                it is safe to describe.
               - Billing, team and account questions still go to the relevant screen in the app:
                 photos are all you can read.
             `
@@ -107,8 +127,15 @@ export function agentFor(viewer: Viewer | null, zone = "UTC") {
     model: gateway("anthropic/claude-sonnet-4.6"),
     instructions: [{ role: "system", content: instructions(viewer, zone) }],
     // Signed out this is genuinely empty — not a tool that refuses, but no tool at all.
-    tools: viewer ? { findPhotos: photoSearchTool(viewer, zone) } : {},
-    // One extra step over the old limit: a search plus the reply that describes it.
-    stopWhen: [stepCountIs(5)],
+    tools: viewer
+      ? {
+          findPhotos: photoSearchTool(viewer, zone),
+          summarizeActivity: activityStatsTool(viewer, zone),
+          exportReport: reportExportTool(viewer, zone),
+        }
+      : {},
+    // Room for a couple of tool calls and the reply that describes them — counting a week and
+    // then exporting it is one turn, not two.
+    stopWhen: [stepCountIs(6)],
   });
 }

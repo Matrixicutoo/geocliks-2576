@@ -42,6 +42,20 @@ export async function photoBytes(storageKey: string): Promise<Uint8Array | null>
 export const stillKey = (photo: Photo) =>
   photo.kind === "video" ? (photo.posterKey ?? null) : photo.storageKey;
 
+/** The content type a built package is stored and served with. */
+export const exportMime: Record<string, string> = {
+  pdf: "application/pdf",
+  xlsx: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+  zip: "application/zip",
+  kmz: "application/vnd.google-earth.kmz",
+};
+
+/** What a built package is called once it lands in someone's downloads folder. */
+export function exportFilename(title: string, format: string) {
+  const safe = title.replace(/[^a-z0-9]+/gi, "-").replace(/^-|-$/g, "");
+  return `${safe || "geocliks-report"}.${format}`;
+}
+
 /** Filename for a record inside a ZIP/KMZ package. */
 export const mediaName = (photo: Photo) =>
   `${photo.photoCode}.${photo.kind === "video" ? "mp4" : "jpg"}`;

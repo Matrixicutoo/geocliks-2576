@@ -7,17 +7,17 @@ import * as schema from "../database/schema";
 import { id } from "../lib/ids";
 import { planOf } from "../lib/plans";
 import { presignGet, putObject } from "../lib/s3";
-import { buildKmz, buildPdf, buildXlsx, buildZip } from "../lib/exports";
+import {
+  buildKmz,
+  buildPdf,
+  buildXlsx,
+  buildZip,
+  exportFilename,
+  exportMime,
+} from "../lib/exports";
 
 const formatEnum = z.enum(["pdf", "xlsx", "zip", "kmz"]);
 const layoutEnum = z.enum(["grid", "detailed", "before_after", "map"]);
-
-const MIME: Record<string, string> = {
-  pdf: "application/pdf",
-  xlsx: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
-  zip: "application/zip",
-  kmz: "application/vnd.google-earth.kmz",
-};
 
 export const reports = {
   list: orgProc.handler(async ({ context }) => {
@@ -138,7 +138,7 @@ export const reports = {
 
       const reportId = id("rpt");
       const key = `orgs/${context.org.id}/reports/${reportId}.${input.format}`;
-      await putObject(key, bytes, MIME[input.format]!);
+      await putObject(key, bytes, exportMime[input.format]!);
 
       const [report] = await db
         .insert(schema.reports)
@@ -190,6 +190,5 @@ export const reports = {
 };
 
 function filenameFor(report: typeof schema.reports.$inferSelect) {
-  const safe = report.title.replace(/[^a-z0-9]+/gi, "-").replace(/^-|-$/g, "");
-  return `${safe || "geocliks-report"}.${report.format}`;
+  return exportFilename(report.title, report.format);
 }
