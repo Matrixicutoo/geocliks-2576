@@ -4,7 +4,9 @@ import {
   Animated,
   Dimensions,
   Easing,
+  Image,
   KeyboardAvoidingView,
+  Linking,
   Modal,
   Platform,
   Pressable,
@@ -16,7 +18,15 @@ import { Ionicons } from "@expo/vector-icons";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import Constants from "expo-constants";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
-import { isChatMessage, textOf, useAgentChat, type ChatMessage } from "@/lib/agent-chat";
+import {
+  forStorage,
+  isChatMessage,
+  photosOf,
+  textOf,
+  useAgentChat,
+  type ChatMessage,
+  type PhotoHit,
+} from "@/lib/agent-chat";
 import { Text, TextInput } from "@/components/app-text";
 import { useColors } from "@/hooks/use-colors";
 import { Fonts } from "@/constants/theme";
@@ -115,6 +125,81 @@ function Inline({ text }: { text: string }) {
   );
 }
 
+/** When a capture was taken, as short as it can be without losing the day. */
+function whenOf(iso: string): string {
+  const at = new Date(iso);
+  if (Number.isNaN(at.getTime())) return "";
+  const sameYear = at.getFullYear() === new Date().getFullYear();
+  return at.toLocaleDateString(undefined, {
+    month: "short",
+    day: "numeric",
+    ...(sameYear ? {} : { year: "numeric" }),
+  });
+}
+
+/** "34 Clearview Street, Moncton, NB, E1A 4H2" is too long for a card; the street is enough. */
+function shortAddress(address: string | null): string | null {
+  if (!address) return null;
+  const [street, city] = address.split(",").map((s) => s.trim());
+  return [street, city].filter(Boolean).join(", ") || address;
+}
+
+/**
+ * The captures the assistant found, as a row of tappable thumbnails under its reply.
+ *
+ * Tapping one opens that photo's public page in the browser — the same `/v/<code>` link the
+ * person could forward to a customer, so nothing here can reach further than they already can.
+ */
+function Photos({ photos }: { photos: PhotoHit[] }) {
+  const colors = useColors();
+
+  return (
+    <ScrollView
+      horizontal
+      showsHorizontalScrollIndicator={false}
+      contentContainerStyle={styles.hits}
+      // The sheet's own scroller must not steal a sideways drag on this row.
+      nestedScrollEnabled
+    >
+      {photos.map((photo) => {
+        const place = shortAddress(photo.address);
+        return (
+          <Pressable
+            key={photo.code}
+            onPress={() => void Linking.openURL(photo.link)}
+            accessibilityRole="link"
+            accessibilityLabel={`${photo.tag} capture${place ? ` at ${place}` : ""}, ${whenOf(photo.capturedAt)}`}
+            style={[styles.hit, { borderColor: colors.border, backgroundColor: colors.card }]}
+          >
+            <Image
+              source={{ uri: photo.thumbnail }}
+              style={styles.hitImage}
+              // A capture is evidence, not decoration: show the whole frame, not a crop.
+              resizeMode="cover"
+              accessibilityIgnoresInvertColors
+            />
+            {photo.kind === "video" ? (
+              <View style={styles.hitPlay}>
+                <Ionicons name="play" size={12} color="#fff" />
+              </View>
+            ) : null}
+            <View style={styles.hitMeta}>
+              <Text numberOfLines={1} style={[styles.hitWhen, { color: colors.foreground }]}>
+                {whenOf(photo.capturedAt)}
+              </Text>
+              {place ? (
+                <Text numberOfLines={2} style={[styles.hitWhere, { color: colors.mutedForeground }]}>
+                  {place}
+                </Text>
+              ) : null}
+            </View>
+          </Pressable>
+        );
+      })}
+    </ScrollView>
+  );
+}
+
 export function AssistantSheet() {
   const colors = useColors();
   const tr = useT();
@@ -159,7 +244,10 @@ export function AssistantSheet() {
   // the transcript that is still being read back.
   useEffect(() => {
     if (!restored.current) return;
-    void AsyncStorage.setItem(KEY, JSON.stringify(messages.slice(-MAX_STORED))).catch(() => {
+    void AsyncStorage.setItem(
+      KEY,
+      JSON.stringify(forStorage(messages.slice(-MAX_STORED))),
+    ).catch(() => {
       // Blocked storage: the chat still works for this session, it just will not persist.
     });
   }, [messages]);
@@ -300,7 +388,10 @@ export function AssistantSheet() {
 
               {messages.map((message) => {
                 const text = textOf(message);
-                if (!text) return null;
+                const found = photosOf(message);
+                // A reply mid-search has neither yet; one that found photos without a word of
+                // its own still has something to show.
+                if (!text && found.length === 0) return null;
                 const mine = message.role === "user";
                 return (
                   <View
@@ -323,7 +414,10 @@ export function AssistantSheet() {
                           {text}
                         </Text>
                       ) : (
-                        <Rich text={text} color={colors.foreground} />
+                        <>
+                          {text ? <Rich text={text} color={colors.foreground} /> : null}
+                          {found.length > 0 ? <Photos photos={found} /> : null}
+                        </>
                       )}
                     </View>
                   </View>
@@ -459,6 +553,25 @@ const styles = StyleSheet.create({
   bulletDot: { fontSize: 13, lineHeight: 20 },
   bulletText: { flex: 1 },
   error: { fontSize: 12, lineHeight: 18 },
+  // The found captures. A row that scrolls sideways rather than a grid: the bubble is narrow,
+  // and four thumbnails in a line read faster than two rows of two.
+  hits: { gap: 8, paddingTop: 8, paddingRight: 2 },
+  hit: { width: 116, borderRadius: 10, borderWidth: 1, overflow: "hidden" },
+  hitImage: { width: "100%", height: 84, backgroundColor: "#00000014" },
+  hitPlay: {
+    position: "absolute",
+    top: 60,
+    left: 8,
+    width: 20,
+    height: 20,
+    borderRadius: 10,
+    alignItems: "center",
+    justifyContent: "center",
+    backgroundColor: "#000000a6",
+  },
+  hitMeta: { paddingHorizontal: 8, paddingVertical: 6, gap: 2 },
+  hitWhen: { fontSize: 11.5, fontFamily: Fonts?.semibold },
+  hitWhere: { fontSize: 10.5, lineHeight: 14 },
   foot: { borderTopWidth: 1, paddingHorizontal: 12, paddingTop: 10, gap: 8 },
   composer: { flexDirection: "row", alignItems: "flex-end", gap: 8 },
   input: {

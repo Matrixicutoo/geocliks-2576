@@ -45,7 +45,14 @@ function readStored(): UIMessage[] {
 
 function store(messages: UIMessage[]) {
   try {
-    globalThis.localStorage?.setItem(KEY, JSON.stringify(messages.slice(-MAX_STORED)));
+    // Text only. A found photo's thumbnail is a presigned URL with an expiry on it, so a photo
+    // part restored tomorrow would render as a row of broken images — and the reply's own text
+    // already says what was found.
+    const text = messages.slice(-MAX_STORED).map((m) => ({
+      ...m,
+      parts: (m.parts ?? []).filter((p) => p.type === "text"),
+    }));
+    globalThis.localStorage?.setItem(KEY, JSON.stringify(text));
   } catch {
     // Blocked storage: the chat still works for this page view, it just will not persist.
   }
@@ -57,6 +64,99 @@ function textOf(message: UIMessage): string {
     .filter((p): p is { type: "text"; text: string } => p.type === "text")
     .map((p) => p.text)
     .join("");
+}
+
+/** One capture `findPhotos` returned, as the panel renders it. */
+type PhotoHit = {
+  code: string;
+  kind: string;
+  address: string | null;
+  note: string | null;
+  tag: string;
+  capturedAt: string;
+  project: string | null;
+  takenBy: string | null;
+  link: string;
+  thumbnail: string;
+};
+
+function isPhotoHit(value: unknown): value is PhotoHit {
+  const p = value as PhotoHit | null;
+  return !!p && typeof p.code === "string" && typeof p.link === "string";
+}
+
+/** The captures a reply found, pulled out of its settled `findPhotos` tool parts. */
+function photosOf(message: UIMessage): PhotoHit[] {
+  return (message.parts ?? []).flatMap((part) => {
+    const p = part as { type: string; state?: string; output?: unknown; preliminary?: boolean };
+    if (p.type !== "tool-findPhotos" || p.state !== "output-available" || p.preliminary) return [];
+    const found = (p.output as { photos?: unknown })?.photos;
+    return Array.isArray(found) ? found.filter(isPhotoHit) : [];
+  });
+}
+
+/** When a capture was taken, as short as it can be without losing the day. */
+function whenOf(iso: string): string {
+  const at = new Date(iso);
+  if (Number.isNaN(at.getTime())) return "";
+  const sameYear = at.getFullYear() === new Date().getFullYear();
+  return at.toLocaleDateString(undefined, {
+    month: "short",
+    day: "numeric",
+    ...(sameYear ? {} : { year: "numeric" }),
+  });
+}
+
+/** The full address is too long for a card; the street and the town carry it. */
+function shortAddress(address: string | null): string | null {
+  if (!address) return null;
+  const [street, city] = address.split(",").map((s) => s.trim());
+  return [street, city].filter(Boolean).join(", ") || address;
+}
+
+/**
+ * The captures the assistant found, as a grid of thumbnails under its reply.
+ *
+ * Each one opens that photo's public `/v/<code>` page — the same link the person could forward
+ * to a customer, so nothing here reaches further than they already can.
+ */
+function Photos({ photos }: { photos: PhotoHit[] }) {
+  return (
+    <div className="grid grid-cols-2 gap-2 pt-1">
+      {photos.map((photo) => {
+        const place = shortAddress(photo.address);
+        return (
+          <a
+            key={photo.code}
+            href={photo.link}
+            target="_blank"
+            rel="noreferrer"
+            className="group overflow-hidden rounded-[8px] border border-line bg-ink-2 transition-colors hover:border-amber"
+          >
+            <div className="relative">
+              <img
+                src={photo.thumbnail}
+                alt={`${photo.tag} capture${place ? ` at ${place}` : ""}`}
+                loading="lazy"
+                className="h-[74px] w-full object-cover"
+              />
+              {photo.kind === "video" && (
+                <span className="absolute bottom-1 left-1 rounded-full bg-black/65 px-1.5 py-0.5 text-[9px] text-white">
+                  video
+                </span>
+              )}
+            </div>
+            <div className="px-2 py-1.5">
+              <p className="truncate text-[11px] font-medium text-chalk">
+                {whenOf(photo.capturedAt)}
+              </p>
+              {place && <p className="line-clamp-2 text-[10px] leading-snug text-fog">{place}</p>}
+            </div>
+          </a>
+        );
+      })}
+    </div>
+  );
 }
 
 /**
@@ -378,7 +478,10 @@ export function ChatWidget() {
 
           {messages.map((message) => {
             const text = textOf(message);
-            if (!text) return null;
+            const found = photosOf(message);
+            // A reply is worth a bubble if it has either words or captures in it: the thumbnails
+            // arrive before the sentence that describes them.
+            if (!text && found.length === 0) return null;
             const mine = message.role === "user";
             return (
               <div key={message.id} className={mine ? "flex justify-end" : "flex justify-start"}>
@@ -389,7 +492,14 @@ export function ChatWidget() {
                       : "max-w-[92%] space-y-2 rounded-[10px] rounded-es-[3px] bg-ink-3 px-3 py-2 text-[13px] leading-relaxed text-fog"
                   }
                 >
-                  {mine ? <p className="whitespace-pre-wrap">{text}</p> : <Rich text={text} />}
+                  {mine ? (
+                    <p className="whitespace-pre-wrap">{text}</p>
+                  ) : (
+                    <>
+                      {text && <Rich text={text} />}
+                      {found.length > 0 && <Photos photos={found} />}
+                    </>
+                  )}
                 </div>
               </div>
             );

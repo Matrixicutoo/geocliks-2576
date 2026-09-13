@@ -1,6 +1,7 @@
 import { createAgentUIStreamResponse, type UIMessage } from "ai";
-import { agent } from "./index";
+import { agentFor } from "./index";
 import { gatewayReady } from "./gateway";
+import { viewerOf } from "./viewer";
 
 /**
  * The chat bubble is reachable without a session (it sits on the marketing site too), so this
@@ -28,6 +29,25 @@ function rateLimited(key: string): boolean {
     for (const [k, times] of hits) if (times.every((t) => now - t >= WINDOW_MS)) hits.delete(k);
   }
   return recent.length > MAX_PER_WINDOW;
+}
+
+/**
+ * The history, reduced to what the model should actually read: the words.
+ *
+ * A reply that searched photos carries its `findPhotos` result as a tool part, and the website
+ * hands the whole message list back on the next turn. Left alone, every past result would be
+ * replayed into the model's context — dozens of long presigned thumbnail URLs that have since
+ * expired, paid for by the token. Worse, a client could hand back a *forged* tool result and
+ * have the model treat it as something the server found. So history is text only, and anything
+ * about photos comes from searching again.
+ */
+function textOnly(messages: UIMessage[]): UIMessage[] {
+  return messages
+    .map((message) => ({
+      ...message,
+      parts: (message.parts ?? []).filter((part) => part.type === "text" && part.text.length > 0),
+    }))
+    .filter((message) => message.parts.length > 0);
 }
 
 /** Total characters of text across a UI message's parts. */
@@ -72,5 +92,15 @@ export async function agentMessages(request: Request): Promise<Response> {
     return Response.json({ error: "That message is too long." }, { status: 413 });
   }
 
-  return createAgentUIStreamResponse({ agent, uiMessages: messages });
+  // Who is asking decides what the assistant can do: signed in it can search that workspace's
+  // own captures, signed out it is the tool-less public bubble. Resolved here, once, and closed
+  // over by the tool — never taken from anything the client sent.
+  const viewer = await viewerOf(request);
+
+  const history = textOnly(messages);
+  if (history.length === 0) {
+    return Response.json({ error: "Start a new chat to continue." }, { status: 400 });
+  }
+
+  return createAgentUIStreamResponse({ agent: agentFor(viewer), uiMessages: history });
 }

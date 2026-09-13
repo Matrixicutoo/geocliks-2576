@@ -19,7 +19,21 @@ import { authToken } from "./auth";
  * The shape below deliberately mirrors the part of `useChat`'s API the sheet was using, so the
  * sheet reads the same as the website's panel.
  */
-export type ChatPart = { type: "text"; text: string };
+/** One capture the assistant found, as the sheet renders it. Mirrors `findPhotos`' output. */
+export type PhotoHit = {
+  code: string;
+  kind: string;
+  address: string | null;
+  note: string | null;
+  tag: string;
+  capturedAt: string;
+  project: string | null;
+  takenBy: string | null;
+  link: string;
+  thumbnail: string;
+};
+
+export type ChatPart = { type: "text"; text: string } | { type: "photos"; photos: PhotoHit[] };
 
 export type ChatMessage = {
   id: string;
@@ -27,15 +41,36 @@ export type ChatMessage = {
   parts: ChatPart[];
 };
 
+/** The photos attached to a message, across its parts. */
+export function photosOf(message: ChatMessage): PhotoHit[] {
+  return (message.parts ?? []).flatMap((p) => (p?.type === "photos" ? p.photos : []));
+}
+
+function isPhotoHit(value: unknown): value is PhotoHit {
+  const p = value as PhotoHit | null;
+  return !!p && typeof p.code === "string" && typeof p.link === "string";
+}
+
 /** `submitted` is waiting on the first token; `streaming` is a reply arriving. */
 export type ChatStatus = "ready" | "submitted" | "streaming" | "error";
 
 /** The text of a message, joined across its parts. */
 export function textOf(message: ChatMessage): string {
   return (message.parts ?? [])
-    .filter((p) => p?.type === "text")
+    .filter((p): p is { type: "text"; text: string } => p?.type === "text")
     .map((p) => p.text)
     .join("");
+}
+
+/**
+ * A transcript as it should be written to disk.
+ *
+ * Thumbnails are presigned URLs with an expiry on them, so a photo part restored days later
+ * would render as a row of broken images. The text of the reply already says what was found,
+ * and the codes in it still resolve, so the parts are dropped rather than kept stale.
+ */
+export function forStorage(messages: ChatMessage[]): ChatMessage[] {
+  return messages.map((m) => ({ ...m, parts: m.parts.filter((p) => p.type === "text") }));
 }
 
 /** True for anything that still looks like a message we wrote, so a stale store degrades to empty. */
@@ -94,26 +129,41 @@ export function useAgentChat(api: string) {
       // The id of the assistant message this run is writing into. Created on the first token
       // rather than up front, so a failed request leaves no empty bubble behind.
       let replyId: string | null = null;
-      const append = (delta: string) => {
-        if (!delta || !live.current) return;
+
+      /** Adds to the reply, creating it on the first thing that arrives for it. */
+      const into = (add: (parts: ChatPart[]) => ChatPart[]) => {
+        if (!live.current) return;
         setMessages((prev) => {
           if (replyId === null) {
             replyId = newId();
-            const fresh: ChatMessage = {
-              id: replyId,
-              role: "assistant",
-              parts: [{ type: "text", text: delta }],
-            };
-            return [...prev, fresh];
+            return [...prev, { id: replyId, role: "assistant", parts: add([]) }];
           }
-          return prev.map((m) =>
-            m.id === replyId
-              ? { ...m, parts: [{ type: "text" as const, text: textOf(m) + delta }] }
-              : m,
-          );
+          return prev.map((m) => (m.id === replyId ? { ...m, parts: add(m.parts) } : m));
+        });
+      };
+
+      const append = (delta: string) => {
+        if (!delta) return;
+        // Text accumulates into the last text part, so a reply split either side of a tool
+        // call keeps its two paragraphs in the order the model wrote them.
+        into((parts) => {
+          const last = parts[parts.length - 1];
+          if (last?.type === "text") {
+            return [...parts.slice(0, -1), { type: "text", text: last.text + delta }];
+          }
+          return [...parts, { type: "text", text: delta }];
         });
         setStatus("streaming");
       };
+
+      const attach = (photos: PhotoHit[]) => {
+        if (photos.length === 0) return;
+        into((parts) => [...parts, { type: "photos", photos }]);
+      };
+
+      // `tool-output-available` carries only the call id, so the name is remembered from the
+      // `tool-input-available` frame that opened it.
+      const calls = new Map<string, string>();
 
       const handle = (raw: string) => {
         const line = raw.trim();
@@ -126,8 +176,23 @@ export function useAgentChat(api: string) {
         } catch {
           return; // A half-written frame, or a keep-alive. Nothing to show.
         }
-        if (frame.type === "text-delta") append(String((frame as { delta?: string }).delta ?? ""));
-        else if (frame.type === "error") throw new Error((frame as { errorText?: string }).errorText ?? "stream error");
+        if (frame.type === "text-delta") {
+          append(String((frame as { delta?: string }).delta ?? ""));
+        } else if (frame.type === "tool-input-available") {
+          const f = frame as { toolCallId?: string; toolName?: string };
+          if (f.toolCallId && f.toolName) calls.set(f.toolCallId, f.toolName);
+        } else if (frame.type === "tool-output-available") {
+          const f = frame as { toolCallId?: string; output?: unknown; preliminary?: boolean };
+          // A preliminary output is a partial the model may still replace; only the settled
+          // one becomes thumbnails.
+          if (f.preliminary) return;
+          if (f.toolCallId && calls.get(f.toolCallId) === "findPhotos") {
+            const found = (f.output as { photos?: unknown })?.photos;
+            if (Array.isArray(found)) attach(found.filter(isPhotoHit));
+          }
+        } else if (frame.type === "error") {
+          throw new Error((frame as { errorText?: string }).errorText ?? "stream error");
+        }
       };
 
       try {
@@ -141,7 +206,13 @@ export function useAgentChat(api: string) {
             ...(token ? { Authorization: `Bearer ${token}` } : {}),
           },
           body: JSON.stringify({
-            messages: history.map((m) => ({ id: m.id, role: m.role, parts: m.parts })),
+            // Text only: the photo parts are ours, for rendering. The endpoint validates and
+            // bills on message text, and the model already saw its own tool results.
+            messages: forStorage(history).map((m) => ({
+              id: m.id,
+              role: m.role,
+              parts: m.parts,
+            })),
           }),
           signal: abort.signal,
         });
