@@ -6,31 +6,38 @@ import {
   Easing,
   Image,
   KeyboardAvoidingView,
+  Linking,
   Modal,
   Platform,
   Pressable,
   ScrollView,
+  Share,
   StyleSheet,
   View,
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import Constants from "expo-constants";
+import * as WebBrowser from "expo-web-browser";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import {
   forStorage,
   isChatMessage,
   photosOf,
+  reportsOf,
+  statsOf,
   textOf,
   useAgentChat,
+  type Activity,
   type ChatMessage,
   type PhotoHit,
+  type ReportFile,
 } from "@/lib/agent-chat";
 import { Text, TextInput } from "@/components/app-text";
 import { PhotoDetail } from "@/components/photo-detail";
 import { useColors } from "@/hooks/use-colors";
 import { Fonts } from "@/constants/theme";
-import { useT } from "@/lib/i18n";
+import { useT, type TKey } from "@/lib/i18n";
 import {
   ASSISTANT_NAME,
   assistantWasRequested,
@@ -192,6 +199,203 @@ function Photos({ photos, onOpen }: { photos: PhotoHit[]; onOpen: (id: string) =
           </Pressable>
         );
       })}
+    </View>
+  );
+}
+
+/** Card and chart headings are keys, not words: the server does not pick the sheet's wording. */
+const METRICS: Record<string, TKey> = {
+  captures: "assistant.metric.captures",
+  places: "assistant.metric.places",
+  crew: "assistant.metric.crew",
+  days: "assistant.metric.days",
+};
+
+const DIMENSIONS: Record<string, TKey> = {
+  city: "assistant.by.city",
+  day: "assistant.by.day",
+  tag: "assistant.by.tag",
+  person: "assistant.by.person",
+  project: "assistant.by.project",
+};
+
+/** The capture types, stored as these words and rendered through `tag.*`. */
+const TAGS = new Set([
+  "arrival",
+  "before",
+  "work",
+  "after",
+  "issue",
+  "departure",
+  "pickup",
+  "delivery",
+]);
+
+/**
+ * What a counts breakdown draws under the reply: four cards and a bar per bucket.
+ *
+ * Bars run sideways rather than as columns, because the buckets are named things — a street, a
+ * crew member — with nowhere to put a label under a column on a phone. Each is sized against
+ * the largest bucket, not the total, so one dominant place still leaves the small ones visible.
+ */
+function Stats({ stats }: { stats: Activity }) {
+  const colors = useColors();
+  const tr = useT();
+  const bars = stats.chart?.bars ?? [];
+  const peak = Math.max(1, ...bars.map((b) => b.value));
+  const dimension = stats.chart?.dimension ?? "city";
+
+  const label = (raw: string) => {
+    if (dimension === "day") {
+      // Midday, so a phone in a zone west of the data does not shift every bar back a day.
+      const at = new Date(`${raw}T12:00:00`);
+      return Number.isNaN(at.getTime())
+        ? raw
+        : at.toLocaleDateString(undefined, { month: "short", day: "numeric" });
+    }
+    if (dimension === "tag" && TAGS.has(raw)) return tr(`tag.${raw}` as TKey);
+    return raw;
+  };
+
+  return (
+    <View style={styles.stats}>
+      <View style={styles.cards}>
+        {(stats.cards ?? []).map((card) => (
+          <View
+            key={card.metric}
+            style={[styles.card, { borderColor: colors.border, backgroundColor: colors.background }]}
+          >
+            <Text style={[styles.cardValue, { color: colors.foreground }]}>
+              {card.value.toLocaleString()}
+            </Text>
+            <Text numberOfLines={1} style={[styles.cardLabel, { color: colors.mutedForeground }]}>
+              {METRICS[card.metric] ? tr(METRICS[card.metric]!) : card.metric}
+            </Text>
+          </View>
+        ))}
+      </View>
+
+      {bars.length > 0 ? (
+        <View
+          style={[styles.chart, { borderColor: colors.border, backgroundColor: colors.background }]}
+        >
+          <Text style={[styles.chartTitle, { color: colors.mutedForeground }]}>
+            {DIMENSIONS[dimension] ? tr(DIMENSIONS[dimension]!) : dimension}
+          </Text>
+          {bars.map((bar) => (
+            <View key={bar.label} style={styles.bar}>
+              <Text numberOfLines={1} style={[styles.barLabel, { color: colors.mutedForeground }]}>
+                {label(bar.label)}
+              </Text>
+              <View style={[styles.barTrack, { backgroundColor: colors.muted }]}>
+                <View
+                  style={[
+                    styles.barFill,
+                    {
+                      backgroundColor: colors.amber,
+                      width: `${Math.max(4, (bar.value / peak) * 100)}%`,
+                    },
+                  ]}
+                />
+              </View>
+              <Text style={[styles.barValue, { color: colors.foreground }]}>{bar.value}</Text>
+            </View>
+          ))}
+        </View>
+      ) : null}
+    </View>
+  );
+}
+
+/** A report's size, in the units the Reports screen uses. */
+function sizeOf(bytes: number): string {
+  if (!bytes) return "—";
+  if (bytes < 1024 * 1024) return `${Math.max(1, Math.round(bytes / 1024))} KB`;
+  return `${(bytes / (1024 * 1024)).toFixed(1)} MB`;
+}
+
+/**
+ * The finished report, as a file card under the reply.
+ *
+ * Opening it hands the presigned URL to the in-app browser, the same way the Reports screen
+ * does, so the phone's own viewer and its "save to Files" take over from there. Share passes
+ * the link to the system sheet, which is how a crew member gets it to the office without
+ * retyping it. The link is good for a day and never goes into the reply's text, where it would
+ * outlive itself in the stored transcript.
+ */
+function ReportCard({ report }: { report: ReportFile }) {
+  const colors = useColors();
+  const tr = useT();
+
+  const open = async () => {
+    if (Platform.OS === "web") {
+      globalThis.location?.assign(report.url);
+      return;
+    }
+    try {
+      await WebBrowser.openBrowserAsync(report.url, { dismissButtonStyle: "close" });
+    } catch {
+      if (await Linking.canOpenURL(report.url)) await Linking.openURL(report.url);
+    }
+  };
+
+  const share = async () => {
+    try {
+      await Share.share({ message: report.url, url: report.url, title: report.title });
+    } catch {
+      // Dismissed, or no share sheet. The open button still works.
+    }
+  };
+
+  return (
+    <View style={styles.stats}>
+      <View
+        style={[styles.file, { borderColor: colors.border, backgroundColor: colors.background }]}
+      >
+        <View style={styles.fileHead}>
+          <View style={[styles.fileKind, { backgroundColor: `${colors.amber}26` }]}>
+            <Text style={[styles.fileKindText, { color: colors.amber }]}>
+              {report.format.toUpperCase()}
+            </Text>
+          </View>
+          <View style={styles.fileMeta}>
+            <Text numberOfLines={1} style={[styles.fileTitle, { color: colors.foreground }]}>
+              {report.title}
+            </Text>
+            <Text numberOfLines={1} style={[styles.fileSize, { color: colors.mutedForeground }]}>
+              {tr("assistant.reportMeta", {
+                count: report.photoCount,
+                size: sizeOf(report.bytes),
+              })}
+            </Text>
+          </View>
+        </View>
+        <View style={styles.fileActions}>
+          <Pressable
+            onPress={() => void open()}
+            accessibilityRole="button"
+            style={[styles.fileButton, { backgroundColor: colors.amber }]}
+          >
+            <Ionicons name="download-outline" size={14} color={colors.primaryForeground} />
+            <Text style={[styles.fileButtonText, { color: colors.primaryForeground }]}>
+              {tr("assistant.download")}
+            </Text>
+          </Pressable>
+          <Pressable
+            onPress={() => void share()}
+            accessibilityRole="button"
+            style={[styles.fileButton, { borderWidth: 1, borderColor: colors.border }]}
+          >
+            <Ionicons name="share-outline" size={14} color={colors.mutedForeground} />
+            <Text style={[styles.fileButtonText, { color: colors.mutedForeground }]}>
+              {tr("assistant.share")}
+            </Text>
+          </Pressable>
+        </View>
+      </View>
+      <Text style={[styles.fileNote, { color: colors.mutedForeground }]}>
+        {tr("assistant.linkExpires")}
+      </Text>
     </View>
   );
 }
@@ -393,9 +597,12 @@ export function AssistantSheet() {
                 {messages.map((message) => {
                   const text = textOf(message);
                   const found = photosOf(message);
-                  // A reply mid-search has neither yet; one that found photos without a word of
-                  // its own still has something to show.
-                  if (!text && found.length === 0) return null;
+                  const counted = statsOf(message);
+                  const built = reportsOf(message);
+                  // A reply mid-search has none of these yet; one that produced something
+                  // without a word of its own still has something to show.
+                  const rich = found.length > 0 || counted.length > 0 || built.length > 0;
+                  if (!text && !rich) return null;
                   const mine = message.role === "user";
                   return (
                     <View
@@ -409,7 +616,7 @@ export function AssistantSheet() {
                             ? [styles.bubbleMine, { backgroundColor: colors.amber }]
                             : [
                                 styles.bubbleTheirs,
-                                found.length > 0 ? styles.bubbleGrid : null,
+                                rich ? styles.bubbleGrid : null,
                                 { backgroundColor: colors.card, borderColor: colors.border },
                               ],
                         ]}
@@ -421,6 +628,9 @@ export function AssistantSheet() {
                         ) : (
                           <>
                             {text ? <Rich text={text} color={colors.foreground} /> : null}
+                            {counted.map((stats, i) => (
+                              <Stats key={i} stats={stats} />
+                            ))}
                             {found.length > 0 ? (
                               <Photos
                                 photos={found}
@@ -433,6 +643,9 @@ export function AssistantSheet() {
                                 }}
                               />
                             ) : null}
+                            {built.map((report) => (
+                              <ReportCard key={report.id} report={report} />
+                            ))}
                           </>
                         )}
                       </View>
@@ -603,6 +816,39 @@ const styles = StyleSheet.create({
   hitMeta: { paddingHorizontal: 8, paddingVertical: 6, gap: 2 },
   hitWhen: { fontSize: 11.5, fontFamily: Fonts?.semibold },
   hitWhere: { fontSize: 10.5, lineHeight: 14 },
+  // Counts and the breakdown chart.
+  stats: { gap: 8, paddingTop: 8 },
+  cards: { flexDirection: "row", flexWrap: "wrap", gap: 6 },
+  card: { width: "48%", borderWidth: 1, borderRadius: 8, paddingHorizontal: 9, paddingVertical: 7 },
+  cardValue: { fontSize: 17, lineHeight: 21, fontFamily: Fonts?.mono },
+  cardLabel: { fontSize: 10.5 },
+  chart: { borderWidth: 1, borderRadius: 8, paddingHorizontal: 9, paddingVertical: 9, gap: 6 },
+  chartTitle: { fontSize: 10, letterSpacing: 0.6, textTransform: "uppercase" },
+  bar: { flexDirection: "row", alignItems: "center", gap: 7 },
+  barLabel: { width: 78, fontSize: 10.5 },
+  barTrack: { flex: 1, height: 9, borderRadius: 5, overflow: "hidden" },
+  barFill: { height: "100%", borderRadius: 5 },
+  barValue: { width: 24, fontSize: 10.5, textAlign: "right", fontFamily: Fonts?.mono },
+  // The finished report.
+  file: { borderWidth: 1, borderRadius: 8, padding: 9, gap: 9 },
+  fileHead: { flexDirection: "row", alignItems: "center", gap: 9 },
+  fileKind: { width: 36, height: 36, borderRadius: 7, alignItems: "center", justifyContent: "center" },
+  fileKindText: { fontSize: 9.5, fontFamily: Fonts?.mono },
+  fileMeta: { flex: 1, gap: 1 },
+  fileTitle: { fontSize: 12.5, fontFamily: Fonts?.semibold },
+  fileSize: { fontSize: 10.5 },
+  fileActions: { flexDirection: "row", gap: 7 },
+  fileButton: {
+    flex: 1,
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
+    gap: 5,
+    borderRadius: 7,
+    paddingVertical: 8,
+  },
+  fileButtonText: { fontSize: 11, fontFamily: Fonts?.semibold },
+  fileNote: { fontSize: 10, lineHeight: 14 },
   foot: { borderTopWidth: 1, paddingHorizontal: 12, paddingTop: 10, gap: 8 },
   composer: { flexDirection: "row", alignItems: "flex-end", gap: 8 },
   input: {

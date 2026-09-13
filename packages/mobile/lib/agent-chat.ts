@@ -34,7 +34,31 @@ export type PhotoHit = {
   thumbnail: string;
 };
 
-export type ChatPart = { type: "text"; text: string } | { type: "photos"; photos: PhotoHit[] };
+/** What `summarizeActivity` counted, as the sheet renders it. */
+export type Activity = {
+  total: number;
+  cards?: { metric: string; value: number }[];
+  chart?: { dimension: string; bars: { label: string; value: number }[]; hidden: number };
+  range?: { from: string | null; to: string | null };
+  truncated?: boolean;
+};
+
+/** The finished package `exportReport` built. */
+export type ReportFile = {
+  id: string;
+  title: string;
+  format: string;
+  photoCount: number;
+  bytes: number;
+  filename: string;
+  url: string;
+};
+
+export type ChatPart =
+  | { type: "text"; text: string }
+  | { type: "photos"; photos: PhotoHit[] }
+  | { type: "stats"; stats: Activity }
+  | { type: "report"; report: ReportFile };
 
 export type ChatMessage = {
   id: string;
@@ -47,6 +71,16 @@ export function photosOf(message: ChatMessage): PhotoHit[] {
   return (message.parts ?? []).flatMap((p) => (p?.type === "photos" ? p.photos : []));
 }
 
+/** The counts attached to a message, across its parts. */
+export function statsOf(message: ChatMessage): Activity[] {
+  return (message.parts ?? []).flatMap((p) => (p?.type === "stats" ? [p.stats] : []));
+}
+
+/** The reports built for a message, across its parts. */
+export function reportsOf(message: ChatMessage): ReportFile[] {
+  return (message.parts ?? []).flatMap((p) => (p?.type === "report" ? [p.report] : []));
+}
+
 function isPhotoHit(value: unknown): value is PhotoHit {
   const p = value as PhotoHit | null;
   return !!p && typeof p.id === "string" && typeof p.thumbnail === "string";
@@ -55,12 +89,19 @@ function isPhotoHit(value: unknown): value is PhotoHit {
 /** `submitted` is waiting on the first token; `streaming` is a reply arriving. */
 export type ChatStatus = "ready" | "submitted" | "streaming" | "error";
 
-/** The text of a message, joined across its parts. */
+/**
+ * The text of a message, joined across its parts.
+ *
+ * A reply that calls a tool is written in two goes — a line before the call, the answer after
+ * it — and a card attached in between closes the first text part. Joined edge to edge the two
+ * ran together mid-sentence, so they are separated by a blank line instead.
+ */
 export function textOf(message: ChatMessage): string {
   return (message.parts ?? [])
     .filter((p): p is { type: "text"; text: string } => p?.type === "text")
-    .map((p) => p.text)
-    .join("");
+    .map((p) => p.text.trim())
+    .filter(Boolean)
+    .join("\n\n");
 }
 
 /**
@@ -162,6 +203,8 @@ export function useAgentChat(api: string) {
         into((parts) => [...parts, { type: "photos", photos }]);
       };
 
+      const attachPart = (part: ChatPart) => into((parts) => [...parts, part]);
+
       // `tool-output-available` carries only the call id, so the name is remembered from the
       // `tool-input-available` frame that opened it.
       const calls = new Map<string, string>();
@@ -187,9 +230,22 @@ export function useAgentChat(api: string) {
           // A preliminary output is a partial the model may still replace; only the settled
           // one becomes thumbnails.
           if (f.preliminary) return;
-          if (f.toolCallId && calls.get(f.toolCallId) === "findPhotos") {
+          const name = f.toolCallId ? calls.get(f.toolCallId) : undefined;
+          if (name === "findPhotos") {
             const found = (f.output as { photos?: unknown })?.photos;
             if (Array.isArray(found)) attach(found.filter(isPhotoHit));
+          } else if (name === "summarizeActivity") {
+            // A run that matched nothing has no cards on it; that is the reply's to explain,
+            // since four zeroes and an empty chart say nothing.
+            const stats = f.output as Activity | null;
+            if (stats && Array.isArray(stats.cards) && stats.cards.length > 0) {
+              attachPart({ type: "stats", stats });
+            }
+          } else if (name === "exportReport") {
+            // A refusal carries `blocked` instead of `report` and is left to the reply's words,
+            // which can offer the formats this workspace does have.
+            const report = (f.output as { report?: ReportFile } | null)?.report;
+            if (report && typeof report.url === "string") attachPart({ type: "report", report });
           }
         } else if (frame.type === "error") {
           throw new Error((frame as { errorText?: string }).errorText ?? "stream error");
