@@ -30,6 +30,7 @@ import { type TKey, useLocale, useT } from "../lib/i18n";
 import { cn } from "../lib/utils";
 import { SALES_EMAIL, SUPPORT_EMAIL } from "../lib/support";
 import { SiteFooter } from "../components/site-footer";
+import { scrollSiteToId } from "../lib/site-scroll";
 
 const INDUSTRIES: TKey[] = [
   "industry.construction",
@@ -129,11 +130,16 @@ function NavMenu({ label, items }: { label: TKey; items: MenuItem[] }) {
   );
 }
 
+/**
+ * Section anchors are written absolute ("/#evidence", not "#evidence"): this header is shared
+ * with /pricing, where a bare fragment would point at a section that is not on the page. From
+ * the home page the browser still treats it as a same-document jump, so nothing reloads.
+ */
 const FEATURE_ITEMS: MenuItem[] = [
-  { label: "home.nav.tamper", href: "#evidence" },
-  { label: "home.nav.teamspace", href: "#teamspace" },
-  { label: "home.nav.reports", href: "#reports" },
-  { label: "home.nav.offline", href: "#field" },
+  { label: "home.nav.tamper", href: "/#evidence" },
+  { label: "home.nav.teamspace", href: "/#teamspace" },
+  { label: "home.nav.reports", href: "/#reports" },
+  { label: "home.nav.offline", href: "/#field" },
 ];
 
 const RESOURCE_ITEMS: MenuItem[] = [
@@ -204,7 +210,7 @@ function MobileGroup({
   );
 }
 
-function Nav() {
+export function Nav() {
   const { data: session } = authClient.useSession();
   const t = useT();
   const [mobileOpen, setMobileOpen] = useState(false);
@@ -221,20 +227,20 @@ function Nav() {
 
         <nav className="hidden items-center gap-6 lg:flex">
           <a
-            href="#top"
+            href="/#top"
             className="py-2 text-[14px] font-semibold text-white transition-colors hover:text-amber"
           >
             {t("home.nav.home")}
           </a>
           <NavMenu label="home.nav.features" items={FEATURE_ITEMS} />
           <a
-            href="#delivery"
+            href="/#delivery"
             className="py-2 text-[14px] font-semibold text-white transition-colors hover:text-amber"
           >
             {t("home.nav.delivery")}
           </a>
           <a
-            href="#pricing"
+            href="/#pricing"
             className="py-2 text-[14px] font-semibold text-white transition-colors hover:text-amber"
           >
             {t("home.nav.pricing")}
@@ -273,14 +279,14 @@ function Nav() {
       {mobileOpen && (
         <div className="border-t border-white/10 lg:hidden">
           <nav className="mx-auto max-h-[70vh] max-w-[1180px] overflow-y-auto px-4 pb-5 pt-2">
-            <a href="#top" onClick={close} className={mobileLink}>
+            <a href="/#top" onClick={close} className={mobileLink}>
               {t("home.nav.home")}
             </a>
             <MobileGroup label="home.nav.features" items={FEATURE_ITEMS} onNavigate={close} />
-            <a href="#delivery" onClick={close} className={mobileLink}>
+            <a href="/#delivery" onClick={close} className={mobileLink}>
               {t("home.nav.delivery")}
             </a>
-            <a href="#pricing" onClick={close} className={mobileLink}>
+            <a href="/#pricing" onClick={close} className={mobileLink}>
               {t("home.nav.pricing")}
             </a>
             <MobileGroup label="home.nav.resources" items={RESOURCE_ITEMS} onNavigate={close} />
@@ -804,7 +810,7 @@ const isDeliveryPlan = (id: string) => id.startsWith("delivery-");
 
 type PlanView = NonNullable<ReturnType<typeof usePlans>["data"]>[number];
 
-function Pricing() {
+export function Pricing({ numbered = true }: { numbered?: boolean } = {}) {
   const t = useT();
   const { locale } = useLocale();
   const plans = usePlans(locale);
@@ -822,7 +828,9 @@ function Pricing() {
   return (
     <section id="pricing" className="border-b border-line">
       <div className="mx-auto max-w-[1180px] px-5 py-20">
-        <p className="label">{t("home.pricing.label")}</p>
+        {/* The kicker carries the home page's section number ("06 — Plans"), which means nothing
+            on /pricing where this is the only section. */}
+        {numbered && <p className="label">{t("home.pricing.label")}</p>}
         <h2 className="mt-3 font-display text-[32px] font-bold leading-tight tracking-tight text-chalk sm:text-[40px]">
           {t("home.pricing.h2")}
         </h2>
@@ -1019,6 +1027,23 @@ export default function Index() {
       if (previous) root.dataset.theme = previous;
       else delete root.dataset.theme;
     };
+  }, []);
+
+  // Arriving with a fragment — "/#pricing" from the header on /pricing, or a link someone was
+  // sent — has to be handled here: the browser tries its own jump before React has painted the
+  // sections, finds nothing, and leaves the visitor at the top. Retried for a few frames because
+  // the section may still be a few renders away.
+  useEffect(() => {
+    const id = decodeURIComponent(globalThis.location.hash.slice(1));
+    if (!id || id === "top") return;
+    let frame = 0;
+    let tries = 0;
+    const jump = () => {
+      if (scrollSiteToId(id) || tries++ > 40) return;
+      frame = requestAnimationFrame(jump);
+    };
+    jump();
+    return () => cancelAnimationFrame(frame);
   }, []);
 
   return (

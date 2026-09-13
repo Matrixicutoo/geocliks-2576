@@ -39,6 +39,7 @@ const AdminPlans = lazy(() => import("./pages/admin-plans"));
 const AdminSettings = lazy(() => import("./pages/admin-settings"));
 const Terms = lazy(() => import("./pages/terms"));
 const Privacy = lazy(() => import("./pages/privacy"));
+const PricingPage = lazy(() => import("./pages/pricing"));
 const Help = lazy(() => import("./pages/help"));
 const HelpCategory = lazy(() => import("./pages/help-category"));
 const HelpArticle = lazy(() => import("./pages/help-article"));
@@ -96,6 +97,9 @@ function App() {
                 </PublicOnlyRoute>
               </Route>
               <Route path="/get-app" component={GetApp} />
+              {/* The plans live on the home page too, at /#pricing. This is the URL people type
+                  and link to, so it gets a page of its own instead of a 404. */}
+              <Route path="/pricing" component={PricingPage} />
               <Route path="/verify" component={VerifyPage} />
               <Route path="/v/:code" component={VerifyPage} />
               <Route path="/share/:token" component={ShareView} />

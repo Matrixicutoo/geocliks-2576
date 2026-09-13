@@ -13,6 +13,31 @@ export function siteScroller(): HTMLElement | null {
   return document.getElementById(SITE_SCROLL_ID);
 }
 
+/** The marketing header is sticky, so a section jumped to has to clear its height. */
+const HEADER_PX = 64;
+
+/**
+ * Jump to a section by id, in whichever of the two scrollers is live. Returns false when no
+ * element with that id is on the page yet, so a caller can wait for it and try again.
+ *
+ * This exists because the browser's own fragment jump happens before the page's JS has painted
+ * the sections: arriving at `/#pricing` from another route lands at the top of the home page
+ * with nothing to scroll to.
+ */
+export function scrollSiteToId(id: string): boolean {
+  const element = document.getElementById(id);
+  if (!element) return false;
+  const column = siteScroller();
+  const box = element.getBoundingClientRect();
+  if (column && column.scrollHeight - column.clientHeight > 1) {
+    const top = box.top - column.getBoundingClientRect().top + column.scrollTop - HEADER_PX;
+    column.scrollTo({ top: Math.max(0, top) });
+    return true;
+  }
+  globalThis.scrollTo({ top: Math.max(0, box.top + globalThis.scrollY - HEADER_PX) });
+  return true;
+}
+
 export function scrollSiteToTop() {
   // Both, unconditionally: whichever of the two is not the scroller is already at 0, so setting
   // it costs nothing and this needs no knowledge of which mode is live.
