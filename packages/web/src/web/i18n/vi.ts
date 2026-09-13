@@ -1264,13 +1264,6 @@ export const vi: Catalog = {
   "team.projectLevelAccess": "Quyền theo từng dự án",
   "team.projectLevelBody":
     "Người dùng Hiện trường chỉ thấy những dự án được phân công cho họ. Hãy tích chọn dự án trong biểu mẫu lời mời để phân công ngay khi lời mời được chấp nhận, hoặc dùng nút thư mục ở bất kỳ thành viên phía trên để thay đổi quyền sau khi họ đã tham gia. Mỗi trang dự án cũng có {crew}.",
-  // Cookie notice
-  "cookies.title": "Cookie",
-  "cookies.body":
-    "GeoCliks chỉ dùng những cookie cần thiết để giữ bạn đăng nhập và ghi nhớ ngôn ngữ cùng giao diện. Không có cookie quảng cáo và không theo dõi từ bên thứ ba.",
-  "cookies.accept": "Đồng ý",
-  "cookies.policy": "Đọc chính sách bảo mật",
-  "cookies.dismiss": "Đóng",
   // Evidence download
   "download.title": "Tải xuống",
   "download.blurb":
@@ -1284,7 +1277,8 @@ export const vi: Catalog = {
   "assistant.open": "Mở trợ lý",
   "assistant.close": "Đóng trợ lý",
   "assistant.clear": "Xóa cuộc trò chuyện này",
-  "assistant.greeting": "Hỏi tôi bất cứ điều gì — cách GeoCliks hoạt động, hay bất cứ chuyện gì khác.",
+  "assistant.greeting":
+    "Hỏi tôi bất cứ điều gì — cách GeoCliks hoạt động, hay bất cứ chuyện gì khác.",
   "assistant.suggest1": "GeoCliks dùng để làm gì?",
   "assistant.suggest2": "Việc xác minh ảnh hoạt động thế nào?",
   "assistant.suggest3": "Viết một bản cập nhật ngắn cho khách của tôi",

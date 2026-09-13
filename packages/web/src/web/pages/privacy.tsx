@@ -157,6 +157,11 @@ export default function Privacy() {
           you signed in, remembering your language and theme, and holding captures queued while you
           are offline. We do not run third-party advertising or cross-site tracking cookies.
         </p>
+        <p>
+          Because every one of them is strictly necessary to deliver the Service you asked for, none
+          of them needs your consent and the site asks for none. There is nothing to opt out of;
+          clearing your browser storage signs you out and forgets your preferences.
+        </p>
       </LegalSection>
 
       <LegalSection title="12. Children">

@@ -1290,13 +1290,6 @@ export const tl: Catalog = {
   "team.projectLevelAccess": "Access kada proyekto",
   "team.projectLevelBody":
     "Ang mga Field user ay nakikita lang ang mga proyektong naka-assign sa kanila. I-tsek ang mga proyekto sa invite form para ma-assign agad sa oras na tanggapin ang imbitasyon, o gamitin ang folder button sa kahit sinong miyembro sa itaas para baguhin ang access pagkatapos nilang sumali. May {crew} din ang bawat pahina ng proyekto.",
-  // Cookie notice
-  "cookies.title": "Cookies",
-  "cookies.body":
-    "Ang GeoCliks ay gumagamit lamang ng cookies na kailangan para manatili kang naka-sign in at matandaan ang iyong wika at tema. Walang cookies para sa advertising at walang third-party tracking.",
-  "cookies.accept": "Tanggapin",
-  "cookies.policy": "Basahin ang patakaran sa privacy",
-  "cookies.dismiss": "Isara",
   // Evidence download
   "download.title": "I-download",
   "download.blurb":
@@ -1310,7 +1303,8 @@ export const tl: Catalog = {
   "assistant.open": "Buksan ang assistant",
   "assistant.close": "Isara ang assistant",
   "assistant.clear": "I-clear ang chat na ito",
-  "assistant.greeting": "Magtanong po kayo ng kahit ano — kung paano gumagana ang GeoCliks, o anumang bagay.",
+  "assistant.greeting":
+    "Magtanong po kayo ng kahit ano — kung paano gumagana ang GeoCliks, o anumang bagay.",
   "assistant.suggest1": "Para saan po ang GeoCliks?",
   "assistant.suggest2": "Paano gumagana ang photo verification?",
   "assistant.suggest3": "Gumawa ng maikling update para sa kliyente ko",
@@ -1318,5 +1312,6 @@ export const tl: Catalog = {
   "assistant.send": "Ipadala",
   "assistant.stop": "Itigil",
   "assistant.error": "May nagkamali. Subukan pong ipadala muli.",
-  "assistant.disclaimer": "Maaaring magkamali ang assistant. Hindi nito nakikita ang mga larawan o account mo.",
+  "assistant.disclaimer":
+    "Maaaring magkamali ang assistant. Hindi nito nakikita ang mga larawan o account mo.",
 };

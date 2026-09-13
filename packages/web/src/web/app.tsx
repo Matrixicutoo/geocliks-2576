@@ -1,5 +1,5 @@
 import { lazy, Suspense } from "react";
-import { Route, Switch } from "wouter";
+import { Redirect, Route, Switch } from "wouter";
 
 // Eager: first-paint routes. The landing page and the auth screens must render
 // without an async boundary so geocliks.com paints exactly as before.
@@ -39,7 +39,6 @@ const AdminPlans = lazy(() => import("./pages/admin-plans"));
 const AdminSettings = lazy(() => import("./pages/admin-settings"));
 const Terms = lazy(() => import("./pages/terms"));
 const Privacy = lazy(() => import("./pages/privacy"));
-const PricingPage = lazy(() => import("./pages/pricing"));
 const Help = lazy(() => import("./pages/help"));
 const HelpCategory = lazy(() => import("./pages/help-category"));
 const HelpArticle = lazy(() => import("./pages/help-article"));
@@ -50,7 +49,6 @@ import { AdminRoute } from "./components/admin-route";
 import { PublicOnlyRoute } from "./components/public-only-route";
 import { StaffRoute } from "./components/staff-route";
 import { Provider } from "./components/provider";
-import { CookieNotice } from "./components/cookie-notice";
 import { ChatWidget } from "./components/chat-widget";
 import { useAssistantDocked } from "./lib/assistant";
 import { SITE_SCROLL_ID } from "./lib/site-scroll";
@@ -97,9 +95,12 @@ function App() {
                 </PublicOnlyRoute>
               </Route>
               <Route path="/get-app" component={GetApp} />
-              {/* The plans live on the home page too, at /#pricing. This is the URL people type
-                  and link to, so it gets a page of its own instead of a 404. */}
-              <Route path="/pricing" component={PricingPage} />
+              {/* The plans are a section of the home page. /pricing is the URL people type, link
+                  to and land on from search, so it sends them there instead of 404ing — one copy
+                  of the table, one URL that ranks. */}
+              <Route path="/pricing">
+                <Redirect to="/#pricing" replace />
+              </Route>
               <Route path="/verify" component={VerifyPage} />
               <Route path="/v/:code" component={VerifyPage} />
               <Route path="/share/:token" component={ShareView} />
@@ -262,9 +263,6 @@ function App() {
               </Route>
             </Switch>
           </Suspense>
-          {/* Sits outside the Switch so one bar serves every public route, and survives navigation
-          between them without remounting. It hides itself on /app and /admin. */}
-          <CookieNotice />
         </div>
         {/* Outside the Switch, so the transcript survives navigation between the public site and
             the workspace. It hides itself on /admin and on plans without it. */}

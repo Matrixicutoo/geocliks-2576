@@ -210,7 +210,7 @@ function MobileGroup({
   );
 }
 
-export function Nav() {
+function Nav() {
   const { data: session } = authClient.useSession();
   const t = useT();
   const [mobileOpen, setMobileOpen] = useState(false);
@@ -810,7 +810,7 @@ const isDeliveryPlan = (id: string) => id.startsWith("delivery-");
 
 type PlanView = NonNullable<ReturnType<typeof usePlans>["data"]>[number];
 
-export function Pricing({ numbered = true }: { numbered?: boolean } = {}) {
+function Pricing() {
   const t = useT();
   const { locale } = useLocale();
   const plans = usePlans(locale);
@@ -828,9 +828,7 @@ export function Pricing({ numbered = true }: { numbered?: boolean } = {}) {
   return (
     <section id="pricing" className="border-b border-line">
       <div className="mx-auto max-w-[1180px] px-5 py-20">
-        {/* The kicker carries the home page's section number ("06 — Plans"), which means nothing
-            on /pricing where this is the only section. */}
-        {numbered && <p className="label">{t("home.pricing.label")}</p>}
+        <p className="label">{t("home.pricing.label")}</p>
         <h2 className="mt-3 font-display text-[32px] font-bold leading-tight tracking-tight text-chalk sm:text-[40px]">
           {t("home.pricing.h2")}
         </h2>
@@ -1029,21 +1027,29 @@ export default function Index() {
     };
   }, []);
 
-  // Arriving with a fragment — "/#pricing" from the header on /pricing, or a link someone was
-  // sent — has to be handled here: the browser tries its own jump before React has painted the
-  // sections, finds nothing, and leaves the visitor at the top. Retried for a few frames because
-  // the section may still be a few renders away.
+  // Arriving with a fragment — "/pricing" redirecting here, or a link someone was sent — has to
+  // be handled here: the browser tries its own jump before React has painted the sections, finds
+  // nothing, and leaves the visitor at the top. Retried for a few frames because the section may
+  // still be a few renders away. The same handler runs on `hashchange` so an in-page link clears
+  // the sticky header too, which the browser's own jump does not.
   useEffect(() => {
-    const id = decodeURIComponent(globalThis.location.hash.slice(1));
-    if (!id || id === "top") return;
     let frame = 0;
-    let tries = 0;
     const jump = () => {
-      if (scrollSiteToId(id) || tries++ > 40) return;
-      frame = requestAnimationFrame(jump);
+      const id = decodeURIComponent(globalThis.location.hash.slice(1));
+      if (!id || id === "top") return;
+      let tries = 0;
+      const attempt = () => {
+        if (scrollSiteToId(id) || tries++ > 40) return;
+        frame = requestAnimationFrame(attempt);
+      };
+      attempt();
     };
     jump();
-    return () => cancelAnimationFrame(frame);
+    globalThis.addEventListener("hashchange", jump);
+    return () => {
+      cancelAnimationFrame(frame);
+      globalThis.removeEventListener("hashchange", jump);
+    };
   }, []);
 
   return (
