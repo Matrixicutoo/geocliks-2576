@@ -16,9 +16,7 @@ import { Ionicons } from "@expo/vector-icons";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import Constants from "expo-constants";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
-import { fetch as expoFetch } from "expo/fetch";
-import { useChat } from "@ai-sdk/react";
-import { DefaultChatTransport, type UIMessage } from "ai";
+import { isChatMessage, textOf, useAgentChat, type ChatMessage } from "@/lib/agent-chat";
 import { Text, TextInput } from "@/components/app-text";
 import { useColors } from "@/hooks/use-colors";
 import { Fonts } from "@/constants/theme";
@@ -46,14 +44,6 @@ const KEY = "geocliks.assistant.v1";
 const MAX_STORED = 40;
 
 const baseUrl = Constants.expoConfig?.extra?.apiUrl ?? process.env.EXPO_PUBLIC_API_URL;
-
-/** The text of a message, joined across its parts. Reasoning and tool parts are ignored. */
-function textOf(message: UIMessage): string {
-  return (message.parts ?? [])
-    .filter((p): p is { type: "text"; text: string } => p.type === "text")
-    .map((p) => p.text)
-    .join("");
-}
 
 /**
  * Just enough markdown for a chat bubble: **bold** and `code` inline, and "- " lines as a
@@ -137,15 +127,9 @@ export function AssistantSheet() {
   const [input, setInput] = useState("");
   const scroller = useRef<ScrollView>(null);
 
-  const { messages, sendMessage, status, stop, error, setMessages, clearError } = useChat({
-    transport: new DefaultChatTransport({
-      api: `${baseUrl}/api/agent/messages`,
-      // React Native's own fetch has no streaming body, so the whole reply would arrive in one
-      // lump after a long wait — or not at all. Expo's fetch streams it, which is what makes
-      // the words appear as they are written.
-      fetch: expoFetch as unknown as typeof globalThis.fetch,
-    }),
-  });
+  const { messages, sendMessage, status, stop, error, setMessages, clearError } = useAgentChat(
+    `${baseUrl}/api/agent/messages`,
+  );
 
   // Restoring after mount rather than seeding useChat: the sheet is mounted at the app root at
   // launch, long before AsyncStorage answers, and a transcript is worth waiting a frame for.
@@ -157,12 +141,8 @@ export function AssistantSheet() {
         const raw = await AsyncStorage.getItem(KEY);
         const parsed: unknown = raw ? JSON.parse(raw) : null;
         if (live && Array.isArray(parsed)) {
-          // Only what still looks like a UI message, so a stale shape degrades to an empty chat.
-          setMessages(
-            (parsed as UIMessage[])
-              .filter((m) => m && typeof m.id === "string" && Array.isArray(m.parts))
-              .slice(-MAX_STORED),
-          );
+          // Only what still looks like a message, so a stale shape degrades to an empty chat.
+          setMessages((parsed as ChatMessage[]).filter(isChatMessage).slice(-MAX_STORED));
         }
       } catch {
         /* starts empty */
@@ -396,7 +376,7 @@ export function AssistantSheet() {
                 />
                 {busy ? (
                   <Pressable
-                    onPress={() => void stop()}
+                    onPress={() => stop()}
                     accessibilityLabel={tr("assistant.stop")}
                     style={[
                       styles.sendBtn,

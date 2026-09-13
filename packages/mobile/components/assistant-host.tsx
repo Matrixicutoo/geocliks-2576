@@ -1,22 +1,36 @@
-import { Component, Suspense, lazy, useEffect, useState, type ReactNode } from "react";
+import { Component, Suspense, lazy, useCallback, useEffect, useState, type ReactNode } from "react";
+import { Alert } from "react-native";
 import { onAssistantOpen } from "@/lib/assistant";
 
 /**
  * Keeps the assistant OFF the launch path.
  *
- * The sheet pulls in the AI SDK (`ai`, `@ai-sdk/react`) and its web-stream machinery. Mounted
- * at the app root, all of that was evaluated on every cold start — on a screen nobody had asked
- * for yet — so anything it disagreed with on a device took the whole app down before the first
- * frame. Here it is loaded only once someone actually opens the assistant, and behind a boundary
- * that swallows a failure: the worst case is the chat not opening, never the app closing.
+ * The sheet used to pull in the AI SDK (`ai`, `@ai-sdk/react`). Those build their streaming on
+ * `TransformStream` at module scope, and the Expo runtime installs `ReadableStream` and
+ * `TextDecoder` but no `TransformStream` — so merely importing them threw under Hermes. Mounted
+ * at the app root that ran on every cold start and closed the app before the first frame; loaded
+ * on demand it became an import that rejected, which a silent boundary turned into links that
+ * did nothing at all. The chat now speaks the endpoint's SSE itself (`lib/agent-chat.ts`) and
+ * those packages are gone.
+ *
+ * The sheet is still loaded on demand and behind a boundary — nothing about the assistant belongs
+ * on the launch path, and a broken chat must never be a broken app — but the boundary now *says*
+ * when it trips. A dead link that reports nothing cost a release to find.
  */
 const AssistantSheet = lazy(async () => {
   const mod = await import("./assistant-sheet");
   return { default: mod.AssistantSheet };
 });
 
-/** Renders nothing if the subtree below it throws. The rest of the app carries on. */
-class Quiet extends Component<{ children: ReactNode }, { failed: boolean }> {
+/**
+ * Renders nothing if the subtree below it throws, and hands the error up. The rest of the app
+ * carries on either way — but the caller gets to tell someone, instead of the assistant just
+ * quietly not being there.
+ */
+class Boundary extends Component<
+  { children: ReactNode; onError: (error: unknown) => void },
+  { failed: boolean }
+> {
   state = { failed: false };
 
   static getDerivedStateFromError() {
@@ -24,8 +38,8 @@ class Quiet extends Component<{ children: ReactNode }, { failed: boolean }> {
   }
 
   componentDidCatch(error: unknown) {
-    // Logged, not shown: a broken assistant is not worth an error screen over someone's work.
     console.warn("Assistant failed to load", error);
+    this.props.onError(error);
   }
 
   render() {
@@ -40,13 +54,23 @@ export function AssistantHost() {
   // which is a plain module-level listener list with no AI code behind it.
   useEffect(() => onAssistantOpen(() => setWanted(true)), []);
 
+  const report = useCallback((error: unknown) => {
+    // Said out loud, once. Not an error screen over someone's work, but never silence either:
+    // a link that opens nothing and reports nothing is indistinguishable from a link that is
+    // not wired up, and that is exactly how this shipped broken once.
+    Alert.alert(
+      "Assistant unavailable",
+      `The assistant could not be opened. ${error instanceof Error ? error.message : "Please try again after updating the app."}`,
+    );
+  }, []);
+
   if (!wanted) return null;
 
   return (
-    <Quiet>
+    <Boundary onError={report}>
       <Suspense fallback={null}>
         <AssistantSheet />
       </Suspense>
-    </Quiet>
+    </Boundary>
   );
 }
