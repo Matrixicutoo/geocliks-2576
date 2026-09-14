@@ -98,7 +98,9 @@
        still gets routes instead of being locked out. `homeFor()` derives the landing page from
        the same rule, and `ProductRoute`'s bounce target + the sidebar's workspace-card link
        both read it, so they can no longer disagree. `dashboard-shell.tsx` filters nav through
-       `showsProduct` instead of raw role checks. **Mobile tabs still pending (with item 9).**
+       `showsProduct` instead of raw role checks. Mobile needed no equivalent — its tabs and
+       drawer gate on role, never on `product` (settled in item 17; `rg` confirms the app never
+       reads `org.product`).
 13.[x] trial UI (web). `components/trial-banner.tsx` exports two pieces, both manager-gated
        (`canManageWorkspace`) since the plan page they point at is: `TrialBanner`, rendered once
        at the top of `DashboardShell`'s `<main>`, and `TrialChip`, a countdown on the sidebar's
@@ -125,12 +127,17 @@
        `autoFocus` on the OTP field in `components/auth-form.tsx` (flagged by jsx-a11y) — the
        field now focuses from a ref on the code step, so the keyboard still comes up. `TextInput`
        in `components/app-text.tsx` takes a `ref` prop for it.
-15.[ ] live verify, clean up dev test data, commit. Dev test data is done (item 19), plus the
-       item 11 verification rows cleared on 2026-09-14 (see Item 11). Server-side
-       tags re-verified on 2026-09-14 against the production entrypoint
+15.[x] live verify, clean up dev test data, commit — closed 2026-09-14. Dev test data is done
+       (item 19), plus the item 11 verification rows cleared on 2026-09-14 (see Item 11); the
+       dev DB now holds 6 users / 5 workspaces and no `@example.com` accounts or stray
+       `verification` rows. Server-side tags re-verified against the production entrypoint
        (`PORT=4555 bun packages/web/src/server.ts`): `/` and `/help/verify` each return their own
        `<title>` in the raw HTML, an unknown path returns the shell's defaults, `/assets/*` and
-       `/api/health` both 200.
+       `/api/health` both 200. Final pass: `bun run lint` 0 errors / 0 warnings on 401 files,
+       `bun run typecheck` green across web + mobile + desktop, `packages/web` `bun run build`
+       clean, `bun run db:push` reports no changes, both dev servers answer 200 on `/` and
+       `/api/health`, and the tree is committed and pushed (`c253d46`, level with origin/main).
+       Every live check behind items 11-20 is logged in the sections below.
 
 ## Deferred (deliberately)
 - ~~276 unreferenced i18n keys~~ — done, see Item 18.
