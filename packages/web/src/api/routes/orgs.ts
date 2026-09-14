@@ -9,7 +9,7 @@ import { planOf } from "../lib/plans";
 import { LOCALE_CODES } from "../lib/locales";
 import { avatarUrl, brandLogoUrl } from "./account";
 import { defaultOrgName } from "../lib/workspaces";
-import { trialEndFrom, trialPlanFor, trialStatus } from "../lib/trial";
+import { canStartTrial, trialEndFrom, trialPlanFor, trialStatus } from "../lib/trial";
 
 /**
  * One logo, two places to set it. A logo uploaded on a watermark template is also the business
@@ -54,9 +54,14 @@ export const orgs = {
      * auto-provisioned name, and no product has been chosen. Invited members are excluded by
      * `role` on the client — they joined someone else's Teamspace and must never be asked to
      * name it or pick its product.
+     *
+     * A platform operator's own workspace is never asked: it has both systems and no trial to
+     * start, so the form has nothing to decide, and the one thing it would still do is overwrite
+     * a workspace that has been in real use since before the question existed.
      */
     const needsSetup =
-      context.org.product === null || context.org.name === defaultOrgName(context.user);
+      !context.staffOrg &&
+      (context.org.product === null || context.org.name === defaultOrgName(context.user));
 
     return {
       // The column holds a bare storage key; clients get a freshly minted link, never the key.
@@ -99,10 +104,11 @@ export const orgs = {
    * is charged: the trial lives in its own two columns and simply stops counting after a week,
    * leaving the workspace on that product's free tier with its data intact. See `lib/trial.ts`.
    *
-   * Idempotent on the trial specifically — calling it twice never extends the week, because a
-   * workspace that already has a `trialEndsAt` keeps the one it has. That matters: onboarding is
-   * a form someone can submit twice on a bad connection, and re-running it must not be a way to
-   * farm free months by re-picking a product.
+   * Who the week is actually for is `canStartTrial` in `lib/trial.ts`, and it is narrower than
+   * "whoever submits this form": never twice, never over a paid plan, never on a platform
+   * operator's own workspace, and never on a workspace old enough to have been named already.
+   * The name and product are still saved in every one of those cases — only the clock is not
+   * started. Read that function for why each answer is the way it is.
    *
    * Owners and admins only. An invited member never reaches this — they joined a workspace that
    * has already been set up, and the client skips onboarding for them entirely.
@@ -126,7 +132,12 @@ export const orgs = {
           .where(eq(schema.user.id, context.user.id));
       }
 
-      const startTrial = !context.org.trialEndsAt;
+      const startTrial = canStartTrial({
+        plan: context.paidPlan,
+        trialEndsAt: context.org.trialEndsAt,
+        staffOwned: context.staffOrg,
+        brandNew: context.org.name === defaultOrgName(context.user),
+      });
       const now = new Date();
       const [org] = await db
         .update(schema.organizations)

@@ -5,9 +5,9 @@ import { auth } from "../auth";
 import { db } from "../database";
 import * as schema from "../database/schema";
 import { id, random, slugify } from "../lib/ids";
-import { loadPlans } from "../lib/plans";
+import { loadPlans, STAFF_PLAN_ID } from "../lib/plans";
 import { SUPPORT_EMAIL } from "../lib/support";
-import { effectivePlanId, trialStatus, type TrialStatus } from "../lib/trial";
+import { effectivePlanId, NO_TRIAL, trialStatus, type TrialStatus } from "../lib/trial";
 import { defaultOrgName } from "../lib/workspaces";
 
 export type Role = "owner" | "admin" | "manager" | "dispatcher" | "driver" | "field";
@@ -236,13 +236,22 @@ type OrgRow = typeof schema.organizations.$inferSelect;
  * that one — it is what "your current plan" means on the billing screen, and what a plan change
  * is compared against. Handing billing the trial plan would tell someone they already own
  * Business and make the upgrade button a no-op.
+ *
+ * A workspace owned by a platform operator resolves to the staff plan instead of whatever its
+ * column says: every feature of both systems, no limits, no trial. It is resolved per request
+ * from the `staff` table rather than written into the row, so revoking someone's staff role
+ * takes their workspace straight back to the plan it actually pays for, with nothing to undo.
  */
-function resolveOrg(org: OrgRow): { org: OrgRow; paidPlan: string; trial: TrialStatus } {
-  const plan = effectivePlanId(org);
+async function resolveOrg(
+  org: OrgRow,
+): Promise<{ org: OrgRow; paidPlan: string; trial: TrialStatus; staffOrg: boolean }> {
+  const staffOrg = (await staffRoleOf(org.ownerId)) !== null;
+  const plan = staffOrg ? STAFF_PLAN_ID : effectivePlanId(org);
   return {
     org: plan === org.plan ? org : { ...org, plan },
     paidPlan: org.plan,
-    trial: trialStatus(org),
+    trial: staffOrg ? NO_TRIAL : trialStatus(org),
+    staffOrg,
   };
 }
 
@@ -290,7 +299,7 @@ export const orgProc = authed.use(async ({ context, next }) => {
     const member = ranked[0];
     const org = member ? byId.get(member.orgId) : undefined;
     if (!member || !org) throw new ORPCError("NOT_FOUND", { message: "Workspace not found" });
-    return next({ context: { ...resolveOrg(org), role: member.role as Role, member } });
+    return next({ context: { ...(await resolveOrg(org)), role: member.role as Role, member } });
   }
 
   // The dashboard fires several queries at once on first load, so provisioning has to be
@@ -334,7 +343,7 @@ export const orgProc = authed.use(async ({ context, next }) => {
     .where(eq(schema.watermarkTemplates.orgId, orgId))
     .limit(1);
   if (templates.length > 0) {
-    return next({ context: { ...resolveOrg(org), role: member.role as Role, member } });
+    return next({ context: { ...(await resolveOrg(org)), role: member.role as Role, member } });
   }
 
   await db.insert(schema.watermarkTemplates).values([
@@ -371,7 +380,7 @@ export const orgProc = authed.use(async ({ context, next }) => {
     },
   ]);
 
-  return next({ context: { ...resolveOrg(org!), role: "owner" as Role, member: member! } });
+  return next({ context: { ...(await resolveOrg(org!)), role: "owner" as Role, member: member! } });
 });
 
 /**

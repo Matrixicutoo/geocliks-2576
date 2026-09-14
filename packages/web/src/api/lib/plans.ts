@@ -661,6 +661,53 @@ function hydrate(seed: Seed): Plan {
   return { ...seed, priceLabel: priceLabel(seed.priceCents) };
 }
 
+/**
+ * The plan a platform operator's own workspace runs on: both systems, nothing metered.
+ *
+ * It is deliberately NOT in `DEFAULT_PLANS`, so it is never seeded into the `plans` table,
+ * never listed on /pricing, never offered in the admin plan switcher, and cannot be edited or
+ * handed to a customer by accident. `planOf()` answers it by id and nothing else does.
+ *
+ * Every sold plan belongs to exactly one product line — the field plans zero out the delivery
+ * allowances and the delivery plans switch `fieldEnabled` off — because the two systems are
+ * sold apart. Staff are not buying either one: they answer support tickets about both and need
+ * to stand where the customer is standing, so this is the one plan with both sides on.
+ */
+export const STAFF_PLAN_ID = "staff";
+
+const STAFF_PLAN: Plan = hydrate({
+  id: STAFF_PLAN_ID,
+  name: "Platform Staff",
+  priceCents: 0,
+  period: "internal",
+  tagline: "Every feature of both systems, for the people who run the platform.",
+  features: ["Everything in every plan, on both the job photo and delivery sides"],
+  limits: {
+    photosPerMonth: -1,
+    videoMaxSeconds: 180,
+    videoTrialDays: 0,
+    projects: -1,
+    seats: 10000,
+    templates: -1,
+    teamspace: true,
+    shareLinks: true,
+    exports: ["pdf", "xlsx", "zip", "kmz"],
+    branding: true,
+    roles: true,
+    fieldEnabled: true,
+    deliveryStopsPerMonth: -1,
+    deliveryDrivers: -1,
+    deliveryDispatch: true,
+    deliverySmartOptimize: true,
+    deliveryTracking: true,
+    deliverySignature: true,
+  },
+  visible: false,
+  sortOrder: 9999,
+  autumnPlanId: null,
+  isCustom: false,
+});
+
 const DEFAULT_MAP: Record<string, Plan> = Object.fromEntries(
   DEFAULT_PLANS.map((p) => [p.id, hydrate(p)]),
 );
@@ -819,6 +866,8 @@ export function visiblePlans(): Plan[] {
 
 export function planOf(plan: string | null | undefined): Plan {
   const key = plan ?? "free";
+  // Answered in code, not from the table: the staff plan has no row to read. See STAFF_PLAN.
+  if (key === STAFF_PLAN_ID) return STAFF_PLAN;
   return cacheMap[key] ?? DEFAULT_MAP[key] ?? cacheMap.free ?? DEFAULT_MAP.free!;
 }
 

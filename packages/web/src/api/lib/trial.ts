@@ -91,12 +91,29 @@ export interface TrialStatus {
   expired: boolean;
 }
 
+/** The "nothing to say" status: no clock running, none ever ran, nothing lapsed. */
+export const NO_TRIAL: TrialStatus = {
+  active: false,
+  plan: null,
+  endsAt: null,
+  daysLeft: null,
+  expired: false,
+};
+
 export function trialStatus(org: TrialBearing, now: Date = new Date()): TrialStatus {
   const endsAt = org.trialEndsAt ?? null;
   const plan = org.trialPlan ?? null;
-  if (!endsAt || !plan) {
-    return { active: false, plan: null, endsAt: null, daysLeft: null, expired: false };
-  }
+  if (!endsAt || !plan) return NO_TRIAL;
+  /**
+   * A paid plan makes the trial a non-event, so nothing is allowed to speak about it.
+   *
+   * `effectivePlanId` below already lets the subscription win, which means a workspace with a
+   * plan underneath gains nothing from the clock and loses nothing when it stops. Reporting the
+   * trial anyway is how a paying customer ends up reading "Delivery Pro — 7 days left" over a
+   * dashboard they already own, and being pointed at a plan page to buy what they bought. The
+   * columns are left exactly as they are; they simply stop being anybody's business.
+   */
+  if (isPaid(org.plan)) return NO_TRIAL;
   const remaining = endsAt.getTime() - now.getTime();
   if (remaining <= 0) {
     return { active: false, plan: null, endsAt, daysLeft: 0, expired: true };
@@ -136,4 +153,42 @@ export function isPaid(planId: string | null | undefined): boolean {
 /** When a trial started now would run out. */
 export function trialEndFrom(start: Date = new Date()): Date {
   return new Date(start.getTime() + TRIAL_DAYS * 86_400_000);
+}
+
+/** Everything that decides whether onboarding is allowed to start the free week. */
+export interface TrialGrant {
+  /** The paid column, untouched by trials. */
+  plan: string;
+  /** Set once, the first time a trial is granted. */
+  trialEndsAt?: Date | null;
+  /** A platform operator's own workspace — not a customer, and never on a clock. */
+  staffOwned: boolean;
+  /**
+   * The workspace is genuinely fresh — still carrying the name it was auto-provisioned with.
+   * A workspace that already has a real business name went through an earlier onboarding, so
+   * whatever it is being asked now is a backfill, not a first run.
+   */
+  brandNew: boolean;
+}
+
+/**
+ * Who the free week is for: somebody who just arrived, has never had one, and owes us nothing.
+ *
+ * Each of the four answers is a way this went wrong in production rather than a hypothetical:
+ *
+ * - **Already trialled** — onboarding is a form that gets submitted twice on a bad connection,
+ *   and re-picking a product must never be a way to farm free weeks.
+ * - **Already paying** — the trial can only ever grant a customer less than they bought, and
+ *   the countdown strip over a paid dashboard reads as a downgrade nobody asked for.
+ * - **Staff-owned** — the platform's own operators have every feature by definition; putting
+ *   their workspace on a 7-day clock is a support ticket about ourselves.
+ * - **Not brand new** — a workspace from before the product question existed still answers it
+ *   one day, long after its first run. That answer is a backfill: it says which system to show,
+ *   and must not reach back and start a free week months into the account's life.
+ */
+export function canStartTrial(args: TrialGrant): boolean {
+  if (args.trialEndsAt) return false;
+  if (isPaid(args.plan)) return false;
+  if (args.staffOwned) return false;
+  return args.brandNew;
 }
