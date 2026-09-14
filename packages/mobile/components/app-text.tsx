@@ -1,3 +1,4 @@
+import type { Ref } from "react";
 import {
   Text as RNText,
   TextInput as RNTextInput,
@@ -23,8 +24,16 @@ export function Text({ maxFontSizeMultiplier = MAX_FONT_SCALE, ...rest }: TextPr
   return <RNText maxFontSizeMultiplier={maxFontSizeMultiplier} {...rest} />;
 }
 
-/** Drop-in replacement for react-native's TextInput with the font-scale ceiling applied. */
-export function TextInput({ maxFontSizeMultiplier = MAX_FONT_SCALE, ...rest }: TextInputProps) {
+/**
+ * Drop-in replacement for react-native's TextInput with the font-scale ceiling applied.
+ *
+ * `ref` is declared because callers need the imperative handle — focusing the OTP field when its
+ * step appears, for one. React 19 passes it through as an ordinary prop.
+ */
+export function TextInput({
+  maxFontSizeMultiplier = MAX_FONT_SCALE,
+  ...rest
+}: TextInputProps & { ref?: Ref<RNTextInput> }) {
   return <RNTextInput maxFontSizeMultiplier={maxFontSizeMultiplier} {...rest} />;
 }
 

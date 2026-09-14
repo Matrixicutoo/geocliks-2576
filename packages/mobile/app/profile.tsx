@@ -17,7 +17,6 @@ import { Text, TextInput } from "@/components/app-text";
 import { useColors } from "@/hooks/use-colors";
 import { Fonts } from "@/constants/theme";
 import { useT } from "@/lib/i18n";
-import { authClient } from "@/lib/auth";
 import { client } from "@/lib/api";
 import { signOutCompletely } from "@/lib/sign-out";
 import { usesAppStoreBilling } from "@/lib/purchases";

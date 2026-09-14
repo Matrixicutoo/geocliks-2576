@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import {
   ActivityIndicator,
   KeyboardAvoidingView,
@@ -6,6 +6,7 @@ import {
   Pressable,
   ScrollView,
   StyleSheet,
+  type TextInput as RNTextInput,
   View,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -70,11 +71,26 @@ export function AuthForm() {
 
   const [email, setEmail] = useState(invitedEmail);
   const [code, setCode] = useState("");
+  /**
+   * The OTP field, focused the moment the code step appears.
+   *
+   * `autoFocus` would do the same, but it is flagged for taking focus away from a screen reader's
+   * own reading order; driving it from a ref keeps the keyboard up on arrival without the
+   * attribute.
+   */
+  const codeInput = useRef<RNTextInput>(null);
   /** `email` collects the address, `code` spends the 6 digits mailed to it. */
   const [step, setStep] = useState<"email" | "code">("email");
   const [busy, setBusy] = useState<null | "google" | "x" | "send" | "verify">(null);
   const [error, setError] = useState<string | null>(null);
   const [cooldown, setCooldown] = useState(0);
+
+  // Keyboard up as soon as the code step arrives, so the 6 digits can be typed straight in.
+  useEffect(() => {
+    if (step !== "code") return;
+    const id = setTimeout(() => codeInput.current?.focus(), 50);
+    return () => clearTimeout(id);
+  }, [step]);
 
   // Ticks the resend countdown down to zero, one second at a time.
   useEffect(() => {
@@ -236,7 +252,7 @@ export function AuthForm() {
                 keyboardType="number-pad"
                 autoCapitalize="none"
                 autoCorrect={false}
-                autoFocus
+                ref={codeInput}
                 textContentType="oneTimeCode"
                 autoComplete="one-time-code"
                 accessibilityLabel={t("signin.codeLabel")}

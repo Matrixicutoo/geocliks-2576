@@ -14,7 +14,7 @@ import { injectSeoIntoHtml } from "../../src/web/lib/seo-html";
  * Applies only to a request with a URL. `vite build` also runs this hook, once,
  * with no request: the emitted `dist/index.html` must keep the sitewide
  * defaults, because it is the shell every route is rendered from and
- * `src/__server.ts` rewrites it per request.
+ * `src/server.ts` rewrites it per request.
  */
 export default function seoHtmlPlugin(): Plugin {
   return {

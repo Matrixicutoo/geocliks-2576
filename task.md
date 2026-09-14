@@ -110,10 +110,25 @@
        "Trial in progress / {plan} included until {date}" from `billing.overview.trial`, which
        closes the "billing says Free while the app hands you Business" gap noted below.
        13 `trial.*` keys added to all 11 web catalogs (`scripts/add-trial-keys.py`).
-14.[ ] gates: web typecheck/lint/build **all green** (re-run after the nav + trial UI work);
-       mobile `bun run typecheck` green after the auth rewrite (2026-09-14); db:push already
-       applied
-15.[ ] live verify, clean up dev test data, commit
+14.[x] gates, all re-run from the repo root on 2026-09-14 and green: `bun run lint`
+       (template integrity + 398 files, 0 errors), `bun run typecheck` (web, mobile, desktop),
+       `packages/web` `bun run build`. db:push already applied.
+       Two real failures were found and fixed in this pass, both from the SEO work:
+       - `packages/web/src/__server.ts` is template-managed and had been edited. Reverted to the
+         template; the per-request head-tag injection moved to `packages/web/src/server.ts`,
+         which is the platform's production entrypoint and ours to edit. `ecosystem.config.cjs`
+         and `packages/web` `start` now run `src/server.ts`.
+       - `vite/__plugins/seo-html-plugin.ts` used the reserved `__` prefix. Moved to
+         `vite/plugins/seo-html-plugin.ts`.
+       Plus two lint errors of our own: an unused `authClient` import in `app/profile.tsx`, and
+       `autoFocus` on the OTP field in `components/auth-form.tsx` (flagged by jsx-a11y) — the
+       field now focuses from a ref on the code step, so the keyboard still comes up. `TextInput`
+       in `components/app-text.tsx` takes a `ref` prop for it.
+15.[ ] live verify, clean up dev test data, commit. Dev test data is done (item 19). Server-side
+       tags re-verified on 2026-09-14 against the production entrypoint
+       (`PORT=4555 bun packages/web/src/server.ts`): `/` and `/help/verify` each return their own
+       `<title>` in the raw HTML, an unknown path returns the shell's defaults, `/assets/*` and
+       `/api/health` both 200.
 
 ## Deferred (deliberately)
 - ~~276 unreferenced i18n keys~~ — done, see Item 18.
