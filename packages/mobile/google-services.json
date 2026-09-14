@@ -7,6 +7,25 @@
   "client": [
     {
       "client_info": {
+        "mobilesdk_app_id": "1:222895504630:android:96a740f917cb12d17600d7",
+        "android_client_info": {
+          "package_name": "com.geocliks.app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCY9SdUfcPfFM1U573MuCg-JnQGXcIl2yE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
         "mobilesdk_app_id": "1:222895504630:android:91512c7a9da577507600d7",
         "android_client_info": {
           "package_name": "com.timemark_a7k2.runable"
