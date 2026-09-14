@@ -219,3 +219,38 @@
   JSON-LD in the DOM.
 - Not done, deliberately: no sample closeout-report asset (PDF #2 asks for a sanitized one, none
   supplied), and no field-service/delivery variants of the construction page.
+
+## Item 16 — super-admin wrongly enrolled in a free trial — DONE, verified 2026-09-14
+- Reported: the superadmin's own workspace ("Cat", `org_MTCE8SRQBM81BGT9XD`, owner
+  `matrixicutoo@gmail.com`) was showing as a free trial. Cause: that org predates the `product`
+  column, so `product === null` tripped `needsSetup` in `orgs.current` and pushed the owner
+  through first-run onboarding — and `orgs.setup` started the free week on ANY org without
+  `trialEndsAt`, so submitting the form wrote `trial_plan = "delivery-pro"` + a 7-day clock onto
+  a workspace already on the `business` plan.
+- `lib/trial.ts`: new exported `NO_TRIAL` constant, and `trialStatus()` returns it as soon as
+  `isPaid(org.plan)` — a paying workspace has no trial to report, so no strip, chip or banner.
+  New `canStartTrial({ plan, trialEndsAt, staffOwned, brandNew })` is now the single authority on
+  who gets the free week: no second trial, never on a paid plan, never on a staff workspace, and
+  only for an org still carrying its generated default name (i.e. genuinely first-run, not an
+  existing workspace being asked for its `product` late).
+- `lib/plans.ts`: `STAFF_PLAN_ID = "staff"` + a module-level `STAFF_PLAN` with `fieldEnabled` and
+  every delivery allowance unlimited. Deliberately NOT in `DEFAULT_PLANS`, so it is never seeded
+  into the `plans` table, never listed on /pricing and never offered in the admin plan switcher —
+  `planOf()` special-cases the id instead.
+- `middleware/auth.ts`: `resolveOrg()` is async and staff-aware. If `staffRoleOf(org.ownerId)`
+  returns a role, the effective plan becomes `staff` and the trial becomes `NO_TRIAL` regardless
+  of what the columns say, so a stale trial row cannot gate an operator. `paidPlan` still reports
+  the raw column, so /app/billing keeps telling the truth about the subscription. New
+  `context.staffOrg` on every `orgProc` request.
+- `routes/orgs.ts`: `needsSetup` is now `!context.staffOrg && (...)` — staff never see the
+  onboarding gate — and `setup` asks `canStartTrial(...)` instead of `!trialEndsAt`. Name and
+  product are still saved on every path; only the clock is conditional.
+- One-off data repair, outside git: `update organizations set trial_plan = null, trial_ends_at =
+  null where owner_id in (select user_id from staff)` — cleared the stale `delivery-pro` / 7-day
+  row. The code fix alone would have neutralised it, but the data is clean now too.
+- Verified in the browser signed in as the superadmin: sidebar reads "PLATFORM STAFF · OWNER",
+  `orgs.current` returns `plan.id = "staff"` with `fieldEnabled: true` and every delivery limit
+  `-1`, `trial` all-false/null, `needsSetup: false`; no trial strip anywhere in the DOM; both
+  `/app/captures` (field) and `/app/routes` (delivery) render real data. `/app/billing` still
+  shows Business $25 as the billed subscription, which is correct — that page reports `paidPlan`.
+- `bun run typecheck` clean.
