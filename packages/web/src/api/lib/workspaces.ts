@@ -1,7 +1,115 @@
-import { and, count, eq, gt, isNull, ne, or } from "drizzle-orm";
+import { and, count, eq, gt, inArray, isNull, ne, or } from "drizzle-orm";
 import { db } from "../database";
 import * as schema from "../database/schema";
+import { deleteObject } from "./s3";
 import { isPaid } from "./trial";
+
+/**
+ * Deletes a workspace and everything hanging off it — including the stored bytes of its captures.
+ *
+ * This schema has no foreign keys, so nothing cascades: every dependent table has to be named
+ * here. It lives in one place on purpose. The same purge used to be written out by hand in the
+ * self-serve account deletion, the admin console's user deletion, and the empty-workspace
+ * cleanup below, and all three had drifted — messages, push tokens and the whole delivery side
+ * (routes, stops, events) survived their own workspace, and the admin path left every photo's
+ * bytes in storage. Add a workspace-scoped table to the schema, add it here.
+ */
+export async function purgeWorkspace(orgId: string): Promise<void> {
+  const photos = await db
+    .select({ storageKey: schema.photos.storageKey, posterKey: schema.photos.posterKey })
+    .from(schema.photos)
+    .where(eq(schema.photos.orgId, orgId));
+  for (const photo of photos) {
+    await deleteObject(photo.storageKey).catch(() => false);
+    if (photo.posterKey) await deleteObject(photo.posterKey).catch(() => false);
+  }
+
+  // Captures and their audit trail.
+  await db.delete(schema.photoEvents).where(eq(schema.photoEvents.orgId, orgId));
+  await db.delete(schema.photos).where(eq(schema.photos.orgId, orgId));
+  await db.delete(schema.comparisons).where(eq(schema.comparisons.orgId, orgId));
+  await db.delete(schema.reports).where(eq(schema.reports.orgId, orgId));
+  await db.delete(schema.shareLinks).where(eq(schema.shareLinks.orgId, orgId));
+  await db.delete(schema.watermarkTemplates).where(eq(schema.watermarkTemplates.orgId, orgId));
+
+  // Work: jobs and delivery routes.
+  await db.delete(schema.projectAssignments).where(eq(schema.projectAssignments.orgId, orgId));
+  await db.delete(schema.projects).where(eq(schema.projects.orgId, orgId));
+  await db.delete(schema.routeEvents).where(eq(schema.routeEvents.orgId, orgId));
+  await db.delete(schema.routeStops).where(eq(schema.routeStops.orgId, orgId));
+  await db.delete(schema.routes).where(eq(schema.routes.orgId, orgId));
+
+  // Internal messaging. Read cursors key off the conversation, so they go first.
+  const conversations = await db
+    .select({ id: schema.conversations.id })
+    .from(schema.conversations)
+    .where(eq(schema.conversations.orgId, orgId));
+  for (let i = 0; i < conversations.length; i += 100) {
+    const slice = conversations.slice(i, i + 100).map((c) => c.id);
+    await db.delete(schema.messageReads).where(inArray(schema.messageReads.conversationId, slice));
+  }
+  await db.delete(schema.messages).where(eq(schema.messages.orgId, orgId));
+  await db.delete(schema.conversations).where(eq(schema.conversations.orgId, orgId));
+
+  // The workspace itself.
+  await db.delete(schema.invites).where(eq(schema.invites.orgId, orgId));
+  await db.delete(schema.subscriptions).where(eq(schema.subscriptions.orgId, orgId));
+  await db.delete(schema.members).where(eq(schema.members.orgId, orgId));
+  await db.delete(schema.organizations).where(eq(schema.organizations.id, orgId));
+}
+
+/**
+ * Deletes an identity and everything keyed to the person rather than to a workspace: their
+ * avatar, devices, memberships elsewhere, and the 1:1 conversations they are half of.
+ *
+ * Call `purgeWorkspace` for anything they own first — this does not look at ownership. The
+ * `staff` row goes too: a deleted account must not leave a platform-staff grant behind that a
+ * re-registration of the same user id could inherit.
+ */
+export async function purgeUser(userId: string): Promise<void> {
+  const [user] = await db
+    .select({ image: schema.user.image })
+    .from(schema.user)
+    .where(eq(schema.user.id, userId))
+    .limit(1);
+  if (user?.image && !user.image.startsWith("http")) {
+    await deleteObject(user.image).catch(() => false);
+  }
+
+  const conversations = await db
+    .select({ id: schema.conversations.id })
+    .from(schema.conversations)
+    .where(
+      or(eq(schema.conversations.userAId, userId), eq(schema.conversations.userBId, userId)),
+    );
+  for (let i = 0; i < conversations.length; i += 100) {
+    const slice = conversations.slice(i, i + 100).map((c) => c.id);
+    await db.delete(schema.messageReads).where(inArray(schema.messageReads.conversationId, slice));
+    await db.delete(schema.messages).where(inArray(schema.messages.conversationId, slice));
+  }
+  if (conversations.length > 0) {
+    await db.delete(schema.conversations).where(
+      inArray(
+        schema.conversations.id,
+        conversations.map((c) => c.id),
+      ),
+    );
+  }
+  await db.delete(schema.messageReads).where(eq(schema.messageReads.userId, userId));
+
+  await db.delete(schema.projectAssignments).where(eq(schema.projectAssignments.userId, userId));
+  await db.delete(schema.members).where(eq(schema.members.userId, userId));
+  await db.delete(schema.pushTokens).where(eq(schema.pushTokens.userId, userId));
+  await db
+    .delete(schema.impersonations)
+    .where(or(eq(schema.impersonations.userId, userId), eq(schema.impersonations.actorId, userId)));
+  await db.delete(schema.userStatus).where(eq(schema.userStatus.userId, userId));
+  await db.delete(schema.staff).where(eq(schema.staff.userId, userId));
+  await db.delete(schema.twoFactor).where(eq(schema.twoFactor.userId, userId));
+  await db.delete(schema.session).where(eq(schema.session.userId, userId));
+  await db.delete(schema.account).where(eq(schema.account.userId, userId));
+  await db.delete(schema.user).where(eq(schema.user.id, userId));
+}
 
 /**
  * The name `orgProc` gives a freshly auto-provisioned workspace. It lives here so the sign-up
@@ -54,11 +162,7 @@ export async function dropEmptyPersonalWorkspace(
     .where(and(eq(schema.members.orgId, orgId), ne(schema.members.userId, userId)));
   if ((others?.value ?? 0) > 0) return false;
 
-  await db.delete(schema.watermarkTemplates).where(eq(schema.watermarkTemplates.orgId, orgId));
-  await db.delete(schema.invites).where(eq(schema.invites.orgId, orgId));
-  await db.delete(schema.subscriptions).where(eq(schema.subscriptions.orgId, orgId));
-  await db.delete(schema.members).where(eq(schema.members.orgId, orgId));
-  await db.delete(schema.organizations).where(eq(schema.organizations.id, orgId));
+  await purgeWorkspace(orgId);
   return true;
 }
 

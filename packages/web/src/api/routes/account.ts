@@ -1,11 +1,12 @@
 import { z } from "zod";
-import { eq, inArray } from "drizzle-orm";
+import { eq } from "drizzle-orm";
 import { ORPCError } from "@orpc/server";
 import { authed, orgProc } from "../middleware/auth";
 import { db } from "../database";
 import * as schema from "../database/schema";
 import { deleteObject, presignGet, presignPut } from "../lib/s3";
 import { id } from "../lib/ids";
+import { purgeUser, purgeWorkspace } from "../lib/workspaces";
 
 const safeName = (name: string) => name.replace(/[^a-zA-Z0-9._-]/g, "_").slice(-60);
 
@@ -137,63 +138,8 @@ export const account = {
         throw new ORPCError("FORBIDDEN", { message: FIELD_DELETE_DENIED });
       }
 
-      if (owns) {
-        const photos = await db
-          .select({
-            id: schema.photos.id,
-            storageKey: schema.photos.storageKey,
-            posterKey: schema.photos.posterKey,
-          })
-          .from(schema.photos)
-          .where(eq(schema.photos.orgId, orgId));
-
-        for (const photo of photos) {
-          await deleteObject(photo.storageKey).catch(() => false);
-          if (photo.posterKey) await deleteObject(photo.posterKey).catch(() => false);
-        }
-        const photoIds = photos.map((p) => p.id);
-        for (let i = 0; i < photoIds.length; i += 100) {
-          const slice = photoIds.slice(i, i + 100);
-          await db.delete(schema.photoEvents).where(inArray(schema.photoEvents.photoId, slice));
-        }
-
-        await db.delete(schema.photos).where(eq(schema.photos.orgId, orgId));
-        await db.delete(schema.comparisons).where(eq(schema.comparisons.orgId, orgId));
-        await db.delete(schema.reports).where(eq(schema.reports.orgId, orgId));
-        await db.delete(schema.shareLinks).where(eq(schema.shareLinks.orgId, orgId));
-        await db
-          .delete(schema.watermarkTemplates)
-          .where(eq(schema.watermarkTemplates.orgId, orgId));
-        const projects = await db
-          .select({ id: schema.projects.id })
-          .from(schema.projects)
-          .where(eq(schema.projects.orgId, orgId));
-        if (projects.length > 0) {
-          await db.delete(schema.projectAssignments).where(
-            inArray(
-              schema.projectAssignments.projectId,
-              projects.map((p) => p.id),
-            ),
-          );
-        }
-        await db.delete(schema.projects).where(eq(schema.projects.orgId, orgId));
-        await db.delete(schema.invites).where(eq(schema.invites.orgId, orgId));
-        await db.delete(schema.members).where(eq(schema.members.orgId, orgId));
-        await db.delete(schema.subscriptions).where(eq(schema.subscriptions.orgId, orgId));
-        await db.delete(schema.organizations).where(eq(schema.organizations.id, orgId));
-      } else {
-        await db.delete(schema.members).where(eq(schema.members.userId, userId));
-      }
-
-      if (context.user.image && !context.user.image.startsWith("http")) {
-        await deleteObject(context.user.image).catch(() => false);
-      }
-
-      await db.delete(schema.userStatus).where(eq(schema.userStatus.userId, userId));
-      await db.delete(schema.staff).where(eq(schema.staff.userId, userId));
-      await db.delete(schema.session).where(eq(schema.session.userId, userId));
-      await db.delete(schema.account).where(eq(schema.account.userId, userId));
-      await db.delete(schema.user).where(eq(schema.user.id, userId));
+      if (owns) await purgeWorkspace(orgId);
+      await purgeUser(userId);
 
       return { ok: true as const };
     }),

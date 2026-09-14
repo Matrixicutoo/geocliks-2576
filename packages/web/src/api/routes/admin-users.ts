@@ -11,6 +11,7 @@ import {
 } from "../middleware/auth";
 import { allPlans, planOf } from "../lib/plans";
 import { id } from "../lib/ids";
+import { purgeUser, purgeWorkspace } from "../lib/workspaces";
 
 export const adminUsers = {
   /** Every user on the platform with workspace, role, staff flag and suspension state. */
@@ -184,28 +185,8 @@ export const adminUsers = {
       .from(schema.organizations)
       .where(eq(schema.organizations.ownerId, input.userId));
 
-    for (const org of ownedOrgs) {
-      await db.delete(schema.photoEvents).where(eq(schema.photoEvents.orgId, org.id));
-      await db.delete(schema.photos).where(eq(schema.photos.orgId, org.id));
-      await db.delete(schema.comparisons).where(eq(schema.comparisons.orgId, org.id));
-      await db.delete(schema.reports).where(eq(schema.reports.orgId, org.id));
-      await db.delete(schema.shareLinks).where(eq(schema.shareLinks.orgId, org.id));
-      await db.delete(schema.watermarkTemplates).where(eq(schema.watermarkTemplates.orgId, org.id));
-      await db.delete(schema.projectAssignments).where(eq(schema.projectAssignments.orgId, org.id));
-      await db.delete(schema.projects).where(eq(schema.projects.orgId, org.id));
-      await db.delete(schema.invites).where(eq(schema.invites.orgId, org.id));
-      await db.delete(schema.members).where(eq(schema.members.orgId, org.id));
-      await db.delete(schema.subscriptions).where(eq(schema.subscriptions.orgId, org.id));
-      await db.delete(schema.organizations).where(eq(schema.organizations.id, org.id));
-    }
-
-    await db.delete(schema.members).where(eq(schema.members.userId, input.userId));
-    await db.delete(schema.staff).where(eq(schema.staff.userId, input.userId));
-    await db.delete(schema.userStatus).where(eq(schema.userStatus.userId, input.userId));
-    await db.delete(schema.impersonations).where(eq(schema.impersonations.userId, input.userId));
-    await db.delete(schema.session).where(eq(schema.session.userId, input.userId));
-    await db.delete(schema.account).where(eq(schema.account.userId, input.userId));
-    await db.delete(schema.user).where(eq(schema.user.id, input.userId));
+    for (const org of ownedOrgs) await purgeWorkspace(org.id);
+    await purgeUser(input.userId);
 
     await logAdmin(context.actor.id, "user.delete", input.userId, target.email);
     return { ok: true };
