@@ -291,3 +291,38 @@
   real field data (3 projects, 8 captures, chart by project) — so the field tools are reachable
   for this account, not just the links.
 - `bun run typecheck` clean in both `packages/web` and `packages/mobile`.
+
+## Item 18 — 272 dead i18n keys removed from the web catalogs — DONE, verified 2026-09-14
+- Was deferred as "276 unreferenced keys". Real count after re-running the sweep: 272 across all
+  11 web catalogs (3,300 lines gone, deletions only). Mostly legacy mobile-screen strings that
+  had been mirrored into the web catalogs and never rendered there — `capture.*` (52),
+  `signin.*` (43, the old password/sign-up form), `run.*` (36), `plans.*` IAP strings (20),
+  `reset.*` (16), `twofa.*` (14), `tabs.*`, `queue.*`.
+- `scripts/find-dead-keys.py` fixed and hardened. Two bugs in the saved copy:
+  - the exclude glob was `!web/i18n/*`, which rg matches against the whole path, so the
+    catalogs were scanned as sources and every key looked used. Now `!**/web/i18n/*`.
+  - no awareness of template-literal keys. `index.tsx` built `home.delivery.t${n}.name` and
+    cast it to TKey, so neither the compiler nor the sweep could see t4..t7. The first pass
+    deleted them and the landing page rendered the raw key "home.delivery.t4.name" — caught in
+    the browser, not by typecheck. The script now collects static heads of interpolated keys
+    and keeps everything under them, and prints the prefixes it is honouring.
+  - that prefix scan is scoped to `src/web` (where `t()` is called). Scanning the API too
+    dragged in ordinary string building like `${code}-evidence.${ext}` and protected five
+    genuinely dead `evidence.*` keys.
+- `pages/index.tsx`: the four "more delivery types" tiles are spelled out as literal keys
+  instead of a `t${n}` loop, so the compiler checks them and the sweep can see them. This is the
+  real fix for the class of bug above — a cast-to-TKey template is invisible to both.
+- New `scripts/drop-dead-keys.py` does the removal across all 11 catalogs: handles one-line
+  entries, wrapped entries whose value continues on indented lines, and drops a group comment
+  only when every key under it goes (2 orphaned headings removed: "Mobile tabs", "Capture
+  screen"). Preserves the trailing newline and the blank line before `export type Catalog`.
+- Verified beyond typecheck, because `as TKey` casts mean typecheck is NOT sufficient here:
+  swept every rendered page for anything shaped like a raw key. Public pages (`/`, `/#pricing`,
+  `/sign-in`, `/get-app`, `/help`, both search landing pages) in 6 locales — en, fr-CA, es, zh,
+  ar, pl — via a clean browser context so the marketing site was not redirected to /app; then
+  signed in as the superadmin across all 15 `/app` routes plus a project detail page, a route
+  detail page, `/app/routes/new` and a deliberately bad project id (the `project.fallbackTitle`
+  / `project.deleted` path). Zero raw keys anywhere.
+- `bun run typecheck` clean. en.ts: 1266 -> 994 keys, sweep now reports 0 unreferenced.
+- NOT touched: `packages/mobile/i18n/*`. Those catalogs are consumed by the phone app and were
+  never in scope; the web sweep says nothing about them. A separate pass if it is ever wanted.

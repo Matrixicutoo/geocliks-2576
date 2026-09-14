@@ -477,10 +477,16 @@ function Delivery() {
     },
   ];
 
-  const more = ([4, 5, 6, 7] as const).map((n) => ({
-    name: `home.delivery.t${n}.name` as TKey,
-    body: `home.delivery.t${n}.body` as TKey,
-  }));
+  /* Spelled out rather than built from `t${n}` in a loop. The interpolated version cast to
+     TKey, so the compiler could not see these four keys and neither could the dead-key
+     sweep — it reported them unused and a first pass deleted them, which put the raw
+     "home.delivery.t4.name" on the page. Written as literals they are checked again. */
+  const more = [
+    { name: "home.delivery.t4.name" as TKey, body: "home.delivery.t4.body" as TKey },
+    { name: "home.delivery.t5.name" as TKey, body: "home.delivery.t5.body" as TKey },
+    { name: "home.delivery.t6.name" as TKey, body: "home.delivery.t6.body" as TKey },
+    { name: "home.delivery.t7.name" as TKey, body: "home.delivery.t7.body" as TKey },
+  ];
 
   return (
     <section id="delivery" className="border-b border-line bg-ink-2/40">
