@@ -116,15 +116,9 @@
 15.[ ] live verify, clean up dev test data, commit
 
 ## Deferred (deliberately)
-- **276 unreferenced i18n keys** in `web/i18n/en.ts` (legacy `common.*`, `capture.*`, `run.*`,
-  `reset.*`, `twofa.*`, old password/sign-up `signin.*`/`profile.*` strings). Found with
-  `scripts/find-dead-keys.py` — note the saved copy still has a broken exclude glob, use
-  `-g "!**/web/i18n/*"`. Left alone: a 276-key bulk delete across 11 catalogs is its own task.
-- Dev DB test data: `otptest1@`, `rosacrew1@`, `marcofield1@`, `marcofield9@`, `otploop9@`
-  `example.com`, org "Northwind Roofing" (now "Ortiz Roofing Co"), `freshowner7@`, `luiscrew3@`,
-  `omardriver2@`, org "Shah Logistics" (its `product` is currently `field` from the item 12
-  test, and its `trial_ends_at` was backdated and restored during the item 13 test), several
-  consumed invite codes.
+- ~~276 unreferenced i18n keys~~ — done, see Item 18.
+- ~~Dev DB test data~~ — done, see Item 19.
+- `packages/mobile/i18n/*` has never had a dead-key sweep. The web pass says nothing about it.
 
 ## Verified live (dev server, 2026-09-13)
 - `send-verification-otp` → `sign-in/email-otp` mints a verified user + session (curl + browser).
@@ -326,3 +320,52 @@
 - `bun run typecheck` clean. en.ts: 1266 -> 994 keys, sweep now reports 0 unreferenced.
 - NOT touched: `packages/mobile/i18n/*`. Those catalogs are consumed by the phone app and were
   never in scope; the web sweep says nothing about them. A separate pass if it is ever wanted.
+
+## Item 19 — dev DB test data cleared, and the delete paths that made the mess — DONE, verified 2026-09-14
+- The last deferred item. Inventoried first with a read-only `scripts/list-test-data.ts`
+  (workspaces with owner/plan/trial/counts, every invite, the `staff` table, row counts), then
+  cleared with `scripts/clear-test-data.ts` — dry run by default, `--apply` to commit, the whole
+  thing in one transaction. Both scripts stay local: `/scripts/` is gitignored by this repo.
+- Removed: 10 users (9 `@example.com` OTP/invite testers plus `crew.test1788479@timemark.dev`),
+  11 workspaces, 17 invites. Every workspace taken was empty — 0 projects, 0 photos, 0 routes —
+  and 7 of the 11 were abandoned sign-ups whose owner row was already gone ("Nav Test's Team" x3,
+  "Chrome Test's Team" x3, "Gisele Cormier's Team"). Named test workspaces went with their
+  owners: Northwind Roofing, Ortiz Roofing Co, Shah Logistics, mobileotp3's Team — so the
+  mutated `product`/`trial_ends_at` on Shah Logistics from the item 12/13 tests is moot.
+- Kept, on the user's call: the `ops.admin1788258771@timemark.dev` workspace (6 projects,
+  3 routes — it is the demo data) with only its `crew.test` member removed, all accepted invites,
+  and every real account. Platform staff and staff-owned workspaces are excluded by construction,
+  not by judgement: the script reads `staff` first and subtracts it, because losing the
+  superadmin's own workspace locks the admin console.
+- Invite pruning: all `revoked` rows and the `@geocliks-test.dev` ones, accepted history kept.
+- **The cleanup surfaced a real bug** (Item 20 below) — the orphans it found were not created by
+  this cleanup: 310 photo events, 8 messages, 5 push tokens and 1 assignment had been left
+  behind by *earlier* deletions through the app itself.
+- After both passes: an every-table foreign-key check (24 parent/child pairs) reports no orphaned
+  rows anywhere. 6 users, 5 workspaces, 8 invites remain; the admin console agrees (USERS 6,
+  WORKSPACES 5, MRR $250) and all 15 `/app` routes plus all 4 `/admin` pages render without an
+  error, signed in as the superadmin, with the session intact.
+
+## Item 20 — deleting an account left half of it behind — DONE, verified 2026-09-14
+- Found while clearing the dev DB, not reported. Three separate hand-written copies of "delete
+  everything belonging to this user/workspace": `routes/account.ts` (self-serve), 
+  `routes/admin-users.ts` (admin console), `lib/workspaces.ts` (empty-personal-workspace
+  cleanup). They had drifted, and there are no foreign keys in this schema, so nothing cascades
+  and whatever a copy forgot to name simply survived.
+- What survived a delete: the entire delivery side (`routes`, `route_stops`, `route_events`),
+  all messaging (`conversations`, `messages`, `message_reads`), and `push_tokens` — a deleted
+  account's devices would still be sent notifications. `two_factor` rows too. The admin path
+  additionally deleted no stored bytes at all, so every capture's image stayed in S3 after its
+  workspace was gone, and it never cleared the owner's avatar.
+- Fixed by naming every dependent table exactly once: `purgeWorkspace(orgId)` and
+  `purgeUser(userId)` in `api/lib/workspaces.ts`, children before parents, storage objects
+  included. All three call sites now call them; ~60 lines of duplicated deletes replaced.
+  Rule for later: a new workspace- or user-scoped table gets a line in there.
+- Pre-existing orphans cleared in the same pass, scoped to rows whose parent is already gone, so
+  it is safe to re-run: 310 photo events, 8 messages, 5 push tokens, 1 project assignment.
+- Verified by `scripts/verify-purge.ts`: seeds a throwaway user + workspace with a row in all 23
+  dependent tables (project, assignment, photo + event, route + stop + event, share link,
+  report, comparison, watermark template, invite, subscription, conversation + message + read
+  cursor, push token, session, account, user status), purges, then checks every table in the
+  database for survivors AND re-runs the orphan sweep. PASS, and it is re-runnable.
+- `bun run typecheck` clean in `packages/web` and `packages/mobile`. Commit `8f05223`.
