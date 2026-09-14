@@ -84,6 +84,39 @@ const EMPTY_FIX: Fix = {
   address: null,
 };
 
+/** One readable line out of a reverse-geocode hit, best part first. */
+function addressLineOf(place: Location.LocationGeocodedAddress): string | null {
+  const line = [
+    [place.streetNumber, place.street].filter(Boolean).join(" "),
+    place.city ?? place.subregion,
+    place.region,
+    place.postalCode,
+  ]
+    .filter(Boolean)
+    .join(", ");
+  return line || null;
+}
+
+/** Straight-line metres between two fixes — used to decide when the address is stale. */
+function metersBetween(
+  aLat: number,
+  aLng: number,
+  bLat: number,
+  bLng: number,
+): number {
+  const R = 6_371_000;
+  const toRad = (d: number) => (d * Math.PI) / 180;
+  const dLat = toRad(bLat - aLat);
+  const dLng = toRad(bLng - aLng);
+  const h =
+    Math.sin(dLat / 2) ** 2 +
+    Math.cos(toRad(aLat)) * Math.cos(toRad(bLat)) * Math.sin(dLng / 2) ** 2;
+  return 2 * R * Math.asin(Math.sqrt(h));
+}
+
+/** Re-geocode once the device has moved this far from the point the address was read at. */
+const ADDRESS_REFRESH_M = 40;
+
 function clock(seconds: number) {
   const m = Math.floor(seconds / 60);
   const s = seconds % 60;
@@ -246,6 +279,69 @@ export default function Capture() {
     return () => clearInterval(timer);
   }, [recording]);
 
+  /**
+   * The fix has to be the one true at SHUTTER time, not the one that was true when this screen
+   * opened. A single reading on mount is what made a whole day of driving stamp every photo with
+   * the coordinate of wherever the app was first opened — the pins landed on top of each other
+   * and every address but the first degraded to the city, because they were all reverse-geocoded
+   * from the same stale point. So the position is watched for as long as the screen is up, and
+   * the shutter reads `fixRef` rather than React state (state is a render behind).
+   */
+  const fixRef = useRef<Fix>(EMPTY_FIX);
+  /** Where the current address string was resolved — the address is only re-read after moving. */
+  const geocodedAt = useRef<{ lat: number; lng: number } | null>(null);
+  const geocoding = useRef(false);
+
+  const applyPosition = useCallback((position: Location.LocationObject) => {
+    const lat = position.coords.latitude;
+    const lng = position.coords.longitude;
+    const moved =
+      geocodedAt.current === null ||
+      metersBetween(geocodedAt.current.lat, geocodedAt.current.lng, lat, lng) >
+        ADDRESS_REFRESH_M;
+    const next: Fix = {
+      lat,
+      lng,
+      accuracyM: position.coords.accuracy ?? null,
+      altitudeM: position.coords.altitude ?? null,
+      heading: position.coords.heading ?? null,
+      // Keep showing the last address until a closer one arrives, but never carry one that
+      // belongs to a place we have already left.
+      address: moved ? null : fixRef.current.address,
+    };
+    fixRef.current = next;
+    setFix(next);
+
+    if (!moved || geocoding.current) return;
+    geocoding.current = true;
+    void (async () => {
+      try {
+        const [place] = await Location.reverseGeocodeAsync({
+          latitude: lat,
+          longitude: lng,
+        });
+        if (place) {
+          const line = addressLineOf(place);
+          geocodedAt.current = { lat, lng };
+          // Only stamp it if the device is still near where this address was resolved.
+          const now = fixRef.current;
+          if (
+            now.lat != null &&
+            now.lng != null &&
+            metersBetween(lat, lng, now.lat, now.lng) <= ADDRESS_REFRESH_M
+          ) {
+            fixRef.current = { ...now, address: line };
+            setFix((prev) => ({ ...prev, address: line }));
+          }
+        }
+      } catch {
+        /* reverse geocode is best-effort — the coordinates are the evidence */
+      } finally {
+        geocoding.current = false;
+      }
+    })();
+  }, []);
+
   const refreshFix = useCallback(async () => {
     try {
       const { status: perm } = await Location.requestForegroundPermissionsAsync();
@@ -254,45 +350,53 @@ export default function Capture() {
         return;
       }
       setLocDenied(false);
+      geocodedAt.current = null;
       const position = await Location.getCurrentPositionAsync({
         accuracy: Location.Accuracy.High,
       });
-      const next: Fix = {
-        lat: position.coords.latitude,
-        lng: position.coords.longitude,
-        accuracyM: position.coords.accuracy ?? null,
-        altitudeM: position.coords.altitude ?? null,
-        heading: position.coords.heading ?? null,
-        address: null,
-      };
-      setFix(next);
-      try {
-        const [place] = await Location.reverseGeocodeAsync({
-          latitude: next.lat!,
-          longitude: next.lng!,
-        });
-        if (place) {
-          const line = [
-            [place.streetNumber, place.street].filter(Boolean).join(" "),
-            place.city ?? place.subregion,
-            place.region,
-            place.postalCode,
-          ]
-            .filter(Boolean)
-            .join(", ");
-          setFix((prev) => ({ ...prev, address: line || null }));
-        }
-      } catch {
-        /* reverse geocode is best-effort */
-      }
+      applyPosition(position);
     } catch {
       setLocDenied(true);
     }
-  }, []);
+  }, [applyPosition]);
 
+  // Watch the position for as long as the capture screen is open, so the readout on the frame and
+  // the fix sealed into the shot are the same live value.
   useEffect(() => {
-    void refreshFix();
-  }, [refreshFix]);
+    let sub: Location.LocationSubscription | null = null;
+    let cancelled = false;
+    void (async () => {
+      try {
+        const { status: perm } = await Location.requestForegroundPermissionsAsync();
+        if (perm !== "granted") {
+          setLocDenied(true);
+          return;
+        }
+        setLocDenied(false);
+        const first = await Location.getCurrentPositionAsync({
+          accuracy: Location.Accuracy.High,
+        });
+        if (cancelled) return;
+        applyPosition(first);
+        sub = await Location.watchPositionAsync(
+          {
+            accuracy: Location.Accuracy.High,
+            timeInterval: 2000,
+            distanceInterval: 5,
+          },
+          (position) => {
+            if (!cancelled) applyPosition(position);
+          },
+        );
+      } catch {
+        if (!cancelled) setLocDenied(true);
+      }
+    })();
+    return () => {
+      cancelled = true;
+      sub?.remove();
+    };
+  }, [applyPosition]);
 
   // Re-measure the device clock against the server whenever the capture screen opens.
   // Offline this is a no-op that keeps the last good offset.
@@ -321,6 +425,9 @@ export default function Capture() {
       // Stamp the capture with the clock offset that was true at shutter time. Read
       // from storage, so it works with no signal — that is the whole point.
       const clockStamp = await clockStampForCapture();
+      // Same rule for place as for time: the fix sealed in is the one live at shutter, read from
+      // the ref the watcher keeps current rather than from state, which lags a render behind.
+      const shotFix = fixRef.current;
       const finalTag = extra.tag ?? tag;
       const pod = finalTag === "pickup" || finalTag === "delivery";
       const item: QueuedPhoto = {
@@ -333,12 +440,12 @@ export default function Capture() {
         projectName: project?.name ?? null,
         tag: finalTag,
         note: null,
-        lat: fix.lat,
-        lng: fix.lng,
-        accuracyM: fix.accuracyM,
-        altitudeM: fix.altitudeM,
-        heading: fix.heading,
-        address: fix.address,
+        lat: shotFix.lat,
+        lng: shotFix.lng,
+        accuracyM: shotFix.accuracyM,
+        altitudeM: shotFix.altitudeM,
+        heading: shotFix.heading,
+        address: shotFix.address,
         width,
         height,
         templateId: template?.id ?? null,
@@ -393,7 +500,8 @@ export default function Capture() {
       setTimeout(() => setStatus(null), 4000);
     },
     [
-      fix,
+      // `fix` is deliberately absent: the shutter reads `fixRef`, so rebuilding this on every
+      // position update (twice a second while driving) would buy nothing.
       hasSession,
       invalidate,
       params.note,
