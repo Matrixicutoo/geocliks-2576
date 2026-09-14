@@ -270,6 +270,9 @@ export const pl: Catalog = {
   "plans.stripeNote": "Bezpieczna płatność przez Stripe. Anuluj w każdej chwili.",
   "plans.appleNote":
     "Rozliczenie przez Twoje Apple ID. Zarządzaj lub anuluj w ustawieniach App Store.",
+  "plans.currentOnly":
+    "To plan Twojej przestrzeni roboczej. Wszystko, co obejmuje, działa już na tym telefonie.",
+  "plans.noChangesHere": "Zmiany planu nie są obsługiwane w tej aplikacji.",
   "plans.restore": "Przywróć zakupy",
   "plans.restored": "Zakup przywrócony.",
   "plans.nothingToRestore": "Nie znaleziono zakupu do przywrócenia.",

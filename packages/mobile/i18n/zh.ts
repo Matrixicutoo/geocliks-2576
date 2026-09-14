@@ -259,6 +259,9 @@ export const zh: Catalog = {
   "plans.ownerOnly": "只有工作区所有者才能更改套餐。",
   "plans.stripeNote": "由 Stripe 提供安全付款，可随时取消。",
   "plans.appleNote": "通过你的 Apple ID 计费。可在 App Store 设置中管理或取消。",
+  "plans.currentOnly":
+    "这是你的工作区所用的方案。其包含的功能在这台手机上均已生效。",
+  "plans.noChangesHere": "本应用不支持更改方案。",
   "plans.restore": "恢复购买",
   "plans.restored": "已恢复购买。",
   "plans.nothingToRestore": "未找到可恢复的购买。",

@@ -19,7 +19,7 @@ import { Fonts } from "@/constants/theme";
 import { useT } from "@/lib/i18n";
 import { client } from "@/lib/api";
 import { signOutCompletely } from "@/lib/sign-out";
-import { usesAppStoreBilling } from "@/lib/purchases";
+import { sellsSubscriptions, usesAppStoreBilling } from "@/lib/purchases";
 import { useOrg, useUpdateOrg } from "@/queries/orgs";
 import { useDeleteAccount, useUpdateProfile } from "@/queries/account";
 
@@ -408,18 +408,28 @@ export default function Profile() {
                   {(org.data?.plan.name ?? "").toUpperCase()}
                 </Text>
               </View>
-              <Pressable
-                onPress={() => router.push("/plans")}
-                style={[styles.primary, { backgroundColor: colors.amber }]}
-              >
-                <Ionicons name="arrow-up-circle-outline" size={16} color={colors.background} />
-                <Text style={[styles.primaryText, { color: colors.background }]}>
-                  {tr("profile.upgrade")}
+              {/* Play forbids both selling outside its billing and pointing at somewhere that
+                  does, so the Android build offers no upgrade at all — see sellsSubscriptions(). */}
+              {sellsSubscriptions() ? (
+                <>
+                  <Pressable
+                    onPress={() => router.push("/plans")}
+                    style={[styles.primary, { backgroundColor: colors.amber }]}
+                  >
+                    <Ionicons name="arrow-up-circle-outline" size={16} color={colors.background} />
+                    <Text style={[styles.primaryText, { color: colors.background }]}>
+                      {tr("profile.upgrade")}
+                    </Text>
+                  </Pressable>
+                  <Text style={[styles.meta, { color: colors.mutedForeground }]}>
+                    {tr(usesAppStoreBilling() ? "plans.appleNote" : "plans.stripeNote")}
+                  </Text>
+                </>
+              ) : (
+                <Text style={[styles.meta, { color: colors.mutedForeground }]}>
+                  {tr("plans.noChangesHere")}
                 </Text>
-              </Pressable>
-              <Text style={[styles.meta, { color: colors.mutedForeground }]}>
-                {tr(usesAppStoreBilling() ? "plans.appleNote" : "plans.stripeNote")}
-              </Text>
+              )}
             </View>
           </>
         )}

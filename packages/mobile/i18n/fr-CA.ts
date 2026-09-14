@@ -273,6 +273,9 @@ export const frCA: Catalog = {
   "plans.stripeNote": "Paiement sécurisé par Stripe. Annulez à tout moment.",
   "plans.appleNote":
     "Facturé via votre identifiant Apple. Gérez ou annulez dans les réglages de l'App Store.",
+  "plans.currentOnly":
+    "Voici le forfait de votre espace de travail. Tout ce qu'il comprend est déjà actif sur ce téléphone.",
+  "plans.noChangesHere": "Les changements de forfait ne se font pas dans cette application.",
   "plans.restore": "Restaurer les achats",
   "plans.restored": "Achat restauré.",
   "plans.nothingToRestore": "Aucun achat à restaurer.",

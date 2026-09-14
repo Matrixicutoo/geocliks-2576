@@ -269,6 +269,9 @@ export const ptBR: Catalog = {
   "plans.stripeNote": "Pagamento seguro pela Stripe. Cancele quando quiser.",
   "plans.appleNote":
     "Cobrado pelo seu ID Apple. Gerencie ou cancele nas configurações da App Store.",
+  "plans.currentOnly":
+    "Este é o plano do seu espaço de trabalho. Tudo o que ele inclui já está ativo neste telefone.",
+  "plans.noChangesHere": "Mudanças de plano não são feitas neste aplicativo.",
   "plans.restore": "Restaurar compras",
   "plans.restored": "Compra restaurada.",
   "plans.nothingToRestore": "Nenhuma compra encontrada para restaurar.",

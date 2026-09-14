@@ -271,6 +271,9 @@ export const de: Catalog = {
   "plans.stripeNote": "Sichere Zahlung über Stripe. Jederzeit kündbar.",
   "plans.appleNote":
     "Abrechnung über deine Apple-ID. Verwaltung und Kündigung in den App-Store-Einstellungen.",
+  "plans.currentOnly":
+    "Das ist der Tarif deines Workspace. Alles, was dazugehört, ist auf diesem Telefon schon aktiv.",
+  "plans.noChangesHere": "Tarifwechsel sind in dieser App nicht möglich.",
   "plans.restore": "Käufe wiederherstellen",
   "plans.restored": "Kauf wiederhergestellt.",
   "plans.nothingToRestore": "Kein wiederherstellbarer Kauf gefunden.",

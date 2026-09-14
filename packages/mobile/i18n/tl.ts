@@ -271,6 +271,9 @@ export const tl: Catalog = {
   "plans.stripeNote": "Secure checkout sa pamamagitan ng Stripe. Kanselahin anumang oras.",
   "plans.appleNote":
     "Sinisingil sa pamamagitan ng Apple ID mo. Pamahalaan o kanselahin sa settings ng App Store.",
+  "plans.currentOnly":
+    "Ito ang plan ng workspace mo. Aktibo na sa telepono ito ang lahat ng kasama rito.",
+  "plans.noChangesHere": "Hindi dito sa app ginagawa ang pagpapalit ng plan.",
   "plans.restore": "I-restore ang mga purchase",
   "plans.restored": "Nai-restore ang purchase.",
   "plans.nothingToRestore": "Walang nahanap na purchase na ma-restore.",

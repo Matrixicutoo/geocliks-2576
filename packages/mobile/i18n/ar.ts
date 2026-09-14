@@ -266,6 +266,9 @@ export const ar: Catalog = {
   "plans.stripeNote": "دفع آمن عبر Stripe. يمكنك الإلغاء في أي وقت.",
   "plans.appleNote":
     "الفاتورة عبر معرّف Apple الخاص بك. يمكنك الإدارة أو الإلغاء من إعدادات App Store.",
+  "plans.currentOnly":
+    "هذه هي خطة مساحة عملك. كل ما تتضمنه مُفعَّل بالفعل على هذا الهاتف.",
+  "plans.noChangesHere": "لا تتم تغييرات الخطة في هذا التطبيق.",
   "plans.restore": "استعادة عمليات الشراء",
   "plans.restored": "تمت استعادة عملية الشراء.",
   "plans.nothingToRestore": "لم يتم العثور على عملية شراء لاستعادتها.",

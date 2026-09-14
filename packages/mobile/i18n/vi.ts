@@ -266,6 +266,9 @@ export const vi: Catalog = {
   "plans.ownerOnly": "Chỉ chủ không gian làm việc mới có thể đổi gói.",
   "plans.stripeNote": "Thanh toán an toàn qua Stripe. Hủy bất cứ lúc nào.",
   "plans.appleNote": "Thanh toán qua Apple ID của bạn. Quản lý hoặc hủy trong cài đặt App Store.",
+  "plans.currentOnly":
+    "Đây là gói của không gian làm việc của bạn. Mọi thứ trong gói đã hoạt động trên điện thoại này.",
+  "plans.noChangesHere": "Ứng dụng này không xử lý việc thay đổi gói.",
   "plans.restore": "Khôi phục giao dịch",
   "plans.restored": "Đã khôi phục giao dịch.",
   "plans.nothingToRestore": "Không tìm thấy giao dịch nào để khôi phục.",

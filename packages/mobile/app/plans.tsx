@@ -28,6 +28,7 @@ import {
   finishPurchase,
   iapAvailable,
   restoreSubscriptions,
+  sellsSubscriptions,
   usesAppStoreBilling,
 } from "@/lib/purchases";
 import { canManageWorkspace } from "../lib/roles";
@@ -35,6 +36,10 @@ import { canManageWorkspace } from "../lib/roles";
 /**
  * Native plan picker. Lists the same plans as the web pricing table and hands off straight to
  * Stripe checkout (Autumn-hosted) in an in-app browser — no web dashboard sign-in detour.
+ *
+ * On Android it is not a picker at all. Play's Payments policy would require its billing system
+ * for an in-app subscription and forbids pointing at any other way to pay, so that build shows
+ * the plan the workspace is already on and nothing buyable — see `sellsSubscriptions()`.
  */
 export default function Plans() {
   const colors = useColors();
@@ -47,6 +52,8 @@ export default function Plans() {
   const applyApple = useApplyApple();
   // App Store build: StoreKit owns paid upgrades, so the Stripe path is never shown on iOS.
   const appStore = usesAppStoreBilling();
+  // Play build: nothing here is for sale. The screen degrades to a statement of the current plan.
+  const canSell = sellsSubscriptions();
   const storeProducts = useIapProducts();
 
   const [busy, setBusy] = useState<string | null>(null);
@@ -60,6 +67,7 @@ export default function Plans() {
   const isField = !canManageWorkspace(current.data?.role);
   const appleSkus = storeProducts.data?.apple ?? [];
   const skuFor = (planId: string) => appleSkus.find((p) => p.plan === planId)?.sku ?? null;
+  const activePlan = plans.find((p) => p.id === activeId) ?? null;
 
   const flash = (message: string) => {
     setError(null);
@@ -204,6 +212,59 @@ export default function Plans() {
               {tr("perm.planNote")}
             </Text>
           </View>
+        ) : !canSell ? (
+          /* Play build: a statement of the current plan. No other plans, no prices, no CTA. */
+          <>
+            <Text style={[styles.lede, { color: colors.mutedForeground }]}>
+              {tr("plans.currentOnly")}
+            </Text>
+
+            {current.isLoading ? (
+              <View style={styles.loading}>
+                <ActivityIndicator color={colors.amber} />
+              </View>
+            ) : null}
+
+            {activePlan ? (
+              <View
+                style={[styles.card, { borderColor: colors.amber, backgroundColor: colors.card }]}
+              >
+                <View style={styles.cardHead}>
+                  <Text
+                    style={[styles.planName, { color: colors.foreground, fontFamily: Fonts?.display }]}
+                  >
+                    {activePlan.name.toUpperCase()}
+                  </Text>
+                  <View style={[styles.chip, { borderColor: colors.amber }]}>
+                    <Text
+                      style={[styles.chipText, { color: colors.amber, fontFamily: Fonts?.mono }]}
+                    >
+                      {tr("plans.current").toUpperCase()}
+                    </Text>
+                  </View>
+                </View>
+
+                <Text style={[styles.tagline, { color: colors.mutedForeground }]}>
+                  {activePlan.tagline}
+                </Text>
+
+                <View style={styles.features}>
+                  {activePlan.features.map((feature) => (
+                    <View key={feature} style={styles.featureRow}>
+                      <Ionicons name="checkmark" size={14} color={colors.verified} />
+                      <Text style={[styles.feature, { color: colors.foreground }]}>{feature}</Text>
+                    </View>
+                  ))}
+                </View>
+              </View>
+            ) : null}
+
+            <Text
+              style={[styles.footer, { color: colors.mutedForeground, fontFamily: Fonts?.mono }]}
+            >
+              {tr("plans.noChangesHere")}
+            </Text>
+          </>
         ) : (
           <>
             <Text style={[styles.lede, { color: colors.mutedForeground }]}>

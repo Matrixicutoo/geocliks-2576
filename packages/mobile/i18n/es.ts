@@ -270,6 +270,9 @@ export const es: Catalog = {
   "plans.stripeNote": "Pago seguro con Stripe. Cancela cuando quieras.",
   "plans.appleNote":
     "Se factura a través de tu ID de Apple. Gestiónalo o cancélalo en los ajustes del App Store.",
+  "plans.currentOnly":
+    "Este es el plan de tu espacio de trabajo. Todo lo que incluye ya está activo en este teléfono.",
+  "plans.noChangesHere": "Los cambios de plan no se gestionan en esta aplicación.",
   "plans.restore": "Restaurar compras",
   "plans.restored": "Compra restaurada.",
   "plans.nothingToRestore": "No se encontró ninguna compra para restaurar.",

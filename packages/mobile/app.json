@@ -2,7 +2,7 @@
   "expo": {
     "icon": "./assets/icon.png",
     "android": {
-      "package": "com.timemark_a7k2.runable",
+      "package": "com.geocliks.app",
       "googleServicesFile": "./google-services.json",
       "adaptiveIcon": {
         "foregroundImage": "./assets/icon.png",
@@ -24,7 +24,7 @@
       "runableAuthIssuer": "https://api.runable.com/api/auth"
     },
     "ios": {
-      "bundleIdentifier": "com.timemark_a7k2.runable",
+      "bundleIdentifier": "com.geocliks.app",
       "supportsTablet": true,
       "config": {
         "googleMapsApiKey": "AIzaSyCooTC1R7KhuG9RoI3dsqqpujHtrpfWGTc"
@@ -39,6 +39,12 @@
     "slug": "geocliks",
     "owner": "matrixicutoo",
     "version": "1.0.0",
+    "runtimeVersion": {
+      "policy": "appVersion"
+    },
+    "updates": {
+      "url": "https://u.expo.dev/5a0e9262-b5c1-4da3-ab37-2012eff9013f"
+    },
     "scheme": "runable-timemar-nt1ia4s",
     "orientation": "portrait",
     "userInterfaceStyle": "dark",
@@ -58,6 +64,26 @@
         {
           "icon": "./assets/notification-icon.png",
           "color": "#FFB021"
+        }
+      ],
+      [
+        "expo-camera",
+        {
+          "cameraPermission": "GeoCliks uses the camera to take the job-site photos and videos you capture as evidence.",
+          "microphonePermission": "GeoCliks uses the microphone to record sound with your job-site videos.",
+          "recordAudioAndroid": true
+        }
+      ],
+      [
+        "expo-location",
+        {
+          "locationWhenInUsePermission": "GeoCliks records where each photo was taken so the place and time can be stamped on it and verified later. Location is only read while you are using the app."
+        }
+      ],
+      [
+        "expo-image-picker",
+        {
+          "photosPermission": "GeoCliks needs your photo library so you can attach pictures you already took to a project."
         }
       ],
       "expo-iap"

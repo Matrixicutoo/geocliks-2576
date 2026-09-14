@@ -47,6 +47,27 @@ export function usesAppStoreBilling(): boolean {
   return Platform.OS === "ios";
 }
 
+/**
+ * Whether this build may sell a plan at all.
+ *
+ * False on Android. Google Play's Payments policy requires digital subscriptions bought inside a
+ * Play-distributed app to go through Play's billing system, and separately forbids pointing the
+ * user at any other way to pay — so the Android build cannot open the Stripe checkout, and cannot
+ * link to it, name a price for it, or hint at it either.
+ *
+ * Rather than take Play's cut on a B2B tool whose buyer is a manager with a laptop, the Android
+ * app sells nothing: it shows the plan the workspace is on and stops there. Entitlements are
+ * resolved server-side from the subscription, so a plan bought on the web is already in force on
+ * the phone the moment it signs in — nothing about the app's capabilities depends on this. This is
+ * the same posture Slack, Notion and Salesforce take on Android.
+ *
+ * iOS keeps StoreKit (guideline 3.1.1 makes the same demand, and Apple offers no equivalent way
+ * out), and web/desktop keep Stripe.
+ */
+export function sellsSubscriptions(): boolean {
+  return Platform.OS !== "android";
+}
+
 function loadIap(): IapModule | null {
   if (cached !== undefined) return cached;
   if (!usesAppStoreBilling()) {

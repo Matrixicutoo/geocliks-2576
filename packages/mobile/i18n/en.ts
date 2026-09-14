@@ -281,6 +281,9 @@ export const en = {
   "plans.stripeNote": "Secure checkout by Stripe. Cancel anytime.",
   "plans.appleNote":
     "Billed through your Apple ID. Manage or cancel it in your App Store settings.",
+  "plans.currentOnly":
+    "This is the plan your workspace is on. Everything it includes is already active on this phone.",
+  "plans.noChangesHere": "Plan changes are not handled in this app.",
   "plans.restore": "Restore purchases",
   "plans.restored": "Purchase restored.",
   "plans.nothingToRestore": "No purchase found to restore.",
