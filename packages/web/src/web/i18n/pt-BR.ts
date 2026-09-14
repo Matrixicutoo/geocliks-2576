@@ -60,6 +60,7 @@ export const ptBR: Catalog = {
   "seo.home.title": "GeoCliks — A prova de que o trabalho foi feito",
 
   "seo.help.title": "Central de ajuda — GeoCliks",
+  "seo.getApp.title": "Baixe o app GeoCliks — A prova de que seu trabalho foi feito",
   "signin.subtitle": "Documentação fotográfica à prova de fraudes para equipes de campo.",
   "signin.google": "Continuar com o Google",
   "signin.x": "Continuar com X",
@@ -743,6 +744,8 @@ export const ptBR: Catalog = {
   "home.nav.offline": "Captura offline",
   "home.nav.website": "Site",
   "home.nav.help": "Central de ajuda",
+  "home.nav.constructionDocs": "Documentação fotográfica de obra",
+  "home.nav.vsCompanycam": "GeoCliks vs. CompanyCam",
   "home.nav.emailSupport": "Suporte por e-mail",
   "home.nav.contactSales": "Falar com vendas",
   "join.checking": "Verificando o convite…",

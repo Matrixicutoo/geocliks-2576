@@ -60,6 +60,7 @@ export const frCA: Catalog = {
   "seo.home.title": "GeoCliks — La preuve que le travail a été fait",
 
   "seo.help.title": "Centre d'aide — GeoCliks",
+  "seo.getApp.title": "Obtenez l'application GeoCliks — La preuve que votre travail a été fait",
   "signin.subtitle": "Documentation photo infalsifiable pour les équipes de terrain.",
   "signin.google": "Continuer avec Google",
   "signin.x": "Continuer avec X",
@@ -753,6 +754,8 @@ export const frCA: Catalog = {
   "home.nav.offline": "Capture hors ligne",
   "home.nav.website": "Site web",
   "home.nav.help": "Centre d'aide",
+  "home.nav.constructionDocs": "Documentation photo de chantier",
+  "home.nav.vsCompanycam": "GeoCliks vs CompanyCam",
   "home.nav.emailSupport": "Soutien par courriel",
   "home.nav.contactSales": "Parler aux ventes",
   "join.checking": "Vérification de l'invitation…",

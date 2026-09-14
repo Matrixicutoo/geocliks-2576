@@ -60,6 +60,7 @@ export const it: Catalog = {
   "seo.home.title": "GeoCliks — La prova che il lavoro è stato fatto",
 
   "seo.help.title": "Centro assistenza — GeoCliks",
+  "seo.getApp.title": "Scarica l'app GeoCliks — La prova che il lavoro è stato fatto",
   "signin.subtitle": "Documentazione fotografica a prova di manomissione per squadre sul campo.",
   "signin.google": "Continua con Google",
   "signin.x": "Continua con X",
@@ -746,6 +747,8 @@ export const it: Catalog = {
   "home.nav.offline": "Acquisizione offline",
   "home.nav.website": "Sito web",
   "home.nav.help": "Centro assistenza",
+  "home.nav.constructionDocs": "Documentazione fotografica di cantiere",
+  "home.nav.vsCompanycam": "GeoCliks vs CompanyCam",
   "home.nav.emailSupport": "Supporto via e-mail",
   "home.nav.contactSales": "Contatta le vendite",
   "join.checking": "Verifica dell'invito…",

@@ -5,6 +5,7 @@ import { Logo } from "./logo";
 import { SiteFooter } from "./site-footer";
 import { LEGAL_EFFECTIVE_DATE } from "../lib/company";
 import { useSeo } from "../lib/seo";
+import { seoForPath } from "../lib/seo-routes";
 import { scrollSiteToTop } from "../lib/site-scroll";
 
 /**
@@ -18,20 +19,21 @@ import { scrollSiteToTop } from "../lib/site-scroll";
  */
 export function LegalPage({
   title,
-  description,
   path,
   children,
 }: {
+  /** Visible `<h1>`, e.g. "Terms of Service". */
   title: string;
-  /** Meta description for search results. */
-  description: string;
   /** Canonical path, e.g. "/terms". */
   path: string;
   children: React.ReactNode;
 }) {
   // The head lives here rather than in terms.tsx and privacy.tsx so a third
-  // legal page cannot be added without one.
-  useSeo({ title: `${title} — GeoCliks`, description, path });
+  // legal page cannot be added without one, and the copy is read from
+  // `seo-routes.ts` rather than passed in, so the tag a crawler gets from the
+  // HTML response and the tag React writes after mounting are the same string.
+  const seo = seoForPath(path);
+  useSeo({ title: seo.title ?? `${title} — GeoCliks`, description: seo.description, path });
 
   useEffect(() => {
     const root = document.documentElement;

@@ -17,7 +17,7 @@ import { useT, type TKey } from "../lib/i18n";
 import { useInviteInfo } from "../queries/team";
 import { SUPPORT_EMAIL } from "../lib/support";
 import { useSeo } from "../lib/seo";
-import { SEO_DESCRIPTIONS } from "../lib/seo-copy";
+import { PAGE_SEO } from "../lib/seo-routes";
 
 /**
  * Crew-facing app landing page — the QR destination printed on trucks, crew
@@ -157,8 +157,8 @@ export default function GetApp() {
   // URL for the same page, and without this each one would be crawled and
   // indexed on its own — publishing the invite codes in the process.
   useSeo({
-    title: t("getapp.title"),
-    description: SEO_DESCRIPTIONS.getApp,
+    title: t("seo.getApp.title"),
+    description: PAGE_SEO["/get-app"].description,
     path: "/get-app",
   });
 

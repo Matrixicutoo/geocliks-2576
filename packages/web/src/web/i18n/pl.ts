@@ -59,6 +59,7 @@ export const pl: Catalog = {
   "seo.home.title": "GeoCliks — Dowód, że praca została wykonana",
 
   "seo.help.title": "Centrum pomocy — GeoCliks",
+  "seo.getApp.title": "Pobierz aplikację GeoCliks — Dowód, że praca została wykonana",
   "signin.subtitle": "Odporna na manipulacje dokumentacja zdjęciowa dla ekip w terenie.",
   "signin.google": "Kontynuuj z Google",
   "signin.x": "Kontynuuj z X",
@@ -744,6 +745,8 @@ export const pl: Catalog = {
   "home.nav.offline": "Rejestracja offline",
   "home.nav.website": "Strona www",
   "home.nav.help": "Centrum pomocy",
+  "home.nav.constructionDocs": "Dokumentacja zdjęciowa budowy",
+  "home.nav.vsCompanycam": "GeoCliks a CompanyCam",
   "home.nav.emailSupport": "Wsparcie e-mail",
   "home.nav.contactSales": "Kontakt ze sprzedażą",
   "join.checking": "Sprawdzanie zaproszenia…",

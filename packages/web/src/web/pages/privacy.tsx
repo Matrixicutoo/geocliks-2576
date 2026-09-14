@@ -1,6 +1,5 @@
 import { LegalList, LegalPage, LegalSection } from "../components/legal-page";
 import { COMPANY_ADDRESS, JURISDICTION, LEGAL_ENTITY } from "../lib/company";
-import { SEO_DESCRIPTIONS } from "../lib/seo-copy";
 import { SUPPORT_EMAIL } from "../lib/support";
 
 /**
@@ -12,7 +11,6 @@ export default function Privacy() {
   return (
     <LegalPage
       title="Privacy Policy"
-      description={SEO_DESCRIPTIONS.privacy}
       path="/privacy"
     >
       <p className="text-[14.5px] leading-relaxed text-fog">
@@ -25,7 +23,7 @@ export default function Privacy() {
       <LegalSection title="1. What we collect">
         <LegalList
           items={[
-            "Account data: your name, email address, password hash (we never store your password itself), profile photo, language, chosen theme, and, if you enable it, your two-factor secret.",
+            "Account data: your name, email address, profile photo, language and chosen theme. GeoCliks has no passwords: you sign in with a single-use code mailed to your address, and the code is stored only as a hash until it is spent or expires.",
             "Workspace data: workspace name, your role, project names, client and location details, project assignments, invitations, watermark templates and reports you generate.",
             "Captures: the photos and videos you take, plus the timestamp, GPS coordinates, resolved street address, device-reported capture time, unique photo code, content hash and signature attached to each one.",
             "Messages: the direct messages and broadcasts you send inside a workspace, including any image you attach.",
@@ -99,7 +97,7 @@ export default function Privacy() {
           items={[
             "Cloud hosting and database providers that run the Service and store your captures.",
             "A payment processor for subscriptions, and Apple for purchases made inside the iOS app.",
-            "An email provider for invitations, password resets and transactional mail.",
+            "An email provider for sign-in codes, invitations and transactional mail.",
             "A push notification service (Expo and, on Android, Firebase Cloud Messaging) to deliver alerts to your device.",
             "A mapping provider to resolve addresses and render maps.",
           ]}
@@ -135,9 +133,9 @@ export default function Privacy() {
         <p>
           Data is encrypted in transit. Each capture carries a SHA-256 content hash and an
           HMAC-SHA256 signature, and every event affecting it is written to an append-only chain, so
-          alterations are detectable. Access to production systems is restricted, passwords are
-          stored hashed, and two-factor authentication is available for workspace owners and
-          administrators. No system is perfectly secure; if a breach affects you we will notify you
+          alterations are detectable. Access to production systems is restricted, and sign-in
+          needs a single-use code mailed to your address, so there is no password to steal, reuse
+          or leak. No system is perfectly secure; if a breach affects you we will notify you
           and the relevant regulator as required by law.
         </p>
       </LegalSection>

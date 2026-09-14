@@ -18,14 +18,11 @@
  */
 import { useEffect } from "react";
 
-/** Canonical origin. No trailing slash — every helper here appends its own path. */
-export const SITE_URL = "https://geocliks.com";
-
-/** Absolute URL for a site-relative path, for canonical and og:url. */
-export function absoluteUrl(path: string): string {
-  if (/^https?:\/\//.test(path)) return path;
-  return `${SITE_URL}${path.startsWith("/") ? path : `/${path}`}`;
-}
+// Both live in `seo-routes.ts` with the copy tables, so the server-side
+// injection in `seo-html.ts` can use them without importing React. Re-exported
+// here because this module is the head's public entry point.
+export { SITE_URL, absoluteUrl } from "./seo-routes";
+import { absoluteUrl } from "./seo-routes";
 
 export interface Seo {
   /** Full `<title>`. Write it per page — no suffix is appended. */

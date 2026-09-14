@@ -7,6 +7,7 @@ import { articleHref, findArticle, helpCategories, isUntranslated } from "../hel
 import { articlesOf } from "../help/types";
 import { useLocale, useT } from "../lib/i18n";
 import { useSeo } from "../lib/seo";
+import { helpSeo } from "../lib/seo-routes";
 import { breadcrumbSchema, techArticleSchema } from "../lib/structured-data";
 
 /** One article, plus an on-page contents list and the rest of its category. */
@@ -24,11 +25,15 @@ export default function HelpArticle() {
   // "not found" page — those URLs come from typos and stale links, and there are
   // unboundedly many of them.
   const path = found ? articleHref(found.category.slug, found.article.slug) : "";
+  // As in help-category: the search title and snippet come from the SEO table so
+  // that they match the tags baked into the HTML response, with the catalog's
+  // own title and summary as the fallback for an article added since.
+  const copy = found ? helpSeo(`${found.category.slug}/${found.article.slug}`) : undefined;
   useSeo(
     found
       ? {
-          title: `${found.article.title} — GeoCliks Help`,
-          description: found.article.summary,
+          title: copy?.title ?? `${found.article.title} — GeoCliks Help`,
+          description: copy?.description ?? found.article.summary,
           path,
           jsonLd: [
             breadcrumbSchema([

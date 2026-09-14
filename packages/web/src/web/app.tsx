@@ -42,6 +42,10 @@ const Privacy = lazy(() => import("./pages/privacy"));
 const Help = lazy(() => import("./pages/help"));
 const HelpCategory = lazy(() => import("./pages/help-category"));
 const HelpArticle = lazy(() => import("./pages/help-article"));
+const ConstructionPhotoDocumentation = lazy(
+  () => import("./pages/construction-photo-documentation"),
+);
+const AlternativesCompanyCam = lazy(() => import("./pages/alternatives-companycam"));
 
 import { ProtectedRoute } from "./components/protected-route";
 import { ProductRoute } from "./components/product-route";
@@ -248,6 +252,13 @@ function App() {
               </Route>
               <Route path="/help/:category">
                 <HelpCategory />
+              </Route>
+
+              <Route path="/construction-photo-documentation">
+                <ConstructionPhotoDocumentation />
+              </Route>
+              <Route path="/alternatives/companycam">
+                <AlternativesCompanyCam />
               </Route>
 
               <Route path="/terms">

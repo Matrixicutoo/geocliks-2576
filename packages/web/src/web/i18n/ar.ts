@@ -59,6 +59,7 @@ export const ar: Catalog = {
   "seo.home.title": "جيوكليكس — إثبات أن العمل قد أُنجز",
 
   "seo.help.title": "مركز المساعدة — جيوكليكس",
+  "seo.getApp.title": "احصل على تطبيق GeoCliks — إثبات أن عملك قد تم",
   "signin.subtitle": "توثيق صور غير قابل للتلاعب لفرق العمل الميدانية.",
   "signin.google": "المتابعة باستخدام Google",
   "signin.x": "المتابعة باستخدام X",
@@ -725,6 +726,8 @@ export const ar: Catalog = {
   "home.nav.offline": "التقاط دون اتصال",
   "home.nav.website": "الموقع الإلكتروني",
   "home.nav.help": "مركز المساعدة",
+  "home.nav.constructionDocs": "توثيق صور البناء",
+  "home.nav.vsCompanycam": "GeoCliks مقابل CompanyCam",
   "home.nav.emailSupport": "الدعم عبر البريد",
   "home.nav.contactSales": "تواصل مع المبيعات",
   "join.checking": "جارٍ التحقق من الدعوة…",

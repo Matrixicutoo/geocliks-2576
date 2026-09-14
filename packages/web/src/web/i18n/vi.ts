@@ -59,6 +59,7 @@ export const vi: Catalog = {
   "seo.home.title": "GeoCliks — Bằng chứng công việc đã hoàn thành",
 
   "seo.help.title": "Trung tâm trợ giúp — GeoCliks",
+  "seo.getApp.title": "Tải ứng dụng GeoCliks — Bằng chứng công việc đã hoàn thành",
   "signin.subtitle": "Hồ sơ ảnh chống giả mạo cho đội ngũ hiện trường.",
   "signin.google": "Tiếp tục với Google",
   "signin.x": "Tiếp tục với X",
@@ -736,6 +737,8 @@ export const vi: Catalog = {
   "home.nav.offline": "Chụp ngoại tuyến",
   "home.nav.website": "Trang web",
   "home.nav.help": "Trung tâm trợ giúp",
+  "home.nav.constructionDocs": "Tài liệu ảnh công trình",
+  "home.nav.vsCompanycam": "GeoCliks so với CompanyCam",
   "home.nav.emailSupport": "Hỗ trợ qua email",
   "home.nav.contactSales": "Liên hệ kinh doanh",
   "join.checking": "Đang kiểm tra lời mời…",

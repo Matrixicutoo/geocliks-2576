@@ -59,6 +59,7 @@ export const zh: Catalog = {
   "seo.home.title": "GeoCliks — 证明工作已完成",
 
   "seo.help.title": "帮助中心 — GeoCliks",
+  "seo.getApp.title": "获取 GeoCliks 应用 — 证明你的工作已完成",
   "signin.subtitle": "为现场团队提供防篡改的照片记录。",
   "signin.google": "使用 Google 继续",
   "signin.x": "使用 X 继续",
@@ -707,6 +708,8 @@ export const zh: Catalog = {
   "home.nav.offline": "离线拍摄",
   "home.nav.website": "官网",
   "home.nav.help": "帮助中心",
+  "home.nav.constructionDocs": "施工照片记录",
+  "home.nav.vsCompanycam": "GeoCliks 与 CompanyCam 对比",
   "home.nav.emailSupport": "邮件支持",
   "home.nav.contactSales": "联系销售",
   "join.checking": "正在检查邀请…",

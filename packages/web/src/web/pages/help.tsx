@@ -6,7 +6,7 @@ import { allArticles, articleHref, helpCategories, iconFor, isUntranslated } fro
 import { articlesOf } from "../help/types";
 import { useLocale, useT } from "../lib/i18n";
 import { useSeo } from "../lib/seo";
-import { SEO_DESCRIPTIONS } from "../lib/seo-copy";
+import { PAGE_SEO } from "../lib/seo-routes";
 import { breadcrumbSchema } from "../lib/structured-data";
 
 /** Matches on title, summary, keywords and body text — one pass, no index. */
@@ -61,7 +61,7 @@ export default function Help() {
 
   useSeo({
     title: t("seo.help.title"),
-    description: SEO_DESCRIPTIONS.help,
+    description: PAGE_SEO["/help"].description,
     path: "/help",
     jsonLd: breadcrumbSchema([{ name: "Help Center" }]),
   });

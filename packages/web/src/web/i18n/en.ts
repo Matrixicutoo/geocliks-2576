@@ -64,8 +64,9 @@ export const en = {
 
   // Sign in
   "signin.title": "Sign in to GeoCliks",
-  "seo.home.title": "GeoCliks — Proof your work happened",
-  "seo.help.title": "Help Center — GeoCliks",
+  "seo.home.title": "GeoCliks — Tamper-Proof Photo Documentation for Field Teams",
+  "seo.help.title": "GeoCliks Help — Guides for Solo Users, Teams & Drivers",
+  "seo.getApp.title": "Download GeoCliks — GPS Timestamp Camera App",
   "signin.subtitle": "Tamper-proof photo documentation for field teams.",
   "signin.google": "Continue with Google",
   "signin.x": "Continue with X",
@@ -749,6 +750,10 @@ export const en = {
   "home.nav.offline": "Offline capture",
   "home.nav.website": "Website",
   "home.nav.help": "Help center",
+  // English-only landing pages: every other locale falls back to this string,
+  // which is correct — the pages themselves are English.
+  "home.nav.constructionDocs": "Construction photo documentation",
+  "home.nav.vsCompanycam": "GeoCliks vs CompanyCam",
   "home.nav.emailSupport": "Email support",
   "home.nav.contactSales": "Contact sales",
   "join.checking": "Checking the invite…",
