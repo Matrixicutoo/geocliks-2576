@@ -68,12 +68,26 @@
        ProtectedRoute read the stale signed-out store and bounced to /sign-in. Verified in-browser.
 8. [x] remove password surfaces: reset-password page + route + SEO entry, profile password block,
        2FA components, privacy copy
-9. [ ] mobile `lib/auth.ts` + `components/auth-form.tsx` + `app/join.tsx` + `app/sign-in.tsx` +
-       `app/sign-up.tsx`, and retire `lib/web-signup.ts` bounce (+ its usages in `app/sign-up.tsx`,
-       `app/landing.tsx`, `app/auth/callback.tsx`). **Mobile is entirely untouched so far.**
+9. [x] mobile passwordless (2026-09-14). `lib/auth.ts`: `twoFactorClient()` → `emailOTPClient()`,
+       and the `onSuccess` hook lost its `twoFactorRedirect` special case — it now stores any
+       `set-auth-token` and clears both stores on `/sign-out`. `components/auth-form.tsx` rewritten
+       as ONE screen with no `mode` prop: Google, X, then `or email` → address → 6 digits, with a
+       50s resend cooldown (same constant as web) and `changeEmail` back out. Password field, eye
+       toggle, the 2FA second step and the "create your account on the web" card are gone.
+       `app/sign-up.tsx` forwards to `/sign-in` (as does the legacy `?mode=sign-up`), and
+       `lib/web-signup.ts` is **deleted** — landing's "Register free" now opens `/sign-in` in-app
+       instead of the browser. `app/auth/callback.tsx` stays (the website still deep-links back)
+       and `app/join.tsx` needed no logic change, only its stale "register on the web" comment.
+       Verify errors deliberately use our localized `signin.codeError`, not better-auth's
+       untranslated "Invalid OTP".
 10.[x] i18n keys across the 11 web catalogs (22 new `signin.*` / `profile.*` / `join.*` keys,
-       translated per locale via `scripts/add-auth-keys.py`). Mobile catalogs still pending with
-       item 9.
+       translated per locale via `scripts/add-auth-keys.py`). Mobile catalogs done with item 9:
+       11 new `signin.*` code keys per catalog (copy lifted from the web catalogs so both surfaces
+       read identically) and the 23 keys the rewrite orphaned removed — password/showPassword/
+       hidePassword, the 8 `twoFactor*`, `signUpWebBody`/`Button`, `accountCreated`,
+       `openInBrowser`, `authError`, `or`, `noAccount`/`goCreate`/`haveAccount`/`goSignIn`,
+       `submitSignIn`/`submitJoin`. (The pre-existing dead `twofa.*` block in the mobile catalogs
+       is left for the 276-key bulk delete noted under Deferred.)
 11.[ ] mobile: delayed "create your Teamspace for free" sheet on the capture tab, signed out only,
         shown once per install (AsyncStorage flag) — reuses the AuthGate copy/buttons
 12.[x] nav tailoring by `product` (web). New `web/lib/product.ts` holds the one rule:
@@ -97,7 +111,8 @@
        closes the "billing says Free while the app hands you Business" gap noted below.
        13 `trial.*` keys added to all 11 web catalogs (`scripts/add-trial-keys.py`).
 14.[ ] gates: web typecheck/lint/build **all green** (re-run after the nav + trial UI work);
-       mobile typecheck/lint not run since mobile is untouched; db:push already applied
+       mobile `bun run typecheck` green after the auth rewrite (2026-09-14); db:push already
+       applied
 15.[ ] live verify, clean up dev test data, commit
 
 ## Deferred (deliberately)
@@ -138,6 +153,19 @@
   `active:2026-09-13` and the strip stays gone across navigation. Backdating `trial_ends_at`
   two days into the past (then restoring it) flipped the sidebar to FREE · OWNER, dropped the
   chip, and showed the lapsed notice; dismissing it writes `ended` and it never returns.
+
+## Verified live (mobile preview :4300, 2026-09-14)
+- `/sign-in` renders Google · X · OR EMAIL · address + "Send me a code"; sending advances to
+  "Check your email" with the address interpolated and the resend link counting down from 50.
+- A wrong code shows "That code didn't work. Request a new one and try again." (our copy, not
+  the server's English); "Use a different email" returns to the address step.
+- Full success path with the real code (temporarily logged in the dev API, log reverted):
+  `mobileotp3@example.com` → account created, app boots into Capture, and `/settings` shows
+  "mobileotp3's Team · owner" on the free plan.
+- Sign out from `/settings` empties `geocliks.auth.token` (the `/sign-out` branch of the new
+  `onSuccess`) and drops back to the public capture tab, which is the designed signed-out home.
+- Cleaned up: the two `dbg_%` debug sessions from the `/app/app` investigation are deleted from
+  the session table, and the scratch scripts in /tmp are gone.
 
 ## Already done (uncommitted, gates green, db:push applied)
 - Nullable `invites.email` (open QR invites) + `invites.expiresAt`, 7-day TTL, expiry filtering
