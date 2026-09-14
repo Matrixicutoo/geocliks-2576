@@ -48,10 +48,6 @@ export default function Profile() {
   const [name, setName] = useState("");
   const [uploading, setUploading] = useState(false);
   const [logoBusy, setLogoBusy] = useState(false);
-  const [currentPassword, setCurrentPassword] = useState("");
-  const [newPassword, setNewPassword] = useState("");
-  const [changingPassword, setChangingPassword] = useState(false);
-  const [sendingLink, setSendingLink] = useState(false);
   const [confirm, setConfirm] = useState("");
   const [armed, setArmed] = useState(false);
   const [signingOut, setSigningOut] = useState(false);
@@ -182,42 +178,7 @@ export default function Profile() {
     }
   };
 
-  async function emailResetLink() {
-    setError(null);
-    setSendingLink(true);
-    try {
-      await client.account.sendPasswordResetLink();
-      flash(tr("profile.emailResetSent"));
-    } catch (err) {
-      setError(err instanceof Error ? err.message : String(err));
-    } finally {
-      setSendingLink(false);
-    }
-  }
 
-  const changePassword = async () => {
-    setError(null);
-    if (currentPassword.length < 1 || newPassword.length < 8) {
-      setError(tr("signin.passwordHint"));
-      return;
-    }
-    setChangingPassword(true);
-    try {
-      const result = await authClient.changePassword({
-        currentPassword,
-        newPassword,
-        revokeOtherSessions: true,
-      });
-      if (result.error) throw new Error(result.error.message ?? "Could not change password");
-      setCurrentPassword("");
-      setNewPassword("");
-      flash(tr("profile.passwordUpdated"));
-    } catch (err) {
-      setError(err instanceof Error ? err.message : String(err));
-    } finally {
-      setChangingPassword(false);
-    }
-  };
 
   const signOut = async () => {
     setSigningOut(true);
@@ -418,58 +379,18 @@ export default function Profile() {
         </View>
 
         <Text style={[styles.section, { color: colors.mutedForeground, fontFamily: Fonts?.mono }]}>
-          {tr("profile.password").toUpperCase()}
+          {tr("profile.signInSection").toUpperCase()}
         </Text>
         <View style={[styles.card, { borderColor: colors.border, backgroundColor: colors.card }]}>
-          <TextInput
-            value={currentPassword}
-            onChangeText={setCurrentPassword}
-            secureTextEntry
-            autoCapitalize="none"
-            placeholder={tr("profile.currentPassword")}
-            placeholderTextColor={colors.mutedForeground}
-            accessibilityLabel={tr("profile.currentPassword")}
-            style={[styles.input, { borderColor: colors.border, color: colors.foreground }]}
-          />
-          <TextInput
-            value={newPassword}
-            onChangeText={setNewPassword}
-            secureTextEntry
-            autoCapitalize="none"
-            placeholder={tr("profile.newPassword")}
-            placeholderTextColor={colors.mutedForeground}
-            accessibilityLabel={tr("profile.newPassword")}
-            style={[styles.input, { borderColor: colors.border, color: colors.foreground }]}
-          />
-          <Pressable
-            onPress={() => void changePassword()}
-            disabled={changingPassword}
-            style={[
-              styles.outline,
-              { borderColor: colors.amber, opacity: changingPassword ? 0.6 : 1 },
-            ]}
-          >
-            <Text style={[styles.outlineText, { color: colors.amber }]}>
-              {tr("profile.changePassword")}
+          <View style={styles.signInRow}>
+            <Ionicons name="mail-outline" size={16} color={colors.amber} />
+            <Text style={[styles.signInText, { color: colors.foreground }]}>
+              {tr("profile.signInPasswordless")}
             </Text>
-          </Pressable>
+          </View>
           <Text style={[styles.meta, { color: colors.mutedForeground }]}>
-            {tr("profile.passwordManaged")}
+            {tr("profile.signInPasswordlessHint")}
           </Text>
-          <View style={[styles.divider, { backgroundColor: colors.border }]} />
-          <Text style={[styles.meta, { color: colors.mutedForeground }]}>
-            {tr("profile.emailResetOr")}
-          </Text>
-          <Pressable
-            onPress={() => void emailResetLink()}
-            disabled={sendingLink}
-            style={[styles.outline, { borderColor: colors.border, opacity: sendingLink ? 0.6 : 1 }]}
-            accessibilityLabel={tr("profile.emailReset")}
-          >
-            <Text style={[styles.outlineText, { color: colors.foreground }]}>
-              {tr("profile.emailReset")}
-            </Text>
-          </Pressable>
         </View>
 
         {isField ? null : (
@@ -652,6 +573,8 @@ const styles = StyleSheet.create({
     fontSize: 13,
     borderRadius: 8,
   },
+  signInRow: { flexDirection: "row", alignItems: "center", gap: 8 },
+  signInText: { fontSize: 13, flex: 1 },
   meta: { fontSize: 11.5, lineHeight: 17 },
   primary: {
     flexDirection: "row",

@@ -12,6 +12,7 @@ import {
 import { authClient } from "../lib/auth";
 import { useOrg } from "../queries/orgs";
 import { canManageWorkspace } from "../lib/roles";
+import { homeFor } from "../lib/product";
 import { useAdminMe } from "../queries/admin";
 import { useUnreadMessages } from "../queries/messages";
 import { cn } from "../lib/utils";
@@ -21,6 +22,7 @@ import { ASSISTANT_NAME, openAssistant, planHasAssistant } from "../lib/assistan
 import { useTheme } from "../lib/theme";
 import { type TKey, useLocale } from "../lib/i18n";
 import { LanguageSelect } from "./language-select";
+import { TrialChip } from "./trial-banner";
 
 /** Same avatar initials the mobile drawer shows, so both menus read as one product. */
 function initials(name: string | null | undefined, email: string | null | undefined) {
@@ -112,7 +114,10 @@ export function SidebarBody({
               </Link>
               <Link
                 onClick={onNavigate}
-                to="/app"
+                /* The workspace card goes home — Routes for a delivery workspace, the
+                   Teamspace feed for a job-photos one. Hardcoding /app would hand a courier a
+                   page ProductRoute only bounces them off again. */
+                to={homeFor(org.data?.product, org.data?.role)}
                 className="flex items-center gap-2.5 rounded-[12px] border border-line bg-ink px-3 py-1.5 transition-colors hover:border-amber/60"
               >
                 {/* Workspace identity: the business logo when one is uploaded, the shield
@@ -133,6 +138,11 @@ export function SidebarBody({
                   <span className="mono block truncate text-[10px] uppercase tracking-widest text-amber">
                     {org.data?.plan.name} · {org.data?.role}
                   </span>
+                  {/* A trialling workspace is running on a borrowed plan, so the plan name
+                      alone is misleading — the chip says how long it is borrowed for. It takes
+                      a row of its own: sharing the plan line's row truncates the plan name,
+                      and the plan name is the thing people came to this card to read. */}
+                  <TrialChip />
                 </span>
                 <ChevronRight className="size-4 shrink-0 text-fog" />
               </Link>

@@ -203,7 +203,18 @@ export default function Join() {
                 })}
               </Text>
               <View style={styles.metaBlock}>
-                {meta(t("join.metaEmail"), invite.data.email)}
+                {invite.data.email ? (
+                  meta(t("join.metaEmail"), invite.data.email)
+                ) : (
+                  <Text
+                    style={[
+                      styles.meta,
+                      { color: colors.mutedForeground, fontFamily: Fonts?.mono },
+                    ]}
+                  >
+                    {t("join.metaOpen")}
+                  </Text>
+                )}
                 {meta(t("join.metaRole"), invite.data.role)}
                 {meta(t("join.metaCode"), code.trim().toUpperCase())}
               </View>
@@ -256,7 +267,9 @@ export default function Join() {
                   <Text style={[styles.cardBody, { color: colors.mutedForeground, fontFamily: Fonts?.sans }]}>
                     {signedIn
                       ? t("join.signedInAs", { email: session.data?.user.email ?? "" })
-                      : t("join.createHint", { email: invite.data.email })}
+                      : invite.data.email
+                        ? t("join.createHint", { email: invite.data.email })
+                        : t("join.createHintOpen")}
                   </Text>
                 </>
               )}

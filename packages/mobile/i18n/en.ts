@@ -646,6 +646,9 @@ export const en = {
   "profile.displayName": "Display name",
   "profile.saveChanges": "Save changes",
   "profile.saved": "Profile updated",
+  "profile.signInSection": "How you sign in",
+  "profile.signInPasswordless": "Passwordless — email code, Google or X",
+  "profile.signInPasswordlessHint": "GeoCliks has no passwords. You sign in with a one-time code sent to your email, or with Google or X. Nothing to remember, nothing to leak.",
   "profile.password": "Password",
   "profile.currentPassword": "Current password",
   "profile.newPassword": "New password",
@@ -712,6 +715,8 @@ export const en = {
   "join.signInToAccept": "Sign in to accept",
   "join.createHint":
     "Create your account with {email} or sign in with Google, then you land back here.",
+  "join.metaOpen": "open invite · anyone with this code",
+  "join.createHintOpen": "Create your account or sign in with Google, then you land back here.",
   "join.footer":
     "Every photo you take carries a verified time, GPS coordinates and a street address.",
   "reset.sendError": "Could not send the reset email.",

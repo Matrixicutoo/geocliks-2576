@@ -12,6 +12,20 @@ export const organizations = sqliteTable("organizations", {
   logoUrl: text("logo_url"),
   industry: text("industry"),
   plan: text("plan").notNull().default("free"), // free | plus | business | enterprise
+  /**
+   * Which system this workspace runs: "field" (job photos) or "delivery" (routes). Picked during
+   * onboarding and used to tailor the navigation, so the delivery half of the app is not in a
+   * roofer's way and vice versa. Null on workspaces created before onboarding asked — those see
+   * everything, which is the old behaviour and the right fallback.
+   */
+  product: text("product"),
+  /**
+   * 7-day card-free trial. Deliberately NOT written into `plan`: that column stays the paid
+   * truth mirrored from the billing processor, and these two decide what is *included right
+   * now*. See `api/lib/trial.ts` — expiry is the clock passing `trialEndsAt`, nothing more.
+   */
+  trialPlan: text("trial_plan"),
+  trialEndsAt: integer("trial_ends_at", { mode: "timestamp_ms" }),
   /** Workspace-wide default appearance. Members may override it on their own device. */
   theme: text("theme").notNull().default("light"), // light | dark
   /** Workspace-wide default UI language (BCP-47). Members may override it on their own device. */
@@ -48,13 +62,24 @@ export const invites = sqliteTable(
   {
     id: text("id").primaryKey(),
     orgId: text("org_id").notNull(),
-    email: text("email").notNull(),
+    /**
+     * Null for an "open" invite — the QR a foreman holds up for a driver standing in front of
+     * him, with no address to type. It is still single-use and still holds a seat; it just
+     * cannot be checked against the redeemer's address, so whoever scans it first claims it.
+     */
+    email: text("email"),
     role: text("role").notNull().default("field"),
     code: text("code").notNull().unique(),
     status: text("status").notNull().default("pending"), // pending | accepted | revoked
     /** JSON array of project ids to assign the moment the invite is accepted. */
     projectIds: text("project_ids"),
     invitedBy: text("invited_by").notNull(),
+    /**
+     * Invites die on their own. An invite email sits in an inbox forever, and a link that can
+     * put someone inside a workspace must not stay live that long. Null on rows that predate
+     * this column, which are treated as never expiring rather than retroactively killed.
+     */
+    expiresAt: integer("expires_at", { mode: "timestamp_ms" }),
     createdAt: integer("created_at", { mode: "timestamp_ms" }).notNull().$defaultFn(now),
   },
   (t) => [index("invites_org_idx").on(t.orgId)],

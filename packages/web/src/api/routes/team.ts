@@ -1,16 +1,18 @@
 import { z } from "zod";
 import QRCode from "qrcode";
 import { ORPCError } from "@orpc/server";
-import { and, count, eq, inArray, sql } from "drizzle-orm";
+import { and, count, eq, gt, inArray, isNull, or, sql } from "drizzle-orm";
 import { base } from "../__core/app";
 import { authed, orgProc, requireRole, staffRoleOf, visibleTeammates } from "../middleware/auth";
 import { db } from "../database";
 import * as schema from "../database/schema";
 import { id, random } from "../lib/ids";
 import { planOf } from "../lib/plans";
+import { effectivePlanId } from "../lib/trial";
 import { dropEmptyPersonalWorkspace, seatUsage } from "../lib/workspaces";
 import { avatarUrl } from "./account";
 import { inviteEmail } from "../services/email-templates";
+import { auth } from "../auth";
 import { emailConfigured } from "../services/email";
 
 const roleEnum = z.enum(["owner", "admin", "manager", "dispatcher", "driver", "field"]);
@@ -52,6 +54,122 @@ async function assertMayGrant(role: string, actorId: string) {
 function inviteUrl(code: string): string {
   const base = (process.env.WEBSITE_URL ?? "http://localhost:4200").replace(/\/+$/, "");
   return `${base}/join/${code}`;
+}
+
+/** How long a fresh invite stays redeemable. */
+const INVITE_TTL_DAYS = 7;
+
+function inviteExpiry(): Date {
+  return new Date(Date.now() + INVITE_TTL_DAYS * 24 * 60 * 60 * 1000);
+}
+
+/**
+ * A pending invite is only redeemable until it expires. `expiresAt` is null on rows created
+ * before invites had a lifetime; those stay redeemable rather than being killed retroactively
+ * under someone who is mid-signup.
+ */
+function inviteExpired(invite: { expiresAt: Date | null }): boolean {
+  return invite.expiresAt !== null && invite.expiresAt.getTime() <= Date.now();
+}
+
+/**
+ * Everything that happens once we know WHICH user is joining WHICH invite: seat and plan checks,
+ * the membership row, the pre-assigned projects, burning the invite, and dropping the empty
+ * personal workspace a fresh account arrives with.
+ *
+ * One implementation on purpose. Two callers redeem an invite — `acceptInvite` (already signed in)
+ * and `claimInvite` (came through an invite link with no account) — and the plan/seat re-checks
+ * here are the ones that stop a workspace going over its paid seats. A second copy would drift,
+ * and the copy that drifted would be the one letting people in for free.
+ */
+async function attachToWorkspace(
+  invite: typeof schema.invites.$inferSelect,
+  userId: string,
+): Promise<{
+  ok: true;
+  orgId: string;
+  workspace: string;
+  role: string;
+  droppedOwnWorkspace: boolean;
+  assignedProjects: number;
+}> {
+  const [org] = await db
+    .select()
+    .from(schema.organizations)
+    .where(eq(schema.organizations.id, invite.orgId));
+  if (!org) throw new ORPCError("NOT_FOUND");
+
+  const [existing] = await db
+    .select()
+    .from(schema.members)
+    .where(and(eq(schema.members.orgId, invite.orgId), eq(schema.members.userId, userId)));
+  const joinedAt = new Date();
+  if (!existing) {
+    // The plan is re-checked here, not just at invite time: the workspace may have downgraded,
+    // or filled its last seat, between sending the invite and this click.
+    const plan = planOf(effectivePlanId(org));
+    if (!plan.limits.teamspace) {
+      throw new ORPCError("PAYMENT_REQUIRED", {
+        status: 402,
+        message: `${org.name} is no longer on a plan that includes Teamspace. Ask the workspace owner to upgrade, then open this link again.`,
+      });
+    }
+    const seats = await seatUsage(invite.orgId);
+    if (seats.members >= plan.limits.seats) {
+      throw new ORPCError("PAYMENT_REQUIRED", {
+        status: 402,
+        message: `${org.name} has no seats left. Ask the workspace owner to free a seat or upgrade, then open this link again.`,
+      });
+    }
+    await db.insert(schema.members).values({
+      id: id("mem"),
+      orgId: invite.orgId,
+      userId,
+      role: invite.role,
+      activeAt: joinedAt,
+    });
+  } else {
+    await db
+      .update(schema.members)
+      .set({ activeAt: joinedAt })
+      .where(eq(schema.members.id, existing.id));
+  }
+  // Pre-assigned projects become real assignments now that we know the user id, so a field
+  // member never opens the capture screen with nothing but "Unassigned" to pick.
+  const preAssigned = parseProjectIds(invite.projectIds);
+  if (preAssigned.length) {
+    const live = await db
+      .select({ id: schema.projects.id })
+      .from(schema.projects)
+      .where(and(eq(schema.projects.orgId, invite.orgId), inArray(schema.projects.id, preAssigned)));
+    if (live.length) {
+      await db
+        .insert(schema.projectAssignments)
+        .values(
+          live.map((project) => ({
+            id: id("asg"),
+            orgId: invite.orgId,
+            projectId: project.id,
+            userId,
+          })),
+        )
+        .onConflictDoNothing();
+    }
+  }
+
+  await db.update(schema.invites).set({ status: "accepted" }).where(eq(schema.invites.id, invite.id));
+
+  // Someone who only signed up to accept a crew invite should land in the workspace that invited
+  // them - not in the empty personal one that sign-up auto-provisions.
+  const droppedOwnWorkspace = await dropEmptyPersonalWorkspace(userId, invite.orgId);
+  return {
+    ok: true,
+    orgId: invite.orgId,
+    workspace: org.name,
+    role: invite.role,
+    droppedOwnWorkspace,
+    assignedProjects: preAssigned.length,
+  };
 }
 
 export const team = {
@@ -112,16 +230,28 @@ export const team = {
   invites: orgProc.handler(async ({ context }) => {
     // Pending invites are a seat/management detail; field crews get no invite controls at all.
     if (context.role === "field") return [] as (typeof schema.invites.$inferSelect)[];
+    // An expired invite is no longer actionable and no longer holds a seat, so it drops off the
+    // list rather than sitting there looking live.
     return db
       .select()
       .from(schema.invites)
-      .where(and(eq(schema.invites.orgId, context.org.id), eq(schema.invites.status, "pending")));
+      .where(
+        and(
+          eq(schema.invites.orgId, context.org.id),
+          eq(schema.invites.status, "pending"),
+          or(isNull(schema.invites.expiresAt), gt(schema.invites.expiresAt, new Date())),
+        ),
+      );
   }),
 
   invite: orgProc
     .input(
       z.object({
-        email: z.string().email(),
+        /**
+         * Omitted for an open invite — a QR handed over in person, with no address to type and
+         * so no email to send. Everything else about it behaves the same.
+         */
+        email: z.string().email().optional(),
         role: roleEnum.default("field"),
         /** Projects the invitee should already be assigned to when they first open the app. */
         projectIds: z.array(z.string()).default([]),
@@ -169,29 +299,34 @@ export const team = {
         .values({
           id: id("inv"),
           orgId: context.org.id,
-          email: input.email.toLowerCase(),
+          email: input.email ? input.email.toLowerCase() : null,
           role: input.role,
           code: random(10).toLowerCase(),
           projectIds: projectIds.length ? JSON.stringify(projectIds) : null,
           invitedBy: context.user.id,
+          expiresAt: inviteExpiry(),
         })
         .returning();
       if (!invite) throw new ORPCError("INTERNAL_SERVER_ERROR");
 
-      // The invite row is the source of truth; email is a best-effort notification on top of it.
-      const delivery = await inviteEmail({
-        to: invite.email,
-        workspace: context.org.name,
-        inviterName: context.user.name || context.user.email,
-        role: invite.role,
-        code: invite.code,
-        projects: ownProjects.map((r) => r.name),
-      });
+      // An open invite is handed over in person — there is no address to mail it to, and the
+      // caller shows the QR instead. The invite row is the source of truth either way; email is
+      // a best-effort notification on top of it.
+      const delivery = invite.email
+        ? await inviteEmail({
+            to: invite.email,
+            workspace: context.org.name,
+            inviterName: context.user.name || context.user.email,
+            role: invite.role,
+            code: invite.code,
+            projects: ownProjects.map((r) => r.name),
+          })
+        : null;
       return {
         ...invite,
         url: inviteUrl(invite.code),
-        emailSent: delivery.ok,
-        emailReason: delivery.ok ? undefined : (delivery.reason ?? "failed"),
+        emailSent: delivery ? delivery.ok : false,
+        emailReason: !delivery || delivery.ok ? undefined : (delivery.reason ?? "failed"),
         emailConfigured: emailConfigured(),
       };
     }),
@@ -203,6 +338,13 @@ export const team = {
       .from(schema.invites)
       .where(eq(schema.invites.code, input.code.trim().toLowerCase()));
     if (!invite || invite.status !== "pending") throw new ORPCError("NOT_FOUND");
+    // Expiry answers the same way a revoked code does. The join screen offers "ask for a fresh
+    // invite", which is the only useful move in both cases.
+    if (inviteExpired(invite)) {
+      throw new ORPCError("NOT_FOUND", {
+        message: "This invite expired. Ask the person who sent it for a fresh one.",
+      });
+    }
     const [org] = await db
       .select({ id: schema.organizations.id, name: schema.organizations.name })
       .from(schema.organizations)
@@ -213,11 +355,14 @@ export const team = {
       .where(eq(schema.user.id, invite.invitedBy));
     // Smart routing: an invited person who already has a GeoCliks account is sent to the
     // sign-in page instead of sign-up. Only the holder of a live invite code reaches this, and
-    // the response already carries the invited email, so this leaks nothing new.
-    const [existing] = await db
-      .select({ id: schema.user.id })
-      .from(schema.user)
-      .where(eq(sql`lower(${schema.user.email})`, invite.email.trim().toLowerCase()));
+    // the response already carries the invited email, so this leaks nothing new. An open invite
+    // names nobody, so there is no account to look up and the redeemer types their own address.
+    const [existing] = invite.email
+      ? await db
+          .select({ id: schema.user.id })
+          .from(schema.user)
+          .where(eq(sql`lower(${schema.user.email})`, invite.email.trim().toLowerCase()))
+      : [];
 
     return {
       email: invite.email,
@@ -225,8 +370,101 @@ export const team = {
       workspace: org?.name ?? "a GeoCliks workspace",
       inviterName: inviter?.name || inviter?.email || "A teammate",
       hasAccount: Boolean(existing),
+      /** Null email means anyone holding the code may redeem it. */
+      open: invite.email === null,
+      expiresAt: invite.expiresAt,
     };
   }),
+
+  /**
+   * One-tap redemption for somebody who has no account yet: they type a name and they are in.
+   *
+   * The invite link IS the credential here, which is a deliberate trade. The alternative — mail
+   * them a six-digit code like every other sign-in — costs a crew member standing in a muddy yard
+   * an inbox round trip on a phone with one bar, and buys very little: whoever opened the link
+   * already holds a single-use secret that a manager handed them, and the only thing they can
+   * reach with it is the one workspace that issued it. An open QR invite is the same trade the QR
+   * already makes — the manager showed the square to the person standing in front of them.
+   *
+   * The account this creates is marked `emailVerified` by the OTP plugin even though no code was
+   * typed, so it is worth being precise about what that flag now means on an invited account: the
+   * *inviter* asserted the address, not the mailbox holder. For an emailed invite that is exactly
+   * as strong as a code (the code would have gone to that same address). For an open invite the
+   * address is typed by the redeemer and unproven — acceptable because the address on an open
+   * invite is a contact detail, not the thing that granted access.
+   *
+   * The session is minted through Better Auth rather than by writing a session row here:
+   * `createVerificationOTP` is server-only and hands back the code without mailing it, and
+   * `signInEmailOTP` then spends it, creating the user on first sight. So this path goes through
+   * exactly the same account-creation, session and cookie machinery as a normal sign-in, instead
+   * of a second hand-rolled one that would quietly miss a step.
+   */
+  claimInvite: base
+    .input(
+      z.object({
+        code: z.string().min(4),
+        name: z.string().trim().min(1).max(80),
+        /**
+         * Only read for an OPEN invite, which names nobody. An emailed invite ignores whatever
+         * arrives here and uses the invited address — otherwise the link would be a way to
+         * attach the invited seat to any address the holder liked.
+         */
+        email: z.string().email().optional(),
+      }),
+    )
+    .handler(async ({ input }) => {
+      const code = input.code.trim().toLowerCase();
+      const [invite] = await db.select().from(schema.invites).where(eq(schema.invites.code, code));
+      if (!invite || invite.status !== "pending") throw new ORPCError("NOT_FOUND");
+      if (inviteExpired(invite)) {
+        throw new ORPCError("FORBIDDEN", {
+          status: 403,
+          message: "This invite expired. Ask the person who sent it for a fresh one.",
+        });
+      }
+
+      const email = (invite.email ?? input.email ?? "").trim().toLowerCase();
+      if (!email) {
+        throw new ORPCError("BAD_REQUEST", {
+          message: "This invite needs an email address so the workspace can reach you.",
+        });
+      }
+
+      /**
+       * An address that already has an account does NOT come through here. Handing a session for
+       * an existing account to whoever holds an invite link would turn a forwarded link into a
+       * way into somebody else's account — including the manager's own, if they mistyped the
+       * invite to themselves. That person signs in with a code and accepts the invite from
+       * inside, which is what `acceptInvite` is for.
+       */
+      const [existingUser] = await db
+        .select({ id: schema.user.id })
+        .from(schema.user)
+        .where(eq(sql`lower(${schema.user.email})`, email));
+      if (existingUser) {
+        throw new ORPCError("CONFLICT", {
+          status: 409,
+          message: `${email} already has a GeoCliks account. Sign in with a code sent to that address, then open this invite link again.`,
+        });
+      }
+
+      const otp = await auth.api.createVerificationOTP({
+        body: { email, type: "sign-in" },
+      });
+      const session = await auth.api.signInEmailOTP({
+        body: { email, otp, name: input.name.trim() },
+      });
+      if (!session?.token) throw new ORPCError("INTERNAL_SERVER_ERROR");
+
+      const joined = await attachToWorkspace(invite, session.user.id);
+      /**
+       * The bearer goes back in the body because the clients that need it most cannot read a
+       * cookie: the phone app keeps its session as a bearer in SecureStore, and the web preview
+       * runs in a partitioned iframe where the SameSite cookie is dropped. Both call
+       * `setAuthToken` with this.
+       */
+      return { ...joined, token: session.token, email };
+    }),
 
   /** Signed-in acceptance: joins the inviting workspace and marks the invite used. */
   acceptInvite: authed
@@ -235,104 +473,32 @@ export const team = {
       const code = input.code.trim().toLowerCase();
       const [invite] = await db.select().from(schema.invites).where(eq(schema.invites.code, code));
       if (!invite || invite.status !== "pending") throw new ORPCError("NOT_FOUND");
-
-      // An invite names one person. Without this check the code is a bearer token: whoever
-      // happens to be signed in when the button is pressed joins the workspace, which silently
-      // lands the wrong account (and burns a paid seat) whenever an invite link is opened on a
-      // phone already signed in as somebody else, or forwarded on to a workmate.
-      const invitedEmail = invite.email.trim().toLowerCase();
-      const signedInEmail = (context.user.email ?? "").trim().toLowerCase();
-      if (invitedEmail !== signedInEmail) {
+      if (inviteExpired(invite)) {
         throw new ORPCError("FORBIDDEN", {
           status: 403,
-          message: `This invite was sent to ${invite.email}, but you are signed in as ${context.user.email}. Sign out and open the invite link again with the invited address, or ask for a fresh invite to ${context.user.email}.`,
+          message: "This invite expired. Ask the person who sent it for a fresh one.",
         });
       }
 
-      const [org] = await db
-        .select()
-        .from(schema.organizations)
-        .where(eq(schema.organizations.id, invite.orgId));
-      if (!org) throw new ORPCError("NOT_FOUND");
-
-      const [existing] = await db
-        .select()
-        .from(schema.members)
-        .where(
-          and(eq(schema.members.orgId, invite.orgId), eq(schema.members.userId, context.user.id)),
-        );
-      const joinedAt = new Date();
-      if (!existing) {
-        // The plan is re-checked here, not just at invite time: the workspace may have
-        // downgraded, or filled its last seat, between sending the invite and this click.
-        const plan = planOf(org.plan);
-        if (!plan.limits.teamspace) {
-          throw new ORPCError("PAYMENT_REQUIRED", {
-            status: 402,
-            message: `${org.name} is no longer on a plan that includes Teamspace. Ask the workspace owner to upgrade, then open this link again.`,
+      // An emailed invite names one person. Without this check the code is a bearer token:
+      // whoever happens to be signed in when the button is pressed joins the workspace, which
+      // silently lands the wrong account (and burns a paid seat) whenever an invite link is
+      // opened on a phone already signed in as somebody else, or forwarded on to a workmate.
+      //
+      // An open invite deliberately names nobody: it is handed over face to face, so whoever
+      // redeems it first is the intended person and there is nothing to compare against.
+      if (invite.email !== null) {
+        const invitedEmail = invite.email.trim().toLowerCase();
+        const signedInEmail = (context.user.email ?? "").trim().toLowerCase();
+        if (invitedEmail !== signedInEmail) {
+          throw new ORPCError("FORBIDDEN", {
+            status: 403,
+            message: `This invite was sent to ${invite.email}, but you are signed in as ${context.user.email}. Sign out and open the invite link again with the invited address, or ask for a fresh invite to ${context.user.email}.`,
           });
-        }
-        const seats = await seatUsage(invite.orgId);
-        if (seats.members >= plan.limits.seats) {
-          throw new ORPCError("PAYMENT_REQUIRED", {
-            status: 402,
-            message: `${org.name} has no seats left. Ask the workspace owner to free a seat or upgrade, then open this link again.`,
-          });
-        }
-        await db.insert(schema.members).values({
-          id: id("mem"),
-          orgId: invite.orgId,
-          userId: context.user.id,
-          role: invite.role,
-          activeAt: joinedAt,
-        });
-      } else {
-        await db
-          .update(schema.members)
-          .set({ activeAt: joinedAt })
-          .where(eq(schema.members.id, existing.id));
-      }
-      // Pre-assigned projects become real assignments now that we know the user id, so a
-      // field member never opens the capture screen with nothing but "Unassigned" to pick.
-      const preAssigned = parseProjectIds(invite.projectIds);
-      if (preAssigned.length) {
-        const live = await db
-          .select({ id: schema.projects.id })
-          .from(schema.projects)
-          .where(
-            and(eq(schema.projects.orgId, invite.orgId), inArray(schema.projects.id, preAssigned)),
-          );
-        if (live.length) {
-          await db
-            .insert(schema.projectAssignments)
-            .values(
-              live.map((project) => ({
-                id: id("asg"),
-                orgId: invite.orgId,
-                projectId: project.id,
-                userId: context.user.id,
-              })),
-            )
-            .onConflictDoNothing();
         }
       }
 
-      await db
-        .update(schema.invites)
-        .set({ status: "accepted" })
-        .where(eq(schema.invites.id, invite.id));
-
-      // Someone who only signed up to accept a crew invite should land in the workspace that
-      // invited them - not in the empty personal one that sign-up auto-provisions.
-      const droppedOwnWorkspace = await dropEmptyPersonalWorkspace(context.user.id, invite.orgId);
-      return {
-        ok: true,
-        orgId: invite.orgId,
-        workspace: org.name,
-        role: invite.role,
-        droppedOwnWorkspace,
-        assignedProjects: preAssigned.length,
-      };
+      return await attachToWorkspace(invite, context.user.id);
     }),
 
   /**

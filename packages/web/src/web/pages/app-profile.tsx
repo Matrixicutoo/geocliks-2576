@@ -3,7 +3,6 @@ import { Link } from "wouter";
 import {
   ArrowUpCircle,
   Image as ImageIcon,
-  KeyRound,
   Loader2,
   Mail,
   LogOut,
@@ -12,9 +11,8 @@ import {
   User,
 } from "lucide-react";
 import { DashboardShell } from "../components/dashboard-shell";
-import { TwoFactorCard } from "../components/two-factor-card";
 import { useOrg, useUpdateOrg } from "../queries/orgs";
-import { useDeleteAccount, useSendPasswordResetLink, useUpdateProfile } from "../queries/account";
+import { useDeleteAccount, useUpdateProfile } from "../queries/account";
 import { orpc } from "../lib/api";
 import { authClient } from "../lib/auth";
 import { useT } from "../lib/i18n";
@@ -29,7 +27,7 @@ function initials(name: string | null | undefined, email: string | null | undefi
 }
 
 /**
- * Account page: avatar, display name, password, plan shortcut and permanent deletion.
+ * Account page: avatar, display name, sign-in method, plan shortcut and permanent deletion.
  * Workspace-wide settings (members, appearance, watermarks) stay on their own pages.
  */
 export default function AppProfile() {
@@ -45,9 +43,6 @@ export default function AppProfile() {
   const [orgName, setOrgName] = useState("");
   const [uploading, setUploading] = useState(false);
   const [logoUploading, setLogoUploading] = useState(false);
-  const [currentPassword, setCurrentPassword] = useState("");
-  const [newPassword, setNewPassword] = useState("");
-  const [changingPassword, setChangingPassword] = useState(false);
   const [armed, setArmed] = useState(false);
   const [confirm, setConfirm] = useState("");
   const [note, setNote] = useState<string | null>(null);
@@ -56,12 +51,6 @@ export default function AppProfile() {
   const user = org.data?.user;
   // Only the workspace owner removes a field member — their captures are workspace evidence.
   const canDeleteAccount = org.data?.role !== "field";
-  /**
-   * Two-step sign-in is offered to owners and admins only. Forcing it on a field crew would mean a
-   * phone-in-a-truck losing access to capture, which is worse for the business than the risk it
-   * removes; the accounts that can change billing, roles and evidence are the ones worth protecting.
-   */
-  const canUse2fa = org.data?.role === "owner" || org.data?.role === "admin";
   /** The server enforces admin+ on `orgs.update`; this keeps the page honest about it. */
   const canRenameOrg = org.data?.role === "owner" || org.data?.role === "admin";
   const workspaceName = org.data?.org.name;
@@ -179,42 +168,6 @@ export default function AppProfile() {
     }
   }
 
-  const sendResetLink = useSendPasswordResetLink();
-
-  async function emailResetLink() {
-    setError(null);
-    try {
-      await sendResetLink.mutateAsync({});
-      flash(t("profile.emailResetSent"));
-    } catch (err) {
-      setError(err instanceof Error ? err.message : String(err));
-    }
-  }
-
-  async function changePassword() {
-    setError(null);
-    if (currentPassword.length < 1 || newPassword.length < 8) {
-      setError(t("signin.passwordHint"));
-      return;
-    }
-    setChangingPassword(true);
-    try {
-      const result = await authClient.changePassword({
-        currentPassword,
-        newPassword,
-        revokeOtherSessions: true,
-      });
-      if (result.error) throw new Error(result.error.message ?? "Could not change password");
-      setCurrentPassword("");
-      setNewPassword("");
-      flash(t("profile.passwordUpdated"));
-    } catch (err) {
-      setError(err instanceof Error ? err.message : String(err));
-    } finally {
-      setChangingPassword(false);
-    }
-  }
-
   async function destroy() {
     setError(null);
     try {
@@ -319,58 +272,19 @@ export default function AppProfile() {
             </div>
           </section>
 
-          {/* Password */}
+          {/* How this account signs in. There is nothing to change — hence no form. */}
           <section className="rounded-[12px] border border-line bg-ink-2">
             <div className="border-b border-line px-4 py-3">
-              <p className="label text-fog">{t("profile.password")}</p>
+              <p className="label text-fog">{t("profile.signInSection")}</p>
             </div>
-            <div className="space-y-3 p-4">
-              <input
-                type="password"
-                value={currentPassword}
-                onChange={(e) => setCurrentPassword(e.target.value)}
-                placeholder={t("profile.currentPassword")}
-                aria-label={t("profile.currentPassword")}
-                className="w-full rounded-[12px] border border-line bg-ink px-3 py-2 text-[14px] text-chalk outline-none focus:border-amber"
-              />
-              <input
-                type="password"
-                value={newPassword}
-                onChange={(e) => setNewPassword(e.target.value)}
-                placeholder={t("profile.newPassword")}
-                aria-label={t("profile.newPassword")}
-                className="w-full rounded-[12px] border border-line bg-ink px-3 py-2 text-[14px] text-chalk outline-none focus:border-amber"
-              />
-              <button
-                type="button"
-                onClick={() => void changePassword()}
-                disabled={changingPassword}
-                className="rounded-[8px] flex items-center gap-2 border border-amber px-4 py-2 text-[13px] font-semibold text-amber transition-colors hover:bg-amber hover:text-ink disabled:opacity-60"
-              >
-                {changingPassword ? (
-                  <Loader2 className="size-4 animate-spin" />
-                ) : (
-                  <KeyRound className="size-4" />
-                )}
-                {t("profile.changePassword")}
-              </button>
-              <p className="text-[12px] text-fog">{t("profile.passwordManaged")}</p>
-              <div className="border-t border-line pt-3">
-                <p className="mb-2 text-[12px] text-fog">{t("profile.emailResetOr")}</p>
-                <button
-                  type="button"
-                  onClick={() => void emailResetLink()}
-                  disabled={sendResetLink.isPending}
-                  className="flex items-center gap-2 rounded-[12px] border border-line px-4 py-2 text-[13px] font-semibold text-chalk transition-colors hover:border-amber hover:text-amber disabled:opacity-60"
-                >
-                  {sendResetLink.isPending ? (
-                    <Loader2 className="size-4 animate-spin" />
-                  ) : (
-                    <Mail className="size-4" />
-                  )}
-                  {t("profile.emailReset")}
-                </button>
-              </div>
+            <div className="space-y-2 p-4">
+              <p className="flex items-center gap-2 text-[13px] text-chalk">
+                <Mail className="size-4 shrink-0 text-amber" />
+                {t("profile.signInPasswordless")}
+              </p>
+              <p className="text-[12px] leading-relaxed text-fog">
+                {t("profile.signInPasswordlessHint")}
+              </p>
             </div>
           </section>
 
@@ -455,7 +369,6 @@ export default function AppProfile() {
             </section>
           ) : null}
 
-          {canUse2fa ? <TwoFactorCard /> : null}
         </div>
 
         <div className="space-y-6">

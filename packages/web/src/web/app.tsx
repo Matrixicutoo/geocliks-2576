@@ -16,7 +16,6 @@ const GetApp = lazy(() => import("./pages/get-app"));
 const VerifyPage = lazy(() => import("./pages/verify"));
 const TrackPage = lazy(() => import("./pages/track"));
 const JoinPage = lazy(() => import("./pages/join"));
-const ResetPasswordPage = lazy(() => import("./pages/reset-password"));
 const AppTeamspace = lazy(() => import("./pages/app-teamspace"));
 const AppCaptures = lazy(() => import("./pages/app-captures"));
 const AppProjects = lazy(() => import("./pages/app-projects"));
@@ -108,7 +107,6 @@ function App() {
               <Route path="/share/:token" component={ShareView} />
               <Route path="/t/:token" component={TrackPage} />
               <Route path="/join/:code" component={JoinPage} />
-              <Route path="/reset-password" component={ResetPasswordPage} />
 
               <Route path="/app">
                 <ProtectedRoute>

@@ -3,6 +3,7 @@ import { auth } from "../auth";
 import { db } from "../database";
 import * as schema from "../database/schema";
 import type { Role } from "../middleware/auth";
+import { effectivePlanId } from "../lib/trial";
 
 /**
  * Who is asking the assistant, if anyone.
@@ -50,6 +51,8 @@ export async function viewerOf(request: Request): Promise<Viewer | null> {
       id: schema.organizations.id,
       name: schema.organizations.name,
       plan: schema.organizations.plan,
+      trialPlan: schema.organizations.trialPlan,
+      trialEndsAt: schema.organizations.trialEndsAt,
     })
     .from(schema.organizations)
     .where(inArray(schema.organizations.id, [chosen.orgId]));
@@ -67,6 +70,8 @@ export async function viewerOf(request: Request): Promise<Viewer | null> {
     orgId: org.id,
     orgName: org.name,
     role: chosen.role as Role,
-    plan: org.plan,
+    // The plan that is included right now, trial and all — the chat's export gate reads this and
+    // must not refuse a format the workspace can plainly use in the UI.
+    plan: effectivePlanId(org),
   };
 }

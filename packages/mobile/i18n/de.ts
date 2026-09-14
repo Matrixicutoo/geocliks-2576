@@ -644,6 +644,9 @@ export const de: Catalog = {
   "profile.displayName": "Anzeigename",
   "profile.saveChanges": "Änderungen speichern",
   "profile.saved": "Profil aktualisiert",
+  "profile.signInSection": "So melden Sie sich an",
+  "profile.signInPasswordless": "Passwortlos – Code per E-Mail, Google oder X",
+  "profile.signInPasswordlessHint": "GeoCliks hat keine Passwörter. Sie melden sich mit einem Einmalcode per E-Mail oder mit Google oder X an. Nichts zu merken, nichts, was geleakt werden kann.",
   "profile.password": "Passwort",
   "profile.currentPassword": "Aktuelles Passwort",
   "profile.newPassword": "Neues Passwort",
@@ -710,6 +713,8 @@ export const de: Catalog = {
   "join.signInToAccept": "Zum Annehmen anmelden",
   "join.createHint":
     "Erstellen Sie Ihr Konto mit {email} oder melden Sie sich mit Google an — Sie landen wieder hier.",
+  "join.metaOpen": "offene Einladung · jeder mit diesem Code",
+  "join.createHintOpen": "Erstelle dein Konto oder melde dich mit Google an – danach landest du wieder hier.",
   "join.footer": "Jedes Foto trägt eine verifizierte Uhrzeit, GPS-Koordinaten und eine Adresse.",
   "reset.sendError": "Die Zurücksetzungs-E-Mail konnte nicht gesendet werden.",
   "reset.tokenError": "Dieser Link ist abgelaufen oder wurde bereits verwendet.",

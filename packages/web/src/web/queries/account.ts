@@ -11,11 +11,6 @@ export function useUpdateProfile() {
   );
 }
 
-/** Emails the signed-in user a reset link so they never have to type the old password. */
-export function useSendPasswordResetLink() {
-  return useMutation(orpc.account.sendPasswordResetLink.mutationOptions());
-}
-
 /** Permanent account deletion — owners also lose the workspace and its photos. */
 export function useDeleteAccount() {
   return useMutation(orpc.account.destroy.mutationOptions());

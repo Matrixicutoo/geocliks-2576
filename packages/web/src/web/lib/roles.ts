@@ -68,3 +68,13 @@ export function canUseField(role: string | undefined | null): boolean {
 export function canManageWatermarks(role: string | undefined | null): boolean {
   return role === "owner" || role === "admin";
 }
+
+/**
+ * First-run onboarding: owner and admin only, matching `requireRole(role, "admin")` on
+ * `orgs.setup`. A manager runs the workspace but does not name it or pick its product — and an
+ * invited crew member must never be asked either, which is what keeps the setup gate off
+ * everyone who joined a Teamspace somebody else had already created.
+ */
+export function canSetUpWorkspace(role: string | undefined | null): boolean {
+  return role === "owner" || role === "admin";
+}

@@ -279,6 +279,54 @@ export const DEFAULT_PLANS: Seed[] = [
     isCustom: false,
   },
   {
+    /**
+     * The delivery side's free tier, and where a lapsed delivery trial lands.
+     *
+     * It has to stay genuinely usable — a driver running a few stops a day keeps working, keeps
+     * stamping proof photos, and keeps the record — while everything that either costs us money
+     * (Google's per-stop route optimization, tracking emails) or is what the paid tiers are sold
+     * on (volume, extra drivers, dispatch) is off. Ordered routes still work: the local solver
+     * is ours and is never billed.
+     */
+    id: "delivery-free",
+    name: "Delivery Free",
+    priceCents: 0,
+    period: "forever",
+    tagline: "Run a handful of stops a day with locked photo proof, free forever.",
+    features: [
+      "40 delivery stops a month, 1 driver",
+      "Route builder: type addresses or paste a list",
+      "Ordered stop list (smart optimizer on paid plans)",
+      "Photo proof locked to every stop",
+      "Verified time, GPS and address on every proof photo",
+      "PDF export",
+    ],
+    limits: {
+      photosPerMonth: 300,
+      videoMaxSeconds: 30,
+      videoTrialDays: 3,
+      projects: 1,
+      seats: 1,
+      templates: 2,
+      teamspace: false,
+      shareLinks: false,
+      exports: ["pdf"],
+      branding: false,
+      roles: false,
+      fieldEnabled: false,
+      deliveryStopsPerMonth: 40,
+      deliveryDrivers: 1,
+      deliveryDispatch: false,
+      deliverySmartOptimize: false,
+      deliveryTracking: false,
+      deliverySignature: false,
+    },
+    visible: true,
+    sortOrder: 9,
+    autumnPlanId: "delivery-free",
+    isCustom: false,
+  },
+  {
     id: "delivery-lite",
     name: "Delivery Lite",
     priceCents: 3900,

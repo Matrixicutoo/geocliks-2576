@@ -1,12 +1,12 @@
 import { betterAuth } from "better-auth";
-import { captcha, twoFactor } from "better-auth/plugins";
+import { captcha, emailOTP } from "better-auth/plugins";
 import { drizzleAdapter } from "better-auth/adapters/drizzle";
 import { expo } from "@better-auth/expo";
 import { runableManagedAuth } from "@runablehq/managed-auth/server";
 import { autumn } from "autumn-js/better-auth";
 import { Autumn } from "autumn-js";
 import { db } from "./database";
-import { resetPasswordEmail, welcomeEmail } from "./services/email-templates";
+import { loginCodeEmail, welcomeEmail } from "./services/email-templates";
 
 /** Reads AUTUMN_SECRET_KEY from the root .env automatically. */
 const autumnSdk = new Autumn();
@@ -94,28 +94,24 @@ const TRUSTED_ORIGINS = [
 ];
 
 /**
- * Cloudflare Turnstile guards the two endpoints a bot actually abuses: account creation and the
- * password-reset mailer. It is deliberately NOT on `/sign-in/email`.
+ * Cloudflare Turnstile is kept in the build but guards nothing, and the empty list is the point.
  *
- * The captcha plugin is all-or-nothing per endpoint — every client hitting a guarded path must send
- * an `x-captcha-response` header or it gets a 400. Turnstile has no native React Native widget
- * (Cloudflare requires a browser/WebView), so guarding sign-in would instantly lock the phone app —
- * and therefore the whole field crew — out of the product. Sign-in is protected by the rate limits
- * below instead, which is the right tool for brute force anyway. The mobile app sends people to the
- * website to register, so it never needs to solve a challenge.
+ * It used to guard `/sign-up/email` and `/request-password-reset`, the two endpoints a bot abuses.
+ * Both are gone: this app has no passwords, so there is no reset mailer, and there is no separate
+ * sign-up either — `/sign-in/email-otp` creates the account on first use.
  *
- * The spread is guarded on the secret being present so a missing key can never lock anyone out: no
- * key means no captcha rather than a 500 on every sign-up.
+ * What replaced them is `/email-otp/send-verification-otp`, and that one CANNOT be guarded. The
+ * captcha plugin is all-or-nothing per endpoint: every client hitting a guarded path must send an
+ * `x-captcha-response` header or it gets a 400. Turnstile has no native React Native widget
+ * (Cloudflare requires a browser/WebView), and asking for a code is now the phone app's only way
+ * in — guarding it would lock out the entire field crew. That is the same reason sign-in was never
+ * guarded. Abuse of the mailer is bounded by the hard per-IP rate limit below instead.
+ *
+ * The plugin stays wired (rather than deleted) so re-guarding a future browser-only endpoint is a
+ * one-line change, and it stays guarded on the secret being present so a missing key can never
+ * lock anyone out.
  */
-const captchaPlugins = process.env.TURNSTILE_SECRET_KEY
-  ? [
-      captcha({
-        provider: "cloudflare-turnstile",
-        secretKey: process.env.TURNSTILE_SECRET_KEY,
-        endpoints: ["/sign-up/email", "/request-password-reset"],
-      }),
-    ]
-  : [];
+const captchaPlugins: ReturnType<typeof captcha>[] = [];
 
 /**
  * "Continue with X" is a plain OAuth 2.0 provider, not part of Runable's managed broker (which
@@ -140,12 +136,18 @@ export const auth = betterAuth({
   basePath: "/api/auth",
   baseURL: process.env.WEBSITE_URL,
   database: drizzleAdapter(db, { provider: "sqlite" }),
-  emailAndPassword: {
-    enabled: true,
-    sendResetPassword: async ({ user, url }) => {
-      await resetPasswordEmail({ to: user.email, url });
-    },
-  },
+  /**
+   * No passwords anywhere. `emailAndPassword` is left explicitly disabled rather than deleted so
+   * it is obvious this is a decision and not an omission: the email route in and out of this app
+   * is the six-digit code issued by the `emailOTP` plugin below, and Google / X mint their own
+   * sessions. Disabling it removes `/sign-in/email`, `/sign-up/email`, `/request-password-reset`
+   * and `/reset-password` from the API surface.
+   *
+   * Accounts that still carry a password hash from before keep it in the `account` table, unused
+   * and unreachable — the endpoint that would check it no longer exists. Those people sign in with
+   * a code to the same address and land in the same account, because the address is the key.
+   */
+  emailAndPassword: { enabled: false },
   socialProviders: xLoginConfigured
     ? {
         twitter: {
@@ -188,18 +190,27 @@ export const auth = betterAuth({
     ipAddress: { ipAddressHeaders: ["cf-connecting-ip", "x-forwarded-for"] },
   },
   /**
-   * Sign-in carries no captcha (the phone app has to reach it), so brute force is bounded here
-   * instead. Windows are in seconds and counted per IP. The generous 60/min default keeps normal
-   * session polling untouched; the three named paths are the ones worth throttling hard.
+   * Sign-in carries no captcha (the phone app has to reach it), so abuse is bounded here instead.
+   * Windows are in seconds and counted per IP. The generous 60/min default keeps normal session
+   * polling untouched; the two named paths are the ones worth throttling hard.
+   *
+   * `send-verification-otp` is the mailer: every call puts a message in somebody's inbox from our
+   * sending domain, so an unbounded one is a spam cannon pointed at our own reputation. 10 an hour
+   * per IP is far above honest use (ask, mistype, ask again, plus a couple of resends) and far
+   * below useful for flooding. Note the app's own `resendAfter` cooldown is a UI courtesy, not a
+   * control — this is the control.
+   *
+   * `sign-in/email-otp` is the guess: six digits is a million combinations, and the plugin already
+   * burns the code after 3 wrong attempts. The limit exists to stop someone cycling fresh codes
+   * and guessing 10 times at each.
    */
   rateLimit: {
     enabled: true,
     window: 60,
     max: 60,
     customRules: {
-      "/sign-in/email": { window: 60, max: 20 },
-      "/sign-up/email": { window: 3600, max: 5 },
-      "/request-password-reset": { window: 3600, max: 5 },
+      "/email-otp/send-verification-otp": { window: 3600, max: 10 },
+      "/sign-in/email-otp": { window: 300, max: 10 },
     },
   },
   plugins: [
@@ -210,18 +221,47 @@ export const auth = betterAuth({
     expo(),
     autumn(),
     /**
-     * Authenticator-app (TOTP) second step. Opt-in per account: the UI only offers it on
-     * /app/profile to owners and admins, because a field crew signing in on a shared truck phone
-     * should not be forced through an authenticator app.
+     * The only email credential this app has: a six-digit code, mailed on request.
      *
-     * Enabling it changes the sign-in response for that account: `signIn.email` returns
-     * `{ twoFactorRedirect: true }` with no session instead of a token, and the session is only
-     * minted once `twoFactor.verifyTotp` succeeds. Both the website and the phone app handle that
-     * second step, so an owner with 2FA on can still sign in on either surface.
+     * `/sign-in/email-otp` doubles as registration — when the address is unknown the plugin
+     * creates the account with `emailVerified: true` and mints the session in the same call. That
+     * is why there is no sign-up endpoint any more, and why an invited crew member cannot end up
+     * with an account whose address they do not control.
      *
-     * `issuer` is what shows up as the account name inside Google Authenticator / Authy / 1Password.
+     * - `expiresIn` 600 (10 minutes, not the 5-minute default): a code has to survive the walk
+     *   from the truck to somewhere with signal, and the mail itself can take a minute to land.
+     * - `allowedAttempts` 3 — the plugin burns the code after the third wrong guess, so a
+     *   shoulder-surfed digit cannot be brute-forced from the remaining five.
+     * - `storeOTP: "hashed"` — the codes live in the `verification` table, and a dump of that
+     *   table should not be a list of live credentials. It also forces `resendStrategy: "rotate"`
+     *   (the default), which is the safer behaviour anyway: "resend" issues a NEW code and the
+     *   old one stops working.
+     * - `disableSignUp` is left off on purpose. Turning it on would mean a brand-new customer
+     *   typing their address gets "invalid code" instead of an account.
+     * - `sendVerificationOnSignUp` is off: the sign-in code already proved the address.
+     *
+     * The mail is awaited rather than fired and forgotten. Better Auth's own docs suggest not
+     * awaiting it to avoid a timing side-channel (a known address takes longer than an unknown
+     * one), but that leak does not exist here — this endpoint mails a code for ANY address,
+     * known or not, and answers `{ success: true }` either way. Awaiting means a mail provider
+     * outage surfaces as a visible error on the button instead of a code that never arrives.
      */
-    twoFactor({ issuer: "GeoCliks" }),
+    emailOTP({
+      otpLength: 6,
+      expiresIn: 600,
+      allowedAttempts: 3,
+      storeOTP: "hashed",
+      sendVerificationOTP: async ({ email, otp, type }) => {
+        await loginCodeEmail({ to: email, otp, type });
+      },
+    }),
+    /**
+     * No TOTP second step. The `twoFactor` plugin only ever hooks `/sign-in/email`,
+     * `/sign-in/username` and `/sign-in/phone-number` — all three are gone with passwords, so it
+     * would guard nothing while still showing an enrolment UI that could never be enforced. A
+     * fresh 6-digit code mailed to a verified address is the whole credential now: possession of
+     * the mailbox is what the second factor used to prove on a reset anyway.
+     */
     ...captchaPlugins,
   ],
   databaseHooks: {

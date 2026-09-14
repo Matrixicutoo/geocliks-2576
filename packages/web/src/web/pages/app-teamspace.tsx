@@ -18,7 +18,7 @@ import { PageTitle } from "../components/page-title";
 import { PhotoDrawer } from "../components/photo-drawer";
 import { useInfinitePhotos, usePhotoStats, useRemovePhotos } from "../queries/photos";
 import { useProjects } from "../queries/projects";
-import { useOrg, useUpdateOrg } from "../queries/orgs";
+import { useOrg } from "../queries/orgs";
 import { useSeedDemo } from "../queries/demo";
 import { cn } from "../lib/utils";
 import { useInfiniteScroll } from "../lib/use-infinite-scroll";
@@ -59,15 +59,11 @@ export default function TeamspacePage() {
   const [selected, setSelected] = useState<string[]>([]);
   const removeMany = useRemovePhotos();
   const org = useOrg();
-  const updateOrg = useUpdateOrg();
-  const [bizName, setBizName] = useState("");
-  const [hideNamePrompt, setHideNamePrompt] = useState(false);
-  const canRenameOrg = org.data?.role === "owner" || org.data?.role === "admin";
   /**
-   * Google sign-ups never see the sign-up form, and accounts that predate the business-name field
-   * still carry the auto-provisioned default. Offer the name once here rather than blocking them.
+   * The "name your business" prompt that used to live here is gone: first-run onboarding
+   * (`SetupGate`) now asks for the Teamspace name before anyone reaches this page, so a banner
+   * asking again could only ever be noise. Renaming later lives on the profile page.
    */
-  const askOrgName = Boolean(org.data?.needsName) && canRenameOrg && !hideNamePrompt;
   /** Field crews capture evidence; only manager and above can remove it. */
   const canDelete = canManageWorkspace(org.data?.role);
 
@@ -112,46 +108,6 @@ export default function TeamspacePage() {
       }
     >
       <PageTitle name={org.data?.org.name} section={t("teamspace.title")} />
-
-      {askOrgName && (
-        <div className="rounded-[12px] mb-4 border border-amber/50 bg-amber/10 p-4">
-          <p className="mono text-[12px] uppercase tracking-widest text-amber">
-            {t("teamspace.nameOrgTitle")}
-          </p>
-          <p className="mt-1 max-w-2xl text-[12.5px] leading-relaxed text-chalk">
-            {t("teamspace.nameOrgBody")}
-          </p>
-          <div className="mt-3 flex flex-wrap items-center gap-2">
-            <input
-              aria-label={t("profile.businessName")}
-              value={bizName}
-              onChange={(e) => setBizName(e.target.value)}
-              placeholder={t("profile.businessName")}
-              className="w-64 rounded-[8px] border border-line bg-ink-2 px-3 py-2 text-[13px] text-chalk outline-none placeholder:text-fog/60 focus:border-amber"
-            />
-            <button
-              type="button"
-              disabled={bizName.trim().length < 2 || updateOrg.isPending}
-              onClick={() =>
-                updateOrg.mutate(
-                  { name: bizName.trim() },
-                  { onSuccess: () => setHideNamePrompt(true) },
-                )
-              }
-              className="rounded-[8px] mono bg-amber px-3.5 py-2 text-[11px] font-bold uppercase tracking-widest text-on-amber disabled:opacity-60"
-            >
-              {t("teamspace.nameOrgSave")}
-            </button>
-            <button
-              type="button"
-              onClick={() => setHideNamePrompt(true)}
-              className="mono rounded-[8px] border border-line px-3 py-2 text-[11px] uppercase tracking-widest text-fog hover:text-chalk"
-            >
-              {t("teamspace.nameOrgDismiss")}
-            </button>
-          </div>
-        </div>
-      )}
 
       <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
         <StatTile

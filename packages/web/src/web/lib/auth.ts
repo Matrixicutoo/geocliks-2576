@@ -1,5 +1,5 @@
 import { createAuthClient } from "better-auth/react";
-import { twoFactorClient } from "better-auth/client/plugins";
+import { emailOTPClient } from "better-auth/client/plugins";
 import { managedAuthClient } from "@runablehq/managed-auth/client";
 
 /**
@@ -15,7 +15,7 @@ const config = {
 };
 
 /**
- * Storage key used by @runablehq/managed-auth's browser storage. Email/password sign-in returns its
+ * Storage key used by @runablehq/managed-auth's browser storage. Email-code sign-in returns its
  * bearer in the `set-auth-token` header instead of going through the managed exchange, so we persist
  * it under the same key — that keeps `managedAuth.getToken()` (and the oRPC bearer in lib/api.ts)
  * working, and makes sessions survive the cross-site preview iframe (web and desktop panels) where
@@ -59,64 +59,20 @@ export const authToken = () => {
   return managed || memoryToken || readStored();
 };
 
-/**
- * Turnstile token for the next guarded request. The captcha plugin reads `x-captcha-response` off
- * the request, and per-call `fetchOptions.headers` have a history of being dropped on these routes,
- * so the widget parks its token here and the global `onRequest` hook below attaches it. Tokens are
- * single-use: the widget clears and re-renders after every submit.
- */
-let captchaToken = "";
-
-export const setCaptchaToken = (token: string) => {
-  captchaToken = token;
-};
-
-/**
- * The captcha plugin answers with its own raw codes and messages ("Missing CAPTCHA response"),
- * which mean nothing to a field crew. Map the two a real person can actually hit onto plain
- * instructions. Returning literal keys keeps `t()` type-checked against the catalog.
- *
- * Deliberately paired with NOT disabling the submit button: if Turnstile is unreachable for a
- * legitimate user, a dead button locks them out with no explanation, whereas letting them submit
- * and showing this message tells them what to do.
- */
-export function captchaErrorKey(code?: string | null) {
-  if (code === "MISSING_RESPONSE") return "signin.captchaMissing" as const;
-  if (code === "VERIFICATION_FAILED") return "signin.captchaFailed" as const;
-  return null;
-}
-
-/** Paths guarded by the captcha plugin on the server — keep in sync with `api/auth.ts`. */
-const CAPTCHA_PATHS = ["/sign-up/email", "/request-password-reset"];
-
 export const authClient = createAuthClient({
   baseURL: import.meta.env.VITE_WEBSITE_URL ?? window.location.origin,
   basePath: "/api/auth",
   fetchOptions: {
     credentials: "include",
     auth: { type: "Bearer", token: () => authToken() },
-    onRequest: (ctx) => {
-      try {
-        const { pathname } = new URL(ctx.url);
-        if (captchaToken && CAPTCHA_PATHS.some((path) => pathname.endsWith(path))) {
-          ctx.headers.set("x-captcha-response", captchaToken);
-        }
-      } catch {
-        // malformed URL — let the request through and let the server answer
-      }
-      return ctx;
-    },
     onSuccess: (ctx) => {
       /**
-       * A sign-in that still needs a 2FA code answers `{ twoFactorRedirect: true }` and no session,
-       * but it STILL sends a `set-auth-token` header — carrying the signed pending two-factor
-       * cookie, not a session token. Storing that would leave a junk bearer behind if the person
-       * abandons the code step. The real token arrives from the verify call instead.
+       * Every authenticated response carries the bearer in `set-auth-token`. Requesting a code is
+       * NOT one of them — `/email-otp/send-verification-otp` mints no session, so there is nothing
+       * to store until the code itself is spent on `/sign-in/email-otp`.
        */
-      const pendingTwoFactor = (ctx.data as { twoFactorRedirect?: boolean } | undefined)
-        ?.twoFactorRedirect;
       const token = ctx.response.headers.get("set-auth-token");
-      if (token && !pendingTwoFactor) setAuthToken(token);
+      if (token) setAuthToken(token);
       try {
         if (new URL(ctx.request.url).pathname.endsWith("/sign-out")) setAuthToken("");
       } catch {
@@ -124,5 +80,5 @@ export const authClient = createAuthClient({
       }
     },
   },
-  plugins: [managedAuthClient(config), twoFactorClient()],
+  plugins: [managedAuthClient(config), emailOTPClient()],
 });

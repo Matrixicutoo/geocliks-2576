@@ -30,7 +30,9 @@ import { LanguageSelect } from "./language-select";
 import { NavDrawer } from "./nav-drawer";
 import { SidebarBody } from "./sidebar-body";
 import { InviteDialog } from "./invite-form";
-import { canManageWatermarks, canManageWorkspace, canUseDelivery, canUseField } from "../lib/roles";
+import { TrialBanner } from "./trial-banner";
+import { canManageWatermarks, canManageWorkspace } from "../lib/roles";
+import { showsProduct } from "../lib/product";
 
 /** Nav entries a field member can't act on — the pages are manager/owner only. */
 const MANAGER_ONLY = new Set(["/app/billing"]);
@@ -43,9 +45,12 @@ const MANAGER_ONLY = new Set(["/app/billing"]);
 const ADMIN_ONLY = new Set(["/app/templates"]);
 
 /**
- * Product-scoped nav. A `driver` has no field access and a `field` member has no delivery
- * access, so showing them these entries would only produce a 403 on click — the server refuses
- * both in `fieldProc` / `requireDelivery`. Hiding is presentation only; the server is the guard.
+ * Product-scoped nav. Two reasons an entry goes: the role has no access to that side — a
+ * `driver` has no field pages, a `field` member has no routes, so the entry would only produce
+ * a 403 on click — or the workspace does not run that system at all, which is what it answered
+ * at onboarding. A roofing company should not carry a Routes tab it will never open.
+ * `showsProduct` owns both rules, and `ProductRoute` applies the same ones to the URL, since
+ * hiding an entry leaves the page itself reachable by typing it.
  *
  * Team, Messages, Share, Profile and Help are deliberately in NEITHER set: they belong to the
  * workspace rather than to one product, so both crews keep them.
@@ -101,10 +106,12 @@ export function DashboardShell({
   // Field crews capture evidence; the plan page is manager and above, and watermark curation is
   // tighter still — owner and admin only.
   const role = org.data?.role;
+  // Which system this workspace runs, so the other one's pages stay out of the sidebar.
+  const product = org.data?.product;
   const nav = (canManageWorkspace(role) ? NAV : NAV.filter((i) => !MANAGER_ONLY.has(i.href)))
     .filter((i) => canManageWatermarks(role) || !ADMIN_ONLY.has(i.href))
-    .filter((i) => canUseField(role) || !FIELD_ONLY.has(i.href))
-    .filter((i) => canUseDelivery(role) || !DELIVERY_ONLY.has(i.href));
+    .filter((i) => showsProduct(product, role, "field") || !FIELD_ONLY.has(i.href))
+    .filter((i) => showsProduct(product, role, "delivery") || !DELIVERY_ONLY.has(i.href));
   // The tab title mirrors the page header, so open tabs stay tellable apart.
   useEffect(() => {
     document.title = title ? `${title} · GeoCliks` : "GeoCliks";
@@ -209,7 +216,13 @@ export function DashboardShell({
           </div>
         </header>
 
-        <main className="px-4 py-5 sm:px-5 sm:py-6 lg:px-8">{children}</main>
+        {/* The free week, above every page's content: the countdown has to reach people who
+            never open the plan page, and it is the only warning before paid features go quiet.
+            Rendered once here rather than per page so no page can forget it. */}
+        <main className="px-4 py-5 sm:px-5 sm:py-6 lg:px-8">
+          <TrialBanner />
+          {children}
+        </main>
       </div>
 
       <InviteDialog open={inviting} onClose={() => setInviting(false)} />

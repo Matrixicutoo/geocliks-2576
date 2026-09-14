@@ -4,7 +4,7 @@ import { useQuery } from "@tanstack/react-query";
 import { useMutation } from "@tanstack/react-query";
 import { Loader2, ShieldCheck, ArrowRight, MailCheck, Smartphone, LogOut } from "lucide-react";
 import { orpc } from "../lib/api";
-import { authClient } from "../lib/auth";
+import { authClient, setAuthToken } from "../lib/auth";
 import { Logo } from "../components/logo";
 import { useT } from "../lib/i18n";
 
@@ -45,6 +45,35 @@ export default function JoinPage() {
       onError: (e: Error) => setError(e.message),
     }),
   );
+  /**
+   * Signed-out acceptance. The invite link IS the credential — whoever holds it was handed it by
+   * someone who already has the workspace, so asking them to prove a mailbox they may not even
+   * read on this phone buys nothing and loses people. A name (and, on an open QR invite that
+   * names nobody, an address) is the whole form; the server mints the session and hands the
+   * bearer back in the body.
+   */
+  const claim = useMutation(
+    orpc.team.claimInvite.mutationOptions({
+      onSuccess: async (result: { token: string }) => {
+        setAuthToken(result.token);
+        // Confirm the bearer really resolves a session before routing anywhere.
+        await authClient.getSession({ query: { disableCookieCache: true } });
+        /**
+         * `getSession()` is a plain fetch — it does NOT write to the reactive session store that
+         * `useSession()` reads, and `claimInvite` is an oRPC call so it never trips Better Auth's
+         * own sign-in signal the way `/sign-in/email-otp` does. Without this notify, /app mounts
+         * holding the stale signed-out value, ProtectedRoute sees no session and bounces the crew
+         * member straight back to /sign-in with a perfectly good session in hand. Notifying makes
+         * the store refetch (and flip to `isPending`) synchronously, so the guard waits for it.
+         */
+        authClient.$store.notify("$sessionSignal");
+        navigate("/app");
+      },
+      onError: (e: Error) => setError(e.message),
+    }),
+  );
+  const [claimName, setClaimName] = useState("");
+  const [claimEmail, setClaimEmail] = useState("");
 
   const signedIn = Boolean(session.data?.user);
   // Acceptance is refused server-side unless the account email matches the invited one, so the
@@ -55,16 +84,26 @@ export default function JoinPage() {
     signedIn &&
     Boolean(invitedEmail) &&
     invitedEmail.trim().toLowerCase() !== currentEmail.trim().toLowerCase();
-  const signUpHref = `/sign-up?email=${encodeURIComponent(invitedEmail)}&next=${encodeURIComponent(`/join/${code}`)}`;
-  // An invited person who already has an account gets sign-in; a brand-new crew member gets
-  // sign-up. Sending an existing user to sign-up only dead-ends them on "already exists".
+  /**
+   * The one authentication route: the code mailed to the invited address signs in an existing
+   * account and creates one for a new address, so there is no second page to choose between.
+   */
   const signInHref = `/sign-in?email=${encodeURIComponent(invitedEmail)}&next=${encodeURIComponent(`/join/${code}`)}`;
   const hasAccount = Boolean(invite.data?.hasAccount);
-  const authHref = hasAccount ? signInHref : signUpHref;
+  // An open invite (a QR handed over in person) carries no address, so there is nobody to look
+  // up and no way to tell whether this person already has an account — the page offers both.
+  const openInvite = Boolean(invite.data?.open);
   const onPhone = useMemo(isMobileUA, []);
   const appLink = `${APP_SCHEME}://join?code=${encodeURIComponent(code)}`;
   const tried = useRef(false);
   const [stayedOnWeb, setStayedOnWeb] = useState(false);
+  const nameRef = useRef<HTMLInputElement | null>(null);
+
+  // Put the caret in the name field once the claim form is actually on screen — via a ref rather
+  // than `autoFocus`, which the a11y lint forbids.
+  useEffect(() => {
+    nameRef.current?.focus();
+  }, [invite.data]);
 
   // One automatic attempt per page load, once the code is known to be a live invite. If the app
   // is not installed nothing happens and we reveal the browser path instead of leaving the person
@@ -114,7 +153,9 @@ export default function JoinPage() {
             </h1>
             <div className="mono mt-6 space-y-2 border-l-2 border-amber pl-4 text-[11.5px] text-fog">
               <p>
-                {t("join.metaEmail")} · {invite.data.email}
+                {invite.data.email
+                  ? `${t("join.metaEmail")} · ${invite.data.email}`
+                  : t("join.metaOpen")}
               </p>
               <p>
                 {t("join.metaRole")} · {invite.data.role}
@@ -164,7 +205,7 @@ export default function JoinPage() {
                   type="button"
                   onClick={async () => {
                     await authClient.signOut();
-                    navigate(authHref);
+                    navigate(signInHref);
                   }}
                   className="mono mt-4 flex w-full items-center justify-center gap-2 rounded-[8px] border border-line px-4 py-2.5 text-[11.5px] uppercase tracking-widest text-chalk transition-colors hover:border-fog"
                 >
@@ -194,21 +235,87 @@ export default function JoinPage() {
                   {t("join.signedInAs", { email: session.data?.user.email ?? "" })}
                 </p>
               </>
-            ) : (
+            ) : hasAccount ? (
+              /* The invited address already has an account: a claim here would be a way into
+                 somebody else's, so this person signs in with a code and accepts from inside. */
               <>
                 <Link
-                  to={authHref}
+                  to={signInHref}
                   className="rounded-[8px] mono mt-8 flex w-full items-center justify-center gap-2 bg-amber px-4 py-3 text-[11.5px] font-bold uppercase tracking-widest text-ink transition-colors hover:bg-amber-deep"
                 >
                   <ArrowRight className="size-4" />
-                  {hasAccount ? t("join.signInToAccept") : t("signin.submitSignUp")}
+                  {t("join.signInToAccept")}
                 </Link>
-                {hasAccount ? null : (
-                  <p className="mt-3 text-[11.5px] leading-relaxed text-fog">
-                    {t("join.createHint", { email: invite.data.email })}
-                  </p>
-                )}
               </>
+            ) : (
+              /* Frictionless path: name in, straight into the Teamspace. No code, no password. */
+              <form
+                className="mt-8 space-y-3"
+                onSubmit={(event) => {
+                  event.preventDefault();
+                  setError(null);
+                  claim.mutate({
+                    code,
+                    name: claimName.trim(),
+                    ...(openInvite ? { email: claimEmail.trim().toLowerCase() } : {}),
+                  });
+                }}
+              >
+                <label className="block">
+                  <span className="label">{t("join.yourName")}</span>
+                  <input
+                    ref={nameRef}
+                    aria-label={t("join.yourName")}
+                    value={claimName}
+                    onChange={(e) => setClaimName(e.target.value)}
+                    required
+                    maxLength={80}
+                    placeholder={t("join.yourNamePlaceholder")}
+                    className="mt-1.5 w-full rounded-[8px] border border-line bg-ink-2 px-3 py-2.5 text-[14px] text-chalk outline-none transition-colors placeholder:text-fog/60 focus:border-amber"
+                  />
+                </label>
+                {openInvite ? (
+                  <label className="block">
+                    <span className="label">{t("signin.workEmail")}</span>
+                    <input
+                      aria-label={t("signin.workEmail")}
+                      type="email"
+                      required
+                      value={claimEmail}
+                      onChange={(e) => setClaimEmail(e.target.value)}
+                      placeholder={t("signin.emailPlaceholder")}
+                      className="mt-1.5 w-full rounded-[8px] border border-line bg-ink-2 px-3 py-2.5 text-[14px] text-chalk outline-none transition-colors placeholder:text-fog/60 focus:border-amber"
+                    />
+                    <span className="mt-1.5 block text-[11.5px] leading-relaxed text-fog">
+                      {t("join.emailHint")}
+                    </span>
+                  </label>
+                ) : null}
+                <button
+                  type="submit"
+                  disabled={claim.isPending || claimName.trim().length < 1}
+                  className="rounded-[8px] mono flex w-full items-center justify-center gap-2 bg-amber px-4 py-3 text-[11.5px] font-bold uppercase tracking-widest text-ink transition-colors hover:bg-amber-deep disabled:opacity-60"
+                >
+                  {claim.isPending ? (
+                    <Loader2 className="size-4 animate-spin" />
+                  ) : (
+                    <ArrowRight className="size-4" />
+                  )}
+                  {t("join.claim", { workspace: invite.data.workspace })}
+                </button>
+                <p className="text-[11.5px] leading-relaxed text-fog">
+                  {openInvite
+                    ? t("join.claimHintOpen")
+                    : t("join.claimHint", { email: invite.data.email ?? "" })}
+                </p>
+                <Link
+                  to={signInHref}
+                  className="mono inline-flex items-center gap-2 text-[11px] uppercase tracking-widest text-amber hover:text-amber-deep"
+                >
+                  <ArrowRight className="size-3.5" />
+                  {t("join.haveAccount")}
+                </Link>
+              </form>
             )}
 
             {error && (

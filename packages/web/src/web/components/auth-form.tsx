@@ -1,15 +1,13 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Link, useLocation, useSearchParams } from "wouter";
-import { Loader2, ShieldCheck, ArrowRight, Eye, EyeOff } from "lucide-react";
-import { authClient, captchaErrorKey, setAuthToken } from "../lib/auth";
-import { orpc } from "../lib/api";
+import { Loader2, ShieldCheck, ArrowRight, Mail, ChevronDown } from "lucide-react";
+import { authClient, setAuthToken } from "../lib/auth";
 import { Logo } from "./logo";
-import { Turnstile } from "./turnstile";
-import { TwoFactorStep } from "./two-factor-step";
 import { useT } from "../lib/i18n";
 import { useAuthProviders } from "../queries/site";
 
-export type AuthMode = "sign-in" | "sign-up";
+/** Seconds a person waits before a fresh code can be mailed. Matches the mobile screen. */
+const RESEND_SECONDS = 50;
 
 /**
  * Pulls the OAuth failure code out of the current query string.
@@ -44,22 +42,25 @@ function XIcon({ className }: { className?: string }) {
 }
 
 /**
- * Shared body of /sign-in and /sign-up.
+ * The single authentication screen.
  *
- * The two are separate URLs — a person arriving from an invite, an email, or the marketing site
- * lands on one purpose, not on a tabbed form they have to read twice. The logic is shared here
- * rather than duplicated so the auth handling, 2FA hand-off and bearer-token dance can never
- * drift apart between the two pages.
+ * There is no sign-up any more, and therefore no second page: a 6-digit code spent on
+ * `/sign-in/email-otp` creates the account if the address is new and signs in if it isn't, so
+ * asking someone up front which of the two they are is a question with no purpose. Everything a
+ * new workspace needs — the person's name, the Teamspace name, which system they run — is asked
+ * once, after the session exists, by the onboarding screen.
+ *
+ * Social first, deliberately: Google is the button nearly everyone wants, X and email hide behind
+ * "More" so the common path is a single tap. The same ordering ships on the phone app.
  */
+
 /**
- * The phone app cannot register natively: new accounts are gated by Turnstile, which has no React
- * Native widget and is broken inside iOS WKWebView. The app therefore hands sign-up to this page
- * in the browser with `?app=1`, and on success we hand the browser straight back to the app
- * through its deep link instead of routing on into the website.
+ * The phone app hands the browser a `?app=1` sign-in when it needs one, and on success we hand the
+ * browser straight back to the app through its deep link instead of routing on into the website.
  *
  * The scheme is hardcoded deliberately. Reading the return target out of the query string would
- * turn this page into an open redirect: anyone could mail a /sign-up?app=<their-url> link and
- * bounce a freshly-registered user - bearer token and all - wherever they liked.
+ * turn this page into an open redirect: anyone could mail a link and bounce a freshly-signed-in
+ * user - bearer token and all - wherever they liked.
  */
 const APP_SCHEME = "runable-timemar-nt1ia4s";
 
@@ -72,7 +73,7 @@ function appCallbackUrl(email: string): string {
   return `${APP_SCHEME}://auth/callback?${params.toString()}`;
 }
 
-export function AuthForm({ mode }: { mode: AuthMode }) {
+export function AuthForm() {
   const t = useT();
   const [, navigate] = useLocation();
   const [searchParams] = useSearchParams();
@@ -83,51 +84,53 @@ export function AuthForm({ mode }: { mode: AuthMode }) {
   const invitedEmail = searchParams.get("email")?.trim() ?? "";
   // Set when the phone app sent us here, so a success returns to the app rather than to /app.
   const appReturn = searchParams.get("app") === "1";
-  // Set when /sign-up bounced someone here because their account already existed, or when a
-  // social sign-in came back failed (X hands control back through errorCallbackURL, not a promise).
-  // The notice value can arrive with the OAuth code glued on, so compare only the leading word.
+  // Set when a social sign-in came back failed (X hands control back through errorCallbackURL,
+  // not a promise). The notice value can arrive with the OAuth code glued on, so compare only the
+  // leading word.
   const notice = (searchParams.get("notice") ?? "").split("?")[0];
   const socialError = oauthErrorCode(
     typeof window === "undefined" ? "" : window.location.search,
   );
   const [error, setError] = useState<string | null>(
-    notice === "exists"
-      ? t("signin.existsSignIn")
-      : notice === "social" || socialError
-        ? `${t("signin.authError")}${socialError ? ` (${socialError})` : ""}`
-        : null,
+    notice === "social" || socialError
+      ? `${t("signin.authError")}${socialError ? ` (${socialError})` : ""}`
+      : null,
   );
-  // Sign-up reached from an invite is a join, not a workspace creation: the person is landing
-  // in someone else's Teamspace, so asking them to name a business and pressing "create
-  // workspace" at them is wrong on both counts.
-  const joining = mode === "sign-up" && Boolean(invitedEmail);
-  const [name, setName] = useState("");
-  // The business name becomes the Teamspace name: the workspace is auto-provisioned on the
-  // first API call, so setting it is a rename issued right after the account exists.
-  const [businessName, setBusinessName] = useState("");
+
   const [email, setEmail] = useState(invitedEmail);
-  const [password, setPassword] = useState("");
-  const [showPw, setShowPw] = useState(false);
-  const [busy, setBusy] = useState<"google" | "x" | "email" | null>(null);
+  const [code, setCode] = useState("");
+  // "choose" shows the buttons, "email" the address field, "code" the 6 digits.
+  // An invited arrival skips straight to the address: the invite already named it.
+  const [step, setStep] = useState<"choose" | "email" | "code">(
+    invitedEmail ? "email" : "choose",
+  );
+  const [showMore, setShowMore] = useState(false);
+  const [busy, setBusy] = useState<"google" | "x" | "send" | "verify" | null>(null);
+  const [cooldown, setCooldown] = useState(0);
   // Hides the X button unless the server actually holds X credentials.
   const providers = useAuthProviders();
-  // Turnstile tokens are single-use. Bumping this remounts the widget for the next attempt.
-  const [captchaNonce, setCaptchaNonce] = useState(0);
-  /**
-   * Accounts with authenticator 2FA on get no session from `signIn.email` — it answers
-   * `{ twoFactorRedirect: true }` and the session is minted only after the code is verified.
-   */
-  const [needsCode, setNeedsCode] = useState(false);
+  const codeRef = useRef<HTMLInputElement | null>(null);
+  const emailRef = useRef<HTMLInputElement | null>(null);
 
-  /** Carry the invite context across to the sibling page so a switch never loses it. */
-  function siblingHref(to: AuthMode) {
-    const params = new URLSearchParams();
-    if (invitedEmail) params.set("email", invitedEmail);
-    if (next !== "/app") params.set("next", next);
-    if (appReturn) params.set("app", "1");
-    const qs = params.toString();
-    return `/${to === "sign-in" ? "sign-in" : "sign-up"}${qs ? `?${qs}` : ""}`;
-  }
+  /** Resend countdown. One interval for the whole screen, cleared the moment it hits zero. */
+  useEffect(() => {
+    if (cooldown <= 0) return;
+    const timer = setInterval(() => setCooldown((n) => (n <= 1 ? 0 : n - 1)), 1000);
+    return () => clearInterval(timer);
+  }, [cooldown]);
+
+  /** Focus the digits as soon as the code screen appears — nobody should have to click first. */
+  useEffect(() => {
+    if (step === "code") codeRef.current?.focus();
+  }, [step]);
+
+  /**
+   * Same courtesy on the email step, minus the `autoFocus` attribute the a11y lint forbids. An
+   * invited address is read-only, so focusing it would only trap the caret in a field nobody edits.
+   */
+  useEffect(() => {
+    if (step === "email" && !invitedEmail) emailRef.current?.focus();
+  }, [step, invitedEmail]);
 
   /**
    * Shared tail of every successful sign-in. Desktop/preview panels run the app in a cross-site
@@ -183,58 +186,68 @@ export function AuthForm({ mode }: { mode: AuthMode }) {
     }
   }
 
-  async function withEmail(event: React.FormEvent) {
-    event.preventDefault();
+  /**
+   * Mails a fresh 6-digit code. `type: "sign-in"` is the identifier the verify call expects; the
+   * endpoint answers the same way whether or not the address has an account, so nothing here
+   * leaks whether someone is already a member.
+   */
+  async function sendCode(event?: React.FormEvent) {
+    event?.preventDefault();
+    const address = email.trim().toLowerCase();
+    if (!address) return;
     setError(null);
-    setBusy("email");
+    setBusy("send");
     try {
-      const result =
-        mode === "sign-in"
-          ? await authClient.signIn.email({ email, password })
-          : await authClient.signUp.email({ email, password, name: name || email.split("@")[0] });
+      const result = await authClient.emailOtp.sendVerificationOtp({
+        email: address,
+        type: "sign-in",
+      });
       if (result.error) {
-        // better-auth answers a duplicate sign-up with "User already exists. Use another email."
-        // On an invite the address is locked to the invited person, so "use another email" is
-        // advice they cannot follow — it dead-ends someone who simply already has an account.
-        // Send them to the sign-in page on the same address instead, invite context intact.
-        const exists =
-          result.error.code === "USER_ALREADY_EXISTS" ||
-          /already exists/i.test(result.error.message ?? "");
-        if (mode === "sign-up" && exists) {
-          const params = new URLSearchParams();
-          if (email) params.set("email", email);
-          if (next !== "/app") params.set("next", next);
-          if (appReturn) params.set("app", "1");
-          params.set("notice", "exists");
-          navigate(`/sign-in?${params.toString()}`);
-          return;
-        }
-        const captchaKey = captchaErrorKey(result.error.code);
-        setError(captchaKey ? t(captchaKey) : (result.error.message ?? t("signin.authError")));
+        setError(result.error.message ?? t("signin.codeSendError"));
         return;
       }
-      if ((result.data as { twoFactorRedirect?: boolean } | null)?.twoFactorRedirect) {
-        setNeedsCode(true);
-        return;
-      }
-      const token = (result.data as { token?: string | null } | null)?.token;
-      if (mode === "sign-up" && !joining && businessName.trim().length >= 2) {
-        // Store the bearer first: in a cross-site iframe the session cookie is dropped and the
-        // token is the only thing that authenticates this call. A failure never blocks sign-up —
-        // the Teamspace page asks for the name again.
-        if (token) setAuthToken(token);
-        await orpc.orgs.update.call({ name: businessName.trim() }).catch(() => undefined);
-      }
-      await finish(token);
+      setCode("");
+      setStep("code");
+      setCooldown(RESEND_SECONDS);
     } catch (err) {
       setError(err instanceof Error ? err.message : String(err));
     } finally {
       setBusy(null);
-      if (mode === "sign-up") setCaptchaNonce((n) => n + 1);
     }
   }
 
-  if (needsCode) return <TwoFactorStep onVerified={finish} />;
+  /**
+   * Spends the code. On an address with no account this creates one, verified, and signs in — the
+   * name is a placeholder the onboarding screen replaces, never something the person is asked for
+   * twice.
+   */
+  async function verifyCode(event: React.FormEvent) {
+    event.preventDefault();
+    const address = email.trim().toLowerCase();
+    setError(null);
+    setBusy("verify");
+    try {
+      const result = await authClient.signIn.emailOtp({
+        email: address,
+        otp: code.trim(),
+        name: address.split("@")[0],
+      });
+      if (result.error) {
+        setError(result.error.message ?? t("signin.codeError"));
+        return;
+      }
+      await finish((result.data as { token?: string | null } | null)?.token);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : String(err));
+    } finally {
+      setBusy(null);
+    }
+  }
+
+  const buttonClass =
+    "flex w-full items-center justify-center gap-2.5 rounded-[12px] border border-line bg-ink-2 px-4 py-3 text-[13.5px] font-semibold text-chalk transition-colors hover:border-fog disabled:opacity-60";
+  const inputClass =
+    "mt-1.5 w-full rounded-[8px] border border-line bg-ink-2 px-3 py-2.5 text-[14px] text-chalk outline-none transition-colors placeholder:text-fog/60 focus:border-amber";
 
   return (
     <div
@@ -279,201 +292,217 @@ export function AuthForm({ mode }: { mode: AuthMode }) {
           </div>
 
           <h1 className="mt-8 font-display text-[27px] font-bold tracking-tight lg:mt-0">
-            {joining
-              ? t("signin.joinEyebrow")
-              : mode === "sign-in"
-                ? t("signin.welcomeBack")
-                : t("signin.createYourWorkspace")}
+            {step === "code"
+              ? t("signin.codeTitle")
+              : invitedEmail
+                ? t("signin.joinEyebrow")
+                : t("signin.welcomeBack")}
           </h1>
           <p className="mt-2 text-[13.5px] leading-relaxed text-fog">
-            {joining
-              ? t("signin.joinTitle")
-              : mode === "sign-in"
-                ? t("signin.subtitle")
-                : t("signin.startDocumenting")}
+            {step === "code"
+              ? t("signin.codeBody", { email: email.trim().toLowerCase() })
+              : invitedEmail
+                ? t("signin.joinTitle")
+                : t("signin.subtitle")}
           </p>
 
-          <button
-            type="button"
-            onClick={withGoogle}
-            disabled={busy !== null}
-            className="mt-7 flex w-full items-center justify-center gap-2.5 rounded-[12px] border border-line bg-ink-2 px-4 py-3 text-[13.5px] font-semibold text-chalk transition-colors hover:border-fog disabled:opacity-60"
-          >
-            {busy === "google" ? (
-              <Loader2 className="size-4 animate-spin" />
-            ) : (
-              <svg viewBox="0 0 24 24" className="size-4" aria-hidden="true">
-                <path
-                  fill="#4285F4"
-                  d="M23.5 12.3c0-.9-.1-1.5-.2-2.2H12v4.1h6.6c-.1 1.1-.8 2.7-2.4 3.8v3.1h3.9c2.3-2.1 3.4-5.2 3.4-8.8Z"
-                />
-                <path
-                  fill="#34A853"
-                  d="M12 24c3.2 0 5.9-1.1 7.9-2.9l-3.9-3c-1 .7-2.3 1.2-4 1.2-3.1 0-5.7-2-6.7-4.8H1.3v3.2C3.3 21.5 7.3 24 12 24Z"
-                />
-                <path
-                  fill="#FBBC05"
-                  d="M5.3 14.5c-.3-.8-.4-1.6-.4-2.5s.2-1.7.4-2.5V6.3H1.3A11.9 11.9 0 0 0 0 12c0 1.9.5 3.8 1.3 5.4l4-2.9Z"
-                />
-                <path
-                  fill="#EA4335"
-                  d="M12 4.7c1.8 0 3.3.6 4.5 1.8l3.4-3.4C17.9 1.2 15.2 0 12 0 7.3 0 3.3 2.5 1.3 6.3l4 3.2C6.3 6.7 8.9 4.7 12 4.7Z"
-                />
-              </svg>
-            )}
-            {t("signin.google")}
-          </button>
-
-          {providers.data?.x ? (
-            <button
-              type="button"
-              onClick={withX}
-              disabled={busy !== null}
-              className="mt-3 flex w-full items-center justify-center gap-2.5 rounded-[12px] border border-line bg-ink-2 px-4 py-3 text-[13.5px] font-semibold text-chalk transition-colors hover:border-fog disabled:opacity-60"
-            >
-              {busy === "x" ? (
-                <Loader2 className="size-4 animate-spin" />
-              ) : (
-                <XIcon className="size-4" />
-              )}
-              {t("signin.x")}
-            </button>
-          ) : null}
-
-          <div className="my-6 flex items-center gap-3">
-            <span className="h-px flex-1 bg-line" />
-            <span className="mono text-[10px] uppercase tracking-widest text-fog">
-              {t("signin.orEmail")}
-            </span>
-            <span className="h-px flex-1 bg-line" />
-          </div>
-
-          <form onSubmit={withEmail} className="space-y-3">
-            {mode === "sign-up" && (
-              <>
-                <label className="block">
-                  <span className="label">{t("signin.name")}</span>
-                  <input
-                    aria-label={t("signin.name")}
-                    value={name}
-                    onChange={(e) => setName(e.target.value)}
-                    placeholder="Dana Whitfield"
-                    className="mt-1.5 w-full rounded-[8px] border border-line bg-ink-2 px-3 py-2.5 text-[14px] text-chalk outline-none transition-colors placeholder:text-fog/60 focus:border-amber"
-                  />
-                </label>
-                {joining ? null : (
-                  <label className="block">
-                    <span className="label">{t("signin.businessName")}</span>
-                    <input
-                      aria-label={t("signin.businessName")}
-                      value={businessName}
-                      onChange={(e) => setBusinessName(e.target.value)}
-                      placeholder="Whitfield Contracting"
-                      className="mt-1.5 w-full rounded-[8px] border border-line bg-ink-2 px-3 py-2.5 text-[14px] text-chalk outline-none transition-colors placeholder:text-fog/60 focus:border-amber"
-                    />
-                    <span className="mt-1.5 block text-[11.5px] leading-relaxed text-fog">
-                      {t("signin.businessNameHelp")}
-                    </span>
-                  </label>
-                )}
-              </>
-            )}
-            <label className="block">
-              {mode === "sign-up" ? (
-                <span className="label">{t("signin.workEmail")}</span>
-              ) : null}
-              <input
-                aria-label={t("signin.workEmail")}
-                type="email"
-                required
-                readOnly={Boolean(invitedEmail)}
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                placeholder={t("signin.emailPlaceholder")}
-                className={`mt-1.5 w-full rounded-[8px] border border-line bg-ink-2 px-3 py-2.5 text-[14px] text-chalk outline-none transition-colors placeholder:text-fog/60 focus:border-amber${
-                  invitedEmail ? " cursor-not-allowed text-fog" : ""
-                }`}
-              />
-              {invitedEmail ? (
-                <span className="mt-1.5 block text-[11.5px] leading-relaxed text-fog">
-                  {t("signin.inviteLocked")}
-                </span>
-              ) : null}
-            </label>
-            <label className="block">
-              {mode === "sign-up" ? (
-                <span className="label">{t("signin.password")}</span>
-              ) : null}
-              <div className="relative mt-1.5">
+          {step === "code" ? (
+            /* Code step — nothing else on screen competes with the six digits. */
+            <form onSubmit={verifyCode} className="mt-7 space-y-3">
+              <label className="block">
+                <span className="label">{t("signin.codeLabel")}</span>
                 <input
-                  aria-label={t("signin.password")}
-                  type={showPw ? "text" : "password"}
-                  required
-                  minLength={8}
-                  autoCapitalize="none"
-                  autoCorrect="off"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  placeholder={t("signin.passwordHint")}
-                  className="w-full rounded-[8px] border border-line bg-ink-2 py-2.5 pl-3 pr-12 text-[14px] text-chalk outline-none transition-colors placeholder:text-fog/60 focus:border-amber"
+                  ref={codeRef}
+                  aria-label={t("signin.codeLabel")}
+                  value={code}
+                  onChange={(e) => setCode(e.target.value.replace(/\D/g, "").slice(0, 6))}
+                  inputMode="numeric"
+                  autoComplete="one-time-code"
+                  placeholder="123456"
+                  className={`${inputClass} mono text-center text-[22px] tracking-[0.4em]`}
                 />
+              </label>
+
+              {error && (
+                <p className="rounded-[8px] border border-alert/40 bg-alert/10 px-3 py-2 text-[12.5px] text-alert">
+                  {error}
+                </p>
+              )}
+
+              <button
+                type="submit"
+                disabled={busy !== null || code.length < 6}
+                className="flex w-full items-center justify-center gap-2 rounded-[8px] bg-amber px-4 py-3 text-[14px] font-bold text-ink transition-colors hover:bg-amber-deep disabled:opacity-60"
+              >
+                {busy === "verify" ? (
+                  <Loader2 className="size-4 animate-spin" />
+                ) : (
+                  <ArrowRight className="size-4" />
+                )}
+                {t("signin.continue")}
+              </button>
+
+              <button
+                type="button"
+                onClick={() => void sendCode()}
+                disabled={cooldown > 0 || busy !== null}
+                className="mono block w-full py-1 text-[11.5px] text-fog transition-colors hover:text-chalk disabled:hover:text-fog"
+              >
+                {cooldown > 0
+                  ? t("signin.resendIn", { seconds: cooldown })
+                  : t("signin.resend")}
+              </button>
+
+              {invitedEmail ? null : (
                 <button
                   type="button"
-                  onClick={() => setShowPw((v) => !v)}
-                  aria-label={t(showPw ? "signin.hidePassword" : "signin.showPassword")}
-                  className="absolute inset-y-0 right-0 flex w-11 items-center justify-center text-fog transition-colors hover:text-chalk"
+                  onClick={() => {
+                    setStep("email");
+                    setError(null);
+                    setCode("");
+                  }}
+                  className="mono block w-full text-[11.5px] text-fog transition-colors hover:text-chalk"
                 >
-                  {showPw ? <EyeOff className="size-4" /> : <Eye className="size-4" />}
+                  {t("signin.changeEmail")}
                 </button>
-              </div>
-            </label>
-
-            {mode === "sign-up" && <Turnstile nonce={captchaNonce} />}
-
-            {error && (
-              <p className="rounded-[8px] border border-alert/40 bg-alert/10 px-3 py-2 text-[12.5px] text-alert">
-                {error}
-              </p>
-            )}
-
-            <button
-              type="submit"
-              disabled={busy !== null}
-              className="flex w-full items-center justify-center gap-2 rounded-[8px] bg-amber px-4 py-3 text-[14px] font-bold text-ink transition-colors hover:bg-amber-deep disabled:opacity-60"
-            >
-              {busy === "email" ? (
-                <Loader2 className="size-4 animate-spin" />
-              ) : (
-                <ArrowRight className="size-4" />
               )}
-              {joining
-                ? t("signin.submitJoin")
-                : mode === "sign-in"
-                  ? t("signin.submitSignIn")
-                  : t("signin.submitCreateWorkspace")}
-            </button>
-          </form>
+            </form>
+          ) : (
+            <>
+              <button
+                type="button"
+                onClick={withGoogle}
+                disabled={busy !== null}
+                className={`mt-7 ${buttonClass}`}
+              >
+                {busy === "google" ? (
+                  <Loader2 className="size-4 animate-spin" />
+                ) : (
+                  <svg viewBox="0 0 24 24" className="size-4" aria-hidden="true">
+                    <path
+                      fill="#4285F4"
+                      d="M23.5 12.3c0-.9-.1-1.5-.2-2.2H12v4.1h6.6c-.1 1.1-.8 2.7-2.4 3.8v3.1h3.9c2.3-2.1 3.4-5.2 3.4-8.8Z"
+                    />
+                    <path
+                      fill="#34A853"
+                      d="M12 24c3.2 0 5.9-1.1 7.9-2.9l-3.9-3c-1 .7-2.3 1.2-4 1.2-3.1 0-5.7-2-6.7-4.8H1.3v3.2C3.3 21.5 7.3 24 12 24Z"
+                    />
+                    <path
+                      fill="#FBBC05"
+                      d="M5.3 14.5c-.3-.8-.4-1.6-.4-2.5s.2-1.7.4-2.5V6.3H1.3A11.9 11.9 0 0 0 0 12c0 1.9.5 3.8 1.3 5.4l4-2.9Z"
+                    />
+                    <path
+                      fill="#EA4335"
+                      d="M12 4.7c1.8 0 3.3.6 4.5 1.8l3.4-3.4C17.9 1.2 15.2 0 12 0 7.3 0 3.3 2.5 1.3 6.3l4 3.2C6.3 6.7 8.9 4.7 12 4.7Z"
+                    />
+                  </svg>
+                )}
+                {t("signin.google")}
+              </button>
 
-          {/* Password recovery belongs on sign-in, and on any invited arrival: an invited person
-              who already has an account is exactly who needs it most. */}
-          {(mode === "sign-in" || Boolean(invitedEmail)) && (
-            <Link
-              to="/reset-password"
-              className="mono mt-4 inline-block text-[11.5px] text-fog hover:text-chalk"
-            >
-              {t("signin.forgot")}
-            </Link>
+              {/* "More" keeps the rare paths one tap away instead of stacked in everyone's face. */}
+              {step === "choose" && !showMore ? (
+                <button
+                  type="button"
+                  onClick={() => setShowMore(true)}
+                  disabled={busy !== null}
+                  className={`mt-3 ${buttonClass}`}
+                >
+                  <ChevronDown className="size-4" />
+                  {t("signin.more")}
+                </button>
+              ) : null}
+
+              {showMore && step === "choose" ? (
+                <>
+                  {providers.data?.x ? (
+                    <button
+                      type="button"
+                      onClick={withX}
+                      disabled={busy !== null}
+                      className={`mt-3 ${buttonClass}`}
+                    >
+                      {busy === "x" ? (
+                        <Loader2 className="size-4 animate-spin" />
+                      ) : (
+                        <XIcon className="size-4" />
+                      )}
+                      {t("signin.x")}
+                    </button>
+                  ) : null}
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setStep("email");
+                      setError(null);
+                    }}
+                    disabled={busy !== null}
+                    className={`mt-3 ${buttonClass}`}
+                  >
+                    <Mail className="size-4" />
+                    {t("signin.continueEmail")}
+                  </button>
+                </>
+              ) : null}
+
+              {step === "email" ? (
+                <>
+                  <div className="my-6 flex items-center gap-3">
+                    <span className="h-px flex-1 bg-line" />
+                    <span className="mono text-[10px] uppercase tracking-widest text-fog">
+                      {t("signin.orEmail")}
+                    </span>
+                    <span className="h-px flex-1 bg-line" />
+                  </div>
+
+                  <form onSubmit={sendCode} className="space-y-3">
+                    <label className="block">
+                      <span className="label">{t("signin.workEmail")}</span>
+                      <input
+                        ref={emailRef}
+                        aria-label={t("signin.workEmail")}
+                        type="email"
+                        required
+                        readOnly={Boolean(invitedEmail)}
+                        value={email}
+                        onChange={(e) => setEmail(e.target.value)}
+                        placeholder={t("signin.emailPlaceholder")}
+                        className={`${inputClass}${invitedEmail ? " cursor-not-allowed text-fog" : ""}`}
+                      />
+                      <span className="mt-1.5 block text-[11.5px] leading-relaxed text-fog">
+                        {invitedEmail ? t("signin.inviteLocked") : t("signin.codeHelp")}
+                      </span>
+                    </label>
+
+                    {error && (
+                      <p className="rounded-[8px] border border-alert/40 bg-alert/10 px-3 py-2 text-[12.5px] text-alert">
+                        {error}
+                      </p>
+                    )}
+
+                    <button
+                      type="submit"
+                      disabled={busy !== null}
+                      className="flex w-full items-center justify-center gap-2 rounded-[8px] bg-amber px-4 py-3 text-[14px] font-bold text-ink transition-colors hover:bg-amber-deep disabled:opacity-60"
+                    >
+                      {busy === "send" ? (
+                        <Loader2 className="size-4 animate-spin" />
+                      ) : (
+                        <ArrowRight className="size-4" />
+                      )}
+                      {t("signin.sendCode")}
+                    </button>
+                  </form>
+                </>
+              ) : null}
+
+              {step === "choose" && error ? (
+                <p className="mt-3 rounded-[8px] border border-alert/40 bg-alert/10 px-3 py-2 text-[12.5px] text-alert">
+                  {error}
+                </p>
+              ) : null}
+            </>
           )}
-
-          <p className="mt-5 text-[12.5px] leading-relaxed text-fog">
-            {mode === "sign-in" ? t("signin.noAccount") : t("signin.haveAccount")}{" "}
-            <Link
-              to={siblingHref(mode === "sign-in" ? "sign-up" : "sign-in")}
-              className="font-semibold text-amber underline decoration-amber/40 underline-offset-2 hover:decoration-amber"
-            >
-              {mode === "sign-in" ? t("signin.goCreate") : t("signin.goSignIn")}
-            </Link>
-          </p>
 
           <p className="mt-6 flex items-start gap-2 text-[11.5px] leading-relaxed text-fog">
             <ShieldCheck className="mt-0.5 size-3.5 shrink-0 text-verified" />

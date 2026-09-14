@@ -9,6 +9,7 @@ import { planOf } from "../lib/plans";
 import { LOCALE_CODES } from "../lib/locales";
 import { avatarUrl, brandLogoUrl } from "./account";
 import { defaultOrgName } from "../lib/workspaces";
+import { trialEndFrom, trialPlanFor, trialStatus } from "../lib/trial";
 
 /**
  * One logo, two places to set it. A logo uploaded on a watermark template is also the business
@@ -48,12 +49,32 @@ export const orgs = {
       .from(schema.members)
       .where(eq(schema.members.orgId, context.org.id));
 
+    /**
+     * Has this person been through onboarding? Two things say no: the workspace is still on the
+     * auto-provisioned name, and no product has been chosen. Invited members are excluded by
+     * `role` on the client — they joined someone else's Teamspace and must never be asked to
+     * name it or pick its product.
+     */
+    const needsSetup =
+      context.org.product === null || context.org.name === defaultOrgName(context.user);
+
     return {
       // The column holds a bare storage key; clients get a freshly minted link, never the key.
       org: { ...context.org, logoUrl: await brandLogoUrl(context.org.logoUrl) },
       role: context.role,
       /** Still on the auto-provisioned name: the UI offers to set the business name once. */
       needsName: context.org.name === defaultOrgName(context.user),
+      needsSetup,
+      /** Which system to show: "field", "delivery", or null for "show both" (pre-onboarding). */
+      product: context.org.product,
+      /** The free week. `plan` below already includes whatever the trial grants. */
+      trial: {
+        active: context.trial.active,
+        expired: context.trial.expired,
+        daysLeft: context.trial.daysLeft,
+        endsAt: context.trial.endsAt,
+        planName: context.trial.plan ? planOf(context.trial.plan).name : null,
+      },
       user: {
         id: context.user.id,
         name: context.user.name,
@@ -69,6 +90,84 @@ export const orgs = {
       },
     };
   }),
+
+  /**
+   * First-run onboarding, in one call: your name, the Teamspace name, and which system you run.
+   *
+   * The product answer is what starts the 7-day trial — it decides which plan the free week
+   * hands out (Business for job photos, Delivery Pro for routes). No card is taken and nothing
+   * is charged: the trial lives in its own two columns and simply stops counting after a week,
+   * leaving the workspace on that product's free tier with its data intact. See `lib/trial.ts`.
+   *
+   * Idempotent on the trial specifically — calling it twice never extends the week, because a
+   * workspace that already has a `trialEndsAt` keeps the one it has. That matters: onboarding is
+   * a form someone can submit twice on a bad connection, and re-running it must not be a way to
+   * farm free months by re-picking a product.
+   *
+   * Owners and admins only. An invited member never reaches this — they joined a workspace that
+   * has already been set up, and the client skips onboarding for them entirely.
+   */
+  setup: orgProc
+    .input(
+      z.object({
+        /** The person's own display name, as typed on the same form. */
+        userName: z.string().trim().min(1).max(80).optional(),
+        name: z.string().trim().min(2).max(80),
+        product: z.enum(["field", "delivery"]),
+      }),
+    )
+    .handler(async ({ input, context }) => {
+      requireRole(context.role, "admin");
+
+      if (input.userName && input.userName !== context.user.name) {
+        await db
+          .update(schema.user)
+          .set({ name: input.userName })
+          .where(eq(schema.user.id, context.user.id));
+      }
+
+      const startTrial = !context.org.trialEndsAt;
+      const now = new Date();
+      const [org] = await db
+        .update(schema.organizations)
+        .set({
+          name: input.name,
+          product: input.product,
+          ...(startTrial
+            ? { trialPlan: trialPlanFor(input.product), trialEndsAt: trialEndFrom(now) }
+            : {}),
+        })
+        .where(eq(schema.organizations.id, context.org.id))
+        .returning();
+      if (!org) throw new ORPCError("NOT_FOUND");
+
+      const trial = trialStatus(org, now);
+      return {
+        org: { ...org, logoUrl: await brandLogoUrl(org.logoUrl) },
+        product: input.product,
+        trial: {
+          active: trial.active,
+          daysLeft: trial.daysLeft,
+          endsAt: trial.endsAt,
+          planName: trial.plan ? planOf(trial.plan).name : null,
+        },
+      };
+    }),
+
+  /**
+   * Switch which system the workspace runs, after onboarding. Changing it never touches the
+   * trial: the week is granted once, and re-picking is a navigation preference, not a new trial.
+   */
+  setProduct: orgProc
+    .input(z.object({ product: z.enum(["field", "delivery"]) }))
+    .handler(async ({ input, context }) => {
+      requireRole(context.role, "admin");
+      await db
+        .update(schema.organizations)
+        .set({ product: input.product })
+        .where(eq(schema.organizations.id, context.org.id));
+      return { product: input.product };
+    }),
 
   update: orgProc
     .input(

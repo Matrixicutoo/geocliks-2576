@@ -6,6 +6,30 @@ export function useOrg() {
   return useQuery(orpc.orgs.current.queryOptions({ staleTime: 30_000 }));
 }
 
+/**
+ * First-run onboarding: your name, the Teamspace name and which system you run, in one call.
+ * The product answer is what starts the 7-day trial, so the org query has to be refetched —
+ * the plan, the trial banner and the setup gate itself all read from it.
+ */
+export function useSetupOrg() {
+  const queryClient = useQueryClient();
+  return useMutation(
+    orpc.orgs.setup.mutationOptions({
+      onSuccess: () => queryClient.invalidateQueries({ queryKey: orpc.orgs.key() }),
+    }),
+  );
+}
+
+/** Switch systems after onboarding. Never touches the trial — the free week is granted once. */
+export function useSetProduct() {
+  const queryClient = useQueryClient();
+  return useMutation(
+    orpc.orgs.setProduct.mutationOptions({
+      onSuccess: () => queryClient.invalidateQueries({ queryKey: orpc.orgs.key() }),
+    }),
+  );
+}
+
 export function useUpdateOrg() {
   const queryClient = useQueryClient();
   return useMutation(

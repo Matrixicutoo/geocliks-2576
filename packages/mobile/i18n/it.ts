@@ -641,6 +641,9 @@ export const it: Catalog = {
   "profile.displayName": "Nome visualizzato",
   "profile.saveChanges": "Salva modifiche",
   "profile.saved": "Profilo aggiornato",
+  "profile.signInSection": "Come accedi",
+  "profile.signInPasswordless": "Senza password: codice via email, Google o X",
+  "profile.signInPasswordlessHint": "GeoCliks non usa password. Accedi con un codice monouso inviato alla tua email, oppure con Google o X. Niente da ricordare, niente da farsi rubare.",
   "profile.password": "Password",
   "profile.currentPassword": "Password attuale",
   "profile.newPassword": "Nuova password",
@@ -706,6 +709,8 @@ export const it: Catalog = {
   "join.signedInAs": "Accesso effettuato come {email}.",
   "join.signInToAccept": "Accedi per accettare",
   "join.createHint": "Crea il tuo account con {email} oppure accedi con Google, poi torni qui.",
+  "join.metaOpen": "invito aperto · chiunque abbia questo codice",
+  "join.createHintOpen": "Crea il tuo account o accedi con Google, poi torni qui.",
   "join.footer":
     "Ogni foto che scatti porta con sé un orario verificato, coordinate GPS e un indirizzo.",
   "reset.sendError": "Impossibile inviare l'email di reimpostazione.",

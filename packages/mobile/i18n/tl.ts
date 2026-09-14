@@ -642,6 +642,9 @@ export const tl: Catalog = {
   "profile.displayName": "Pangalang ipapakita",
   "profile.saveChanges": "I-save ang mga pagbabago",
   "profile.saved": "Na-update ang profile",
+  "profile.signInSection": "Paano ka nag-sign in",
+  "profile.signInPasswordless": "Walang password — code sa email, Google o X",
+  "profile.signInPasswordlessHint": "Walang password ang GeoCliks. Nag-sign in ka sa isang beses na code na ipinapadala sa email mo, o sa Google o X. Walang tatandaan, walang malalabas.",
   "profile.password": "Password",
   "profile.currentPassword": "Kasalukuyang password",
   "profile.newPassword": "Bagong password",
@@ -709,6 +712,8 @@ export const tl: Catalog = {
   "join.signInToAccept": "Mag-sign in para tanggapin",
   "join.createHint":
     "Gumawa ng account gamit ang {email} o mag-sign in gamit ang Google, at babalik ka rito.",
+  "join.metaOpen": "open invite · kahit sino na may code na ito",
+  "join.createHintOpen": "Gumawa ng account o mag-sign in sa Google, babalik ka rito.",
   "join.footer":
     "Bawat larawang kukunan mo ay may verified na oras, GPS coordinates at street address.",
   "reset.sendError": "Hindi naipadala ang reset email.",

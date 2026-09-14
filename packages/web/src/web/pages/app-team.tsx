@@ -1,9 +1,6 @@
 import { useState } from "react";
 import { useLocation } from "wouter";
 import {
-  Copy,
-  Download,
-  Loader2,
   Mail,
   MessageSquare,
   Moon,
@@ -19,7 +16,6 @@ import { EmptyState } from "../components/empty-state";
 import { formatStamp } from "../components/evidence-card";
 import {
   useAssignMember,
-  useInviteQr,
   useInvites,
   useMemberProjects,
   useRemoveMember,
@@ -37,6 +33,7 @@ import { RoleBadge } from "../components/role-badge";
 import { cn } from "../lib/utils";
 import { canManageWorkspace } from "../lib/roles";
 import { InviteForm, useGrantableRoles } from "../components/invite-form";
+import { InviteQrPanel } from "../components/invite-qr";
 
 const ROLES = ["owner", "admin", "manager", "dispatcher", "driver", "field"] as const;
 type Role = (typeof ROLES)[number];
@@ -58,7 +55,6 @@ export default function AppTeam() {
   const team = useTeam();
   const invites = useInvites();
   const [qrFor, setQrFor] = useState<string | null>(null);
-  const qr = useInviteQr(qrFor);
   const projects = useProjects({ status: "active" });
   const memberProjects = useMemberProjects();
   const assign = useAssignMember();
@@ -91,6 +87,16 @@ export default function AppTeam() {
   const used = members + pending;
   const activeProjects = projects.data ?? [];
   const projectName = (id_: string) => activeProjects.find((p) => p.id === id_)?.name ?? "Project";
+  /**
+   * What is left of a pending invite's seven days, in the shortest form that still tells the
+   * truth. Rounded up, so the last partial day reads as "today" rather than as a day it is not.
+   */
+  function expiryLabel(expiresAt: Date) {
+    const days = Math.ceil((expiresAt.getTime() - Date.now()) / 86_400_000);
+    return days <= 1
+      ? lang.t("team.inviteExpiresToday")
+      : lang.t("team.inviteExpiresDays", { days: String(days) });
+  }
   /** projectIds assigned to a given user id. */
   const projectsOf = (userId: string) =>
     (memberProjects.data ?? []).filter((a) => a.userId === userId).map((a) => a.projectId);
@@ -335,11 +341,18 @@ export default function AppTeam() {
                   {(invites.data ?? []).map((row) => (
                     <li key={row.id} className="px-4 py-3">
                       <div className="flex items-center gap-3">
-                        <Mail className="size-4 shrink-0 text-fog" />
+                        {row.email ? (
+                          <Mail className="size-4 shrink-0 text-fog" />
+                        ) : (
+                          <QrCode className="size-4 shrink-0 text-fog" />
+                        )}
                         <div className="min-w-0 flex-1">
-                          <p className="mono truncate text-[12px] text-chalk">{row.email}</p>
+                          <p className="mono truncate text-[12px] text-chalk">
+                            {row.email ?? lang.t("team.openInvite")}
+                          </p>
                           <p className="mono text-[10px] uppercase tracking-widest text-fog">
                             {row.role} · {lang.t("team.inviteCode", { code: row.code })}
+                            {row.expiresAt ? ` · ${expiryLabel(row.expiresAt)}` : ""}
                           </p>
                           {parseInviteProjects(row.projectIds).length > 0 && (
                             <p className="mt-0.5 truncate text-[11px] text-fog">
@@ -359,7 +372,11 @@ export default function AppTeam() {
                         {isAdmin && (
                           <button
                             type="button"
-                            aria-label={lang.t("team.revokeAria", { email: row.email })}
+                            aria-label={
+                              row.email
+                                ? lang.t("team.revokeAria", { email: row.email })
+                                : lang.t("team.revokeAriaOpen", { code: row.code })
+                            }
                             disabled={revokeInvite.isPending}
                             onClick={async () => {
                               setError(null);
@@ -367,7 +384,11 @@ export default function AppTeam() {
                               try {
                                 await revokeInvite.mutateAsync({ id: row.id });
                                 if (qrFor === row.id) setQrFor(null);
-                                setNotice(lang.t("team.revoked", { email: row.email }));
+                                setNotice(
+                                  row.email
+                                    ? lang.t("team.revoked", { email: row.email })
+                                    : lang.t("team.revokedOpen", { code: row.code }),
+                                );
                               } catch (err) {
                                 setError(err instanceof Error ? err.message : String(err));
                               }
@@ -380,53 +401,13 @@ export default function AppTeam() {
                         )}
                       </div>
                       {qrFor === row.id && (
-                        <div className="mt-3 rounded-[12px] border border-line bg-ink p-4">
-                          {qr.isPending ? (
-                            <p className="mono flex items-center gap-2 text-[11px] text-fog">
-                              <Loader2 className="size-3.5 animate-spin" />{" "}
-                              {lang.t("team.buildingQr")}
-                            </p>
-                          ) : qr.isError ? (
-                            <p className="mono text-[11px] text-alert">{qr.error.message}</p>
-                          ) : (
-                            <div className="flex flex-col items-center gap-3">
-                              <img
-                                src={qr.data.dataUrl}
-                                alt={lang.t("team.qrAlt", { email: row.email })}
-                                className="size-40 bg-white p-1"
-                              />
-                              <p className="mono break-all text-center text-[10.5px] text-fog">
-                                {qr.data.url}
-                              </p>
-                              <div className="flex w-full gap-2">
-                                <button
-                                  type="button"
-                                  onClick={() => {
-                                    void navigator.clipboard?.writeText(qr.data.url);
-                                    setNotice(lang.t("team.linkCopied"));
-                                  }}
-                                  className="mono flex-1 rounded-[8px] border border-line px-2 py-2 text-[10px] uppercase tracking-widest text-chalk transition-colors hover:border-amber"
-                                >
-                                  <Copy className="mr-1 inline size-3" /> {lang.t("team.copyLink")}
-                                </button>
-                                <a
-                                  href={qr.data.dataUrl}
-                                  download={`geocliks-invite-${row.code}.png`}
-                                  className="mono flex-1 rounded-[8px] border border-line px-2 py-2 text-center text-[10px] uppercase tracking-widest text-chalk transition-colors hover:border-amber"
-                                >
-                                  <Download className="mr-1 inline size-3" /> PNG
-                                </a>
-                              </div>
-                              {/* One key on purpose: splitting out the highlighted role word would
-                                wreck word order in 11 languages, so it renders as plain text. */}
-                              <p className="text-center text-[11px] leading-relaxed text-fog">
-                                {lang.t("team.scanJoins", {
-                                  org: org.data?.org.name ?? lang.t("team.thisWorkspace"),
-                                  role: row.role,
-                                })}
-                              </p>
-                            </div>
-                          )}
+                        <div className="mt-3">
+                          <InviteQrPanel
+                            inviteId={row.id}
+                            code={row.code}
+                            role={row.role}
+                            email={row.email}
+                          />
                         </div>
                       )}
                     </li>

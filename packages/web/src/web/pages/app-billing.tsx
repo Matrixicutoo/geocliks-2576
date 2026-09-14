@@ -96,6 +96,27 @@ export default function AppBilling() {
                 {current.period}
               </p>
               <p className="mt-3 text-[12.5px] leading-relaxed text-fog">{current.tagline}</p>
+              {/* The billed plan and the trialling plan are two different things: this card
+                  shows what is being charged for (Free, until someone pays), so a running
+                  trial needs its own line naming the plan the free week is lending and the
+                  day it stops. Without it the page tells a trialling workspace it is on Free
+                  while the app hands it Business features. */}
+              {data.trial.active && data.trial.plan && (
+                <div className="mt-3 border-t border-amber/30 pt-3">
+                  <p className="label text-amber">{t("trial.planLabel")}</p>
+                  <p className="mt-1 text-[12.5px] leading-relaxed text-chalk">
+                    {t("trial.planLine", {
+                      plan: data.trial.plan.name,
+                      date: data.trial.endsAt
+                        ? new Intl.DateTimeFormat(locale, {
+                            month: "short",
+                            day: "numeric",
+                          }).format(new Date(data.trial.endsAt))
+                        : "",
+                    })}
+                  </p>
+                </div>
+              )}
             </div>
             <div className="grid gap-4 sm:grid-cols-2">
               <Meter

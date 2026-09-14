@@ -70,9 +70,24 @@ export const billing = {
     ]);
 
     await loadPlans();
-    const plan = planOf(context.org.plan);
+    /**
+     * Billing talks about the SUBSCRIPTION, so it reads `paidPlan` — the column, untouched by a
+     * running trial. `plan` here is what is being billed for (Free, until someone pays), while
+     * `trialPlan` alongside it is what the free week is currently including. Showing the trial
+     * plan as "your plan" would tell a trialling workspace it already owns Business and turn the
+     * upgrade button into a no-op.
+     */
+    const plan = planOf(context.paidPlan);
+    const trialPlan = context.trial.active && context.trial.plan ? planOf(context.trial.plan) : null;
     return {
       plan: localizePlan(plan, input?.locale),
+      trial: {
+        active: context.trial.active,
+        expired: context.trial.expired,
+        daysLeft: context.trial.daysLeft,
+        endsAt: context.trial.endsAt,
+        plan: trialPlan ? localizePlan(trialPlan, input?.locale) : null,
+      },
       plans: allPlans()
         .filter((p) => p.visible || p.id === plan.id)
         .map((p) => localizePlan(p, input?.locale)),
@@ -99,7 +114,7 @@ export const billing = {
     return await applyProcessorState({
       orgId: context.org.id,
       customerId: context.user.id,
-      currentPlan: context.org.plan,
+      currentPlan: context.paidPlan,
       currentSeats: context.org.seats,
     });
   }),
@@ -202,7 +217,9 @@ export const billing = {
       };
 
       // Free plan (and re-picking the current plan) never needs the processor.
-      if (target.priceCents === 0 || target.id === context.org.plan) {
+      // Compared against the PAID plan: a trialling workspace picking the plan it is trialling is
+      // a real purchase, not a no-op re-pick, and must still reach the processor.
+      if (target.priceCents === 0 || target.id === context.paidPlan) {
         await applyLocally();
         return { kind: "applied" as const, plan: target, url: null };
       }

@@ -646,6 +646,9 @@ export const frCA: Catalog = {
   "profile.displayName": "Nom affiché",
   "profile.saveChanges": "Enregistrer",
   "profile.saved": "Profil mis à jour",
+  "profile.signInSection": "Comment vous vous connectez",
+  "profile.signInPasswordless": "Sans mot de passe — code par courriel, Google ou X",
+  "profile.signInPasswordlessHint": "GeoCliks n'utilise aucun mot de passe. Vous vous connectez avec un code à usage unique envoyé par courriel, ou avec Google ou X. Rien à retenir, rien à faire fuiter.",
   "profile.password": "Mot de passe",
   "profile.currentPassword": "Mot de passe actuel",
   "profile.newPassword": "Nouveau mot de passe",
@@ -714,6 +717,8 @@ export const frCA: Catalog = {
   "join.signInToAccept": "Se connecter pour accepter",
   "join.createHint":
     "Créez votre compte avec {email} ou connectez-vous avec Google, puis vous revenez ici.",
+  "join.metaOpen": "invitation ouverte · toute personne ayant ce code",
+  "join.createHintOpen": "Créez votre compte ou connectez-vous avec Google, puis vous revenez ici.",
   "join.footer":
     "Chaque photo que vous prenez porte une heure vérifiée, des coordonnées GPS et une adresse.",
   "reset.sendError": "Impossible d'envoyer le courriel de réinitialisation.",

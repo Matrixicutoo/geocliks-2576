@@ -634,6 +634,9 @@ export const vi: Catalog = {
   "profile.displayName": "Tên hiển thị",
   "profile.saveChanges": "Lưu thay đổi",
   "profile.saved": "Đã cập nhật hồ sơ",
+  "profile.signInSection": "Cách bạn đăng nhập",
+  "profile.signInPasswordless": "Không mật khẩu — mã qua email, Google hoặc X",
+  "profile.signInPasswordlessHint": "GeoCliks không dùng mật khẩu. Bạn đăng nhập bằng mã dùng một lần gửi tới email, hoặc bằng Google hay X. Không phải nhớ gì, không có gì để rò rỉ.",
   "profile.password": "Mật khẩu",
   "profile.currentPassword": "Mật khẩu hiện tại",
   "profile.newPassword": "Mật khẩu mới",
@@ -699,6 +702,8 @@ export const vi: Catalog = {
   "join.signInToAccept": "Đăng nhập để chấp nhận",
   "join.createHint":
     "Tạo tài khoản bằng {email} hoặc đăng nhập bằng Google, rồi bạn sẽ quay lại đây.",
+  "join.metaOpen": "lời mời mở · bất kỳ ai có mã này",
+  "join.createHintOpen": "Tạo tài khoản hoặc đăng nhập bằng Google, rồi bạn sẽ quay lại đây.",
   "join.footer": "Mọi ảnh bạn chụp đều mang thời gian đã xác thực, tọa độ GPS và địa chỉ.",
   "reset.sendError": "Không thể gửi email đặt lại.",
   "reset.tokenError": "Liên kết đặt lại đã hết hạn hoặc đã dùng.",

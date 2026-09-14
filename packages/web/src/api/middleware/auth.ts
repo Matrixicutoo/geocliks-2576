@@ -7,6 +7,7 @@ import * as schema from "../database/schema";
 import { id, random, slugify } from "../lib/ids";
 import { loadPlans } from "../lib/plans";
 import { SUPPORT_EMAIL } from "../lib/support";
+import { effectivePlanId, trialStatus, type TrialStatus } from "../lib/trial";
 import { defaultOrgName } from "../lib/workspaces";
 
 export type Role = "owner" | "admin" | "manager" | "dispatcher" | "driver" | "field";
@@ -221,6 +222,30 @@ export async function logAdmin(
     .values({ id: id("aev"), actorId, action, target: target ?? null, detail: detail ?? null });
 }
 
+type OrgRow = typeof schema.organizations.$inferSelect;
+
+/**
+ * Folds a running trial into the workspace every endpoint sees.
+ *
+ * `context.org.plan` is the plan that is INCLUDED RIGHT NOW — the trial plan for a workspace
+ * inside its free week, the paid plan otherwise. Every `planOf(context.org.plan)` gate therefore
+ * honours the trial without knowing one exists, and stops honouring it the moment the clock
+ * passes, with no expiry job to run.
+ *
+ * `context.paidPlan` is the untouched column: the plan actually subscribed to. Billing must use
+ * that one — it is what "your current plan" means on the billing screen, and what a plan change
+ * is compared against. Handing billing the trial plan would tell someone they already own
+ * Business and make the upgrade button a no-op.
+ */
+function resolveOrg(org: OrgRow): { org: OrgRow; paidPlan: string; trial: TrialStatus } {
+  const plan = effectivePlanId(org);
+  return {
+    org: plan === org.plan ? org : { ...org, plan },
+    paidPlan: org.plan,
+    trial: trialStatus(org),
+  };
+}
+
 /**
  * Every signed-in user belongs to exactly one workspace in this app. On first call we
  * create their organization, membership, and the default watermark templates.
@@ -265,7 +290,7 @@ export const orgProc = authed.use(async ({ context, next }) => {
     const member = ranked[0];
     const org = member ? byId.get(member.orgId) : undefined;
     if (!member || !org) throw new ORPCError("NOT_FOUND", { message: "Workspace not found" });
-    return next({ context: { org, role: member.role as Role, member } });
+    return next({ context: { ...resolveOrg(org), role: member.role as Role, member } });
   }
 
   // The dashboard fires several queries at once on first load, so provisioning has to be
@@ -309,7 +334,7 @@ export const orgProc = authed.use(async ({ context, next }) => {
     .where(eq(schema.watermarkTemplates.orgId, orgId))
     .limit(1);
   if (templates.length > 0) {
-    return next({ context: { org, role: member.role as Role, member } });
+    return next({ context: { ...resolveOrg(org), role: member.role as Role, member } });
   }
 
   await db.insert(schema.watermarkTemplates).values([
@@ -346,7 +371,7 @@ export const orgProc = authed.use(async ({ context, next }) => {
     },
   ]);
 
-  return next({ context: { org: org!, role: "owner" as Role, member: member! } });
+  return next({ context: { ...resolveOrg(org!), role: "owner" as Role, member: member! } });
 });
 
 /**

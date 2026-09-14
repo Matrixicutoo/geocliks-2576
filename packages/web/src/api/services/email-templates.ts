@@ -169,6 +169,58 @@ Your workspace is ready: ${link}`;
   return sendEmail({ to: params.to, subject: "Welcome to GeoCliks", html, text });
 }
 
+/**
+ * The six-digit sign-in code. GeoCliks has no passwords: this email IS the credential, which is
+ * why the code is the loudest thing in the message and why nothing else in it is clickable.
+ *
+ * A magic *link* was deliberately not used. Crew members read mail on a phone and then type the
+ * code into whichever surface asked for it — the website on a laptop, or the app on the same
+ * phone. A link only lands them back in the browser, which is the wrong place half the time.
+ *
+ * `type` is what Better Auth is asking the code for. Only `sign-in` and `email-verification`
+ * can happen in this app (there is no password to forget, and the change-email flow is not
+ * wired up), so the copy covers those two and falls back to neutral wording otherwise.
+ */
+export function loginCodeEmail(params: {
+  to: string;
+  otp: string;
+  type: "sign-in" | "email-verification" | "forget-password" | "change-email";
+}): Promise<SendResult> {
+  const verifying = params.type === "email-verification";
+  const title = verifying ? "Confirm your email address" : "Your GeoCliks sign-in code";
+  const lead = verifying
+    ? "Enter this code to confirm this address belongs to you:"
+    : "Enter this code to finish signing in:";
+  const html = shell(
+    title,
+    `<p style="margin:0;font-size:14px;line-height:1.65">${lead}</p>
+     <p style="margin:20px 0 0;font-size:34px;line-height:1.1;font-weight:700;letter-spacing:0.18em;color:${INK};font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace">
+       ${escapeHtml(params.otp)}
+     </p>
+     <p style="margin:18px 0 0;font-size:13px;line-height:1.65;color:#6b7280">
+       The code expires in 10 minutes and works once. If you didn't ask to sign in, ignore this
+       email — nobody can get into your account with this code alone, and it will simply expire.
+     </p>
+     <p style="margin:14px 0 0;font-size:13px;line-height:1.65;color:#6b7280">
+       GeoCliks never asks for a password, and nobody from GeoCliks will ever ask you for this code.
+     </p>`,
+    "You received this because this address was used to sign in to GeoCliks.",
+  );
+  const text = `${title}
+
+${params.otp}
+
+${lead.replace(":", ".")} The code expires in 10 minutes and works once.
+If you didn't ask to sign in, ignore this email. Never share this code with anyone.`;
+  return sendEmail({
+    to: params.to,
+    // The code rides in the subject too: it saves opening the mail on a phone lock screen.
+    subject: `${params.otp} is your GeoCliks code`,
+    html,
+    text,
+  });
+}
+
 export function resetPasswordEmail(params: { to: string; url: string }): Promise<SendResult> {
   const html = shell(
     "Reset your GeoCliks password",

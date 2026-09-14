@@ -132,12 +132,17 @@ export default function Team() {
     }
   };
 
-  const revoke = async (id: string, to: string) => {
+  /** `to` is null for open QR invites, which carry no address. */
+  const revoke = async (id: string, to: string | null) => {
     setError(null);
     setNotice(null);
     try {
       await revokeInvite.mutateAsync({ id });
-      setNotice(`Invite to ${to} revoked. The code no longer works.`);
+      setNotice(
+        to
+          ? `Invite to ${to} revoked. The code no longer works.`
+          : "Open invite revoked. The code no longer works.",
+      );
     } catch (err) {
       setError(err instanceof Error ? err.message : String(err));
     }
@@ -474,7 +479,7 @@ export default function Team() {
                           { color: colors.foreground, fontFamily: Fonts?.mono },
                         ]}
                       >
-                        {row.email}
+                        {row.email ?? "OPEN INVITE"}
                       </Text>
                       <Text
                         style={[

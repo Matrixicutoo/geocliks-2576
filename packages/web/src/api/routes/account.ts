@@ -2,7 +2,6 @@ import { z } from "zod";
 import { eq, inArray } from "drizzle-orm";
 import { ORPCError } from "@orpc/server";
 import { authed, orgProc } from "../middleware/auth";
-import { auth } from "../auth";
 import { db } from "../database";
 import * as schema from "../database/schema";
 import { deleteObject, presignGet, presignPut } from "../lib/s3";
@@ -71,20 +70,6 @@ export async function brandLogoUrl(value: string | null | undefined) {
 }
 
 export const account = {
-  /**
-   * Password reset by email for someone who is already signed in - the alternative to typing the
-   * current password. It can only ever send to the caller's own address, so there is nothing to
-   * enumerate and no captcha is needed: the session already proves a human signed in. Calling
-   * better-auth server-side also skips the captcha hook, which only runs on real HTTP requests.
-   */
-  sendPasswordResetLink: authed.handler(async ({ context }) => {
-    const base = process.env.WEBSITE_URL ?? "https://www.geocliks.com";
-    await auth.api.requestPasswordReset({
-      body: { email: context.user.email, redirectTo: `${base}/reset-password` },
-    });
-    return { email: context.user.email };
-  }),
-
   /** Presign a direct PUT for the signed-in user's avatar. */
   presignAvatar: authed
     .input(z.object({ filename: z.string(), contentType: z.string().default("image/jpeg") }))

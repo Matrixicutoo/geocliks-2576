@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
-import { Loader2, UserPlus, X } from "lucide-react";
+import { Loader2, Mail, QrCode, UserPlus, X } from "lucide-react";
 import { useInviteMember } from "../queries/team";
+import { InviteQrPanel } from "./invite-qr";
 import { useAdminMe } from "../queries/admin";
 import { useLocale } from "../lib/i18n";
 import { cn } from "../lib/utils";
@@ -45,19 +46,30 @@ const ROLE_HINT: Record<
 };
 
 /**
- * Email + role + send, with its own result and error lines. One implementation on purpose: the
- * Team page renders it in a card and the sidebar's Invite entry renders it in a dialog, so the
- * two can never drift apart.
+ * How the invite reaches the crew member. Emailing suits someone who is not here; the QR suits
+ * a driver standing at the counter, where asking for an address is a detour and typing one on
+ * their behalf is how invites end up at the wrong inbox.
+ */
+const MODES = ["email", "qr"] as const;
+type Mode = (typeof MODES)[number];
+
+/**
+ * Email or QR, plus role and send, with its own result and error lines. One implementation on
+ * purpose: the Team page renders it in a card and the sidebar's Invite entry renders it in a
+ * dialog, so the two can never drift apart.
  */
 export function InviteForm({ onSent }: { onSent?: () => void }) {
   const lang = useLocale();
   const invite = useInviteMember();
   const roles = useGrantableRoles();
+  const [mode, setMode] = useState<Mode>("email");
   const [email, setEmail] = useState("");
   // No default on purpose: the inviter has to state the role before the invite can go out.
   const [role, setRole] = useState<Role | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [notice, setNotice] = useState<string | null>(null);
+  // An open invite has to be shown, not sent, so its QR stays on screen after creation.
+  const [created, setCreated] = useState<{ id: string; code: string; role: Role } | null>(null);
 
   return (
     <form
@@ -65,22 +77,33 @@ export function InviteForm({ onSent }: { onSent?: () => void }) {
         event.preventDefault();
         setError(null);
         setNotice(null);
+        setCreated(null);
         if (!role) {
           setError(lang.t("team.pickRole"));
           return;
         }
         try {
-          const res = await invite.mutateAsync({ email, role });
-          const sentTo = email;
-          setEmail("");
-          setNotice(
-            res.emailSent
-              ? lang.t("team.inviteEmailed", { email: sentTo, code: res.code })
-              : lang.t("team.inviteCreated", {
-                  code: res.code,
-                  reason: res.emailReason ? ` (${res.emailReason})` : "",
-                }),
-          );
+          // An open invite carries no address at all — the field is not merely blank, it is
+          // absent, which is what tells the server to skip the email-match check on redemption.
+          const res =
+            mode === "qr"
+              ? await invite.mutateAsync({ role })
+              : await invite.mutateAsync({ email, role });
+          if (mode === "qr") {
+            setCreated({ id: res.id, code: res.code, role });
+            setNotice(lang.t("team.openInviteCreated", { code: res.code }));
+          } else {
+            const sentTo = email;
+            setEmail("");
+            setNotice(
+              res.emailSent
+                ? lang.t("team.inviteEmailed", { email: sentTo, code: res.code })
+                : lang.t("team.inviteCreated", {
+                    code: res.code,
+                    reason: res.emailReason ? ` (${res.emailReason})` : "",
+                  }),
+            );
+          }
           onSent?.();
         } catch (err) {
           setError(err instanceof Error ? err.message : String(err));
@@ -88,18 +111,52 @@ export function InviteForm({ onSent }: { onSent?: () => void }) {
       }}
       className="space-y-3"
     >
-      <label className="block">
-        <span className="label mb-1.5 block text-fog">{lang.t("team.workEmail")}</span>
-        <input
-          aria-label={lang.t("team.workEmail")}
-          required
-          type="email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          placeholder="tech@northline.com"
-          className="w-full rounded-[12px] border border-line bg-ink px-3 py-2 text-sm text-chalk outline-none focus:border-amber"
-        />
-      </label>
+      <div>
+        <span className="label mb-1.5 block text-fog">{lang.t("team.howToSend")}</span>
+        <div className="grid grid-cols-2 gap-1.5">
+          {MODES.map((item) => (
+            <button
+              key={item}
+              type="button"
+              onClick={() => {
+                setMode(item);
+                setError(null);
+                setNotice(null);
+                setCreated(null);
+              }}
+              className={cn(
+                "rounded-[8px] flex items-center justify-center gap-1.5 border px-3 py-2 transition-colors",
+                mode === item
+                  ? "border-amber bg-amber/10"
+                  : "border-line bg-ink hover:border-fog/50",
+              )}
+            >
+              {item === "email" ? <Mail className="size-3.5" /> : <QrCode className="size-3.5" />}
+              <span className="mono text-[11px] uppercase tracking-widest text-chalk">
+                {item === "email" ? lang.t("team.modeEmail") : lang.t("team.modeQr")}
+              </span>
+            </button>
+          ))}
+        </div>
+        <p className="mt-1.5 text-[11.5px] leading-relaxed text-fog">
+          {mode === "email" ? lang.t("team.modeEmailHint") : lang.t("team.modeQrHint")}
+        </p>
+      </div>
+
+      {mode === "email" && (
+        <label className="block">
+          <span className="label mb-1.5 block text-fog">{lang.t("team.workEmail")}</span>
+          <input
+            aria-label={lang.t("team.workEmail")}
+            required
+            type="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            placeholder="tech@northline.com"
+            className="w-full rounded-[12px] border border-line bg-ink px-3 py-2 text-sm text-chalk outline-none focus:border-amber"
+          />
+        </label>
+      )}
       <div>
         <span className="label mb-1.5 block text-fog">
           {lang.t("team.role")} <span className="text-alert">*</span>
@@ -130,6 +187,16 @@ export function InviteForm({ onSent }: { onSent?: () => void }) {
         </p>
       )}
       {notice && <p className="mono text-[11px] text-verified">{notice}</p>}
+      {/* The open invite exists only as this QR until somebody scans it, so it renders right
+          here rather than sending the inviter off to the pending list to find it. */}
+      {created && (
+        <InviteQrPanel
+          inviteId={created.id}
+          code={created.code}
+          role={created.role}
+          email={null}
+        />
+      )}
 
       <button
         type="submit"
@@ -138,10 +205,12 @@ export function InviteForm({ onSent }: { onSent?: () => void }) {
       >
         {invite.isPending ? (
           <Loader2 className="size-4 animate-spin" />
+        ) : mode === "qr" ? (
+          <QrCode className="size-4" />
         ) : (
           <UserPlus className="size-4" />
         )}
-        {lang.t("team.sendInvite")}
+        {mode === "qr" ? lang.t("team.createQrInvite") : lang.t("team.sendInvite")}
       </button>
     </form>
   );

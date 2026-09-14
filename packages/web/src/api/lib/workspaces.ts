@@ -1,6 +1,7 @@
-import { and, count, eq, ne } from "drizzle-orm";
+import { and, count, eq, gt, isNull, ne, or } from "drizzle-orm";
 import { db } from "../database";
 import * as schema from "../database/schema";
+import { isPaid } from "./trial";
 
 /**
  * The name `orgProc` gives a freshly auto-provisioned workspace. It lives here so the sign-up
@@ -32,7 +33,8 @@ export async function dropEmptyPersonalWorkspace(
     .from(schema.organizations)
     .where(eq(schema.organizations.id, orgId))
     .limit(1);
-  if (!org || org.ownerId !== userId || org.plan !== "free") return false;
+  // Either free tier counts as untouched — a delivery workspace sits on `delivery-free`.
+  if (!org || org.ownerId !== userId || isPaid(org.plan)) return false;
 
   const [photos] = await db
     .select({ value: count() })
@@ -64,6 +66,9 @@ export async function dropEmptyPersonalWorkspace(
  * Seats are a cap, not a meter: the plan price is flat and this is what decides whether one more
  * person may come in. Pending invites count, otherwise an admin could issue ten invites against
  * two seats and every one of them would still be able to accept.
+ *
+ * An expired invite does not: it can no longer be redeemed, so holding a seat hostage with it
+ * would quietly shrink the workspace every time an invite went unanswered.
  */
 export async function seatUsage(orgId: string): Promise<{ members: number; pending: number }> {
   const [members] = await db
@@ -73,6 +78,12 @@ export async function seatUsage(orgId: string): Promise<{ members: number; pendi
   const [pending] = await db
     .select({ value: count() })
     .from(schema.invites)
-    .where(and(eq(schema.invites.orgId, orgId), eq(schema.invites.status, "pending")));
+    .where(
+      and(
+        eq(schema.invites.orgId, orgId),
+        eq(schema.invites.status, "pending"),
+        or(isNull(schema.invites.expiresAt), gt(schema.invites.expiresAt, new Date())),
+      ),
+    );
   return { members: members?.value ?? 0, pending: pending?.value ?? 0 };
 }

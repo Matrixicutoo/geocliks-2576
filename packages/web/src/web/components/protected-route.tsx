@@ -3,6 +3,7 @@ import { useLocation } from "wouter";
 import { Loader2 } from "lucide-react";
 import { authClient, authToken } from "../lib/auth";
 import { Logo } from "./logo";
+import { SetupGate } from "./setup-gate";
 
 export function ProtectedRoute({ children }: { children: React.ReactNode }) {
   const { data: session, isPending } = authClient.useSession();
@@ -44,5 +45,10 @@ export function ProtectedRoute({ children }: { children: React.ReactNode }) {
     );
   }
 
-  return <>{children}</>;
+  /**
+   * Signed in, but possibly not set up: a brand-new owner still owes us their name, a Teamspace
+   * name and a product before any page can know where to land them. The gate lets every already
+   * set-up member, and every invited one, straight through.
+   */
+  return <SetupGate>{children}</SetupGate>;
 }
