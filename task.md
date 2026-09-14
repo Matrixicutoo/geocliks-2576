@@ -142,7 +142,7 @@
 ## Deferred (deliberately)
 - ~~276 unreferenced i18n keys~~ — done, see Item 18.
 - ~~Dev DB test data~~ — done, see Item 19.
-- `packages/mobile/i18n/*` has never had a dead-key sweep. The web pass says nothing about it.
+- ~~`packages/mobile/i18n/*` dead-key sweep~~ — done, see Item 21. Nothing is deferred now.
 
 ## Verified live (dev server, 2026-09-13)
 - `send-verification-otp` → `sign-in/email-otp` mints a verified user + session (curl + browser).
@@ -430,3 +430,43 @@
   is unreadable from here) went out through `scripts/clear-test-data.ts --apply` along with the
   auto-created workspace, the leftover `sign-in-otp-…@example.com` `verification` row was
   deleted by hand, and the preview's localStorage keys were cleared. `@example.com` users: 0.
+
+## Item 21 — 603 dead i18n keys removed from the mobile catalogs — DONE, verified 2026-09-14
+- The last deferred item. The phone catalogs had never been swept: 603 of 1,084 keys in each of
+  the 11 files were web-only copy the app never renders. 7,177 lines gone, deletions only,
+  481 keys left per catalog with parity intact (the `Catalog` type enforces it).
+- What went: whole groups belonging to screens the app does not have — `admin.*` (105, the
+  console is web-only), `home.*` (72) and `getapp.*` (45, marketing pages), `track.*` (46, the
+  public delivery tracking page), `templates.*` (30, the watermark editor — the phone's stamp
+  settings use their own keys), `shareView.*` (17), `reset.*` (16) and `twofa.*` (14, both dead
+  product-wide since item 8/9 made the app passwordless), `compare.*` (15), `billing.*` (13),
+  `industry.*` (10). Plus the slimmer half of groups the app does have: mobile's routes screen
+  carries no CSV-import preview or column pickers (43), its teamspace has no bulk-select (28),
+  its sign-in no password or captcha copy (25).
+- `scripts/find-dead-keys.py` now takes a target (`web`, `mobile`, or both) instead of hardcoding
+  the web paths — one script, two scoped sweeps. Re-running `web` still reports 0, so the
+  refactor did not loosen the old sweep. The per-target `ui` root matters: for mobile the whole
+  package is UI, and the `tag.` template prefix is the only dynamic key the app builds
+  (`assistant-sheet.tsx`), so it is the only prefix protected. The other `as TKey` casts
+  (`TAG_LABEL`, `EVENT_LABEL`, `TAG_LABELS`) hold literal key values inside `Record<string, TKey>`
+  maps, which the token scan sees.
+- `scripts/drop-dead-keys.py` fixed: it globbed `*.ts` and would have rewritten
+  `packages/mobile/i18n/locales.ts`, whose comments `tidy()` reads as orphaned headings and
+  deletes — the web folder has no such file, so the bug had never fired. It now skips any file
+  carrying no catalog keys. `locales.ts` is untouched in the diff.
+- Stale comment in both `en.ts` headers said the mobile folder is a verbatim mirror of the web
+  one ("same keys, same values"), and the old workflow was `cp packages/web/src/web/i18n/* →
+  packages/mobile/i18n/`. That is now wrong in both directions — item 18 took 272 keys off the
+  web side that mobile kept, and this pass took 603 off mobile. Both headers say so, because a
+  `cp` would silently undo both sweeps.
+- Verified past typecheck, which is necessary but NOT sufficient (an `as TKey` key is invisible
+  to the compiler and only shows up as the raw key on screen): new `scripts/sweep-raw-keys.sh`
+  walks 21 screens in the running preview and greps the visible text for anything shaped like a
+  key. All 21 clean signed in as the superadmin — capture, projects, teamspace, map, routes,
+  messages + a thread, settings, assistant, queue, my-captures, reports, share, team, plans,
+  profile, verify, join, landing, sign-in, /route/new. Re-checked the capture and sign-in screens
+  in ar (RTL), zh, fr-CA and pl. The sweep was proved to work rather than assumed: injecting a
+  deleted key into the DOM makes it fail, and `mb url` confirms `/(tabs)/x` really lands on the
+  tab screen.
+- Gates: `bun run lint` 0/0 on 401 files, `bun run typecheck` green across web + mobile +
+  desktop, `packages/web` `bun run build` clean. Preview localStorage left as found.

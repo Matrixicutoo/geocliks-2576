@@ -3,7 +3,9 @@
  * translation of these keys and is typed against `Catalog`, so a missing or extra
  * key is a typecheck error rather than a raw key leaking into the UI.
  *
- * Mirrored for Metro at packages/mobile/i18n/ (same keys, same values).
+ * The phone app has its own catalog at packages/mobile/i18n/. It is NOT a mirror of this
+ * one any more (each side has been swept for keys only the other renders), so do not copy
+ * this folder over it — add a key to whichever side renders it.
  */
 export const en = {
   // Shell / navigation
