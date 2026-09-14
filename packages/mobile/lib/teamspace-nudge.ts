@@ -8,10 +8,11 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
  * written the moment the sheet appears rather than when it is dismissed — a launch that ends
  * with the app killed mid-sheet still counts as the one showing.
  *
- * Versioned like the other capture keys: a future rewrite of the pitch can bump `.v1` and
- * deliberately give everyone one more look.
+ * Versioned like the other capture keys, so a rewrite of the pitch can deliberately give
+ * everyone one more look. `.v2` is that: the sheet now comes down from the top rather than up
+ * over the shutter, and anyone who saw the first version saw it land on the controls.
  */
-const KEY = "geocliks.teamspace-nudge.v1";
+const KEY = "geocliks.teamspace-nudge.v2";
 
 /** Whether this install has already had its one look at the sheet. */
 export async function teamspaceNudgeSeen(): Promise<boolean> {
