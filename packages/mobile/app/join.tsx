@@ -90,9 +90,8 @@ export default function Join() {
     if (!signedIn) {
       void savePendingInvite(value);
       const invitedEmail = invite.data?.email;
-      // Already registered -> sign in. Otherwise create the account. Same rule as the web page.
-      // Both cases go to the in-app form: it signs existing crew in, and offers the website
-      // link to the ones who still have to register.
+      // Registered or not, it is the same screen and the same six digits: the code signs existing
+      // crew in and creates the account for anyone new, so there is nothing left to branch on.
       const target = "/sign-in";
       router.push(
         invitedEmail ? `${target}?email=${encodeURIComponent(invitedEmail)}` : target,

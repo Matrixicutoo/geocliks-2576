@@ -1,5 +1,5 @@
 import { createAuthClient } from "better-auth/react";
-import { twoFactorClient } from "better-auth/client/plugins";
+import { emailOTPClient } from "better-auth/client/plugins";
 import { expoClient } from "@better-auth/expo/client";
 import { managedAuthExpoClient } from "@runablehq/managed-auth/native";
 import Constants from "expo-constants";
@@ -11,8 +11,8 @@ const extra = (Constants.expoConfig?.extra ?? {}) as Record<string, string | und
 
 /**
  * The app's own URL scheme, used by the native social flow as the address the browser session
- * watches for. `expo.scheme` can be declared as either a string or an array, so normalise it the
- * same way `lib/web-signup.ts` does rather than assuming one shape.
+ * watches for. `expo.scheme` can be declared as either a string or an array, so normalise it
+ * rather than assuming one shape.
  */
 const nativeScheme = (() => {
   const scheme = Constants.expoConfig?.scheme;
@@ -20,7 +20,7 @@ const nativeScheme = (() => {
 })();
 
 /**
- * Email/password sign-in returns its bearer in the `set-auth-token` header rather than through the
+ * Email-code sign-in returns its bearer in the `set-auth-token` header rather than through the
  * managed exchange, so `managedAuth.getToken()` stays empty on that path. Keep our own copy so the
  * oRPC client (lib/api.ts) can authenticate either way.
  */
@@ -85,23 +85,21 @@ export const authClient = createAuthClient({
     },
     onSuccess: (ctx) => {
       /**
-       * A sign-in that still needs a 2FA code answers `{ twoFactorRedirect: true }` and no session,
-       * but it STILL sends a `set-auth-token` header — carrying the signed pending two-factor
-       * cookie, not a session token. Storing that would leave a junk bearer behind if the person
-       * abandons the code step. The real token arrives from the verify call instead.
+       * Every authenticated response carries the bearer in `set-auth-token`. Requesting a code is
+       * NOT one of them — `/email-otp/send-verification-otp` mints no session, so there is nothing
+       * to store until the code itself is spent on `/sign-in/email-otp`, which answers with both
+       * the header and a `token` in its body.
        */
-      const pendingTwoFactor = (ctx.data as { twoFactorRedirect?: boolean } | undefined)
-        ?.twoFactorRedirect;
       const token = ctx.response.headers.get("set-auth-token");
       const path = new URL(ctx.request.url).pathname;
       if (path.endsWith("/sign-out")) {
         emailToken = null;
-        SecureStore.setItem(EMAIL_TOKEN_KEY, "");
+        tokenStore.set("");
         return;
       }
-      if (token && !pendingTwoFactor) {
+      if (token) {
         emailToken = token;
-        SecureStore.setItem(EMAIL_TOKEN_KEY, token);
+        tokenStore.set(token);
       }
     },
   },
@@ -127,19 +125,24 @@ export const authClient = createAuthClient({
       storagePrefix: "geocliks",
       storage: SecureStore,
     }),
-    twoFactorClient(),
+    /**
+     * The email path. There are no passwords on this product: `/sign-in/email-otp` spends a 6-digit
+     * code mailed by `/email-otp/send-verification-otp`, creating the account if the address is new
+     * and signing in if it isn't. The server half is the `emailOTP` plugin in api/auth.ts.
+     */
+    emailOTPClient(),
   ],
 });
 
 /**
  * Store a bearer the API returned in a response body rather than the `set-auth-token` header.
- * The two-factor verify step is the one path that needs this: it mints the session only after the
- * 6-digit code checks out, and the token comes back in the body.
+ * The code-verify step is the one path that needs this: it mints the session only after the
+ * 6-digit code checks out, and the token comes back in the body as well as the header.
  */
 export const setEmailToken = (token: string) => {
   emailToken = token;
   tokenStore.set(token);
 };
 
-/** Bearer for the typed oRPC client — managed (Google) token first, email/password token second. */
+/** Bearer for the typed oRPC client — managed (Google) token first, email-code token second. */
 export const authToken = () => authClient.managedAuth.getToken() || emailToken || "";

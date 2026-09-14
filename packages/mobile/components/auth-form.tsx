@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   ActivityIndicator,
   KeyboardAvoidingView,
@@ -11,14 +11,13 @@ import {
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Ionicons } from "@expo/vector-icons";
 import Svg, { Path } from "react-native-svg";
-import { router, useLocalSearchParams } from "expo-router";
+import { useLocalSearchParams } from "expo-router";
 import { Text, TextInput } from "@/components/app-text";
 import { useColors } from "@/hooks/use-colors";
 import { Fonts } from "@/constants/theme";
 import { authClient, setEmailToken } from "@/lib/auth";
 import { useT } from "@/lib/i18n";
 import { LogoMark } from "@/components/logo";
-import { openWebSignUp as openSignUpUrl } from "@/lib/web-signup";
 import { SUPPORT_EMAIL } from "../constants/support";
 
 /**
@@ -39,58 +38,50 @@ function XIcon({ size, color }: { size: number; color: string }) {
   );
 }
 
-export type AuthMode = "sign-in" | "sign-up";
+/**
+ * How long before the code can be mailed again. Same number as the website's own form, so a
+ * person bouncing between the two sees one consistent wait.
+ */
+const RESEND_SECONDS = 50;
 
 /**
- * The whole auth body for both native screens.
+ * The one auth screen in the app.
  *
- * `app/sign-in.tsx` and `app/sign-up.tsx` are two separate routes so the app matches the website,
- * where /sign-in and /sign-up were split apart. They share this one component on purpose: the
- * Google hand-off, the 2FA second step and the bearer-token dance are fiddly enough that keeping
- * two copies would guarantee they drift.
+ * There are no passwords on this product and no separate sign-up: an email address plus the
+ * 6-digit code mailed to it either signs the person in or creates their account, so the same
+ * screen serves the owner setting up a workspace and the crew member accepting an invite.
+ * Google goes through the managed broker; X goes through the native social plugin.
+ *
+ * `app/sign-up.tsx` only forwards here, which is why this component takes no mode.
  */
-export function AuthForm({ mode }: { mode: AuthMode }) {
+export function AuthForm() {
   const colors = useColors();
   const t = useT();
   // An invite hands the address over so the crew member never mistypes the invited email. The
-  // server now refuses any invite accepted from a different address, so the field is locked too.
+  // server refuses any invite accepted from a different address, so the field is locked too.
   const params = useLocalSearchParams<{ email?: string; created?: string }>();
   const invitedEmail = typeof params.email === "string" ? params.email.trim() : "";
   /**
-   * Set by `auth/callback`, i.e. they registered on the website a second ago and the browser
-   * just handed them back. The address is already in the field; all that is left is the
-   * password they chose, and this line is what tells them so instead of leaving them staring
-   * at a login screen wondering whether the sign-up worked.
+   * Older builds bounced registration to the website and came back through `auth/callback` with
+   * `?created=1`. That address is the person's own choice, not an invite, so it must stay editable
+   * — only a genuinely invited address is locked.
    */
-  const justCreated = params.created === "1";
-  /**
-   * Only an INVITED address is locked. Someone coming back from the website sign-up arrives
-   * with `?email=` too, but that address is their own choice, not an invite - locking it (and
-   * telling them it "comes from your invite") would be a lie they cannot correct after a typo.
-   */
-  const locked = !!invitedEmail && !justCreated;
-  const [email, setEmail] = useState(invitedEmail);
-  const [password, setPassword] = useState("");
-  const [showPw, setShowPw] = useState(false);
-  const [busy, setBusy] = useState<null | "google" | "x" | "email">(null);
-  const [error, setError] = useState<string | null>(null);
-  /**
-   * Owners and admins can turn on authenticator 2FA from the website. For those accounts
-   * `signIn.email` returns `{ twoFactorRedirect: true }` and no session, so the phone app has to be
-   * able to finish the second step too — otherwise turning 2FA on would lock the owner out of the
-   * very app they use in the field.
-   */
-  const [needsCode, setNeedsCode] = useState(false);
-  const [code, setCode] = useState("");
-  const [useBackup, setUseBackup] = useState(false);
+  const locked = !!invitedEmail && params.created !== "1";
 
-  /** Cross-link to the sibling screen, carrying the invited email so context is never lost. */
-  const goSibling = () => {
-    const to = mode === "sign-in" ? "/sign-up" : "/sign-in";
-    router.replace(
-      invitedEmail ? `${to}?email=${encodeURIComponent(invitedEmail)}` : to,
-    );
-  };
+  const [email, setEmail] = useState(invitedEmail);
+  const [code, setCode] = useState("");
+  /** `email` collects the address, `code` spends the 6 digits mailed to it. */
+  const [step, setStep] = useState<"email" | "code">("email");
+  const [busy, setBusy] = useState<null | "google" | "x" | "send" | "verify">(null);
+  const [error, setError] = useState<string | null>(null);
+  const [cooldown, setCooldown] = useState(0);
+
+  // Ticks the resend countdown down to zero, one second at a time.
+  useEffect(() => {
+    if (cooldown <= 0) return;
+    const id = setTimeout(() => setCooldown((seconds) => seconds - 1), 1000);
+    return () => clearTimeout(id);
+  }, [cooldown]);
 
   const google = async () => {
     setError(null);
@@ -131,32 +122,26 @@ export function AuthForm({ mode }: { mode: AuthMode }) {
   };
 
   /**
-   * Registration happens on the website, not in the app.
-   *
-   * New accounts are protected by a Cloudflare Turnstile challenge, and Turnstile has no native
-   * React Native widget — Cloudflare requires a real browser, and it is widely broken inside iOS
-   * WKWebView. Rather than ship an untestable in-app WebView bridge, sign-up opens the site in the
-   * phone's browser and the crew comes back here to sign in. Most crew members arrive through an
-   * invite link anyway, so this path is mainly for the person creating the workspace.
+   * Mails the 6-digit code. This mints no session, so nothing is stored here — the token only
+   * exists once the code is spent below.
    */
-  const openWebSignUp = async () => {
+  const sendCode = async () => {
+    const address = email.trim();
+    if (!address) return;
     setError(null);
-    const blocked = await openSignUpUrl(invitedEmail);
-    if (blocked) setError(`${t("signin.openInBrowser")} ${blocked}`);
-  };
-
-  const withEmail = async () => {
-    setError(null);
-    setBusy("email");
+    setBusy("send");
     try {
-      const result = await authClient.signIn.email({ email: email.trim(), password });
+      const result = await authClient.emailOtp.sendVerificationOtp({
+        email: address,
+        type: "sign-in",
+      });
       if (result.error) {
-        setError(result.error.message ?? t("signin.authError"));
+        setError(result.error.message ?? t("signin.codeSendError"));
         return;
       }
-      if ((result.data as { twoFactorRedirect?: boolean } | null)?.twoFactorRedirect) {
-        setNeedsCode(true);
-      }
+      setCode("");
+      setStep("code");
+      setCooldown(RESEND_SECONDS);
     } catch (err) {
       setError(err instanceof Error ? err.message : String(err));
     } finally {
@@ -164,19 +149,29 @@ export function AuthForm({ mode }: { mode: AuthMode }) {
     }
   };
 
+  /**
+   * Spends the code. An address the server has never seen gets an account created on the spot,
+   * which is why `name` rides along — it is the fallback display name for a brand-new member.
+   * The session is created here and nowhere else, so keep the bearer the body carries: the root
+   * gate re-reads the session and swaps this screen for the app itself.
+   */
   const verifyCode = async () => {
+    const address = email.trim();
     setError(null);
-    setBusy("email");
+    setBusy("verify");
     try {
-      const trimmed = code.trim();
-      const result = useBackup
-        ? await authClient.twoFactor.verifyBackupCode({ code: trimmed })
-        : await authClient.twoFactor.verifyTotp({ code: trimmed });
+      const result = await authClient.signIn.emailOtp({
+        email: address,
+        otp: code.trim(),
+        name: address.split("@")[0],
+      });
       if (result.error) {
-        setError(t("signin.twoFactorError"));
+        // Deliberately OUR copy, not the server's: every failure here is the same wrong-or-stale
+        // code, and better-auth answers with untranslated English ("Invalid OTP") that would leak
+        // into all eleven locales.
+        setError(t("signin.codeError"));
         return;
       }
-      // The session is created here, not at sign-in: keep the bearer the body carries.
       const token = (result.data as { token?: string | null } | null)?.token;
       if (token) setEmailToken(token);
     } catch (err) {
@@ -186,7 +181,7 @@ export function AuthForm({ mode }: { mode: AuthMode }) {
     }
   };
 
-  const headline = mode === "sign-up" && invitedEmail ? t("signin.joinTitle") : t("signin.mobileHeadline");
+  const codeReady = code.trim().length === 6;
 
   return (
     <SafeAreaView
@@ -212,20 +207,110 @@ export function AuthForm({ mode }: { mode: AuthMode }) {
             </Text>
           </View>
 
-          {mode === "sign-up" && invitedEmail ? (
-            <Text style={[styles.eyebrow, { color: colors.mutedForeground, fontFamily: Fonts?.mono }]}>
+          {invitedEmail && locked ? (
+            <Text
+              style={[styles.eyebrow, { color: colors.mutedForeground, fontFamily: Fonts?.mono }]}
+            >
               {t("signin.joinEyebrow").toUpperCase()}
             </Text>
           ) : null}
 
           <Text style={[styles.headline, { color: colors.amber, fontFamily: Fonts?.display }]}>
-            {headline}
+            {step === "code"
+              ? t("signin.codeTitle")
+              : locked
+                ? t("signin.joinTitle")
+                : t("signin.mobileHeadline")}
           </Text>
           <Text style={[styles.sub, { color: colors.mutedForeground }]}>
-            {t("signin.mobileSub")}
+            {step === "code" ? t("signin.codeBody", { email: email.trim() }) : t("signin.mobileSub")}
           </Text>
 
-          {needsCode ? null : (
+          {step === "code" ? (
+            <View style={styles.codeBlock}>
+              <TextInput
+                value={code}
+                onChangeText={(value) => setCode(value.replace(/[^0-9]/g, "").slice(0, 6))}
+                placeholder={t("signin.codeLabel")}
+                placeholderTextColor={colors.mutedForeground}
+                keyboardType="number-pad"
+                autoCapitalize="none"
+                autoCorrect={false}
+                autoFocus
+                textContentType="oneTimeCode"
+                autoComplete="one-time-code"
+                accessibilityLabel={t("signin.codeLabel")}
+                style={[
+                  styles.input,
+                  styles.codeInput,
+                  {
+                    color: colors.foreground,
+                    borderColor: colors.border,
+                    backgroundColor: colors.card,
+                    fontFamily: Fonts?.mono,
+                  },
+                ]}
+              />
+
+              {error ? (
+                <Text style={[styles.error, { color: colors.destructive }]}>{error}</Text>
+              ) : null}
+
+              <Pressable
+                onPress={verifyCode}
+                disabled={busy !== null || !codeReady}
+                accessibilityRole="button"
+                accessibilityLabel={t("signin.continue")}
+                style={[
+                  styles.primary,
+                  {
+                    backgroundColor: colors.amber,
+                    opacity: busy !== null || !codeReady ? 0.5 : 1,
+                  },
+                ]}
+              >
+                {busy === "verify" ? (
+                  <ActivityIndicator color={colors.background} />
+                ) : (
+                  <Text style={[styles.primaryText, { color: colors.background }]}>
+                    {t("signin.continue")}
+                  </Text>
+                )}
+              </Pressable>
+
+              <Pressable
+                onPress={sendCode}
+                disabled={busy !== null || cooldown > 0}
+                accessibilityRole="button"
+                accessibilityLabel={t("signin.resend")}
+              >
+                <Text
+                  style={[
+                    styles.switch,
+                    { color: cooldown > 0 ? colors.mutedForeground : colors.amber },
+                  ]}
+                >
+                  {cooldown > 0 ? t("signin.resendIn", { seconds: cooldown }) : t("signin.resend")}
+                </Text>
+              </Pressable>
+
+              {locked ? null : (
+                <Pressable
+                  onPress={() => {
+                    setStep("email");
+                    setCode("");
+                    setError(null);
+                  }}
+                  accessibilityRole="button"
+                  accessibilityLabel={t("signin.changeEmail")}
+                >
+                  <Text style={[styles.switchQuiet, { color: colors.mutedForeground }]}>
+                    {t("signin.changeEmail")}
+                  </Text>
+                </Pressable>
+              )}
+            </View>
+          ) : (
             <>
               <Pressable
                 onPress={google}
@@ -254,10 +339,7 @@ export function AuthForm({ mode }: { mode: AuthMode }) {
                 disabled={busy !== null}
                 accessibilityRole="button"
                 accessibilityLabel={t("signin.x")}
-                style={[
-                  styles.x,
-                  { borderColor: colors.border, opacity: busy ? 0.7 : 1 },
-                ]}
+                style={[styles.x, { borderColor: colors.border, opacity: busy ? 0.7 : 1 }]}
               >
                 {busy === "x" ? (
                   <ActivityIndicator color={colors.foreground} />
@@ -276,121 +358,11 @@ export function AuthForm({ mode }: { mode: AuthMode }) {
                 <Text
                   style={[styles.or, { color: colors.mutedForeground, fontFamily: Fonts?.mono }]}
                 >
-                  {t("signin.or").toUpperCase()}
+                  {t("signin.orEmail").toUpperCase()}
                 </Text>
                 <View style={[styles.rule, { backgroundColor: colors.border }]} />
               </View>
-            </>
-          )}
 
-          {needsCode ? (
-            <View style={styles.webSignUp}>
-              <Text
-                style={[styles.codeTitle, { color: colors.foreground, fontFamily: Fonts?.display }]}
-              >
-                {t("signin.twoFactorTitle")}
-              </Text>
-              <Text style={[styles.webSignUpBody, { color: colors.mutedForeground }]}>
-                {t("signin.twoFactorBody")}
-              </Text>
-              <TextInput
-                value={code}
-                onChangeText={(value) =>
-                  setCode(useBackup ? value : value.replace(/[^0-9]/g, "").slice(0, 6))
-                }
-                placeholder={
-                  useBackup ? t("signin.twoFactorBackupPlaceholder") : t("signin.twoFactorCode")
-                }
-                placeholderTextColor={colors.mutedForeground}
-                keyboardType={useBackup ? "default" : "number-pad"}
-                autoCapitalize="characters"
-                autoCorrect={false}
-                accessibilityLabel={
-                  useBackup ? t("signin.twoFactorBackupPlaceholder") : t("signin.twoFactorCode")
-                }
-                style={[
-                  styles.input,
-                  styles.codeInput,
-                  {
-                    color: colors.foreground,
-                    borderColor: colors.border,
-                    backgroundColor: colors.card,
-                    fontFamily: Fonts?.mono,
-                  },
-                ]}
-              />
-              {error ? (
-                <Text style={[styles.error, { color: colors.destructive }]}>{error}</Text>
-              ) : null}
-              <Pressable
-                onPress={verifyCode}
-                disabled={busy !== null || code.trim().length < 6}
-                accessibilityRole="button"
-                accessibilityLabel={t("signin.twoFactorVerify")}
-                style={[
-                  styles.primary,
-                  {
-                    backgroundColor: colors.amber,
-                    opacity: busy !== null || code.trim().length < 6 ? 0.5 : 1,
-                  },
-                ]}
-              >
-                {busy === "email" ? (
-                  <ActivityIndicator color={colors.background} />
-                ) : (
-                  <Text style={[styles.primaryText, { color: colors.background }]}>
-                    {t("signin.twoFactorVerify")}
-                  </Text>
-                )}
-              </Pressable>
-              <Pressable
-                onPress={() => {
-                  setUseBackup((v) => !v);
-                  setCode("");
-                  setError(null);
-                }}
-                accessibilityRole="button"
-                accessibilityLabel={
-                  useBackup ? t("signin.twoFactorUseApp") : t("signin.twoFactorBackup")
-                }
-              >
-                <Text style={[styles.switch, { color: colors.mutedForeground }]}>
-                  {useBackup ? t("signin.twoFactorUseApp") : t("signin.twoFactorBackup")}
-                </Text>
-              </Pressable>
-            </View>
-          ) : mode === "sign-up" ? (
-            <View style={styles.webSignUp}>
-              <Text style={[styles.webSignUpBody, { color: colors.mutedForeground }]}>
-                {t("signin.signUpWebBody")}
-              </Text>
-              {error ? (
-                <Text style={[styles.error, { color: colors.destructive }]}>{error}</Text>
-              ) : null}
-              <Pressable
-                onPress={openWebSignUp}
-                accessibilityRole="button"
-                accessibilityLabel={t("signin.signUpWebButton")}
-                style={[styles.primary, { backgroundColor: colors.amber }]}
-              >
-                <Ionicons name="open-outline" size={17} color={colors.background} />
-                <Text style={[styles.primaryText, { color: colors.background }]}>
-                  {t("signin.signUpWebButton")}
-                </Text>
-              </Pressable>
-            </View>
-          ) : (
-            <>
-              {justCreated ? (
-                <View
-                  style={[styles.notice, { borderColor: colors.success, backgroundColor: colors.card }]}
-                >
-                  <Ionicons name="checkmark-circle" size={17} color={colors.success} />
-                  <Text style={[styles.noticeText, { color: colors.foreground }]}>
-                    {t("signin.accountCreated")}
-                  </Text>
-                </View>
-              ) : null}
               <TextInput
                 value={email}
                 onChangeText={setEmail}
@@ -398,8 +370,10 @@ export function AuthForm({ mode }: { mode: AuthMode }) {
                 placeholder={t("signin.emailPlaceholder")}
                 placeholderTextColor={colors.mutedForeground}
                 autoCapitalize="none"
+                autoCorrect={false}
                 keyboardType="email-address"
-                accessibilityLabel={t("signin.emailPlaceholder")}
+                textContentType="emailAddress"
+                accessibilityLabel={t("signin.workEmail")}
                 style={[
                   styles.input,
                   {
@@ -409,93 +383,36 @@ export function AuthForm({ mode }: { mode: AuthMode }) {
                   },
                 ]}
               />
-              {locked ? (
-                <Text style={[styles.lockNote, { color: colors.mutedForeground }]}>
-                  {t("signin.inviteLocked")}
-                </Text>
-              ) : null}
-              <View style={styles.pwWrap}>
-                <TextInput
-                  value={password}
-                  onChangeText={setPassword}
-                  placeholder={t("signin.password")}
-                  placeholderTextColor={colors.mutedForeground}
-                  secureTextEntry={!showPw}
-                  autoCapitalize="none"
-                  autoCorrect={false}
-                  accessibilityLabel={t("signin.password")}
-                  style={[
-                    styles.input,
-                    styles.pwInput,
-                    {
-                      color: colors.foreground,
-                      borderColor: colors.border,
-                      backgroundColor: colors.card,
-                    },
-                  ]}
-                />
-                <Pressable
-                  onPress={() => setShowPw((v) => !v)}
-                  hitSlop={8}
-                  accessibilityRole="button"
-                  accessibilityLabel={t(showPw ? "signin.hidePassword" : "signin.showPassword")}
-                  style={styles.pwToggle}
-                >
-                  <Ionicons
-                    name={showPw ? "eye-off-outline" : "eye-outline"}
-                    size={20}
-                    color={colors.mutedForeground}
-                  />
-                </Pressable>
-              </View>
+              <Text style={[styles.lockNote, { color: colors.mutedForeground }]}>
+                {locked ? t("signin.inviteLocked") : t("signin.codeHelp")}
+              </Text>
 
               {error ? (
                 <Text style={[styles.error, { color: colors.destructive }]}>{error}</Text>
               ) : null}
 
               <Pressable
-                onPress={withEmail}
-                disabled={busy !== null || !email || password.length < 8}
+                onPress={sendCode}
+                disabled={busy !== null || !email.trim()}
                 accessibilityRole="button"
-                accessibilityLabel={locked ? t("signin.submitJoin") : t("signin.submitSignIn")}
+                accessibilityLabel={t("signin.sendCode")}
                 style={[
                   styles.primary,
                   {
                     backgroundColor: colors.amber,
-                    opacity: busy !== null || !email || password.length < 8 ? 0.5 : 1,
+                    opacity: busy !== null || !email.trim() ? 0.5 : 1,
                   },
                 ]}
               >
-                {busy === "email" ? (
+                {busy === "send" ? (
                   <ActivityIndicator color={colors.background} />
                 ) : (
                   <Text style={[styles.primaryText, { color: colors.background }]}>
-                    {locked ? t("signin.submitJoin") : t("signin.submitSignIn")}
+                    {t("signin.sendCode")}
                   </Text>
                 )}
               </Pressable>
             </>
-          )}
-
-          {needsCode ? null : (
-            <Pressable
-              onPress={mode === "sign-in" ? openWebSignUp : goSibling}
-              accessibilityRole="button"
-              accessibilityLabel={
-                mode === "sign-in"
-                  ? `${t("signin.noAccount")} ${t("signin.goCreate")}`
-                  : `${t("signin.haveAccount")} ${t("signin.goSignIn")}`
-              }
-            >
-              <Text style={[styles.switch, { color: colors.mutedForeground }]}>
-                {mode === "sign-in"
-                  ? `${t("signin.noAccount")} `
-                  : `${t("signin.haveAccount")} `}
-                <Text style={{ color: colors.amber }}>
-                  {mode === "sign-in" ? t("signin.goCreate") : t("signin.goSignIn")}
-                </Text>
-              </Text>
-            </Pressable>
           )}
 
           <Text style={[styles.legal, { color: colors.mutedForeground, fontFamily: Fonts?.mono }]}>
@@ -544,21 +461,9 @@ const styles = StyleSheet.create({
   or: { fontSize: 11, letterSpacing: 2 },
   input: { height: 50, borderWidth: 1, paddingHorizontal: 14, fontSize: 15, borderRadius: 8 },
   lockNote: { marginTop: -4, fontSize: 11.5, lineHeight: 17 },
-  pwWrap: { position: "relative", justifyContent: "center" },
-  pwInput: { paddingRight: 48 },
-  pwToggle: {
-    position: "absolute",
-    right: 0,
-    top: 0,
-    bottom: 0,
-    width: 48,
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  webSignUp: { gap: 12 },
-  codeTitle: { fontSize: 22, lineHeight: 28 },
-  codeInput: { letterSpacing: 6, fontSize: 18 },
-  webSignUpBody: { fontSize: 13.5, lineHeight: 20 },
+  codeBlock: { gap: 12 },
+  /** The six digits read as digits: wide tracking, mono face, centred. */
+  codeInput: { letterSpacing: 8, fontSize: 20, textAlign: "center" },
   primary: {
     height: 52,
     flexDirection: "row",
@@ -570,16 +475,7 @@ const styles = StyleSheet.create({
   },
   primaryText: { fontSize: 15, fontWeight: "700", letterSpacing: 0.5 },
   switch: { fontSize: 13, textAlign: "center", marginTop: 14 },
+  switchQuiet: { fontSize: 12.5, textAlign: "center", marginTop: 2 },
   error: { fontSize: 13 },
-  notice: {
-    flexDirection: "row",
-    alignItems: "center",
-    gap: 8,
-    borderWidth: 1,
-    borderRadius: 8,
-    paddingVertical: 10,
-    paddingHorizontal: 12,
-  },
-  noticeText: { flex: 1, fontSize: 13.5, lineHeight: 19 },
   legal: { fontSize: 11, textAlign: "center", marginTop: 22, letterSpacing: 0.5 },
 });

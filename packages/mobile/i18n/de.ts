@@ -61,10 +61,7 @@ export const de: Catalog = {
   "signin.tabSignUp": "Registrieren",
   "signin.name": "Name",
   "signin.email": "E-Mail",
-  "signin.password": "Passwort",
-  "signin.submitSignIn": "Anmelden",
   "signin.submitSignUp": "Konto erstellen",
-  "signin.or": "oder",
 
   "teamspace.title": "Teambereich",
   "teamspace.subtitle": "Alle verifizierten Aufnahmen des Teams an einem Ort.",
@@ -129,7 +126,6 @@ export const de: Catalog = {
   "signin.emailPlaceholder": "you@company.com",
   "signin.passwordHint": "Mindestens 8 Zeichen",
   "signin.submitCreateWorkspace": "Workspace erstellen",
-  "signin.authError": "Authentifizierung fehlgeschlagen.",
   "signin.privacy": "Ihre Fotos und Metadaten bleiben in Ihrem Workspace. Siehe die",
   "signin.privacyLink": "Datenschutzerklärung",
   "signin.panelHeadline": "Jedes Foto Ihres Teams — im Moment der Aufnahme versiegelt.",
@@ -894,12 +890,6 @@ export const de: Catalog = {
   "msg.openMedia": "In voller Größe öffnen",
   "msg.closeViewer": "Schließen",
   "msg.emoji": "Emoji",
-  "signin.showPassword": "Passwort anzeigen",
-  "signin.hidePassword": "Passwort verbergen",
-  "signin.accountCreated": "Konto erstellt. Geben Sie Ihr Passwort ein, um sich anzumelden.",
-  "signin.signUpWebBody":
-    "Neue Konten werden auf geocliks.com erstellt, damit wir eine kurze Bot-Prüfung durchführen können. Die Seite öffnet sich im Browser, dauert eine Minute, danach kommen Sie hierher zurück und melden sich an.",
-  "signin.signUpWebButton": "Konto im Web erstellen",
   "signin.captchaMissing":
     "Bitte schließen Sie die Bot-Prüfung oben ab und versuchen Sie es erneut.",
   "signin.captchaFailed":
@@ -923,16 +913,6 @@ export const de: Catalog = {
   "twofa.disable": "Zwei-Schritt-Anmeldung ausschalten",
   "twofa.error":
     "Das hat nicht funktioniert. Prüfen Sie Ihr Passwort oder den 6-stelligen Code und versuchen Sie es erneut.",
-  "signin.twoFactorTitle": "Geben Sie Ihren 6-stelligen Code ein",
-  "signin.twoFactorBody":
-    "Öffnen Sie Ihre Authenticator-App und geben Sie den Code für GeoCliks ein. Er wechselt alle 30 Sekunden.",
-  "signin.twoFactorCode": "6-stelliger Code",
-  "signin.twoFactorVerify": "Prüfen und anmelden",
-  "signin.twoFactorBackup": "Handy verloren? Nutzen Sie einen Ersatzcode",
-  "signin.twoFactorUseApp": "Stattdessen den App-Code verwenden",
-  "signin.twoFactorError":
-    "Dieser Code hat nicht funktioniert. Warten Sie auf den nächsten und versuchen Sie es erneut.",
-  "signin.twoFactorBackupPlaceholder": "Ersatzcode",
   "profile.emailResetOr": "Sie erinnern sich nicht an Ihr aktuelles Passwort?",
   "profile.emailReset": "Link per E-Mail senden",
   "profile.emailResetSent": "Link gesendet. Prüfen Sie Ihre E-Mails — der Link gilt eine Stunde.",
@@ -941,17 +921,21 @@ export const de: Catalog = {
     "Sie wurde an {invited} gesendet, aber Sie sind als {current} angemeldet. Melden Sie sich ab und öffnen Sie den Link mit der eingeladenen Adresse, oder bitten Sie um eine neue Einladung für {current}.",
   "join.signOutUse": "Abmelden und {email} verwenden",
   "signin.inviteLocked": "Diese Adresse stammt aus Ihrer Einladung und kann nicht geändert werden.",
+  "signin.codeTitle": "Prüfen Sie Ihre E-Mails",
+  "signin.codeBody": "Wir haben einen 6-stelligen Code an {email} geschickt. Er läuft in 5 Minuten ab.",
+  "signin.codeLabel": "6-stelliger Code",
+  "signin.continue": "Weiter",
+  "signin.resend": "Keinen Code erhalten? Erneut senden",
+  "signin.resendIn": "Keinen Code erhalten? ({seconds} s)",
+  "signin.changeEmail": "Andere E-Mail verwenden",
+  "signin.sendCode": "Code senden",
+  "signin.codeHelp": "Wir schicken Ihnen einen 6-stelligen Code per E-Mail. Kein Passwort zu merken.",
+  "signin.codeSendError": "Der Code konnte nicht gesendet werden. Prüfen Sie die Adresse und versuchen Sie es erneut.",
+  "signin.codeError": "Dieser Code hat nicht funktioniert. Fordern Sie einen neuen an und versuchen Sie es erneut.",
   "signin.existsSignIn":
     "Sie haben bereits ein GeoCliks-Konto mit dieser E-Mail. Geben Sie unten Ihr Passwort ein, um sich anzumelden und beizutreten.",
   "signin.joinEyebrow": "Sie wurden eingeladen",
   "signin.joinTitle": "Dem Team beitreten",
-  "signin.submitJoin": "Team beitreten",
-  "signin.noAccount": "Neu bei GeoCliks?",
-  "signin.goCreate": "Konto erstellen",
-  "signin.openInBrowser":
-    "Der Browser konnte nicht geöffnet werden. Öffnen Sie diese Adresse, um Ihr Konto zu erstellen:",
-  "signin.haveAccount": "Sie haben bereits ein Konto?",
-  "signin.goSignIn": "Anmelden",
   "signin.businessName": "Firmenname",
   "signin.businessNameHelp":
     "Das wird der Name Ihres Teambereichs. Sie können ihn später im Profil ändern.",

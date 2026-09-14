@@ -62,10 +62,7 @@ export const frCA: Catalog = {
   "signin.tabSignUp": "Inscription",
   "signin.name": "Nom",
   "signin.email": "Courriel",
-  "signin.password": "Mot de passe",
-  "signin.submitSignIn": "Se connecter",
   "signin.submitSignUp": "Créer un compte",
-  "signin.or": "ou",
 
   "teamspace.title": "Espace d'équipe",
   "teamspace.subtitle": "Toutes les captures vérifiées de l'équipe, au même endroit.",
@@ -129,7 +126,6 @@ export const frCA: Catalog = {
   "signin.emailPlaceholder": "you@company.com",
   "signin.passwordHint": "Au moins 8 caractères",
   "signin.submitCreateWorkspace": "Créer l'espace de travail",
-  "signin.authError": "Authentification impossible.",
   "signin.privacy": "Vos photos et métadonnées restent dans votre espace de travail. Consultez la",
   "signin.privacyLink": "politique de confidentialité",
   "signin.panelHeadline": "Chaque photo de votre équipe, scellée dès la prise de vue.",
@@ -900,12 +896,6 @@ export const frCA: Catalog = {
   "msg.openMedia": "Ouvrir en grand",
   "msg.closeViewer": "Fermer",
   "msg.emoji": "Émoji",
-  "signin.showPassword": "Afficher le mot de passe",
-  "signin.hidePassword": "Masquer le mot de passe",
-  "signin.accountCreated": "Compte créé. Entrez votre mot de passe pour vous connecter.",
-  "signin.signUpWebBody":
-    "Les nouveaux comptes sont créés sur geocliks.com afin d'effectuer une vérification anti-robot. Le site s'ouvre dans votre navigateur, cela prend une minute, puis revenez ici pour vous connecter.",
-  "signin.signUpWebButton": "Créer un compte sur le web",
   "signin.captchaMissing":
     "Veuillez compléter la vérification anti-robot ci-dessus, puis réessayez.",
   "signin.captchaFailed":
@@ -929,15 +919,6 @@ export const frCA: Catalog = {
   "twofa.disable": "Désactiver la connexion en deux étapes",
   "twofa.error":
     "Cela n'a pas fonctionné. Vérifiez votre mot de passe ou le code à 6 chiffres et réessayez.",
-  "signin.twoFactorTitle": "Entrez votre code à 6 chiffres",
-  "signin.twoFactorBody":
-    "Ouvrez votre application d'authentification et entrez le code affiché pour GeoCliks. Il change toutes les 30 secondes.",
-  "signin.twoFactorCode": "Code à 6 chiffres",
-  "signin.twoFactorVerify": "Vérifier et se connecter",
-  "signin.twoFactorBackup": "Téléphone perdu? Utilisez un code de secours",
-  "signin.twoFactorUseApp": "Utiliser plutôt le code de l'application",
-  "signin.twoFactorError": "Ce code n'a pas fonctionné. Attendez le suivant et réessayez.",
-  "signin.twoFactorBackupPlaceholder": "Code de secours",
   "profile.emailResetOr": "Vous ne vous souvenez pas de votre mot de passe actuel?",
   "profile.emailReset": "M'envoyer un lien par courriel",
   "profile.emailResetSent":
@@ -947,17 +928,21 @@ export const frCA: Catalog = {
     "Elle a été envoyée à {invited}, mais vous êtes connecté comme {current}. Déconnectez-vous et ouvrez le lien avec l'adresse invitée, ou demandez une nouvelle invitation pour {current}.",
   "join.signOutUse": "Se déconnecter et utiliser {email}",
   "signin.inviteLocked": "Cette adresse provient de votre invitation et ne peut pas être modifiée.",
+  "signin.codeTitle": "Vérifiez votre courriel",
+  "signin.codeBody": "Nous avons envoyé un code à 6 chiffres à {email}. Il expire dans 5 minutes.",
+  "signin.codeLabel": "Code à 6 chiffres",
+  "signin.continue": "Continuer",
+  "signin.resend": "Pas reçu le code? L'envoyer de nouveau",
+  "signin.resendIn": "Pas reçu le code? ({seconds} s)",
+  "signin.changeEmail": "Utiliser un autre courriel",
+  "signin.sendCode": "M'envoyer un code",
+  "signin.codeHelp": "Nous vous enverrons un code à 6 chiffres par courriel. Aucun mot de passe à retenir.",
+  "signin.codeSendError": "Impossible d'envoyer le code. Vérifiez l'adresse et réessayez.",
+  "signin.codeError": "Ce code n'a pas fonctionné. Demandez-en un nouveau et réessayez.",
   "signin.existsSignIn":
     "Vous avez déjà un compte GeoCliks avec cette adresse. Entrez votre mot de passe ci-dessous pour vous connecter et vous joindre.",
   "signin.joinEyebrow": "Vous avez été invité",
   "signin.joinTitle": "Joignez-vous à l'équipe",
-  "signin.submitJoin": "Se joindre à l'équipe",
-  "signin.noAccount": "Nouveau sur GeoCliks?",
-  "signin.goCreate": "Créer un compte",
-  "signin.openInBrowser":
-    "Impossible d'ouvrir le navigateur. Rendez-vous à cette adresse pour créer votre compte :",
-  "signin.haveAccount": "Vous avez déjà un compte?",
-  "signin.goSignIn": "Se connecter",
   "signin.businessName": "Nom de l'entreprise",
   "signin.businessNameHelp":
     "Ce nom devient celui de votre espace d'équipe. Vous pourrez le modifier plus tard dans votre profil.",

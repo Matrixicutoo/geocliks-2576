@@ -3,16 +3,13 @@ import { Redirect, useLocalSearchParams } from "expo-router";
 /**
  * Where the website drops people back into the app.
  *
- * Registration itself has to happen on geocliks.com — it is gated by a Cloudflare Turnstile
- * challenge that has no React Native widget. Once the account exists the website sends the browser
+ * Accounts are created in the app now — the email code does it — so nothing in the app sends
+ * anyone to the website to register. This route stays because the WEBSITE still knows how to hand
+ * a browser back to us: someone who opened geocliks.com from a phone and signed in there is sent
  * to `<scheme>://auth/callback?email=...&created=1`, and this screen turns that into the sign-in
- * screen with the new address already filled in.
+ * screen with the address already filled in.
  *
- * Two different paths land here, which is why this screen exists at all:
- *  - the in-app browser: `openAuthSessionAsync` hands the URL straight back to `web-signup.ts`,
- *    which routes without ever mounting this screen;
- *  - the system browser (or a cold start, where the app was killed while they registered): the OS
- *    delivers the deep link as a navigation, and this screen is what receives it.
+ * Old installed builds and stale links use the same shape, which is the other reason to keep it.
  *
  * Nothing sensitive rides the link — the address only, never a token or a password.
  */

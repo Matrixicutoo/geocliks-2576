@@ -10,7 +10,7 @@ const MANAGED_TOKEN_KEY = "runable.managed-auth.token";
 /**
  * Signs the crew member out for real.
  *
- * There are TWO tokens on this device: the email/password bearer (cleared by the `/sign-out`
+ * There are TWO tokens on this device: the email-code bearer (cleared by the `/sign-out`
  * response hook in lib/auth.ts) and the managed-auth (Google) broker JWT. Dropping only the
  * server session leaves the managed token in place, so `authClient.useSession()` keeps resolving
  * a session and the router gate bounces the user straight back into the app — which is exactly

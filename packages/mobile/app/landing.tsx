@@ -1,4 +1,3 @@
-import { useState } from "react";
 import { Linking, Pressable, ScrollView, StyleSheet, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Ionicons } from "@expo/vector-icons";
@@ -9,7 +8,6 @@ import { Fonts } from "@/constants/theme";
 import { useT } from "@/lib/i18n";
 import { LanguageMenu } from "@/components/language-menu";
 import { LogoMark } from "@/components/logo";
-import { openWebSignUp } from "@/lib/web-signup";
 import { SUPPORT_EMAIL } from "../constants/support";
 
 /**
@@ -32,17 +30,9 @@ export default function Landing() {
   const router = useRouter();
 
   /**
-   * "Register free" does what it says: it opens the website's sign-up page in the browser,
-   * because accounts cannot be created natively (Turnstile has no React Native widget).
-   * "Login" stays in the app. If every route to a browser is blocked — which happens inside
-   * the preview's iframe — we show the address rather than leave a dead button.
+   * Both buttons now stay in the app: registering and signing in are the same screen, because an
+   * email code creates the account when the address is new. Nothing bounces to the browser.
    */
-  const [blockedUrl, setBlockedUrl] = useState<string | null>(null);
-
-  const register = async () => {
-    setBlockedUrl(await openWebSignUp());
-  };
-
   return (
     <SafeAreaView edges={["top", "left", "right"]} style={{ flex: 1, backgroundColor: HEADER_BG }}>
       <View style={styles.header}>
@@ -83,7 +73,7 @@ export default function Landing() {
 
         <Pressable
           accessibilityLabel={t("home.nav.registerFree")}
-          onPress={() => void register()}
+          onPress={() => router.push("/sign-in")}
           style={[styles.primary, { backgroundColor: colors.amber }]}
         >
           <Text style={[styles.primaryText, { fontFamily: Fonts?.semibold }]}>
@@ -103,12 +93,6 @@ export default function Landing() {
             {t("home.nav.login")}
           </Text>
         </Pressable>
-
-        {blockedUrl ? (
-          <Text style={[styles.blocked, { color: colors.foreground, fontFamily: Fonts?.sans }]}>
-            {t("signin.openInBrowser")} {blockedUrl}
-          </Text>
-        ) : null}
 
         <Text style={[styles.fine, { color: colors.mutedForeground, fontFamily: Fonts?.sans }]}>
           {t("getapp.underButtons")}
@@ -207,7 +191,6 @@ const styles = StyleSheet.create({
   },
   secondaryText: { fontSize: 15, fontWeight: "600" },
   fine: { marginTop: 14, fontSize: 12.5, lineHeight: 18, textAlign: "center" },
-  blocked: { marginTop: 14, fontSize: 12.5, lineHeight: 18, textAlign: "center" },
 
   divider: { height: 1, marginTop: 30 },
 
