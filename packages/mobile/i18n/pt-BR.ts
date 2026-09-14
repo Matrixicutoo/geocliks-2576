@@ -1139,6 +1139,9 @@ export const ptBR: Catalog = {
   "gate.body":
     "A câmera funciona sem conta. O espaço da equipe, os projetos, as rotas e as mensagens precisam de uma.",
   "gate.cancel": "Agora não",
+  "nudge.title": "Crie seu espaço da equipe de graça",
+  "nudge.body":
+    "As capturas ficam neste telefone até existir um espaço da equipe para arquivá-las. Crie um e as fotos da sua turma caem no projeto certo, verificadas, com tudo do seu plano de graça na primeira semana.",
   "nav.mine": "Minhas capturas",
   "mine.title": "Minhas capturas",
   "mine.body": "Fotos e clipes ainda não arquivados em um projeto.",

@@ -1139,6 +1139,9 @@ export const pl: Catalog = {
   "gate.body":
     "Aparat działa bez konta. Przestrzeń zespołu, projekty, trasy i wiadomości go wymagają.",
   "gate.cancel": "Nie teraz",
+  "nudge.title": "Utwórz swoją przestrzeń zespołu bezpłatnie",
+  "nudge.body":
+    "Ujęcia zostają na tym telefonie, dopóki nie ma przestrzeni zespołu, w której można je zapisać. Utwórz ją, a zdjęcia ekipy trafią do właściwego projektu, potwierdzone, z całym planem bezpłatnie w pierwszym tygodniu.",
   "nav.mine": "Moje ujęcia",
   "mine.title": "Moje ujęcia",
   "mine.body": "Zdjęcia i klipy jeszcze nieprzypisane do projektu.",

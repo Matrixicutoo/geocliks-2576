@@ -1145,6 +1145,9 @@ export const en = {
   "gate.body":
     "The camera works without an account. Teamspace, projects, routes and messages need one.",
   "gate.cancel": "Not now",
+  "nudge.title": "Create your Teamspace for free",
+  "nudge.body":
+    "Captures stay on this phone until there is a Teamspace to file them in. Create one and your crew's photos land under the right project, verified, with everything on your plan free for the first week.",
   "nav.mine": "My captures",
   "mine.title": "My captures",
   "mine.body": "Photos and clips not filed under a project yet.",

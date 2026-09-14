@@ -1159,6 +1159,9 @@ export const frCA: Catalog = {
   "gate.body":
     "La caméra fonctionne sans compte. L'espace d'équipe, les projets, les tournées et les messages en exigent un.",
   "gate.cancel": "Plus tard",
+  "nudge.title": "Créez votre espace d'équipe gratuitement",
+  "nudge.body":
+    "Les captures restent sur ce téléphone tant qu'il n'y a pas d'espace d'équipe pour les classer. Créez-en un et les photos de votre équipe se rangent sous le bon projet, vérifiées, avec tout votre forfait gratuit la première semaine.",
   "nav.mine": "Mes captures",
   "mine.title": "Mes captures",
   "mine.body": "Photos et clips pas encore classés dans un projet.",

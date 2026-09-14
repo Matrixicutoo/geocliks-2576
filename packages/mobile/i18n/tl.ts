@@ -1149,6 +1149,9 @@ export const tl: Catalog = {
   "gate.body":
     "Gumagana ang camera nang walang account. Kailangan ng account para sa Teamspace, mga proyekto, mga ruta at mga mensahe.",
   "gate.cancel": "Hindi muna",
+  "nudge.title": "Gumawa ng Teamspace mo nang libre",
+  "nudge.body":
+    "Nananatili sa teleponong ito ang mga capture hangga't walang Teamspace na paglagyan nila. Gumawa ng isa at mapupunta ang mga litrato ng tauhan mo sa tamang proyekto, na-verify, at libre ang lahat sa plano mo sa unang linggo.",
   "nav.mine": "Mga capture ko",
   "mine.title": "Mga capture ko",
   "mine.body": "Mga larawan at clip na wala pa sa anumang proyekto.",

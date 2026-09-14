@@ -25,6 +25,8 @@ import { LanguageMenu } from "@/components/language-menu";
 import { ProfileMenu } from "@/components/profile-menu";
 import { useInvalidatePhotos, useVideoPolicy } from "@/queries/photos";
 import { useHasSession } from "@/hooks/use-session";
+import { useTeamspaceNudge } from "@/hooks/use-teamspace-nudge";
+import { TeamspaceSheet } from "@/components/teamspace-sheet";
 import { drainQueue, enqueue, readQueue, subscribeQueue, type QueuedPhoto } from "@/lib/queue";
 import { clockStampForCapture, ensureClockSync } from "@/lib/clock";
 import { SignaturePad } from "@/components/signature-pad";
@@ -165,9 +167,19 @@ export default function Capture() {
   const invalidate = useInvalidatePhotos();
   const policy = useVideoPolicy();
   const tr = useT();
-  const { hasSession } = useHasSession();
+  const { hasSession, pending: sessionPending } = useHasSession();
   // Photos work signed out; video does not, because the plan that governs clip length lives
   // on the workspace. A signed-out record press opens the register/login prompt.
+
+  /**
+   * The one-per-install Teamspace pitch. Armed only once the session answer has settled (the
+   * first render of a signed-in launch reads as signed out), and disarmed whenever the screen
+   * is busy being a camera: mid-recording, mid-save, or with a picker or the signature pad
+   * already over the viewfinder. A sheet that lands on top of another sheet reads as a bug.
+   */
+  const nudge = useTeamspaceNudge(
+    !hasSession && !sessionPending && !recording && !busy && !tagOpen && !projectOpen && !signOpen,
+  );
 
   const template = templates.data?.find((t) => t.isDefault) ?? templates.data?.[0] ?? null;
   const project = projects.data?.find((p) => p.id === projectId) ?? null;
@@ -1210,6 +1222,7 @@ export default function Capture() {
         </View>
 
       </ScrollView>
+      <TeamspaceSheet visible={nudge.visible} onClose={nudge.dismiss} />
     </SafeAreaView>
   );
 }

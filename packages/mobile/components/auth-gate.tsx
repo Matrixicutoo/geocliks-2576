@@ -12,6 +12,48 @@ type Props = {
 };
 
 /**
+ * The two doors — register, log in — plus the way out, shared by this gate and the Teamspace
+ * sheet on the capture tab.
+ *
+ * Both surfaces ask for the same thing and must offer it in the same words and the same order,
+ * so the buttons live in one place: a user who dismissed the sheet and later taps a locked tab
+ * should recognise what they are looking at.
+ */
+export function AuthDoors({ onClose }: { onClose: () => void }) {
+  const colors = useColors();
+  const router = useRouter();
+  const tr = useT();
+
+  const go = (href: "/sign-up" | "/sign-in") => {
+    onClose();
+    router.push(href);
+  };
+
+  return (
+    <>
+      <Pressable
+        onPress={() => go("/sign-up")}
+        style={[styles.primary, { backgroundColor: colors.amber, borderColor: colors.amber }]}
+      >
+        <Text style={[styles.primaryText, { color: colors.primaryForeground }]}>
+          {tr("home.nav.registerFree")}
+        </Text>
+      </Pressable>
+      <Pressable onPress={() => go("/sign-in")} style={[styles.secondary, { borderColor: colors.border }]}>
+        <Text style={[styles.secondaryText, { color: colors.foreground }]}>
+          {tr("home.nav.login")}
+        </Text>
+      </Pressable>
+      <Pressable onPress={onClose} style={styles.cancel} hitSlop={8}>
+        <Text style={[styles.cancelText, { color: colors.mutedForeground }]}>
+          {tr("gate.cancel")}
+        </Text>
+      </Pressable>
+    </>
+  );
+}
+
+/**
  * The register-or-login prompt shown when a signed-out user reaches for anything beyond
  * the camera.
  *
@@ -27,13 +69,7 @@ type Props = {
  */
 export function AuthGate({ visible, onClose }: Props) {
   const colors = useColors();
-  const router = useRouter();
   const tr = useT();
-
-  const go = (href: "/sign-up" | "/sign-in") => {
-    onClose();
-    router.push(href);
-  };
 
   return (
     <Modal visible={visible} transparent animationType="fade" onRequestClose={onClose}>
@@ -48,27 +84,7 @@ export function AuthGate({ visible, onClose }: Props) {
           </Text>
           <Text style={[styles.body, { color: colors.mutedForeground }]}>{tr("gate.body")}</Text>
 
-          <Pressable
-            onPress={() => go("/sign-up")}
-            style={[styles.primary, { backgroundColor: colors.amber, borderColor: colors.amber }]}
-          >
-            <Text style={[styles.primaryText, { color: colors.primaryForeground }]}>
-              {tr("home.nav.registerFree")}
-            </Text>
-          </Pressable>
-          <Pressable
-            onPress={() => go("/sign-in")}
-            style={[styles.secondary, { borderColor: colors.border }]}
-          >
-            <Text style={[styles.secondaryText, { color: colors.foreground }]}>
-              {tr("home.nav.login")}
-            </Text>
-          </Pressable>
-          <Pressable onPress={onClose} style={styles.cancel} hitSlop={8}>
-            <Text style={[styles.cancelText, { color: colors.mutedForeground }]}>
-              {tr("gate.cancel")}
-            </Text>
-          </Pressable>
+          <AuthDoors onClose={onClose} />
         </View>
       </View>
     </Modal>

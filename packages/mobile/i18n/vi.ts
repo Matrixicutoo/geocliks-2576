@@ -1131,6 +1131,9 @@ export const vi: Catalog = {
   "gate.body":
     "Máy ảnh hoạt động mà không cần tài khoản. Không gian nhóm, dự án, tuyến đường và tin nhắn thì cần.",
   "gate.cancel": "Để sau",
+  "nudge.title": "Tạo không gian nhóm của bạn miễn phí",
+  "nudge.body":
+    "Ảnh chụp vẫn ở trên điện thoại này cho đến khi có không gian nhóm để lưu vào. Hãy tạo một cái và ảnh của tổ bạn sẽ vào đúng dự án, đã được xác minh, với mọi thứ trong gói của bạn miễn phí tuần đầu tiên.",
   "nav.mine": "Ảnh chụp của tôi",
   "mine.title": "Ảnh chụp của tôi",
   "mine.body": "Ảnh và video clip chưa được xếp vào dự án nào.",

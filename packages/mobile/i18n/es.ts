@@ -1145,6 +1145,9 @@ export const es: Catalog = {
   "gate.body":
     "La cámara funciona sin cuenta. El espacio del equipo, los proyectos, las rutas y los mensajes necesitan una.",
   "gate.cancel": "Ahora no",
+  "nudge.title": "Crea tu espacio de equipo gratis",
+  "nudge.body":
+    "Las capturas se quedan en este teléfono hasta que haya un espacio de equipo donde archivarlas. Crea uno y las fotos de tu cuadrilla llegan al proyecto correcto, verificadas, con todo lo de tu plan gratis la primera semana.",
   "nav.mine": "Mis capturas",
   "mine.title": "Mis capturas",
   "mine.body": "Fotos y clips que aún no están en ningún proyecto.",

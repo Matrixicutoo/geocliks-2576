@@ -1153,6 +1153,9 @@ export const de: Catalog = {
   "gate.body":
     "Die Kamera funktioniert ohne Konto. Teamspace, Projekte, Touren und Nachrichten brauchen eines.",
   "gate.cancel": "Jetzt nicht",
+  "nudge.title": "Erstelle deinen Teamspace kostenlos",
+  "nudge.body":
+    "Aufnahmen bleiben auf diesem Handy, solange es keinen Teamspace gibt, der sie ablegt. Erstelle einen, und die Fotos deines Teams landen verifiziert im richtigen Projekt – in der ersten Woche ist alles aus deinem Tarif kostenlos.",
   "nav.mine": "Meine Aufnahmen",
   "mine.title": "Meine Aufnahmen",
   "mine.body": "Fotos und Clips, die noch keinem Projekt zugeordnet sind.",

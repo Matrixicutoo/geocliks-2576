@@ -1145,6 +1145,9 @@ export const it: Catalog = {
   "gate.body":
     "La fotocamera funziona senza account. Lo spazio del team, i progetti, i percorsi e i messaggi ne richiedono uno.",
   "gate.cancel": "Non ora",
+  "nudge.title": "Crea il tuo spazio del team gratis",
+  "nudge.body":
+    "Le acquisizioni restano su questo telefono finché non c'è uno spazio del team in cui archiviarle. Creane uno e le foto della squadra finiscono nel progetto giusto, verificate, con tutto il tuo piano gratis per la prima settimana.",
   "nav.mine": "Le mie acquisizioni",
   "mine.title": "Le mie acquisizioni",
   "mine.body": "Foto e clip non ancora archiviate in un progetto.",

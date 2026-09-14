@@ -88,8 +88,9 @@
        `openInBrowser`, `authError`, `or`, `noAccount`/`goCreate`/`haveAccount`/`goSignIn`,
        `submitSignIn`/`submitJoin`. (The pre-existing dead `twofa.*` block in the mobile catalogs
        is left for the 276-key bulk delete noted under Deferred.)
-11.[ ] mobile: delayed "create your Teamspace for free" sheet on the capture tab, signed out only,
-        shown once per install (AsyncStorage flag) — reuses the AuthGate copy/buttons
+11.[x] mobile: delayed "create your Teamspace for free" sheet on the capture tab, signed out only,
+        shown once per install (AsyncStorage flag) — reuses the AuthGate copy/buttons.
+        Built and verified 2026-09-14, see "Item 11" below.
 12.[x] nav tailoring by `product` (web). New `web/lib/product.ts` holds the one rule:
        `showsProduct(orgProduct, role, product)` checks the role's own side first
        (`canUseField`/`canUseDelivery`) and only then narrows by the workspace's onboarding
@@ -124,7 +125,8 @@
        `autoFocus` on the OTP field in `components/auth-form.tsx` (flagged by jsx-a11y) — the
        field now focuses from a ref on the code step, so the keyboard still comes up. `TextInput`
        in `components/app-text.tsx` takes a `ref` prop for it.
-15.[ ] live verify, clean up dev test data, commit. Dev test data is done (item 19). Server-side
+15.[ ] live verify, clean up dev test data, commit. Dev test data is done (item 19), plus the
+       item 11 verification rows cleared on 2026-09-14 (see Item 11). Server-side
        tags re-verified on 2026-09-14 against the production entrypoint
        (`PORT=4555 bun packages/web/src/server.ts`): `/` and `/help/verify` each return their own
        `<title>` in the raw HTML, an unknown path returns the shell's defaults, `/assets/*` and
@@ -384,3 +386,40 @@
   cursor, push token, session, account, user status), purges, then checks every table in the
   database for survivors AND re-runs the orphan sweep. PASS, and it is re-runnable.
 - `bun run typecheck` clean in `packages/web` and `packages/mobile`. Commit `8f05223`.
+
+## Item 11 — mobile "create your Teamspace for free" nudge sheet — DONE, verified 2026-09-14
+- `lib/teamspace-nudge.ts`: `teamspaceNudgeSeen()` / `markTeamspaceNudgeSeen()` over AsyncStorage
+  key `geocliks.teamspace-nudge.v1`. Unreadable storage counts as *seen* — a sheet on every
+  launch is far worse than a sheet never shown.
+- `hooks/use-teamspace-nudge.ts`: `useTeamspaceNudge(armed)`, `DELAY_MS = 30_000`. The timer runs
+  inside `useFocusEffect`, so it only counts down while the capture tab is on screen, and it
+  **restarts rather than resumes** when `armed` flips off and back on. A `fired` ref guards the
+  double-fire that a re-arm would otherwise allow. The flag is written the moment the sheet
+  **appears**, not when it is dismissed — an app kill mid-sheet still counts as shown.
+- `components/auth-gate.tsx`: the "Register free / Login / Not now" block (and the `go()` routing
+  with it) is extracted into an exported `AuthDoors({ onClose })`; `AuthGate` now renders its card
+  plus `<AuthDoors/>`. Single source of truth for that copy, which is what "reuses the AuthGate
+  copy/buttons" asked for.
+- `components/teamspace-sheet.tsx`: bottom-sheet `Modal` (slide-up, backdrop, grip bar,
+  `people-outline`) rendering `nudge.title` / `nudge.body` + `<AuthDoors/>`.
+- `app/(tabs)/index.tsx`: armed only when signed out and settled and nothing else is happening —
+  `!hasSession && !sessionPending && !recording && !busy && !tagOpen && !projectOpen && !signOpen`
+  (`useHasSession()` now also gives up `pending`). Sheet rendered after the ScrollView.
+- i18n: `nudge.title` / `nudge.body` added after `gate.cancel` in all 11 mobile catalogs via
+  `scripts/add-nudge-keys.py` (idempotent, sits with the other `add-*-keys.py`; `/scripts/` is
+  gitignored).
+- Verified live in the preview (:4300), signed out with the flag cleared: no sheet on launch, it
+  appears at ~30s with the right title/body/buttons, `geocliks.teamspace-nudge.v1` reads `"1"`
+  as it appears, "Not now" closes it, and a full reload with the flag set shows nothing after
+  40s of waiting. Restart-not-resume checked twice: with the PROJECT picker open the nudge did
+  not fire at 34s, and fired ~38s after the picker closed; same again with the EVIDENCE picker.
+  "Register free" from inside the sheet routes to `/sign-in`, so `AuthDoors` works from both
+  hosts. Signed in (a seeded bearer in `geocliks.auth.token`) the sheet never appears and the
+  flag is never written — the arm condition, not just the render, is doing the work.
+- `bun run typecheck` (mobile) clean; `bun run lint` from the root: 0 errors, 0 warnings, 401
+  files.
+- Verification scaffolding cleaned up afterwards, and it was scaffolding, not part of the
+  feature: a hand-seeded `user`/`session` pair (`nudgechk_*`, needed because the real mailed OTP
+  is unreadable from here) went out through `scripts/clear-test-data.ts --apply` along with the
+  auto-created workspace, the leftover `sign-in-otp-…@example.com` `verification` row was
+  deleted by hand, and the preview's localStorage keys were cleared. `@example.com` users: 0.
