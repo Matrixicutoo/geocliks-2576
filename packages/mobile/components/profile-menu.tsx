@@ -109,7 +109,7 @@ export function ProfileMenu({ showStamp, onToggleStamp }: Props) {
   const org = useOrg();
   // Appearance and language are answered in the drawer now, not only in Settings.
   const { scheme, setTheme } = useAppTheme();
-  // Hidden on plans that do not include the assistant, matching the website's footer link.
+  // Shown to anyone signed in, on every plan — matching the website's footer link.
   const assistant = useAssistantAccess();
   const [open, setOpen] = useState(false);
   const [mounted, setMounted] = useState(false);

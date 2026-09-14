@@ -254,3 +254,40 @@
   `/app/captures` (field) and `/app/routes` (delivery) render real data. `/app/billing` still
   shows Business $25 as the billed subscription, which is correct — that page reports `paidPlan`.
 - `bun run typecheck` clean.
+
+## Item 17 — staff sidebar/tabs hid half the app + assistant plan gate removed — DONE, verified 2026-09-14
+- Reported: signed in as the superadmin owner the website showed the delivery menu only, no
+  field photos side, and the AI assistant was missing from the right side entirely. Ask: no
+  restrictions at all for the superadmin on web AND app, and the assistant available to every
+  signed-in user on every plan (only signed-out visitors go without).
+- Cause (nav): Item 16 fixed the *plan* (feature limits) but the sidebar and mobile tabs do not
+  branch on the plan — they branch on `orgs.current`'s `product`, which returned
+  `context.org.product` verbatim. The superadmin's org answered "delivery" at onboarding, so
+  `showsProduct()` in `web/lib/product.ts` took every field-only link off the sidebar.
+- `routes/orgs.ts`: `product` is now `context.staffOrg ? null : context.org.product`. `null`
+  already means "show both", so a staff workspace reports it whatever its column says — staff
+  run both systems and the onboarding answer must not take half the app away from an operator.
+  The stored column is left alone; nothing else reads it for staff.
+- Mobile needed no equivalent fix: its drawer tiles (`components/profile-menu.tsx`) and the
+  Routes tab gate on ROLE (`canUseField` / `canUseDelivery`), not on `product` — grep confirms
+  the app never reads `org.product` at all. An `owner` passes both, so the phone always had both
+  sides. Confirmed in the running preview, not just by reading.
+- Cause (assistant): `web/lib/assistant.ts` and `mobile/lib/assistant.ts` each carried an
+  `ASSISTANT_PLANS` allow-list, so Plus and Delivery Lite could never see it, and the web
+  sidebar wrapped the menu item in `planHasAssistant(...)` on top of that.
+- Both `assistant.ts` files: `ASSISTANT_PLANS` and `planHasAssistant()` deleted;
+  `useAssistantAccess()` is now just "is there a session". The grant is deliberate, not lazy:
+  everything the assistant can actually reach is gated on its own behind the API
+  (`assertFieldEnabled`, export formats, the role checks in `agent/viewer.ts`), so a free plan
+  gets the conversation without getting anything it has not paid for. `sidebar-body.tsx` renders
+  the assistant item unconditionally; the stale "plan-gated" comments in `site-footer.tsx`,
+  `profile-menu.tsx` and `(tabs)/_layout.tsx` were corrected to match.
+- Verified live, signed in as the superadmin. Web (:4200) `/app`: sidebar lists Teamspace,
+  Projects, My captures, Map, Before/After, Reports (field) alongside Routes (delivery), plus
+  "GeoCliks AI Assistant" — opened it and got a real streamed answer. Mobile (:4300): tab bar is
+  Capture / Messages / Routes / Assistant; the drawer lists Projects, Teamspace, My captures,
+  Map, Reports AND Routes under "PLATFORM STAFF · OWNER", with the assistant link in its footer;
+  sent "How many projects do I have?" on the Assistant tab and it answered with the workspace's
+  real field data (3 projects, 8 captures, chart by project) — so the field tools are reachable
+  for this account, not just the links.
+- `bun run typecheck` clean in both `packages/web` and `packages/mobile`.

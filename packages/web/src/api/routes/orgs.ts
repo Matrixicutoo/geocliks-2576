@@ -70,8 +70,15 @@ export const orgs = {
       /** Still on the auto-provisioned name: the UI offers to set the business name once. */
       needsName: context.org.name === defaultOrgName(context.user),
       needsSetup,
-      /** Which system to show: "field", "delivery", or null for "show both" (pre-onboarding). */
-      product: context.org.product,
+      /**
+       * Which system to show: "field", "delivery", or null for "show both".
+       *
+       * Null is what pre-onboarding workspaces report, and it is also what a platform
+       * operator's own workspace reports whatever its column says — staff run both systems, so
+       * the onboarding answer must not take half the app off their sidebar. The plan behind it
+       * (`staff`) already allows both, so this is the last thing that was hiding them.
+       */
+      product: context.staffOrg ? null : context.org.product,
       /** The free week. `plan` below already includes whatever the trial grants. */
       trial: {
         active: context.trial.active,

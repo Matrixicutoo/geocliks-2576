@@ -56,8 +56,8 @@ function SocialRow() {
 
 export function SiteFooter() {
   const t = useT();
-  // The assistant is a signed-in, plan-gated feature, so the link only exists for a workspace
-  // that actually has it — no dead link and no upsell teaser for everyone else.
+  // Signing in is the assistant's only gate — every plan carries it. Signed out the link stays
+  // off the marketing footer: there is no workspace to ask about yet.
   const hasAssistant = useAssistantAccess();
   return (
     <footer className="bg-ink">

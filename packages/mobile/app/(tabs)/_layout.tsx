@@ -31,8 +31,8 @@ export default function TabLayout() {
   // Capture is the one public tab. Every other tab press signed out opens the
   // register/login prompt instead of navigating to a screen with no workspace behind it.
   const { hasSession } = useHasSession();
-  // The assistant is signed-in and plan-gated, so its tab only exists for a workspace that
-  // actually has it — same rule as the drawer link and the Settings footer link.
+  // Signing in is the assistant's only gate, on every plan — same rule as the drawer link and
+  // the Settings footer link. Signed out there is no workspace to ask about, so no tab either.
   const hasAssistant = useAssistantAccess();
   const [gateOpen, setGateOpen] = useState(false);
   const gateIfSignedOut = {

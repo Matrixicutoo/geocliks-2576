@@ -1,4 +1,3 @@
-import { useOrg } from "@/queries/orgs";
 import { useHasSession } from "@/hooks/use-session";
 
 /**
@@ -9,42 +8,17 @@ import { useHasSession } from "@/hooks/use-session";
 export const ASSISTANT_NAME = "GeoCliks AI Assistant";
 
 /**
- * Plans the assistant is included with. Kept in step with the website's list by hand: the two
- * apps cannot import from each other, and the grant is small enough that duplicating it beats
- * a round trip to the server on every launch.
- */
-const ASSISTANT_PLANS = new Set([
-  "free",
-  "business",
-  "crew10",
-  "crew25",
-  "enterprise",
-  "enterprise-field",
-  "delivery-pro",
-  "delivery-fleet",
-  "delivery-fleet-30",
-  "delivery-fleet-200",
-  "delivery-fleet-500",
-]);
-
-export function planHasAssistant(planId: string | null | undefined): boolean {
-  if (!planId) return false;
-  // Fleet tiers an operator adds later ("delivery-fleet-1000") sit above Delivery Pro, so they
-  // are covered by the same grant rather than needing this list edited again.
-  if (planId.startsWith("delivery-fleet")) return true;
-  return ASSISTANT_PLANS.has(planId);
-}
-
-/**
- * Whether this phone may use the assistant: signed in, in a workspace whose plan includes it.
+ * Whether this phone may use the assistant: signed in. That is the whole grant, and it matches
+ * `web/src/web/lib/assistant.ts` — no plan gate on either client.
  *
- * The capture screen works before sign-up, so signed out there is no workspace and no plan and
- * the link stays hidden. `useOrg` is already switched off until a session exists.
+ * The capture screen works before sign-up, so signed out there is no workspace to ask about and
+ * the tab, the drawer link and the Settings link all stay hidden. Everything the assistant can
+ * actually reach is gated on its own behind the API, so an unpaid plan gets the conversation
+ * without getting anything it has not paid for.
  */
 export function useAssistantAccess(): boolean {
   const { hasSession } = useHasSession();
-  const org = useOrg();
-  return hasSession && planHasAssistant(org.data?.plan?.id);
+  return hasSession;
 }
 
 /**
