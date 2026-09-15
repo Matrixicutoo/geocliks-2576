@@ -341,6 +341,9 @@ export function PhotoDetail({ photoId, onClose }: { photoId: string | null; onCl
                     },
                   ]}
                   showRoute={false}
+                  // 220px of map has no room for a layer panel; a single pin opens tight enough
+                  // that the street detail turns itself on anyway.
+                  layerControl={false}
                   height={220}
                 />
                 <Text

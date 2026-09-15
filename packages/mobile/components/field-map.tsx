@@ -20,6 +20,8 @@ export type FieldMapProps = {
   showRoute?: boolean;
   onSelect?: (id: string) => void;
   height?: number;
+  /** Native-only; the web fallback draws no map to put a layer panel on. */
+  layerControl?: boolean;
 };
 
 /**
