@@ -1092,7 +1092,7 @@ export const ar: Catalog = {
   "checklist.crew": "ادعُ فريقك",
   "checklist.crewSub": "هم يصوّرون وأنت ترى. بلا كلمات مرور تُوزَّع.",
   "checklist.share": "أرسل الإثبات إلى العميل",
-  "checklist.shareSub": "تقرير أو رابط يفتحه دون إنشاء حساب.",
+  "checklist.shareSub": "ملف واحد بصور الموقع، جاهز للإرسال.",
 
   // The popups behind each checklist step
   "checklist.close": "إغلاق",
@@ -1108,8 +1108,6 @@ export const ar: Catalog = {
   "checklist.capture3": "تصل إلى هنا في ثوانٍ — أو بمجرد عودة الشبكة.",
   "checklist.captureDone": "تم — التقطت واحدة",
   "checklist.shareTitle": "أرسل الإثبات إلى العميل",
-  "checklist.shareBody": "طريقتان: تقرير يجمع صور الموقع في ملف PDF واحد، أو رابط يفتحه العميل في متصفحه بلا حساب وبلا تطبيق.",
-  "checklist.shareOpen": "فتح التقارير",
-  "checklist.shareDone": "سأفعل ذلك لاحقًا",
+  "checklist.shareBody": "أنشئ أولها من هنا. يجمع صور الموقع — وكل صورة مختومة بوقتها ومكانها وعنوانها — في ملف واحد جاهز للإرسال.",
 
 };

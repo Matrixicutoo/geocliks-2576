@@ -1132,7 +1132,7 @@ export const de: Catalog = {
   "checklist.crew": "Laden Sie Ihr Team ein",
   "checklist.crewSub": "Sie fotografieren, Sie sehen es. Keine Passwörter zu verteilen.",
   "checklist.share": "Senden Sie einem Kunden den Nachweis",
-  "checklist.shareSub": "Ein Bericht oder ein Link, den er ohne Konto öffnet.",
+  "checklist.shareSub": "Eine Datei mit den Fotos der Baustelle, fertig zum Versenden.",
 
   // The popups behind each checklist step
   "checklist.close": "Schließen",
@@ -1148,8 +1148,6 @@ export const de: Catalog = {
   "checklist.capture3": "Es landet in Sekunden hier — oder sobald Sie wieder Empfang haben.",
   "checklist.captureDone": "Fertig — eines gemacht",
   "checklist.shareTitle": "Senden Sie einem Kunden den Nachweis",
-  "checklist.shareBody": "Zwei Wege nach außen: ein Bericht, der die Fotos einer Baustelle in einem PDF bündelt, oder ein Link, den der Kunde im Browser öffnet — ohne Konto, ohne App.",
-  "checklist.shareOpen": "Berichte öffnen",
-  "checklist.shareDone": "Mache ich später",
+  "checklist.shareBody": "Erstellen Sie den ersten hier. Er bündelt die Fotos einer Baustelle — jedes mit Zeit, Ort und Adresse eingesiegelt — in einer Datei zum Versenden.",
 
 };

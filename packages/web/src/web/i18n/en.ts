@@ -1130,7 +1130,7 @@ export const en = {
   "checklist.crew": "Invite your crew",
   "checklist.crewSub": "They shoot, you see it. No passwords to hand out.",
   "checklist.share": "Send proof to a client",
-  "checklist.shareSub": "A report or a share link they can open without an account.",
+  "checklist.shareSub": "One file with a job's photos, ready to send.",
 
   // The popups behind each checklist step
   "checklist.close": "Close",
@@ -1146,9 +1146,7 @@ export const en = {
   "checklist.capture3": "It lands here within seconds — or as soon as you have signal again.",
   "checklist.captureDone": "Done — I took one",
   "checklist.shareTitle": "Send proof to a client",
-  "checklist.shareBody": "Two ways out: a report that gathers a job's photos into one PDF, or a share link the client opens in their browser with no account and no app.",
-  "checklist.shareOpen": "Open reports",
-  "checklist.shareDone": "I'll do this later",
+  "checklist.shareBody": "Build your first one here. It gathers a job's photos — each with its time, place and address sealed in — into one file you can send.",
 
 } as const;
 

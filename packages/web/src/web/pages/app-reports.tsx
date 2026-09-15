@@ -86,14 +86,17 @@ function bytesLabel(bytes?: number | null) {
   return `${(bytes / (1024 * 1024)).toFixed(1)} MB`;
 }
 
-export default function AppReports() {
+/**
+ * The report builder itself — every field, the format picker and the generate button.
+ *
+ * Exported because the get-started checklist opens it in a popup on the Teamspace page: a first
+ * report built there has to be the same report built here, down to the defaults, or the one the
+ * owner makes during onboarding is a different thing from the one they make afterwards.
+ */
+export function ReportBuilder({ onCreated }: { onCreated?: () => void }) {
   const t = useT();
   const projects = useProjects();
-  const reports = useReports();
   const create = useCreateReport();
-  const download = useDownloadReport();
-  const remove = useRemoveReport();
-  const desktop = useDesktop();
 
   const [title, setTitle] = useState("");
   const [projectId, setProjectId] = useState("");
@@ -104,160 +107,174 @@ export default function AppReports() {
   const [error, setError] = useState<string | null>(null);
 
   return (
+    <form
+      onSubmit={async (event) => {
+        event.preventDefault();
+        setError(null);
+        try {
+          const report = await create.mutateAsync({
+            title,
+            projectId: projectId || null,
+            format,
+            layout,
+            tag: (tag || null) as (typeof TAGS)[number] | null,
+            limit,
+          });
+          if (report.url) window.open(report.url, "_blank");
+          // Only after the report actually exists, so a failed build never counts as one.
+          onCreated?.();
+        } catch (err) {
+          setError(err instanceof Error ? err.message : String(err));
+        }
+      }}
+      className="h-fit rounded-[12px] border border-line bg-ink-2"
+    >
+      <div className="border-b border-line px-4 py-3">
+        <p className="font-display text-[15px] font-semibold">{t("reports.build")}</p>
+      </div>
+
+      <div className="space-y-4 p-4">
+        <label className="block">
+          <span className="label mb-1.5 block text-fog">{t("reports.titleField")}</span>
+          <input
+            aria-label={t("reports.titleField")}
+            required
+            value={title}
+            onChange={(e) => setTitle(e.target.value)}
+            placeholder="Ridgeline FTTH — Phase 2 closeout"
+            className="w-full rounded-[12px] border border-line bg-ink px-3 py-2 text-sm text-chalk outline-none focus:border-amber"
+          />
+        </label>
+
+        <label className="block">
+          <span className="label mb-1.5 block text-fog">{t("common.project")}</span>
+          <select
+            aria-label={t("common.project")}
+            value={projectId}
+            onChange={(e) => setProjectId(e.target.value)}
+            className="w-full rounded-[12px] border border-line bg-ink px-3 py-2 text-sm text-chalk outline-none focus:border-amber"
+          >
+            <option value="">{t("share.wholeWorkspace")}</option>
+            {(projects.data ?? []).map((project) => (
+              <option key={project.id} value={project.id}>
+                {project.name}
+              </option>
+            ))}
+          </select>
+        </label>
+
+        <div>
+          <span className="label mb-1.5 block text-fog">{t("reports.format")}</span>
+          <div className="grid grid-cols-2 gap-2">
+            {FORMATS.map((item) => (
+              <button
+                key={item.id}
+                type="button"
+                onClick={() => setFormat(item.id)}
+                className={cn(
+                  "rounded-[8px] border px-3 py-2.5 text-left transition-colors",
+                  format === item.id
+                    ? "border-amber bg-amber/10"
+                    : "border-line bg-ink hover:border-fog/50",
+                )}
+              >
+                <span className="flex items-center gap-2 text-[13px] font-semibold text-chalk">
+                  <item.icon
+                    className={cn("size-4", format === item.id ? "text-amber" : "text-fog")}
+                  />
+                  {item.label}
+                </span>
+              </button>
+            ))}
+          </div>
+          <p className="mt-2 text-[11.5px] leading-relaxed text-fog">
+            {t(FORMATS.find((f) => f.id === format)?.hint ?? "reports.hint.pdf")}
+          </p>
+        </div>
+
+        <label className="block">
+          <span className="label mb-1.5 block text-fog">{t("reports.layoutField")}</span>
+          <select
+            aria-label={t("reports.layoutField")}
+            value={layout}
+            onChange={(e) => setLayout(e.target.value as typeof layout)}
+            className="w-full rounded-[12px] border border-line bg-ink px-3 py-2 text-sm text-chalk outline-none focus:border-amber"
+          >
+            {LAYOUTS.map((item) => (
+              <option key={item.id} value={item.id}>
+                {t(item.label)}
+              </option>
+            ))}
+          </select>
+        </label>
+
+        <div className="grid grid-cols-2 gap-3">
+          <label className="block">
+            <span className="label mb-1.5 block text-fog">{t("reports.onlyTag")}</span>
+            <select
+              aria-label={t("reports.onlyTag")}
+              value={tag}
+              onChange={(e) => setTag(e.target.value)}
+              className="w-full rounded-[12px] border border-line bg-ink px-3 py-2 text-sm text-chalk outline-none focus:border-amber"
+            >
+              <option value="">{t("reports.any")}</option>
+              {TAGS.map((item) => (
+                <option key={item} value={item}>
+                  {t(TAG_LABELS[item] ?? "tag.work")}
+                </option>
+              ))}
+            </select>
+          </label>
+          <label className="block">
+            <span className="label mb-1.5 block text-fog">{t("reports.maxPhotos")}</span>
+            <input
+              aria-label={t("reports.maxPhotos")}
+              type="number"
+              min={1}
+              max={300}
+              value={limit}
+              onChange={(e) => setLimit(Number(e.target.value) || 1)}
+              className="mono w-full rounded-[12px] border border-line bg-ink px-3 py-2 text-sm text-chalk outline-none focus:border-amber"
+            />
+          </label>
+        </div>
+
+        {error && <p className="mono text-[11px] text-alert">{error}</p>}
+
+        <button
+          type="submit"
+          disabled={create.isPending}
+          className="rounded-[8px] inline-flex w-full items-center justify-center gap-2 bg-amber px-4 py-2.5 text-[13px] font-semibold text-ink disabled:opacity-60"
+        >
+          {create.isPending ? (
+            <>
+              <Loader2 className="size-4 animate-spin" /> {t("reports.building")}
+            </>
+          ) : (
+            <>
+              <FileStack className="size-4" /> {t("reports.generate")}
+            </>
+          )}
+        </button>
+      </div>
+    </form>
+  );
+}
+
+export default function AppReports() {
+  const t = useT();
+  const reports = useReports();
+  const download = useDownloadReport();
+  const remove = useRemoveReport();
+  const desktop = useDesktop();
+
+  return (
     <DashboardShell
       title={t("reports.title")}
       subtitle={t("reports.subtitle")}
     >
       <div className="grid gap-6 xl:grid-cols-[380px_minmax(0,1fr)]">
-        <form
-          onSubmit={async (event) => {
-            event.preventDefault();
-            setError(null);
-            try {
-              const report = await create.mutateAsync({
-                title,
-                projectId: projectId || null,
-                format,
-                layout,
-                tag: (tag || null) as (typeof TAGS)[number] | null,
-                limit,
-              });
-              if (report.url) window.open(report.url, "_blank");
-            } catch (err) {
-              setError(err instanceof Error ? err.message : String(err));
-            }
-          }}
-          className="h-fit rounded-[12px] border border-line bg-ink-2"
-        >
-          <div className="border-b border-line px-4 py-3">
-            <p className="font-display text-[15px] font-semibold">{t("reports.build")}</p>
-          </div>
-
-          <div className="space-y-4 p-4">
-            <label className="block">
-              <span className="label mb-1.5 block text-fog">{t("reports.titleField")}</span>
-              <input
-                aria-label={t("reports.titleField")}
-                required
-                value={title}
-                onChange={(e) => setTitle(e.target.value)}
-                placeholder="Ridgeline FTTH — Phase 2 closeout"
-                className="w-full rounded-[12px] border border-line bg-ink px-3 py-2 text-sm text-chalk outline-none focus:border-amber"
-              />
-            </label>
-
-            <label className="block">
-              <span className="label mb-1.5 block text-fog">{t("common.project")}</span>
-              <select
-                aria-label={t("common.project")}
-                value={projectId}
-                onChange={(e) => setProjectId(e.target.value)}
-                className="w-full rounded-[12px] border border-line bg-ink px-3 py-2 text-sm text-chalk outline-none focus:border-amber"
-              >
-                <option value="">{t("share.wholeWorkspace")}</option>
-                {(projects.data ?? []).map((project) => (
-                  <option key={project.id} value={project.id}>
-                    {project.name}
-                  </option>
-                ))}
-              </select>
-            </label>
-
-            <div>
-              <span className="label mb-1.5 block text-fog">{t("reports.format")}</span>
-              <div className="grid grid-cols-2 gap-2">
-                {FORMATS.map((item) => (
-                  <button
-                    key={item.id}
-                    type="button"
-                    onClick={() => setFormat(item.id)}
-                    className={cn(
-                      "rounded-[8px] border px-3 py-2.5 text-left transition-colors",
-                      format === item.id
-                        ? "border-amber bg-amber/10"
-                        : "border-line bg-ink hover:border-fog/50",
-                    )}
-                  >
-                    <span className="flex items-center gap-2 text-[13px] font-semibold text-chalk">
-                      <item.icon
-                        className={cn("size-4", format === item.id ? "text-amber" : "text-fog")}
-                      />
-                      {item.label}
-                    </span>
-                  </button>
-                ))}
-              </div>
-              <p className="mt-2 text-[11.5px] leading-relaxed text-fog">
-                {t(FORMATS.find((f) => f.id === format)?.hint ?? "reports.hint.pdf")}
-              </p>
-            </div>
-
-            <label className="block">
-              <span className="label mb-1.5 block text-fog">{t("reports.layoutField")}</span>
-              <select
-                aria-label={t("reports.layoutField")}
-                value={layout}
-                onChange={(e) => setLayout(e.target.value as typeof layout)}
-                className="w-full rounded-[12px] border border-line bg-ink px-3 py-2 text-sm text-chalk outline-none focus:border-amber"
-              >
-                {LAYOUTS.map((item) => (
-                  <option key={item.id} value={item.id}>
-                    {t(item.label)}
-                  </option>
-                ))}
-              </select>
-            </label>
-
-            <div className="grid grid-cols-2 gap-3">
-              <label className="block">
-                <span className="label mb-1.5 block text-fog">{t("reports.onlyTag")}</span>
-                <select
-                  aria-label={t("reports.onlyTag")}
-                  value={tag}
-                  onChange={(e) => setTag(e.target.value)}
-                  className="w-full rounded-[12px] border border-line bg-ink px-3 py-2 text-sm text-chalk outline-none focus:border-amber"
-                >
-                  <option value="">{t("reports.any")}</option>
-                  {TAGS.map((item) => (
-                    <option key={item} value={item}>
-                      {t(TAG_LABELS[item] ?? "tag.work")}
-                    </option>
-                  ))}
-                </select>
-              </label>
-              <label className="block">
-                <span className="label mb-1.5 block text-fog">{t("reports.maxPhotos")}</span>
-                <input
-                  aria-label={t("reports.maxPhotos")}
-                  type="number"
-                  min={1}
-                  max={300}
-                  value={limit}
-                  onChange={(e) => setLimit(Number(e.target.value) || 1)}
-                  className="mono w-full rounded-[12px] border border-line bg-ink px-3 py-2 text-sm text-chalk outline-none focus:border-amber"
-                />
-              </label>
-            </div>
-
-            {error && <p className="mono text-[11px] text-alert">{error}</p>}
-
-            <button
-              type="submit"
-              disabled={create.isPending}
- className="rounded-[8px] inline-flex w-full items-center justify-center gap-2 bg-amber px-4 py-2.5 text-[13px] font-semibold text-ink disabled:opacity-60"
-            >
-              {create.isPending ? (
-                <>
-                  <Loader2 className="size-4 animate-spin" /> {t("reports.building")}
-                </>
-              ) : (
-                <>
-                  <FileStack className="size-4" /> {t("reports.generate")}
-                </>
-              )}
-            </button>
-          </div>
-        </form>
+        <ReportBuilder />
 
         <div className="min-w-0">
           {reports.isLoading ? (

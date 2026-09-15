@@ -1136,7 +1136,7 @@ export const frCA: Catalog = {
   "checklist.crew": "Invitez votre équipe",
   "checklist.crewSub": "Ils photographient, vous voyez tout. Aucun mot de passe à distribuer.",
   "checklist.share": "Envoyez une preuve à un client",
-  "checklist.shareSub": "Un rapport ou un lien qu'il ouvre sans créer de compte.",
+  "checklist.shareSub": "Un seul fichier avec les photos du chantier, prêt à envoyer.",
 
   // The popups behind each checklist step
   "checklist.close": "Fermer",
@@ -1152,8 +1152,6 @@ export const frCA: Catalog = {
   "checklist.capture3": "La photo arrive ici en quelques secondes — ou dès que vous avez du signal.",
   "checklist.captureDone": "C'est fait — j'en ai pris une",
   "checklist.shareTitle": "Envoyez une preuve à un client",
-  "checklist.shareBody": "Deux sorties : un rapport qui réunit les photos d'un chantier en un seul PDF, ou un lien que le client ouvre dans son navigateur, sans compte ni application.",
-  "checklist.shareOpen": "Ouvrir les rapports",
-  "checklist.shareDone": "Je le ferai plus tard",
+  "checklist.shareBody": "Créez le premier ici. Il réunit les photos d'un chantier — chacune scellée avec son heure, son lieu et son adresse — en un seul fichier à envoyer.",
 
 };

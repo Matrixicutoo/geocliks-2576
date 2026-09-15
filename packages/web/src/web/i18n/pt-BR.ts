@@ -1123,7 +1123,7 @@ export const ptBR: Catalog = {
   "checklist.crew": "Convide sua equipe",
   "checklist.crewSub": "Eles fotografam, você vê. Sem senhas para distribuir.",
   "checklist.share": "Envie provas a um cliente",
-  "checklist.shareSub": "Um relatório ou link que ele abre sem criar conta.",
+  "checklist.shareSub": "Um arquivo com as fotos da obra, pronto para enviar.",
 
   // The popups behind each checklist step
   "checklist.close": "Fechar",
@@ -1139,8 +1139,6 @@ export const ptBR: Catalog = {
   "checklist.capture3": "Chega aqui em segundos — ou assim que você tiver sinal de novo.",
   "checklist.captureDone": "Pronto — já tirei uma",
   "checklist.shareTitle": "Envie provas a um cliente",
-  "checklist.shareBody": "Duas saídas: um relatório que reúne as fotos de uma obra em um PDF, ou um link que o cliente abre no navegador, sem conta e sem aplicativo.",
-  "checklist.shareOpen": "Abrir relatórios",
-  "checklist.shareDone": "Faço isso depois",
+  "checklist.shareBody": "Crie o primeiro aqui. Ele reúne as fotos de uma obra — cada uma selada com hora, lugar e endereço — em um único arquivo para enviar.",
 
 };

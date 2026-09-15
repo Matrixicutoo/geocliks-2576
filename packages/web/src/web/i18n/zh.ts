@@ -1062,7 +1062,7 @@ export const zh: Catalog = {
   "checklist.crew": "邀请你的团队",
   "checklist.crewSub": "他们拍摄，你即刻看到。无需分发密码。",
   "checklist.share": "把凭证发给客户",
-  "checklist.shareSub": "一份报告或一个链接，无需账号即可打开。",
+  "checklist.shareSub": "一个文件汇集工地照片，随时可发送。",
 
   // The popups behind each checklist step
   "checklist.close": "关闭",
@@ -1078,8 +1078,6 @@ export const zh: Catalog = {
   "checklist.capture3": "几秒内就会出现在这里 —— 或在恢复信号后立即上传。",
   "checklist.captureDone": "完成 —— 我拍了一张",
   "checklist.shareTitle": "把凭证发给客户",
-  "checklist.shareBody": "两种方式：把一个工地的照片汇成一份 PDF 报告，或一个客户在浏览器里直接打开的分享链接，无需账号、无需应用。",
-  "checklist.shareOpen": "打开报告",
-  "checklist.shareDone": "以后再做",
+  "checklist.shareBody": "在这里生成第一份。它会把一个工地的照片（每张都封存了时间、位置和地址）汇成一个可发送的文件。",
 
 };

@@ -1133,7 +1133,7 @@ export const tl: Catalog = {
   "checklist.crew": "Imbitahin ang tropa",
   "checklist.crewSub": "Sila ang kumukuha, ikaw ang nakakakita. Walang password na ipamimigay.",
   "checklist.share": "Ipadala ang ebidensya sa kliyente",
-  "checklist.shareSub": "Report o link na mabubuksan nila nang walang account.",
+  "checklist.shareSub": "Isang file na may mga larawan ng trabaho, handang ipadala.",
 
   // The popups behind each checklist step
   "checklist.close": "Isara",
@@ -1149,8 +1149,6 @@ export const tl: Catalog = {
   "checklist.capture3": "Darating ito dito sa loob ng segundo — o pagbalik ng signal.",
   "checklist.captureDone": "Ayos — nakakuha na ako",
   "checklist.shareTitle": "Ipadala ang ebidensya sa kliyente",
-  "checklist.shareBody": "Dalawang paraan: report na pinagsasama ang mga larawan ng trabaho sa isang PDF, o share link na bubuksan ng kliyente sa browser nang walang account at walang app.",
-  "checklist.shareOpen": "Buksan ang reports",
-  "checklist.shareDone": "Mamaya ko na gagawin",
+  "checklist.shareBody": "Gawin ang una dito. Pinagsasama nito ang mga larawan ng trabaho — bawat isa selyado sa oras, lugar at address — sa isang file na maipapadala.",
 
 };

@@ -1113,7 +1113,7 @@ export const vi: Catalog = {
   "checklist.crew": "Mời đội của bạn",
   "checklist.crewSub": "Họ chụp, bạn thấy ngay. Không cần phát mật khẩu.",
   "checklist.share": "Gửi bằng chứng cho khách hàng",
-  "checklist.shareSub": "Một báo cáo hoặc liên kết họ mở được mà không cần tài khoản.",
+  "checklist.shareSub": "Một tệp chứa ảnh của công trình, sẵn sàng để gửi.",
 
   // The popups behind each checklist step
   "checklist.close": "Đóng",
@@ -1129,8 +1129,6 @@ export const vi: Catalog = {
   "checklist.capture3": "Ảnh về đây trong vài giây — hoặc ngay khi có lại tín hiệu.",
   "checklist.captureDone": "Xong — tôi đã chụp một bức",
   "checklist.shareTitle": "Gửi bằng chứng cho khách hàng",
-  "checklist.shareBody": "Hai cách: một báo cáo gom ảnh của công trình vào một PDF, hoặc một liên kết khách mở ngay trên trình duyệt, không cần tài khoản hay ứng dụng.",
-  "checklist.shareOpen": "Mở báo cáo",
-  "checklist.shareDone": "Để sau",
+  "checklist.shareBody": "Tạo bản đầu tiên ngay đây. Nó gom ảnh của công trình — mỗi ảnh đã niêm phong thời gian, vị trí và địa chỉ — vào một tệp để gửi.",
 
 };

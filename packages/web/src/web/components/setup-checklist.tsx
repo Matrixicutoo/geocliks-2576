@@ -1,12 +1,12 @@
 import { useState } from "react";
 import { useQueryClient } from "@tanstack/react-query";
-import { Link } from "wouter";
 import { Check, ChevronRight, Copy, Loader2, Rocket, X } from "lucide-react";
 import { useAckSetup, useAppQr, useOrg } from "../queries/orgs";
 import { orpc } from "../lib/api";
 import { useT, type TKey, type Translate } from "../lib/i18n";
 import { cn } from "../lib/utils";
 import { NewProjectDialog } from "../pages/app-projects";
+import { ReportBuilder } from "../pages/app-reports";
 import { InviteDialog } from "./invite-form";
 
 /**
@@ -158,30 +158,18 @@ function CapturePopup({ onClose }: { onClose: () => void }) {
 }
 
 /**
- * Step 5 — proof out the door. The one step whose work genuinely lives on another page, so this
- * explains the two ways and hands over a link; closing it ticks the step either way.
+ * Step 5 — proof out the door, built right here. The real report builder, not a link to it: this
+ * step only ticks when a report actually exists, so sending the owner to another page to make
+ * one and come back would be the long way round to the same place.
  */
-function SharePopup({ onClose }: { onClose: () => void }) {
+function SharePopup({ onClose, onCreated }: { onClose: () => void; onCreated: () => void }) {
   const t = useT();
   return (
     <Popup title={t("checklist.shareTitle")} onClose={onClose} t={t}>
       <div className="px-5 py-4">
         <p className="text-[13px] leading-relaxed text-fog">{t("checklist.shareBody")}</p>
-        <div className="mt-4 grid gap-2">
-          <Link
-            to="/app/reports"
-            onClick={onClose}
-            className="mono rounded-[8px] bg-amber px-4 py-2.5 text-center text-[11px] font-bold uppercase tracking-widest text-ink"
-          >
-            {t("checklist.shareOpen")}
-          </Link>
-          <button
-            type="button"
-            onClick={onClose}
-            className="mono rounded-[8px] border border-line px-4 py-2.5 text-[11px] font-bold uppercase tracking-widest text-fog hover:text-paper"
-          >
-            {t("checklist.shareDone")}
-          </button>
+        <div className="mt-4">
+          <ReportBuilder onCreated={onCreated} />
         </div>
       </div>
     </Popup>
@@ -203,14 +191,17 @@ export function SetupChecklist() {
   if (done === STEPS.length) return null;
 
   /**
-   * Closing a popup is the confirmation for the three steps the data cannot witness at that
-   * moment — the app being installed, a photo being taken on it, proof reaching a client. The
-   * two that are done *inside* their popup need no promise: re-reading the workspace is enough,
-   * and a popup closed without creating anything correctly leaves its step open.
+   * Closing a popup is the confirmation only for the two steps whose work happens on a phone we
+   * cannot see — the app being installed and the first photo taken on it. Everything else is
+   * done inside its own popup and leaves a record behind (a project, an invite, a report), so
+   * re-reading the workspace is the honest check and a popup closed without finishing the work
+   * correctly leaves its step open.
    */
+  const ACK_ON_CLOSE: StepKey[] = ["mobile", "capture"];
+
   const close = (step: StepKey) => {
     setOpen(null);
-    if (step === "project" || step === "crew") {
+    if (!ACK_ON_CLOSE.includes(step)) {
       void queryClient.invalidateQueries({ queryKey: orpc.orgs.key() });
       return;
     }
@@ -302,7 +293,9 @@ export function SetupChecklist() {
       {open === "mobile" ? <MobilePopup onClose={() => close("mobile")} /> : null}
       {open === "capture" ? <CapturePopup onClose={() => close("capture")} /> : null}
       <InviteDialog open={open === "crew"} onClose={() => close("crew")} />
-      {open === "share" ? <SharePopup onClose={() => close("share")} /> : null}
+      {open === "share" ? (
+        <SharePopup onClose={() => close("share")} onCreated={() => close("share")} />
+      ) : null}
     </>
   );
 }

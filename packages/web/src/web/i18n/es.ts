@@ -1129,7 +1129,7 @@ export const es: Catalog = {
   "checklist.crew": "Invite a su equipo",
   "checklist.crewSub": "Ellos fotografían, usted lo ve. Sin contraseñas que repartir.",
   "checklist.share": "Envíe pruebas a un cliente",
-  "checklist.shareSub": "Un informe o un enlace que abre sin crear una cuenta.",
+  "checklist.shareSub": "Un archivo con las fotos de la obra, listo para enviar.",
 
   // The popups behind each checklist step
   "checklist.close": "Cerrar",
@@ -1145,8 +1145,6 @@ export const es: Catalog = {
   "checklist.capture3": "Llega aquí en segundos — o en cuanto vuelva a tener señal.",
   "checklist.captureDone": "Listo — ya tomé una",
   "checklist.shareTitle": "Envíe pruebas a un cliente",
-  "checklist.shareBody": "Dos salidas: un informe que reúne las fotos de una obra en un PDF, o un enlace que el cliente abre en su navegador, sin cuenta ni aplicación.",
-  "checklist.shareOpen": "Abrir informes",
-  "checklist.shareDone": "Lo haré más tarde",
+  "checklist.shareBody": "Cree el primero aquí. Reúne las fotos de una obra —cada una sellada con su hora, lugar y dirección— en un solo archivo para enviar.",
 
 };
