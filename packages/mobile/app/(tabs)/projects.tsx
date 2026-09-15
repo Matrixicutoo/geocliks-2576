@@ -11,6 +11,8 @@ import { ProfileMenu } from "@/components/profile-menu";
 import { useT } from "@/lib/i18n";
 import { formatStamp } from "@/components/stamp";
 import { useOrg } from "@/queries/orgs";
+import { useMemberProjects } from "@/queries/team";
+import { AssignCrewSheet } from "@/components/assign-crew-sheet";
 import { useCreateProject, useDestroyProject, useProjects } from "@/queries/projects";
 import { canManageWorkspace } from "../../lib/roles";
 
@@ -41,7 +43,12 @@ export default function Projects() {
   const org = useOrg();
   // Field crews work inside projects; creating and deleting them is manager and above.
   const canManage = canManageWorkspace(org.data?.role);
+  // One read of every assignment in the workspace feeds the crew count on each row.
+  const memberProjects = useMemberProjects();
+  const crewCount = (projectId: string) =>
+    (memberProjects.data ?? []).filter((row) => row.projectId === projectId).length;
   const [confirmId, setConfirmId] = useState<string | null>(null);
+  const [assignFor, setAssignFor] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [showForm, setShowForm] = useState(false);
   const [form, setForm] = useState(EMPTY_FORM);
@@ -248,6 +255,29 @@ export default function Projects() {
                   </View>
                 </Pressable>
 
+                {canManage ? (
+                  <Pressable
+                    accessibilityLabel={t("assign.title")}
+                    onPress={() => setAssignFor(item.id)}
+                    style={[styles.crewBtn, { borderColor: colors.border }]}
+                  >
+                    <Ionicons name="people-outline" size={13} color={colors.mutedForeground} />
+                    <Text
+                      style={[
+                        styles.crewText,
+                        { color: colors.mutedForeground, fontFamily: Fonts?.mono },
+                      ]}
+                    >
+                      {t("assign.crew").toUpperCase()}
+                    </Text>
+                    <Text
+                      style={[styles.crewText, { color: colors.foreground, fontFamily: Fonts?.mono }]}
+                    >
+                      {crewCount(item.id)}
+                    </Text>
+                  </Pressable>
+                ) : null}
+
                 {canManage && confirmId === item.id ? (
                   <View style={styles.confirmWrap}>
                     <View style={styles.confirmBox}>
@@ -318,6 +348,14 @@ export default function Projects() {
           }}
         />
       )}
+
+      {assignFor && canManage ? (
+        <AssignCrewSheet
+          projectId={assignFor}
+          projectName={(projects.data ?? []).find((p) => p.id === assignFor)?.name}
+          onClose={() => setAssignFor(null)}
+        />
+      ) : null}
     </SafeAreaView>
   );
 }
@@ -348,6 +386,18 @@ const styles = StyleSheet.create({
   badge: { fontSize: 9, letterSpacing: 1 },
   last: { fontSize: 9, letterSpacing: 0.8 },
   trash: { paddingHorizontal: 4, paddingTop: 2 },
+  crewBtn: {
+    flexDirection: "row",
+    alignItems: "center",
+    alignSelf: "flex-start",
+    gap: 5,
+    borderWidth: 1,
+    borderRadius: 8,
+    paddingHorizontal: 8,
+    paddingVertical: 5,
+    marginTop: 8,
+  },
+  crewText: { fontSize: 9, letterSpacing: 1 },
   iconBtn: { borderWidth: 1, paddingHorizontal: 7, paddingVertical: 5, borderRadius: 8 },
   form: {
     borderWidth: 1,

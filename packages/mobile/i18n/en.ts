@@ -545,6 +545,17 @@ export const en = {
   "assistant.linkExpires": "This link works for 24 hours. The report also stays on the Reports screen.",
   "assistant.linkExpired": "This download link has expired. The report is still on the Reports screen.",
   "assistant.reportMeta": "{count} photos · {size}",
+  "project.crewAccess": "Crew access",
+  "assign.title": "Assign crew",
+  "assign.body": "Pick who works this job. Field crews only see the projects they are assigned to.",
+  "assign.empty": "No teammates yet — invite your crew from the Team screen first.",
+  "assign.add": "Assign",
+  "assign.assigned": "Assigned",
+  "assign.done": "Done",
+  "assign.crew": "Crew",
+  "assign.none": "No crew assigned yet.",
+  "assign.remove": "Remove from project",
+  "team.unknownUser": "Unknown user",
 } as const;
 
 export type Catalog = Record<keyof typeof en, string>;

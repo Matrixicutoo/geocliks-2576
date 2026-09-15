@@ -24,6 +24,9 @@ import { PhotoDetail } from "@/components/photo-detail";
 import { usePhotoStats, usePhotos } from "@/queries/photos";
 import { useOrg } from "@/queries/orgs";
 import { useProjects } from "@/queries/projects";
+import { useAssignments, useAssignMember, useTeam } from "@/queries/team";
+import { AssignCrewSheet } from "@/components/assign-crew-sheet";
+import { canManageWorkspace } from "../../lib/roles";
 
 const apiUrl = (Constants.expoConfig?.extra?.apiUrl as string | undefined) ?? "";
 
@@ -86,10 +89,19 @@ export default function Teamspace() {
   const [pickerOpen, setPickerOpen] = useState(false);
   const [tagOpen, setTagOpen] = useState(false);
   const [openPhoto, setOpenPhoto] = useState<string | null>(null);
+  const [assignOpen, setAssignOpen] = useState(false);
+  // Field crews work inside projects; only manager and above change who is on one.
+  const canManage = canManageWorkspace(org.data?.role);
 
   const photos = usePhotos({ tag, projectId, limit: 60 });
   const stats = usePhotoStats();
   const projects = useProjects();
+
+  const team = useTeam();
+  const assignments = useAssignments(projectId);
+  const assign = useAssignMember();
+  const assignedIds = new Set(assignments.data?.map((row) => row.userId) ?? []);
+  const assignedCrew = (team.data ?? []).filter((row) => assignedIds.has(row.userId));
 
   const rows = useMemo(() => photos.data?.photos ?? [], [photos.data]);
   const activeProject = useMemo(
@@ -278,6 +290,76 @@ export default function Teamspace() {
         </Pressable>
       </Modal>
 
+      {/* Crew on the filtered project: one row each with its own remove, and the popup where
+          somebody gets added. Mirrors the website's project page. */}
+      {projectId ? (
+        <View style={[styles.crewCard, { borderColor: colors.border, backgroundColor: colors.card }]}>
+          <Text
+            style={[styles.crewHead, { color: colors.mutedForeground, fontFamily: Fonts?.mono }]}
+          >
+            {t("project.crewAccess").toUpperCase()}
+          </Text>
+          {team.isLoading || assignments.isLoading ? (
+            <ActivityIndicator color={colors.amber} size="small" style={{ marginTop: 8 }} />
+          ) : assignedCrew.length === 0 ? (
+            <Text style={[styles.crewEmpty, { color: colors.mutedForeground }]}>
+              {t("assign.none")}
+            </Text>
+          ) : (
+            assignedCrew.map((member) => (
+              <View key={member.id} style={[styles.crewRow, { borderColor: colors.border }]}>
+                <View style={{ flex: 1 }}>
+                  <Text numberOfLines={1} style={[styles.crewName, { color: colors.foreground }]}>
+                    {member.user?.name ?? member.user?.email ?? t("team.unknownUser")}
+                  </Text>
+                  <Text
+                    style={[
+                      styles.crewRole,
+                      { color: colors.mutedForeground, fontFamily: Fonts?.mono },
+                    ]}
+                  >
+                    {member.role.toUpperCase()}
+                  </Text>
+                </View>
+                {canManage ? (
+                  <Pressable
+                    accessibilityLabel={t("assign.remove")}
+                    disabled={assign.isPending}
+                    onPress={() =>
+                      assign.mutate({ projectId, userId: member.userId, assigned: false })
+                    }
+                    hitSlop={8}
+                    style={{ opacity: assign.isPending ? 0.4 : 1, paddingHorizontal: 4 }}
+                  >
+                    <Ionicons name="trash-outline" size={15} color={colors.mutedForeground} />
+                  </Pressable>
+                ) : null}
+              </View>
+            ))
+          )}
+          {canManage ? (
+            <Pressable
+              accessibilityLabel={t("assign.title")}
+              onPress={() => setAssignOpen(true)}
+              style={[styles.crewAdd, { borderColor: colors.border }]}
+            >
+              <Ionicons name="person-add-outline" size={13} color={colors.foreground} />
+              <Text style={[styles.crewAddText, { color: colors.foreground, fontFamily: Fonts?.mono }]}>
+                {t("assign.title").toUpperCase()}
+              </Text>
+            </Pressable>
+          ) : null}
+        </View>
+      ) : null}
+
+      {assignOpen && projectId && canManage ? (
+        <AssignCrewSheet
+          projectId={projectId}
+          projectName={activeProject?.name}
+          onClose={() => setAssignOpen(false)}
+        />
+      ) : null}
+
       {photos.isLoading ? (
         <View style={styles.loading}>
           <ActivityIndicator color={colors.amber} />
@@ -406,6 +488,36 @@ const styles = StyleSheet.create({
   },
   optionText: { flex: 1, fontSize: 14 },
   loading: { paddingTop: 40 },
+  crewCard: {
+    borderWidth: 1,
+    borderRadius: 12,
+    marginHorizontal: 16,
+    marginTop: 10,
+    paddingHorizontal: 12,
+    paddingVertical: 10,
+  },
+  crewHead: { fontSize: 9.5, letterSpacing: 1.4 },
+  crewEmpty: { fontSize: 11.5, lineHeight: 17, marginTop: 6 },
+  crewRow: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 8,
+    borderBottomWidth: 1,
+    paddingVertical: 7,
+  },
+  crewName: { fontSize: 12.5 },
+  crewRole: { fontSize: 9, letterSpacing: 1, marginTop: 1 },
+  crewAdd: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
+    gap: 6,
+    borderWidth: 1,
+    borderRadius: 8,
+    paddingVertical: 8,
+    marginTop: 9,
+  },
+  crewAddText: { fontSize: 9.5, letterSpacing: 1.2 },
   list: { padding: 16, gap: 12 },
   card: { borderWidth: 1 },
   photo: { width: "100%", height: 190, backgroundColor: "#1A212C" },
