@@ -241,6 +241,9 @@ export function PhotoDrawer({ photoId, onClose }: { photoId: string | null; onCl
                       },
                     ]}
                     showRoute={false}
+                    // 220px of map has no room for a layer panel; the single pin lands at zoom 17
+                    // anyway, which turns the street detail on by itself.
+                    layerControl={false}
                     className="mt-2 h-[220px]"
                   />
                   <p className="mono mt-1.5 text-[10px] uppercase tracking-widest text-fog">

@@ -6,7 +6,7 @@ import {
   useMap,
   useMapsLibrary,
 } from "@vis.gl/react-google-maps";
-import { MapPinOff } from "lucide-react";
+import { Layers, MapPinOff } from "lucide-react";
 import { formatStamp } from "./evidence-card";
 import { cn } from "../lib/utils";
 
@@ -37,6 +37,30 @@ export const MAP_STYLES: google.maps.MapTypeStyle[] = [
   { featureType: "water", elementType: "geometry", stylers: [{ color: "#CFE2F3" }] },
   { featureType: "water", elementType: "labels.text.fill", stylers: [{ color: "#7C93A8" }] },
 ];
+
+/**
+ * Zoomed-in variant of the same look. `MAP_STYLES` deliberately hides every POI and land-parcel
+ * label so a wide view of a job site is pins and streets and nothing else — but that is exactly
+ * what a user zooming in to check WHICH building a photo was taken at needs back: house numbers,
+ * business names, the parcel outline. Same palette, labels restored.
+ */
+export const MAP_STYLES_DETAILED: google.maps.MapTypeStyle[] = MAP_STYLES.filter(
+  (rule) =>
+    !(
+      (rule.featureType === "poi" || rule.featureType === "administrative.land_parcel") &&
+      rule.elementType === "labels"
+    ),
+).concat([
+  { featureType: "poi", elementType: "labels.text.fill", stylers: [{ color: "#6E7B8C" }] },
+  { featureType: "poi.business", elementType: "labels.icon", stylers: [{ saturation: -45 }] },
+  {
+    featureType: "administrative.land_parcel",
+    elementType: "labels.text.fill",
+    stylers: [{ color: "#8A95A5" }],
+  },
+]);
+
+export type MapType = "default" | "satellite";
 
 export type MapPin = {
   id: string;
@@ -180,6 +204,77 @@ const pinIcon = (active: boolean): google.maps.Symbol => ({
   anchor: { x: 0, y: 14 } as google.maps.Point,
 });
 
+/**
+ * Google's own "Map details" panel, reduced to the two choices that mean something for evidence:
+ * what the basemap is, and whether the fine labels are on. Collapsed to a single button so it
+ * costs no map area until someone wants it.
+ */
+function LayerControl({
+  mapType,
+  onMapType,
+  detail,
+  onDetail,
+}: {
+  mapType: MapType;
+  onMapType: (value: MapType) => void;
+  detail: boolean;
+  onDetail: (value: boolean) => void;
+}) {
+  const [open, setOpen] = useState(false);
+
+  return (
+    <div className="absolute right-2 top-2 z-10 flex flex-col items-end gap-2">
+      <button
+        type="button"
+        onClick={() => setOpen((v) => !v)}
+        aria-expanded={open}
+        aria-label="Map layers"
+        className="grid size-8 place-items-center rounded-[8px] border border-line bg-ink/85 text-fog backdrop-blur transition hover:text-amber"
+      >
+        <Layers className="size-4" />
+      </button>
+
+      {open ? (
+        <div className="w-[190px] rounded-[10px] border border-line bg-ink/95 p-3 backdrop-blur">
+          <p className="mono text-[9.5px] uppercase tracking-widest text-fog">Map type</p>
+          <div className="mt-2 grid grid-cols-2 gap-2">
+            {(["default", "satellite"] as const).map((value) => (
+              <button
+                key={value}
+                type="button"
+                onClick={() => onMapType(value)}
+                className={cn(
+                  "mono rounded-[8px] border px-2 py-1.5 text-[9.5px] uppercase tracking-widest transition",
+                  mapType === value
+                    ? "border-amber text-amber"
+                    : "border-line text-fog hover:text-paper",
+                )}
+              >
+                {value === "default" ? "Map" : "Satellite"}
+              </button>
+            ))}
+          </div>
+
+          <label className="mt-3 flex cursor-pointer items-center gap-2 border-t border-line pt-3">
+            <input
+              type="checkbox"
+              checked={detail}
+              onChange={(e) => onDetail(e.target.checked)}
+              className="size-3.5 accent-amber"
+            />
+            <span className="mono text-[9.5px] uppercase tracking-widest text-fog">
+              Street detail
+            </span>
+          </label>
+          <p className="mt-1.5 text-[10px] leading-snug text-fog/70">
+            Street numbers, business names and parcel lines.
+          </p>
+        </div>
+      ) : null}
+    </div>
+  );
+}
+
 function PinLayer({
   pins,
   onSelect,
@@ -206,20 +301,51 @@ function PinLayer({
   );
 }
 
+/**
+ * Turns the fine labels on by themselves once the view is close enough for them to be readable
+ * rather than noise, and off again on the way out — until someone touches the checkbox, after
+ * which their choice sticks and the zoom stops overriding it.
+ */
+function DetailOnZoom({
+  pinned,
+  onDetail,
+}: {
+  pinned: boolean;
+  onDetail: (value: boolean) => void;
+}) {
+  const map = useMap();
+
+  useEffect(() => {
+    if (!map || pinned) return;
+    const apply = () => onDetail((map.getZoom() ?? 15) >= 17);
+    apply();
+    const listener = map.addListener("zoom_changed", apply);
+    return () => listener.remove();
+  }, [map, pinned, onDetail]);
+
+  return null;
+}
+
 export function EvidenceMap({
   pins,
   onSelect,
   className,
   showRoute = true,
   zoomControl = true,
+  layerControl = true,
 }: {
   pins: MapPin[];
   onSelect?: (id: string) => void;
   className?: string;
   showRoute?: boolean;
   zoomControl?: boolean;
+  layerControl?: boolean;
 }) {
   const points = useMemo(() => located(pins), [pins]);
+  const [mapType, setMapType] = useState<MapType>("default");
+  const [detail, setDetail] = useState(false);
+  // Once the user picks for themselves, zoom stops deciding for them.
+  const [detailPinned, setDetailPinned] = useState(false);
 
   if (!API_KEY) {
     return (
@@ -266,7 +392,11 @@ export function EvidenceMap({
           className="size-full"
           defaultCenter={{ lat: points[0].lat, lng: points[0].lng }}
           defaultZoom={15}
-          styles={MAP_STYLES}
+          // Satellite imagery carries its own labels, so the JSON styling is dropped there —
+          // Google ignores most of it over imagery anyway. "hybrid" is satellite WITH roads and
+          // names, which is the only satellite worth having for locating a job site.
+          mapTypeId={mapType === "satellite" ? "hybrid" : "roadmap"}
+          styles={mapType === "satellite" ? undefined : detail ? MAP_STYLES_DETAILED : MAP_STYLES}
           disableDefaultUI
           zoomControl={zoomControl}
           gestureHandling="greedy"
@@ -275,8 +405,20 @@ export function EvidenceMap({
           <PinLayer pins={points} onSelect={onSelect} />
           <RouteLines pins={points} enabled={showRoute} />
           <FitBounds pins={points} />
+          <DetailOnZoom pinned={detailPinned} onDetail={setDetail} />
         </GoogleMap>
       </APIProvider>
+      {layerControl ? (
+        <LayerControl
+          mapType={mapType}
+          onMapType={setMapType}
+          detail={detail}
+          onDetail={(value) => {
+            setDetailPinned(true);
+            setDetail(value);
+          }}
+        />
+      ) : null}
       <p className="mono pointer-events-none absolute bottom-2 left-3 z-10 bg-ink/80 px-1.5 py-1 text-[9.5px] uppercase tracking-widest text-fog">
         {points.length} pins · last fix {formatStamp(latest.capturedAt ?? new Date()).slice(0, 16)}
       </p>
