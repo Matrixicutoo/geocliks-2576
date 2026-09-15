@@ -85,6 +85,16 @@ export const orgs = {
       .from(schema.reports)
       .where(eq(schema.reports.orgId, context.org.id));
     const acks = parseAcks(context.org.setupAcks);
+    /**
+     * Crew invited, not crew arrived. An invite sits pending until the person accepts it, which
+     * can be days — counting members only would leave the step open after the owner has
+     * demonstrably done their half of it. Revoked rows are excluded: withdrawing the only
+     * invite you sent puts the step back.
+     */
+    const [inviteCount] = await db
+      .select({ value: count() })
+      .from(schema.invites)
+      .where(and(eq(schema.invites.orgId, context.org.id), ne(schema.invites.status, "revoked")));
     /** Any capture that came off a phone — proof the mobile app is installed and signed in. */
     const [mobileCount] = await db
       .select({ value: count() })
@@ -160,7 +170,7 @@ export const orgs = {
         project: acks.has("project") || (projectCount?.value ?? 0) > 0,
         mobile: acks.has("mobile") || (mobileCount?.value ?? 0) > 0,
         capture: acks.has("capture") || (photoCount?.value ?? 0) > 0,
-        crew: acks.has("crew") || (memberCount?.value ?? 0) > 1,
+        crew: acks.has("crew") || (memberCount?.value ?? 0) > 1 || (inviteCount?.value ?? 0) > 0,
         share: acks.has("share") || (shareCount?.value ?? 0) + (reportCount?.value ?? 0) > 0,
       },
     };

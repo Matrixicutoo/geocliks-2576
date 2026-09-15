@@ -58,7 +58,7 @@ type Mode = (typeof MODES)[number];
  * purpose: the Team page renders it in a card and the sidebar's Invite entry renders it in a
  * dialog, so the two can never drift apart.
  */
-export function InviteForm({ onSent }: { onSent?: () => void }) {
+export function InviteForm({ onSent }: { onSent?: (mode: Mode) => void }) {
   const lang = useLocale();
   const invite = useInviteMember();
   const roles = useGrantableRoles();
@@ -104,7 +104,9 @@ export function InviteForm({ onSent }: { onSent?: () => void }) {
                   }),
             );
           }
-          onSent?.();
+          // The mode goes with it: an emailed invite is finished and its host can close, but an
+          // open invite's QR has only just appeared and closing over it would be the bug.
+          onSent?.(mode);
         } catch (err) {
           setError(err instanceof Error ? err.message : String(err));
         }
@@ -257,7 +259,16 @@ export function InviteDialog({ open, onClose }: { open: boolean; onClose: () => 
           </button>
         </div>
         <div className="p-4">
-          <InviteForm />
+          {/*
+            An emailed invite is done the moment it is sent, so the sheet gets out of the way
+            rather than sitting there asking to be dismissed. QR mode deliberately stays open:
+            the code it just drew is the whole point and has yet to be scanned.
+          */}
+          <InviteForm
+            onSent={(mode) => {
+              if (mode === "email") onClose();
+            }}
+          />
         </div>
       </div>
     </div>
