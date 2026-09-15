@@ -1141,4 +1141,13 @@ export const ptBR: Catalog = {
   "checklist.shareTitle": "Envie provas a um cliente",
   "checklist.shareBody": "Crie o primeiro aqui. Ele reúne as fotos de uma obra — cada uma selada com hora, lugar e endereço — em um único arquivo para enviar.",
 
+  "assign.title": "Atribuir equipe",
+  "assign.body": "Escolha quem trabalha nesta obra. As equipes de campo só veem os projetos atribuídos a elas.",
+  "assign.empty": "Ainda não há colegas — convide sua equipe na página Equipe.",
+  "assign.add": "Atribuir",
+  "assign.assigned": "Atribuído",
+  "assign.done": "Concluído",
+  "assign.crew": "Equipe",
+  "assign.none": "Nenhuma equipe atribuída ainda.",
+  "assign.remove": "Remover do projeto",
 };

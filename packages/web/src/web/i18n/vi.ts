@@ -1131,4 +1131,13 @@ export const vi: Catalog = {
   "checklist.shareTitle": "Gửi bằng chứng cho khách hàng",
   "checklist.shareBody": "Tạo bản đầu tiên ngay đây. Nó gom ảnh của công trình — mỗi ảnh đã niêm phong thời gian, vị trí và địa chỉ — vào một tệp để gửi.",
 
+  "assign.title": "Phân công tổ",
+  "assign.body": "Chọn ai làm việc tại công trình này. Tổ hiện trường chỉ thấy các dự án được phân công.",
+  "assign.empty": "Chưa có thành viên — hãy mời tổ của bạn ở trang Nhóm.",
+  "assign.add": "Phân công",
+  "assign.assigned": "Đã phân công",
+  "assign.done": "Xong",
+  "assign.crew": "Tổ",
+  "assign.none": "Chưa phân công ai.",
+  "assign.remove": "Xoá khỏi dự án",
 };

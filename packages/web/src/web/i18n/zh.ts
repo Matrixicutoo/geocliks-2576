@@ -1080,4 +1080,13 @@ export const zh: Catalog = {
   "checklist.shareTitle": "把凭证发给客户",
   "checklist.shareBody": "在这里生成第一份。它会把一个工地的照片（每张都封存了时间、位置和地址）汇成一个可发送的文件。",
 
+  "assign.title": "分配班组",
+  "assign.body": "选择谁负责这个项目。现场人员只能看到分配给他们的项目。",
+  "assign.empty": "还没有成员 — 请先在团队页面邀请班组。",
+  "assign.add": "分配",
+  "assign.assigned": "已分配",
+  "assign.done": "完成",
+  "assign.crew": "班组",
+  "assign.none": "尚未分配任何人。",
+  "assign.remove": "从项目中移除",
 };

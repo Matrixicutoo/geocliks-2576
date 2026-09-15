@@ -1154,4 +1154,13 @@ export const frCA: Catalog = {
   "checklist.shareTitle": "Envoyez une preuve à un client",
   "checklist.shareBody": "Créez le premier ici. Il réunit les photos d'un chantier — chacune scellée avec son heure, son lieu et son adresse — en un seul fichier à envoyer.",
 
+  "assign.title": "Assigner une équipe",
+  "assign.body": "Choisissez qui travaille sur ce chantier. Les équipes terrain ne voient que les projets qui leur sont assignés.",
+  "assign.empty": "Aucun coéquipier pour l'instant — invitez votre équipe depuis la page Équipe.",
+  "assign.add": "Assigner",
+  "assign.assigned": "Assigné",
+  "assign.done": "Terminé",
+  "assign.crew": "Équipe",
+  "assign.none": "Aucune équipe assignée.",
+  "assign.remove": "Retirer du projet",
 };

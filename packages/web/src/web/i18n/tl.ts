@@ -1151,4 +1151,13 @@ export const tl: Catalog = {
   "checklist.shareTitle": "Ipadala ang ebidensya sa kliyente",
   "checklist.shareBody": "Gawin ang una dito. Pinagsasama nito ang mga larawan ng trabaho — bawat isa selyado sa oras, lugar at address — sa isang file na maipapadala.",
 
+  "assign.title": "Mag-assign ng crew",
+  "assign.body": "Piliin kung sino ang magtatrabaho sa proyektong ito. Ang field crew ay nakakakita lang ng mga proyektong naka-assign sa kanila.",
+  "assign.empty": "Wala pang kasamahan — mag-invite ng crew sa Team page.",
+  "assign.add": "I-assign",
+  "assign.assigned": "Naka-assign",
+  "assign.done": "Tapos",
+  "assign.crew": "Crew",
+  "assign.none": "Wala pang naka-assign na crew.",
+  "assign.remove": "Alisin sa proyekto",
 };

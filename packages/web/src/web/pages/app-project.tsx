@@ -10,6 +10,7 @@ import {
   MapPin,
   Navigation,
   Trash2,
+  UserPlus,
   Users,
 } from "lucide-react";
 import { DashboardShell } from "../components/dashboard-shell";
@@ -18,11 +19,11 @@ import { EvidenceCard, EvidenceSkeleton, formatStamp } from "../components/evide
 import { EmptyState } from "../components/empty-state";
 import { PhotoDrawer } from "../components/photo-drawer";
 import { EvidenceMap, type MapPin as EvidenceMapPin } from "../components/evidence-map";
+import { AssignCrewDialog } from "../components/assign-crew-dialog";
 import { useDestroyProject, useProject, useRemoveProject } from "../queries/projects";
 import { usePhotos } from "../queries/photos";
 import { useTeam, useAssignments, useAssignMember } from "../queries/team";
 import { useOrg } from "../queries/orgs";
-import { cn } from "../lib/utils";
 import { type TKey, useT } from "../lib/i18n";
 import { canManageWorkspace } from "../lib/roles";
 
@@ -47,10 +48,12 @@ export default function ProjectPage() {
   const archive = useRemoveProject();
   const destroy = useDestroyProject();
   const [confirmDelete, setConfirmDelete] = useState(false);
+  const [assignOpen, setAssignOpen] = useState(false);
   // Field crews work inside projects; only manager and above archive or delete them.
   const canManage = canManageWorkspace(org.data?.role);
 
   const assigned = new Set(assignments.data?.map((a) => a.userId) ?? []);
+  const assignedRows = (team.data ?? []).filter((row) => assigned.has(row.userId));
 
   /** Coordinates route exactly; a typed address is the fallback Maps can still resolve. */
   const siteDestination =
@@ -246,40 +249,64 @@ export default function ProjectPage() {
             <p className="label flex items-center gap-1.5">
               <Users className="size-3.5" /> {t("project.crewAccess")}
             </p>
-            <div className="mt-3 space-y-1.5">
-              {team.isLoading ? (
+            {/* Assigned crew only, one row each with its own remove — the popup is where
+                somebody gets added. */}
+            <div className="mt-3 space-y-px">
+              {team.isLoading || assignments.isLoading ? (
                 <div className="h-20 animate-pulse bg-ink-3" />
+              ) : assignedRows.length === 0 ? (
+                <p className="text-[11.5px] leading-snug text-fog">{t("assign.none")}</p>
               ) : (
-                team.data?.map((row) => {
-                  const on = assigned.has(row.userId);
-                  return (
-                    <button
-                      key={row.id}
-                      type="button"
-                      disabled={assign.isPending}
-                      onClick={() =>
-                        assign.mutate({
-                          projectId: id,
-                          userId: row.userId,
-                          assigned: !on,
-                        })
-                      }
-                      className={cn(
-                        "rounded-[6px] flex w-full items-center justify-between border px-2.5 py-1.5 text-left text-[12px] transition-colors disabled:opacity-60",
-                        on
-                          ? "border-verified/40 bg-verified/10 text-chalk"
-                          : "border-line text-fog hover:text-chalk",
-                      )}
-                    >
-                      <span className="truncate">{row.user?.name ?? row.user?.email}</span>
-                      <span className="mono text-[9.5px] uppercase tracking-widest">
-                        {on ? t("project.on") : t("project.off")}
+                assignedRows.map((row) => (
+                  <div
+                    key={row.id}
+                    className="flex items-center gap-2 border-b border-line py-2 last:border-0"
+                  >
+                    {row.user?.image ? (
+                      <img
+                        src={row.user.image}
+                        alt=""
+                        className="size-7 shrink-0 rounded-[8px] border border-line object-cover"
+                      />
+                    ) : (
+                      <span className="mono grid size-7 shrink-0 place-items-center rounded-[8px] border border-line bg-ink text-[10px] text-amber">
+                        {(row.user?.name ?? row.user?.email ?? "?").slice(0, 2).toUpperCase()}
                       </span>
-                    </button>
-                  );
-                })
+                    )}
+                    <span className="min-w-0 flex-1">
+                      <span className="block truncate text-[12.5px] text-chalk">
+                        {row.user?.name ?? row.user?.email}
+                      </span>
+                      <span className="mono block truncate text-[9.5px] uppercase tracking-widest text-fog">
+                        {row.role}
+                      </span>
+                    </span>
+                    {canManage && (
+                      <button
+                        type="button"
+                        aria-label={t("assign.remove")}
+                        disabled={assign.isPending}
+                        onClick={() =>
+                          assign.mutate({ projectId: id, userId: row.userId, assigned: false })
+                        }
+                        className="rounded-[8px] shrink-0 border border-line p-1.5 text-fog transition-colors hover:border-alert/50 hover:text-alert disabled:opacity-40"
+                      >
+                        <Trash2 className="size-3" />
+                      </button>
+                    )}
+                  </div>
+                ))
               )}
             </div>
+            {canManage && (
+              <button
+                type="button"
+                onClick={() => setAssignOpen(true)}
+                className="mono mt-3 flex w-full items-center justify-center gap-1.5 rounded-[8px] border border-line px-2.5 py-2 text-[10.5px] uppercase tracking-widest text-chalk transition-colors hover:border-amber hover:text-amber"
+              >
+                <UserPlus className="size-3.5" /> {t("assign.add")}
+              </button>
+            )}
             <Link
               to="/app/share"
               className="mono mt-3 flex items-center gap-1.5 rounded-[8px] border border-line px-2.5 py-2 text-[10.5px] uppercase tracking-widest text-chalk hover:border-amber/60"
@@ -289,6 +316,14 @@ export default function ProjectPage() {
           </div>
         </aside>
       </div>
+
+      {assignOpen && canManage && (
+        <AssignCrewDialog
+          projectId={id}
+          projectName={project.data?.name}
+          onClose={() => setAssignOpen(false)}
+        />
+      )}
 
       <PhotoDrawer photoId={openPhoto} onClose={() => setOpenPhoto(null)} />
     </DashboardShell>

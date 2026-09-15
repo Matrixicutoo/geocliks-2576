@@ -1139,4 +1139,13 @@ export const pl: Catalog = {
   "checklist.shareTitle": "Wyślij dowód klientowi",
   "checklist.shareBody": "Zrób pierwszy tutaj. Zbiera zdjęcia z budowy — każde opieczętowane czasem, miejscem i adresem — w jeden plik do wysłania.",
 
+  "assign.title": "Przypisz ekipę",
+  "assign.body": "Wybierz, kto pracuje na tej budowie. Ekipy w terenie widzą tylko przypisane im projekty.",
+  "assign.empty": "Brak członków zespołu — zaproś ekipę na stronie Zespół.",
+  "assign.add": "Przypisz",
+  "assign.assigned": "Przypisany",
+  "assign.done": "Gotowe",
+  "assign.crew": "Ekipa",
+  "assign.none": "Nikt jeszcze nie przypisany.",
+  "assign.remove": "Usuń z projektu",
 };

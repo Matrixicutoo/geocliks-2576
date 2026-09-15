@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useState } from "react";
 import { Link } from "wouter";
-import { FolderKanban, Plus, Loader2, X, Trash2, Archive } from "lucide-react";
+import { FolderKanban, Plus, Loader2, X, Trash2, Archive, Users } from "lucide-react";
 import { DashboardShell } from "../components/dashboard-shell";
 import { EmptyState } from "../components/empty-state";
 import {
@@ -10,6 +10,8 @@ import {
   useRemoveProject,
 } from "../queries/projects";
 import { useOrg } from "../queries/orgs";
+import { useMemberProjects } from "../queries/team";
+import { AssignCrewDialog } from "../components/assign-crew-dialog";
 import { formatStamp } from "../components/evidence-card";
 import { cn } from "../lib/utils";
 import { type TKey, useT } from "../lib/i18n";
@@ -188,7 +190,10 @@ export default function ProjectsPage() {
   const canManage = canManageWorkspace(org.data?.role);
   const [open, setOpen] = useState(false);
   const [confirmId, setConfirmId] = useState<string | null>(null);
+  const [assignFor, setAssignFor] = useState<string | null>(null);
   const [rowError, setRowError] = useState<string | null>(null);
+  // One read of every assignment in the workspace feeds the crew count on each row.
+  const memberProjects = useMemberProjects();
   const destroy = useDestroyProject();
   const archive = useRemoveProject();
   /**
@@ -199,6 +204,8 @@ export default function ProjectsPage() {
   const all = projects.data ?? [];
   const visible = all.slice(0, shown);
   const showMore = useCallback(() => setShown((n) => n + PAGE), []);
+  const crewCount = (projectId: string) =>
+    (memberProjects.data ?? []).filter((row) => row.projectId === projectId).length;
   const sentinel = useInfiniteScroll({
     hasMore: shown < all.length,
     loading: projects.isLoading,
@@ -224,12 +231,9 @@ export default function ProjectsPage() {
       }
     >
       {projects.isLoading ? (
-        <div className="grid gap-3 grid-cols-[repeat(auto-fill,minmax(min(100%,380px),1fr))]">
+        <div className="space-y-px overflow-hidden rounded-[12px] border border-line bg-ink-2">
           {Array.from({ length: 6 }).map((_, i) => (
-            <div
-              key={i}
-              className="h-56 animate-pulse rounded-[12px] border border-line bg-ink-2"
-            />
+            <div key={i} className="h-16 animate-pulse bg-ink-3/50" />
           ))}
         </div>
       ) : (projects.data?.length ?? 0) === 0 ? (
@@ -239,136 +243,150 @@ export default function ProjectsPage() {
           hint={t("projects.empty.hint")}
         />
       ) : (
-        <div className="grid gap-3 grid-cols-[repeat(auto-fill,minmax(min(100%,380px),1fr))]">
-          {visible.map((project) => (
-            <div
-              key={project.id}
-              className="group overflow-hidden rounded-[12px] border border-line bg-ink-2 transition-colors hover:border-amber/50"
-            >
-              <Link to={`/app/projects/${project.id}`} className="block">
-                <div className="relative aspect-[16/9] overflow-hidden bg-ink-3">
-                  {project.coverUrl ? (
-                    <img
-                      src={project.coverUrl}
-                      alt=""
-                      loading="lazy"
-                      className="h-full w-full object-cover opacity-80 transition-transform duration-500 group-hover:scale-105"
-                    />
-                  ) : (
-                    <div className="grid h-full place-items-center blueprint-fine">
-                      <FolderKanban className="size-6 text-fog" />
-                    </div>
-                  )}
+        <div className="overflow-hidden rounded-[12px] border border-line bg-ink-2">
+          <ul className="divide-y divide-line">
+            {visible.map((project) => (
+              <li key={project.id} className="transition-colors hover:bg-ink-3/40">
+                <div className="flex flex-wrap items-center gap-3 px-4 py-3">
+                  <Link
+                    to={`/app/projects/${project.id}`}
+                    className="flex min-w-0 flex-1 items-center gap-3"
+                  >
+                    <span className="relative size-11 shrink-0 overflow-hidden rounded-[8px] border border-line bg-ink-3">
+                      {project.coverUrl ? (
+                        <img
+                          src={project.coverUrl}
+                          alt=""
+                          loading="lazy"
+                          className="h-full w-full object-cover opacity-85"
+                        />
+                      ) : (
+                        <span className="grid h-full place-items-center blueprint-fine">
+                          <FolderKanban className="size-4 text-fog" />
+                        </span>
+                      )}
+                    </span>
+                    <span className="min-w-0 flex-1">
+                      <span className="flex items-center gap-2">
+                        <span className="truncate text-[13.5px] font-semibold text-chalk">
+                          {project.name}
+                        </span>
+                        {project.code && (
+                          <span className="mono shrink-0 text-[10px] tracking-widest text-amber">
+                            {project.code}
+                          </span>
+                        )}
+                      </span>
+                      <span className="mono flex flex-wrap gap-x-3 text-[10.5px] text-fog">
+                        {project.client && <span className="truncate">{project.client}</span>}
+                        <span>{t("projects.photosN", { n: project.photoCount })}</span>
+                        {project.lastPhotoAt && (
+                          <span>
+                            {t("projects.last", {
+                              stamp: formatStamp(project.lastPhotoAt).slice(0, 16),
+                            })}
+                          </span>
+                        )}
+                      </span>
+                    </span>
+                  </Link>
+
                   <span
                     className={cn(
-                      "rounded-[6px] mono absolute right-2 top-2 border px-1.5 py-0.5 text-[9.5px] uppercase tracking-widest",
+                      "rounded-[6px] mono shrink-0 border px-1.5 py-0.5 text-[9.5px] uppercase tracking-widest",
                       STATUS_STYLE[project.status],
                     )}
                   >
                     {t(STATUS_LABEL[project.status] ?? "projects.status.active")}
                   </span>
-                </div>
-                <div className="space-y-2 p-4">
-                  <div className="flex items-start justify-between gap-2">
-                    <p className="font-display text-[15px] font-semibold leading-snug text-chalk">
-                      {project.name}
-                    </p>
-                    {project.code && (
-                      <span className="mono shrink-0 text-[10px] tracking-widest text-amber">
-                        {project.code}
-                      </span>
-                    )}
-                  </div>
-                  {project.client && <p className="text-[12.5px] text-fog">{project.client}</p>}
-                  <div className="mono flex flex-wrap gap-x-4 gap-y-1 border-t border-line pt-2 text-[10.5px] text-fog">
-                    <span>{t("projects.photosN", { n: project.photoCount })}</span>
-                    {project.lastPhotoAt && (
-                      <span>
-                        {t("projects.last", {
-                          stamp: formatStamp(project.lastPhotoAt).slice(0, 16),
-                        })}
-                      </span>
-                    )}
-                  </div>
-                </div>
-              </Link>
 
-              {canManage && (
-                <div className="flex items-center justify-end gap-2 border-t border-line px-4 py-2">
-                  {confirmId === project.id ? (
-                    <>
-                      <span className="mr-auto text-[11px] leading-tight text-alert">
-                        {t("project.deleteConfirm")}
-                      </span>
-                      <button
-                        type="button"
-                        onClick={() => setConfirmId(null)}
-                        className="mono rounded-[8px] border border-line px-2.5 py-1 text-[10px] uppercase tracking-widest text-fog hover:text-chalk"
-                      >
-                        {t("common.cancel")}
-                      </button>
-                      <button
-                        type="button"
-                        disabled={destroy.isPending}
-                        onClick={async () => {
-                          setRowError(null);
-                          try {
-                            await destroy.mutateAsync({ id: project.id });
-                            setConfirmId(null);
-                          } catch (err) {
-                            setRowError(err instanceof Error ? err.message : String(err));
-                          }
-                        }}
-                        className="rounded-[6px] mono flex items-center gap-1.5 bg-alert px-2.5 py-1 text-[10px] font-bold uppercase tracking-widest text-chalk disabled:opacity-60"
-                      >
-                        {destroy.isPending ? (
-                          <Loader2 className="size-3 animate-spin" />
-                        ) : (
-                          <Trash2 className="size-3" />
-                        )}
-                        {t("common.confirm")}
-                      </button>
-                    </>
-                  ) : (
-                    <>
-                      {project.status !== "archived" && (
-                        <button
-                          type="button"
-                          onClick={() => {
-                            setRowError(null);
-                            archive.mutate({ id: project.id });
-                          }}
-                          className="mono flex items-center gap-1.5 rounded-[8px] border border-line px-2.5 py-1 text-[10px] uppercase tracking-widest text-fog hover:border-amber/50 hover:text-chalk"
-                        >
-                          <Archive className="size-3" /> {t("project.archive")}
-                        </button>
-                      )}
-                      <button
-                        type="button"
-                        onClick={() => {
-                          setRowError(null);
-                          setConfirmId(project.id);
-                        }}
-                        className="mono flex items-center gap-1.5 rounded-[8px] border border-line px-2.5 py-1 text-[10px] uppercase tracking-widest text-fog hover:border-alert/60 hover:text-alert"
-                      >
-                        <Trash2 className="size-3" /> {t("project.delete")}
-                      </button>
-                    </>
+                  {/* Who works this job. Field crews only see the projects they are on, so this
+                      is the control that actually decides their view. */}
+                  {canManage && (
+                    <button
+                      type="button"
+                      onClick={() => setAssignFor(project.id)}
+                      className="mono inline-flex shrink-0 items-center gap-1.5 rounded-[8px] border border-line px-2.5 py-1.5 text-[10px] uppercase tracking-widest text-fog transition-colors hover:border-amber hover:text-amber"
+                    >
+                      <Users className="size-3.5" /> {t("assign.crew")}
+                      <span className="text-chalk">{crewCount(project.id)}</span>
+                    </button>
+                  )}
+
+                  {canManage && project.status !== "archived" && (
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setRowError(null);
+                        archive.mutate({ id: project.id });
+                      }}
+                      className="mono inline-flex shrink-0 items-center gap-1.5 rounded-[8px] border border-line px-2.5 py-1.5 text-[10px] uppercase tracking-widest text-fog transition-colors hover:border-amber/50 hover:text-chalk"
+                    >
+                      <Archive className="size-3" /> {t("project.archive")}
+                    </button>
+                  )}
+
+                  {canManage && (
+                    <button
+                      type="button"
+                      aria-label={t("project.delete")}
+                      onClick={() => {
+                        setRowError(null);
+                        setConfirmId(confirmId === project.id ? null : project.id);
+                      }}
+                      className="rounded-[12px] shrink-0 border border-line p-1.5 text-fog transition-colors hover:border-alert/50 hover:text-alert"
+                    >
+                      <Trash2 className="size-3.5" />
+                    </button>
                   )}
                 </div>
-              )}
-              {confirmId === project.id && (
-                <p className="border-t border-line px-4 py-2 text-[11px] leading-snug text-fog">
-                  {t("project.deleteHint")}
-                </p>
-              )}
-              {rowError && confirmId === project.id && (
-                <p className="rounded-[8px] border-t border-alert/40 bg-alert/10 px-4 py-2 text-[11.5px] text-alert">
-                  {rowError}
-                </p>
-              )}
-            </div>
-          ))}
+
+                {confirmId === project.id && canManage && (
+                  <div className="flex flex-wrap items-center gap-3 border-t border-alert/40 bg-alert/10 px-4 py-2.5">
+                    <div className="min-w-0 flex-1">
+                      <p className="mono text-[11px] uppercase tracking-widest text-alert">
+                        {t("project.deleteConfirm")}
+                      </p>
+                      <p className="mt-0.5 text-[11.5px] leading-snug text-fog">
+                        {t("project.deleteHint")}
+                      </p>
+                    </div>
+                    <button
+                      type="button"
+                      onClick={() => setConfirmId(null)}
+                      className="mono rounded-[8px] border border-line px-2.5 py-1.5 text-[10px] uppercase tracking-widest text-fog hover:text-chalk"
+                    >
+                      {t("common.cancel")}
+                    </button>
+                    <button
+                      type="button"
+                      disabled={destroy.isPending}
+                      onClick={async () => {
+                        setRowError(null);
+                        try {
+                          await destroy.mutateAsync({ id: project.id });
+                          setConfirmId(null);
+                        } catch (err) {
+                          setRowError(err instanceof Error ? err.message : String(err));
+                        }
+                      }}
+                      className="rounded-[6px] mono flex items-center gap-1.5 bg-alert px-2.5 py-1.5 text-[10px] font-bold uppercase tracking-widest text-chalk disabled:opacity-60"
+                    >
+                      {destroy.isPending ? (
+                        <Loader2 className="size-3 animate-spin" />
+                      ) : (
+                        <Trash2 className="size-3" />
+                      )}
+                      {t("common.confirm")}
+                    </button>
+                    {rowError && (
+                      <p className="mono w-full text-[11px] text-alert">{rowError}</p>
+                    )}
+                  </div>
+                )}
+              </li>
+            ))}
+          </ul>
         </div>
       )}
       {/* Scrolling near this reveals the next batch of projects. */}
@@ -380,6 +398,13 @@ export default function ProjectsPage() {
       )}
 
       {open && canManage && <NewProjectDialog onClose={() => setOpen(false)} />}
+      {assignFor && canManage && (
+        <AssignCrewDialog
+          projectId={assignFor}
+          projectName={all.find((p) => p.id === assignFor)?.name}
+          onClose={() => setAssignFor(null)}
+        />
+      )}
     </DashboardShell>
   );
 }

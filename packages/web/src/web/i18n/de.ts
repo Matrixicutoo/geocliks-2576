@@ -1150,4 +1150,13 @@ export const de: Catalog = {
   "checklist.shareTitle": "Senden Sie einem Kunden den Nachweis",
   "checklist.shareBody": "Erstellen Sie den ersten hier. Er bündelt die Fotos einer Baustelle — jedes mit Zeit, Ort und Adresse eingesiegelt — in einer Datei zum Versenden.",
 
+  "assign.title": "Team zuweisen",
+  "assign.body": "Wählen Sie, wer auf dieser Baustelle arbeitet. Feldteams sehen nur die ihnen zugewiesenen Projekte.",
+  "assign.empty": "Noch keine Teammitglieder — laden Sie Ihr Team auf der Team-Seite ein.",
+  "assign.add": "Zuweisen",
+  "assign.assigned": "Zugewiesen",
+  "assign.done": "Fertig",
+  "assign.crew": "Team",
+  "assign.none": "Noch kein Team zugewiesen.",
+  "assign.remove": "Aus Projekt entfernen",
 };

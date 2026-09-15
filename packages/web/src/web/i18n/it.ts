@@ -1148,4 +1148,13 @@ export const it: Catalog = {
   "checklist.shareTitle": "Invia le prove a un cliente",
   "checklist.shareBody": "Crea il primo qui. Raccoglie le foto di un cantiere — ognuna sigillata con ora, luogo e indirizzo — in un unico file da inviare.",
 
+  "assign.title": "Assegna squadra",
+  "assign.body": "Scegli chi lavora su questo cantiere. Le squadre in campo vedono solo i progetti a cui sono assegnate.",
+  "assign.empty": "Nessun collega ancora — invita la tua squadra dalla pagina Team.",
+  "assign.add": "Assegna",
+  "assign.assigned": "Assegnato",
+  "assign.done": "Fatto",
+  "assign.crew": "Squadra",
+  "assign.none": "Nessuna squadra assegnata.",
+  "assign.remove": "Rimuovi dal progetto",
 };

@@ -1147,4 +1147,13 @@ export const es: Catalog = {
   "checklist.shareTitle": "Envíe pruebas a un cliente",
   "checklist.shareBody": "Cree el primero aquí. Reúne las fotos de una obra —cada una sellada con su hora, lugar y dirección— en un solo archivo para enviar.",
 
+  "assign.title": "Asignar cuadrilla",
+  "assign.body": "Elige quién trabaja en esta obra. Las cuadrillas de campo solo ven los proyectos que se les asignan.",
+  "assign.empty": "Aún no hay compañeros — invita a tu cuadrilla desde la página Equipo.",
+  "assign.add": "Asignar",
+  "assign.assigned": "Asignado",
+  "assign.done": "Listo",
+  "assign.crew": "Cuadrilla",
+  "assign.none": "Nadie asignado todavía.",
+  "assign.remove": "Quitar del proyecto",
 };

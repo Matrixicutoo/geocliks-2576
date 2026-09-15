@@ -1148,6 +1148,15 @@ export const en = {
   "checklist.shareTitle": "Send proof to a client",
   "checklist.shareBody": "Build your first one here. It gathers a job's photos — each with its time, place and address sealed in — into one file you can send.",
 
+  "assign.title": "Assign crew",
+  "assign.body": "Pick who works this job. Field crews only see the projects they are assigned to.",
+  "assign.empty": "No teammates yet — invite your crew from the Team page first.",
+  "assign.add": "Assign crew",
+  "assign.assigned": "Assigned",
+  "assign.done": "Done",
+  "assign.crew": "Crew",
+  "assign.none": "No crew assigned yet.",
+  "assign.remove": "Remove from project",
 } as const;
 
 export type Catalog = Record<keyof typeof en, string>;
