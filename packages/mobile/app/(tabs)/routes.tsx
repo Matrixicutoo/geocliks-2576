@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { ActivityIndicator, Alert, FlatList, Pressable, StyleSheet, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useRouter } from "expo-router";
@@ -6,6 +7,7 @@ import { Text } from "@/components/app-text";
 import { useColors } from "@/hooks/use-colors";
 import { Fonts } from "@/constants/theme";
 import { LanguageMenu } from "@/components/language-menu";
+import { AssignDriverSheet } from "@/components/assign-driver-sheet";
 import { useT, type TKey } from "@/lib/i18n";
 import { useOrg } from "@/queries/orgs";
 import { useRemoveRoute, useRoutes } from "@/queries/routes";
@@ -33,6 +35,10 @@ export default function RoutesList() {
   // Dispatcher and above build runs. Field crew only run the ones handed to them, so they never
   // see this button - and the server refuses them anyway.
   const canCreate = canRunDeliveries(org.data?.role);
+  // Which run's driver popup is open. Same control the projects list has for crew, except a run
+  // holds one driver, so the popup is a single-select.
+  const [assignFor, setAssignFor] = useState<string | null>(null);
+  const assigning = rows.find((row) => row.id === assignFor);
 
   const confirmDelete = (id: string, name: string) => {
     Alert.alert(t("routes.deleteRoute"), name, [
@@ -130,9 +136,25 @@ export default function RoutesList() {
                 <Text
                   style={[styles.meta, styles.metaOnAmber, { color: colors.primaryForeground }]}
                 >
-                  {t("routes.progress", { n: item.doneCount, total: item.stopCount })}
+                  {t("routes.progress", { n: item.doneCount, total: item.stopCount })} ·{" "}
+                  {item.driverName ?? t("queue.unassigned")}
                 </Text>
               </View>
+              {/* Who is driving this run. A driver only sees the runs assigned to them, so this
+                  is the control that decides their whole day. */}
+              {canCreate && (
+                <Pressable
+                  onPress={() => setAssignFor(item.id)}
+                  accessibilityLabel={t("driver.title")}
+                  hitSlop={8}
+                  style={({ pressed }) => [
+                    styles.delete,
+                    { backgroundColor: pressed ? colors.background : "transparent" },
+                  ]}
+                >
+                  <Ionicons name="car-outline" size={17} color={colors.primaryForeground} />
+                </Pressable>
+              )}
               {canDelete && (
                 <Pressable
                   onPress={() => confirmDelete(item.id, item.name)}
@@ -151,6 +173,15 @@ export default function RoutesList() {
           )}
         />
       )}
+
+      {assignFor && canCreate ? (
+        <AssignDriverSheet
+          routeId={assignFor}
+          routeName={assigning?.name}
+          driverId={assigning?.driverId ?? null}
+          onClose={() => setAssignFor(null)}
+        />
+      ) : null}
     </SafeAreaView>
   );
 }

@@ -95,3 +95,13 @@ export function useAddressSuggestions(query: string) {
     }),
   );
 }
+
+/**
+ * Hands a run to a driver, or takes it back. One driver per run, so this replaces whoever held
+ * it; a null driver drops the run back to `draft` on the server. Dispatcher and above - the
+ * server enforces the same rule, so a refusal comes back as the error to show.
+ */
+export function useAssignRoute() {
+  const invalidate = useInvalidateRoutes();
+  return useMutation(orpc.routes.assign.mutationOptions({ onSuccess: invalidate }));
+}

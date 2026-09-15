@@ -10,15 +10,15 @@ import {
   Plus,
   Trash2,
   TriangleAlert,
+  Truck,
   Wand2,
 } from "lucide-react";
 import { DashboardShell } from "../components/dashboard-shell";
+import { AssignDriverDialog } from "../components/assign-driver-dialog";
 import { useOrg } from "../queries/orgs";
-import { useTeam } from "../queries/team";
 import {
   useAddLiveStop,
   useAddStops,
-  useAssignRoute,
   useGeocodeStops,
   useOptimizeRoute,
   useRemoveRoute,
@@ -60,7 +60,6 @@ export default function AppRoutePage() {
   const routeId = params?.id ?? "";
 
   const org = useOrg();
-  const team = useTeam();
   const detail = useRoute(routeId);
   const canManage = canRunDeliveries(org.data?.role);
 
@@ -68,7 +67,6 @@ export default function AppRoutePage() {
   const liveStop = useAddLiveStop();
   const geocode = useGeocodeStops();
   const optimize = useOptimizeRoute();
-  const assign = useAssignRoute();
   const reorder = useReorderStops();
   const removeStop = useRemoveStop();
   const removeRoute = useRemoveRoute();
@@ -76,6 +74,8 @@ export default function AppRoutePage() {
   // A late order typed straight into a run that is already moving.
   const [live, setLive] = useState({ address: "", name: "" });
   const [paste, setPaste] = useState("");
+  // The driver popup, opened from the run header.
+  const [assignOpen, setAssignOpen] = useState(false);
   // Parsed as the dispatcher types, so the preview below is always what will actually be created.
   const parsed = useMemo(() => parseStops(paste), [paste]);
   // Keys are minted here rather than in JSX: two identical addresses in one paste is normal.
@@ -208,28 +208,16 @@ export default function AppRoutePage() {
 
             {canManage && (
               <div className="ml-auto flex flex-wrap items-center gap-2">
-                <label className="sr-only" htmlFor="route-driver">
-                  {t("routes.assign")}
-                </label>
-                <select
-                  id="route-driver"
-                  aria-label={t("routes.assign")}
-                  value={route.driverId ?? ""}
-                  onChange={(e) =>
-                    run(async () => {
-                      await assign.mutateAsync({ routeId, driverId: e.target.value || null });
-                      return null;
-                    })
-                  }
-                  className="rounded-[8px] border border-line bg-ink px-3 py-2 text-[13px] text-chalk outline-none focus:border-amber"
+                {/* Same popup the runs list opens, so assigning a driver works the same in both
+                    places instead of being a dropdown here and a dialog there. */}
+                <button
+                  type="button"
+                  onClick={() => setAssignOpen(true)}
+                  className="inline-flex items-center gap-2 rounded-[8px] border border-line px-3 py-2 text-[13px] text-chalk hover:border-amber"
                 >
-                  <option value="">{t("queue.unassigned")}</option>
-                  {team.data?.map((member) => (
-                    <option key={member.userId} value={member.userId}>
-                      {member.user?.name ?? member.user?.email ?? t("queue.unassigned")}
-                    </option>
-                  ))}
-                </select>
+                  <Truck className="size-4" /> {t("routes.assign")}:{" "}
+                  <span className="text-fog">{route.driverName ?? t("queue.unassigned")}</span>
+                </button>
 
                 <button
                   type="button"
@@ -649,6 +637,15 @@ export default function AppRoutePage() {
             </div>
           )}
         </div>
+      )}
+
+      {assignOpen && canManage && route && (
+        <AssignDriverDialog
+          routeId={routeId}
+          routeName={route.name}
+          driverId={route.driverId ?? null}
+          onClose={() => setAssignOpen(false)}
+        />
       )}
     </DashboardShell>
   );

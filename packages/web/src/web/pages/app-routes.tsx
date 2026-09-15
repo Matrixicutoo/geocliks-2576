@@ -1,8 +1,9 @@
 import { useCallback, useEffect, useState } from "react";
 import { Link } from "wouter";
-import { Loader2, Plus, Route as RouteIcon, Trash2 } from "lucide-react";
+import { Loader2, Plus, Route as RouteIcon, Trash2, Truck } from "lucide-react";
 import { DashboardShell } from "../components/dashboard-shell";
 import { EmptyState } from "../components/empty-state";
+import { AssignDriverDialog } from "../components/assign-driver-dialog";
 import { useOrg } from "../queries/orgs";
 import { useRemoveRoute, useRoutes } from "../queries/routes";
 import { cn } from "../lib/utils";
@@ -68,6 +69,9 @@ export default function AppRoutes() {
   // Two-step confirm: the whole row is a link, so a single stray click must never delete a run.
   const [confirmId, setConfirmId] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
+  // Which run's driver popup is open. Same control the projects list has for crew, except a run
+  // holds one driver, so the popup is a single-select.
+  const [assignFor, setAssignFor] = useState<string | null>(null);
 
   const onDelete = async (id: string) => {
     setError(null);
@@ -152,6 +156,18 @@ export default function AppRoutes() {
                 </span>
               </Link>
 
+              {/* Who is driving this run. A driver only sees the runs assigned to them, so this
+                  is the control that decides their whole day. */}
+              {canManage && (
+                <button
+                  type="button"
+                  onClick={() => setAssignFor(route.id)}
+                  className="inline-flex shrink-0 items-center gap-1.5 rounded-[8px] bg-ink px-2.5 py-1.5 text-[11px] font-semibold uppercase tracking-wide text-fog transition-colors hover:text-amber-deep"
+                >
+                  <Truck className="size-3.5" /> {t("routes.assign")}
+                </button>
+              )}
+
               {canDelete &&
                 (confirmId === route.id ? (
                   <span className="flex shrink-0 items-center gap-1.5">
@@ -195,6 +211,15 @@ export default function AppRoutes() {
             </div>
           )}
         </div>
+      )}
+
+      {assignFor && canManage && (
+        <AssignDriverDialog
+          routeId={assignFor}
+          routeName={all.find((r) => r.id === assignFor)?.name}
+          driverId={all.find((r) => r.id === assignFor)?.driverId ?? null}
+          onClose={() => setAssignFor(null)}
+        />
       )}
     </DashboardShell>
   );

@@ -18,6 +18,7 @@ import { LanguageMenu } from "@/components/language-menu";
 import { useT, type TKey } from "@/lib/i18n";
 import { drainQueue, readQueue, type FailedReason } from "@/lib/queue";
 import { useAddLiveStop, useRoute, useSkipStop, useStartRoute } from "@/queries/routes";
+import { AssignDriverSheet } from "@/components/assign-driver-sheet";
 import { useOrg } from "@/queries/orgs";
 import { AddressInput } from "@/components/address-input";
 import { canRunDeliveries } from "../../lib/roles";
@@ -162,6 +163,10 @@ export default function RouteRun() {
     route.status !== "cancelled" &&
     (canRunDeliveries(org.data?.role) || route.status === "active");
 
+  // Dispatcher and above can hand this run to a driver, in the same popup the runs list opens.
+  const canAssign = canRunDeliveries(org.data?.role);
+  const [assignOpen, setAssignOpen] = useState(false);
+
   const submitLiveStop = async () => {
     if (!routeId || !liveAddress.trim()) return;
     setLiveError(null);
@@ -216,6 +221,26 @@ export default function RouteRun() {
         <ActivityIndicator style={{ marginTop: 40 }} color={colors.amber} />
       ) : (
         <ScrollView contentContainerStyle={styles.body} keyboardShouldPersistTaps="handled">
+          {canAssign && route ? (
+            <Pressable
+              onPress={() => setAssignOpen(true)}
+              style={[styles.driver, { borderColor: colors.border, backgroundColor: colors.card }]}
+            >
+              <Ionicons name="car-outline" size={17} color={colors.amber} />
+              <Text style={[styles.line, { color: colors.foreground, flex: 1 }]} numberOfLines={1}>
+                {route.driverName ?? t("queue.unassigned")}
+              </Text>
+              <Text
+                style={[
+                  styles.driverAction,
+                  { color: colors.mutedForeground, fontFamily: Fonts?.mono },
+                ]}
+              >
+                {t("driver.add").toUpperCase()}
+              </Text>
+            </Pressable>
+          ) : null}
+
           {stops.length === 0 ? (
             <View
               style={[styles.card, { borderColor: colors.border, backgroundColor: colors.card }]}
@@ -608,6 +633,15 @@ export default function RouteRun() {
             })}
         </ScrollView>
       )}
+
+      {assignOpen && canAssign && route && routeId ? (
+        <AssignDriverSheet
+          routeId={routeId}
+          routeName={route.name}
+          driverId={route.driverId ?? null}
+          onClose={() => setAssignOpen(false)}
+        />
+      ) : null}
     </SafeAreaView>
   );
 }
@@ -627,6 +661,16 @@ const styles = StyleSheet.create({
   count: { fontSize: 12 },
   body: { padding: 16, gap: 10 },
   card: { borderWidth: 1, borderRadius: 12, padding: 14, gap: 8 },
+  driver: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 10,
+    borderWidth: 1,
+    borderRadius: 12,
+    paddingHorizontal: 14,
+    paddingVertical: 11,
+  },
+  driverAction: { fontSize: 9.5, letterSpacing: 1.1 },
   stopOf: { fontSize: 10, letterSpacing: 1.2 },
   address: { fontSize: 19, fontWeight: "700", lineHeight: 25 },
   line: { fontSize: 14 },
