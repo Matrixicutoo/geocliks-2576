@@ -31,6 +31,13 @@ export const organizations = sqliteTable("organizations", {
   /** Workspace-wide default UI language (BCP-47). Members may override it on their own device. */
   locale: text("locale").notNull().default("en"),
   seats: integer("seats").notNull().default(1),
+  /**
+   * Get-started steps the workspace has explicitly ticked off, as a JSON array of step keys.
+   * Only for the steps nothing in the data can prove — "the app is on my phone" is true long
+   * before the first photo arrives from it, so closing that step's popup is the confirmation.
+   * The steps that *are* provable stay derived and ignore this column entirely.
+   */
+  setupAcks: text("setup_acks"),
   ownerId: text("owner_id").notNull(),
   createdAt: integer("created_at", { mode: "timestamp_ms" }).notNull().$defaultFn(now),
 });

@@ -1123,4 +1123,22 @@ export const pl: Catalog = {
   "checklist.share": "Wyślij dowód klientowi",
   "checklist.shareSub": "Raport lub link, który otworzy bez zakładania konta.",
 
+  // The popups behind each checklist step
+  "checklist.close": "Zamknij",
+  "checklist.mobileTitle": "Zainstaluj aplikację na telefonie",
+  "checklist.mobileBody": "Zeskanuj to kamerą telefonu. Otworzy stronę instalacji dla iPhone'a i Androida — zaloguj się tym samym e-mailem, a twój Teamspace już tam będzie.",
+  "checklist.mobileScan": "Zeskanuj telefonem",
+  "checklist.mobileCopied": "Link skopiowany",
+  "checklist.mobileDone": "Gotowe — zainstalowana",
+  "checklist.captureTitle": "Zrób pierwsze opieczętowane zdjęcie",
+  "checklist.captureBody": "Na telefonie, z otwartą aplikacją:",
+  "checklist.capture1": "Wybierz budowę, do której należy praca.",
+  "checklist.capture2": "Zrób zdjęcie. Czas, współrzędne i adres zostają w nim opieczętowane.",
+  "checklist.capture3": "Trafia tutaj w kilka sekund — albo gdy wróci zasięg.",
+  "checklist.captureDone": "Gotowe — zrobiłem jedno",
+  "checklist.shareTitle": "Wyślij dowód klientowi",
+  "checklist.shareBody": "Dwie drogi: raport zbierający zdjęcia z budowy w jeden PDF albo link, który klient otworzy w przeglądarce, bez konta i bez aplikacji.",
+  "checklist.shareOpen": "Otwórz raporty",
+  "checklist.shareDone": "Zrobię to później",
+
 };

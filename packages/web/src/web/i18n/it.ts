@@ -1132,4 +1132,22 @@ export const it: Catalog = {
   "checklist.share": "Invia le prove a un cliente",
   "checklist.shareSub": "Un rapporto o un link che apre senza creare un account.",
 
+  // The popups behind each checklist step
+  "checklist.close": "Chiudi",
+  "checklist.mobileTitle": "Installa l'app sul telefono",
+  "checklist.mobileBody": "Inquadra questo con la fotocamera del telefono. Apre la pagina di installazione per iPhone e Android — accedi con la stessa email e il tuo spazio è già lì.",
+  "checklist.mobileScan": "Inquadra col telefono",
+  "checklist.mobileCopied": "Link copiato",
+  "checklist.mobileDone": "Fatto — è installata",
+  "checklist.captureTitle": "Scatta la tua prima foto sigillata",
+  "checklist.captureBody": "Sul telefono, con l'app aperta:",
+  "checklist.capture1": "Scegli il cantiere a cui appartiene il lavoro.",
+  "checklist.capture2": "Scatta. Ora, coordinate e indirizzo vengono sigillati nello scatto.",
+  "checklist.capture3": "Arriva qui in pochi secondi — o appena torna il segnale.",
+  "checklist.captureDone": "Fatto — ne ho scattata una",
+  "checklist.shareTitle": "Invia le prove a un cliente",
+  "checklist.shareBody": "Due vie d'uscita: un rapporto che raccoglie le foto di un cantiere in un PDF, o un link che il cliente apre nel browser, senza account e senza app.",
+  "checklist.shareOpen": "Apri i rapporti",
+  "checklist.shareDone": "Lo farò dopo",
+
 };

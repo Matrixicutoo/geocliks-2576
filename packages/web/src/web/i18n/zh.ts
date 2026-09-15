@@ -1064,4 +1064,22 @@ export const zh: Catalog = {
   "checklist.share": "把凭证发给客户",
   "checklist.shareSub": "一份报告或一个链接，无需账号即可打开。",
 
+  // The popups behind each checklist step
+  "checklist.close": "关闭",
+  "checklist.mobileTitle": "在手机上安装应用",
+  "checklist.mobileBody": "用手机相机扫描此码，会打开 iPhone 和 Android 的安装页面 —— 用同一个邮箱登录，你的团队空间已经在那里。",
+  "checklist.mobileScan": "用手机扫描",
+  "checklist.mobileCopied": "链接已复制",
+  "checklist.mobileDone": "完成 —— 已安装",
+  "checklist.captureTitle": "拍下第一张封存照片",
+  "checklist.captureBody": "在手机上打开应用后：",
+  "checklist.capture1": "选择这项工作所属的工地。",
+  "checklist.capture2": "按下快门。时间、坐标和地址会在那一刻被封进照片。",
+  "checklist.capture3": "几秒内就会出现在这里 —— 或在恢复信号后立即上传。",
+  "checklist.captureDone": "完成 —— 我拍了一张",
+  "checklist.shareTitle": "把凭证发给客户",
+  "checklist.shareBody": "两种方式：把一个工地的照片汇成一份 PDF 报告，或一个客户在浏览器里直接打开的分享链接，无需账号、无需应用。",
+  "checklist.shareOpen": "打开报告",
+  "checklist.shareDone": "以后再做",
+
 };

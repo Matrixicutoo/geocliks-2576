@@ -88,3 +88,21 @@ export function useRemoveTemplate() {
     }),
   );
 }
+
+/**
+ * Tick off one get-started step. Fired when a step's popup is closed, so the checklist behind it
+ * has to be re-read — the org query carries the whole checklist state.
+ */
+export function useAckSetup() {
+  const queryClient = useQueryClient();
+  return useMutation(
+    orpc.orgs.ackSetup.mutationOptions({
+      onSuccess: () => queryClient.invalidateQueries({ queryKey: orpc.orgs.key() }),
+    }),
+  );
+}
+
+/** The QR for this deployment's /get-app, rendered server-side. */
+export function useAppQr() {
+  return useQuery(orpc.orgs.appQr.queryOptions({ staleTime: Number.POSITIVE_INFINITY }));
+}

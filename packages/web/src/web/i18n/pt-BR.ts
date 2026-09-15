@@ -1125,4 +1125,22 @@ export const ptBR: Catalog = {
   "checklist.share": "Envie provas a um cliente",
   "checklist.shareSub": "Um relatório ou link que ele abre sem criar conta.",
 
+  // The popups behind each checklist step
+  "checklist.close": "Fechar",
+  "checklist.mobileTitle": "Instale o aplicativo no seu celular",
+  "checklist.mobileBody": "Escaneie isto com a câmera do celular. Abre a página de instalação para iPhone e Android — entre com o mesmo e-mail e seu espaço já estará lá.",
+  "checklist.mobileScan": "Escaneie com o celular",
+  "checklist.mobileCopied": "Link copiado",
+  "checklist.mobileDone": "Pronto — está instalado",
+  "checklist.captureTitle": "Tire sua primeira foto selada",
+  "checklist.captureBody": "No celular, com o aplicativo aberto:",
+  "checklist.capture1": "Escolha a obra a que o trabalho pertence.",
+  "checklist.capture2": "Fotografe. A hora, as coordenadas e o endereço são selados na hora.",
+  "checklist.capture3": "Chega aqui em segundos — ou assim que você tiver sinal de novo.",
+  "checklist.captureDone": "Pronto — já tirei uma",
+  "checklist.shareTitle": "Envie provas a um cliente",
+  "checklist.shareBody": "Duas saídas: um relatório que reúne as fotos de uma obra em um PDF, ou um link que o cliente abre no navegador, sem conta e sem aplicativo.",
+  "checklist.shareOpen": "Abrir relatórios",
+  "checklist.shareDone": "Faço isso depois",
+
 };

@@ -46,7 +46,7 @@ const STATUS_STYLE: Record<string, string> = {
   archived: "border-line bg-ink-3 text-fog",
 };
 
-function NewProjectDialog({ onClose }: { onClose: () => void }) {
+export function NewProjectDialog({ onClose }: { onClose: () => void }) {
   const create = useCreateProject();
   const t = useT();
   const [form, setForm] = useState({

@@ -1,4 +1,5 @@
 import { z } from "zod";
+import QRCode from "qrcode";
 import { and, asc, count, eq, gte, inArray, ne } from "drizzle-orm";
 import { ORPCError } from "@orpc/server";
 import { orgProc, requireRole } from "../middleware/auth";
@@ -26,6 +27,26 @@ const startOfMonth = () => {
   const d = new Date();
   return new Date(d.getFullYear(), d.getMonth(), 1);
 };
+
+/** The get-started steps a workspace can tick off by hand. */
+const SETUP_STEPS = ["project", "mobile", "capture", "crew", "share"] as const;
+type SetupStep = (typeof SETUP_STEPS)[number];
+
+/** `organizations.setupAcks` is a JSON array in one text column; never trust its shape. */
+function parseAcks(raw: string | null): Set<SetupStep> {
+  if (!raw) return new Set();
+  try {
+    const parsed: unknown = JSON.parse(raw);
+    if (!Array.isArray(parsed)) return new Set();
+    return new Set(
+      parsed.filter((v): v is SetupStep =>
+        SETUP_STEPS.includes(v as SetupStep),
+      ),
+    );
+  } catch {
+    return new Set();
+  }
+}
 
 export const orgs = {
   /** Workspace bootstrap for every client: org, role, plan limits and usage counters. */
@@ -63,6 +84,7 @@ export const orgs = {
       .select({ value: count() })
       .from(schema.reports)
       .where(eq(schema.reports.orgId, context.org.id));
+    const acks = parseAcks(context.org.setupAcks);
     /** Any capture that came off a phone — proof the mobile app is installed and signed in. */
     const [mobileCount] = await db
       .select({ value: count() })
@@ -128,15 +150,57 @@ export const orgs = {
       /**
        * The five things that have to happen before the product is doing its job. The client
        * draws them as a checklist and hides the whole card once they are all true.
+       *
+       * Each one is true when the work exists OR when the workspace ticked it off by hand. The
+       * data is the better witness and wins on its own, but it cannot see everything: the app
+       * being installed shows up only when a photo finally arrives from a phone, so a step the
+       * owner has demonstrably just done would otherwise sit there unticked for a day.
        */
       setup: {
-        project: (projectCount?.value ?? 0) > 0,
-        mobile: (mobileCount?.value ?? 0) > 0,
-        capture: (photoCount?.value ?? 0) > 0,
-        crew: (memberCount?.value ?? 0) > 1,
-        share: (shareCount?.value ?? 0) + (reportCount?.value ?? 0) > 0,
+        project: acks.has("project") || (projectCount?.value ?? 0) > 0,
+        mobile: acks.has("mobile") || (mobileCount?.value ?? 0) > 0,
+        capture: acks.has("capture") || (photoCount?.value ?? 0) > 0,
+        crew: acks.has("crew") || (memberCount?.value ?? 0) > 1,
+        share: acks.has("share") || (shareCount?.value ?? 0) + (reportCount?.value ?? 0) > 0,
       },
     };
+  }),
+
+  /**
+   * Tick off a get-started step by hand — what closing a step's popup on the Teamspace home
+   * does. Additive and idempotent: a step already ticked, or already true from the data, is a
+   * no-op, and nothing here can untick anything.
+   *
+   * Deliberately open to every role. Any member can be the one who installs the app or takes
+   * the first photo, and making the owner re-confirm their crew's work would be theatre.
+   */
+  ackSetup: orgProc
+    .input(z.object({ step: z.enum(SETUP_STEPS) }))
+    .handler(async ({ input, context }) => {
+      const acks = parseAcks(context.org.setupAcks);
+      if (acks.has(input.step)) return { ok: true };
+      acks.add(input.step);
+      await db
+        .update(schema.organizations)
+        .set({ setupAcks: JSON.stringify([...acks]) })
+        .where(eq(schema.organizations.id, context.org.id));
+      return { ok: true };
+    }),
+
+  /**
+   * The QR that puts the app on a phone: this deployment's own /get-app, encoded server-side so
+   * the browser never loads a QR library for one 160px image.
+   */
+  appQr: orgProc.handler(async () => {
+    const base = (process.env.WEBSITE_URL ?? "http://localhost:4200").replace(/\/+$/, "");
+    const url = `${base}/get-app`;
+    const dataUrl = await QRCode.toDataURL(url, {
+      width: 512,
+      margin: 1,
+      errorCorrectionLevel: "M",
+      color: { dark: "#0d2137ff", light: "#ffffffff" },
+    });
+    return { url, dataUrl };
   }),
 
   /**

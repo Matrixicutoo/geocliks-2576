@@ -1115,4 +1115,22 @@ export const vi: Catalog = {
   "checklist.share": "Gửi bằng chứng cho khách hàng",
   "checklist.shareSub": "Một báo cáo hoặc liên kết họ mở được mà không cần tài khoản.",
 
+  // The popups behind each checklist step
+  "checklist.close": "Đóng",
+  "checklist.mobileTitle": "Cài ứng dụng trên điện thoại",
+  "checklist.mobileBody": "Quét mã này bằng camera điện thoại. Nó mở trang cài đặt cho iPhone và Android — đăng nhập bằng cùng email và không gian của bạn đã có ở đó.",
+  "checklist.mobileScan": "Quét bằng điện thoại",
+  "checklist.mobileCopied": "Đã sao chép liên kết",
+  "checklist.mobileDone": "Xong — đã cài",
+  "checklist.captureTitle": "Chụp bức ảnh niêm phong đầu tiên",
+  "checklist.captureBody": "Trên điện thoại, khi đã mở ứng dụng:",
+  "checklist.capture1": "Chọn công trình mà công việc thuộc về.",
+  "checklist.capture2": "Bấm chụp. Thời gian, toạ độ và địa chỉ được niêm phong ngay lúc đó.",
+  "checklist.capture3": "Ảnh về đây trong vài giây — hoặc ngay khi có lại tín hiệu.",
+  "checklist.captureDone": "Xong — tôi đã chụp một bức",
+  "checklist.shareTitle": "Gửi bằng chứng cho khách hàng",
+  "checklist.shareBody": "Hai cách: một báo cáo gom ảnh của công trình vào một PDF, hoặc một liên kết khách mở ngay trên trình duyệt, không cần tài khoản hay ứng dụng.",
+  "checklist.shareOpen": "Mở báo cáo",
+  "checklist.shareDone": "Để sau",
+
 };

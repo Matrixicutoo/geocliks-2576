@@ -1132,6 +1132,24 @@ export const en = {
   "checklist.share": "Send proof to a client",
   "checklist.shareSub": "A report or a share link they can open without an account.",
 
+  // The popups behind each checklist step
+  "checklist.close": "Close",
+  "checklist.mobileTitle": "Install the app on your phone",
+  "checklist.mobileBody": "Scan this with your phone camera. It opens the install page for iPhone and Android — sign in with the same email and your workspace is already there.",
+  "checklist.mobileScan": "Scan with your phone",
+  "checklist.mobileCopied": "Link copied",
+  "checklist.mobileDone": "Done — it's installed",
+  "checklist.captureTitle": "Take your first sealed photo",
+  "checklist.captureBody": "On the phone, with the app open:",
+  "checklist.capture1": "Pick the project the work belongs to.",
+  "checklist.capture2": "Shoot. The time, the coordinates and the address are sealed in as you do.",
+  "checklist.capture3": "It lands here within seconds — or as soon as you have signal again.",
+  "checklist.captureDone": "Done — I took one",
+  "checklist.shareTitle": "Send proof to a client",
+  "checklist.shareBody": "Two ways out: a report that gathers a job's photos into one PDF, or a share link the client opens in their browser with no account and no app.",
+  "checklist.shareOpen": "Open reports",
+  "checklist.shareDone": "I'll do this later",
+
 } as const;
 
 export type Catalog = Record<keyof typeof en, string>;

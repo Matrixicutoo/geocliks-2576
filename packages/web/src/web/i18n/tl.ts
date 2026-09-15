@@ -1135,4 +1135,22 @@ export const tl: Catalog = {
   "checklist.share": "Ipadala ang ebidensya sa kliyente",
   "checklist.shareSub": "Report o link na mabubuksan nila nang walang account.",
 
+  // The popups behind each checklist step
+  "checklist.close": "Isara",
+  "checklist.mobileTitle": "I-install ang app sa telepono",
+  "checklist.mobileBody": "I-scan ito sa camera ng telepono. Bubuksan nito ang install page para sa iPhone at Android — mag-sign in sa parehong email at nandiyan na ang Teamspace mo.",
+  "checklist.mobileScan": "I-scan sa telepono",
+  "checklist.mobileCopied": "Nakopya ang link",
+  "checklist.mobileDone": "Ayos — naka-install na",
+  "checklist.captureTitle": "Kunan ang unang selyadong larawan",
+  "checklist.captureBody": "Sa telepono, bukas ang app:",
+  "checklist.capture1": "Piliin ang trabahong pinagmulan nito.",
+  "checklist.capture2": "Kunan. Nakaselyo na roon ang oras, coordinates at address.",
+  "checklist.capture3": "Darating ito dito sa loob ng segundo — o pagbalik ng signal.",
+  "checklist.captureDone": "Ayos — nakakuha na ako",
+  "checklist.shareTitle": "Ipadala ang ebidensya sa kliyente",
+  "checklist.shareBody": "Dalawang paraan: report na pinagsasama ang mga larawan ng trabaho sa isang PDF, o share link na bubuksan ng kliyente sa browser nang walang account at walang app.",
+  "checklist.shareOpen": "Buksan ang reports",
+  "checklist.shareDone": "Mamaya ko na gagawin",
+
 };

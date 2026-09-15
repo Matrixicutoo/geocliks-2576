@@ -1094,4 +1094,22 @@ export const ar: Catalog = {
   "checklist.share": "أرسل الإثبات إلى العميل",
   "checklist.shareSub": "تقرير أو رابط يفتحه دون إنشاء حساب.",
 
+  // The popups behind each checklist step
+  "checklist.close": "إغلاق",
+  "checklist.mobileTitle": "ثبّت التطبيق على هاتفك",
+  "checklist.mobileBody": "امسح هذا بكاميرا هاتفك. يفتح صفحة التثبيت لـ iPhone و Android — سجّل الدخول بالبريد نفسه وستجد مساحة فريقك جاهزة.",
+  "checklist.mobileScan": "امسح بهاتفك",
+  "checklist.mobileCopied": "تم نسخ الرابط",
+  "checklist.mobileDone": "تم — التطبيق مثبّت",
+  "checklist.captureTitle": "التقط أول صورة مختومة",
+  "checklist.captureBody": "على الهاتف، والتطبيق مفتوح:",
+  "checklist.capture1": "اختر الموقع الذي ينتمي إليه العمل.",
+  "checklist.capture2": "التقط الصورة. يُختم فيها الوقت والإحداثيات والعنوان لحظة التصوير.",
+  "checklist.capture3": "تصل إلى هنا في ثوانٍ — أو بمجرد عودة الشبكة.",
+  "checklist.captureDone": "تم — التقطت واحدة",
+  "checklist.shareTitle": "أرسل الإثبات إلى العميل",
+  "checklist.shareBody": "طريقتان: تقرير يجمع صور الموقع في ملف PDF واحد، أو رابط يفتحه العميل في متصفحه بلا حساب وبلا تطبيق.",
+  "checklist.shareOpen": "فتح التقارير",
+  "checklist.shareDone": "سأفعل ذلك لاحقًا",
+
 };

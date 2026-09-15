@@ -1134,4 +1134,22 @@ export const de: Catalog = {
   "checklist.share": "Senden Sie einem Kunden den Nachweis",
   "checklist.shareSub": "Ein Bericht oder ein Link, den er ohne Konto öffnet.",
 
+  // The popups behind each checklist step
+  "checklist.close": "Schließen",
+  "checklist.mobileTitle": "Installieren Sie die App auf Ihrem Telefon",
+  "checklist.mobileBody": "Scannen Sie das mit der Handykamera. Es öffnet die Installationsseite für iPhone und Android — melden Sie sich mit derselben E-Mail an, und Ihr Teamspace ist schon da.",
+  "checklist.mobileScan": "Mit dem Telefon scannen",
+  "checklist.mobileCopied": "Link kopiert",
+  "checklist.mobileDone": "Fertig — installiert",
+  "checklist.captureTitle": "Machen Sie Ihr erstes gesiegeltes Foto",
+  "checklist.captureBody": "Am Telefon, bei geöffneter App:",
+  "checklist.capture1": "Wählen Sie die Baustelle, zu der die Arbeit gehört.",
+  "checklist.capture2": "Auslösen. Zeit, Koordinaten und Adresse werden dabei eingesiegelt.",
+  "checklist.capture3": "Es landet in Sekunden hier — oder sobald Sie wieder Empfang haben.",
+  "checklist.captureDone": "Fertig — eines gemacht",
+  "checklist.shareTitle": "Senden Sie einem Kunden den Nachweis",
+  "checklist.shareBody": "Zwei Wege nach außen: ein Bericht, der die Fotos einer Baustelle in einem PDF bündelt, oder ein Link, den der Kunde im Browser öffnet — ohne Konto, ohne App.",
+  "checklist.shareOpen": "Berichte öffnen",
+  "checklist.shareDone": "Mache ich später",
+
 };

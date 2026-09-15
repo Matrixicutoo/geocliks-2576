@@ -1138,4 +1138,22 @@ export const frCA: Catalog = {
   "checklist.share": "Envoyez une preuve à un client",
   "checklist.shareSub": "Un rapport ou un lien qu'il ouvre sans créer de compte.",
 
+  // The popups behind each checklist step
+  "checklist.close": "Fermer",
+  "checklist.mobileTitle": "Installez l'application sur votre téléphone",
+  "checklist.mobileBody": "Scannez ceci avec l'appareil photo de votre téléphone. La page d'installation s'ouvre pour iPhone et Android — connectez-vous avec le même courriel et votre Teamspace est déjà là.",
+  "checklist.mobileScan": "Scannez avec votre téléphone",
+  "checklist.mobileCopied": "Lien copié",
+  "checklist.mobileDone": "C'est fait — installée",
+  "checklist.captureTitle": "Prenez votre première photo scellée",
+  "checklist.captureBody": "Sur le téléphone, l'application ouverte :",
+  "checklist.capture1": "Choisissez le chantier auquel le travail appartient.",
+  "checklist.capture2": "Photographiez. L'heure, les coordonnées et l'adresse sont scellées au passage.",
+  "checklist.capture3": "La photo arrive ici en quelques secondes — ou dès que vous avez du signal.",
+  "checklist.captureDone": "C'est fait — j'en ai pris une",
+  "checklist.shareTitle": "Envoyez une preuve à un client",
+  "checklist.shareBody": "Deux sorties : un rapport qui réunit les photos d'un chantier en un seul PDF, ou un lien que le client ouvre dans son navigateur, sans compte ni application.",
+  "checklist.shareOpen": "Ouvrir les rapports",
+  "checklist.shareDone": "Je le ferai plus tard",
+
 };
