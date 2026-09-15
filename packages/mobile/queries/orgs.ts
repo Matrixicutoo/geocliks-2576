@@ -26,6 +26,19 @@ export function useUpdateOrg() {
   );
 }
 
+/**
+ * Tick off one get-started step. Fired when a step's sheet is closed, so the checklist behind it
+ * has to be re-read — the org query carries the whole checklist state.
+ */
+export function useAckSetup() {
+  const queryClient = useQueryClient();
+  return useMutation(
+    orpc.orgs.ackSetup.mutationOptions({
+      onSuccess: () => queryClient.invalidateQueries({ queryKey: orpc.orgs.key() }),
+    }),
+  );
+}
+
 /** Workspace-wide appearance defaults (theme, locale). Admins only. */
 export function useSetAppearance() {
   const queryClient = useQueryClient();

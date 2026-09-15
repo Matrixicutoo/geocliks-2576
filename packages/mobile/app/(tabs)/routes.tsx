@@ -8,6 +8,7 @@ import { useColors } from "@/hooks/use-colors";
 import { Fonts } from "@/constants/theme";
 import { LanguageMenu } from "@/components/language-menu";
 import { AssignDriverSheet } from "@/components/assign-driver-sheet";
+import { DeliveryChecklist } from "@/components/delivery-checklist";
 import { useT, type TKey } from "@/lib/i18n";
 import { useOrg } from "@/queries/orgs";
 import { useRemoveRoute, useRoutes } from "@/queries/routes";
@@ -99,6 +100,11 @@ export default function RoutesList() {
           data={rows}
           keyExtractor={(item) => item.id}
           contentContainerStyle={styles.list}
+          // First-run guide for a brand new delivery workspace, riding above the list the way
+          // it sits above the table on the website. It hides itself once every step is done, so
+          // established workspaces never see it. Field crew never see it either - the steps it
+          // walks through (build a run, invite drivers, assign one) are all dispatcher work.
+          ListHeaderComponent={canCreate ? <DeliveryChecklist /> : null}
           ListEmptyComponent={
             <View style={[styles.empty, { borderColor: colors.border }]}>
               <Ionicons name="map-outline" size={28} color={colors.mutedForeground} />
