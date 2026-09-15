@@ -33,7 +33,7 @@ const STEPS: { key: StepKey; title: TKey; sub: TKey }[] = [
 ];
 
 /** The shell every step's popup sits in, so all five close the same way. */
-function Popup({
+export function Popup({
   title,
   onClose,
   children,
@@ -68,7 +68,7 @@ function Popup({
  * Step 2 — the app on the phone. A QR beats typing a URL with gloves on, and the link under it
  * is there for the owner who is already on their laptop and wants to text it to the crew.
  */
-function MobilePopup({ onClose }: { onClose: () => void }) {
+export function MobilePopup({ onClose }: { onClose: () => void }) {
   const t = useT();
   const qr = useAppQr();
   const [copied, setCopied] = useState(false);
@@ -136,7 +136,7 @@ function CapturePopup({ onClose }: { onClose: () => void }) {
         <ol className="mt-3 space-y-2">
           {(["checklist.capture1", "checklist.capture2", "checklist.capture3"] as TKey[]).map(
             (key, i) => (
-              <li key={key} className="flex gap-2.5 text-[12.5px] text-paper">
+              <li key={key} className="flex gap-2.5 text-[12.5px] text-chalk">
                 <span className="mono grid size-5 shrink-0 place-items-center rounded-full border border-line text-[9px] text-fog">
                   {i + 1}
                 </span>
@@ -220,7 +220,7 @@ export function SetupChecklist() {
             <Rocket className="size-4 text-amber" />
           </div>
           <div className="min-w-0 flex-1">
-            <h2 className="text-[15px] font-semibold text-paper">{t("checklist.title")}</h2>
+            <h2 className="text-[15px] font-semibold text-chalk">{t("checklist.title")}</h2>
             <p className="mt-0.5 text-[12.5px] leading-snug text-fog">{t("checklist.subtitle")}</p>
           </div>
           <span className="mono hidden shrink-0 text-[10px] uppercase tracking-widest text-fog sm:inline">
@@ -266,7 +266,7 @@ export function SetupChecklist() {
                     <span
                       className={cn(
                         "block truncate text-[13px]",
-                        complete ? "text-fog line-through" : "text-paper",
+                        complete ? "text-fog line-through" : "text-chalk",
                       )}
                     >
                       {t(step.title)}

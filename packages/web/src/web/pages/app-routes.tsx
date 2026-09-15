@@ -4,6 +4,7 @@ import { Loader2, Plus, Route as RouteIcon, Trash2, Truck } from "lucide-react";
 import { DashboardShell } from "../components/dashboard-shell";
 import { EmptyState } from "../components/empty-state";
 import { AssignDriverDialog } from "../components/assign-driver-dialog";
+import { DeliveryChecklist } from "../components/delivery-checklist";
 import { useOrg } from "../queries/orgs";
 import { useRemoveRoute, useRoutes } from "../queries/routes";
 import { cn } from "../lib/utils";
@@ -101,6 +102,10 @@ export default function AppRoutes() {
     >
       {/* Moved out of the page header: it reads as a lead-in to the list, not as chrome. */}
       <p className="mb-4 text-[13px] text-fog">{t("routes.subtitle")}</p>
+
+      {/* First-run guide for a brand new delivery workspace. It hides itself once every step is
+          done, so established workspaces never see it. */}
+      <DeliveryChecklist />
 
       {error && (
         <p className="mb-3 rounded-[8px] border border-alert/40 bg-alert/10 px-3 py-2 text-[13px] text-alert">

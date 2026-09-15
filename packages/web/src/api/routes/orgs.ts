@@ -1,6 +1,6 @@
 import { z } from "zod";
 import QRCode from "qrcode";
-import { and, asc, count, eq, gte, inArray, ne } from "drizzle-orm";
+import { and, asc, count, eq, gte, inArray, isNotNull, ne } from "drizzle-orm";
 import { ORPCError } from "@orpc/server";
 import { orgProc, requireRole } from "../middleware/auth";
 import { db } from "../database";
@@ -29,7 +29,20 @@ const startOfMonth = () => {
 };
 
 /** The get-started steps a workspace can tick off by hand. */
-const SETUP_STEPS = ["project", "mobile", "capture", "crew", "share"] as const;
+const SETUP_STEPS = [
+  // The field workspace's steps.
+  "project",
+  "capture",
+  "share",
+  // The delivery workspace's steps. `mobile` and `crew` are shared: both products need the app
+  // on a phone and somebody other than the owner in the workspace.
+  "run",
+  "stops",
+  "driver",
+  "drop",
+  "mobile",
+  "crew",
+] as const;
 type SetupStep = (typeof SETUP_STEPS)[number];
 
 /** `organizations.setupAcks` is a JSON array in one text column; never trust its shape. */
@@ -84,6 +97,32 @@ export const orgs = {
       .select({ value: count() })
       .from(schema.reports)
       .where(eq(schema.reports.orgId, context.org.id));
+    /**
+     * The same question for a delivery workspace: a run built, stops in it, a driver holding it,
+     * and one drop closed with its proof photo. Counted the same way — from the work itself, so
+     * whoever did it and wherever they did it, the step ticks.
+     */
+    const [routeCount] = await db
+      .select({ value: count() })
+      .from(schema.routes)
+      .where(eq(schema.routes.orgId, context.org.id));
+    const [stopCount] = await db
+      .select({ value: count() })
+      .from(schema.routeStops)
+      .where(eq(schema.routeStops.orgId, context.org.id));
+    const [assignedCount] = await db
+      .select({ value: count() })
+      .from(schema.routes)
+      .where(and(eq(schema.routes.orgId, context.org.id), isNotNull(schema.routes.driverId)));
+    const [deliveredCount] = await db
+      .select({ value: count() })
+      .from(schema.routeStops)
+      .where(
+        and(
+          eq(schema.routeStops.orgId, context.org.id),
+          eq(schema.routeStops.status, "delivered"),
+        ),
+      );
     const acks = parseAcks(context.org.setupAcks);
     /**
      * Crew invited, not crew arrived. An invite sits pending until the person accepts it, which
@@ -172,6 +211,11 @@ export const orgs = {
         capture: acks.has("capture") || (photoCount?.value ?? 0) > 0,
         crew: acks.has("crew") || (memberCount?.value ?? 0) > 1 || (inviteCount?.value ?? 0) > 0,
         share: acks.has("share") || (shareCount?.value ?? 0) + (reportCount?.value ?? 0) > 0,
+        // Delivery's own rows. Same contract: work exists OR ticked off by hand.
+        run: acks.has("run") || (routeCount?.value ?? 0) > 0,
+        stops: acks.has("stops") || (stopCount?.value ?? 0) > 0,
+        driver: acks.has("driver") || (assignedCount?.value ?? 0) > 0,
+        drop: acks.has("drop") || (deliveredCount?.value ?? 0) > 0,
       },
     };
   }),
