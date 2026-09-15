@@ -1098,4 +1098,21 @@ export const vi: Catalog = {
   "trial.endedCta": "Xem các gói",
   "trial.planLabel": "Đang dùng thử",
   "trial.planLine": "Gồm {plan} đến ngày {date}",
+  // First-run checklist on the Teamspace home, ticked off by work that actually exists
+  "checklist.title": "Bắt đầu với GeoCliks",
+  "checklist.subtitle": "Năm bước là đội của bạn chạy được. Mỗi bước tự đánh dấu xong.",
+  "checklist.progress": "{n} trên {total}",
+  "checklist.hide": "Ẩn danh sách",
+  "checklist.start": "Bắt đầu",
+  "checklist.project": "Tạo dự án đầu tiên",
+  "checklist.projectSub": "Mỗi ảnh được lưu vào đúng công trình của nó.",
+  "checklist.mobile": "Cài ứng dụng trên điện thoại",
+  "checklist.mobileSub": "Máy ảnh niêm phong thời gian và địa điểm vào từng bức ảnh.",
+  "checklist.capture": "Chụp bức ảnh niêm phong đầu tiên",
+  "checklist.captureSub": "Chụp một bức ngoài hiện trường và xem nó về đây.",
+  "checklist.crew": "Mời đội của bạn",
+  "checklist.crewSub": "Họ chụp, bạn thấy ngay. Không cần phát mật khẩu.",
+  "checklist.share": "Gửi bằng chứng cho khách hàng",
+  "checklist.shareSub": "Một báo cáo hoặc liên kết họ mở được mà không cần tài khoản.",
+
 };

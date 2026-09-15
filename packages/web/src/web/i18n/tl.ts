@@ -1118,4 +1118,21 @@ export const tl: Catalog = {
   "trial.endedCta": "Tingnan ang mga plan",
   "trial.planLabel": "May trial pa",
   "trial.planLine": "Kasama ang {plan} hanggang {date}",
+  // First-run checklist on the Teamspace home, ticked off by work that actually exists
+  "checklist.title": "Magsimula sa GeoCliks",
+  "checklist.subtitle": "Limang hakbang at umaandar na ang tropa. Bawat isa ay kusang naka-tsek.",
+  "checklist.progress": "{n} sa {total}",
+  "checklist.hide": "Itago ang listahan",
+  "checklist.start": "Simulan",
+  "checklist.project": "Gumawa ng unang proyekto",
+  "checklist.projectSub": "Bawat larawan ay naka-file sa trabahong pinagmulan nito.",
+  "checklist.mobile": "I-install ang app sa telepono",
+  "checklist.mobileSub": "Ang kamerang nagsasara ng oras at lugar sa bawat kuha.",
+  "checklist.capture": "Kunan ang unang selyadong larawan",
+  "checklist.captureSub": "Kumuha ng isa sa site at tingnan itong dumating dito.",
+  "checklist.crew": "Imbitahin ang tropa",
+  "checklist.crewSub": "Sila ang kumukuha, ikaw ang nakakakita. Walang password na ipamimigay.",
+  "checklist.share": "Ipadala ang ebidensya sa kliyente",
+  "checklist.shareSub": "Report o link na mabubuksan nila nang walang account.",
+
 };

@@ -1047,4 +1047,21 @@ export const zh: Catalog = {
   "trial.endedCta": "查看方案",
   "trial.planLabel": "试用进行中",
   "trial.planLine": "{date} 前包含 {plan}",
+  // First-run checklist on the Teamspace home, ticked off by work that actually exists
+  "checklist.title": "开始使用 GeoCliks",
+  "checklist.subtitle": "五个步骤，团队即可上手。每一项都会自动勾选。",
+  "checklist.progress": "{total} 项中的 {n} 项",
+  "checklist.hide": "隐藏清单",
+  "checklist.start": "开始",
+  "checklist.project": "创建第一个项目",
+  "checklist.projectSub": "每张照片都会归档到所属工地。",
+  "checklist.mobile": "在手机上安装应用",
+  "checklist.mobileSub": "这台相机会把时间和地点封进每一张照片。",
+  "checklist.capture": "拍下第一张封存照片",
+  "checklist.captureSub": "在现场拍一张，看它出现在这里。",
+  "checklist.crew": "邀请你的团队",
+  "checklist.crewSub": "他们拍摄，你即刻看到。无需分发密码。",
+  "checklist.share": "把凭证发给客户",
+  "checklist.shareSub": "一份报告或一个链接，无需账号即可打开。",
+
 };

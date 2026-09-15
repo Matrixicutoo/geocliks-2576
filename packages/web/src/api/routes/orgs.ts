@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { and, asc, count, eq, gte, ne } from "drizzle-orm";
+import { and, asc, count, eq, gte, inArray, ne } from "drizzle-orm";
 import { ORPCError } from "@orpc/server";
 import { orgProc, requireRole } from "../middleware/auth";
 import { db } from "../database";
@@ -48,6 +48,31 @@ export const orgs = {
       .select({ value: count() })
       .from(schema.members)
       .where(eq(schema.members.orgId, context.org.id));
+
+    /**
+     * First-run checklist state. Every step is derived from work that actually exists rather
+     * than from a "seen it" flag, so it ticks itself off whoever did the work and on whatever
+     * device — and a workspace that was already in real use before the checklist existed opens
+     * with it complete instead of being told to start over.
+     */
+    const [shareCount] = await db
+      .select({ value: count() })
+      .from(schema.shareLinks)
+      .where(eq(schema.shareLinks.orgId, context.org.id));
+    const [reportCount] = await db
+      .select({ value: count() })
+      .from(schema.reports)
+      .where(eq(schema.reports.orgId, context.org.id));
+    /** Any capture that came off a phone — proof the mobile app is installed and signed in. */
+    const [mobileCount] = await db
+      .select({ value: count() })
+      .from(schema.photos)
+      .where(
+        and(
+          eq(schema.photos.orgId, context.org.id),
+          inArray(schema.photos.platform, ["android", "ios"]),
+        ),
+      );
 
     /**
      * Has this person been through onboarding? Two things say no: the workspace is still on the
@@ -99,6 +124,17 @@ export const orgs = {
         photosThisMonth: monthCount?.value ?? 0,
         projects: projectCount?.value ?? 0,
         members: memberCount?.value ?? 0,
+      },
+      /**
+       * The five things that have to happen before the product is doing its job. The client
+       * draws them as a checklist and hides the whole card once they are all true.
+       */
+      setup: {
+        project: (projectCount?.value ?? 0) > 0,
+        mobile: (mobileCount?.value ?? 0) > 0,
+        capture: (photoCount?.value ?? 0) > 0,
+        crew: (memberCount?.value ?? 0) > 1,
+        share: (shareCount?.value ?? 0) + (reportCount?.value ?? 0) > 0,
       },
     };
   }),

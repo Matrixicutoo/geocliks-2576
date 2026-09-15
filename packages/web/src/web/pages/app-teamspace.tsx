@@ -16,6 +16,7 @@ import { EvidenceCard, EvidenceSkeleton } from "../components/evidence-card";
 import { EmptyState } from "../components/empty-state";
 import { PageTitle } from "../components/page-title";
 import { PhotoDrawer } from "../components/photo-drawer";
+import { SetupChecklist } from "../components/setup-checklist";
 import { useInfinitePhotos, usePhotoStats, useRemovePhotos } from "../queries/photos";
 import { useProjects } from "../queries/projects";
 import { useOrg } from "../queries/orgs";
@@ -108,6 +109,9 @@ export default function TeamspacePage() {
       }
     >
       <PageTitle name={org.data?.org.name} section={t("teamspace.title")} />
+
+      {/* Above the stats on purpose: a workspace with nothing in it has nothing to count yet. */}
+      <SetupChecklist />
 
       <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
         <StatTile

@@ -1114,4 +1114,21 @@ export const es: Catalog = {
   "trial.endedCta": "Ver planes",
   "trial.planLabel": "Prueba en curso",
   "trial.planLine": "{plan} incluido hasta el {date}",
+  // First-run checklist on the Teamspace home, ticked off by work that actually exists
+  "checklist.title": "Empiece con GeoCliks",
+  "checklist.subtitle": "Cinco pasos y su equipo está en marcha. Cada uno se marca solo.",
+  "checklist.progress": "{n} de {total}",
+  "checklist.hide": "Ocultar la lista",
+  "checklist.start": "Empezar",
+  "checklist.project": "Cree su primer proyecto",
+  "checklist.projectSub": "Cada foto queda archivada en la obra a la que pertenece.",
+  "checklist.mobile": "Instale la aplicación en su teléfono",
+  "checklist.mobileSub": "La cámara que sella la hora y el lugar en cada toma.",
+  "checklist.capture": "Tome su primera foto sellada",
+  "checklist.captureSub": "Tome una en el campo y véala llegar aquí.",
+  "checklist.crew": "Invite a su equipo",
+  "checklist.crewSub": "Ellos fotografían, usted lo ve. Sin contraseñas que repartir.",
+  "checklist.share": "Envíe pruebas a un cliente",
+  "checklist.shareSub": "Un informe o un enlace que abre sin crear una cuenta.",
+
 };

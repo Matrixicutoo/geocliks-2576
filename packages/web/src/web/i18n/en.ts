@@ -1115,6 +1115,23 @@ export const en = {
   "trial.endedCta": "View plans",
   "trial.planLabel": "Trial in progress",
   "trial.planLine": "{plan} included until {date}",
+  // First-run checklist on the Teamspace home, ticked off by work that actually exists
+  "checklist.title": "Get started with GeoCliks",
+  "checklist.subtitle": "Five moves and your crew is running. Each one ticks itself off.",
+  "checklist.progress": "{n} of {total}",
+  "checklist.hide": "Hide checklist",
+  "checklist.start": "Start",
+  "checklist.project": "Create your first project",
+  "checklist.projectSub": "Every photo gets filed to the job it belongs to.",
+  "checklist.mobile": "Install the app on your phone",
+  "checklist.mobileSub": "The camera that seals the time and the place into every shot.",
+  "checklist.capture": "Take your first sealed photo",
+  "checklist.captureSub": "Shoot one from the field and watch it land here.",
+  "checklist.crew": "Invite your crew",
+  "checklist.crewSub": "They shoot, you see it. No passwords to hand out.",
+  "checklist.share": "Send proof to a client",
+  "checklist.shareSub": "A report or a share link they can open without an account.",
+
 } as const;
 
 export type Catalog = Record<keyof typeof en, string>;
