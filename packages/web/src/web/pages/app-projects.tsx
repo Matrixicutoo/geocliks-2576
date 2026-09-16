@@ -55,6 +55,7 @@ export function NewProjectDialog({ onClose }: { onClose: () => void }) {
     name: "",
     code: "",
     client: "",
+    contactPhone: "",
     address: "",
     locationLabel: "",
     category: "construction",
@@ -73,6 +74,7 @@ export function NewProjectDialog({ onClose }: { onClose: () => void }) {
               name: form.name,
               code: form.code || null,
               client: form.client || null,
+              contactPhone: form.contactPhone || null,
               address: form.address || null,
               locationLabel: form.locationLabel || null,
               category: form.category,
@@ -93,18 +95,24 @@ export function NewProjectDialog({ onClose }: { onClose: () => void }) {
         </div>
 
         <div className="grid gap-3 p-5 sm:grid-cols-2">
+          {/* The phone sits next to the client it belongs to, and goes out as type=tel so a
+              phone keyboard opens on a dialpad instead of a qwerty. */}
           {(
             [
-              ["name", "projects.fName", "Ridgeline FTTH — Phase 2", true],
-              ["code", "projects.fCode", "FTTH-2214", false],
-              ["client", "projects.fClient", "Northline Communications", false],
-              ["locationLabel", "projects.fLocation", "Ridgeline Dr / Elm", false],
-            ] as [keyof typeof form, TKey, string, boolean][]
-          ).map(([key, label, placeholder, required]) => (
+              ["name", "projects.fName", "Ridgeline FTTH — Phase 2", true, "text"],
+              ["code", "projects.fCode", "FTTH-2214", false, "text"],
+              ["client", "projects.fClient", "Northline Communications", false, "text"],
+              ["contactPhone", "projects.fPhone", "(303) 555-0142 ext 4", false, "tel"],
+              ["locationLabel", "projects.fLocation", "Ridgeline Dr / Elm", false, "text"],
+            ] as [keyof typeof form, TKey, string, boolean, "text" | "tel"][]
+          ).map(([key, label, placeholder, required, type]) => (
             <label key={key} className="block">
               <span className="label">{t(label)}</span>
               <input
                 aria-label={t(label)}
+                type={type}
+                inputMode={type === "tel" ? "tel" : undefined}
+                autoComplete={type === "tel" ? "tel" : undefined}
                 required={required}
                 value={form[key]}
                 onChange={(e) => setForm({ ...form, [key]: e.target.value })}

@@ -227,6 +227,7 @@ export const ar: Catalog = {
   "projects.fName": "اسم المشروع",
   "projects.fCode": "رمز المهمة",
   "projects.fClient": "العميل",
+  "projects.fPhone": "الهاتف",
   "projects.fLocation": "تسمية الموقع",
   "projects.fAddress": "عنوان الموقع",
   "projects.fTrade": "التخصص",

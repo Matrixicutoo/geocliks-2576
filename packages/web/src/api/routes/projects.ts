@@ -113,6 +113,9 @@ export const projects = {
         name: z.string().min(1).max(90),
         code: z.string().max(40).nullish(),
         client: z.string().max(90).nullish(),
+        // Free text on purpose: extensions, country codes and "ask for Dave" all belong here,
+        // and no format check is worth losing a number the office actually dials.
+        contactPhone: z.string().max(40).nullish(),
         locationLabel: z.string().max(120).nullish(),
         address: z.string().max(200).nullish(),
         lat: z.number().nullish(),
@@ -149,6 +152,7 @@ export const projects = {
         name: z.string().min(1).max(90).optional(),
         code: z.string().max(40).nullish(),
         client: z.string().max(90).nullish(),
+        contactPhone: z.string().max(40).nullish(),
         locationLabel: z.string().max(120).nullish(),
         address: z.string().max(200).nullish(),
         status: statusEnum.optional(),

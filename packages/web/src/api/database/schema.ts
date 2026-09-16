@@ -101,6 +101,8 @@ export const projects = sqliteTable(
     name: text("name").notNull(),
     code: text("code"),
     client: text("client"),
+    /** Who to call about this job — the site contact or the client's number. */
+    contactPhone: text("contact_phone"),
     locationLabel: text("location_label"),
     address: text("address"),
     lat: real("lat"),

@@ -220,6 +220,7 @@ export const zh: Catalog = {
   "projects.fName": "项目名称",
   "projects.fCode": "工单编号",
   "projects.fClient": "客户",
+  "projects.fPhone": "电话",
   "projects.fLocation": "位置标签",
   "projects.fAddress": "现场地址",
   "projects.fTrade": "工种",

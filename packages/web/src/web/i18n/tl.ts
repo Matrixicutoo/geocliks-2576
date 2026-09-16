@@ -236,6 +236,7 @@ export const tl: Catalog = {
   "projects.fName": "Pangalan ng proyekto",
   "projects.fCode": "Job code",
   "projects.fClient": "Kliyente",
+  "projects.fPhone": "Telepono",
   "projects.fLocation": "Label ng lokasyon",
   "projects.fAddress": "Address ng site",
   "projects.fTrade": "Trade",

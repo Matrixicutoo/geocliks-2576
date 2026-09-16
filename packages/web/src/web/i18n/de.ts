@@ -237,6 +237,7 @@ export const de: Catalog = {
   "projects.fName": "Projektname",
   "projects.fCode": "Auftragsnummer",
   "projects.fClient": "Kunde",
+  "projects.fPhone": "Telefon",
   "projects.fLocation": "Ortsbezeichnung",
   "projects.fAddress": "Standortadresse",
   "projects.fTrade": "Gewerk",

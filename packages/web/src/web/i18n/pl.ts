@@ -234,6 +234,7 @@ export const pl: Catalog = {
   "projects.fName": "Nazwa projektu",
   "projects.fCode": "Kod zlecenia",
   "projects.fClient": "Klient",
+  "projects.fPhone": "Telefon",
   "projects.fLocation": "Etykieta lokalizacji",
   "projects.fAddress": "Adres lokalizacji",
   "projects.fTrade": "Branża",

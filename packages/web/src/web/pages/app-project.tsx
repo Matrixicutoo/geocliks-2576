@@ -9,6 +9,7 @@ import {
   Loader2,
   MapPin,
   Navigation,
+  Phone,
   Trash2,
   UserPlus,
   Users,
@@ -209,6 +210,18 @@ export default function ProjectPage() {
                 ? `${project.data.lat.toFixed(5)}, ${project.data.lng.toFixed(5)}`
                 : t("project.noCoords")}
             </p>
+            {/* Whoever to call about this job. A tel: link, so it dials from a phone and the
+                office can still copy it off a desktop. The dial string stops at the first
+                letter, so an "ext 4" stays visible but never gets dialled onto the end of
+                the number. */}
+            {project.data?.contactPhone && (
+              <a
+                href={`tel:${project.data.contactPhone.split(/[a-z]/i)[0].replace(/[^\d+]/g, "")}`}
+                className="mono mt-2 inline-flex items-center gap-1.5 text-[11px] text-fog transition-colors hover:text-amber"
+              >
+                <Phone className="size-3.5 shrink-0" /> {project.data.contactPhone}
+              </a>
+            )}
             <EvidenceMap
               pins={(photos.data?.photos ?? []) as unknown as EvidenceMapPin[]}
               onSelect={setOpenPhoto}

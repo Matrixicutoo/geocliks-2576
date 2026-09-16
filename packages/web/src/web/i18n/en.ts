@@ -247,6 +247,7 @@ export const en = {
   "projects.fName": "Project name",
   "projects.fCode": "Job code",
   "projects.fClient": "Client",
+  "projects.fPhone": "Phone",
   "projects.fLocation": "Location label",
   "projects.fAddress": "Site address",
   "projects.fTrade": "Trade",
