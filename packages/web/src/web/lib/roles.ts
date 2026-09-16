@@ -26,6 +26,18 @@ export function canRunDeliveries(role: string | undefined | null): boolean {
 }
 
 /**
+ * Office notes — the notes panel on the Teamspace and Routes dashboards.
+ *
+ * The office tier: owner, admin, manager, dispatcher. Field crew and drivers are excluded, and
+ * that is the whole point of the check — notes carry customer phone numbers and addresses that
+ * a crew member on a job site has no business reading. Same set as `canRunDeliveries`, written
+ * separately because the two answer different questions and will drift.
+ */
+export function canUseNotes(role: string | undefined | null): boolean {
+  return canManageWorkspace(role) || role === "dispatcher";
+}
+
+/**
  * Which PRODUCT the role belongs to, as opposed to how senior it is.
  *
  * `driver` and `field` are peers — neither outranks the other, they just work on different

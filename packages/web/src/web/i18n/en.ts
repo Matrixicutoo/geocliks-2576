@@ -1196,6 +1196,33 @@ export const en = {
   "assign.crew": "Crew",
   "assign.none": "No crew assigned yet.",
   "assign.remove": "Remove from project",
+
+  // Office notes and the dashboard photo strip
+  "notes.title": "Notes",
+  "notes.tabOpen": "Open",
+  "notes.tabArchived": "Archived",
+  "notes.add": "Add note",
+  "notes.empty": "No notes yet. Callbacks, quotes and reminders the office keeps live here.",
+  "notes.emptyArchived": "Nothing archived yet.",
+  "notes.dialogNew": "New note",
+  "notes.dialogEdit": "Note",
+  "notes.fTitle": "Subject",
+  "notes.fTitlePlaceholder": "Call back about the Ridgeline quote",
+  "notes.fDate": "Date",
+  "notes.fEmail": "Email",
+  "notes.fAddress": "Address",
+  "notes.fContact": "Contact person",
+  "notes.fPhone": "Phone",
+  "notes.fBody": "Note",
+  "notes.fBodyPlaceholder": "What needs doing, and anything the next person should know.",
+  "notes.archive": "Archive",
+  "notes.restore": "Restore",
+  "notes.confirmDelete": "Delete for good",
+  "notes.save": "Save",
+  "feed.title": "Live photo feed",
+  "feed.empty": "No photos match these filters yet.",
+  "feed.more": "Load more",
+  "projects.viewAll": "View all {n}",
 } as const;
 
 export type Catalog = Record<keyof typeof en, string>;

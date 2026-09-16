@@ -24,7 +24,7 @@ import { useOrg } from "../queries/orgs";
 import { formatCoords, formatStamp, TAG_LABEL, VerifiedBadge } from "./evidence-card";
 import { EvidenceMap } from "./evidence-map";
 import { PhotoShareButton } from "./share-menu";
-import { canManageWorkspace } from "../lib/roles";
+import { canManageWorkspace, canUseField } from "../lib/roles";
 
 const EVENT_LABEL: Record<string, TKey> = {
   captured: "event.captured",
@@ -65,8 +65,15 @@ export function PhotoDrawer({ photoId, onClose }: { photoId: string | null; onCl
   const verify = useVerifyPhoto();
   const remove = useRemovePhoto();
   const move = useMovePhoto();
-  const projects = useProjects();
   const org = useOrg();
+  /**
+   * Filing a capture under a project is a FIELD action: `projects.list` and `photos.move` both
+   * refuse a driver server-side. A proof-of-delivery photo opened from the Routes dashboard is
+   * reachable by a driver, so asking for the project list there would 403 on every open, and the
+   * control it feeds would be useless anyway.
+   */
+  const canFile = canUseField(org.data?.role);
+  const projects = useProjects(undefined, { enabled: canFile });
   const [confirmDelete, setConfirmDelete] = useState(false);
   /**
    * Evidence files are built on demand, so the click has to survive the round trip: `building`
@@ -153,23 +160,27 @@ export function PhotoDrawer({ photoId, onClose }: { photoId: string | null; onCl
 
             {/* Filing a capture under a project was only possible from the phone; the website
                 had no control at all. Same server call the phone makes. */}
-            <div>
-              <p className="label">{t("mine.assign")}</p>
-              <select
-                value={data.projectId ?? ""}
-                disabled={move.isPending}
-                onChange={(e) => move.mutate({ ids: [data.id], projectId: e.target.value || null })}
-                className="mono mt-2 w-full rounded-[8px] border border-line bg-ink px-3 py-2 text-[12px] text-chalk outline-none focus:border-amber disabled:opacity-60"
-                aria-label={t("mine.assign")}
-              >
-                <option value="">{t("queue.unassigned")}</option>
-                {projects.data?.map((project) => (
-                  <option key={project.id} value={project.id}>
-                    {project.name}
-                  </option>
-                ))}
-              </select>
-            </div>
+            {canFile && (
+              <div>
+                <p className="label">{t("mine.assign")}</p>
+                <select
+                  value={data.projectId ?? ""}
+                  disabled={move.isPending}
+                  onChange={(e) =>
+                    move.mutate({ ids: [data.id], projectId: e.target.value || null })
+                  }
+                  className="mono mt-2 w-full rounded-[8px] border border-line bg-ink px-3 py-2 text-[12px] text-chalk outline-none focus:border-amber disabled:opacity-60"
+                  aria-label={t("mine.assign")}
+                >
+                  <option value="">{t("queue.unassigned")}</option>
+                  {projects.data?.map((project) => (
+                    <option key={project.id} value={project.id}>
+                      {project.name}
+                    </option>
+                  ))}
+                </select>
+              </div>
+            )}
 
             {data.note && <p className="text-sm leading-relaxed text-chalk">{data.note}</p>}
 

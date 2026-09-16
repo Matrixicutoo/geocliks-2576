@@ -605,3 +605,47 @@ export const geocodes = sqliteTable(
   },
   (t) => [index("geocodes_at_idx").on(t.at)],
 );
+
+/**
+ * Office notes — the right-hand panel on the Teamspace and Routes dashboards.
+ *
+ * A note is a scrap of office work that is not yet a project or a run: a callback to make, a
+ * quote to chase, a site visit to book. Deliberately NOT a task assigned to a crew member —
+ * that is what projects and routes are for. These belong to the office, are shared across
+ * everyone who can see them, and are read and written by owner/admin/manager/dispatcher only
+ * (see `canUseNotes`). Field crew and drivers never see this table at all.
+ *
+ * Every field except the title is optional: a note jotted in five seconds is the common case,
+ * and the contact block is there for when it turns into a real callback.
+ */
+export const notes = sqliteTable(
+  "notes",
+  {
+    id: text("id").primaryKey(),
+    orgId: text("org_id").notNull(),
+    /**
+     * Which dashboard the note was written on: "field" or "delivery". The panel shows its own
+     * side's notes so a roofing office's callbacks are not mixed into the dispatch board, and a
+     * workspace running both keeps two lists. Not a product gate — just a filter.
+     */
+    board: text("board").notNull().default("field"),
+    title: text("title").notNull(),
+    /** Free text. The bulk of most notes. */
+    body: text("body"),
+    /** When this needs doing, as YYYY-MM-DD local — the calendar field on the form. */
+    dueDate: text("due_date"),
+    address: text("address"),
+    contactName: text("contact_name"),
+    contactPhone: text("contact_phone"),
+    contactEmail: text("contact_email"),
+    /** open | archived. Archiving keeps the record and its history; deleting drops the row. */
+    status: text("status").notNull().default("open"),
+    createdBy: text("created_by").notNull(),
+    createdAt: integer("created_at", { mode: "timestamp_ms" }).notNull().$defaultFn(now),
+    updatedAt: integer("updated_at", { mode: "timestamp_ms" }).notNull().$defaultFn(now),
+  },
+  (t) => [
+    // The panel's only query: this org's notes, this board, open first.
+    index("notes_org_board_idx").on(t.orgId, t.board, t.status),
+  ],
+);

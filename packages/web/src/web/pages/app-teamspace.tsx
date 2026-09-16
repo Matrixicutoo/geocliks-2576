@@ -1,93 +1,46 @@
-import { useState } from "react";
 import { Link } from "wouter";
-import {
-  Camera,
-  ShieldCheck,
-  Users,
-  MapPin,
-  Search,
-  ImageOff,
-  Loader2,
-  Trash2,
-} from "lucide-react";
+import { Camera, ImageOff, Loader2, MapPin, ShieldCheck, Users } from "lucide-react";
 import { DashboardShell } from "../components/dashboard-shell";
 import { StatTile } from "../components/stat-tile";
-import { EvidenceCard, EvidenceSkeleton } from "../components/evidence-card";
 import { EmptyState } from "../components/empty-state";
 import { PageTitle } from "../components/page-title";
-import { PhotoDrawer } from "../components/photo-drawer";
+import { PhotoStrip } from "../components/photo-strip";
+import { NotesPanel } from "../components/notes-panel";
+import { ProjectsPanel } from "../components/projects-panel";
 import { SetupChecklist } from "../components/setup-checklist";
-import { useInfinitePhotos, usePhotoStats, useRemovePhotos } from "../queries/photos";
+import { usePhotoStats } from "../queries/photos";
 import { useProjects } from "../queries/projects";
 import { useOrg } from "../queries/orgs";
 import { useSeedDemo } from "../queries/demo";
+import { canUseNotes } from "../lib/roles";
 import { cn } from "../lib/utils";
-import { useInfiniteScroll } from "../lib/use-infinite-scroll";
-import { useT, type TKey } from "../lib/i18n";
-import { canManageWorkspace } from "../lib/roles";
+import { useT } from "../lib/i18n";
 
-const TAGS = [
-  "all",
-  "arrival",
-  "before",
-  "general",
-  "after",
-  "issue",
-  "departure",
-  "pickup",
-  "delivery",
-] as const;
-
-const TAG_LABELS: Record<(typeof TAGS)[number], TKey> = {
-  all: "tag.all",
-  arrival: "tag.arrival",
-  before: "tag.before",
-  general: "tag.work",
-  after: "tag.after",
-  issue: "tag.issue",
-  departure: "tag.departure",
-  pickup: "tag.pickup",
-  delivery: "tag.delivery",
-};
-
+/**
+ * Teamspace — the field dashboard.
+ *
+ * Three bands, top to bottom: the numbers, the live photo feed, then the day's two lists side
+ * by side. The feed used to be a page-filling grid that you scrolled past to reach anything
+ * else; it is a single sideways-scrolling strip now (`PhotoStrip`, which also carries the tag
+ * filters, search and the select-and-delete that grid had), so the lists that actually get
+ * worked — projects on the left, office notes on the right — sit above the fold.
+ *
+ * The notes column draws nothing at all for a field member: notes hold customer phone numbers
+ * and addresses, and both the panel and the server stop below dispatcher.
+ */
 export default function TeamspacePage() {
   const t = useT();
-  const [tag, setTag] = useState<(typeof TAGS)[number]>("all");
-  const [projectId, setProjectId] = useState<string | null>(null);
-  const [search, setSearch] = useState("");
-  const [openPhoto, setOpenPhoto] = useState<string | null>(null);
-  const [selectMode, setSelectMode] = useState(false);
-  const [selected, setSelected] = useState<string[]>([]);
-  const removeMany = useRemovePhotos();
   const org = useOrg();
-  /**
-   * The "name your business" prompt that used to live here is gone: first-run onboarding
-   * (`SetupGate`) now asks for the Teamspace name before anyone reaches this page, so a banner
-   * asking again could only ever be noise. Renaming later lives on the profile page.
-   */
-  /** Field crews capture evidence; only manager and above can remove it. */
-  const canDelete = canManageWorkspace(org.data?.role);
-
   const stats = usePhotoStats();
   const projects = useProjects();
-  const photos = useInfinitePhotos({
-    tag: tag === "all" ? null : tag,
-    projectId,
-    search: search.trim() ? search.trim() : null,
-  });
-  const loaded = photos.data?.pages.flatMap((page) => page.photos) ?? [];
-  const total = photos.data?.pages[0]?.total ?? 0;
-  const sentinel = useInfiniteScroll({
-    hasMore: Boolean(photos.hasNextPage),
-    loading: photos.isFetchingNextPage,
-    onLoadMore: photos.fetchNextPage,
-  });
   const seed = useSeedDemo();
+  // Field members get no notes column at all, so the row must not hold half a page of air.
+  const showNotes = canUseNotes(org.data?.role);
 
   // A brand-new workspace stays empty until the owner asks for sample data — real evidence only.
   const workspaceEmpty =
-    !photos.isLoading &&
-    total === 0 &&
+    !stats.isLoading &&
+    (stats.data?.photos ?? 0) === 0 &&
     !projects.isLoading &&
     (projects.data?.length ?? 0) === 0;
 
@@ -175,59 +128,9 @@ export default function TeamspacePage() {
         )}
       </div>
 
-      {/* Filters */}
-      <div className="mt-6 flex flex-wrap items-center gap-2">
-        {TAGS.map((tag_) => (
-          <button
-            key={tag_}
-            type="button"
-            onClick={() => setTag(tag_)}
-            className={cn(
-              "rounded-[6px] mono border px-2.5 py-1.5 text-[10.5px] uppercase tracking-widest transition-colors",
-              tag === tag_
-                ? "border-amber/60 bg-amber/10 text-amber"
-                : "border-line text-fog hover:text-chalk",
-            )}
-          >
-            {t(TAG_LABELS[tag_])}
-          </button>
-        ))}
-
-        <select
-          aria-label={t("teamspace.projectFilter")}
-          value={projectId ?? ""}
-          onChange={(e) => setProjectId(e.target.value || null)}
-          className="mono rounded-[8px] border border-line bg-ink-2 px-2.5 py-1.5 text-[10.5px] uppercase tracking-widest text-chalk outline-none focus:border-amber"
-        >
-          <option value="">{t("common.allProjects")}</option>
-          {projects.data?.map((project) => (
-            <option key={project.id} value={project.id}>
-              {project.name}
-            </option>
-          ))}
-        </select>
-
-        <label className="ml-auto flex items-center gap-2 rounded-[12px] border border-line bg-ink-2 px-2.5 py-1.5">
-          <Search className="size-3.5 text-fog" />
-          <input
-            aria-label={t("teamspace.searchPlaceholder")}
-            value={search}
-            onChange={(e) => setSearch(e.target.value)}
-            placeholder={t("teamspace.searchPlaceholder")}
-            className="mono w-52 bg-transparent text-[11px] text-chalk outline-none placeholder:text-fog/60"
-          />
-        </label>
-      </div>
-
-      {/* Grid */}
+      {/* The live feed, one strip deep. */}
       <div className="mt-4">
-        {photos.isLoading || seed.isPending ? (
-          <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6">
-            {Array.from({ length: 8 }).map((_, i) => (
-              <EvidenceSkeleton key={i} />
-            ))}
-          </div>
-        ) : loaded.length === 0 ? (
+        {workspaceEmpty ? (
           <EmptyState
             icon={ImageOff}
             title={t("teamspace.noMatch.title")}
@@ -237,7 +140,7 @@ export default function TeamspacePage() {
                 <span className="mono flex items-center gap-2 text-[11px] text-fog">
                   <Loader2 className="size-3.5 animate-spin" /> {t("teamspace.loadingField")}
                 </span>
-              ) : workspaceEmpty ? (
+              ) : (
                 <button
                   type="button"
                   onClick={() => seed.mutate({})}
@@ -245,84 +148,19 @@ export default function TeamspacePage() {
                 >
                   {t("teamspace.loadSample")}
                 </button>
-              ) : null
+              )
             }
           />
         ) : (
-          <>
-            <div className="mb-3 flex flex-wrap items-center justify-between gap-2">
-              <p className="label">{t("teamspace.newestFirst", { n: total })}</p>
-              <div className="flex items-center gap-2">
-                {canDelete && selectMode && selected.length > 0 && (
-                  <>
-                    <span className="mono text-[11px] uppercase tracking-widest text-amber">
-                      {t("teamspace.selectedN", { n: selected.length })}
-                    </span>
-                    <button
-                      type="button"
-                      disabled={removeMany.isPending}
-                      onClick={() => {
-                        removeMany.mutate({ ids: selected }, { onSuccess: () => setSelected([]) });
-                      }}
-                      className="rounded-[8px] mono flex items-center gap-1.5 border border-alert/60 bg-alert/10 px-3 py-1.5 text-[11px] uppercase tracking-widest text-alert hover:bg-alert/20 disabled:opacity-60"
-                    >
-                      {removeMany.isPending ? (
-                        <Loader2 className="size-3.5 animate-spin" />
-                      ) : (
-                        <Trash2 className="size-3.5" />
-                      )}
-                      {t("teamspace.deleteSelected")}
-                    </button>
-                  </>
-                )}
-                {canDelete && (
-                  <button
-                    type="button"
-                    onClick={() => {
-                      setSelectMode((v) => !v);
-                      setSelected([]);
-                    }}
-                    className="mono rounded-[8px] border border-line px-3 py-1.5 text-[11px] uppercase tracking-widest text-fog hover:text-chalk"
-                  >
-                    {selectMode ? t("teamspace.clearSelection") : t("teamspace.select")}
-                  </button>
-                )}
-              </div>
-            </div>
-            <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6">
-              {loaded.map((photo) => (
-                <EvidenceCard
-                  key={photo.id}
-                  photo={photo}
-                  shareable={!selectMode}
-                  selectable={selectMode}
-                  selected={selected.includes(photo.id)}
-                  onClick={() => {
-                    if (!selectMode) {
-                      setOpenPhoto(photo.id);
-                      return;
-                    }
-                    setSelected((prev) =>
-                      prev.includes(photo.id)
-                        ? prev.filter((x) => x !== photo.id)
-                        : [...prev, photo.id],
-                    );
-                  }}
-                />
-              ))}
-            </div>
-            {/* Scrolling near this pulls the next page in. */}
-            <div ref={sentinel} className="h-px" />
-            {photos.isFetchingNextPage && (
-              <div className="mono mt-4 flex items-center justify-center gap-2 text-[11px] uppercase tracking-widest text-fog">
-                <Loader2 className="size-3.5 animate-spin" /> {t("common.loading")}
-              </div>
-            )}
-          </>
+          <PhotoStrip board="field" />
         )}
       </div>
 
-      <PhotoDrawer photoId={openPhoto} onClose={() => setOpenPhoto(null)} />
+      {/* The day's work: the jobs on the left, the office's notes on the right. */}
+      <div className={cn("mt-4 grid gap-4", showNotes && "xl:grid-cols-2")}>
+        <ProjectsPanel />
+        <NotesPanel board="field" />
+      </div>
     </DashboardShell>
   );
 }

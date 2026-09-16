@@ -1,8 +1,21 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { orpc } from "../lib/api";
 
-export function useProjects(input?: { status?: "active" | "on_hold" | "complete" | "archived" }) {
-  return useQuery(orpc.projects.list.queryOptions({ input: input ?? {}, staleTime: 15_000 }));
+/**
+ * `enabled` exists because a driver is forbidden from listing projects — the delivery side of
+ * the photo strip must not fire the request at all rather than eat a 403 on every page load.
+ */
+export function useProjects(
+  input?: { status?: "active" | "on_hold" | "complete" | "archived" },
+  options?: { enabled?: boolean },
+) {
+  return useQuery(
+    orpc.projects.list.queryOptions({
+      input: input ?? {},
+      staleTime: 15_000,
+      enabled: options?.enabled ?? true,
+    }),
+  );
 }
 
 export function useProject(id: string) {
