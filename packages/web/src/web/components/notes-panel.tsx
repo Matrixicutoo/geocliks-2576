@@ -1,9 +1,11 @@
 import { useState } from "react";
-import { CalendarDays, MapPin, Phone, Plus, StickyNote } from "lucide-react";
+import { CalendarDays, MapPin, Phone, Plus, Search, StickyNote } from "lucide-react";
 import { NoteDialog, type NoteRow } from "./note-dialog";
+import { PanelSearch } from "./panel-search";
 import { useNotes, type NoteBoard } from "../queries/notes";
 import { useOrg } from "../queries/orgs";
 import { canUseNotes } from "../lib/roles";
+import { matchesSearch } from "../lib/search";
 import { cn } from "../lib/utils";
 import { useT } from "../lib/i18n";
 
@@ -17,6 +19,10 @@ import { useT } from "../lib/i18n";
  *
  * Every row is the whole note: clicking one opens the same popup that wrote it, where archive
  * and delete live.
+ *
+ * Search covers the contact block as well as the text — a note is usually looked for by the
+ * person or the address it concerns, not by its title. It filters the current tab only, so a
+ * query that finds nothing open may still have a hit under archived.
  */
 export function NotesPanel({ board }: { board: NoteBoard }) {
   const t = useT();
@@ -26,10 +32,28 @@ export function NotesPanel({ board }: { board: NoteBoard }) {
   const notes = useNotes(board, { status: tab, enabled: allowed });
   // null = closed, "new" = writing one, otherwise the note being opened.
   const [open, setOpen] = useState<NoteRow | "new" | null>(null);
+  const [query, setQuery] = useState("");
 
   if (!allowed) return null;
 
-  const rows = notes.data ?? [];
+  const all = notes.data ?? [];
+  // Everything the office might have to hand: who it concerns, where, when, and how to reach
+  // them. The body is in there too, since that is where the detail of a callback ends up.
+  const rows = all.filter((note) =>
+    matchesSearch(query, {
+      text: [
+        note.title,
+        note.body,
+        note.address,
+        note.contactName,
+        note.contactEmail,
+        note.authorName,
+      ],
+      dates: [note.dueDate],
+      phones: [note.contactPhone],
+    }),
+  );
+  const searching = query.trim().length > 0;
   const today = new Date().toISOString().slice(0, 10);
 
   return (
@@ -63,6 +87,13 @@ export function NotesPanel({ board }: { board: NoteBoard }) {
         </button>
       </header>
 
+      {/* Hidden until there is a list worth narrowing — a search box over an empty panel is
+          furniture. It stays put once shown, even when a query filters everything out, or
+          clearing the last match would take the field away with it. */}
+      {(all.length > 0 || searching) && (
+        <PanelSearch value={query} onChange={setQuery} placeholder={t("search.notes")} />
+      )}
+
       <div className="min-h-0 flex-1 overflow-y-auto">
         {notes.isLoading ? (
           <div className="space-y-px">
@@ -73,9 +104,15 @@ export function NotesPanel({ board }: { board: NoteBoard }) {
         ) : rows.length === 0 ? (
           <div className="grid h-full place-items-center px-6 py-10 text-center">
             <div>
-              <StickyNote className="mx-auto size-6 text-fog/60" />
+              {searching ? (
+                <Search className="mx-auto size-6 text-fog/60" />
+              ) : (
+                <StickyNote className="mx-auto size-6 text-fog/60" />
+              )}
               <p className="mt-3 text-[13px] text-fog">
-                {t(tab === "open" ? "notes.empty" : "notes.emptyArchived")}
+                {searching
+                  ? t("search.noMatch", { query: query.trim() })
+                  : t(tab === "open" ? "notes.empty" : "notes.emptyArchived")}
               </p>
             </div>
           </div>

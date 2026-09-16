@@ -1,11 +1,13 @@
 import { useState } from "react";
 import { Link } from "wouter";
-import { FolderKanban, Plus } from "lucide-react";
+import { FolderKanban, Plus, Search } from "lucide-react";
 import { useProjects } from "../queries/projects";
 import { useOrg } from "../queries/orgs";
 import { NewProjectDialog } from "../pages/app-projects";
 import { formatStamp } from "./evidence-card";
+import { PanelSearch } from "./panel-search";
 import { canManageWorkspace } from "../lib/roles";
+import { matchesSearch } from "../lib/search";
 import { useT } from "../lib/i18n";
 
 /** How many jobs the dashboard column shows before sending you to the full list. */
@@ -18,6 +20,10 @@ const SHOWN = 8;
  * stops at eight and hands off to /app/projects, where archiving, crew and deletion live. Rows
  * are deliberately one line of work each — cover, name, code, photo count, last capture — so a
  * manager can see which jobs are moving without opening anything.
+ *
+ * Search filters the whole list before the eight-row cap, so a job the office is asked about
+ * over the phone is reachable even when it is nowhere near the most recent. It runs locally
+ * against rows already in hand — no request, no spinner.
  */
 export function ProjectsPanel() {
   const t = useT();
@@ -25,9 +31,28 @@ export function ProjectsPanel() {
   const projects = useProjects();
   const canManage = canManageWorkspace(org.data?.role);
   const [open, setOpen] = useState(false);
+  const [query, setQuery] = useState("");
 
   const all = projects.data ?? [];
-  const rows = all.slice(0, SHOWN);
+  // A job is looked up by whatever the caller on the phone said: the job name, the code off
+  // their paperwork, the client, the street, or the kind of work.
+  const found = all.filter((project) =>
+    matchesSearch(query, {
+      text: [
+        project.name,
+        project.code,
+        project.client,
+        project.address,
+        project.locationLabel,
+        project.category,
+        project.notes,
+      ],
+    }),
+  );
+  const searching = query.trim().length > 0;
+  // The eight-row cap applies to the matches, not to the list behind them, so a search can
+  // reach a job that sits well below the cut.
+  const rows = found.slice(0, SHOWN);
 
   return (
     <section className="flex min-h-[420px] flex-col rounded-[12px] border border-line bg-ink-2">
@@ -44,6 +69,12 @@ export function ProjectsPanel() {
         )}
       </header>
 
+      {/* Hidden until there is a list worth narrowing, and held in place while a query is
+          active so clearing the last match does not take the field away with it. */}
+      {(all.length > 0 || searching) && (
+        <PanelSearch value={query} onChange={setQuery} placeholder={t("search.projects")} />
+      )}
+
       <div className="min-h-0 flex-1 overflow-y-auto">
         {projects.isLoading ? (
           <div className="space-y-px">
@@ -54,8 +85,16 @@ export function ProjectsPanel() {
         ) : rows.length === 0 ? (
           <div className="grid h-full place-items-center px-6 py-10 text-center">
             <div>
-              <FolderKanban className="mx-auto size-6 text-fog/60" />
-              <p className="mt-3 text-[13px] text-fog">{t("projects.empty.hint")}</p>
+              {searching ? (
+                <Search className="mx-auto size-6 text-fog/60" />
+              ) : (
+                <FolderKanban className="mx-auto size-6 text-fog/60" />
+              )}
+              <p className="mt-3 text-[13px] text-fog">
+                {searching
+                  ? t("search.noMatch", { query: query.trim() })
+                  : t("projects.empty.hint")}
+              </p>
             </div>
           </div>
         ) : (
@@ -111,12 +150,12 @@ export function ProjectsPanel() {
         )}
       </div>
 
-      {all.length > SHOWN && (
+      {found.length > SHOWN && (
         <Link
           to="/app/projects"
           className="mono border-t border-line px-4 py-2.5 text-center text-[10.5px] uppercase tracking-widest text-fog transition-colors hover:text-amber"
         >
-          {t("projects.viewAll", { n: all.length })}
+          {t("projects.viewAll", { n: found.length })}
         </Link>
       )}
 
