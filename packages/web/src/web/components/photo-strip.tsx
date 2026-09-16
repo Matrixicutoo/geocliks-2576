@@ -19,6 +19,10 @@ import { useT, type TKey } from "../lib/i18n";
  *
  * The delivery side passes its own tag set — a dispatcher cares about pickups and drops, not
  * before-and-after job shots.
+ *
+ * Tiles carry no share overlay here, unlike the ones on a project page. At 150px a share button
+ * covered a fifth of the photo, and the drawer the tile opens carries the same control one click
+ * away, so nothing is lost by leaving the thumbnail clean.
  */
 
 const FIELD_TAGS = ["all", "arrival", "before", "general", "after", "issue", "departure"] as const;
@@ -218,7 +222,6 @@ export function PhotoStrip({ board }: { board: "field" | "delivery" }) {
                 <EvidenceCard
                   key={photo.id}
                   photo={photo}
-                  shareable={!selectMode}
                   selectable={selectMode}
                   selected={selected.includes(photo.id)}
                   className="w-[150px] shrink-0 snap-start rounded-[8px]"
@@ -256,13 +259,14 @@ export function PhotoStrip({ board }: { board: "field" | "delivery" }) {
                 112px tall) plus three lines of caption under it, and `top-1/2` put both arrows
                 down on the photo code where they read as part of the text. They are
                 `pointer-events-none` while hidden so a dead button never eats a click on the
-                photo underneath. */}
+                photo underneath. Muted grey at rest and amber on hover: they sit on top of the
+                photos, so at full `fog` they competed with the evidence for attention. */}
             <button
               type="button"
               aria-label={t("feed.scrollBack")}
               onClick={() => nudge(-1)}
               className={cn(
-                "absolute left-0 top-[56px] grid size-8 -translate-y-1/2 place-items-center rounded-full border border-line bg-ink-2/95 text-fog shadow-lg transition-opacity hover:border-amber hover:text-amber",
+                "absolute left-0 top-[56px] grid size-8 -translate-y-1/2 place-items-center rounded-full border border-line bg-ink-2/95 text-fog/55 shadow-lg transition-[color,border-color,opacity] hover:border-amber hover:text-amber",
                 ends.start ? "opacity-100" : "pointer-events-none opacity-0",
               )}
             >
@@ -273,7 +277,7 @@ export function PhotoStrip({ board }: { board: "field" | "delivery" }) {
               aria-label={t("feed.scrollOn")}
               onClick={() => nudge(1)}
               className={cn(
-                "absolute right-0 top-[56px] grid size-8 -translate-y-1/2 place-items-center rounded-full border border-line bg-ink-2/95 text-fog shadow-lg transition-opacity hover:border-amber hover:text-amber",
+                "absolute right-0 top-[56px] grid size-8 -translate-y-1/2 place-items-center rounded-full border border-line bg-ink-2/95 text-fog/55 shadow-lg transition-[color,border-color,opacity] hover:border-amber hover:text-amber",
                 ends.end ? "opacity-100" : "pointer-events-none opacity-0",
               )}
             >
