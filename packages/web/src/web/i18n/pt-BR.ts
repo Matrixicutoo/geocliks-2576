@@ -1199,6 +1199,8 @@ export const ptBR: Catalog = {
   "search.projects": "Buscar obra, cliente, endereço",
   "search.notes": "Buscar nome, endereço, telefone, e-mail",
   "search.noMatch": "Nada corresponde a \"{query}\".",
+  "routes.panelTitle": "Todas as rotas",
+  "search.routes": "Buscar rota, motorista, data, endereço",
   "search.clear": "Limpar busca",
   "notes.dialogNew": "Nova nota",
   "notes.dialogEdit": "Nota",

@@ -1197,6 +1197,8 @@ export const pl: Catalog = {
   "search.projects": "Szukaj zlecenia, klienta, adresu",
   "search.notes": "Szukaj nazwiska, adresu, telefonu, e-maila",
   "search.noMatch": "Brak wyników dla „{query}”.",
+  "routes.panelTitle": "Wszystkie trasy",
+  "search.routes": "Szukaj trasy, kierowcy, daty, adresu",
   "search.clear": "Wyczyść wyszukiwanie",
   "notes.dialogNew": "Nowa notatka",
   "notes.dialogEdit": "Notatka",

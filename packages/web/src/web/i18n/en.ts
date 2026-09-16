@@ -1206,6 +1206,8 @@ export const en = {
   "search.projects": "Search job, client, address",
   "search.notes": "Search name, address, phone, email",
   "search.noMatch": "Nothing matches \"{query}\".",
+  "routes.panelTitle": "All routes",
+  "search.routes": "Search route, driver, date, address",
   "search.clear": "Clear search",
   "notes.dialogNew": "New note",
   "notes.dialogEdit": "Note",

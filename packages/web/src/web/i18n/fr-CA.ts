@@ -1212,6 +1212,8 @@ export const frCA: Catalog = {
   "search.projects": "Rechercher chantier, client, adresse",
   "search.notes": "Rechercher nom, adresse, téléphone, courriel",
   "search.noMatch": "Aucun résultat pour « {query} ».",
+  "routes.panelTitle": "Toutes les tournées",
+  "search.routes": "Rechercher tournée, chauffeur, date, adresse",
   "search.clear": "Effacer la recherche",
   "notes.dialogNew": "Nouvelle note",
   "notes.dialogEdit": "Note",

@@ -1189,6 +1189,8 @@ export const vi: Catalog = {
   "search.projects": "Tìm công việc, khách hàng, địa chỉ",
   "search.notes": "Tìm tên, địa chỉ, điện thoại, email",
   "search.noMatch": "Không có kết quả cho \"{query}\".",
+  "routes.panelTitle": "Tất cả tuyến",
+  "search.routes": "Tìm tuyến, tài xế, ngày, địa chỉ",
   "search.clear": "Xoá tìm kiếm",
   "notes.dialogNew": "Ghi chú mới",
   "notes.dialogEdit": "Ghi chú",

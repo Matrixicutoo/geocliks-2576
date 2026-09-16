@@ -1205,6 +1205,8 @@ export const es: Catalog = {
   "search.projects": "Buscar trabajo, cliente, dirección",
   "search.notes": "Buscar nombre, dirección, teléfono, correo",
   "search.noMatch": "Nada coincide con «{query}».",
+  "routes.panelTitle": "Todas las rutas",
+  "search.routes": "Buscar ruta, conductor, fecha, dirección",
   "search.clear": "Borrar búsqueda",
   "notes.dialogNew": "Nueva nota",
   "notes.dialogEdit": "Nota",

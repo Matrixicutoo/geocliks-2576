@@ -1138,6 +1138,8 @@ export const zh: Catalog = {
   "search.projects": "搜索工程、客户、地址",
   "search.notes": "搜索姓名、地址、电话、邮箱",
   "search.noMatch": "没有与“{query}”匹配的结果。",
+  "routes.panelTitle": "全部路线",
+  "search.routes": "搜索路线、司机、日期、地址",
   "search.clear": "清除搜索",
   "notes.dialogNew": "新建备注",
   "notes.dialogEdit": "备注",

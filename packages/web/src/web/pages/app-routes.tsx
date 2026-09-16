@@ -1,14 +1,15 @@
 import { useCallback, useEffect, useState } from "react";
 import { Link } from "wouter";
-import { Loader2, Plus, Route as RouteIcon, Trash2, Truck } from "lucide-react";
+import { Loader2, Plus, Route as RouteIcon, Search, Trash2, Truck } from "lucide-react";
 import { DashboardShell } from "../components/dashboard-shell";
-import { EmptyState } from "../components/empty-state";
 import { AssignDriverDialog } from "../components/assign-driver-dialog";
 import { DeliveryChecklist } from "../components/delivery-checklist";
 import { PhotoStrip } from "../components/photo-strip";
 import { NotesPanel } from "../components/notes-panel";
+import { PanelSearch } from "../components/panel-search";
 import { useOrg } from "../queries/orgs";
 import { useRemoveRoute, useRoutes } from "../queries/routes";
+import { matchesSearch } from "../lib/search";
 import { cn } from "../lib/utils";
 import { type TKey, useT } from "../lib/i18n";
 import { canManageWorkspace, canRunDeliveries, canUseNotes } from "../lib/roles";
@@ -33,19 +34,6 @@ export const STATUS_STYLE: Record<string, string> = {
   cancelled: "border-alert/40 bg-alert/10 text-alert",
 };
 
-// The row is a solid amber fill now, so the normal tinted badges would wash out against it.
-// On amber we invert to a plain `ink` chip: that token flips with the theme (white in light,
-// near-black in dark) and so do fog/sky/verified/alert, so the status colour coding survives on
-// both. `amber` is the exception - it is #ffb021 in BOTH themes and is unreadable on the light
-// chip, so `active` uses `amber-deep`, which does flip and still reads as amber.
-const STATUS_STYLE_ON_AMBER: Record<string, string> = {
-  draft: "border-transparent bg-ink text-fog",
-  assigned: "border-transparent bg-ink text-sky",
-  active: "border-transparent bg-ink text-amber-deep",
-  completed: "border-transparent bg-ink text-verified",
-  cancelled: "border-transparent bg-ink text-alert",
-};
-
 export default function AppRoutes() {
   const t = useT();
   const org = useOrg();
@@ -60,16 +48,35 @@ export default function AppRoutes() {
 
   /** Long-running workspaces pile up hundreds of runs, so the list grows as you scroll. */
   const [shown, setShown] = useState(PAGE);
+  const [query, setQuery] = useState("");
   const all = routes.data ?? [];
-  const visible = all.slice(0, shown);
+  // A run is looked up by the name it was given, the day it goes out, who is driving it, where
+  // it starts from, or the state it is in — the status label is matched as the word on the badge,
+  // so "completed" narrows to the finished runs.
+  const found = all.filter((route) =>
+    matchesSearch(query, {
+      text: [
+        route.name,
+        route.driverName,
+        route.startAddress,
+        t(STATUS_LABEL[route.status] ?? "routes.status.draft"),
+      ],
+      dates: [route.date],
+    }),
+  );
+  const searching = query.trim().length > 0;
+  // Batching applies to the matches, so a search reaches a run that is hundreds deep without
+  // scrolling the whole list into existence first.
+  const visible = found.slice(0, shown);
   const showMore = useCallback(() => setShown((n) => n + PAGE), []);
   const sentinel = useInfiniteScroll({
-    hasMore: shown < all.length,
+    hasMore: shown < found.length,
     loading: routes.isLoading,
     onLoadMore: showMore,
   });
-  // Deleting a run shrinks the list under what is already revealed; start the batches over.
-  useEffect(() => setShown(PAGE), [all.length]);
+  // Deleting a run shrinks the list under what is already revealed, and so does typing a query;
+  // either way, start the batches over.
+  useEffect(() => setShown(PAGE), [all.length, query]);
 
   // Two-step confirm: the whole row is a link, so a single stray click must never delete a run.
   const [confirmId, setConfirmId] = useState<string | null>(null);
@@ -123,108 +130,169 @@ export default function AppRoutes() {
             </p>
           )}
 
-          {routes.isLoading ? (
-            <div className="h-40 animate-pulse rounded-[12px] bg-ink-2" />
-          ) : (routes.data?.length ?? 0) === 0 ? (
-            <EmptyState
-              icon={RouteIcon}
-              title={t("routes.empty")}
-              hint={canManage ? t("routes.emptyHint") : t("routes.emptyHintDriver")}
-            />
-          ) : (
-            <div className="grid gap-3">
-              {visible.map((route) => (
-                <div
-                  key={route.id}
-                  className="flex items-start gap-3 rounded-[12px] border border-transparent bg-amber px-4 py-2.5 transition-colors hover:bg-amber-deep"
+          {/* The runs sit in the same panel the notes column wears, so the two halves of the
+              dashboard read as a pair: one bordered card each, a search field under the header,
+              and rows divided by a hairline rather than floating as separate tiles. */}
+          <section className="flex min-h-[420px] flex-col rounded-[12px] border border-line bg-ink-2">
+            <header className="flex items-center gap-2 border-b border-line px-4 py-3">
+              <p className="font-display text-[15px] font-semibold">{t("routes.panelTitle")}</p>
+              {canManage && (
+                <Link
+                  to="/app/routes/new"
+                  className="mono ml-auto inline-flex items-center gap-1.5 text-[11px] font-bold uppercase tracking-widest text-amber transition-colors hover:text-amber-deep"
                 >
-                  {/* Half a page wide now, so the run reads as two lines instead of one long
-                      row: what it is, then how it is going. */}
-                  <Link to={`/app/routes/${route.id}`} className="min-w-0 flex-1">
-                    <span className="flex items-center gap-2">
-                      <span className="font-display truncate text-[15px] font-semibold text-on-amber">
-                        {route.name}
-                      </span>
-                      <span
-                        className={cn(
-                          "shrink-0 rounded-[6px] border px-2 py-0.5 text-[11px] font-semibold uppercase tracking-wide",
-                          STATUS_STYLE_ON_AMBER[route.status] ?? STATUS_STYLE_ON_AMBER.draft,
+                  <Plus className="size-3.5" /> {t("routes.new")}
+                </Link>
+              )}
+            </header>
+
+            {/* Hidden until there is a list worth narrowing, and held in place while a query is
+                active so clearing the last match does not take the field away with it. */}
+            {(all.length > 0 || searching) && (
+              <PanelSearch value={query} onChange={setQuery} placeholder={t("search.routes")} />
+            )}
+
+            <div className="min-h-0 flex-1">
+              {routes.isLoading ? (
+                <div className="space-y-px">
+                  {Array.from({ length: 5 }).map((_, i) => (
+                    <div key={i} className="h-16 animate-pulse bg-ink-3/40" />
+                  ))}
+                </div>
+              ) : visible.length === 0 ? (
+                searching ? (
+                  <div className="grid h-full place-items-center px-6 py-10 text-center">
+                    <div>
+                      <Search className="mx-auto size-6 text-fog/60" />
+                      <p className="mt-3 text-[13px] text-fog">
+                        {t("search.noMatch", { query: query.trim() })}
+                      </p>
+                    </div>
+                  </div>
+                ) : (
+                  /* The panel is already a bordered card, so the empty state is the plain
+                     centred block the other two columns use rather than a second box. */
+                  <div className="grid h-full place-items-center px-6 py-10 text-center">
+                    <div>
+                      <RouteIcon className="mx-auto size-6 text-fog/60" />
+                      <p className="font-display mt-3 text-[15px] font-semibold text-chalk">
+                        {t("routes.empty")}
+                      </p>
+                      <p className="mx-auto mt-1 max-w-sm text-[13px] text-fog">
+                        {canManage ? t("routes.emptyHint") : t("routes.emptyHintDriver")}
+                      </p>
+                    </div>
+                  </div>
+                )
+              ) : (
+                <>
+                  <ul className="divide-y divide-line">
+                    {visible.map((route) => (
+                      <li
+                        key={route.id}
+                        className="flex items-start gap-3 px-4 py-3 transition-colors hover:bg-ink-3/40"
+                      >
+                        {/* Half a page wide, so the run reads as two lines instead of one long
+                            row: what it is, then how it is going. */}
+                        <Link to={`/app/routes/${route.id}`} className="min-w-0 flex-1">
+                          <span className="flex items-center gap-2">
+                            <span className="font-display truncate text-[15px] font-semibold text-chalk">
+                              {route.name}
+                            </span>
+                            <span
+                              className={cn(
+                                "shrink-0 rounded-[6px] border px-2 py-0.5 text-[11px] font-semibold uppercase tracking-wide",
+                                STATUS_STYLE[route.status] ?? STATUS_STYLE.draft,
+                              )}
+                            >
+                              {t(STATUS_LABEL[route.status] ?? "routes.status.draft")}
+                            </span>
+                          </span>
+
+                          <span className="mt-0.5 flex flex-wrap gap-x-3 text-[12.5px] text-fog">
+                            <span>{route.date}</span>
+                            {/* The assign control to the right already names the driver for
+                                anyone who can reassign, so only repeat it here for drivers. */}
+                            {!canManage && (
+                              <span>{route.driverName ?? t("queue.unassigned")}</span>
+                            )}
+                            <span>
+                              {t("routes.progress", {
+                                n: route.doneCount,
+                                total: route.stopCount,
+                              })}
+                            </span>
+                            {typeof route.planMetres === "number" && route.planMetres > 0 && (
+                              <span>{Math.round(route.planMetres / 100) / 10} km</span>
+                            )}
+                          </span>
+                        </Link>
+
+                        {/* Who is driving this run. A driver only sees the runs assigned to
+                            them, so this is the control that decides their whole day. */}
+                        {canManage && (
+                          <button
+                            type="button"
+                            title={t("routes.assign")}
+                            onClick={() => setAssignFor(route.id)}
+                            className="inline-flex max-w-[190px] shrink-0 items-center gap-1.5 rounded-[8px] border border-line bg-ink-3 px-2.5 py-1.5 text-[12px] font-semibold text-fog transition-colors hover:text-amber"
+                          >
+                            <Truck className="size-3.5 shrink-0" />
+                            {/* Naming the driver on the button saves a click to find out who
+                                has the run; unassigned runs keep the verb instead. */}
+                            <span className="truncate">
+                              {route.driverName ?? t("routes.assign")}
+                            </span>
+                          </button>
                         )}
-                      >
-                        {t(STATUS_LABEL[route.status] ?? "routes.status.draft")}
-                      </span>
-                    </span>
 
-                    <span className="mt-0.5 flex flex-wrap gap-x-3 text-[12.5px] text-on-amber/80">
-                      <span>{route.date}</span>
-                      <span>{route.driverName ?? t("queue.unassigned")}</span>
-                      <span>
-                        {t("routes.progress", { n: route.doneCount, total: route.stopCount })}
-                      </span>
-                      {typeof route.planMetres === "number" && route.planMetres > 0 && (
-                        <span>{Math.round(route.planMetres / 100) / 10} km</span>
-                      )}
-                    </span>
-                  </Link>
-
-                  {/* Who is driving this run. A driver only sees the runs assigned to them, so
-                      this is the control that decides their whole day. */}
-                  {canManage && (
-                    <button
-                      type="button"
-                      aria-label={t("routes.assign")}
-                      title={t("routes.assign")}
-                      onClick={() => setAssignFor(route.id)}
-                      className="inline-flex shrink-0 items-center gap-1.5 rounded-[8px] bg-ink px-2.5 py-1.5 text-[11px] font-semibold uppercase tracking-wide text-fog transition-colors hover:text-amber-deep"
-                    >
-                      <Truck className="size-3.5" /> {t("routes.assign")}
-                    </button>
-                  )}
-
-                  {canDelete &&
-                    (confirmId === route.id ? (
-                      <span className="flex shrink-0 items-center gap-1.5">
-                        <button
-                          type="button"
-                          onClick={() => onDelete(route.id)}
-                          disabled={removeRoute.isPending}
-                          className="rounded-[6px] bg-alert px-2.5 py-1 text-[11px] font-semibold uppercase tracking-wide text-white disabled:opacity-60"
-                        >
-                          {t("common.delete")}
-                        </button>
-                        <button
-                          type="button"
-                          onClick={() => setConfirmId(null)}
-                          className="rounded-[6px] bg-ink px-2.5 py-1 text-[11px] font-semibold uppercase tracking-wide text-fog"
-                        >
-                          {t("common.cancel")}
-                        </button>
-                      </span>
-                    ) : (
-                      <button
-                        type="button"
-                        aria-label={t("routes.deleteRoute")}
-                        title={t("routes.deleteRoute")}
-                        onClick={() => {
-                          setError(null);
-                          setConfirmId(route.id);
-                        }}
-                        className="grid size-8 shrink-0 place-items-center rounded-[8px] bg-ink text-alert transition-colors hover:bg-alert hover:text-white"
-                      >
-                        <Trash2 className="size-4" />
-                      </button>
+                        {canDelete &&
+                          (confirmId === route.id ? (
+                            <span className="flex shrink-0 items-center gap-1.5">
+                              <button
+                                type="button"
+                                onClick={() => onDelete(route.id)}
+                                disabled={removeRoute.isPending}
+                                className="rounded-[6px] bg-alert px-2.5 py-1 text-[11px] font-semibold uppercase tracking-wide text-white disabled:opacity-60"
+                              >
+                                {t("common.delete")}
+                              </button>
+                              <button
+                                type="button"
+                                onClick={() => setConfirmId(null)}
+                                className="rounded-[6px] border border-line bg-ink-3 px-2.5 py-1 text-[11px] font-semibold uppercase tracking-wide text-fog"
+                              >
+                                {t("common.cancel")}
+                              </button>
+                            </span>
+                          ) : (
+                            <button
+                              type="button"
+                              aria-label={t("routes.deleteRoute")}
+                              title={t("routes.deleteRoute")}
+                              onClick={() => {
+                                setError(null);
+                                setConfirmId(route.id);
+                              }}
+                              className="grid size-8 shrink-0 place-items-center rounded-[8px] border border-line bg-ink-3 text-fog transition-colors hover:bg-alert hover:text-white"
+                            >
+                              <Trash2 className="size-4" />
+                            </button>
+                          ))}
+                      </li>
                     ))}
-                </div>
-              ))}
-              {/* Scrolling near this reveals the next batch of runs. */}
-              <div ref={sentinel} className="h-px" />
-              {shown < all.length && (
-                <div className="mono flex items-center justify-center gap-2 text-[11px] uppercase tracking-widest text-fog">
-                  <Loader2 className="size-3.5 animate-spin" /> {t("common.loading")}
-                </div>
+                  </ul>
+                  {/* Scrolling near this reveals the next batch of runs. */}
+                  <div ref={sentinel} className="h-px" />
+                  {shown < found.length && (
+                    <div className="mono flex items-center justify-center gap-2 py-3 text-[11px] uppercase tracking-widest text-fog">
+                      <Loader2 className="size-3.5 animate-spin" /> {t("common.loading")}
+                    </div>
+                  )}
+                </>
               )}
             </div>
-          )}
+          </section>
         </div>
 
         <NotesPanel board="delivery" />

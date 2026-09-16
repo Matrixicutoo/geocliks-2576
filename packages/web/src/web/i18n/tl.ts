@@ -1209,6 +1209,8 @@ export const tl: Catalog = {
   "search.projects": "Hanapin ang trabaho, kliyente, address",
   "search.notes": "Hanapin ang pangalan, address, telepono, email",
   "search.noMatch": "Walang tugma sa \"{query}\".",
+  "routes.panelTitle": "Lahat ng ruta",
+  "search.routes": "Hanapin ang ruta, driver, petsa, address",
   "search.clear": "I-clear ang hanap",
   "notes.dialogNew": "Bagong tala",
   "notes.dialogEdit": "Tala",

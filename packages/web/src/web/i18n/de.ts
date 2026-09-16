@@ -1208,6 +1208,8 @@ export const de: Catalog = {
   "search.projects": "Auftrag, Kunde, Adresse suchen",
   "search.notes": "Name, Adresse, Telefon, E-Mail suchen",
   "search.noMatch": "Nichts passt zu „{query}“.",
+  "routes.panelTitle": "Alle Touren",
+  "search.routes": "Tour, Fahrer, Datum, Adresse suchen",
   "search.clear": "Suche löschen",
   "notes.dialogNew": "Neue Notiz",
   "notes.dialogEdit": "Notiz",

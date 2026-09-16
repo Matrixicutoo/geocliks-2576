@@ -1168,6 +1168,8 @@ export const ar: Catalog = {
   "search.projects": "ابحث بالمهمة أو العميل أو العنوان",
   "search.notes": "ابحث بالاسم أو العنوان أو الهاتف أو البريد",
   "search.noMatch": "لا نتائج تطابق \"{query}\".",
+  "routes.panelTitle": "كل المسارات",
+  "search.routes": "ابحث بالمسار أو السائق أو التاريخ أو العنوان",
   "search.clear": "مسح البحث",
   "notes.dialogNew": "ملاحظة جديدة",
   "notes.dialogEdit": "ملاحظة",
