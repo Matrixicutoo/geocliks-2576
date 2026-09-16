@@ -26,6 +26,17 @@ export function canRunDeliveries(role: string | undefined | null): boolean {
 }
 
 /**
+ * Who is asked to set the workspace up on first run: owner and admin only.
+ *
+ * Deliberately NOT `canManageWorkspace` — a manager runs day-to-day work but does not name the
+ * company or choose which system it runs, and an invited crew member must never be asked either.
+ * That is what keeps the setup gate off everyone who joined a Teamspace somebody else created.
+ */
+export function canSetUpWorkspace(role: string | undefined | null): boolean {
+  return role === "owner" || role === "admin";
+}
+
+/**
  * Which PRODUCT the role belongs to, as opposed to how senior it is.
  *
  * `driver` and `field` are peers — neither outranks the other, they just work on different

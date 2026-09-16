@@ -9,7 +9,7 @@ import { useOrg } from "@/queries/orgs";
 import { useRoutes } from "@/queries/routes";
 import { useHasSession } from "@/hooks/use-session";
 import { AuthGate } from "@/components/auth-gate";
-import { canUseDelivery } from "@/lib/roles";
+import { showsProduct } from "@/lib/product";
 import { openAssistant, useAssistantAccess } from "@/lib/assistant";
 
 export default function TabLayout() {
@@ -105,15 +105,17 @@ export default function TabLayout() {
         <Tabs.Screen name="map" options={{ href: null, title: t("tabs.map") }} />
         <Tabs.Screen name="projects" options={{ href: null, title: t("tabs.projects") }} />
         {/*
-        A field member has no delivery access at all, so the Routes tab is hidden outright
-        rather than opening a screen the server would refuse. `href: null` keeps the route
-        registered so existing deep links still resolve.
+        Hidden outright unless BOTH the role allows delivery AND this is a delivery workspace -
+        a field-only Teamspace has no runs to show, and the role check alone let an owner of one
+        see the tab. `href: null` keeps the route registered so existing deep links resolve.
       */}
         <Tabs.Screen
           name="routes"
           listeners={gateIfSignedOut}
           options={{
-            href: canUseDelivery(org.data?.role) ? undefined : null,
+            href: showsProduct(org.data?.product, org.data?.role, "delivery")
+              ? undefined
+              : null,
             title: t("tabs.routes"),
             tabBarBadge: stopsLeft > 0 ? stopsLeft : undefined,
             tabBarBadgeStyle: { backgroundColor: colors.amber, color: colors.background },

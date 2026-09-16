@@ -16,6 +16,20 @@ export function useTemplates() {
   );
 }
 
+/**
+ * First-run onboarding, in one call: your name, the Teamspace name, and which system you run.
+ * The same mutation the website's setup gate fires — the product answer is what starts the
+ * 7-day trial, so this must never be skipped on one client and asked on the other.
+ */
+export function useSetupOrg() {
+  const queryClient = useQueryClient();
+  return useMutation(
+    orpc.orgs.setup.mutationOptions({
+      onSuccess: () => queryClient.invalidateQueries({ queryKey: orpc.orgs.key() }),
+    }),
+  );
+}
+
 /** Renaming the teamspace (business name). Owners and admins only. */
 export function useUpdateOrg() {
   const queryClient = useQueryClient();

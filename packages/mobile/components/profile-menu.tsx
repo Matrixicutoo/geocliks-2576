@@ -29,7 +29,8 @@ import { InviteSheet } from "@/components/invite-sheet";
 import { useAppTheme } from "@/lib/theme";
 import { ASSISTANT_NAME, openAssistant, useAssistantAccess } from "@/lib/assistant";
 import { SUPPORT_EMAIL } from "../constants/support";
-import { canManageWatermarks, canManageWorkspace, canUseDelivery, canUseField } from "../lib/roles";
+import { canManageWatermarks, canManageWorkspace } from "../lib/roles";
+import { showsProduct } from "../lib/product";
 
 type Props = {
   /** Live stamp preview state on the capture screen — the drawer toggles it. */
@@ -155,6 +156,9 @@ export function ProfileMenu({ showStamp, onToggleStamp }: Props) {
   const brandTemplate = templates.data?.find((tpl) => tpl.isDefault) ?? templates.data?.[0] ?? null;
   const brandLogo = org.data?.org?.logoUrl ?? brandTemplate?.logoUrl ?? null;
   const myRole = org.data?.role;
+  // Which system this Teamspace runs. A tile belonging to the other one is not just
+  // locked, it is absent - the same rule the website applies to its sidebar.
+  const orgProduct = org.data?.product;
   const isField = !canManageWorkspace(myRole);
   const go = (href: string, params?: Record<string, string>) => {
     setOpen(false);
@@ -376,8 +380,8 @@ export function ProfileMenu({ showStamp, onToggleStamp }: Props) {
                   (tile) =>
                     (!tile.managerOnly || !isField) &&
                     (!tile.adminOnly || canManageWatermarks(myRole)) &&
-                    (!tile.fieldOnly || canUseField(myRole)) &&
-                    (!tile.deliveryOnly || canUseDelivery(myRole)),
+                    (!tile.fieldOnly || showsProduct(orgProduct, myRole, "field")) &&
+                    (!tile.deliveryOnly || showsProduct(orgProduct, myRole, "delivery")),
                 ).map((tile) => (
                   <Pressable
                     key={tile.label}

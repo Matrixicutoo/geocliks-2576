@@ -589,6 +589,28 @@ export const en = {
   "assign.none": "No crew assigned yet.",
   "assign.remove": "Remove from project",
   "team.unknownUser": "Unknown user",
+
+  // First-run onboarding: your name, the Teamspace name, and which system you run
+  "setup.stepOf": "Step {n} of 2",
+  "setup.title": "Set up your Teamspace",
+  "setup.body": "Two answers and you're in. You can change either one later.",
+  "setup.yourName": "Your name",
+  "setup.yourNamePlaceholder": "Alex Rivera",
+  "setup.orgName": "Teamspace name",
+  "setup.orgNamePlaceholder": "Northwind Roofing",
+  "setup.orgNameHint": "Your crew sees this on every invite, report and share link.",
+  "setup.next": "Continue",
+  "setup.back": "Back",
+  "setup.systemTitle": "Which system do you run?",
+  "setup.systemBody": "It decides where your crew lands and what your free week unlocks. You can switch later.",
+  "setup.fieldTitle": "Field job photos",
+  "setup.fieldBody": "Crews photograph the work. Every shot is sealed with the time, the place and the job it belongs to.",
+  "setup.fieldTrial": "7 days of Business, free",
+  "setup.deliveryTitle": "Delivery routes",
+  "setup.deliveryBody": "Plan the stops, run the route, prove each drop with a photo and a signature.",
+  "setup.deliveryTrial": "7 days of Delivery Pro, free",
+  "setup.trialNote": "No card, no charge. After 7 days you drop to that system's free plan and keep everything you captured.",
+  "setup.error": "Could not finish setup. Try again.",
 } as const;
 
 export type Catalog = Record<keyof typeof en, string>;

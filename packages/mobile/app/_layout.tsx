@@ -17,7 +17,8 @@ import { OneDollarStatsProvider } from "../lib/__analytics";
 import { isWeb, startWebSafeArea } from "../lib/__web-safe-area";
 import { authClient } from "../lib/auth";
 import { useOrg } from "../queries/orgs";
-import { canUseDelivery, canUseField } from "../lib/roles";
+import { homeFor, showsProduct } from "../lib/product";
+import { SetupGate } from "../components/setup-gate";
 import { usePendingInvite } from "../hooks/use-pending-invite";
 import { usePushToken } from "../hooks/use-push-token";
 import { useDrainOnSignIn } from "../hooks/use-drain-on-signin";
@@ -86,40 +87,57 @@ function Gate() {
       router.replace("/");
   }, [session, isPending, segments, router]);
 
-  // Product split: bounce a member off the side of the app their membership does not cover,
-  // onto the home of the side it does. Waits for the real role — redirecting on an undefined
-  // role would throw everyone off their own landing screen on a cold start. Presentation
-  // only; the server refuses the same calls in `fieldProc` / `requireDelivery`.
+  // Product split: bounce a member off the side of the app they do not have, onto the home of
+  // the side they do. Two things decide "do not have" and `showsProduct` weighs both — their
+  // role (a driver has no projects) AND what the workspace answered at onboarding (a roofing
+  // company that picked job photos has no routes, whatever its owner's role would allow).
+  //
+  // Role alone used to decide it here, which is how a brand new owner ended up with both
+  // systems: an owner's role permits both, so nothing was left to hide the half they never
+  // asked for. Waits for the real role — redirecting on an undefined one would throw everyone
+  // off their own landing screen on a cold start. Presentation only; the server refuses the
+  // same calls in `fieldProc` / `requireDelivery`.
   const role = org.data?.role;
+  const orgProduct = org.data?.product;
   useEffect(() => {
     if (!session || !role) return;
     const parts: string[] = [...segments];
     const screen = parts[0] === "(tabs)" ? (parts[1] ?? "index") : parts[0];
     if (!screen) return;
-    if (FIELD_ONLY_SCREENS.includes(screen) && !canUseField(role)) router.replace("/routes");
-    else if (DELIVERY_ONLY_SCREENS.includes(screen) && !canUseDelivery(role))
-      router.replace("/teamspace");
-  }, [session, role, segments, router]);
+    if (FIELD_ONLY_SCREENS.includes(screen) && !showsProduct(orgProduct, role, "field"))
+      router.replace(homeFor(orgProduct, role));
+    else if (DELIVERY_ONLY_SCREENS.includes(screen) && !showsProduct(orgProduct, role, "delivery"))
+      router.replace(homeFor(orgProduct, role));
+  }, [session, role, orgProduct, segments, router]);
 
   const { colors, scheme } = useAppTheme();
 
   return (
     <>
       <StatusBar style={scheme === "dark" ? "light" : "dark"} />
-      <Stack
-        screenOptions={{ headerShown: false, contentStyle: { backgroundColor: colors.background } }}
-      >
-        <Stack.Screen name="(tabs)" />
-        <Stack.Screen name="messages/[id]" />
-        <Stack.Screen name="queue" />
-        <Stack.Screen name="profile" />
-        <Stack.Screen name="plans" />
-        <Stack.Screen name="sign-in" />
-        <Stack.Screen name="sign-up" />
-        <Stack.Screen name="landing" />
-        <Stack.Screen name="verify" />
-        <Stack.Screen name="join" />
-      </Stack>
+      {/* First-run onboarding stands in front of the whole app for a fresh owner: name, Teamspace
+          name, and which of the two systems they run. Registering on the phone used to skip all
+          three, which left the workspace unnamed, its trial unstarted and BOTH products showing.
+          It renders nothing for everyone else — invited crew, and anyone already set up. */}
+      <SetupGate>
+        <Stack
+          screenOptions={{
+            headerShown: false,
+            contentStyle: { backgroundColor: colors.background },
+          }}
+        >
+          <Stack.Screen name="(tabs)" />
+          <Stack.Screen name="messages/[id]" />
+          <Stack.Screen name="queue" />
+          <Stack.Screen name="profile" />
+          <Stack.Screen name="plans" />
+          <Stack.Screen name="sign-in" />
+          <Stack.Screen name="sign-up" />
+          <Stack.Screen name="landing" />
+          <Stack.Screen name="verify" />
+          <Stack.Screen name="join" />
+        </Stack>
+      </SetupGate>
       {/* The assistant, above every screen. Nothing of it is loaded until someone opens it
           from the tab bar, the drawer footer or the bottom of Settings — and once loaded it
           stays mounted, so its transcript survives moving between tabs. */}
