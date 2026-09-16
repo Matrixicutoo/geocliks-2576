@@ -52,10 +52,13 @@ const ADMIN_ONLY = new Set(["/app/templates"]);
  * `showsProduct` owns both rules, and `ProductRoute` applies the same ones to the URL, since
  * hiding an entry leaves the page itself reachable by typing it.
  *
- * Team, Messages, Share, Profile and Help are deliberately in NEITHER set: they belong to the
- * workspace rather than to one product, so both crews keep them.
+ * Team, Messages, Share, Profile, Reports and Help are deliberately in NEITHER set: they belong
+ * to the workspace rather than to one product, so both crews keep them. Reports in particular
+ * reads whatever the workspace has — projects for field crews, routes for delivery ones — and
+ * the server scopes it by org alone, so gating it to field would only lock delivery out of its
+ * own paperwork.
  */
-const FIELD_ONLY = new Set(["/app", "/app/projects", "/app/map", "/app/compare", "/app/reports"]);
+const FIELD_ONLY = new Set(["/app", "/app/projects", "/app/map", "/app/compare"]);
 const DELIVERY_ONLY = new Set(["/app/routes"]);
 
 const NAV: { href: string; label: TKey; icon: typeof Camera }[] = [

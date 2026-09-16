@@ -1,8 +1,17 @@
 import { useCallback, useEffect, useState } from "react";
-import { Link } from "wouter";
-import { Loader2, Plus, Route as RouteIcon, Search, Trash2, Truck } from "lucide-react";
+import { Link, useLocation } from "wouter";
+import {
+  FileStack,
+  Loader2,
+  Plus,
+  Route as RouteIcon,
+  Search,
+  Trash2,
+  Truck,
+} from "lucide-react";
 import { DashboardShell } from "../components/dashboard-shell";
 import { AssignDriverDialog } from "../components/assign-driver-dialog";
+import { NewRouteDialog } from "../components/new-route-dialog";
 import { DeliveryChecklist } from "../components/delivery-checklist";
 import { PhotoStrip } from "../components/photo-strip";
 import { NotesPanel } from "../components/notes-panel";
@@ -34,9 +43,16 @@ export const STATUS_STYLE: Record<string, string> = {
   cancelled: "border-alert/40 bg-alert/10 text-alert",
 };
 
-export default function AppRoutes() {
+/**
+ * `openNew` is how `/app/routes/new` still works: that URL renders this page with the new-run
+ * popup already up, rather than a second page holding a second copy of the same form.
+ */
+export default function AppRoutes({ openNew = false }: { openNew?: boolean }) {
   const t = useT();
   const org = useOrg();
+  const [, navigate] = useLocation();
+  // Naming a run is a popup over the list now, the way New project is on the projects page.
+  const [newOpen, setNewOpen] = useState(openNew);
   const routes = useRoutes();
   const removeRoute = useRemoveRoute();
   const canManage = canRunDeliveries(org.data?.role);
@@ -107,12 +123,24 @@ export default function AppRoutes() {
       title={t("routes.title")}
       actions={
         canManage ? (
-          <Link
-            to="/app/routes/new"
-            className="inline-flex items-center gap-2 rounded-[8px] bg-amber px-3 py-2 text-[13px] font-semibold text-on-amber hover:bg-amber-deep"
-          >
-            <Plus className="size-4" /> {t("routes.new")}
-          </Link>
+          <>
+            {/* Proof of delivery closes out in a package exactly like a job site does, so the
+                dispatcher gets the same report action the Teamspace header carries. Secondary
+                styling: naming the next run is what this page is for. */}
+            <Link
+              to="/app/reports"
+              className="mono inline-flex items-center gap-2 rounded-[8px] border border-line px-3 py-2 text-[11px] font-bold uppercase tracking-widest text-chalk transition-colors hover:border-amber hover:text-amber"
+            >
+              <FileStack className="size-4" /> {t("teamspace.buildReport")}
+            </Link>
+            <button
+              type="button"
+              onClick={() => setNewOpen(true)}
+              className="inline-flex items-center gap-2 rounded-[8px] bg-amber px-3 py-2 text-[13px] font-semibold text-on-amber hover:bg-amber-deep"
+            >
+              <Plus className="size-4" /> {t("routes.new")}
+            </button>
+          </>
         ) : null
       }
     >
@@ -142,12 +170,13 @@ export default function AppRoutes() {
             <header className="flex items-center gap-2 border-b border-line px-4 py-3">
               <p className="font-display text-[15px] font-semibold">{t("routes.panelTitle")}</p>
               {canManage && (
-                <Link
-                  to="/app/routes/new"
+                <button
+                  type="button"
+                  onClick={() => setNewOpen(true)}
                   className="mono ml-auto inline-flex items-center gap-1.5 text-[11px] font-bold uppercase tracking-widest text-amber transition-colors hover:text-amber-deep"
                 >
                   <Plus className="size-3.5" /> {t("routes.new")}
-                </Link>
+                </button>
               )}
             </header>
 
@@ -302,6 +331,17 @@ export default function AppRoutes() {
 
         <NotesPanel board="delivery" />
       </div>
+
+      {newOpen && canManage && (
+        <NewRouteDialog
+          onClose={() => {
+            setNewOpen(false);
+            // Closing the popup that /app/routes/new opened has to leave that URL behind, or a
+            // reload would put the form straight back up.
+            if (window.location.pathname === "/app/routes/new") navigate("/app/routes");
+          }}
+        />
+      )}
 
       {assignFor && canManage && (
         <AssignDriverDialog

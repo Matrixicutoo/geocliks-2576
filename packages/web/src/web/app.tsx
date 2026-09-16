@@ -21,7 +21,6 @@ const AppCaptures = lazy(() => import("./pages/app-captures"));
 const AppProjects = lazy(() => import("./pages/app-projects"));
 const AppProject = lazy(() => import("./pages/app-project"));
 const AppRoutes = lazy(() => import("./pages/app-routes"));
-const AppRouteNew = lazy(() => import("./pages/app-route-new"));
 const AppRoutePage = lazy(() => import("./pages/app-route"));
 const AppMap = lazy(() => import("./pages/app-map"));
 const AppCompare = lazy(() => import("./pages/app-compare"));
@@ -155,10 +154,12 @@ function App() {
                   </ProductRoute>
                 </ProtectedRoute>
               </Route>
+              {/* The old standalone new-route page is now a popup over the list, but the URL
+                  stays bookmarkable: it renders the list with the dialog already open. */}
               <Route path="/app/routes/new">
                 <ProtectedRoute>
                   <ProductRoute product="delivery">
-                    <AppRouteNew />
+                    <AppRoutes openNew />
                   </ProductRoute>
                 </ProtectedRoute>
               </Route>
@@ -183,11 +184,12 @@ function App() {
                   </ProductRoute>
                 </ProtectedRoute>
               </Route>
+              {/* Reports belong to the workspace, not to one product: delivery crews build
+                  them off their routes the same way field crews build them off projects.
+                  The server side already scopes them by org alone, not by product. */}
               <Route path="/app/reports">
                 <ProtectedRoute>
-                  <ProductRoute product="field">
-                    <AppReports />
-                  </ProductRoute>
+                  <AppReports />
                 </ProtectedRoute>
               </Route>
               <Route path="/app/share">
