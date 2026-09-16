@@ -69,10 +69,15 @@ export default function AppRoutes() {
   // scrolling the whole list into existence first.
   const visible = found.slice(0, shown);
   const showMore = useCallback(() => setShown((n) => n + PAGE), []);
+  // The rows scroll inside the panel now, not with the page, so the next batch has to be
+  // triggered by that element scrolling rather than by the window. Held in state, not a plain
+  // ref, so the observer is rebuilt once the node exists.
+  const [scrollBox, setScrollBox] = useState<HTMLDivElement | null>(null);
   const sentinel = useInfiniteScroll({
     hasMore: shown < found.length,
     loading: routes.isLoading,
     onLoadMore: showMore,
+    root: scrollBox,
   });
   // Deleting a run shrinks the list under what is already revealed, and so does typing a query;
   // either way, start the batches over.
@@ -133,7 +138,7 @@ export default function AppRoutes() {
           {/* The runs sit in the same panel the notes column wears, so the two halves of the
               dashboard read as a pair: one bordered card each, a search field under the header,
               and rows divided by a hairline rather than floating as separate tiles. */}
-          <section className="flex min-h-[420px] flex-col rounded-[12px] border border-line bg-ink-2">
+          <section className="flex max-h-[620px] min-h-[420px] flex-col rounded-[12px] border border-line bg-ink-2">
             <header className="flex items-center gap-2 border-b border-line px-4 py-3">
               <p className="font-display text-[15px] font-semibold">{t("routes.panelTitle")}</p>
               {canManage && (
@@ -152,7 +157,7 @@ export default function AppRoutes() {
               <PanelSearch value={query} onChange={setQuery} placeholder={t("search.routes")} />
             )}
 
-            <div className="min-h-0 flex-1">
+            <div ref={setScrollBox} className="min-h-0 flex-1 overflow-y-auto">
               {routes.isLoading ? (
                 <div className="space-y-px">
                   {Array.from({ length: 5 }).map((_, i) => (

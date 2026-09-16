@@ -9,8 +9,13 @@ export function useInfiniteScroll<T extends HTMLElement = HTMLDivElement>(option
   hasMore: boolean;
   loading: boolean;
   onLoadMore: () => void;
+  /**
+   * The scrolling element the sentinel lives in, when the list scrolls inside its own panel
+   * rather than with the page. Left out, the viewport is watched.
+   */
+  root?: HTMLElement | null;
 }) {
-  const { hasMore, loading, onLoadMore } = options;
+  const { hasMore, loading, onLoadMore, root } = options;
   const ref = useRef<T>(null);
 
   useEffect(() => {
@@ -22,11 +27,13 @@ export function useInfiniteScroll<T extends HTMLElement = HTMLDivElement>(option
         if (entries.some((entry) => entry.isIntersecting)) onLoadMore();
       },
       // Start fetching before the sentinel is actually on screen so scrolling never stalls.
-      { rootMargin: "600px 0px" },
+      // A panel that scrolls on its own is shorter than the page, so it gets a smaller margin
+      // than the viewport does — 600px inside a 600px box would just load everything at once.
+      { root: root ?? null, rootMargin: root ? "300px 0px" : "600px 0px" },
     );
     observer.observe(node);
     return () => observer.disconnect();
-  }, [hasMore, loading, onLoadMore]);
+  }, [hasMore, loading, onLoadMore, root]);
 
   return ref;
 }

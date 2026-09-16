@@ -57,7 +57,9 @@ export function NotesPanel({ board }: { board: NoteBoard }) {
   const today = new Date().toISOString().slice(0, 10);
 
   return (
-    <section className="flex min-h-[420px] flex-col rounded-[12px] border border-line bg-ink-2">
+    /* Capped so a long board scrolls inside its own card instead of stretching the page: the
+       header, the tabs and the search field stay put while the rows move under them. */
+    <section className="flex max-h-[620px] min-h-[420px] flex-col rounded-[12px] border border-line bg-ink-2">
       <header className="flex items-center gap-2 border-b border-line px-4 py-3">
         <p className="font-display text-[15px] font-semibold">{t("notes.title")}</p>
 

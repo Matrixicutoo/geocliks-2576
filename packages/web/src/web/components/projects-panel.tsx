@@ -55,7 +55,9 @@ export function ProjectsPanel() {
   const rows = found.slice(0, SHOWN);
 
   return (
-    <section className="flex min-h-[420px] flex-col rounded-[12px] border border-line bg-ink-2">
+    /* Capped so the rows scroll inside the card and the header, the search field and the
+       view-all footer stay where they were put. */
+    <section className="flex max-h-[620px] min-h-[420px] flex-col rounded-[12px] border border-line bg-ink-2">
       <header className="flex items-center gap-2 border-b border-line px-4 py-3">
         <p className="font-display text-[15px] font-semibold">{t("projects.title")}</p>
         {canManage && (
