@@ -110,6 +110,7 @@ export const frCA: Catalog = {
   "projects.fName": "Nom du projet",
   "projects.fCode": "Code de chantier",
   "projects.fClient": "Client",
+  "projects.fPhone": "Téléphone",
   "projects.fAddress": "Adresse du site",
   "projects.fNotes": "Notes de portée",
   "projects.create": "Créer le projet",

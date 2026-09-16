@@ -110,6 +110,7 @@ export const es: Catalog = {
   "projects.fName": "Nombre del proyecto",
   "projects.fCode": "Código de trabajo",
   "projects.fClient": "Cliente",
+  "projects.fPhone": "Teléfono",
   "projects.fAddress": "Dirección de la obra",
   "projects.fNotes": "Notas del alcance",
   "projects.create": "Crear proyecto",

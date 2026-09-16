@@ -109,6 +109,7 @@ export const vi: Catalog = {
   "projects.fName": "Tên dự án",
   "projects.fCode": "Mã công việc",
   "projects.fClient": "Khách hàng",
+  "projects.fPhone": "Điện thoại",
   "projects.fAddress": "Địa chỉ hiện trường",
   "projects.fNotes": "Ghi chú phạm vi",
   "projects.create": "Tạo dự án",

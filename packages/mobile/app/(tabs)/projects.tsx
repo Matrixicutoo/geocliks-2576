@@ -1,4 +1,12 @@
-import { ActivityIndicator, FlatList, Image, Pressable, StyleSheet, View } from "react-native";
+import {
+  ActivityIndicator,
+  FlatList,
+  Image,
+  Linking,
+  Pressable,
+  StyleSheet,
+  View,
+} from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useState } from "react";
 import { Ionicons } from "@expo/vector-icons";
@@ -16,15 +24,25 @@ import { AssignCrewSheet } from "@/components/assign-crew-sheet";
 import { useCreateProject, useDestroyProject, useProjects } from "@/queries/projects";
 import { canManageWorkspace } from "../../lib/roles";
 
+// The phone follows the client it belongs to, and asks for the dialpad keyboard so a crew
+// member types a number without hunting for the digits.
 const FORM_FIELDS = [
   ["name", "projects.fName"],
   ["code", "projects.fCode"],
   ["client", "projects.fClient"],
+  ["contactPhone", "projects.fPhone", "phone-pad"],
   ["address", "projects.fAddress"],
   ["notes", "projects.fNotes"],
 ] as const;
 
-const EMPTY_FORM = { name: "", code: "", client: "", address: "", notes: "" };
+const EMPTY_FORM = {
+  name: "",
+  code: "",
+  client: "",
+  contactPhone: "",
+  address: "",
+  notes: "",
+};
 
 const STATUS_LABEL: Record<string, string> = {
   active: "ACTIVE",
@@ -62,6 +80,7 @@ export default function Projects() {
         name: form.name.trim(),
         code: form.code.trim() || null,
         client: form.client.trim() || null,
+        contactPhone: form.contactPhone.trim() || null,
         address: form.address.trim() || null,
         notes: form.notes.trim() || null,
       });
@@ -123,7 +142,7 @@ export default function Projects() {
           >
             {t("projects.new")}
           </Text>
-          {FORM_FIELDS.map(([key, labelKey]) => (
+          {FORM_FIELDS.map(([key, labelKey, keyboard]) => (
             <View key={key} style={styles.formField}>
               <Text style={[styles.formLabel, { color: colors.mutedForeground }]}>
                 {t(labelKey)}
@@ -134,6 +153,7 @@ export default function Projects() {
                 placeholder={t(labelKey)}
                 placeholderTextColor={colors.mutedForeground}
                 accessibilityLabel={t(labelKey)}
+                keyboardType={keyboard ?? "default"}
                 style={[styles.input, { borderColor: colors.border, color: colors.foreground }]}
               />
             </View>
@@ -186,6 +206,7 @@ export default function Projects() {
           }
           renderItem={({ item }) => {
             const cover = item.coverUrl;
+            const phone = item.contactPhone;
             return (
               <View
                 style={[styles.card, { borderColor: colors.border, backgroundColor: colors.card }]}
@@ -222,6 +243,28 @@ export default function Projects() {
                         .filter(Boolean)
                         .join(" · ") || "No client set"}
                     </Text>
+                    {/* Tap to call whoever this job belongs to. The dial string stops at the
+                        first letter, so an "ext 4" reads on screen without being dialled. */}
+                    {phone ? (
+                      <Pressable
+                        accessibilityLabel={`${t("projects.fPhone")} ${phone}`}
+                        hitSlop={6}
+                        onPress={() =>
+                          void Linking.openURL(
+                            `tel:${phone.split(/[a-z]/i)[0].replace(/[^\d+]/g, "")}`,
+                          )
+                        }
+                        style={styles.phoneRow}
+                      >
+                        <Ionicons name="call-outline" size={12} color={colors.sky} />
+                        <Text
+                          numberOfLines={1}
+                          style={[styles.phone, { color: colors.sky, fontFamily: Fonts?.mono }]}
+                        >
+                          {phone}
+                        </Text>
+                      </Pressable>
+                    ) : null}
                     <View style={styles.metaRow}>
                       <Text
                         style={[styles.badge, { color: colors.amber, fontFamily: Fonts?.mono }]}
@@ -382,6 +425,8 @@ const styles = StyleSheet.create({
   body: { flex: 1, gap: 3 },
   name: { fontSize: 14 },
   client: { fontSize: 11 },
+  phoneRow: { flexDirection: "row", alignItems: "center", gap: 4, marginTop: 3 },
+  phone: { fontSize: 10, letterSpacing: 0.5 },
   metaRow: { flexDirection: "row", gap: 12, marginTop: 2 },
   badge: { fontSize: 9, letterSpacing: 1 },
   last: { fontSize: 9, letterSpacing: 0.8 },

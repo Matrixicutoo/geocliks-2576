@@ -110,6 +110,7 @@ export const tl: Catalog = {
   "projects.fName": "Pangalan ng proyekto",
   "projects.fCode": "Job code",
   "projects.fClient": "Kliyente",
+  "projects.fPhone": "Telepono",
   "projects.fAddress": "Address ng site",
   "projects.fNotes": "Mga tala sa scope",
   "projects.create": "Gumawa ng proyekto",

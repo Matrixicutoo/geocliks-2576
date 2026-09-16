@@ -111,6 +111,7 @@ export const it: Catalog = {
   "projects.fName": "Nome progetto",
   "projects.fCode": "Codice lavoro",
   "projects.fClient": "Cliente",
+  "projects.fPhone": "Telefono",
   "projects.fAddress": "Indirizzo del sito",
   "projects.fNotes": "Note sull'ambito",
   "projects.create": "Crea progetto",

@@ -110,6 +110,7 @@ export const ptBR: Catalog = {
   "projects.fName": "Nome do projeto",
   "projects.fCode": "Código da obra",
   "projects.fClient": "Cliente",
+  "projects.fPhone": "Telefone",
   "projects.fAddress": "Endereço do local",
   "projects.fNotes": "Notas de escopo",
   "projects.create": "Criar projeto",
