@@ -82,7 +82,6 @@ export const pl: Catalog = {
   "teamspace.statGeoSub": "Współrzędne + adres",
   "teamspace.statContributors": "Współautorzy",
   "teamspace.statContributorsSub": "{n} aktywnych projektów",
-  "teamspace.activity": "Aktywność zdjęciowa — ostatnie 14 dni",
   "teamspace.projectFilter": "Filtr projektu",
   "teamspace.searchPlaceholder": "Szukaj kodu, adresu, notatki",
   "teamspace.noMatch.title": "Brak zdjęć dla tych filtrów",

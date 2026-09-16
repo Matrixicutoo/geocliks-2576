@@ -82,7 +82,6 @@ export const ar: Catalog = {
   "teamspace.statGeoSub": "الإحداثيات + العنوان",
   "teamspace.statContributors": "المساهمون",
   "teamspace.statContributorsSub": "{n} مشاريع نشطة",
-  "teamspace.activity": "نشاط التصوير — آخر ١٤ يومًا",
   "teamspace.projectFilter": "تصفية المشروع",
   "teamspace.searchPlaceholder": "ابحث بالرمز أو العنوان أو الملاحظة",
   "teamspace.noMatch.title": "لا توجد صور تطابق هذه المرشحات",

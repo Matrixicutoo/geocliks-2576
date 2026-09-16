@@ -83,7 +83,6 @@ export const ptBR: Catalog = {
   "teamspace.statGeoSub": "Coordenadas + endereço",
   "teamspace.statContributors": "Colaboradores",
   "teamspace.statContributorsSub": "{n} projetos ativos",
-  "teamspace.activity": "Atividade de captura — últimos 14 dias",
   "teamspace.projectFilter": "Filtro de projeto",
   "teamspace.searchPlaceholder": "Buscar código, endereço, nota",
   "teamspace.noMatch.title": "Nenhuma foto corresponde a esses filtros",

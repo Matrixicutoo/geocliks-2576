@@ -670,7 +670,6 @@ export const photos = {
         contributors: 0,
         located: 0,
         photosThisMonth: 0,
-        byDay: [] as { day: string; value: number }[],
       };
     }
     const scope = allowed ? [inArray(schema.photos.projectId, allowed)] : [];
@@ -696,24 +695,12 @@ export const photos = {
         ),
       );
 
-    const byDay = await db
-      .select({
-        day: sql<string>`date(${schema.photos.capturedAt} / 1000, 'unixepoch')`,
-        value: count(),
-      })
-      .from(schema.photos)
-      .where(and(eq(schema.photos.orgId, context.org.id), ...scope))
-      .groupBy(sql`date(${schema.photos.capturedAt} / 1000, 'unixepoch')`)
-      .orderBy(sql`date(${schema.photos.capturedAt} / 1000, 'unixepoch') desc`)
-      .limit(14);
-
     return {
       photos: totals?.photos ?? 0,
       verified: Number(totals?.verified ?? 0),
       contributors: Number(totals?.contributors ?? 0),
       located: Number(totals?.located ?? 0),
       photosThisMonth: thisMonth?.value ?? 0,
-      byDay: byDay.reverse(),
     };
   }),
 

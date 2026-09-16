@@ -82,7 +82,6 @@ export const vi: Catalog = {
   "teamspace.statGeoSub": "Toạ độ + địa chỉ",
   "teamspace.statContributors": "Người đóng góp",
   "teamspace.statContributorsSub": "{n} dự án đang hoạt động",
-  "teamspace.activity": "Hoạt động chụp — 14 ngày qua",
   "teamspace.projectFilter": "Bộ lọc dự án",
   "teamspace.searchPlaceholder": "Tìm mã, địa chỉ, ghi chú",
   "teamspace.noMatch.title": "Không có ảnh nào khớp bộ lọc",

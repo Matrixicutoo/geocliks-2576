@@ -82,7 +82,6 @@ export const zh: Catalog = {
   "teamspace.statGeoSub": "坐标 + 街道地址",
   "teamspace.statContributors": "贡献者",
   "teamspace.statContributorsSub": "{n} 个进行中的项目",
-  "teamspace.activity": "拍摄活动 — 最近 14 天",
   "teamspace.projectFilter": "项目筛选",
   "teamspace.searchPlaceholder": "搜索编号、地址、备注",
   "teamspace.noMatch.title": "没有符合筛选条件的照片",

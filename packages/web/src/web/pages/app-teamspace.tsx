@@ -25,6 +25,10 @@ import { useT } from "../lib/i18n";
  * filters, search and the select-and-delete that grid had), so the lists that actually get
  * worked — projects on the left, office notes on the right — sit above the fold.
  *
+ * There was a 14-day capture bar chart between the tiles and the feed. On a workspace where
+ * every day has roughly the same count it drew as one solid amber band the width of the page,
+ * which read as a banner rather than data and pushed the lists down for nothing.
+ *
  * The notes column draws nothing at all for a field member: notes hold customer phone numbers
  * and addresses, and both the panel and the server stop below dispatcher.
  */
@@ -101,31 +105,6 @@ export default function TeamspacePage() {
           sub={t("teamspace.statContributorsSub", { n: projects.data?.length ?? 0 })}
           loading={stats.isLoading}
         />
-      </div>
-
-      {/* Capture activity */}
-      <div className="mt-4 rounded-[12px] border border-line bg-ink-2 p-4">
-        <p className="label">{t("teamspace.activity")}</p>
-        {stats.isLoading ? (
-          <div className="mt-3 h-16 animate-pulse bg-ink-3" />
-        ) : (
-          <div className="mt-3 flex h-16 items-end gap-1.5">
-            {(stats.data?.byDay ?? []).map((day) => {
-              const max = Math.max(...(stats.data?.byDay ?? []).map((d) => d.value), 1);
-              return (
-                <div key={day.day} className="group relative flex-1">
-                  <div
-                    className="w-full bg-amber/70 transition-colors group-hover:bg-amber"
-                    style={{ height: `${Math.max((day.value / max) * 64, 3)}px` }}
-                  />
-                  <span className="mono pointer-events-none absolute -top-5 left-1/2 -translate-x-1/2 whitespace-nowrap rounded-[8px] border border-line bg-ink px-1 text-[9px] text-fog opacity-0 group-hover:opacity-100">
-                    {day.day} · {day.value}
-                  </span>
-                </div>
-              );
-            })}
-          </div>
-        )}
       </div>
 
       {/* The live feed, one strip deep. */}

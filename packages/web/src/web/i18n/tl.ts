@@ -84,7 +84,6 @@ export const tl: Catalog = {
   "teamspace.statGeoSub": "Coordinates + street address",
   "teamspace.statContributors": "Mga contributor",
   "teamspace.statContributorsSub": "{n} aktibong proyekto",
-  "teamspace.activity": "Aktibidad ng capture — huling 14 araw",
   "teamspace.projectFilter": "Filter ng proyekto",
   "teamspace.searchPlaceholder": "Maghanap ng code, address, note",
   "teamspace.noMatch.title": "Walang larawang tugma sa mga filter",

@@ -83,7 +83,6 @@ export const it: Catalog = {
   "teamspace.statGeoSub": "Coordinate + indirizzo",
   "teamspace.statContributors": "Collaboratori",
   "teamspace.statContributorsSub": "{n} progetti attivi",
-  "teamspace.activity": "Attività di acquisizione — ultimi 14 giorni",
   "teamspace.projectFilter": "Filtro progetto",
   "teamspace.searchPlaceholder": "Cerca codice, indirizzo, nota",
   "teamspace.noMatch.title": "Nessuna foto corrisponde ai filtri",

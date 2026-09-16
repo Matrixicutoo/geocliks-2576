@@ -83,7 +83,6 @@ export const frCA: Catalog = {
   "teamspace.statGeoSub": "Coordonnées + adresse civique",
   "teamspace.statContributors": "Contributeurs",
   "teamspace.statContributorsSub": "{n} projets actifs",
-  "teamspace.activity": "Activité de capture — 14 derniers jours",
   "teamspace.projectFilter": "Filtre de projet",
   "teamspace.searchPlaceholder": "Rechercher code, adresse, note",
   "teamspace.noMatch.title": "Aucune photo ne correspond à ces filtres",

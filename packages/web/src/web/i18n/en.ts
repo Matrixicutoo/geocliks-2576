@@ -94,7 +94,6 @@ export const en = {
   "teamspace.statGeoSub": "Coordinates + street address",
   "teamspace.statContributors": "Contributors",
   "teamspace.statContributorsSub": "{n} active projects",
-  "teamspace.activity": "Capture activity — last 14 days",
   "teamspace.projectFilter": "Project filter",
   "teamspace.searchPlaceholder": "Search code, address, note",
   "teamspace.noMatch.title": "No photos match those filters",
