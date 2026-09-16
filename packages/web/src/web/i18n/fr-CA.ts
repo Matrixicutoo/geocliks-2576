@@ -1227,5 +1227,7 @@ export const frCA: Catalog = {
   "feed.title": "Fil photo en direct",
   "feed.empty": "Aucune photo ne correspond à ces filtres.",
   "feed.more": "Charger plus",
+  "feed.scrollBack": "Faire défiler les photos vers la gauche",
+  "feed.scrollOn": "Faire défiler les photos vers la droite",
   "projects.viewAll": "Voir les {n}",
 };

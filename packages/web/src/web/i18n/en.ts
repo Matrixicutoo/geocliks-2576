@@ -1221,6 +1221,8 @@ export const en = {
   "feed.title": "Live photo feed",
   "feed.empty": "No photos match these filters yet.",
   "feed.more": "Load more",
+  "feed.scrollBack": "Scroll photos back",
+  "feed.scrollOn": "Scroll photos on",
   "projects.viewAll": "View all {n}",
 } as const;
 

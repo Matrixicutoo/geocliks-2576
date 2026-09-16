@@ -1183,5 +1183,7 @@ export const ar: Catalog = {
   "feed.title": "تدفق الصور المباشر",
   "feed.empty": "لا توجد صور مطابقة لهذه الفلاتر.",
   "feed.more": "تحميل المزيد",
+  "feed.scrollBack": "تمرير الصور إلى الخلف",
+  "feed.scrollOn": "تمرير الصور إلى الأمام",
   "projects.viewAll": "عرض الكل ({n})",
 };

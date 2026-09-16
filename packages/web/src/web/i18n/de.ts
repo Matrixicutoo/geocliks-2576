@@ -1223,5 +1223,7 @@ export const de: Catalog = {
   "feed.title": "Live-Fotofeed",
   "feed.empty": "Keine Fotos passen zu diesen Filtern.",
   "feed.more": "Mehr laden",
+  "feed.scrollBack": "Fotos zurückblättern",
+  "feed.scrollOn": "Fotos weiterblättern",
   "projects.viewAll": "Alle {n} ansehen",
 };

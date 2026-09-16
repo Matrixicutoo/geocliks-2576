@@ -1221,5 +1221,7 @@ export const it: Catalog = {
   "feed.title": "Feed foto in diretta",
   "feed.empty": "Nessuna foto corrisponde a questi filtri.",
   "feed.more": "Carica altre",
+  "feed.scrollBack": "Scorri le foto indietro",
+  "feed.scrollOn": "Scorri le foto avanti",
   "projects.viewAll": "Vedi tutte le {n}",
 };

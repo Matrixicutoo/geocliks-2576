@@ -1204,5 +1204,7 @@ export const vi: Catalog = {
   "feed.title": "Ảnh mới nhất",
   "feed.empty": "Chưa có ảnh nào khớp với bộ lọc này.",
   "feed.more": "Tải thêm",
+  "feed.scrollBack": "Cuộn ảnh về trước",
+  "feed.scrollOn": "Cuộn ảnh tiếp",
   "projects.viewAll": "Xem tất cả {n}",
 };

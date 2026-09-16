@@ -1224,5 +1224,7 @@ export const tl: Catalog = {
   "feed.title": "Live na photo feed",
   "feed.empty": "Walang larawang tumugma sa mga filter na ito.",
   "feed.more": "Mag-load pa",
+  "feed.scrollBack": "I-scroll pabalik ang mga litrato",
+  "feed.scrollOn": "I-scroll pasulong ang mga litrato",
   "projects.viewAll": "Tingnan lahat ng {n}",
 };

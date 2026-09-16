@@ -1212,5 +1212,7 @@ export const pl: Catalog = {
   "feed.title": "Podgląd zdjęć na żywo",
   "feed.empty": "Żadne zdjęcie nie pasuje do tych filtrów.",
   "feed.more": "Wczytaj więcej",
+  "feed.scrollBack": "Przewiń zdjęcia wstecz",
+  "feed.scrollOn": "Przewiń zdjęcia dalej",
   "projects.viewAll": "Zobacz wszystkie ({n})",
 };

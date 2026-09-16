@@ -1,5 +1,5 @@
-import { useState } from "react";
-import { ImageOff, Loader2, Search, Trash2 } from "lucide-react";
+import { useCallback, useEffect, useRef, useState } from "react";
+import { ChevronLeft, ChevronRight, ImageOff, Loader2, Search, Trash2 } from "lucide-react";
 import { EvidenceCard } from "./evidence-card";
 import { PhotoDrawer } from "./photo-drawer";
 import { useInfinitePhotos, useRemovePhotos } from "../queries/photos";
@@ -71,6 +71,48 @@ export function PhotoStrip({ board }: { board: "field" | "delivery" }) {
     24,
   );
   const loaded = photos.data?.pages.flatMap((page) => page.photos) ?? [];
+
+  /**
+   * Sideways scrolling is invisible on a desktop with a mouse: there is no trackpad flick and the
+   * row has no scrollbar until you hover it, so a strip of 24 photos looked like a strip of 7.
+   * A chevron sits over each end of the row, and each one hides when there is nothing further
+   * that way — so an arrow pointing at blank space never appears.
+   */
+  const rail = useRef<HTMLDivElement | null>(null);
+  const [ends, setEnds] = useState({ start: false, end: false });
+
+  const measure = useCallback(() => {
+    const el = rail.current;
+    if (!el) return;
+    // Sub-pixel widths and browser zoom leave a fraction of a pixel behind at either end, which
+    // would keep an arrow lit with nowhere left to go.
+    const slack = 8;
+    setEnds({
+      start: el.scrollLeft > slack,
+      end: el.scrollLeft + el.clientWidth < el.scrollWidth - slack,
+    });
+  }, []);
+
+  /**
+   * Re-measure when the row itself changes, not just when it is scrolled: filtering, loading
+   * another page or resizing the window all change whether there is more to reach.
+   */
+  useEffect(() => {
+    const el = rail.current;
+    if (!el) return;
+    measure();
+    const observer = new ResizeObserver(measure);
+    observer.observe(el);
+    for (const child of Array.from(el.children)) observer.observe(child);
+    return () => observer.disconnect();
+  }, [measure, loaded.length]);
+
+  /** Just under a screenful, so the tile you were looking at stays on screen as an anchor. */
+  const nudge = (direction: -1 | 1) => {
+    const el = rail.current;
+    if (!el) return;
+    el.scrollBy({ left: direction * Math.max(el.clientWidth * 0.8, 160), behavior: "smooth" });
+  };
 
   return (
     <section className="rounded-[12px] border border-line bg-ink-2">
@@ -168,44 +210,75 @@ export function PhotoStrip({ board }: { board: "field" | "delivery" }) {
           </div>
         ) : (
           // One row, scrolled sideways. `snap-x` makes a trackpad flick land on a tile edge
-          // rather than halfway through a photo.
-          <div className="flex snap-x gap-3 overflow-x-auto pb-1">
-            {loaded.map((photo) => (
-              <EvidenceCard
-                key={photo.id}
-                photo={photo}
-                shareable={!selectMode}
-                selectable={selectMode}
-                selected={selected.includes(photo.id)}
-                className="w-[150px] shrink-0 snap-start rounded-[8px]"
-                onClick={() => {
-                  if (!selectMode) {
-                    setOpenPhoto(photo.id);
-                    return;
-                  }
-                  setSelected((prev) =>
-                    prev.includes(photo.id)
-                      ? prev.filter((x) => x !== photo.id)
-                      : [...prev, photo.id],
-                  );
-                }}
-              />
-            ))}
+          // rather than halfway through a photo. The wrapper is the positioning context for the
+          // two chevrons, which float over the row rather than taking width from it.
+          <div className="relative">
+            <div ref={rail} onScroll={measure} className="flex snap-x gap-3 overflow-x-auto pb-1">
+              {loaded.map((photo) => (
+                <EvidenceCard
+                  key={photo.id}
+                  photo={photo}
+                  shareable={!selectMode}
+                  selectable={selectMode}
+                  selected={selected.includes(photo.id)}
+                  className="w-[150px] shrink-0 snap-start rounded-[8px]"
+                  onClick={() => {
+                    if (!selectMode) {
+                      setOpenPhoto(photo.id);
+                      return;
+                    }
+                    setSelected((prev) =>
+                      prev.includes(photo.id)
+                        ? prev.filter((x) => x !== photo.id)
+                        : [...prev, photo.id],
+                    );
+                  }}
+                />
+              ))}
 
-            {photos.hasNextPage && (
-              <button
-                type="button"
-                onClick={() => photos.fetchNextPage()}
-                disabled={photos.isFetchingNextPage}
-                className="mono grid w-[110px] shrink-0 place-items-center rounded-[8px] border border-line text-[10.5px] uppercase tracking-widest text-fog transition-colors hover:border-amber hover:text-amber"
-              >
-                {photos.isFetchingNextPage ? (
-                  <Loader2 className="size-4 animate-spin" />
-                ) : (
-                  t("feed.more")
-                )}
-              </button>
-            )}
+              {photos.hasNextPage && (
+                <button
+                  type="button"
+                  onClick={() => photos.fetchNextPage()}
+                  disabled={photos.isFetchingNextPage}
+                  className="mono grid w-[110px] shrink-0 place-items-center rounded-[8px] border border-line text-[10.5px] uppercase tracking-widest text-fog transition-colors hover:border-amber hover:text-amber"
+                >
+                  {photos.isFetchingNextPage ? (
+                    <Loader2 className="size-4 animate-spin" />
+                  ) : (
+                    t("feed.more")
+                  )}
+                </button>
+              )}
+            </div>
+
+            {/* Centred on the THUMBNAIL, not on the row: a card is its 4:3 photo (150px wide, so
+                112px tall) plus three lines of caption under it, and `top-1/2` put both arrows
+                down on the photo code where they read as part of the text. They are
+                `pointer-events-none` while hidden so a dead button never eats a click on the
+                photo underneath. */}
+            <button
+              type="button"
+              aria-label={t("feed.scrollBack")}
+              onClick={() => nudge(-1)}
+              className={cn(
+                "absolute left-0 top-[56px] grid size-8 -translate-y-1/2 place-items-center rounded-full border border-line bg-ink-2/95 text-fog shadow-lg transition-opacity hover:border-amber hover:text-amber",
+                ends.start ? "opacity-100" : "pointer-events-none opacity-0",
+              )}
+            >
+              <ChevronLeft className="size-4" />
+            </button>
+            <button
+              type="button"
+              aria-label={t("feed.scrollOn")}
+              onClick={() => nudge(1)}
+              className={cn(
+                "absolute right-0 top-[56px] grid size-8 -translate-y-1/2 place-items-center rounded-full border border-line bg-ink-2/95 text-fog shadow-lg transition-opacity hover:border-amber hover:text-amber",
+                ends.end ? "opacity-100" : "pointer-events-none opacity-0",
+              )}
+            >
+              <ChevronRight className="size-4" />
+            </button>
           </div>
         )}
       </div>

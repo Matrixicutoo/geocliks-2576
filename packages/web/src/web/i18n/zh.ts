@@ -1153,5 +1153,7 @@ export const zh: Catalog = {
   "feed.title": "实时照片流",
   "feed.empty": "没有符合这些筛选条件的照片。",
   "feed.more": "加载更多",
+  "feed.scrollBack": "向前滚动照片",
+  "feed.scrollOn": "向后滚动照片",
   "projects.viewAll": "查看全部 {n} 个",
 };

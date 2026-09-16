@@ -1214,5 +1214,7 @@ export const ptBR: Catalog = {
   "feed.title": "Feed de fotos ao vivo",
   "feed.empty": "Nenhuma foto corresponde a estes filtros.",
   "feed.more": "Carregar mais",
+  "feed.scrollBack": "Rolar as fotos para trás",
+  "feed.scrollOn": "Rolar as fotos para frente",
   "projects.viewAll": "Ver todas as {n}",
 };
