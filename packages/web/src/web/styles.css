@@ -176,6 +176,10 @@
   --c-ink-3: #edf1f6;
   --c-line: #dce3ec;
   --c-fog: #4b5a6e;
+  /* Light grey for chrome that floats over content — scroll arrows and the like. `fog` is a
+     dark slate here, so fading it only gives a washed-out dark; this is grey at full strength
+     and holds the same weight in both themes. */
+  --c-steel: #9daaba;
   --c-chalk: #0b0e13;
   --c-amber: #ffb021;
   --c-amber-deep: #b06c00;
@@ -204,6 +208,7 @@
   --c-ink-3: #1a212c;
   --c-line: #242e3c;
   --c-fog: #9daaba;
+  --c-steel: #9daaba;
   --c-chalk: #e8edf4;
   --c-amber: #ffb021;
   --c-amber-deep: #e08a00;
@@ -239,6 +244,7 @@
   --color-alert: var(--c-alert);
   --color-sky: var(--c-sky);
   --color-fog: var(--c-fog);
+  --color-steel: var(--c-steel);
   --color-chalk: var(--c-chalk);
   --color-paper: var(--c-paper);
   --color-on-amber: var(--c-on-amber);
