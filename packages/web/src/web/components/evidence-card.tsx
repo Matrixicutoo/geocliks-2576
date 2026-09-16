@@ -162,14 +162,25 @@ export function EvidenceCard({
             </p>
           </div>
         </div>
-        {photo.tag && photo.tag !== "general" && (
-          <span className="mono absolute left-2 top-2 border border-white/25 bg-black/60 px-1.5 py-0.5 text-[9.5px] uppercase tracking-widest text-white">
-            {TAG_LABEL[photo.tag] ? t(TAG_LABEL[photo.tag]) : photo.tag}
-          </span>
-        )}
-        <span className="absolute right-2 top-2">
+        {/* Both stamps share one row across the top of the photo. On a tile too narrow to
+            hold them side by side the verified badge wraps underneath the tag instead of
+            printing on top of it, and the right padding keeps the row clear of the
+            selection checkbox while the grid is selecting. */}
+        <div
+          className={cn(
+            "pointer-events-none absolute inset-x-2 top-2 flex flex-wrap items-start justify-between gap-1",
+            selectable && "pr-6",
+          )}
+        >
+          {photo.tag && photo.tag !== "general" ? (
+            <span className="mono border border-white/25 bg-black/60 px-1.5 py-0.5 text-[9.5px] uppercase tracking-widest text-white">
+              {TAG_LABEL[photo.tag] ? t(TAG_LABEL[photo.tag]) : photo.tag}
+            </span>
+          ) : (
+            <span />
+          )}
           <VerifiedBadge integrity={photo.integrity} />
-        </span>
+        </div>
       </div>
 
       <div className={cn("space-y-1.5 p-3", shareable && "pr-12")}>

@@ -224,7 +224,9 @@ export function PhotoStrip({ board }: { board: "field" | "delivery" }) {
                   photo={photo}
                   selectable={selectMode}
                   selected={selected.includes(photo.id)}
-                  className="w-[150px] shrink-0 snap-start rounded-[8px]"
+                  // Wide enough that the tag and the verified stamp sit side by side across
+                  // the top of the photo rather than stacking over each other.
+                  className="w-[196px] shrink-0 snap-start rounded-[8px]"
                   onClick={() => {
                     if (!selectMode) {
                       setOpenPhoto(photo.id);

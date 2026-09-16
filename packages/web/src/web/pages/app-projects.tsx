@@ -32,6 +32,7 @@ const CATEGORIES = [
   "delivery",
   "retail",
   "roofing",
+  "insurance",
 ];
 
 const STATUS_LABEL: Record<string, TKey> = {
