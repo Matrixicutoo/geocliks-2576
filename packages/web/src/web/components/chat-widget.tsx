@@ -711,12 +711,21 @@ export function ChatWidget() {
             : "fixed inset-y-0 end-0 z-[65] flex w-full flex-col border-s border-line bg-ink-2 text-chalk shadow-[-8px_0_28px_rgba(0,0,0,0.28)] motion-safe:animate-[assistant-sheet-in_200ms_ease-out] sm:w-[380px]"
         }
       >
-        <header className="flex shrink-0 items-start gap-3 border-b border-line px-4 py-3">
+        {/* Same bar as the app's own header, so the panel reads as another column of the app
+            rather than a card floating beside it: the same navy, and 69px — the shell's 68px
+            row plus its hairline — so the two rules meet in one line across the window.
+            `data-theme="dark"` pins the bar's tokens dark whatever theme the workspace is in,
+            the way the shell header does. */}
+        <header
+          data-theme="dark"
+          className="flex h-[69px] shrink-0 items-center gap-3 border-b border-line bg-[#0d2137] px-4 text-chalk"
+        >
           {/* The brand is in the name itself, so the old "GeoCliks" eyebrow above it would only
-              have said it twice. */}
+              have said it twice. It is split the way the wordmark is: chalk "Geo", amber
+              "Cliks". */}
           <div className="min-w-0 flex-1">
-            <p className="truncate font-display text-[15px] font-bold text-chalk">
-              {ASSISTANT_NAME}
+            <p className="truncate font-display text-[17px] font-bold tracking-tight text-chalk">
+              Geo<span className="text-amber">Cliks</span> AI Assistant
             </p>
           </div>
           {messages.length > 0 && (
