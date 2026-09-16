@@ -2,6 +2,8 @@ import { stepCountIs, ToolLoopAgent } from "ai";
 import dedent from "dedent";
 import { activityStatsTool } from "./activity";
 import { gateway } from "./gateway";
+import { helpOutline, readHelpArticleTool, searchHelpTool } from "./help";
+import type { LocaleCode } from "../lib/locales";
 import { photoSearchTool } from "./photo-search";
 import { reportExportTool } from "./report-export";
 import type { Viewer } from "./viewer";
@@ -11,16 +13,18 @@ import { todayIn } from "./zone";
  * The assistant behind the chat bubble, on the public site and inside the workspace.
  *
  * Built per request, because what it can do depends entirely on who is asking. Signed out —
- * the marketing site's bubble — it has no tools at all and cannot reach the database, so
- * nothing a visitor types can pull a workspace's photos into a reply. Signed in it gets the
- * three photo tools, each closed over that caller's own viewer and role-scoped inside the
- * tool: `findPhotos` shows captures, `summarizeActivity` counts them, `exportReport` builds a
- * real file out of them.
+ * the marketing site's bubble — it cannot reach the database, so nothing a visitor types can
+ * pull a workspace's photos into a reply. Signed in it gets the three photo tools, each closed
+ * over that caller's own viewer and role-scoped inside the tool: `findPhotos` shows captures,
+ * `summarizeActivity` counts them, `exportReport` builds a real file out of them.
  *
- * Any tool added here must follow the same rule: scoped to the caller's session, and absent
- * rather than refusing when there is no session.
+ * Any tool that reads someone's data must follow the same rule: scoped to the caller's session,
+ * and absent rather than refusing when there is no session. The two Help Center tools are the
+ * deliberate exception — the Help pages are public, so `searchHelp` and `readHelpArticle` are
+ * handed to both halves, and the visitor asking how GeoCliks works gets a real answer out of
+ * the real documentation instead of the model's best guess.
  */
-function instructions(viewer: Viewer | null, zone: string) {
+function instructions(viewer: Viewer | null, zone: string, locale: LocaleCode) {
   return dedent`
         You are the GeoCliks assistant — the chat bubble on geocliks.com and inside the
         GeoCliks web app. You talk to field crews, contractors, inspectors and office staff,
@@ -35,9 +39,27 @@ function instructions(viewer: Viewer | null, zone: string) {
         People use it to prove work was done, where and when — for disputes, billing,
         compliance and insurance.
 
-        Do not invent prices, plan limits, integrations, release dates or features. If you do
-        not know how something in the product works, say so and point the person at the Help
-        pages or at support instead of guessing.
+        ## The Help Center is your source of truth
+        Every question about how GeoCliks works is answered in the Help Center, and you can read
+        it. Its categories:
+
+        ${helpOutline(locale)}
+
+        - \`searchHelp\` finds the articles a question touches and returns each one's
+          "category/slug" ref, title and summary.
+        - \`readHelpArticle\` opens one of those refs in full — the actual steps, limits and
+          wording.
+        - Use them for anything about the product: how to do something, what a screen does,
+          what a plan includes, why something is not working, what a setting means. Search
+          first, read the article that fits, then answer from what it says. Do not ask
+          permission and do not narrate the lookup.
+        - Answer in your own words, short and direct, in the order the article does it. When it
+          is a procedure, give the steps. Do not paste the whole article back.
+        - Do not invent prices, plan limits, integrations, release dates or features. If the
+          Help Center does not cover it, say so plainly and point the person at support — never
+          fill the gap with a guess.
+        - The Help pages live at /help/<category>/<slug>. Mention that path only when they ask
+          where to read more.
 
         ## How to talk
         - Plain, direct, friendly. Short paragraphs. No corporate filler, no flattery.
@@ -84,14 +106,17 @@ function instructions(viewer: Viewer | null, zone: string) {
                 into it and let the card carry the download.
               - Everything they get back is already limited to what they are allowed to see, so
                 it is safe to describe.
-              - Billing, team and account questions still go to the relevant screen in the app:
-                photos are all you can read.
+              - Captures are the only data you can read. Their invoices, members and account
+                settings live on the app's own screens, so send them there for the numbers —
+                but how those screens work is in the Help Center, so look it up and explain it
+                rather than sending them away with nothing.
             `
             : dedent`
               ## You cannot see their data
               You have no access to anyone's account, photos or workspace, so never claim to. If
               they ask about their own photos, billing or team, tell them to sign in to the app
-              or the mobile app, where the assistant can search their captures for them.
+              or the mobile app, where the assistant can search their captures for them. How
+              any of it works is still yours to answer: the Help Center tools work here too.
             `
         }
 
@@ -121,21 +146,33 @@ function instructions(viewer: Viewer | null, zone: string) {
  * anything against it: the model resolves "Tuesday" in it, and the search bounds the day in it.
  * It defaults to UTC so a client that sends nothing still works, just less precisely near
  * midnight.
+ *
+ * `locale` is the language the caller is reading the app in, sent the same way. It picks which
+ * Help Center catalog the two help tools read, so someone asking in French is answered out of
+ * the French articles rather than out of an English one translated on the fly. A locale with no
+ * translated catalog falls back to English inside `resolve.ts`, and the model still replies in
+ * the language the person wrote in.
  */
-export function agentFor(viewer: Viewer | null, zone = "UTC") {
+export function agentFor(viewer: Viewer | null, zone = "UTC", locale: LocaleCode = "en") {
+  const help = {
+    searchHelp: searchHelpTool(locale),
+    readHelpArticle: readHelpArticleTool(locale),
+  };
   return new ToolLoopAgent({
     model: gateway("anthropic/claude-sonnet-4.6"),
-    instructions: [{ role: "system", content: instructions(viewer, zone) }],
-    // Signed out this is genuinely empty — not a tool that refuses, but no tool at all.
+    instructions: [{ role: "system", content: instructions(viewer, zone, locale) }],
+    // Signed out, the data tools are genuinely absent — not tools that refuse, but no tools at
+    // all. The Help Center ones stay, because the Help pages are public either way.
     tools: viewer
       ? {
+          ...help,
           findPhotos: photoSearchTool(viewer, zone),
           summarizeActivity: activityStatsTool(viewer, zone),
           exportReport: reportExportTool(viewer, zone),
         }
-      : {},
-    // Room for a couple of tool calls and the reply that describes them — counting a week and
-    // then exporting it is one turn, not two.
-    stopWhen: [stepCountIs(6)],
+      : help,
+    // Room for a few tool calls and the reply that describes them — counting a week and then
+    // exporting it is one turn, not two, and a Help answer is a search followed by a read.
+    stopWhen: [stepCountIs(8)],
   });
 }

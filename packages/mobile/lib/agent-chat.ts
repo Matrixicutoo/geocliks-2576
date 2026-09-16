@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { fetch as expoFetch } from "expo/fetch";
 import { authToken } from "./auth";
+import { activeLocale } from "./i18n";
 
 /**
  * The assistant's chat client, written by hand against `/api/agent/messages`.
@@ -280,6 +281,8 @@ export function useAgentChat(api: string) {
             // "Tuesday" is this phone's Tuesday. The server has no way to know where the crew
             // is, so the day a date-scoped search bounds comes from here.
             "x-geocliks-tz": Intl.DateTimeFormat().resolvedOptions().timeZone,
+            // Which Help Center language the assistant reads the product answers out of.
+            "x-geocliks-locale": activeLocale(),
             // Signed in, the assistant can look up this workspace's own captures. Signed out it
             // is the same public assistant the marketing site talks to.
             ...(token ? { Authorization: `Bearer ${token}` } : {}),

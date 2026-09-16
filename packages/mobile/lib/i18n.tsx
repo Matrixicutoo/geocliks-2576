@@ -69,6 +69,18 @@ const FALLBACK: Ctx = {
   setWorkspaceDefault: () => {},
 };
 
+/**
+ * The locale on screen right now, readable from outside React.
+ *
+ * The assistant's chat client builds its request headers inside a plain async function, with no
+ * context to read, and the stored value is not enough either: a member following the workspace
+ * default has nothing in AsyncStorage. So the provider publishes the resolved locale here, and
+ * the server can be told which Help Center language to answer out of.
+ */
+let active: LocaleCode = "en";
+
+export const activeLocale = (): LocaleCode => active;
+
 const I18nContext = createContext<Ctx | null>(null);
 
 export function I18nProvider({ children }: { children: React.ReactNode }) {
@@ -87,6 +99,10 @@ export function I18nProvider({ children }: { children: React.ReactNode }) {
 
   const locale = override ?? workspace;
   const rtl = isRtl(locale);
+
+  useEffect(() => {
+    active = locale;
+  }, [locale]);
 
   useEffect(() => {
     // Native layout mirroring only takes effect after an app reload.

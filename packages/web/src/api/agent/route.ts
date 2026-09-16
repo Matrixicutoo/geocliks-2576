@@ -1,6 +1,7 @@
 import { createAgentUIStreamResponse, type UIMessage } from "ai";
 import { agentFor } from "./index";
 import { gatewayReady } from "./gateway";
+import { localeOf } from "./help";
 import { viewerOf } from "./viewer";
 import { zoneOf } from "./zone";
 
@@ -107,5 +108,12 @@ export async function agentMessages(request: Request): Promise<Response> {
   // so the client sends it. Junk or missing falls back to UTC rather than failing the request.
   const zone = zoneOf(request);
 
-  return createAgentUIStreamResponse({ agent: agentFor(viewer, zone), uiMessages: history });
+  // Which Help Center catalog the assistant reads from. Same idea as the zone: the client knows
+  // what language it is rendering, the server does not, and an unknown one lands on English.
+  const locale = localeOf(request);
+
+  return createAgentUIStreamResponse({
+    agent: agentFor(viewer, zone, locale),
+    uiMessages: history,
+  });
 }

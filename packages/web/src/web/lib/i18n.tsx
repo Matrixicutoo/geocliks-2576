@@ -40,6 +40,18 @@ const read = (): LocaleCode | null => {
   }
 };
 
+/**
+ * The locale on screen right now, readable from outside React.
+ *
+ * The chat transport builds its request headers in a module-level callback, nowhere near a
+ * hook, and what it needs is not in localStorage either: a member following the workspace
+ * default has no stored override. So the provider publishes the resolved locale here, and the
+ * assistant can be told which Help Center language to read.
+ */
+let active: LocaleCode = read() ?? "en";
+
+export const activeLocale = (): LocaleCode => active;
+
 const fill = (template: string, vars?: Record<string, string | number>) =>
   vars
     ? template.replace(/\{(\w+)\}/g, (m, name: string) =>
@@ -73,6 +85,7 @@ export function I18nProvider({ children }: { children: React.ReactNode }) {
   const rtl = isRtl(locale);
 
   useEffect(() => {
+    active = locale;
     const root = globalThis.document?.documentElement;
     if (!root) return;
     root.lang = locale;

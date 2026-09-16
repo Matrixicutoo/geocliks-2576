@@ -3,7 +3,7 @@ import { useLocation } from "wouter";
 import { useChat } from "@ai-sdk/react";
 import { DefaultChatTransport, type UIMessage } from "ai";
 import { Check, Download, Link2, MessageSquare, Send, Square, Trash2, X } from "lucide-react";
-import { useT, type TKey } from "../lib/i18n";
+import { activeLocale, useT, type TKey } from "../lib/i18n";
 import { amberFill } from "../lib/chrome";
 import { authToken } from "../lib/auth";
 import { PhotoDrawer } from "./photo-drawer";
@@ -108,6 +108,8 @@ const chatTransport = new DefaultChatTransport({
       // "Tuesday" is this browser's Tuesday. Nothing on the server knows where the caller is,
       // so the day the search bounds comes from here.
       "x-geocliks-tz": Intl.DateTimeFormat().resolvedOptions().timeZone,
+      // Which Help Center language the assistant reads the product answers out of.
+      "x-geocliks-locale": activeLocale(),
       ...(token ? { Authorization: `Bearer ${token}` } : {}),
     };
   },
