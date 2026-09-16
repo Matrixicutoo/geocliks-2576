@@ -774,6 +774,11 @@ export const vi: Catalog = {
   "routes.status.cancelled": "Đã hủy",
   "routes.newTitle": "Tuyến mới",
   "routes.newSubtitle": "Đặt tên cho chuyến trong ngày, rồi thêm các điểm dừng.",
+  "routes.step2Title": "Thêm điểm dừng và tài xế",
+  "routes.step2Hint":
+    "Mọi thay đổi được lưu ngay. Đóng lại khi xong và chuyến sẽ nằm trong Tất cả các chuyến.",
+  "routes.oneTitle": "Thêm một điểm dừng",
+  "routes.oneAdd": "Thêm điểm dừng",
   "routes.fName": "Tên tuyến",
   "routes.fDate": "Ngày",
   "routes.fStartTime": "Giờ khởi hành",

@@ -780,6 +780,11 @@ export const pl: Catalog = {
   "routes.status.cancelled": "Anulowana",
   "routes.newTitle": "Nowa trasa",
   "routes.newSubtitle": "Nazwij dzisiejszy przejazd, a następnie dodaj przystanki.",
+  "routes.step2Title": "Dodaj przystanki i kierowcę",
+  "routes.step2Hint":
+    "Wszystko zapisuje się na bieżąco. Zamknij okno, gdy skończysz — przejazd będzie czekał na liście Wszystkie przejazdy.",
+  "routes.oneTitle": "Dodaj jeden przystanek",
+  "routes.oneAdd": "Dodaj przystanek",
   "routes.fName": "Nazwa trasy",
   "routes.fDate": "Data",
   "routes.fStartTime": "Godzina startu",

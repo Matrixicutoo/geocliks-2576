@@ -791,6 +791,11 @@ export const frCA: Catalog = {
   "routes.status.cancelled": "Annulée",
   "routes.newTitle": "Nouvelle tournée",
   "routes.newSubtitle": "Nommez la tournée du jour, puis ajoutez les arrêts.",
+  "routes.step2Title": "Ajoutez des arrêts et un chauffeur",
+  "routes.step2Hint":
+    "Tout s'enregistre au fur et à mesure. Fermez quand vous avez terminé : la tournée vous attend dans Toutes les tournées.",
+  "routes.oneTitle": "Ajouter un arrêt",
+  "routes.oneAdd": "Ajouter l'arrêt",
   "routes.fName": "Nom de la tournée",
   "routes.fDate": "Date",
   "routes.fStartTime": "Heure de départ",

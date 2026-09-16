@@ -783,6 +783,11 @@ export const it: Catalog = {
   "routes.status.cancelled": "Annullato",
   "routes.newTitle": "Nuovo percorso",
   "routes.newSubtitle": "Dai un nome al giro di oggi, poi aggiungi le fermate.",
+  "routes.step2Title": "Aggiungi fermate e un autista",
+  "routes.step2Hint":
+    "Tutto viene salvato subito. Chiudi quando hai finito e troverai il giro in Tutti i giri.",
+  "routes.oneTitle": "Aggiungi una fermata",
+  "routes.oneAdd": "Aggiungi fermata",
   "routes.fName": "Nome del percorso",
   "routes.fDate": "Data",
   "routes.fStartTime": "Ora di partenza",

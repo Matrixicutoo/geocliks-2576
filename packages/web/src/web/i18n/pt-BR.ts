@@ -780,6 +780,11 @@ export const ptBR: Catalog = {
   "routes.status.cancelled": "Cancelada",
   "routes.newTitle": "Nova rota",
   "routes.newSubtitle": "Nomeie a jornada do dia e depois adicione as paradas.",
+  "routes.step2Title": "Adicione paradas e um motorista",
+  "routes.step2Hint":
+    "Tudo é salvo na hora. Feche quando terminar e a jornada estará em Todas as rotas.",
+  "routes.oneTitle": "Adicionar uma parada",
+  "routes.oneAdd": "Adicionar parada",
   "routes.fName": "Nome da rota",
   "routes.fDate": "Data",
   "routes.fStartTime": "Horário de início",

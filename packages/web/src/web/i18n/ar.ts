@@ -760,6 +760,11 @@ export const ar: Catalog = {
   "routes.status.cancelled": "ملغى",
   "routes.newTitle": "مسار جديد",
   "routes.newSubtitle": "سمِّ رحلة اليوم ثم أضف المحطات.",
+  "routes.step2Title": "أضف المحطات وسائقًا",
+  "routes.step2Hint":
+    "كل شيء هنا يُحفظ تلقائيًا. أغلق النافذة عند الانتهاء وستجد الرحلة في كل الرحلات.",
+  "routes.oneTitle": "أضف محطة واحدة",
+  "routes.oneAdd": "أضف محطة",
   "routes.fName": "اسم المسار",
   "routes.fDate": "التاريخ",
   "routes.fStartTime": "وقت الانطلاق",

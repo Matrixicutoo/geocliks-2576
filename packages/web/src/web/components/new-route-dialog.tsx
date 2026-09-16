@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import { useLocation } from "wouter";
 import { Loader2, X } from "lucide-react";
 import { useAddressSuggestions, useCreateRoute } from "../queries/routes";
 import { useOrg } from "../queries/orgs";
@@ -23,9 +22,18 @@ const FIELD =
  * dialog already up, so a bookmarked link still lands somewhere sensible and there is never a
  * second form to keep in step with this one.
  */
-export function NewRouteDialog({ onClose }: { onClose: () => void }) {
+export function NewRouteDialog({
+  onClose,
+  onCreated,
+}: {
+  onClose: () => void;
+  /**
+   * Handed the new run's id instead of navigating to it. The routes page opens the stops and
+   * driver popup on top of the list, so naming a run and filling it in never costs a page.
+   */
+  onCreated: (routeId: string) => void;
+}) {
   const t = useT();
-  const [, navigate] = useLocation();
   const create = useCreateRoute();
   const org = useOrg();
   const [error, setError] = useState<string | null>(null);
@@ -85,8 +93,8 @@ export function NewRouteDialog({ onClose }: { onClose: () => void }) {
               returnToStart: form.returnToStart,
               requireSignature: form.requireSignature,
             });
-            // Straight onto the run so the stops can go in — the same place the old page went.
-            navigate(`/app/routes/${created.id}`);
+            // Straight on to its stops and its driver, in the next popup over the same list.
+            onCreated(created.id);
           } catch (err) {
             setError(err instanceof Error ? err.message : String(err));
           }

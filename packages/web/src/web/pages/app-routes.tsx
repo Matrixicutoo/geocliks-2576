@@ -12,6 +12,7 @@ import {
 import { DashboardShell } from "../components/dashboard-shell";
 import { AssignDriverDialog } from "../components/assign-driver-dialog";
 import { NewRouteDialog } from "../components/new-route-dialog";
+import { RouteStopsDialog } from "../components/route-stops-dialog";
 import { DeliveryChecklist } from "../components/delivery-checklist";
 import { PhotoStrip } from "../components/photo-strip";
 import { NotesPanel } from "../components/notes-panel";
@@ -53,6 +54,8 @@ export default function AppRoutes({ openNew = false }: { openNew?: boolean }) {
   const [, navigate] = useLocation();
   // Naming a run is a popup over the list now, the way New project is on the projects page.
   const [newOpen, setNewOpen] = useState(openNew);
+  // Step two of the same chain: the stops-and-driver popup, over the same list.
+  const [stopsRouteId, setStopsRouteId] = useState<string | null>(null);
   const routes = useRoutes();
   const removeRoute = useRemoveRoute();
   const canManage = canRunDeliveries(org.data?.role);
@@ -105,6 +108,14 @@ export default function AppRoutes({ openNew = false }: { openNew?: boolean }) {
   // Which run's driver popup is open. Same control the projects list has for crew, except a run
   // holds one driver, so the popup is a single-select.
   const [assignFor, setAssignFor] = useState<string | null>(null);
+
+  /**
+   * /app/routes/new opens the chain on load, so once the form is behind us that URL has to go -
+   * otherwise a reload puts the empty form straight back up over a run that already exists.
+   */
+  const leaveNewUrl = useCallback(() => {
+    if (window.location.pathname === "/app/routes/new") navigate("/app/routes");
+  }, [navigate]);
 
   const onDelete = async (id: string) => {
     setError(null);
@@ -336,11 +347,20 @@ export default function AppRoutes({ openNew = false }: { openNew?: boolean }) {
         <NewRouteDialog
           onClose={() => {
             setNewOpen(false);
-            // Closing the popup that /app/routes/new opened has to leave that URL behind, or a
-            // reload would put the form straight back up.
-            if (window.location.pathname === "/app/routes/new") navigate("/app/routes");
+            leaveNewUrl();
+          }}
+          onCreated={(routeId) => {
+            // Named, so straight on to its stops and its driver in the next popup. The list stays
+            // underneath the whole way.
+            setNewOpen(false);
+            leaveNewUrl();
+            setStopsRouteId(routeId);
           }}
         />
+      )}
+
+      {stopsRouteId && canManage && (
+        <RouteStopsDialog routeId={stopsRouteId} onClose={() => setStopsRouteId(null)} />
       )}
 
       {assignFor && canManage && (

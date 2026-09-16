@@ -786,6 +786,11 @@ export const de: Catalog = {
   "routes.status.cancelled": "Storniert",
   "routes.newTitle": "Neue Tour",
   "routes.newSubtitle": "Benennen Sie die Tagestour und fügen Sie dann die Stopps hinzu.",
+  "routes.step2Title": "Stopps und Fahrer hinzufügen",
+  "routes.step2Hint":
+    "Alles hier wird sofort gespeichert. Schließen Sie das Fenster, wenn Sie fertig sind — die Tour wartet dann unter Alle Touren.",
+  "routes.oneTitle": "Einen Stopp hinzufügen",
+  "routes.oneAdd": "Stopp hinzufügen",
   "routes.fName": "Tourname",
   "routes.fDate": "Datum",
   "routes.fStartTime": "Startzeit",

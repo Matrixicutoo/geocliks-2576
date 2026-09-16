@@ -786,6 +786,11 @@ export const tl: Catalog = {
   "routes.status.cancelled": "Kanselado",
   "routes.newTitle": "Bagong ruta",
   "routes.newSubtitle": "Pangalanan ang biyahe ng araw, pagkatapos ay idagdag ang mga hinto.",
+  "routes.step2Title": "Magdagdag ng mga hinto at drayber",
+  "routes.step2Hint":
+    "Naka-save agad ang lahat dito. Isara kapag tapos na — nasa Lahat ng ruta na ang biyahe.",
+  "routes.oneTitle": "Magdagdag ng isang hinto",
+  "routes.oneAdd": "Idagdag ang hinto",
   "routes.fName": "Pangalan ng ruta",
   "routes.fDate": "Petsa",
   "routes.fStartTime": "Oras ng simula",

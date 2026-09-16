@@ -743,6 +743,11 @@ export const zh: Catalog = {
   "routes.status.cancelled": "已取消",
   "routes.newTitle": "新建路线",
   "routes.newSubtitle": "为当天的行程命名，然后添加站点。",
+  "routes.step2Title": "添加站点和司机",
+  "routes.step2Hint":
+    "此处的更改会即时保存。完成后关闭即可，行程会出现在“所有行程”中。",
+  "routes.oneTitle": "添加单个站点",
+  "routes.oneAdd": "添加站点",
   "routes.fName": "路线名称",
   "routes.fDate": "日期",
   "routes.fStartTime": "出发时间",

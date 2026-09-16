@@ -784,6 +784,11 @@ export const es: Catalog = {
   "routes.status.cancelled": "Cancelada",
   "routes.newTitle": "Nueva ruta",
   "routes.newSubtitle": "Nombre la jornada y luego agregue las paradas.",
+  "routes.step2Title": "Agregue paradas y un conductor",
+  "routes.step2Hint":
+    "Todo se guarda al instante. Cierre cuando termine y la jornada estará en Todas las rutas.",
+  "routes.oneTitle": "Agregar una parada",
+  "routes.oneAdd": "Agregar parada",
   "routes.fName": "Nombre de la ruta",
   "routes.fDate": "Fecha",
   "routes.fStartTime": "Hora de inicio",

@@ -791,6 +791,11 @@ export const en = {
   "routes.status.cancelled": "Cancelled",
   "routes.newTitle": "New route",
   "routes.newSubtitle": "Name the day's run, then add the stops.",
+  "routes.step2Title": "Add stops and a driver",
+  "routes.step2Hint":
+    "Everything here saves as you go. Close when you're done and the run is waiting in All routes.",
+  "routes.oneTitle": "Add one stop",
+  "routes.oneAdd": "Add stop",
   "routes.fName": "Route name",
   "routes.fDate": "Date",
   "routes.fStartTime": "Start time",
