@@ -1,8 +1,10 @@
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { Link, useLocation } from "wouter";
 import {
   FileStack,
   Loader2,
+  MapPin,
+  PackageCheck,
   Plus,
   Route as RouteIcon,
   Search,
@@ -17,6 +19,7 @@ import { DeliveryChecklist } from "../components/delivery-checklist";
 import { PhotoStrip } from "../components/photo-strip";
 import { NotesPanel } from "../components/notes-panel";
 import { PanelSearch } from "../components/panel-search";
+import { StatTile } from "../components/stat-tile";
 import { useOrg } from "../queries/orgs";
 import { useRemoveRoute, useRoutes } from "../queries/routes";
 import { matchesSearch } from "../lib/search";
@@ -116,6 +119,26 @@ export default function AppRoutes({ openNew = false }: { openNew?: boolean }) {
   const leaveNewUrl = useCallback(() => {
     if (window.location.pathname === "/app/routes/new") navigate("/app/routes");
   }, [navigate]);
+
+  /**
+   * The day in four numbers, counted off the list this page already loaded rather than a second
+   * call. Deliberately the whole list, not the search matches: a summary that moves while you
+   * type is not a summary.
+   */
+  const tally = useMemo(() => {
+    const rows = routes.data ?? [];
+    const stops = rows.reduce((n, r) => n + (r.stopCount ?? 0), 0);
+    const done = rows.reduce((n, r) => n + (r.doneCount ?? 0), 0);
+    return {
+      runs: rows.length,
+      running: rows.filter((r) => r.status === "active").length,
+      stops,
+      done,
+      pct: stops ? Math.round((done / stops) * 100) : 0,
+      drivers: new Set(rows.map((r) => r.driverId).filter(Boolean)).size,
+      unassigned: rows.filter((r) => !r.driverId && r.status !== "cancelled").length,
+    };
+  }, [routes.data]);
 
   const onDelete = async (id: string) => {
     setError(null);
@@ -341,6 +364,42 @@ export default function AppRoutes({ openNew = false }: { openNew?: boolean }) {
         </div>
 
         <NotesPanel board="delivery" />
+      </div>
+
+      {/* The counts last, the way Teamspace carries them: a footer summarising the runs above,
+          not a row of numbers standing between the dispatcher and the list. */}
+      <div className="mt-4 grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
+        <StatTile
+          icon={RouteIcon}
+          label={t("routes.statRuns")}
+          value={tally.runs}
+          sub={t("routes.statRunsSub", { n: tally.running })}
+          loading={routes.isLoading}
+        />
+        <StatTile
+          icon={MapPin}
+          label={t("routes.statStops")}
+          value={tally.stops}
+          accent="sky"
+          sub={t("routes.statStopsSub", { n: tally.done })}
+          loading={routes.isLoading}
+        />
+        <StatTile
+          icon={PackageCheck}
+          label={t("routes.statDelivered")}
+          value={`${tally.pct}%`}
+          accent="verified"
+          sub={t("routes.statDeliveredSub", { n: tally.done, total: tally.stops })}
+          loading={routes.isLoading}
+        />
+        <StatTile
+          icon={Truck}
+          label={t("routes.statDrivers")}
+          value={tally.drivers}
+          accent="amber"
+          sub={t("routes.statDriversSub", { n: tally.unassigned })}
+          loading={routes.isLoading}
+        />
       </div>
 
       {newOpen && canManage && (

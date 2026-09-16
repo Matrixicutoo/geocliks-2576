@@ -19,13 +19,16 @@ import { useT } from "../lib/i18n";
 /**
  * Teamspace — the field dashboard.
  *
- * Three bands, top to bottom: the numbers, the live photo feed, then the day's two lists side
- * by side. The feed used to be a page-filling grid that you scrolled past to reach anything
+ * Three bands, top to bottom: the live photo feed, the day's two lists side by side, then the
+ * numbers. The feed used to be a page-filling grid that you scrolled past to reach anything
  * else; it is a single sideways-scrolling strip now (`PhotoStrip`, which also carries the tag
  * filters, search and the select-and-delete that grid had), so the lists that actually get
  * worked — projects on the left, office notes on the right — sit above the fold.
  *
- * There was a 14-day capture bar chart between the tiles and the feed. On a workspace where
+ * The stat tiles used to lead the page and now close it. They restate what the lists already
+ * show, so spending the top of the screen on them pushed the working half down for nothing.
+ *
+ * There was a 14-day capture bar chart above the feed. On a workspace where
  * every day has roughly the same count it drew as one solid amber band the width of the page,
  * which read as a banner rather than data and pushed the lists down for nothing.
  *
@@ -67,10 +70,47 @@ export default function TeamspacePage() {
     >
       <PageTitle name={org.data?.org.name} section={t("teamspace.title")} />
 
-      {/* Above the stats on purpose: a workspace with nothing in it has nothing to count yet. */}
+      {/* First-run guide, ahead of everything: a workspace with nothing in it has nothing to
+          count or show yet. */}
       <SetupChecklist />
 
-      <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
+      {/* The live feed, one strip deep. */}
+      <div>
+        {workspaceEmpty ? (
+          <EmptyState
+            icon={ImageOff}
+            title={t("teamspace.noMatch.title")}
+            hint={t("teamspace.noMatch.body")}
+            action={
+              seed.isPending ? (
+                <span className="mono flex items-center gap-2 text-[11px] text-fog">
+                  <Loader2 className="size-3.5 animate-spin" /> {t("teamspace.loadingField")}
+                </span>
+              ) : (
+                <button
+                  type="button"
+                  onClick={() => seed.mutate({})}
+                  className="mono rounded-full border border-line px-3 py-1.5 text-[11px] uppercase tracking-widest text-fog transition hover:border-amber hover:text-amber"
+                >
+                  {t("teamspace.loadSample")}
+                </button>
+              )
+            }
+          />
+        ) : (
+          <PhotoStrip board="field" />
+        )}
+      </div>
+
+      {/* The day's work: the jobs on the left, the office's notes on the right. */}
+      <div className={cn("mt-4 grid gap-4", showNotes && "xl:grid-cols-2")}>
+        <ProjectsPanel />
+        <NotesPanel board="field" />
+      </div>
+
+      {/* The counts last. They are a summary of what the lists above already show, so they read
+          as the footer of the day rather than as a toll gate in front of it. */}
+      <div className="mt-4 grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
         <StatTile
           icon={Camera}
           label={t("teamspace.statPhotos")}
@@ -105,40 +145,6 @@ export default function TeamspacePage() {
           sub={t("teamspace.statContributorsSub", { n: projects.data?.length ?? 0 })}
           loading={stats.isLoading}
         />
-      </div>
-
-      {/* The live feed, one strip deep. */}
-      <div className="mt-4">
-        {workspaceEmpty ? (
-          <EmptyState
-            icon={ImageOff}
-            title={t("teamspace.noMatch.title")}
-            hint={t("teamspace.noMatch.body")}
-            action={
-              seed.isPending ? (
-                <span className="mono flex items-center gap-2 text-[11px] text-fog">
-                  <Loader2 className="size-3.5 animate-spin" /> {t("teamspace.loadingField")}
-                </span>
-              ) : (
-                <button
-                  type="button"
-                  onClick={() => seed.mutate({})}
-                  className="mono rounded-full border border-line px-3 py-1.5 text-[11px] uppercase tracking-widest text-fog transition hover:border-amber hover:text-amber"
-                >
-                  {t("teamspace.loadSample")}
-                </button>
-              )
-            }
-          />
-        ) : (
-          <PhotoStrip board="field" />
-        )}
-      </div>
-
-      {/* The day's work: the jobs on the left, the office's notes on the right. */}
-      <div className={cn("mt-4 grid gap-4", showNotes && "xl:grid-cols-2")}>
-        <ProjectsPanel />
-        <NotesPanel board="field" />
       </div>
     </DashboardShell>
   );

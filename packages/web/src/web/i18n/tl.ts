@@ -773,6 +773,14 @@ export const tl: Catalog = {
   "routes.title": "Mga ruta ng paghahatid",
   "routes.subtitle":
     "Gumawa ng ruta, magtalaga ng driver, at patunayan ang bawat hatid gamit ang larawan.",
+  "routes.statRuns": "Mga ruta",
+  "routes.statRunsSub": "{n} ang kasalukuyang nasa daan",
+  "routes.statStops": "Mga hinto",
+  "routes.statStopsSub": "{n} ang tapos na",
+  "routes.statDelivered": "Naihatid",
+  "routes.statDeliveredSub": "{n} sa {total} hinto",
+  "routes.statDrivers": "Mga driver na nasa labas",
+  "routes.statDriversSub": "{n} ruta ang wala pang driver",
   "routes.new": "Bagong ruta",
   "routes.empty": "Wala pang ruta",
   "routes.emptyHint":

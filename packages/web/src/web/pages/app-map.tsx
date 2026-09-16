@@ -9,6 +9,14 @@ import { useProjects } from "../queries/projects";
 import { cn } from "../lib/utils";
 import { useT } from "../lib/i18n";
 
+/**
+ * The map is the page, so it runs to the foot of the window rather than sitting in a 560px
+ * letterbox with dead space under it: window height less the pinned header and the page's own
+ * bottom padding. `min-h` keeps it usable on a short laptop screen, where the subtraction would
+ * otherwise leave a sliver.
+ */
+const MAP_H = "h-[calc(100dvh-124px)] min-h-[420px]";
+
 export default function MapPage() {
   const t = useT();
   const [projectId, setProjectId] = useState<string | null>(null);
@@ -56,7 +64,7 @@ export default function MapPage() {
       }
     >
       {pins.isLoading ? (
-        <div className="h-[560px] animate-pulse rounded-[12px] border border-line bg-ink-2" />
+        <div className={cn(MAP_H, "animate-pulse rounded-[12px] border border-line bg-ink-2")} />
       ) : !hasPins ? (
         <EmptyState
           icon={MapPinOff}
@@ -69,10 +77,14 @@ export default function MapPage() {
             pins={rows}
             onSelect={setOpenPhoto}
             showRoute={showRoute}
-            className="h-[560px]"
+            className={MAP_H}
           />
 
-          <aside className="max-h-[560px] space-y-2 overflow-y-auto rounded-[12px] border border-line bg-ink-2 p-3">
+          <aside
+            // Same ceiling as the map, but a short log still draws short rather than as a
+            // window-tall empty box.
+            className="max-h-[calc(100dvh-124px)] space-y-2 overflow-y-auto rounded-[12px] border border-line bg-ink-2 p-3"
+          >
             <p className="label">{t("map.coordLog")}</p>
             {rows.slice(0, 60).map((pin) => (
               <button

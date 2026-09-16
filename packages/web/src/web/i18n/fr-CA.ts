@@ -778,6 +778,14 @@ export const frCA: Catalog = {
   "routes.title": "Tournées de livraison",
   "routes.subtitle":
     "Créez une tournée, assignez un chauffeur et prouvez chaque livraison par une photo.",
+  "routes.statRuns": "Tournées",
+  "routes.statRunsSub": "{n} sur la route maintenant",
+  "routes.statStops": "Arrêts",
+  "routes.statStopsSub": "{n} terminés",
+  "routes.statDelivered": "Livré",
+  "routes.statDeliveredSub": "{n} arrêts sur {total}",
+  "routes.statDrivers": "Chauffeurs en route",
+  "routes.statDriversSub": "{n} tournées en attendent un",
   "routes.new": "Nouvelle tournée",
   "routes.empty": "Aucune tournée",
   "routes.emptyHint":
