@@ -59,24 +59,25 @@ export function PlanCard({ plan, popular = false }: { plan: PlanView; popular?: 
       </ul>
       {/* A custom-priced plan (Enterprise, Enterprise Field) has no self-serve
           checkout — its CTA opens a mail draft to sales instead of the sign-in
-          flow. The address is printed under the button so it can be copied or
-          dialled by people who don't use a mail client on that device.
+          flow. The address is printed above the button so it can be copied or
+          dialled by people who don't use a mail client on that device, and so
+          the buttons themselves stay on one line across the row.
           Keyed off the price, not the id, so any future custom plan gets the
           right CTA without another edit here. */}
       <div className="mt-auto pt-6">
         {plan.priceCents < 0 ? (
           <>
             <a
+              href={`mailto:${SALES_EMAIL}`}
+              className="mono mb-2 block text-center text-[11px] text-amber transition-colors hover:text-chalk"
+            >
+              {SALES_EMAIL}
+            </a>
+            <a
               href={`mailto:${SALES_EMAIL}?subject=${encodeURIComponent(`GeoCliks ${plan.name} plan`)}`}
               className="mono block rounded-[8px] bg-amber px-3 py-2.5 text-center text-[11px] font-bold uppercase tracking-widest text-on-amber transition-colors hover:bg-on-amber hover:text-amber"
             >
               {t("home.pricing.talk")}
-            </a>
-            <a
-              href={`mailto:${SALES_EMAIL}`}
-              className="mono mt-2 block text-center text-[11px] text-amber transition-colors hover:text-chalk"
-            >
-              {SALES_EMAIL}
             </a>
           </>
         ) : (
