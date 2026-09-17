@@ -51,13 +51,6 @@ const riseIn = {
   show: { opacity: 1, y: 0, transition: { duration: 0.65, ease: [0.16, 1, 0.3, 1] as const } },
 };
 
-
-/**
- * Fixed, not `new Date()`. A live clock in a marketing screenshot re-renders on
- * every load and reads as a gimmick; a settled capture time reads like real EXIF.
- */
-const HERO_STAMP = "2026-08-26 14:31:07";
-
 /**
  * Whether this visitor should get the hero's background loop at all.
  *
@@ -101,10 +94,16 @@ function Hero() {
           phones and reduced-motion users get the <video> removed outright and a
           poster attribute would go with it. Both are decorative: no captions, hidden
           from screen readers — every word in the hero is real text on top. */}
-      <div
+      {/* An <img>, not a CSS background: with the collage gone this still is the
+          hero's LCP element, and a background-image is only discovered once the
+          stylesheet has parsed. In the markup it is fetched with the document. */}
+      <img
+        src="/videos/hero-trades-delivery-poster.jpg"
+        alt=""
         aria-hidden="true"
-        className="pointer-events-none absolute inset-0 bg-cover bg-center"
-        style={{ backgroundImage: "url('/videos/hero-trades-delivery-poster.jpg')" }}
+        className="pointer-events-none absolute inset-0 size-full object-cover"
+        fetchPriority="high"
+        decoding="async"
       />
       {footage ? (
         <video
@@ -129,9 +128,9 @@ function Hero() {
         variants={stagger}
         initial="hidden"
         animate="show"
-        className="relative mx-auto grid max-w-[1180px] items-center gap-y-8 px-5 py-20 lg:grid-cols-[1.05fr_0.95fr] lg:gap-x-14 lg:py-28"
+        className="relative mx-auto max-w-[1180px] px-5 py-24 lg:py-36"
       >
-        <div className="lg:col-start-1 lg:row-start-1">
+        <div className="max-w-[640px]">
           <motion.p
             variants={riseIn}
             className="rounded-[6px] mono inline-flex items-center gap-2 border border-amber/40 bg-amber/10 px-2.5 py-1 text-[10.5px] uppercase tracking-[0.2em] text-amber"
@@ -154,48 +153,8 @@ function Hero() {
           >
             {t("home.hero.body")}
           </motion.p>
-        </div>
 
-        {/* Printed-photo evidence stack */}
-        <motion.div
-          variants={riseIn}
-          className="relative mx-auto w-full max-w-[440px] lg:col-start-2 lg:row-span-2 lg:row-start-1 lg:self-center"
-        >
-          <div className="relative rounded-[12px] border border-line bg-ink-2 p-2.5 shadow-[0_30px_80px_-20px_rgba(0,0,0,0.9)]">
-            <div className="relative overflow-hidden">
-              {/* The LCP element: eager, and asked for ahead of the rest of the page's
-                  images, which all load lazily. No width/height attributes anywhere on the
-                  site's images — the `aspect-*` class reserves the box before the file
-                  arrives, so there is no layout shift to fix, and a hardcoded pair would
-                  only be one more thing to get wrong when a sample photo is swapped. */}
-              <img
-                src="/images/samples/crew-collage.jpg"
-                alt={t("home.hero.altCollage")}
-                className="aspect-[3/4] w-full object-cover"
-                fetchPriority="high"
-                decoding="async"
-              />
-              <div className="absolute inset-x-0 bottom-0 flex items-stretch bg-black/72 backdrop-blur-[2px]">
-                <div className="w-[3px] bg-amber" />
-                <div className="px-3 py-2">
-                  <p className="mono text-[12px] font-semibold text-white">{HERO_STAMP}</p>
-                  <p className="mono text-[10px] text-white/70">{t("home.hero.stampNote")}</p>
-                </div>
-              </div>
-              <span className="rounded-[6px] mono absolute left-2.5 top-2.5 border border-verified/50 bg-black/70 px-1.5 py-0.5 text-[9.5px] uppercase tracking-widest text-verified">
-                {t("evidence.verified")}
-              </span>
-            </div>
-            <div className="flex items-center justify-between px-1 pt-2.5 pb-1">
-              <span className="mono text-[10.5px] tracking-widest text-amber">
-                GC-8QF2-40XR-91KD
-              </span>
-              <span className="mono text-[10px] text-fog">SHA-256 LOCKED</span>
-            </div>
-          </div>
-        </motion.div>
-        <div className="lg:col-start-1 lg:row-start-2">
-          <motion.div variants={riseIn} className="flex flex-wrap items-center gap-3">
+          <motion.div variants={riseIn} className="mt-9 flex flex-wrap items-center gap-3">
             <Link
               to="/sign-up"
               className="rounded-[8px] mono inline-flex items-center gap-2 bg-amber px-5 py-3 text-[12px] font-bold uppercase tracking-widest text-on-amber transition-colors hover:bg-amber-deep"
