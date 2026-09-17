@@ -484,15 +484,18 @@
     );
 }
 
+/* Dark mode veils in ink, and lighter than the light-mode one has to be: the
+   copy is already chalk-on-dark, so it only needs the footage knocked back far
+   enough to read against, not blacked out. */
 [data-theme="dark"] .hero-veil {
   background:
     linear-gradient(
       to right,
-      rgba(11, 14, 19, 0.85) 0%,
-      rgba(11, 14, 19, 0.78) calc(50% - 120px),
-      rgba(11, 14, 19, 0.58) calc(50% + 130px),
-      rgba(11, 14, 19, 0.26) calc(50% + 430px),
-      rgba(11, 14, 19, 0.14) 100%
+      rgba(11, 14, 19, 0.62) 0%,
+      rgba(11, 14, 19, 0.55) calc(50% - 120px),
+      rgba(11, 14, 19, 0.36) calc(50% + 130px),
+      rgba(11, 14, 19, 0.14) calc(50% + 430px),
+      rgba(11, 14, 19, 0.06) 100%
     );
 }
 
@@ -520,12 +523,12 @@
     background:
       linear-gradient(
         to right,
-        rgba(11, 14, 19, 0.34) 0%,
-        rgba(11, 14, 19, 0.85) calc(50% - 780px),
-        rgba(11, 14, 19, 0.78) calc(50% - 120px),
-        rgba(11, 14, 19, 0.58) calc(50% + 130px),
-        rgba(11, 14, 19, 0.26) calc(50% + 430px),
-        rgba(11, 14, 19, 0.14) 100%
+        rgba(11, 14, 19, 0.16) 0%,
+        rgba(11, 14, 19, 0.62) calc(50% - 780px),
+        rgba(11, 14, 19, 0.55) calc(50% - 120px),
+        rgba(11, 14, 19, 0.36) calc(50% + 130px),
+        rgba(11, 14, 19, 0.14) calc(50% + 430px),
+        rgba(11, 14, 19, 0.06) 100%
       );
   }
 }
@@ -548,9 +551,9 @@
     background:
       linear-gradient(
         180deg,
-        rgba(11, 14, 19, 0.86) 0%,
-        rgba(11, 14, 19, 0.8) 62%,
-        rgba(11, 14, 19, 0.5) 100%
+        rgba(11, 14, 19, 0.7) 0%,
+        rgba(11, 14, 19, 0.64) 62%,
+        rgba(11, 14, 19, 0.34) 100%
       );
   }
 }
