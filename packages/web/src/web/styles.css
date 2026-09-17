@@ -462,28 +462,26 @@
 }
 
 /* The hero's background footage sits under body text, so it needs a veil — but
-   only where the words are. The copy is a centred 720px column, so the veil is
-   symmetric about the centre line: full strength across the middle where the
-   headline sits, falling away to nearly clear at both edges, so the ends of the
-   band play close to unfiltered.
-   Its stops are px off the centre rather than percentages of the band, because
-   the column is a fixed width and the band is not: in percentages the veil
-   drifted off the text on a cinema-wide monitor, going solid over a thousand px
-   of empty footage while thinning out under the words. In px it holds the same
-   position relative to the headline at every width, which is also why this needs
-   no ultrawide variant. Below ~1180px the ±430px stops sit past the viewport
-   edge and the veil is simply even across the band, which is what narrow
-   desktops want anyway.
+   only where the words are. The copy is a centred column, so the veil is an
+   ellipse centred on it: densest on the centre line under the headline and
+   thinning outward in every direction, clear by the time it reaches either end
+   of the band.
+   An ellipse rather than a left-to-right gradient because the copy is a block,
+   not a stripe — a linear fade holds full strength above and below the text as
+   well, which is footage veiled for no reason. `closest-side` ties the falloff
+   to the band's own half-width and half-height, so it scales with the band
+   instead of needing a breakpoint; the stops are percentages of that radius,
+   which is why this needs no separate ultrawide rule.
    Light mode veils in white, dark mode in ink. */
 @utility hero-veil {
   background:
-    linear-gradient(
-      to right,
-      rgba(255, 255, 255, 0.12) 0%,
-      rgba(255, 255, 255, 0.86) calc(50% - 430px),
-      rgba(255, 255, 255, 0.88) 50%,
-      rgba(255, 255, 255, 0.86) calc(50% + 430px),
-      rgba(250, 252, 255, 0.12) 100%
+    radial-gradient(
+      ellipse 62% 78% at 50% 50%,
+      rgba(255, 255, 255, 0.9) 0%,
+      rgba(255, 255, 255, 0.84) 34%,
+      rgba(255, 255, 255, 0.6) 58%,
+      rgba(252, 253, 255, 0.28) 78%,
+      rgba(250, 252, 255, 0.06) 100%
     );
 }
 
@@ -492,13 +490,13 @@
    enough to read against, not blacked out. */
 [data-theme="dark"] .hero-veil {
   background:
-    linear-gradient(
-      to right,
-      rgba(11, 14, 19, 0.08) 0%,
-      rgba(11, 14, 19, 0.6) calc(50% - 430px),
-      rgba(11, 14, 19, 0.64) 50%,
-      rgba(11, 14, 19, 0.6) calc(50% + 430px),
-      rgba(11, 14, 19, 0.08) 100%
+    radial-gradient(
+      ellipse 62% 78% at 50% 50%,
+      rgba(11, 14, 19, 0.68) 0%,
+      rgba(11, 14, 19, 0.62) 34%,
+      rgba(11, 14, 19, 0.44) 58%,
+      rgba(11, 14, 19, 0.2) 78%,
+      rgba(11, 14, 19, 0.04) 100%
     );
 }
 
