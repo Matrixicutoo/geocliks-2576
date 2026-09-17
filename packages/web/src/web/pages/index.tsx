@@ -169,9 +169,9 @@ function Hero() {
         variants={stagger}
         initial="hidden"
         animate="show"
-        className="relative mx-auto flex max-w-[1180px] flex-col justify-center px-5 py-20 lg:min-h-[min(56.25vw,92vh)] lg:py-24"
+        className="relative mx-auto flex max-w-[1180px] flex-col items-center justify-center px-5 py-20 text-center lg:min-h-[min(56.25vw,92vh)] lg:py-24"
       >
-        <div className="max-w-[640px]">
+        <div className="max-w-[720px]">
           <motion.p
             variants={riseIn}
             className="rounded-[6px] mono inline-flex items-center gap-2 border border-amber/40 bg-amber/10 px-2.5 py-1 text-[10.5px] uppercase tracking-[0.2em] text-amber"
@@ -190,12 +190,15 @@ function Hero() {
 
           <motion.p
             variants={riseIn}
-            className="mt-6 max-w-xl text-[17px] leading-relaxed text-fog"
+            className="mx-auto mt-6 max-w-xl text-[17px] leading-relaxed text-fog"
           >
             {t("home.hero.body")}
           </motion.p>
 
-          <motion.div variants={riseIn} className="mt-9 flex flex-wrap items-center gap-3">
+          <motion.div
+            variants={riseIn}
+            className="mt-9 flex flex-wrap items-center justify-center gap-3"
+          >
             <Link
               to="/sign-up"
               className="rounded-[8px] mono inline-flex items-center gap-2 bg-amber px-5 py-3 text-[12px] font-bold uppercase tracking-widest text-on-amber transition-colors hover:bg-amber-deep"
@@ -212,7 +215,7 @@ function Hero() {
 
           <motion.div
             variants={riseIn}
-            className="mt-8 flex flex-wrap items-center gap-x-7 gap-y-2 text-[12px] text-fog"
+            className="mt-8 flex flex-wrap items-center justify-center gap-x-7 gap-y-2 text-[12px] text-fog"
           >
             <span className="flex items-center gap-1.5">
               <WifiOff className="size-3.5 text-amber" /> {t("home.hero.noSignal")}
