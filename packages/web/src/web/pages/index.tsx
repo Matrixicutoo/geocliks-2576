@@ -51,40 +51,70 @@ const riseIn = {
   show: { opacity: 1, y: 0, transition: { duration: 0.65, ease: [0.16, 1, 0.3, 1] as const } },
 };
 
+/** The two cuts of the hero loop, and the framing each one needs. */
+const HERO_CUTS = {
+  /* 16:9, 2560x1440. The band is held at exactly this ratio from `lg` up, so on a
+     normal screen it plays uncropped. */
+  standard: {
+    src: "/videos/hero-16x9",
+    poster: "/videos/hero-poster-16x9.jpg",
+    /* Barely off centre: what little the band does crop comes mostly off the
+       ground, where nobody's face is. */
+    position: "50% 38%",
+  },
+  /* 2.4:1, 3840x1600 — the same shots recut wide, each one panned to keep its
+     subject inside the shorter frame. A cinema-wide monitor gets this instead of
+     having a third of a 16:9 frame sliced off, which is what took the heads off. */
+  wide: {
+    src: "/videos/hero-wide",
+    poster: "/videos/hero-poster-wide.jpg",
+    /* Anchored near the top: the remaining trim comes off the foreground, and the
+       plumber and the framer sit high enough in frame to need every pixel up there. */
+    position: "50% 12%",
+  },
+} as const;
+
 /**
- * Whether this visitor should get the hero's background loop at all.
+ * Which cut of the hero loop this visitor gets, or null for no loop at all.
  *
  * Hiding the <video> in CSS was the first attempt and it does not work: Chrome
  * fetches the sources of a `display: none` video anyway, so a phone on cellular
  * still paid for several megabytes it would never see. So the element is kept
- * out of the tree entirely until the checks pass, which means no request. Both
- * checks start false so the server-rendered HTML and the first client paint
- * agree — the poster layer is what renders under both, and the loop swaps in a
- * tick later on the machines that want it.
+ * out of the tree entirely until the checks pass, which means no request. And
+ * only the chosen cut is ever mounted, so a visitor downloads one file — the
+ * `media` attribute on <source> would have been the tidy way to do this, but
+ * browsers dropped it for video and honour it on <picture> only.
+ *
+ * It starts null so the server-rendered HTML and the first client paint agree —
+ * the poster layer is what renders under both, and the loop swaps in a tick
+ * later on the machines that want it.
  */
 function useHeroFootage() {
-  const [play, setPlay] = useState(false);
+  const [cut, setCut] = useState<keyof typeof HERO_CUTS | null>(null);
 
   useEffect(() => {
     const wide = window.matchMedia("(min-width: 640px)");
     const still = window.matchMedia("(prefers-reduced-motion: reduce)");
-    const decide = () => setPlay(wide.matches && !still.matches);
+    /* Matches the CSS: past this aspect the band is wider than the footage and
+       `object-cover` starts eating into the frame, so the wide cut takes over. */
+    const cinema = window.matchMedia("(min-aspect-ratio: 37/20)");
+    const decide = () =>
+      setCut(wide.matches && !still.matches ? (cinema.matches ? "wide" : "standard") : null);
 
     decide();
-    wide.addEventListener("change", decide);
-    still.addEventListener("change", decide);
+    for (const q of [wide, still, cinema]) q.addEventListener("change", decide);
     return () => {
-      wide.removeEventListener("change", decide);
-      still.removeEventListener("change", decide);
+      for (const q of [wide, still, cinema]) q.removeEventListener("change", decide);
     };
   }, []);
 
-  return play;
+  return cut;
 }
 
 function Hero() {
   const t = useT();
-  const footage = useHeroFootage();
+  const cut = useHeroFootage();
+  const footage = cut ? HERO_CUTS[cut] : null;
 
   return (
     <section className="hero-band relative overflow-hidden border-b border-line">
@@ -94,21 +124,27 @@ function Hero() {
           phones and reduced-motion users get the <video> removed outright and a
           poster attribute would go with it. Both are decorative: no captions, hidden
           from screen readers — every word in the hero is real text on top. */}
-      {/* An <img>, not a CSS background: with the collage gone this still is the
+      {/* A <picture>, not a CSS background: with the collage gone this still is the
           hero's LCP element, and a background-image is only discovered once the
-          stylesheet has parsed. In the markup it is fetched with the document. */}
-      <img
-        src="/videos/hero-trades-delivery-poster.jpg"
-        alt=""
-        aria-hidden="true"
-        className="pointer-events-none absolute inset-0 size-full object-cover"
-        fetchPriority="high"
-        decoding="async"
-      />
+          stylesheet has parsed. In the markup it is fetched with the document —
+          and `media` picks the right cut before React has even run. */}
+      <picture className="contents">
+        <source media="(min-aspect-ratio: 37/20)" srcSet={HERO_CUTS.wide.poster} />
+        <img
+          src={HERO_CUTS.standard.poster}
+          alt=""
+          aria-hidden="true"
+          className="hero-still pointer-events-none absolute inset-0 size-full object-cover"
+          fetchPriority="high"
+          decoding="async"
+        />
+      </picture>
       {footage ? (
         <video
+          key={footage.src}
           className="hero-footage pointer-events-none absolute inset-0 size-full object-cover"
-          poster="/videos/hero-trades-delivery-poster.jpg"
+          style={{ objectPosition: footage.position }}
+          poster={footage.poster}
           autoPlay
           muted
           loop
@@ -117,21 +153,23 @@ function Hero() {
           aria-hidden="true"
           tabIndex={-1}
         >
-          <source src="/videos/hero-trades-delivery.webm" type="video/webm" />
-          <source src="/videos/hero-trades-delivery.mp4" type="video/mp4" />
+          {/* h264 only: VP9 at a matching quality came out heavier than x264 on
+              footage this soft-edged, so the second file was pure page weight. */}
+          <source src={`${footage.src}.mp4`} type="video/mp4" />
         </video>
       ) : null}
       <div className="hero-veil pointer-events-none absolute inset-0" />
 
-      {/* The band is held at the footage's own 16:9 on wide screens so `object-cover`
-          has almost nothing left to crop — the faces at the edges of frame survive.
-          `min-h` rather than a fixed aspect keeps it from collapsing under the copy
-          on short viewports, where the crop is the lesser evil. */}
+      {/* The band tracks the footage's own shape rather than a fixed height, so
+          `object-cover` has little left to crop and the faces at the edges of frame
+          survive: 56.25vw is 16:9 exactly, and the 92vh ceiling is what stops a
+          cinema-wide monitor from getting a hero taller than its screen. `min-h`
+          rather than a fixed aspect so the band can still grow under the copy. */}
       <motion.div
         variants={stagger}
         initial="hidden"
         animate="show"
-        className="relative mx-auto flex max-w-[1180px] flex-col justify-center px-5 py-20 lg:min-h-[min(56.25vw,860px)] lg:py-24"
+        className="relative mx-auto flex max-w-[1180px] flex-col justify-center px-5 py-20 lg:min-h-[min(56.25vw,92vh)] lg:py-24"
       >
         <div className="max-w-[640px]">
           <motion.p

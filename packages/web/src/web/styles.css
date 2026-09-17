@@ -447,32 +447,87 @@
   box-shadow: inset 0 -34px 34px -32px rgba(0, 0, 0, 0.55);
 }
 
+/* The poster under the loop is framed the same way its cut is: the wide cut sits
+   high because the plumber and the framer are near the top of frame, and whatever
+   the band crops should come off the ground instead. Kept in CSS rather than an
+   inline style so the first paint is already framed right, before React runs. */
+@utility hero-still {
+  object-position: 50% 38%;
+}
+
+@media (min-aspect-ratio: 37 / 20) {
+  .hero-still {
+    object-position: 50% 12%;
+  }
+}
+
 /* The hero's background footage sits under body text, so it needs a veil — but
-   only where the words are. It runs nearly horizontal and clears almost entirely
-   by two thirds across, so the right half of the footage plays close to
-   unfiltered while the headline keeps enough contrast to read. Pulled back from
-   the near-opaque first pass, which was washing the picture out.
+   only where the words are. Its stops are measured in px off the centre line,
+   not in percentages of the band, because the copy is centred too: the content
+   column is `max-w-[1180px] mx-auto`, so the text always starts at
+   50% - 570px and ends at 50% + 70px whatever the viewport does. Percentage
+   stops drifted away from that on a cinema-wide monitor — the veil went solid
+   over 1000px of empty footage on the left while thinning out under the words.
+   In px the veil holds the same position relative to the headline at every
+   width, and the two `max(0px, …)` stops collapse to the left edge below
+   ~1180px so narrow desktops keep the flat-left veil they had.
    Light mode veils in white, dark mode in ink. */
 @utility hero-veil {
   background:
     linear-gradient(
-      96deg,
+      to right,
       rgba(255, 255, 255, 0.9) 0%,
-      rgba(255, 255, 255, 0.78) 34%,
-      rgba(252, 253, 255, 0.34) 62%,
-      rgba(250, 252, 255, 0.12) 100%
+      rgba(255, 255, 255, 0.84) calc(50% - 120px),
+      rgba(252, 253, 255, 0.62) calc(50% + 130px),
+      rgba(251, 253, 255, 0.24) calc(50% + 430px),
+      rgba(250, 252, 255, 0.1) 100%
     );
 }
 
 [data-theme="dark"] .hero-veil {
   background:
     linear-gradient(
-      96deg,
-      rgba(11, 14, 19, 0.84) 0%,
-      rgba(11, 14, 19, 0.72) 34%,
-      rgba(11, 14, 19, 0.38) 62%,
-      rgba(11, 14, 19, 0.16) 100%
+      to right,
+      rgba(11, 14, 19, 0.85) 0%,
+      rgba(11, 14, 19, 0.78) calc(50% - 120px),
+      rgba(11, 14, 19, 0.58) calc(50% + 130px),
+      rgba(11, 14, 19, 0.26) calc(50% + 430px),
+      rgba(11, 14, 19, 0.14) 100%
     );
+}
+
+/* Past ~1700px the content column stops touching the left edge, and a veil that
+   starts solid there sits on a wide strip of footage with no words on it at all —
+   on a cinema-wide monitor that was a thousand px of whited-out roof. From here up
+   the veil fades in from the edge and only reaches full strength just before the
+   headline starts. The right-hand stops are unchanged: they are already measured
+   off the centre line, so they track the copy on their own. */
+@media (width >= 1700px) {
+  .hero-veil {
+    background:
+      linear-gradient(
+        to right,
+        rgba(255, 255, 255, 0.3) 0%,
+        rgba(255, 255, 255, 0.9) calc(50% - 780px),
+        rgba(255, 255, 255, 0.84) calc(50% - 120px),
+        rgba(252, 253, 255, 0.62) calc(50% + 130px),
+        rgba(251, 253, 255, 0.24) calc(50% + 430px),
+        rgba(250, 252, 255, 0.1) 100%
+      );
+  }
+
+  [data-theme="dark"] .hero-veil {
+    background:
+      linear-gradient(
+        to right,
+        rgba(11, 14, 19, 0.34) 0%,
+        rgba(11, 14, 19, 0.85) calc(50% - 780px),
+        rgba(11, 14, 19, 0.78) calc(50% - 120px),
+        rgba(11, 14, 19, 0.58) calc(50% + 130px),
+        rgba(11, 14, 19, 0.26) calc(50% + 430px),
+        rgba(11, 14, 19, 0.14) 100%
+      );
+  }
 }
 
 /* On phones the copy spans the whole band, so a veil that clears to the right
