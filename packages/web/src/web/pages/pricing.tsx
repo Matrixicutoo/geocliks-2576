@@ -7,7 +7,7 @@ import {
   LandingPage,
   LandingSection,
 } from "../components/landing-page";
-import { PlanCard, PlanWideBand, isDeliveryPlan, type PlanView } from "../components/plan-cards";
+import { PlanCard, isDeliveryPlan, type PlanView } from "../components/plan-cards";
 import { useLocale, useT } from "../lib/i18n";
 import { usePlans } from "../queries/billing";
 import { SALES_EMAIL } from "../lib/support";
@@ -306,14 +306,19 @@ export default function Pricing() {
 
   const all = plans.data ?? [];
   // "enterprise" is the custom top of the delivery ladder ("Everything in Delivery
-  // Fleet") and is not itself a delivery plan, so it would leave dead cells in the
-  // 3-column grid. It trails the delivery family as a full-width band, the way it
-  // does on the home page. The evidence family's custom tier is "enterprise-field",
-  // which is a normal card in that grid.
+  // Fleet") without being a delivery plan itself, so it has to be placed by hand.
+  // It is a card in the delivery grid, immediately after Delivery Fleet 500 — the
+  // ladder reads straight through to the custom tier instead of stopping at 500 and
+  // starting again in a band underneath. The evidence family's own custom tier,
+  // "enterprise-field", already sits in its grid the same way.
   const custom = all.find((plan) => plan.id === "enterprise") ?? null;
   const evidence = all.filter((plan) => !isDeliveryPlan(plan.id) && plan.id !== "enterprise");
   const delivery = all.filter((plan) => isDeliveryPlan(plan.id));
-  const shown = family === "evidence" ? evidence : delivery;
+  // Two arrays on purpose. The cards carry Enterprise; the comparison columns do
+  // not, because every cell of it would read "custom" — its limits are agreed, not
+  // listed, which is what the note under the table says.
+  const columns = family === "evidence" ? evidence : delivery;
+  const cards = family === "evidence" ? evidence : custom ? [...delivery, custom] : delivery;
 
   const groups =
     family === "evidence"
@@ -330,9 +335,11 @@ export default function Pricing() {
       h1="Start free. Pay when the crew grows, not before."
       sub="Verified capture is free forever — no card, no expiry date. Everything above it is priced on what actually costs us something: how much you shoot, how many people sign in, and how many doors you knock on."
       jsonLd={[faqSchema(FAQ), breadcrumbSchema([{ name: "Pricing" }])]}
+      center
     >
       <LandingSection
         id="plans"
+        center
         label="01 — The plans"
         h2="Two families, priced on two different things."
         intro="Evidence plans are sized by captures, video and seats. Delivery plans are sized by stops and drivers, and include everything the evidence plans verify. Pick the one that matches the work."
@@ -348,28 +355,24 @@ export default function Pricing() {
         ) : (
           <>
             <div className="mt-8 grid gap-px bg-line sm:grid-cols-2 md:grid-cols-3">
-              {shown.map((plan) => (
+              {cards.map((plan) => (
                 <PlanCard key={plan.id} plan={plan} popular={plan.id === "business"} />
               ))}
               {/* The grid paints its hairlines through 1px gaps in a `bg-line`
                   container, so an incomplete last row would render every empty cell
                   as a solid grey slab. Card-coloured fillers, toggled per breakpoint
                   because a hidden grid item occupies no cell. */}
-              {Array.from({ length: (2 - (shown.length % 2)) % 2 }, (_, i) => (
+              {Array.from({ length: (2 - (cards.length % 2)) % 2 }, (_, i) => (
                 <div key={`fill2-${i}`} aria-hidden className="hidden bg-ink sm:block md:hidden" />
               ))}
-              {Array.from({ length: (3 - (shown.length % 3)) % 3 }, (_, i) => (
+              {Array.from({ length: (3 - (cards.length % 3)) % 3 }, (_, i) => (
                 <div key={`fill3-${i}`} aria-hidden className="hidden bg-ink md:block" />
               ))}
             </div>
-            {/* Only under Delivery, exactly as on the home page. The evidence family
-                has its own custom tier ("Enterprise Field") sitting in the grid as a
-                normal card, so showing this band there too reads as two Enterprises. */}
-            {family === "delivery" && custom && <PlanWideBand plan={custom} />}
           </>
         )}
 
-        <p className="mt-6 text-[13px] leading-relaxed text-fog">
+        <p className="mx-auto mt-6 max-w-[760px] text-[13px] leading-relaxed text-fog">
           Prices are in USD per month, billed per workspace rather than per seat — a five-seat plan
           is one bill, not five. Need SSO, a signed DPA or procurement paperwork? That is Enterprise
           on any volume:{" "}
@@ -381,15 +384,17 @@ export default function Pricing() {
       </LandingSection>
 
       <LandingSection
+        center
         label="02 — On every plan"
         h2="The proof does not get better when you pay us."
         intro="Plenty of tools put the trustworthy version behind the top tier. Here is what a free workspace gets that an Enterprise one does not get more of."
       >
-        <LandingCards items={SAME_FOR_EVERYONE} />
+        <LandingCards items={SAME_FOR_EVERYONE} center />
       </LandingSection>
 
       <LandingSection
         id="compare"
+        center
         label="03 — Compare"
         h2="Every limit, plan against plan."
         intro="Read straight from the plan catalogue our own enforcement code reads, so a number here is the number that applies to your workspace."
@@ -409,7 +414,7 @@ export default function Pricing() {
                 >
                   Feature
                 </th>
-                {shown.map((plan) => (
+                {columns.map((plan) => (
                   <th key={plan.id} scope="col" className="px-3 py-3 text-center align-bottom">
                     <span className="mono block text-[11px] uppercase tracking-[0.18em] text-amber">
                       {plan.name}
@@ -428,7 +433,7 @@ export default function Pricing() {
                       sticky element — a sticky box already as wide as its containing
                       block has nowhere to slide to, and the group name scrolled out of
                       sight with the columns. The label inside it is what sticks. */}
-                  <th scope="colgroup" colSpan={shown.length + 1} className="bg-ink-2 p-0">
+                  <th scope="colgroup" colSpan={columns.length + 1} className="bg-ink-2 p-0">
                     <span className="mono sticky start-0 inline-block px-3 py-2 text-[10.5px] uppercase tracking-[0.2em] text-amber">
                       {group.title}
                     </span>
@@ -444,7 +449,7 @@ export default function Pricing() {
                         </span>
                       )}
                     </th>
-                    {shown.map((plan) => (
+                    {columns.map((plan) => (
                       <td key={plan.id} className="px-3 py-3 text-center">
                         <CompareCell value={row.value(plan)} />
                       </td>
@@ -456,7 +461,7 @@ export default function Pricing() {
           </table>
         </div>
 
-        <p className="mt-5 text-[13px] leading-relaxed text-fog">
+        <p className="mx-auto mt-5 max-w-[760px] text-[13px] leading-relaxed text-fog">
           {family === "delivery" && custom
             ? `${custom.name} is not in the table on purpose — its limits are set with you, not picked from a list.`
             : null}{" "}
@@ -468,8 +473,8 @@ export default function Pricing() {
         </p>
       </LandingSection>
 
-      <LandingSection id="faq" label="04 — Questions" h2="What people ask before they pay.">
-        <LandingFaq entries={FAQ} />
+      <LandingSection id="faq" center label="04 — Questions" h2="What people ask before they pay.">
+        <LandingFaq entries={FAQ} center />
       </LandingSection>
 
       <LandingCta

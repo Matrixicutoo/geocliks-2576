@@ -30,6 +30,7 @@ export function LandingPage({
   h1,
   sub,
   jsonLd,
+  center = false,
   children,
 }: {
   /**
@@ -43,6 +44,14 @@ export function LandingPage({
   h1: string;
   sub: string;
   jsonLd?: object | object[];
+  /**
+   * Centre the hero copy instead of setting it flush left.
+   *
+   * `/pricing` is read as a page of columns, so its bands are centred on the
+   * axis the cards and the table already sit on — the same shape the home
+   * page's video hero uses. The query-led landing pages stay flush left.
+   */
+  center?: boolean;
   children: React.ReactNode;
 }) {
   const seo = PAGE_SEO[path];
@@ -67,12 +76,22 @@ export function LandingPage({
 
       <section className="hero-band relative overflow-hidden border-b border-line">
         <div className="absolute inset-0 blueprint opacity-60" />
-        <div className="relative mx-auto max-w-[1180px] px-5 py-16 sm:py-20">
+        <div
+          className={
+            center
+              ? "relative mx-auto max-w-[1180px] px-5 py-16 text-center sm:py-20"
+              : "relative mx-auto max-w-[1180px] px-5 py-16 sm:py-20"
+          }
+        >
           <p className="label text-amber">{eyebrow}</p>
-          <h1 className="mt-3 max-w-[860px] font-display text-[34px] font-bold leading-[1.08] tracking-tight text-chalk sm:text-[46px]">
+          <h1
+            className={`mt-3 max-w-[860px] font-display text-[34px] font-bold leading-[1.08] tracking-tight text-chalk sm:text-[46px] ${center ? "mx-auto" : ""}`}
+          >
             {h1}
           </h1>
-          <p className="mt-5 max-w-[680px] text-[16px] leading-relaxed text-fog sm:text-[17px]">
+          <p
+            className={`mt-5 max-w-[680px] text-[16px] leading-relaxed text-fog sm:text-[17px] ${center ? "mx-auto" : ""}`}
+          >
             {sub}
           </p>
         </div>
@@ -91,23 +110,43 @@ export function LandingSection({
   label,
   h2,
   intro,
+  center = false,
   children,
 }: {
   id?: string;
   label?: string;
   h2: string;
   intro?: string;
+  /**
+   * Centre the band's own copy, and everything the children inherit from it.
+   *
+   * Set per page rather than globally: a comparison table inside a centred band
+   * still pins its own `text-left`, so only the prose moves.
+   */
+  center?: boolean;
   children?: React.ReactNode;
 }) {
   return (
     <section id={id} className="border-b border-line">
-      <div className="mx-auto max-w-[1180px] px-5 py-16 sm:py-20">
+      <div
+        className={
+          center
+            ? "mx-auto max-w-[1180px] px-5 py-16 text-center sm:py-20"
+            : "mx-auto max-w-[1180px] px-5 py-16 sm:py-20"
+        }
+      >
         {label ? <p className="label">{label}</p> : null}
-        <h2 className="mt-3 max-w-[760px] font-display text-[28px] font-bold leading-tight tracking-tight text-chalk sm:text-[36px]">
+        <h2
+          className={`mt-3 max-w-[760px] font-display text-[28px] font-bold leading-tight tracking-tight text-chalk sm:text-[36px] ${center ? "mx-auto" : ""}`}
+        >
           {h2}
         </h2>
         {intro ? (
-          <p className="mt-4 max-w-[680px] text-[15px] leading-relaxed text-fog">{intro}</p>
+          <p
+            className={`mt-4 max-w-[680px] text-[15px] leading-relaxed text-fog ${center ? "mx-auto" : ""}`}
+          >
+            {intro}
+          </p>
         ) : null}
         {children ? <div className="mt-10">{children}</div> : null}
       </div>
@@ -135,18 +174,25 @@ export function LandingSteps({ steps }: { steps: Array<{ title: string; body: st
 /** A grid of icon + title + body cards. */
 export function LandingCards({
   items,
+  center = false,
 }: {
   items: Array<{
     icon: React.ComponentType<{ className?: string }>;
     title: string;
     body: string;
   }>;
+  /**
+   * Centre the icon with the copy. Needed as a flag rather than inherited from
+   * `text-align`: Tailwind's preflight makes an `svg` a block element, so it
+   * ignores the centring the text around it picks up.
+   */
+  center?: boolean;
 }) {
   return (
     <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
       {items.map((item) => (
         <div key={item.title} className="rounded-[12px] border border-line bg-ink-2 p-5">
-          <item.icon className="size-4.5 text-amber" />
+          <item.icon className={`size-4.5 text-amber ${center ? "mx-auto" : ""}`} />
           <h3 className="mt-3 font-display text-[15px] font-semibold text-chalk">{item.title}</h3>
           <p className="mt-1.5 text-[13.5px] leading-relaxed text-fog">{item.body}</p>
         </div>
@@ -160,12 +206,23 @@ export function LandingCards({
  * HTML whether or not they are open, which is what a featured snippet is pulled
  * from, and they need no JavaScript to expand.
  */
-export function LandingFaq({ entries }: { entries: Array<{ question: string; answer: string }> }) {
+export function LandingFaq({
+  entries,
+  center = false,
+}: {
+  entries: Array<{ question: string; answer: string }>;
+  /** Centre the block and its copy, for the pages whose bands are centred. */
+  center?: boolean;
+}) {
   return (
-    <div className="max-w-[820px] divide-y divide-line border-y border-line">
+    <div
+      className={`max-w-[820px] divide-y divide-line border-y border-line ${center ? "mx-auto" : ""}`}
+    >
       {entries.map((entry) => (
         <details key={entry.question} className="group py-4">
-          <summary className="flex cursor-pointer items-center justify-between gap-4 font-display text-[15.5px] font-semibold text-chalk marker:content-none">
+          <summary
+            className={`flex cursor-pointer items-center gap-4 font-display text-[15.5px] font-semibold text-chalk marker:content-none ${center ? "justify-center" : "justify-between"}`}
+          >
             {entry.question}
             <span className="mono shrink-0 text-[18px] leading-none text-amber group-open:hidden">
               +
@@ -174,7 +231,11 @@ export function LandingFaq({ entries }: { entries: Array<{ question: string; ans
               −
             </span>
           </summary>
-          <p className="mt-2.5 max-w-[680px] text-[14px] leading-relaxed text-fog">{entry.answer}</p>
+          <p
+            className={`mt-2.5 max-w-[680px] text-[14px] leading-relaxed text-fog ${center ? "mx-auto" : ""}`}
+          >
+            {entry.answer}
+          </p>
         </details>
       ))}
     </div>
