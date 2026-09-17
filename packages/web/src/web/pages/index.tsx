@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { Link } from "wouter";
 import { motion } from "motion/react";
 import {
@@ -58,11 +58,71 @@ const riseIn = {
  */
 const HERO_STAMP = "2026-08-26 14:31:07";
 
+/**
+ * Whether this visitor should get the hero's background loop at all.
+ *
+ * Hiding the <video> in CSS was the first attempt and it does not work: Chrome
+ * fetches the sources of a `display: none` video anyway, so a phone on cellular
+ * still paid for several megabytes it would never see. So the element is kept
+ * out of the tree entirely until the checks pass, which means no request. Both
+ * checks start false so the server-rendered HTML and the first client paint
+ * agree — the poster layer is what renders under both, and the loop swaps in a
+ * tick later on the machines that want it.
+ */
+function useHeroFootage() {
+  const [play, setPlay] = useState(false);
+
+  useEffect(() => {
+    const wide = window.matchMedia("(min-width: 640px)");
+    const still = window.matchMedia("(prefers-reduced-motion: reduce)");
+    const decide = () => setPlay(wide.matches && !still.matches);
+
+    decide();
+    wide.addEventListener("change", decide);
+    still.addEventListener("change", decide);
+    return () => {
+      wide.removeEventListener("change", decide);
+      still.removeEventListener("change", decide);
+    };
+  }, []);
+
+  return play;
+}
+
 function Hero() {
   const t = useT();
+  const footage = useHeroFootage();
 
   return (
     <section className="hero-band relative overflow-hidden border-b border-line">
+      {/* Trades-and-delivery footage behind the whole band. Muted and `playsInline`
+          are what make an autoplaying video legal to browsers at all. The still
+          underneath is a real layer rather than just the video's `poster`, because
+          phones and reduced-motion users get the <video> removed outright and a
+          poster attribute would go with it. Both are decorative: no captions, hidden
+          from screen readers — every word in the hero is real text on top. */}
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute inset-0 bg-cover bg-center"
+        style={{ backgroundImage: "url('/videos/hero-trades-delivery-poster.jpg')" }}
+      />
+      {footage ? (
+        <video
+          className="hero-footage pointer-events-none absolute inset-0 size-full object-cover"
+          poster="/videos/hero-trades-delivery-poster.jpg"
+          autoPlay
+          muted
+          loop
+          playsInline
+          preload="auto"
+          aria-hidden="true"
+          tabIndex={-1}
+        >
+          <source src="/videos/hero-trades-delivery.webm" type="video/webm" />
+          <source src="/videos/hero-trades-delivery.mp4" type="video/mp4" />
+        </video>
+      ) : null}
+      <div className="hero-veil pointer-events-none absolute inset-0" />
       <div className="absolute inset-0 blueprint opacity-60" />
 
       <motion.div
