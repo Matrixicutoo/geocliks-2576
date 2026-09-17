@@ -447,39 +447,17 @@
   box-shadow: inset 0 -34px 34px -32px rgba(0, 0, 0, 0.55);
 }
 
-/* Only reaches the footage on a phone, where the still fills the band and so has
-   to be cropped: the trim comes off the ground rather than off anyone's head.
-   From `sm` up the loop is fitted, nothing is cropped, and this does nothing. */
+/* The poster under the loop is framed the same way its cut is: the wide cut sits
+   high because the plumber and the framer are near the top of frame, and whatever
+   the band crops should come off the ground instead. Kept in CSS rather than an
+   inline style so the first paint is already framed right, before React runs. */
 @utility hero-still {
   object-position: 50% 38%;
 }
 
-/* The fitted loop stops short of the band's edges, so without this it would read
-   as a video pasted on top of the page. Feathering both axes dissolves the last
-   few dozen px of picture into the band instead, which is what makes the footage
-   look like it is behind the words rather than in a frame of its own. Two
-   gradients intersected — one per axis — because a single one only softens two
-   sides. Browsers without `mask-composite` simply get the hard edge. */
-@media (width >= 40rem) {
-  .hero-media img,
-  .hero-media video {
-    mask-image:
-      linear-gradient(
-        to right,
-        transparent 0,
-        #000 clamp(26px, 4vw, 92px),
-        #000 calc(100% - clamp(26px, 4vw, 92px)),
-        transparent 100%
-      ),
-      linear-gradient(
-        to bottom,
-        transparent 0,
-        #000 clamp(20px, 3vw, 70px),
-        #000 calc(100% - clamp(20px, 3vw, 70px)),
-        transparent 100%
-      );
-    mask-composite: intersect;
-    -webkit-mask-composite: source-in;
+@media (min-aspect-ratio: 37 / 20) {
+  .hero-still {
+    object-position: 50% 12%;
   }
 }
 
