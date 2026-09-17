@@ -122,13 +122,16 @@ function Hero() {
         </video>
       ) : null}
       <div className="hero-veil pointer-events-none absolute inset-0" />
-      <div className="absolute inset-0 blueprint opacity-60" />
 
+      {/* The band is held at the footage's own 16:9 on wide screens so `object-cover`
+          has almost nothing left to crop — the faces at the edges of frame survive.
+          `min-h` rather than a fixed aspect keeps it from collapsing under the copy
+          on short viewports, where the crop is the lesser evil. */}
       <motion.div
         variants={stagger}
         initial="hidden"
         animate="show"
-        className="relative mx-auto max-w-[1180px] px-5 py-24 lg:py-36"
+        className="relative mx-auto flex max-w-[1180px] flex-col justify-center px-5 py-20 lg:min-h-[min(56.25vw,860px)] lg:py-24"
       >
         <div className="max-w-[640px]">
           <motion.p
