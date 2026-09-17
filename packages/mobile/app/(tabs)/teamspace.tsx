@@ -26,6 +26,7 @@ import { useOrg } from "@/queries/orgs";
 import { useProjects } from "@/queries/projects";
 import { useAssignments, useAssignMember, useTeam } from "@/queries/team";
 import { AssignCrewSheet } from "@/components/assign-crew-sheet";
+import { SetupChecklist } from "@/components/setup-checklist";
 import { canManageWorkspace } from "../../lib/roles";
 
 const apiUrl = (Constants.expoConfig?.extra?.apiUrl as string | undefined) ?? "";
@@ -369,6 +370,11 @@ export default function Teamspace() {
           data={rows}
           keyExtractor={(item) => item.id}
           contentContainerStyle={styles.list}
+          /* First-run guide for a brand new workspace, riding above the grid the way it sits
+             above the gallery on the website. It hides itself once every step is done, so a
+             workspace already shooting never sees it. Field crew never see it either — naming a
+             project, inviting the crew and sending a report are all manager work. */
+          ListHeaderComponent={canManage ? <SetupChecklist /> : null}
           ListEmptyComponent={
             <View style={[styles.empty, { borderColor: colors.border }]}>
               <Ionicons name="images-outline" size={26} color={colors.mutedForeground} />

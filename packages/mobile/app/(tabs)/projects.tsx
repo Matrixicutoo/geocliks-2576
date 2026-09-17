@@ -8,9 +8,9 @@ import {
   View,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Ionicons } from "@expo/vector-icons";
-import { useRouter } from "expo-router";
+import { useLocalSearchParams, useRouter } from "expo-router";
 import { Text, TextInput } from "@/components/app-text";
 import { useColors } from "@/hooks/use-colors";
 import { Fonts } from "@/constants/theme";
@@ -71,6 +71,20 @@ export default function Projects() {
   const [showForm, setShowForm] = useState(false);
   const [form, setForm] = useState(EMPTY_FORM);
   const [formError, setFormError] = useState<string | null>(null);
+
+  /**
+   * `?new=1` lands here with the form already open — what the Teamspace get-started card's
+   * first step sends. It fires once per arrival and never re-opens a form the user has since
+   * closed: the param is still in the URL while this screen stays mounted.
+   */
+  const params = useLocalSearchParams<{ new?: string }>();
+  const openedFromParam = useRef(false);
+  useEffect(() => {
+    if (params.new !== "1" || openedFromParam.current) return;
+    openedFromParam.current = true;
+    setFormError(null);
+    setShowForm(true);
+  }, [params.new]);
 
   const submitProject = async () => {
     setFormError(null);
