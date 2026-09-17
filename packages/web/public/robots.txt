@@ -31,8 +31,8 @@ Disallow: /reset-password
 Disallow: /sign-in
 Disallow: /sign-up
 
-# /pricing redirects to /#pricing, which is a fragment of the home page. Left
-# crawlable on purpose: it is a URL people type and link to, and the redirect
-# consolidates it onto the home page rather than splitting the signal.
+# /pricing is its own page now — the plans, their limits and the comparison table
+# all live there, and "/#pricing" forwards to it. Crawlable on purpose: it is a URL
+# people type, link to and search for.
 
 Sitemap: https://geocliks.com/sitemap.xml

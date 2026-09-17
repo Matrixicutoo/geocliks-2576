@@ -322,7 +322,7 @@ export default function GetApp() {
             {t("getapp.comingSoon")}
           </p>
           <Link
-            to="/#pricing"
+            to="/pricing"
             className="mt-4 inline-flex items-center gap-1.5 text-[13px] font-semibold text-amber hover:underline"
           >
             {t("home.nav.pricing")} <ArrowRight className="size-3.5" />

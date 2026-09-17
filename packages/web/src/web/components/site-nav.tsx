@@ -203,12 +203,14 @@ export function SiteNav() {
           >
             {t("home.nav.delivery")}
           </a>
-          <a
-            href="/#pricing"
+          {/* A route now, not a fragment: the plans, their limits and the comparison
+              table all live on /pricing. */}
+          <Link
+            to="/pricing"
             className="py-2 text-[14px] font-semibold text-white transition-colors hover:text-amber"
           >
             {t("home.nav.pricing")}
-          </a>
+          </Link>
           <NavMenu label="home.nav.resources" items={RESOURCE_ITEMS} />
           <NavMenu label="home.nav.support" items={SUPPORT_ITEMS} />
         </nav>
@@ -250,9 +252,9 @@ export function SiteNav() {
             <a href="/#delivery" onClick={close} className={mobileLink}>
               {t("home.nav.delivery")}
             </a>
-            <a href="/#pricing" onClick={close} className={mobileLink}>
+            <Link to="/pricing" onClick={close} className={mobileLink}>
               {t("home.nav.pricing")}
-            </a>
+            </Link>
             <MobileGroup label="home.nav.resources" items={RESOURCE_ITEMS} onNavigate={close} />
             <MobileGroup label="home.nav.support" items={SUPPORT_ITEMS} onNavigate={close} />
             <Link

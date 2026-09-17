@@ -82,9 +82,9 @@ export function SiteFooter() {
               <a href="/#reports" className="transition-colors hover:text-chalk">
                 {t("home.footer.exports")}
               </a>
-              <a href="/#pricing" className="transition-colors hover:text-chalk">
+              <Link to="/pricing" className="transition-colors hover:text-chalk">
                 {t("home.nav.pricing")}
-              </a>
+              </Link>
               {hasAssistant && (
                 <button
                   type="button"

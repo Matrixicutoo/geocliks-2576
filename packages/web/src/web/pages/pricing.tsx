@@ -14,12 +14,12 @@ import { SALES_EMAIL } from "../lib/support";
 import { breadcrumbSchema, faqSchema } from "../lib/structured-data";
 
 /**
- * The dedicated pricing page.
+ * The pricing page — the only place the plans are listed.
  *
- * The home page's plans section stays where it is — it is part of the pitch, and
- * it is what "/#pricing" has always pointed at. This page is for the other half
- * of the decision: what each plan actually allows, plan against plan, with the
- * numbers the help centre used to be the only place to find.
+ * The home page's section 06 keeps the promise ("Start free. Scale when the crew
+ * does.") and a button; the cards, the limits and the comparison live here, and
+ * "/#pricing" forwards here too. One page to keep truthful instead of a card grid
+ * in the pitch and the real allowances buried in the help centre.
  *
  * Two things it deliberately does not do:
  *  - invent a second price list. Every figure on the page, including every cell
@@ -270,6 +270,10 @@ function FamilySwitch({
   onChange: (next: Family) => void;
   hasDelivery: boolean;
 }) {
+  // The two family names are the one piece of page furniture that is already
+  // translated in all eleven locales — they labelled the plan groups on the home
+  // page before the plans moved here. Reused rather than retyped in English.
+  const t = useT();
   if (!hasDelivery) return null;
   const tab = (value: Family, label: string) => (
     <button
@@ -288,8 +292,8 @@ function FamilySwitch({
   );
   return (
     <div className="inline-flex flex-wrap gap-1 rounded-[10px] border border-line bg-ink-2 p-1">
-      {tab("evidence", "Photo & video evidence")}
-      {tab("delivery", "Delivery routes")}
+      {tab("evidence", t("home.pricing.evidenceGroup"))}
+      {tab("delivery", t("home.pricing.deliveryGroup"))}
     </div>
   );
 }

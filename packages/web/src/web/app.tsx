@@ -100,9 +100,9 @@ function App() {
                 </PublicOnlyRoute>
               </Route>
               <Route path="/get-app" component={GetApp} />
-              {/* /pricing used to redirect to the home page's plans section. It is its own page
-                  now: the section sells the plans, the page compares them limit by limit. The
-                  section keeps its anchor, so every "/#pricing" link ever sent still lands. */}
+              {/* /pricing used to redirect to the home page's plans section. It is the other way
+                  round now: this is the only place the plans are listed, and "/#pricing" is
+                  forwarded here by the home page so old links still land on them. */}
               <Route path="/pricing" component={PricingPage} />
               <Route path="/verify" component={VerifyPage} />
               <Route path="/v/:code" component={VerifyPage} />

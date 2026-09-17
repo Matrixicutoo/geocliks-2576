@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Link } from "wouter";
+import { Link, useLocation } from "wouter";
 import { motion } from "motion/react";
 import {
   ShieldCheck,
@@ -18,14 +18,7 @@ import {
   Truck,
   Bell,
 } from "lucide-react";
-import { usePlans } from "../queries/billing";
-import {
-  PlanCard,
-  PlanWideBand,
-  isDeliveryPlan,
-  type PlanView,
-} from "../components/plan-cards";
-import { type TKey, useLocale, useT } from "../lib/i18n";
+import { type TKey, useT } from "../lib/i18n";
 import { SiteFooter } from "../components/site-footer";
 import { SiteNav } from "../components/site-nav";
 import { scrollSiteToId } from "../lib/site-scroll";
@@ -627,13 +620,13 @@ function Delivery() {
         </div>
 
         <div className="mt-10">
-          <a
-            href="#pricing"
+          <Link
+            to="/pricing"
             className="mono inline-flex items-center gap-2 rounded-[8px] bg-amber px-4 py-3 text-[11px] font-bold uppercase tracking-widest text-on-amber transition-colors hover:bg-on-amber hover:text-amber"
           >
             {t("home.delivery.cta")}
             <ArrowRight className="size-3.5" />
-          </a>
+          </Link>
         </div>
       </div>
     </section>
@@ -642,124 +635,40 @@ function Delivery() {
 
 function Pricing() {
   const t = useT();
-  const { locale } = useLocale();
-  const plans = usePlans(locale);
 
-  // This page groups plans itself and never reads sortOrder, so Enterprise has to
-  // be placed explicitly. It is the custom top of the ladder ("Everything in
-  // Delivery Fleet") and trails every self-serve plan — but it is NOT a delivery
-  // plan. Dropping it into the 3-column delivery grid left two dead cells that
-  // rendered as a grey slab, so it gets its own full-width band under the same
-  // heading instead.
-  const evidence = (plans.data ?? []).filter((p) => !isDeliveryPlan(p.id) && p.id !== "enterprise");
-  const delivery = (plans.data ?? []).filter((p) => isDeliveryPlan(p.id));
-  const custom = (plans.data ?? []).find((p) => p.id === "enterprise") ?? null;
-
+  // The plans themselves live on /pricing now, where they sit next to each other
+  // with every limit spelled out. Repeating six cards here only ever showed the
+  // prices without the allowances behind them, which is the half people were
+  // getting caught out by. So the section keeps the promise and hands off.
   return (
-    <section id="pricing" className="border-b border-line">
+    <section className="border-b border-line">
       <div className="mx-auto max-w-[1180px] px-5 py-20">
         <p className="label">{t("home.pricing.label")}</p>
-        {/* The heading and the way out to the full pricing page sit on one row: this
-            section shows the plans, /pricing shows them next to each other with every
-            limit spelled out. The tab wraps under the heading on a narrow screen
-            rather than squeezing it. `on-amber` not `ink` for the label colour — see
-            the note on the plan CTAs in plan-cards.tsx. */}
-        <div className="mt-3 flex flex-wrap items-end justify-between gap-x-6 gap-y-4">
+        {/* Heading and the way out on one row, the tab wrapping under it on a narrow
+            screen rather than squeezing the heading. `on-amber` not `ink` for the
+            label colour — see the note on the plan CTAs in plan-cards.tsx. */}
+        <div className="mt-3 flex flex-wrap items-end justify-between gap-x-6 gap-y-5">
           <h2 className="font-display text-[32px] font-bold leading-tight tracking-tight text-chalk sm:text-[40px]">
             {t("home.pricing.h2")}
           </h2>
           <Link
             to="/pricing"
-            className="mono inline-flex shrink-0 items-center gap-2 rounded-[8px] bg-amber px-4 py-2.5 text-[11px] font-bold uppercase tracking-widest text-on-amber transition-colors hover:bg-on-amber hover:text-amber"
+            className="mono inline-flex shrink-0 items-center gap-2 rounded-[8px] bg-amber px-5 py-3 text-[11px] font-bold uppercase tracking-widest text-on-amber transition-colors hover:bg-on-amber hover:text-amber"
           >
             {t("home.pricing.seePricing")}
             <ArrowRight className="size-3.5" />
           </Link>
         </div>
-
-        {plans.isLoading ? (
-          <div className="mt-12 grid gap-px bg-line sm:grid-cols-2 md:grid-cols-3">
-            {[0, 1, 2, 3, 4, 5].map((i) => (
-              <div key={i} className="h-80 animate-pulse bg-ink-2" />
-            ))}
-          </div>
-        ) : (
-          <>
-            <PlanGroup
-              title={t("home.pricing.evidenceGroup")}
-              note={t("home.pricing.evidenceNote")}
-              plans={evidence}
-            />
-            {delivery.length > 0 && (
-              <PlanGroup
-                title={t("home.pricing.deliveryGroup")}
-                note={t("home.pricing.deliveryNote")}
-                plans={delivery}
-                trailing={custom}
-              />
-            )}
-          </>
-        )}
       </div>
     </section>
   );
 }
 
-function PlanGroup({
-  title,
-  note,
-  plans,
-  trailing = null,
-}: {
-  title: string;
-  note: string;
-  plans: PlanView[];
-  /** Optional custom plan rendered as a full-width band under the grid, so it
-      never leaves dead cells in the 3-column layout. Optional on purpose: the
-      evidence group passes nothing. */
-  trailing?: PlanView | null;
-}) {
-  // The grid paints its hairlines by letting the container's `bg-line` show through
-  // 1px gaps, so an incomplete last row renders every missing cell as a solid grey
-  // slab (what Luc reported). Pad the last row with card-coloured fillers instead.
-  // The number needed differs per breakpoint, so both sets are rendered and toggled
-  // with `display` — a hidden grid item occupies no cell.
-  const fill2 = (2 - (plans.length % 2)) % 2;
-  const fill3 = (3 - (plans.length % 3)) % 3;
-
-  return (
-    <div className="mt-12">
-      <div className="flex flex-wrap items-baseline gap-x-3 gap-y-1">
-        {/* Group headings ("Photo & video evidence", "Delivery routes") are the
-            section titles for each plan family, so they read at heading scale
-            rather than as a small kicker. */}
-        <p className="mono text-[15px] uppercase tracking-[0.18em] text-amber sm:text-[18px]">
-          {title}
-        </p>
-        <p className="text-[13px] text-fog">{note}</p>
-      </div>
-      <div className="mt-5 grid gap-px bg-line sm:grid-cols-2 md:grid-cols-3">
-        {plans.map((plan) => (
-          <PlanCard key={plan.id} plan={plan} popular={plan.id === "business"} />
-        ))}
-        {Array.from({ length: fill2 }, (_, i) => (
-          <div key={`fill2-${i}`} aria-hidden className="hidden bg-ink sm:block md:hidden" />
-        ))}
-        {Array.from({ length: fill3 }, (_, i) => (
-          <div key={`fill3-${i}`} aria-hidden className="hidden bg-ink md:block" />
-        ))}
-      </div>
-      {trailing && <PlanWideBand plan={trailing} />}
-    </div>
-  );
-}
-
 export default function Index() {
   const tSeo = useT();
+  const [, navigate] = useLocation();
   // Canonical is pinned to "/" rather than taken from the current pathname, so a
-  // visitor landing on "/#pricing" from the nav or an old link still resolves to
-  // the one home-page URL. The plans live at "/pricing" too, which canonicals to
-  // itself — different page, different intent.
+  // visitor landing on any "/#section" link still resolves to the one home-page URL.
   useSeo({
     title: tSeo("seo.home.title"),
     description: PAGE_SEO["/"].description,
@@ -779,16 +688,24 @@ export default function Index() {
     };
   }, []);
 
-  // Arriving with a fragment — the nav's "Pricing" link, or a link someone was sent — has to
-  // be handled here: the browser tries its own jump before React has painted the sections, finds
-  // nothing, and leaves the visitor at the top. Retried for a few frames because the section may
-  // still be a few renders away. The same handler runs on `hashchange` so an in-page link clears
-  // the sticky header too, which the browser's own jump does not.
+  // Arriving with a fragment — a nav link, or a link someone was sent — has to be handled
+  // here: the browser tries its own jump before React has painted the sections, finds nothing,
+  // and leaves the visitor at the top. Retried for a few frames because the section may still
+  // be a few renders away. The same handler runs on `hashchange` so an in-page link clears the
+  // sticky header too, which the browser's own jump does not.
   useEffect(() => {
     let frame = 0;
     const jump = () => {
       const id = decodeURIComponent(globalThis.location.hash.slice(1));
       if (!id || id === "top") return;
+      // "#pricing" is years of links — the nav, the footer, emails, geocliks.com — and it used
+      // to open six plan cards. Those moved to their own page, so the fragment is forwarded
+      // there rather than dropping someone on a heading and a button. `replace` keeps Back
+      // going where the visitor came from instead of bouncing through here again.
+      if (id === "pricing") {
+        navigate("/pricing", { replace: true });
+        return;
+      }
       let tries = 0;
       const attempt = () => {
         if (scrollSiteToId(id) || tries++ > 40) return;
@@ -802,7 +719,7 @@ export default function Index() {
       cancelAnimationFrame(frame);
       globalThis.removeEventListener("hashchange", jump);
     };
-  }, []);
+  }, [navigate]);
 
   return (
     <div data-theme="light" id="top" className="min-h-screen bg-ink text-chalk">

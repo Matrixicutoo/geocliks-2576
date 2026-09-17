@@ -21,7 +21,7 @@ const HEADER_PX = 64;
  * element with that id is on the page yet, so a caller can wait for it and try again.
  *
  * This exists because the browser's own fragment jump happens before the page's JS has painted
- * the sections: arriving at `/#pricing` from another route lands at the top of the home page
+ * the sections: arriving at `/#delivery` from another route lands at the top of the home page
  * with nothing to scroll to.
  */
 export function scrollSiteToId(id: string): boolean {
