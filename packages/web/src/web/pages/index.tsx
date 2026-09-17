@@ -51,27 +51,15 @@ const riseIn = {
   show: { opacity: 1, y: 0, transition: { duration: 0.65, ease: [0.16, 1, 0.3, 1] as const } },
 };
 
-/** The two cuts of the hero loop, and the framing each one needs. */
-const HERO_CUTS = {
-  /* 16:9, 2560x1440. The band is held at exactly this ratio from `lg` up, so on a
-     normal screen it plays uncropped. */
-  standard: {
-    src: "/videos/hero-16x9",
-    poster: "/videos/hero-poster-16x9.jpg",
-    /* Barely off centre: what little the band does crop comes mostly off the
-       ground, where nobody's face is. */
-    position: "50% 38%",
-  },
-  /* 2.4:1, 3840x1600 — the same shots recut wide, each one panned to keep its
-     subject inside the shorter frame. A cinema-wide monitor gets this instead of
-     having a third of a 16:9 frame sliced off, which is what took the heads off. */
-  wide: {
-    src: "/videos/hero-wide",
-    poster: "/videos/hero-poster-wide.jpg",
-    /* Anchored near the top: the remaining trim comes off the foreground, and the
-       plumber and the framer sit high enough in frame to need every pixel up there. */
-    position: "50% 12%",
-  },
+/* The hero loop: the whole 16:9 frame, 2560x1440, downsampled from a 4K master.
+   One file for every screen. There was a second, wider cut here that a cinema
+   monitor got instead, back when the footage filled the band edge to edge and a
+   wide screen paid for that by having the top of the frame sliced off. Nothing
+   is cropped now — the loop sits inside the band rather than filling it — so the
+   wide recut has nothing left to solve. */
+const HERO_LOOP = {
+  src: "/videos/hero-16x9",
+  poster: "/videos/hero-poster-16x9.jpg",
 } as const;
 
 /**
@@ -80,41 +68,33 @@ const HERO_CUTS = {
  * Hiding the <video> in CSS was the first attempt and it does not work: Chrome
  * fetches the sources of a `display: none` video anyway, so a phone on cellular
  * still paid for several megabytes it would never see. So the element is kept
- * out of the tree entirely until the checks pass, which means no request. And
- * only the chosen cut is ever mounted, so a visitor downloads one file — the
- * `media` attribute on <source> would have been the tidy way to do this, but
- * browsers dropped it for video and honour it on <picture> only.
+ * out of the tree entirely until the checks pass, which means no request.
  *
- * It starts null so the server-rendered HTML and the first client paint agree —
+ * It starts false so the server-rendered HTML and the first client paint agree —
  * the poster layer is what renders under both, and the loop swaps in a tick
  * later on the machines that want it.
  */
 function useHeroFootage() {
-  const [cut, setCut] = useState<keyof typeof HERO_CUTS | null>(null);
+  const [play, setPlay] = useState(false);
 
   useEffect(() => {
     const wide = window.matchMedia("(min-width: 640px)");
     const still = window.matchMedia("(prefers-reduced-motion: reduce)");
-    /* Matches the CSS: past this aspect the band is wider than the footage and
-       `object-cover` starts eating into the frame, so the wide cut takes over. */
-    const cinema = window.matchMedia("(min-aspect-ratio: 37/20)");
-    const decide = () =>
-      setCut(wide.matches && !still.matches ? (cinema.matches ? "wide" : "standard") : null);
+    const decide = () => setPlay(wide.matches && !still.matches);
 
     decide();
-    for (const q of [wide, still, cinema]) q.addEventListener("change", decide);
+    for (const q of [wide, still]) q.addEventListener("change", decide);
     return () => {
-      for (const q of [wide, still, cinema]) q.removeEventListener("change", decide);
+      for (const q of [wide, still]) q.removeEventListener("change", decide);
     };
   }, []);
 
-  return cut;
+  return play;
 }
 
 function Hero() {
   const t = useT();
-  const cut = useHeroFootage();
-  const footage = cut ? HERO_CUTS[cut] : null;
+  const play = useHeroFootage();
 
   return (
     <section className="hero-band relative overflow-hidden border-b border-line">
@@ -123,48 +103,54 @@ function Hero() {
           underneath is a real layer rather than just the video's `poster`, because
           phones and reduced-motion users get the <video> removed outright and a
           poster attribute would go with it. Both are decorative: no captions, hidden
-          from screen readers — every word in the hero is real text on top. */}
-      {/* A <picture>, not a CSS background: with the collage gone this still is the
-          hero's LCP element, and a background-image is only discovered once the
-          stylesheet has parsed. In the markup it is fetched with the document —
-          and `media` picks the right cut before React has even run. */}
-      <picture className="contents">
-        <source media="(min-aspect-ratio: 37/20)" srcSet={HERO_CUTS.wide.poster} />
+          from screen readers — every word in the hero is real text on top.
+
+          The loop is sized to fit inside this box rather than to fill it, so the
+          whole shot is on screen and the camera reads as standing well back from
+          the work. `max-h`/`max-w` on the media itself is what does it: the element
+          ends up exactly the size of the picture, which is what lets the feather in
+          `hero-media` land on the edges of the footage and not somewhere out in the
+          band. Filling the band instead would mean cropping, and on a wide screen
+          that crop is what used to cut the tops of heads off. */}
+      <div className="hero-media pointer-events-none absolute inset-0 flex items-center justify-center">
+        {/* An <img>, not a CSS background: with the collage gone this still is the
+            hero's LCP element, and a background-image is only discovered once the
+            stylesheet has parsed. In the markup it is fetched with the document.
+            On a phone it still fills the band: the band is taller than it is wide
+            there, so a fitted 16:9 frame would leave more empty band than picture. */}
         <img
-          src={HERO_CUTS.standard.poster}
+          src={HERO_LOOP.poster}
           alt=""
           aria-hidden="true"
-          className="hero-still pointer-events-none absolute inset-0 size-full object-cover"
+          className="hero-still size-full object-cover sm:size-auto sm:max-h-[84%] sm:max-w-[84%] sm:object-contain"
           fetchPriority="high"
           decoding="async"
         />
-      </picture>
-      {footage ? (
-        <video
-          key={footage.src}
-          className="hero-footage pointer-events-none absolute inset-0 size-full object-cover"
-          style={{ objectPosition: footage.position }}
-          poster={footage.poster}
-          autoPlay
-          muted
-          loop
-          playsInline
-          preload="auto"
-          aria-hidden="true"
-          tabIndex={-1}
-        >
-          {/* h264 only: VP9 at a matching quality came out heavier than x264 on
-              footage this soft-edged, so the second file was pure page weight. */}
-          <source src={`${footage.src}.mp4`} type="video/mp4" />
-        </video>
-      ) : null}
+        {play ? (
+          <video
+            className="absolute max-h-[84%] max-w-[84%] object-contain"
+            poster={HERO_LOOP.poster}
+            autoPlay
+            muted
+            loop
+            playsInline
+            preload="auto"
+            aria-hidden="true"
+            tabIndex={-1}
+          >
+            {/* h264 only: VP9 at a matching quality came out heavier than x264 on
+                footage this soft-edged, so the second file was pure page weight. */}
+            <source src={`${HERO_LOOP.src}.mp4`} type="video/mp4" />
+          </video>
+        ) : null}
+      </div>
       <div className="hero-veil pointer-events-none absolute inset-0" />
 
-      {/* The band tracks the footage's own shape rather than a fixed height, so
-          `object-cover` has little left to crop and the faces at the edges of frame
-          survive: 56.25vw is 16:9 exactly, and the 92vh ceiling is what stops a
-          cinema-wide monitor from getting a hero taller than its screen. `min-h`
-          rather than a fixed aspect so the band can still grow under the copy. */}
+      {/* The band tracks the footage's own shape rather than a fixed height, which
+          is what gives the fitted loop room to be nearly as wide as the band:
+          56.25vw is 16:9 exactly, and the 92vh ceiling is what stops a cinema-wide
+          monitor from getting a hero taller than its screen. `min-h` rather than a
+          fixed aspect so the band can still grow under the copy. */}
       <motion.div
         variants={stagger}
         initial="hidden"
