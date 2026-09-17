@@ -218,6 +218,7 @@ export const it: Catalog = {
   "home.pricing.talk": "Parliamone",
   "home.pricing.choose": "Scegli",
   "home.pricing.freeTrial": "Prova gratuita",
+  "home.pricing.seePricing": "Vedi i prezzi",
   "home.pricing.evidenceGroup": "Prove foto e video",
   "home.pricing.evidenceNote": "Foto e video verificati, filigrane, report ed esportazioni.",
   "home.pricing.deliveryGroup": "Percorsi di consegna",

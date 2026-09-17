@@ -210,6 +210,7 @@ export const ar: Catalog = {
   "home.pricing.talk": "تحدّث إلينا",
   "home.pricing.choose": "اختر",
   "home.pricing.freeTrial": "تجربة مجانية",
+  "home.pricing.seePricing": "عرض الأسعار",
   "home.pricing.evidenceGroup": "أدلة الصور والفيديو",
   "home.pricing.evidenceNote": "صور وفيديو موثّقة، علامات مائية، تقارير وعمليات تصدير.",
   "home.pricing.deliveryGroup": "مسارات التوصيل",

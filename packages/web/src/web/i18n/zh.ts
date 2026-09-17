@@ -203,6 +203,7 @@ export const zh: Catalog = {
   "home.pricing.talk": "联系我们",
   "home.pricing.choose": "选择",
   "home.pricing.freeTrial": "免费试用",
+  "home.pricing.seePricing": "查看价格",
   "home.pricing.evidenceGroup": "照片与视频证据",
   "home.pricing.evidenceNote": "已验证的照片和视频、水印、报告与导出。",
   "home.pricing.deliveryGroup": "配送路线",

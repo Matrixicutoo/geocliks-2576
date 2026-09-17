@@ -216,6 +216,7 @@ export const pl: Catalog = {
   "home.pricing.talk": "Skontaktuj się",
   "home.pricing.choose": "Wybierz",
   "home.pricing.freeTrial": "Bezpłatny okres próbny",
+  "home.pricing.seePricing": "Zobacz ceny",
   "home.pricing.evidenceGroup": "Dowody foto i wideo",
   "home.pricing.evidenceNote": "Zweryfikowane zdjęcia i wideo, znaki wodne, raporty i eksporty.",
   "home.pricing.deliveryGroup": "Trasy dostaw",

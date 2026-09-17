@@ -1,5 +1,5 @@
 import { lazy, Suspense } from "react";
-import { Redirect, Route, Switch } from "wouter";
+import { Route, Switch } from "wouter";
 
 // Eager: first-paint routes. The landing page and the auth screens must render
 // without an async boundary so geocliks.com paints exactly as before.
@@ -45,6 +45,7 @@ const ConstructionPhotoDocumentation = lazy(
   () => import("./pages/construction-photo-documentation"),
 );
 const AlternativesCompanyCam = lazy(() => import("./pages/alternatives-companycam"));
+const PricingPage = lazy(() => import("./pages/pricing"));
 
 import { ProtectedRoute } from "./components/protected-route";
 import { ProductRoute } from "./components/product-route";
@@ -99,12 +100,10 @@ function App() {
                 </PublicOnlyRoute>
               </Route>
               <Route path="/get-app" component={GetApp} />
-              {/* The plans are a section of the home page. /pricing is the URL people type, link
-                  to and land on from search, so it sends them there instead of 404ing — one copy
-                  of the table, one URL that ranks. */}
-              <Route path="/pricing">
-                <Redirect to="/#pricing" replace />
-              </Route>
+              {/* /pricing used to redirect to the home page's plans section. It is its own page
+                  now: the section sells the plans, the page compares them limit by limit. The
+                  section keeps its anchor, so every "/#pricing" link ever sent still lands. */}
+              <Route path="/pricing" component={PricingPage} />
               <Route path="/verify" component={VerifyPage} />
               <Route path="/v/:code" component={VerifyPage} />
               <Route path="/share/:token" component={ShareView} />

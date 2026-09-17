@@ -229,6 +229,7 @@ export const en = {
   "home.pricing.talk": "Talk to us",
   "home.pricing.choose": "Choose",
   "home.pricing.freeTrial": "Free trial",
+  "home.pricing.seePricing": "See Pricing",
   "home.pricing.evidenceGroup": "Photo & video evidence",
   "home.pricing.evidenceNote": "Verified photos and video, watermarks, reports and exports.",
   "home.pricing.deliveryGroup": "Delivery routes",

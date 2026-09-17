@@ -218,6 +218,7 @@ export const ptBR: Catalog = {
   "home.pricing.talk": "Fale com a gente",
   "home.pricing.choose": "Escolher",
   "home.pricing.freeTrial": "Teste grátis",
+  "home.pricing.seePricing": "Ver preços",
   "home.pricing.evidenceGroup": "Provas em foto e vídeo",
   "home.pricing.evidenceNote":
     "Fotos e vídeos verificados, marcas d'água, relatórios e exportações.",

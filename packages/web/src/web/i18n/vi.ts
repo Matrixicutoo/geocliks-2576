@@ -213,6 +213,7 @@ export const vi: Catalog = {
   "home.pricing.talk": "Liên hệ chúng tôi",
   "home.pricing.choose": "Chọn",
   "home.pricing.freeTrial": "Dùng thử miễn phí",
+  "home.pricing.seePricing": "Xem giá",
   "home.pricing.evidenceGroup": "Bằng chứng ảnh và video",
   "home.pricing.evidenceNote": "Ảnh và video đã xác thực, hình mờ, báo cáo và xuất dữ liệu.",
   "home.pricing.deliveryGroup": "Tuyến giao hàng",

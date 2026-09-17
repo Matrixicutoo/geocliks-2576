@@ -218,6 +218,7 @@ export const es: Catalog = {
   "home.pricing.talk": "Habla con nosotros",
   "home.pricing.choose": "Elegir",
   "home.pricing.freeTrial": "Prueba gratis",
+  "home.pricing.seePricing": "Ver precios",
   "home.pricing.evidenceGroup": "Evidencia de fotos y video",
   "home.pricing.evidenceNote":
     "Fotos y video verificados, marcas de agua, informes y exportaciones.",

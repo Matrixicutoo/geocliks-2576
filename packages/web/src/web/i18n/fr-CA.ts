@@ -218,6 +218,7 @@ export const frCA: Catalog = {
   "home.pricing.talk": "Parlez-nous",
   "home.pricing.choose": "Choisir",
   "home.pricing.freeTrial": "Essai gratuit",
+  "home.pricing.seePricing": "Voir les prix",
   "home.pricing.evidenceGroup": "Preuves photo et vidéo",
   "home.pricing.evidenceNote": "Photos et vidéos vérifiées, filigranes, rapports et exportations.",
   "home.pricing.deliveryGroup": "Tournées de livraison",

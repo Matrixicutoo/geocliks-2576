@@ -10,7 +10,6 @@ import {
   Fingerprint,
   Clock,
   ArrowRight,
-  Check,
   Globe2,
   Camera,
   GitCompareArrows,
@@ -20,8 +19,13 @@ import {
   Bell,
 } from "lucide-react";
 import { usePlans } from "../queries/billing";
+import {
+  PlanCard,
+  PlanWideBand,
+  isDeliveryPlan,
+  type PlanView,
+} from "../components/plan-cards";
 import { type TKey, useLocale, useT } from "../lib/i18n";
-import { SALES_EMAIL } from "../lib/support";
 import { SiteFooter } from "../components/site-footer";
 import { SiteNav } from "../components/site-nav";
 import { scrollSiteToId } from "../lib/site-scroll";
@@ -636,11 +640,6 @@ function Delivery() {
   );
 }
 
-/** Delivery plans are sold alongside the evidence plans, not inside them. */
-const isDeliveryPlan = (id: string) => id.startsWith("delivery-");
-
-type PlanView = NonNullable<ReturnType<typeof usePlans>["data"]>[number];
-
 function Pricing() {
   const t = useT();
   const { locale } = useLocale();
@@ -660,9 +659,23 @@ function Pricing() {
     <section id="pricing" className="border-b border-line">
       <div className="mx-auto max-w-[1180px] px-5 py-20">
         <p className="label">{t("home.pricing.label")}</p>
-        <h2 className="mt-3 font-display text-[32px] font-bold leading-tight tracking-tight text-chalk sm:text-[40px]">
-          {t("home.pricing.h2")}
-        </h2>
+        {/* The heading and the way out to the full pricing page sit on one row: this
+            section shows the plans, /pricing shows them next to each other with every
+            limit spelled out. The tab wraps under the heading on a narrow screen
+            rather than squeezing it. `on-amber` not `ink` for the label colour — see
+            the note on the plan CTAs in plan-cards.tsx. */}
+        <div className="mt-3 flex flex-wrap items-end justify-between gap-x-6 gap-y-4">
+          <h2 className="font-display text-[32px] font-bold leading-tight tracking-tight text-chalk sm:text-[40px]">
+            {t("home.pricing.h2")}
+          </h2>
+          <Link
+            to="/pricing"
+            className="mono inline-flex shrink-0 items-center gap-2 rounded-[8px] bg-amber px-4 py-2.5 text-[11px] font-bold uppercase tracking-widest text-on-amber transition-colors hover:bg-on-amber hover:text-amber"
+          >
+            {t("home.pricing.seePricing")}
+            <ArrowRight className="size-3.5" />
+          </Link>
+        </div>
 
         {plans.isLoading ? (
           <div className="mt-12 grid gap-px bg-line sm:grid-cols-2 md:grid-cols-3">
@@ -676,7 +689,6 @@ function Pricing() {
               title={t("home.pricing.evidenceGroup")}
               note={t("home.pricing.evidenceNote")}
               plans={evidence}
-              t={t}
             />
             {delivery.length > 0 && (
               <PlanGroup
@@ -684,7 +696,6 @@ function Pricing() {
                 note={t("home.pricing.deliveryNote")}
                 plans={delivery}
                 trailing={custom}
-                t={t}
               />
             )}
           </>
@@ -699,7 +710,6 @@ function PlanGroup({
   note,
   plans,
   trailing = null,
-  t,
 }: {
   title: string;
   note: string;
@@ -708,7 +718,6 @@ function PlanGroup({
       never leaves dead cells in the 3-column layout. Optional on purpose: the
       evidence group passes nothing. */
   trailing?: PlanView | null;
-  t: ReturnType<typeof useT>;
 }) {
   // The grid paints its hairlines by letting the container's `bg-line` show through
   // 1px gaps, so an incomplete last row renders every missing cell as a solid grey
@@ -731,70 +740,7 @@ function PlanGroup({
       </div>
       <div className="mt-5 grid gap-px bg-line sm:grid-cols-2 md:grid-cols-3">
         {plans.map((plan) => (
-          <div
-            key={plan.id}
-            className={plan.id === "business" ? "relative bg-ink-2 p-6" : "relative bg-ink p-6"}
-          >
-            {plan.id === "business" && (
-              <span className="rounded-[6px] mono absolute right-0 top-0 bg-amber px-2 py-1 text-[9.5px] font-bold uppercase tracking-widest text-on-amber">
-                {t("home.pricing.popular")}
-              </span>
-            )}
-            <p className="mono text-[11px] uppercase tracking-[0.2em] text-amber">{plan.name}</p>
-            <p className="mt-3 font-display text-3xl font-bold text-chalk">{plan.priceLabel}</p>
-            <p className="mono mt-1 text-[10.5px] uppercase tracking-widest text-fog">
-              {plan.priceCents > 0 ? plan.period : " "}
-            </p>
-            <p className="mt-2 min-h-10 text-[13px] text-fog">{plan.tagline}</p>
-            <ul className="mt-5 space-y-2">
-              {plan.features.map((feature) => (
-                <li key={feature} className="flex gap-2 text-[13px] text-chalk">
-                  <Check className="mt-0.5 size-3.5 shrink-0 text-verified" />
-                  {feature}
-                </li>
-              ))}
-            </ul>
-            {/* A custom-priced plan (Enterprise, Enterprise Field) has no self-serve
-                    checkout — its CTA opens a mail draft to sales instead of the sign-in
-                    flow. The address is printed under the button so it can be copied or
-                    dialled by people who don't use a mail client on that device.
-                    Keyed off the price, not the id, so any future custom plan gets the
-                    right CTA without another edit here. */}
-            {plan.priceCents < 0 ? (
-              <>
-                <a
-                  href={`mailto:${SALES_EMAIL}?subject=${encodeURIComponent(`GeoCliks ${plan.name} plan`)}`}
-                  className="mono mt-6 block rounded-[8px] border border-line px-3 py-2.5 text-center text-[11px] uppercase tracking-widest text-chalk transition-colors hover:border-amber/60"
-                >
-                  {t("home.pricing.talk")}
-                </a>
-                <a
-                  href={`mailto:${SALES_EMAIL}`}
-                  className="mono mt-2 block text-center text-[11px] text-amber transition-colors hover:text-chalk"
-                >
-                  {SALES_EMAIL}
-                </a>
-              </>
-            ) : (
-              /* Every plan CTA is a solid amber button that inverts to near-black
-                     on hover, so no plan's button reads as secondary.
-                     `on-amber` (#0b0e13) not `ink`: the palette is theme-aware and
-                     `ink` is #ffffff in the light theme this page pins, so `text-ink`
-                     here would be white-on-orange and `hover:bg-ink` would fade the
-                     button to white instead of black. `on-amber` and `amber` are the
-                     only two tokens that hold the same value in both themes. */
-              <Link
-                to="/sign-up"
-                className="mono mt-6 block rounded-[8px] bg-amber px-3 py-2.5 text-center text-[11px] font-bold uppercase tracking-widest text-on-amber transition-colors hover:bg-on-amber hover:text-amber"
-              >
-                {/* Delivery plans carry a 7-day free trial in Autumn, so their
-                        CTA names the trial rather than a generic "Choose". */}
-                {plan.id.startsWith("delivery-")
-                  ? t("home.pricing.freeTrial")
-                  : t("home.pricing.choose")}
-              </Link>
-            )}
-          </div>
+          <PlanCard key={plan.id} plan={plan} popular={plan.id === "business"} />
         ))}
         {Array.from({ length: fill2 }, (_, i) => (
           <div key={`fill2-${i}`} aria-hidden className="hidden bg-ink sm:block md:hidden" />
@@ -803,53 +749,17 @@ function PlanGroup({
           <div key={`fill3-${i}`} aria-hidden className="hidden bg-ink md:block" />
         ))}
       </div>
-      {trailing && (
-        <div className="border-t border-line bg-ink p-6 md:p-8">
-          <div className="flex flex-col gap-6 md:flex-row md:items-start md:justify-between">
-            <div className="md:max-w-[320px]">
-              <p className="mono text-[11px] uppercase tracking-[0.2em] text-amber">
-                {trailing.name}
-              </p>
-              <p className="mt-3 font-display text-3xl font-bold text-chalk">
-                {trailing.priceLabel}
-              </p>
-              <p className="mt-2 text-[13px] text-fog">{trailing.tagline}</p>
-            </div>
-            <ul className="grid flex-1 gap-2 sm:grid-cols-2 md:mx-8">
-              {trailing.features.map((feature) => (
-                <li key={feature} className="flex gap-2 text-[13px] text-chalk">
-                  <Check className="mt-0.5 size-3.5 shrink-0 text-verified" />
-                  {feature}
-                </li>
-              ))}
-            </ul>
-            <div className="md:w-[220px] md:shrink-0">
-              {/* No self-serve checkout on the custom plan — the CTA opens a mail draft. */}
-              <a
-                href={`mailto:${SALES_EMAIL}?subject=${encodeURIComponent("GeoCliks Enterprise plan")}`}
-                className="mono block rounded-[8px] bg-amber px-3 py-2.5 text-center text-[11px] font-bold uppercase tracking-widest text-on-amber transition-colors hover:bg-on-amber hover:text-amber"
-              >
-                {t("home.pricing.talk")}
-              </a>
-              <a
-                href={`mailto:${SALES_EMAIL}`}
-                className="mono mt-2 block text-center text-[11px] text-amber transition-colors hover:text-chalk"
-              >
-                {SALES_EMAIL}
-              </a>
-            </div>
-          </div>
-        </div>
-      )}
+      {trailing && <PlanWideBand plan={trailing} />}
     </div>
   );
 }
 
 export default function Index() {
   const tSeo = useT();
-  // Canonical is pinned to "/" rather than taken from the current pathname:
-  // "/pricing" redirects here and lands with a "#pricing" fragment, and both
-  // have to resolve to the one home-page URL.
+  // Canonical is pinned to "/" rather than taken from the current pathname, so a
+  // visitor landing on "/#pricing" from the nav or an old link still resolves to
+  // the one home-page URL. The plans live at "/pricing" too, which canonicals to
+  // itself — different page, different intent.
   useSeo({
     title: tSeo("seo.home.title"),
     description: PAGE_SEO["/"].description,
@@ -869,7 +779,7 @@ export default function Index() {
     };
   }, []);
 
-  // Arriving with a fragment — "/pricing" redirecting here, or a link someone was sent — has to
+  // Arriving with a fragment — the nav's "Pricing" link, or a link someone was sent — has to
   // be handled here: the browser tries its own jump before React has painted the sections, finds
   // nothing, and leaves the visitor at the top. Retried for a few frames because the section may
   // still be a few renders away. The same handler runs on `hashchange` so an in-page link clears

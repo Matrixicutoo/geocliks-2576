@@ -27,12 +27,11 @@ const STATIC_PATHS = [
   "/",
   "/get-app",
   "/help",
+  "/pricing",
   "/construction-photo-documentation",
   "/alternatives/companycam",
   "/terms",
   "/privacy",
-  // "/pricing" is intentionally absent: it redirects to /#pricing, so the home
-  // page URL is the one that should carry the ranking signal.
 ];
 
 function xmlEscape(value: string): string {

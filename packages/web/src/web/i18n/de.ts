@@ -217,6 +217,7 @@ export const de: Catalog = {
   "home.pricing.talk": "Sprechen Sie mit uns",
   "home.pricing.choose": "Wählen",
   "home.pricing.freeTrial": "Kostenlos testen",
+  "home.pricing.seePricing": "Preise ansehen",
   "home.pricing.evidenceGroup": "Foto- und Videonachweise",
   "home.pricing.evidenceNote":
     "Verifizierte Fotos und Videos, Wasserzeichen, Berichte und Exporte.",

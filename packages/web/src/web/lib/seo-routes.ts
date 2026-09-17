@@ -51,6 +51,15 @@ export const PAGE_SEO = {
       "Get the GeoCliks app for iOS and Android. Network-verified time, GPS and address on every photo, tamper-proof and free to capture.",
   },
 
+  // Its own page since the plans outgrew a home-page section. The title leads with
+  // "Pricing" because that is the word in the query, and the description carries the
+  // two numbers that decide the click: free, and where paid starts.
+  "/pricing": {
+    title: "GeoCliks Pricing — Plans for Crews and Delivery Fleets",
+    description:
+      "Verified photo capture free forever. Unlimited photos and full-length video from $12 a month, teamspace crews from $25, and delivery routes priced by stop.",
+  },
+
   "/help": {
     // "Help Center" in full put this at 61 characters; "Help" keeps all three
     // audiences and lands inside the 60-character rule.

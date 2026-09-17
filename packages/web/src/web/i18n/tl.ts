@@ -218,6 +218,7 @@ export const tl: Catalog = {
   "home.pricing.talk": "Kausapin kami",
   "home.pricing.choose": "Piliin",
   "home.pricing.freeTrial": "Libreng subok",
+  "home.pricing.seePricing": "Tingnan ang presyo",
   "home.pricing.evidenceGroup": "Ebidensyang photo at video",
   "home.pricing.evidenceNote": "Beripikadong mga larawan at video, watermark, ulat at export.",
   "home.pricing.deliveryGroup": "Mga ruta ng paghahatid",
