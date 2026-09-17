@@ -117,7 +117,7 @@ function Hero() {
   const footage = cut ? HERO_CUTS[cut] : null;
 
   return (
-    <section className="hero-band relative overflow-hidden border-b border-line">
+    <section className="hero-cinema relative overflow-hidden border-b border-line">
       {/* Trades-and-delivery footage behind the whole band. Muted and `playsInline`
           are what make an autoplaying video legal to browsers at all. The still
           underneath is a real layer rather than just the video's `poster`, because

@@ -447,6 +447,21 @@
   box-shadow: inset 0 -34px 34px -32px rgba(0, 0, 0, 0.55);
 }
 
+/* The home hero runs dark in both themes. Its band is footage, and a white veil
+   over dusk-lit trade work read as fog rather than as a hero — so it veils in ink
+   whatever the rest of the page is set to, and the copy on top borrows the dark
+   palette's chalk/fog/line to stay readable against it. The overrides are custom
+   properties on the section itself, so they inherit into the hero and stop at its
+   edge; every other `hero-band` (the SEO landing pages, which have no footage)
+   keeps following the theme. */
+@utility hero-cinema {
+  --c-chalk: #e8edf4;
+  --c-fog: #9daaba;
+  --c-line: #242e3c;
+  background: #0b0e13;
+  box-shadow: inset 0 -34px 34px -32px rgba(0, 0, 0, 0.55);
+}
+
 /* The poster under the loop is framed the same way its cut is: the wide cut sits
    high because the plumber and the framer are near the top of frame, and whatever
    the band crops should come off the ground instead. Kept in CSS rather than an
@@ -472,23 +487,8 @@
    to the band's own half-width and half-height, so it scales with the band
    instead of needing a breakpoint; the stops are percentages of that radius,
    which is why this needs no separate ultrawide rule.
-   Light mode veils in white, dark mode in ink. */
+   It veils in ink in both themes — the band itself is dark either way. */
 @utility hero-veil {
-  background:
-    radial-gradient(
-      ellipse 62% 78% at 50% 50%,
-      rgba(255, 255, 255, 0.9) 0%,
-      rgba(255, 255, 255, 0.84) 34%,
-      rgba(255, 255, 255, 0.6) 58%,
-      rgba(252, 253, 255, 0.28) 78%,
-      rgba(250, 252, 255, 0.06) 100%
-    );
-}
-
-/* Dark mode veils in ink, and lighter than the light-mode one has to be: the
-   copy is already chalk-on-dark, so it only needs the footage knocked back far
-   enough to read against, not blacked out. */
-[data-theme="dark"] .hero-veil {
   background:
     radial-gradient(
       ellipse 62% 78% at 50% 50%,
@@ -505,16 +505,6 @@
    across the width and only fades downward, past where the text ends. */
 @media (width < 64rem) {
   .hero-veil {
-    background:
-      linear-gradient(
-        180deg,
-        rgba(255, 255, 255, 0.88) 0%,
-        rgba(255, 255, 255, 0.84) 62%,
-        rgba(250, 252, 255, 0.46) 100%
-      );
-  }
-
-  [data-theme="dark"] .hero-veil {
     background:
       linear-gradient(
         180deg,
