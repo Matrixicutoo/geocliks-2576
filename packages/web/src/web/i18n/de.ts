@@ -756,6 +756,13 @@ export const de: Catalog = {
   "notify.off": "Desktop-Benachrichtigungen ausschalten",
   "notify.soundOn": "Benachrichtigungston einschalten",
   "notify.soundOff": "Benachrichtigungston ausschalten",
+  "dock.newMessage": "Neue Nachricht",
+  "dock.closePicker": "Schließen",
+  "dock.to": "An",
+  "dock.search": "Teammitglied suchen",
+  "dock.minimize": "Minimieren",
+  "dock.close": "Chat schließen",
+  "dock.expand": "In Nachrichten öffnen",
   "notify.blocked": "Benachrichtigungen sind in den Browsereinstellungen blockiert",
   "notify.testTitle": "Desktop-Benachrichtigungen sind aktiv",
   "notify.testBody":

@@ -744,6 +744,13 @@ export const vi: Catalog = {
   "notify.off": "Tắt thông báo trên máy tính",
   "notify.soundOn": "Bật âm thanh thông báo",
   "notify.soundOff": "Tắt âm thanh thông báo",
+  "dock.newMessage": "Tin nhắn mới",
+  "dock.closePicker": "Đóng",
+  "dock.to": "Đến",
+  "dock.search": "Tìm đồng nghiệp",
+  "dock.minimize": "Thu nhỏ",
+  "dock.close": "Đóng cuộc trò chuyện",
+  "dock.expand": "Mở trong Tin nhắn",
   "notify.blocked": "Thông báo đang bị chặn trong cài đặt trình duyệt",
   "notify.testTitle": "Thông báo trên máy tính đã bật",
   "notify.testBody":

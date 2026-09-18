@@ -7,6 +7,7 @@ import * as schema from "../database/schema";
 import { id } from "../lib/ids";
 import { photoUrl } from "../lib/media";
 import { sendPush } from "../lib/push";
+import { avatarUrl } from "./account";
 
 /**
  * Internal messaging between members of the same workspace.
@@ -162,8 +163,14 @@ export const messages = {
     // Same rule as the Team page: a field member can only chat with people assigned to the same
     // projects. Supervisors included, but only when they are on one of those projects too.
     const teammates = await visibleTeammates(context.org.id, context.user.id, context.role);
-    if (!teammates) return people;
-    return people.filter((person) => teammates.userIds.has(person.userId));
+    const visible = teammates
+      ? people.filter((person) => teammates.userIds.has(person.userId))
+      : people;
+    // `user.image` is a bare storage key. Sign it here, like every other read of an avatar, so
+    // the address book can show faces instead of a broken-image glyph.
+    return Promise.all(
+      visible.map(async (person) => ({ ...person, image: await avatarUrl(person.image) })),
+    );
   }),
 
   /** The caller's threads, newest activity first, with unread counts. */
@@ -206,23 +213,25 @@ export const messages = {
       context.user.id,
     );
 
-    return rows.map((row) => {
-      const otherId = row.userAId === context.user.id ? row.userBId : row.userAId;
-      const person = byId.get(otherId);
-      return {
-        id: row.id,
-        lastMessageAt: row.lastMessageAt,
-        lastMessagePreview: row.lastMessagePreview,
-        unread: unread.get(row.id) ?? 0,
-        other: {
-          id: otherId,
-          name: person?.name ?? "Removed member",
-          email: person?.email ?? null,
-          image: person?.image ?? null,
-          role: roleById.get(otherId) ?? null,
-        },
-      };
-    });
+    return Promise.all(
+      rows.map(async (row) => {
+        const otherId = row.userAId === context.user.id ? row.userBId : row.userAId;
+        const person = byId.get(otherId);
+        return {
+          id: row.id,
+          lastMessageAt: row.lastMessageAt,
+          lastMessagePreview: row.lastMessagePreview,
+          unread: unread.get(row.id) ?? 0,
+          other: {
+            id: otherId,
+            name: person?.name ?? "Removed member",
+            email: person?.email ?? null,
+            image: await avatarUrl(person?.image ?? null),
+            role: roleById.get(otherId) ?? null,
+          },
+        };
+      }),
+    );
   }),
 
   /** Total unread across all threads — the badge on the nav item. */
@@ -360,7 +369,7 @@ export const messages = {
           id: otherId,
           name: other?.name ?? "Removed member",
           email: other?.email ?? null,
-          image: other?.image ?? null,
+          image: await avatarUrl(other?.image ?? null),
         },
         items,
       };

@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { Link } from "wouter";
+import { Link, useLocation } from "wouter";
 import { Bell, BellOff, Camera, MessageSquare, Volume2, VolumeX } from "lucide-react";
 import { useMarkNotificationsSeen, useNotificationFeed } from "../queries/notifications";
 import { useMessageNotifications } from "../hooks/use-message-notifications";
@@ -7,6 +7,7 @@ import { useFaviconBadge } from "../hooks/use-favicon-badge";
 import { useNotificationSound } from "../hooks/use-notification-sound";
 import { useLocale } from "../lib/i18n";
 import { cn } from "../lib/utils";
+import { openChatWindow } from "../lib/chat-dock";
 import { PhotoDrawer } from "./photo-drawer";
 
 /**
@@ -55,6 +56,13 @@ export function NotificationsBell() {
   const markSeen = useMarkNotificationsSeen();
   const notify = useMessageNotifications();
   const relative = useRelative();
+  /**
+   * A message row used to navigate to /app/messages, which cost the reader whatever page they
+   * were on. It opens a floating chat window instead — unless the Messages page is already the
+   * page they are on, where the dock deliberately renders nothing.
+   */
+  const [location] = useLocation();
+  const onMessagesPage = location.startsWith("/app/messages");
   const [open, setOpen] = useState(false);
   /**
    * How many were new at the moment the panel opened. The badge itself drops to zero on that
@@ -214,13 +222,28 @@ export function NotificationsBell() {
                   return (
                     <li key={item.id} className="border-b border-line/60 last:border-b-0">
                       {item.conversationId ? (
-                        <Link
-                          to={`/app/messages?c=${item.conversationId}`}
-                          className={row}
-                          onClick={() => setOpen(false)}
-                        >
-                          {body}
-                        </Link>
+                        onMessagesPage ? (
+                          // Already on the Messages page: open the thread in the pane that is
+                          // right there, rather than floating a second copy of it.
+                          <Link
+                            to={`/app/messages?c=${item.conversationId}`}
+                            className={row}
+                            onClick={() => setOpen(false)}
+                          >
+                            {body}
+                          </Link>
+                        ) : (
+                          <button
+                            type="button"
+                            className={row}
+                            onClick={() => {
+                              openChatWindow(item.conversationId as string);
+                              setOpen(false);
+                            }}
+                          >
+                            {body}
+                          </button>
+                        )
                       ) : (
                         <button
                           type="button"

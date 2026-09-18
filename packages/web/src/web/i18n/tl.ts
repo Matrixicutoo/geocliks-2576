@@ -755,6 +755,13 @@ export const tl: Catalog = {
   "notify.off": "I-off ang mga alerto sa desktop",
   "notify.soundOn": "I-on ang tunog ng notification",
   "notify.soundOff": "I-off ang tunog ng notification",
+  "dock.newMessage": "Bagong mensahe",
+  "dock.closePicker": "Isara",
+  "dock.to": "Para kay",
+  "dock.search": "Maghanap ng kasamahan",
+  "dock.minimize": "I-minimize",
+  "dock.close": "Isara ang chat",
+  "dock.expand": "Buksan sa Mga Mensahe",
   "notify.blocked": "Naka-block ang mga notification sa browser settings",
   "notify.testTitle": "Naka-on ang mga alerto sa desktop",
   "notify.testBody":

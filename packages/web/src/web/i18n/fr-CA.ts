@@ -760,6 +760,13 @@ export const frCA: Catalog = {
   "notify.off": "Désactiver les alertes du bureau",
   "notify.soundOn": "Activer le son des notifications",
   "notify.soundOff": "Désactiver le son des notifications",
+  "dock.newMessage": "Nouveau message",
+  "dock.closePicker": "Fermer",
+  "dock.to": "À",
+  "dock.search": "Rechercher un collègue",
+  "dock.minimize": "Réduire",
+  "dock.close": "Fermer la discussion",
+  "dock.expand": "Ouvrir dans Messages",
   "notify.blocked": "Les notifications sont bloquées dans les réglages du navigateur",
   "notify.testTitle": "Les alertes du bureau sont activées",
   "notify.testBody":

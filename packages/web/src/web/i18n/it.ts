@@ -753,6 +753,13 @@ export const it: Catalog = {
   "notify.off": "Disattiva gli avvisi desktop",
   "notify.soundOn": "Attiva il suono delle notifiche",
   "notify.soundOff": "Disattiva il suono delle notifiche",
+  "dock.newMessage": "Nuovo messaggio",
+  "dock.closePicker": "Chiudi",
+  "dock.to": "A",
+  "dock.search": "Cerca un collega",
+  "dock.minimize": "Riduci",
+  "dock.close": "Chiudi la chat",
+  "dock.expand": "Apri in Messaggi",
   "notify.blocked": "Le notifiche sono bloccate nelle impostazioni del browser",
   "notify.testTitle": "Gli avvisi desktop sono attivi",
   "notify.testBody":

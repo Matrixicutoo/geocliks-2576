@@ -750,6 +750,13 @@ export const ptBR: Catalog = {
   "notify.off": "Desativar alertas na área de trabalho",
   "notify.soundOn": "Ativar som de notificação",
   "notify.soundOff": "Desativar som de notificação",
+  "dock.newMessage": "Nova mensagem",
+  "dock.closePicker": "Fechar",
+  "dock.to": "Para",
+  "dock.search": "Buscar um colega",
+  "dock.minimize": "Minimizar",
+  "dock.close": "Fechar conversa",
+  "dock.expand": "Abrir em Mensagens",
   "notify.blocked": "As notificações estão bloqueadas no seu navegador",
   "notify.testTitle": "Os alertas na área de trabalho estão ativados",
   "notify.testBody":

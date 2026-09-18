@@ -14,7 +14,6 @@ import {
 } from "lucide-react";
 import { DashboardShell } from "../components/dashboard-shell";
 import { EmptyState } from "../components/empty-state";
-import { orpc } from "../lib/api";
 import { useOrg } from "../queries/orgs";
 import { useProjects } from "../queries/projects";
 import {
@@ -28,56 +27,11 @@ import {
   useThread,
 } from "../queries/messages";
 import { cn } from "../lib/utils";
+import { EMOJI, uploadMessageImage } from "../lib/message-compose";
 import { useT } from "../lib/i18n";
 import { canManageWorkspace } from "../lib/roles";
 
-/** Field-first emoji set: the ones a crew actually uses, then the usual faces. */
-const EMOJI = [
-  "👍",
-  "👌",
-  "🙏",
-  "💪",
-  "✅",
-  "❌",
-  "⚠️",
-  "🔥",
-  "🚧",
-  "🦺",
-  "🧰",
-  "🔧",
-  "🔨",
-  "🪜",
-  "🏗️",
-  "🚚",
-  "📷",
-  "📍",
-  "📅",
-  "⏰",
-  "☀️",
-  "🌧️",
-  "❄️",
-  "💨",
-  "😀",
-  "😄",
-  "😅",
-  "😂",
-  "🙂",
-  "😉",
-  "😎",
-  "🤔",
-  "😐",
-  "😕",
-  "😢",
-  "😡",
-  "🎉",
-  "👏",
-  "🙌",
-  "🤝",
-  "👋",
-  "💯",
-  "⭐",
-  "❤️",
-];
+
 
 function initials(name: string) {
   return name
@@ -177,17 +131,7 @@ export default function AppMessages() {
     setUploading(true);
     setError(null);
     try {
-      const presign = await orpc.upload.presignMessageImage.call({
-        filename: file.name,
-        contentType: file.type || "image/jpeg",
-      });
-      const res = await fetch(presign.url, {
-        method: "PUT",
-        body: file,
-        headers: { "content-type": file.type || "image/jpeg" },
-      });
-      if (!res.ok) throw new Error("Upload failed");
-      setImageKey(presign.key);
+      setImageKey(await uploadMessageImage(file));
     } catch (err) {
       setError(err instanceof Error ? err.message : String(err));
     } finally {
@@ -304,9 +248,17 @@ export default function AppMessages() {
                     }}
                     className="rounded-[8px] flex w-full items-center gap-3 px-4 py-2.5 text-left hover:bg-ink-3"
                   >
-                    <span className="flex size-8 shrink-0 items-center justify-center rounded-[8px] bg-ink-3 text-[11px] font-semibold text-fog">
-                      {initials(person.name ?? "?")}
-                    </span>
+                    {person.image ? (
+                      <img
+                        src={person.image}
+                        alt=""
+                        className="size-8 shrink-0 rounded-full object-cover"
+                      />
+                    ) : (
+                      <span className="flex size-8 shrink-0 items-center justify-center rounded-full bg-ink-3 text-[11px] font-semibold text-fog">
+                        {initials(person.name ?? "?")}
+                      </span>
+                    )}
                     <span className="min-w-0">
                       <span className="block truncate text-[13px] font-medium text-chalk">
                         {person.name}
@@ -345,9 +297,17 @@ export default function AppMessages() {
                       : "border-transparent hover:bg-ink-3/60",
                   )}
                 >
-                  <span className="flex size-9 shrink-0 items-center justify-center rounded-[8px] bg-ink-3 text-[11px] font-semibold text-fog">
-                    {initials(row.other.name)}
-                  </span>
+                  {row.other.image ? (
+                    <img
+                      src={row.other.image}
+                      alt=""
+                      className="size-9 shrink-0 rounded-full object-cover"
+                    />
+                  ) : (
+                    <span className="flex size-9 shrink-0 items-center justify-center rounded-full bg-ink-3 text-[11px] font-semibold text-fog">
+                      {initials(row.other.name)}
+                    </span>
+                  )}
                   <span className="min-w-0 flex-1">
                     <span className="flex items-center justify-between gap-2">
                       <span className="truncate text-[13px] font-semibold text-chalk">
@@ -378,9 +338,17 @@ export default function AppMessages() {
           ) : (
             <>
               <div className="flex items-center gap-3 border-b border-line px-4 py-3">
-                <span className="flex size-9 items-center justify-center rounded-[8px] bg-ink-3 text-[11px] font-semibold text-fog">
-                  {initials(thread.data?.other.name ?? "?")}
-                </span>
+                {thread.data?.other.image ? (
+                  <img
+                    src={thread.data.other.image}
+                    alt=""
+                    className="size-9 shrink-0 rounded-full object-cover"
+                  />
+                ) : (
+                  <span className="flex size-9 items-center justify-center rounded-full bg-ink-3 text-[11px] font-semibold text-fog">
+                    {initials(thread.data?.other.name ?? "?")}
+                  </span>
+                )}
                 <div className="min-w-0">
                   <p className="truncate font-display text-[15px] font-semibold">
                     {thread.data?.other.name ?? "—"}

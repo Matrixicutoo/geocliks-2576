@@ -750,6 +750,13 @@ export const pl: Catalog = {
   "notify.off": "Wyłącz alerty na pulpicie",
   "notify.soundOn": "Włącz dźwięk powiadomień",
   "notify.soundOff": "Wyłącz dźwięk powiadomień",
+  "dock.newMessage": "Nowa wiadomość",
+  "dock.closePicker": "Zamknij",
+  "dock.to": "Do",
+  "dock.search": "Szukaj członka zespołu",
+  "dock.minimize": "Zminimalizuj",
+  "dock.close": "Zamknij czat",
+  "dock.expand": "Otwórz w Wiadomościach",
   "notify.blocked": "Powiadomienia są zablokowane w ustawieniach przeglądarki",
   "notify.testTitle": "Alerty na pulpicie są włączone",
   "notify.testBody":

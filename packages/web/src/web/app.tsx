@@ -54,6 +54,7 @@ import { PublicOnlyRoute } from "./components/public-only-route";
 import { StaffRoute } from "./components/staff-route";
 import { Provider } from "./components/provider";
 import { ChatWidget } from "./components/chat-widget";
+import { ChatDock } from "./components/chat-dock";
 import { RouteSeo } from "./components/route-seo";
 import { useAssistantDocked } from "./lib/assistant";
 import { SITE_SCROLL_ID } from "./lib/site-scroll";
@@ -290,6 +291,9 @@ function App() {
             the workspace. It hides itself on /admin and on plans without it. */}
         <ChatWidget />
       </div>
+      {/* Crew chat, docked bottom-right. Outside the Switch and outside the assistant's column
+          so an open thread survives every navigation inside the workspace. */}
+      <ChatDock />
       {/* Renders nothing. Keeps the private routes out of the search index from one place,
           outside the Switch so it sees every navigation. */}
       <RouteSeo />

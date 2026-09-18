@@ -754,6 +754,13 @@ export const es: Catalog = {
   "notify.off": "Desactivar alertas de escritorio",
   "notify.soundOn": "Activar el sonido de notificación",
   "notify.soundOff": "Desactivar el sonido de notificación",
+  "dock.newMessage": "Nuevo mensaje",
+  "dock.closePicker": "Cerrar",
+  "dock.to": "Para",
+  "dock.search": "Buscar un compañero",
+  "dock.minimize": "Minimizar",
+  "dock.close": "Cerrar chat",
+  "dock.expand": "Abrir en Mensajes",
   "notify.blocked": "Las notificaciones están bloqueadas en tu navegador",
   "notify.testTitle": "Las alertas de escritorio están activadas",
   "notify.testBody":
