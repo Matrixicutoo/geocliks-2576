@@ -754,6 +754,8 @@ export const de: Catalog = {
   "notif.newCapture": "hat eine neue Aufnahme hochgeladen",
   "notify.on": "Desktop-Benachrichtigungen aktivieren",
   "notify.off": "Desktop-Benachrichtigungen ausschalten",
+  "notify.soundOn": "Benachrichtigungston einschalten",
+  "notify.soundOff": "Benachrichtigungston ausschalten",
   "notify.blocked": "Benachrichtigungen sind in den Browsereinstellungen blockiert",
   "notify.testTitle": "Desktop-Benachrichtigungen sind aktiv",
   "notify.testBody":

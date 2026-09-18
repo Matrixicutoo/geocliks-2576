@@ -758,6 +758,8 @@ export const frCA: Catalog = {
   "notif.newCapture": "a publié une nouvelle capture",
   "notify.on": "Activer les alertes du bureau",
   "notify.off": "Désactiver les alertes du bureau",
+  "notify.soundOn": "Activer le son des notifications",
+  "notify.soundOff": "Désactiver le son des notifications",
   "notify.blocked": "Les notifications sont bloquées dans les réglages du navigateur",
   "notify.testTitle": "Les alertes du bureau sont activées",
   "notify.testBody":

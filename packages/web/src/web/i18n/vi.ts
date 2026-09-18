@@ -742,6 +742,8 @@ export const vi: Catalog = {
   "notif.newCapture": "đã đăng một ảnh mới",
   "notify.on": "Bật thông báo trên máy tính",
   "notify.off": "Tắt thông báo trên máy tính",
+  "notify.soundOn": "Bật âm thanh thông báo",
+  "notify.soundOff": "Tắt âm thanh thông báo",
   "notify.blocked": "Thông báo đang bị chặn trong cài đặt trình duyệt",
   "notify.testTitle": "Thông báo trên máy tính đã bật",
   "notify.testBody":

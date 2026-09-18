@@ -714,6 +714,8 @@ export const zh: Catalog = {
   "notif.newCapture": "上传了一张新照片",
   "notify.on": "开启桌面提醒",
   "notify.off": "关闭桌面提醒",
+  "notify.soundOn": "开启通知提示音",
+  "notify.soundOff": "关闭通知提示音",
   "notify.blocked": "浏览器设置已阻止通知",
   "notify.testTitle": "桌面提醒已开启",
   "notify.testBody": "这是一条测试消息。队友给你发消息时会出现这样的提醒。",

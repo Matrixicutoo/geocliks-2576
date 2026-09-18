@@ -751,6 +751,8 @@ export const it: Catalog = {
   "notif.newCapture": "ha pubblicato una nuova acquisizione",
   "notify.on": "Attiva gli avvisi desktop",
   "notify.off": "Disattiva gli avvisi desktop",
+  "notify.soundOn": "Attiva il suono delle notifiche",
+  "notify.soundOff": "Disattiva il suono delle notifiche",
   "notify.blocked": "Le notifiche sono bloccate nelle impostazioni del browser",
   "notify.testTitle": "Gli avvisi desktop sono attivi",
   "notify.testBody":

@@ -748,6 +748,8 @@ export const ptBR: Catalog = {
   "notif.newCapture": "publicou uma nova captura",
   "notify.on": "Ativar alertas na área de trabalho",
   "notify.off": "Desativar alertas na área de trabalho",
+  "notify.soundOn": "Ativar som de notificação",
+  "notify.soundOff": "Desativar som de notificação",
   "notify.blocked": "As notificações estão bloqueadas no seu navegador",
   "notify.testTitle": "Os alertas na área de trabalho estão ativados",
   "notify.testBody":

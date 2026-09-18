@@ -748,6 +748,8 @@ export const pl: Catalog = {
   "notif.newCapture": "dodał(a) nowe zdjęcie",
   "notify.on": "Włącz alerty na pulpicie",
   "notify.off": "Wyłącz alerty na pulpicie",
+  "notify.soundOn": "Włącz dźwięk powiadomień",
+  "notify.soundOff": "Wyłącz dźwięk powiadomień",
   "notify.blocked": "Powiadomienia są zablokowane w ustawieniach przeglądarki",
   "notify.testTitle": "Alerty na pulpicie są włączone",
   "notify.testBody":

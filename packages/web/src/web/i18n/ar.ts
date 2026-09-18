@@ -731,6 +731,8 @@ export const ar: Catalog = {
   "notif.newCapture": "نشر صورة جديدة",
   "notify.on": "تشغيل تنبيهات سطح المكتب",
   "notify.off": "إيقاف تنبيهات سطح المكتب",
+  "notify.soundOn": "تشغيل صوت التنبيهات",
+  "notify.soundOff": "إيقاف صوت التنبيهات",
   "notify.blocked": "التنبيهات محجوبة في إعدادات المتصفح",
   "notify.testTitle": "تنبيهات سطح المكتب مفعّلة",
   "notify.testBody": "هذه رسالة تجريبية. ستصلك نافذة مثل هذه عندما يراسلك زميل.",

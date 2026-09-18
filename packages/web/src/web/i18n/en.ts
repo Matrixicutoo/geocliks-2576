@@ -760,6 +760,8 @@ export const en = {
   "notif.newCapture": "posted a new capture",
   "notify.on": "Turn on desktop alerts",
   "notify.off": "Turn off desktop alerts",
+  "notify.soundOn": "Turn on notification sound",
+  "notify.soundOff": "Turn off notification sound",
   "notify.blocked": "Notifications are blocked in your browser settings",
   "notify.testTitle": "Desktop alerts are on",
   "notify.testBody": "This is a test. You will get a popup like this when a teammate messages you.",

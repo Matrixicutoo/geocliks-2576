@@ -1,9 +1,10 @@
 import { useEffect, useRef, useState } from "react";
 import { Link } from "wouter";
-import { Bell, BellOff, Camera, MessageSquare } from "lucide-react";
+import { Bell, BellOff, Camera, MessageSquare, Volume2, VolumeX } from "lucide-react";
 import { useMarkNotificationsSeen, useNotificationFeed } from "../queries/notifications";
 import { useMessageNotifications } from "../hooks/use-message-notifications";
 import { useFaviconBadge } from "../hooks/use-favicon-badge";
+import { useNotificationSound } from "../hooks/use-notification-sound";
 import { useLocale } from "../lib/i18n";
 import { cn } from "../lib/utils";
 import { PhotoDrawer } from "./photo-drawer";
@@ -75,6 +76,8 @@ export function NotificationsBell() {
   // The same count, on the browser tab: the header badge is invisible to somebody working in
   // another site, and a background tab is exactly who a notification is for.
   useFaviconBadge(unseen > 0);
+  // And audible, for the tab nobody is looking at.
+  const sound = useNotificationSound(feed.data?.items);
 
   // A dropdown that outlives the click elsewhere is a dropdown in the way.
   useEffect(() => {
@@ -236,6 +239,20 @@ export function NotificationsBell() {
               </ul>
             )}
           </div>
+
+          {/* The sound switch. First, because it needs no permission and therefore works for
+              everybody — the popup below it depends on what the browser was granted. */}
+          <button
+            type="button"
+            onClick={sound.toggle}
+            className={cn(
+              "mono flex w-full items-center gap-2 border-t border-line px-4 py-2.5 text-[10px] uppercase tracking-widest",
+              sound.enabled ? "text-amber hover:bg-ink" : "text-fog hover:bg-ink hover:text-amber",
+            )}
+          >
+            {sound.enabled ? <Volume2 className="size-3.5" /> : <VolumeX className="size-3.5" />}
+            {sound.enabled ? t("notify.soundOff") : t("notify.soundOn")}
+          </button>
 
           {/* The browser-popup switch, kept with the feed it belongs to. */}
           {notify.supported && (

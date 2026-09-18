@@ -13,9 +13,11 @@ import { useConversationsPolled } from "../queries/messages";
  *    from a click — never on mount;
  *  - the first poll after load only seeds the baseline, otherwise signing in would fire a
  *    notification for every thread that was already unread.
+ *
+ * Sound is not this hook's business: `useNotificationSound` owns the chime for the whole bell
+ * feed, so a message does not get one beep from here and another from there.
  */
 const STORE_KEY = "geocliks.notify.enabled";
-const CHIME = "/media/new-message.mp3";
 
 type Permission = "default" | "granted" | "denied" | "unsupported";
 
@@ -33,22 +35,10 @@ export function useMessageNotifications() {
   const conversations = useConversationsPolled(active);
   // Unread count per thread as of the previous poll. Null until the baseline is seeded.
   const seen = useRef<Map<string, number> | null>(null);
-  const audio = useRef<HTMLAudioElement | null>(null);
-
-  const chime = useCallback(() => {
-    try {
-      if (!audio.current) audio.current = new Audio(CHIME);
-      audio.current.currentTime = 0;
-      // Autoplay can still be refused; a silent notification beats an unhandled rejection.
-      void audio.current.play().catch(() => {});
-    } catch {
-      // No sound is not worth breaking the page over.
-    }
-  }, []);
 
   /**
    * `confirm` fires a real notification immediately so the user can verify the whole path —
-   * permission, popup, sound — without needing a second person to message them.
+   * permission and popup — without needing a second person to message them.
    */
   const enable = useCallback(
     async (confirm?: { title: string; body: string }) => {
@@ -59,8 +49,6 @@ export function useMessageNotifications() {
       if (granted !== "granted") return;
       setEnabled(true);
       localStorage.setItem(STORE_KEY, "1");
-      // Unlocks audio for later automated plays: this call sits inside the user's click.
-      chime();
       if (confirm) {
         try {
           new Notification(confirm.title, {
@@ -69,11 +57,11 @@ export function useMessageNotifications() {
             tag: "geocliks-notify-test",
           });
         } catch {
-          // Permission is granted but the browser refused anyway; the chime already played.
+          // Permission is granted but the browser refused anyway; nothing more to do.
         }
       }
     },
-    [chime],
+    [],
   );
 
   const disable = useCallback(() => {
@@ -110,11 +98,10 @@ export function useMessageNotifications() {
           note.close();
         };
       } catch {
-        // Some browsers throw outside a service worker context; the chime still fires.
+        // Some browsers throw outside a service worker context; the sound still fires.
       }
-      chime();
     }
-  }, [conversations.data, enabled, permission, chime]);
+  }, [conversations.data, enabled, permission]);
 
   return {
     supported: permission !== "unsupported",

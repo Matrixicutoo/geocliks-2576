@@ -752,6 +752,8 @@ export const es: Catalog = {
   "notif.newCapture": "publicó una nueva captura",
   "notify.on": "Activar alertas de escritorio",
   "notify.off": "Desactivar alertas de escritorio",
+  "notify.soundOn": "Activar el sonido de notificación",
+  "notify.soundOff": "Desactivar el sonido de notificación",
   "notify.blocked": "Las notificaciones están bloqueadas en tu navegador",
   "notify.testTitle": "Las alertas de escritorio están activadas",
   "notify.testBody":

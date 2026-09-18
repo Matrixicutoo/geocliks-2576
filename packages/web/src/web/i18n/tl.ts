@@ -753,6 +753,8 @@ export const tl: Catalog = {
   "notif.newCapture": "nag-post ng bagong capture",
   "notify.on": "I-on ang mga alerto sa desktop",
   "notify.off": "I-off ang mga alerto sa desktop",
+  "notify.soundOn": "I-on ang tunog ng notification",
+  "notify.soundOff": "I-off ang tunog ng notification",
   "notify.blocked": "Naka-block ang mga notification sa browser settings",
   "notify.testTitle": "Naka-on ang mga alerto sa desktop",
   "notify.testBody":

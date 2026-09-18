@@ -8,10 +8,14 @@ import { useEffect } from "react";
  * visible from outside the page, and a dot on it is the convention every messaging site uses,
  * so it needs no explaining.
  *
- * Drawn rather than shipped as a second .ico: the badge has to composite over the icon the tab
- * is already showing, and generating it in a canvas keeps one source of truth for the artwork.
- * The untouched href is remembered on the element itself, so a tab that catches up goes quietly
- * back to normal.
+ * Two things this has to get right, both learned the hard way:
+ *
+ *  - The page declares more than one icon (a .ico with `sizes="any"`, and this PNG). Rewriting
+ *    only the PNG left the browser free to keep painting the .ico, so the dot never appeared
+ *    in the tab. The originals are therefore pulled out of the head while the badge is up, and
+ *    put back when it comes down.
+ *  - Mutating `href` on a link the browser has already fetched is not reliably noticed. A
+ *    brand-new element is, so each repaint appends a fresh one.
  */
 
 const DOT = "#ef4444";
@@ -19,40 +23,50 @@ const DOT = "#ef4444";
 const SIZE = 64;
 /** Dot radius as a share of the icon. Small enough that the logo still reads at 16px. */
 const DOT_RADIUS = 0.2;
+const BADGE_ID = "geocliks-favicon-badge";
 
-/**
- * The one link element that owns the tab icon while the badge is on: the PNG rel is what
- * browsers prefer, and rewriting only that one leaves the .ico fallback alone for anything
- * that ignores it.
- */
-function iconLink() {
-  return document.querySelector<HTMLLinkElement>('link[rel="icon"][type="image/png"]');
+/** The page's own icon links, and the artwork to badge — captured before we disturb anything. */
+let originals: HTMLLinkElement[] = [];
+let source: string | null = null;
+
+function capture() {
+  if (source) return;
+  const links = Array.from(
+    document.querySelectorAll<HTMLLinkElement>('link[rel~="icon"]'),
+  ).filter((link) => link.id !== BADGE_ID);
+  if (links.length === 0) return;
+  originals = links;
+  // Prefer the PNG: a canvas can read it, and .ico decoding is not universal.
+  const png = links.find((link) => link.type === "image/png" || /\.png($|\?)/.test(link.href));
+  source = (png ?? links[0]!).href;
 }
 
-/**
- * The real icon's URL, remembered the first time we see it.
- *
- * Reading it back off the element is not an option once a badge is on — `href` by then is the
- * data URL we wrote, so restoring from it would pin the dot on forever.
- */
-function baseHref(link: HTMLLinkElement) {
-  const remembered = link.dataset.faviconBase;
-  if (remembered) return remembered;
-  const current = link.getAttribute("href");
-  if (!current || current.startsWith("data:")) return null;
-  link.dataset.faviconBase = current;
-  return current;
+/** Puts the page's declared icons back and drops the badge. */
+function restore() {
+  document.getElementById(BADGE_ID)?.remove();
+  for (const link of originals) {
+    if (!link.isConnected) document.head.appendChild(link);
+  }
+}
+
+function paint(dataUrl: string) {
+  // Out with the page's own icons first, or the browser may go on painting the .ico.
+  for (const link of originals) link.remove();
+  document.getElementById(BADGE_ID)?.remove();
+  const link = document.createElement("link");
+  link.id = BADGE_ID;
+  link.rel = "icon";
+  link.type = "image/png";
+  link.href = dataUrl;
+  document.head.appendChild(link);
 }
 
 export function useFaviconBadge(active: boolean) {
   useEffect(() => {
-    const link = iconLink();
-    if (!link) return;
-    const source = baseHref(link);
+    capture();
     if (!source) return;
-
     if (!active) {
-      if (link.href !== source) link.setAttribute("href", source);
+      restore();
       return;
     }
 
@@ -82,7 +96,7 @@ export function useFaviconBadge(active: boolean) {
       ctx.arc(cx, cy, r, 0, Math.PI * 2);
       ctx.fill();
       try {
-        link.setAttribute("href", canvas.toDataURL("image/png"));
+        paint(canvas.toDataURL("image/png"));
       } catch {
         // A tainted canvas (an icon served from another origin) just means no badge.
       }
@@ -94,12 +108,6 @@ export function useFaviconBadge(active: boolean) {
     };
   }, [active]);
 
-  // Restore on unmount, so leaving the dashboard never leaves a stale dot behind.
-  useEffect(() => {
-    return () => {
-      const link = iconLink();
-      const base = link?.dataset.faviconBase;
-      if (link && base) link.setAttribute("href", base);
-    };
-  }, []);
+  // Leaving the dashboard should never leave a stale dot behind.
+  useEffect(() => restore, []);
 }
