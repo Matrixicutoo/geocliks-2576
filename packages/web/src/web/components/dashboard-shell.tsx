@@ -1,8 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link } from "wouter";
 import {
-  Bell,
-  BellOff,
   Camera,
   FolderKanban,
   Images,
@@ -20,14 +18,13 @@ import {
 } from "lucide-react";
 import { useOrg } from "../queries/orgs";
 import { useAdminMe } from "../queries/admin";
-import { useMessageNotifications } from "../hooks/use-message-notifications";
 import { stopImpersonation } from "../lib/impersonate";
-import { cn } from "../lib/utils";
 import { useWorkspaceTheme } from "../lib/theme";
 import { type TKey, useLocale, useWorkspaceLocale } from "../lib/i18n";
 import { Logo } from "./logo";
 import { LanguageSelect } from "./language-select";
 import { NavDrawer } from "./nav-drawer";
+import { NotificationsBell } from "./notifications-bell";
 import { SidebarBody } from "./sidebar-body";
 import { InviteDialog } from "./invite-form";
 import { TrialBanner } from "./trial-banner";
@@ -99,8 +96,6 @@ export function DashboardShell({
   const me = useAdminMe();
   // The invite sheet lives here, not in the menu: the drawer unmounts its menu when it closes.
   const [inviting, setInviting] = useState(false);
-  // Desktop message alerts, live on every dashboard page rather than only on Messages.
-  const notify = useMessageNotifications();
   const impersonating = me.data?.impersonating;
   const { t } = useLocale();
   // The workspace defaults apply unless this member already chose on this device.
@@ -176,44 +171,10 @@ export function DashboardShell({
             </div>
             <div className="flex shrink-0 flex-wrap items-center justify-end gap-2">
               {actions}
-              {notify.supported && (
-                <button
-                  type="button"
-                  aria-label={
-                    notify.blocked
-                      ? t("notify.blocked")
-                      : notify.enabled
-                        ? t("notify.off")
-                        : t("notify.on")
-                  }
-                  title={
-                    notify.blocked
-                      ? t("notify.blocked")
-                      : notify.enabled
-                        ? t("notify.off")
-                        : t("notify.on")
-                  }
-                  onClick={() => {
-                    if (notify.blocked) return;
-                    if (notify.enabled) notify.disable();
-                    else
-                      void notify.enable({
-                        title: t("notify.testTitle"),
-                        body: t("notify.testBody"),
-                      });
-                  }}
-                  className={cn(
-                    "rounded-[8px] flex size-9 items-center justify-center border",
-                    notify.enabled
-                      ? "border-amber/60 bg-amber/10 text-amber"
-                      : "border-line text-fog hover:border-amber hover:text-amber",
-                    notify.blocked &&
-                      "cursor-not-allowed opacity-50 hover:border-line hover:text-fog",
-                  )}
-                >
-                  {notify.enabled ? <Bell className="size-4" /> : <BellOff className="size-4" />}
-                </button>
-              )}
+              {/* What happened while you were away: teammate messages and new captures,
+                  counted on the bell and listed in its dropdown. The desktop-popup switch
+                  lives inside that panel now. */}
+              <NotificationsBell />
               <LanguageSelect compact tone="amber" />
             </div>
           </div>

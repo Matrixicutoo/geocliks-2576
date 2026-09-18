@@ -10,6 +10,7 @@ import { routes } from "./routes/routes";
 import { photos } from "./routes/photos";
 import { notes } from "./routes/notes";
 import { messages } from "./routes/messages";
+import { notifications } from "./routes/notifications";
 import { upload } from "./routes/upload";
 import { account } from "./routes/account";
 import { share } from "./routes/share";
@@ -43,6 +44,7 @@ export const router = {
   photos,
   notes,
   messages,
+  notifications,
   upload,
   account,
   share,

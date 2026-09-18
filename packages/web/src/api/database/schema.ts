@@ -426,6 +426,26 @@ export const messageReads = sqliteTable(
   (t) => [uniqueIndex("message_reads_conv_user_idx").on(t.conversationId, t.userId)],
 );
 
+/**
+ * When this person last opened the notification bell, per workspace.
+ *
+ * One cursor for the whole bell rather than one row per notification: the feed is derived on
+ * read from messages and captures that already exist, so there is nothing to mark individually
+ * and nothing to clean up. Everything newer than the cursor is "new" — that is the count on the
+ * bell and the dot beside a row. Per workspace because somebody who belongs to two of them
+ * should not have one Teamspace's captures silence the other's.
+ */
+export const notificationReads = sqliteTable(
+  "notification_reads",
+  {
+    id: text("id").primaryKey(),
+    orgId: text("org_id").notNull(),
+    userId: text("user_id").notNull(),
+    lastSeenAt: integer("last_seen_at", { mode: "timestamp_ms" }).notNull().$defaultFn(now),
+  },
+  (t) => [uniqueIndex("notification_reads_org_user_idx").on(t.orgId, t.userId)],
+);
+
 /** Expo push tokens registered by the mobile app, one row per device token. */
 export const pushTokens = sqliteTable(
   "push_tokens",
