@@ -100,12 +100,7 @@ export function NotificationsBell() {
         title={t("notif.title")}
         aria-expanded={open}
         onClick={toggle}
-        className={cn(
-          "rounded-[8px] relative flex size-9 items-center justify-center border",
-          open || unseen > 0
-            ? "border-amber/60 bg-amber/10 text-amber"
-            : "border-line text-fog hover:border-amber hover:text-amber",
-        )}
+        className="rounded-[8px] relative flex size-9 items-center justify-center bg-amber text-on-amber hover:bg-sky hover:text-white"
       >
         <Bell className="size-4" />
         {unseen > 0 && (
