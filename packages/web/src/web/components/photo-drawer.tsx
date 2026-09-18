@@ -187,7 +187,11 @@ export function PhotoDrawer({ photoId, onClose }: { photoId: string | null; onCl
             {data.note && (
               <div>
                 <p className="label">{t("evidence.note")}</p>
-                <p className="mt-2 text-sm leading-relaxed text-chalk">{data.note}</p>
+                {/* Same panel as the verification record below it: the two labelled blocks read as
+                    a pair instead of one boxed table floating under a loose paragraph. */}
+                <p className="mt-2 rounded-[12px] border border-line bg-ink p-3 text-sm leading-relaxed text-chalk">
+                  {data.note}
+                </p>
               </div>
             )}
 
