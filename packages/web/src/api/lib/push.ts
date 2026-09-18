@@ -15,7 +15,7 @@ type PushPayload = {
   data?: Record<string, string>;
 };
 
-type ExpoTicket = { status?: string; details?: { error?: string } };
+type ExpoTicket = { status?: string; message?: string; details?: { error?: string } };
 
 export async function sendPush(tokens: string[], payload: PushPayload): Promise<void> {
   const valid = [...new Set(tokens.filter((t) => t.startsWith("Expo")))];
@@ -32,6 +32,10 @@ export async function sendPush(tokens: string[], payload: PushPayload): Promise<
           body: payload.body,
           data: payload.data ?? {},
           sound: "default",
+          // Names the max-importance channel the app creates on Android. Without it a push
+          // lands on the OS default channel and arrives silently, with no heads-up banner.
+          channelId: "default",
+          priority: "high",
         })),
       ),
     });
@@ -42,10 +46,24 @@ export async function sendPush(tokens: string[], payload: PushPayload): Promise<
     const json = (await res.json()) as { data?: ExpoTicket[] };
     const dead: string[] = [];
     (json.data ?? []).forEach((ticket, i) => {
-      if (ticket?.status === "error" && ticket.details?.error === "DeviceNotRegistered") {
-        const token = valid[i];
+      if (ticket?.status !== "error") return;
+      const token = valid[i];
+      if (ticket.details?.error === "DeviceNotRegistered") {
         if (token) dead.push(token);
+        return;
       }
+      /**
+       * Every other rejection used to be discarded, which hid a total delivery outage: with no
+       * FCM key uploaded to the Expo project, every Android push came back `InvalidCredentials`
+       * and the server logged nothing at all. A rejection Expo blames on the developer is a
+       * configuration fault, not a dead phone, so it is logged loudly and the token is kept.
+       */
+      console.error(
+        "push: expo rejected a message",
+        ticket.details?.error ?? "unknown",
+        ticket.message ?? "",
+        token ? `token ${token.slice(0, 24)}…` : "",
+      );
     });
     if (dead.length > 0) {
       await db.delete(schema.pushTokens).where(inArray(schema.pushTokens.token, dead));

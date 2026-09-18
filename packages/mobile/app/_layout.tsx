@@ -21,6 +21,7 @@ import { homeFor, showsProduct } from "../lib/product";
 import { SetupGate } from "../components/setup-gate";
 import { usePendingInvite } from "../hooks/use-pending-invite";
 import { usePushToken } from "../hooks/use-push-token";
+import { usePushNotifications } from "../hooks/use-push-notifications";
 import { useDrainOnSignIn } from "../hooks/use-drain-on-signin";
 import { ThemeProvider, useAppTheme } from "../lib/theme";
 import { I18nProvider } from "../lib/i18n";
@@ -51,6 +52,9 @@ function Gate() {
   usePendingInvite(Boolean(session));
   // Registers this device for internal-message push once signed in (native builds only).
   usePushToken(Boolean(session));
+  // Decides what an arriving push DOES: shows it while the app is open, gives Android a
+  // channel loud enough to peek, and opens the thread when it is tapped.
+  usePushNotifications(Boolean(session));
   // Uploads anything captured before signing in, so photos taken without an account land
   // in the team space the moment one exists.
   useDrainOnSignIn(Boolean(session));
