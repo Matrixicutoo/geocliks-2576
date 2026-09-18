@@ -3,6 +3,7 @@ import { Link } from "wouter";
 import { Bell, BellOff, Camera, MessageSquare } from "lucide-react";
 import { useMarkNotificationsSeen, useNotificationFeed } from "../queries/notifications";
 import { useMessageNotifications } from "../hooks/use-message-notifications";
+import { useFaviconBadge } from "../hooks/use-favicon-badge";
 import { useLocale } from "../lib/i18n";
 import { cn } from "../lib/utils";
 import { PhotoDrawer } from "./photo-drawer";
@@ -61,10 +62,19 @@ export function NotificationsBell() {
    */
   const [openedUnseen, setOpenedUnseen] = useState(0);
   const [photoId, setPhotoId] = useState<string | null>(null);
+  /**
+   * Avatar links that failed to load. A signed URL can expire between the poll that fetched it
+   * and the click that opens the panel, and a broken-image glyph is worse than no picture — so
+   * a failure falls back to the initials rather than leaving a torn icon where a face was.
+   */
+  const [brokenAvatars, setBrokenAvatars] = useState<Record<string, true>>({});
   const wrap = useRef<HTMLDivElement>(null);
 
   const items = feed.data?.items ?? [];
   const unseen = feed.data?.unseen ?? 0;
+  // The same count, on the browser tab: the header badge is invisible to somebody working in
+  // another site, and a background tab is exactly who a notification is for.
+  useFaviconBadge(unseen > 0);
 
   // A dropdown that outlives the click elsewhere is a dropdown in the way.
   useEffect(() => {
@@ -138,11 +148,14 @@ export function NotificationsBell() {
                   const body = (
                     <>
                       <span className="relative shrink-0">
-                        {item.actor.image ? (
+                        {item.actor.image && !brokenAvatars[item.actor.id] ? (
                           <img
                             src={item.actor.image}
                             alt=""
                             className="size-9 rounded-full object-cover"
+                            onError={() =>
+                              setBrokenAvatars((prev) => ({ ...prev, [item.actor.id]: true }))
+                            }
                           />
                         ) : (
                           <span className="mono flex size-9 items-center justify-center rounded-full bg-steel text-[11px] font-bold text-chalk">

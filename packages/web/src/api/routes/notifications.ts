@@ -4,6 +4,7 @@ import * as schema from "../database/schema";
 import { id } from "../lib/ids";
 import { photoUrl } from "../lib/media";
 import { orgProc, visibleProjectIds } from "../middleware/auth";
+import { avatarUrl } from "./account";
 
 /**
  * The notification bell.
@@ -49,16 +50,28 @@ export interface NotificationItem {
   unseen: boolean;
 }
 
-/** People in the workspace, for actor names and avatars. */
+/**
+ * People in the workspace, for actor names and avatars.
+ *
+ * `user.image` holds a bare storage key, not a URL — handing it to the client raw is what put
+ * a broken-image icon where the sender's face belongs. `avatarUrl` signs it, and passes an
+ * external one (a Google photo) straight through.
+ */
 async function actors(userIds: string[]) {
-  if (userIds.length === 0) return new Map<string, { name: string; image: string | null }>();
+  const wanted = [...new Set(userIds)];
+  if (wanted.length === 0) return new Map<string, { name: string; image: string | null }>();
   const rows = await db
     .select({ id: schema.user.id, name: schema.user.name, email: schema.user.email, image: schema.user.image })
     .from(schema.user)
-    .where(inArray(schema.user.id, userIds));
-  return new Map(
-    rows.map((row) => [row.id, { name: row.name || row.email || "Teammate", image: row.image }]),
+    .where(inArray(schema.user.id, wanted));
+  const resolved = await Promise.all(
+    rows.map(async (row) => ({
+      id: row.id,
+      name: row.name || row.email || "Teammate",
+      image: await avatarUrl(row.image),
+    })),
   );
+  return new Map(resolved.map((row) => [row.id, { name: row.name, image: row.image }]));
 }
 
 /** Messages sent TO the caller across every thread they are in. */

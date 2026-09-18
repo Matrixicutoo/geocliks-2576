@@ -10,7 +10,14 @@ const POLL_MS = 15_000;
  */
 export function useNotificationFeed() {
   return useQuery(
-    orpc.notifications.feed.queryOptions({ staleTime: 5_000, refetchInterval: POLL_MS }),
+    orpc.notifications.feed.queryOptions({
+      staleTime: 5_000,
+      refetchInterval: POLL_MS,
+      // Keeps polling while the tab is in the background, which React Query otherwise pauses
+      // on blur. That is precisely when this matters: the dot on the browser tab is for
+      // somebody working in another site, and it can only appear if the count still updates.
+      refetchIntervalInBackground: true,
+    }),
   );
 }
 
