@@ -681,6 +681,12 @@ export const vi: Catalog = {
   "verify.notPublishedTitleDoc": "Tài liệu chưa được công bố",
   "verify.notPublishedBodyDoc":
     "Bản ghi đã được khóa và xác minh, nhưng không gian làm việc sở hữu nó chưa công bố tệp. Hãy yêu cầu liên kết chia sẻ để đọc tài liệu.",
+  "verify.headlineVideo": "Đã xác minh video",
+  "verify.subheadVideo":
+    "Trang này hiển thị tệp đã khóa. Đoạn phim, dấu và mã hash bên dưới là bản ghi gốc — không phải bản sao đã mã hóa lại.",
+  "verify.notPublishedTitleVideo": "Video chưa được công bố",
+  "verify.notPublishedBodyVideo":
+    "Bản ghi đã được khóa và xác minh, nhưng không gian làm việc sở hữu nó chưa công bố tệp. Hãy yêu cầu liên kết chia sẻ để xem đoạn phim.",
   "verify.statusLabel": "Trạng thái",
   "verify.statusVerified": "Đã khóa và xác thực",
   "verify.statusUnverified": "Đã khóa, thời gian chưa xác thực",

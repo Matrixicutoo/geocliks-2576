@@ -687,6 +687,12 @@ export const ptBR: Catalog = {
   "verify.notPublishedTitleDoc": "Documento não publicado",
   "verify.notPublishedBodyDoc":
     "O registro está bloqueado e verificado, mas o espaço de trabalho que o possui não publicou o arquivo publicamente. Peça um link de compartilhamento para ler o documento.",
+  "verify.headlineVideo": "Vídeo verificado",
+  "verify.subheadVideo":
+    "Esta página mostra o arquivo bloqueado. O clipe, o selo e o hash abaixo são da gravação original, não uma cópia recodificada.",
+  "verify.notPublishedTitleVideo": "Vídeo não publicado",
+  "verify.notPublishedBodyVideo":
+    "O registro está bloqueado e verificado, mas o espaço de trabalho que o possui não publicou o arquivo publicamente. Peça um link de compartilhamento para assistir ao clipe.",
   "verify.statusLabel": "Status",
   "verify.statusVerified": "Travado e verificado",
   "verify.statusUnverified": "Travado, hora não verificada",

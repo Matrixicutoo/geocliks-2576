@@ -14,7 +14,7 @@ import { Logo } from "../components/logo";
 import { LanguageSelect } from "../components/language-select";
 import { formatCoords, formatStamp } from "../components/evidence-card";
 import { useVerifyCode } from "../queries/verify";
-import { useT } from "../lib/i18n";
+import { type TKey, useT } from "../lib/i18n";
 
 function Field({ label, value, mono = true }: { label: string; value: string; mono?: boolean }) {
   return (
@@ -39,6 +39,32 @@ function Field({ label, value, mono = true }: { label: string; value: string; mo
  * Metadata and integrity are public; the image itself only appears when the owning
  * workspace published a live share link for that photo.
  */
+/*
+  Every kind is "the locked file", but the words for it differ: a scan is a stack of pages, a
+  clip is a recording, and only a photo can be mistaken for a camera-roll copy. Spelled out as
+  real keys rather than built from a suffix, so a missing translation fails the typecheck.
+*/
+const COPY = {
+  photo: {
+    headline: "verify.headline",
+    subhead: "verify.subhead",
+    notPublishedTitle: "verify.notPublishedTitle",
+    notPublishedBody: "verify.notPublishedBody",
+  },
+  video: {
+    headline: "verify.headlineVideo",
+    subhead: "verify.subheadVideo",
+    notPublishedTitle: "verify.notPublishedTitleVideo",
+    notPublishedBody: "verify.notPublishedBodyVideo",
+  },
+  document: {
+    headline: "verify.headlineDoc",
+    subhead: "verify.subheadDoc",
+    notPublishedTitle: "verify.notPublishedTitleDoc",
+    notPublishedBody: "verify.notPublishedBodyDoc",
+  },
+} satisfies Record<string, Record<string, TKey>>;
+
 export default function VerifyPage() {
   const t = useT();
   const params = useParams<{ code?: string }>();
@@ -61,9 +87,7 @@ export default function VerifyPage() {
 
   const d = q.data;
   const ok = d?.integrity === "verified";
-  /* A scan is a PDF of pages, so the page's copy talks about a document instead of an image —
-     "not a camera-roll copy" says nothing to someone holding a signed work order. */
-  const isDocument = d?.kind === "document";
+  const copy = COPY[d?.kind === "document" ? "document" : d?.kind === "video" ? "video" : "photo"];
 
   return (
     <div data-theme="light" className="min-h-screen bg-ink text-chalk">
@@ -119,15 +143,11 @@ export default function VerifyPage() {
             </div>
 
             <h1 className="mt-5 text-[32px] leading-tight font-black tracking-tight sm:text-[44px]">
-              {ok
-                ? isDocument
-                  ? t("verify.headlineDoc")
-                  : t("verify.headline")
-                : t("verify.headlineUnverified")}
+              {ok ? t(copy.headline) : t("verify.headlineUnverified")}
             </h1>
             <p className="mono mt-2 text-[16px] tracking-widest text-amber">{d.photoCode}</p>
             <p className="mt-4 max-w-2xl text-[15px] leading-relaxed text-fog">
-              {isDocument ? t("verify.subheadDoc") : t("verify.subhead")}
+              {t(copy.subhead)}
             </p>
 
             {/* the locked file */}
@@ -171,13 +191,9 @@ export default function VerifyPage() {
                 <div className="flex items-start gap-3 p-6">
                   <Lock className="mt-0.5 size-4 shrink-0 text-amber" />
                   <div>
-                    <h2 className="text-[15px] font-bold">
-                      {isDocument
-                        ? t("verify.notPublishedTitleDoc")
-                        : t("verify.notPublishedTitle")}
-                    </h2>
+                    <h2 className="text-[15px] font-bold">{t(copy.notPublishedTitle)}</h2>
                     <p className="mt-2 text-[13px] leading-relaxed text-fog">
-                      {isDocument ? t("verify.notPublishedBodyDoc") : t("verify.notPublishedBody")}
+                      {t(copy.notPublishedBody)}
                     </p>
                   </div>
                 </div>

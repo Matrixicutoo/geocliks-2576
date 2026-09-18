@@ -690,6 +690,12 @@ export const it: Catalog = {
   "verify.notPublishedTitleDoc": "Documento non pubblicato",
   "verify.notPublishedBodyDoc":
     "Il record è bloccato e verificato, ma lo spazio di lavoro che lo possiede non ha pubblicato il file pubblicamente. Chiedi un link di condivisione per leggere il documento.",
+  "verify.headlineVideo": "Video verificato",
+  "verify.subheadVideo":
+    "Questa pagina mostra il file bloccato. Il clip, il timbro e l'hash qui sotto provengono dalla registrazione originale, non da una copia ricodificata.",
+  "verify.notPublishedTitleVideo": "Video non pubblicato",
+  "verify.notPublishedBodyVideo":
+    "Il record è bloccato e verificato, ma lo spazio di lavoro che lo possiede non ha pubblicato il file pubblicamente. Chiedi un link di condivisione per guardare il clip.",
   "verify.statusLabel": "Stato",
   "verify.statusVerified": "Bloccato e verificato",
   "verify.statusUnverified": "Bloccato, ora non verificata",

@@ -14,7 +14,7 @@ import { useLocalSearchParams, useRouter } from "expo-router";
 import { Text, TextInput } from "@/components/app-text";
 import { useColors } from "@/hooks/use-colors";
 import { Fonts } from "@/constants/theme";
-import { useT } from "@/lib/i18n";
+import { type TKey, useT } from "@/lib/i18n";
 import { useVerifyCode } from "@/queries/verify";
 
 function stamp(value: string | Date | null | undefined) {
@@ -42,6 +42,32 @@ function coords(lat?: number | null, lng?: number | null) {
  * Public photo-code check, reachable signed out from the marketing screen. Same procedure as the
  * web /verify page: metadata always, the image only when the owning workspace published the file.
  */
+/*
+  Every kind is "the locked file", but the words for it differ: a scan is a stack of pages, a
+  clip is a recording, and only a photo can be mistaken for a camera-roll copy. Spelled out as
+  real keys rather than built from a suffix, so a missing translation fails the typecheck.
+*/
+const COPY = {
+  photo: {
+    headline: "verify.headline",
+    subhead: "verify.subhead",
+    notPublishedTitle: "verify.notPublishedTitle",
+    notPublishedBody: "verify.notPublishedBody",
+  },
+  video: {
+    headline: "verify.headlineVideo",
+    subhead: "verify.subheadVideo",
+    notPublishedTitle: "verify.notPublishedTitleVideo",
+    notPublishedBody: "verify.notPublishedBodyVideo",
+  },
+  document: {
+    headline: "verify.headlineDoc",
+    subhead: "verify.subheadDoc",
+    notPublishedTitle: "verify.notPublishedTitleDoc",
+    notPublishedBody: "verify.notPublishedBodyDoc",
+  },
+} satisfies Record<string, Record<string, TKey>>;
+
 export default function Verify() {
   const colors = useColors();
   const router = useRouter();
@@ -53,9 +79,7 @@ export default function Verify() {
   const q = useVerifyCode(code);
   const d = q.data;
   const ok = d?.integrity === "verified";
-  /* A scan is a PDF of pages, so the copy talks about a document instead of an image — the
-     "camera-roll copy" line means nothing to someone holding a signed work order. */
-  const isDocument = d?.kind === "document";
+  const copy = COPY[d?.kind === "document" ? "document" : d?.kind === "video" ? "video" : "photo"];
 
   const row = (label: string, value: string) => (
     <View key={label} style={[styles.row, { borderColor: colors.border }]}>
@@ -154,15 +178,11 @@ export default function Verify() {
               </Text>
             </View>
             <Text style={[styles.h1, { color: colors.foreground }]}>
-              {ok
-                ? isDocument
-                  ? tr("verify.headlineDoc")
-                  : tr("verify.headline")
-                : tr("verify.headlineUnverified")}
+              {ok ? tr(copy.headline) : tr("verify.headlineUnverified")}
             </Text>
             <Text style={[styles.code, { color: colors.primary }]}>{d.photoCode}</Text>
             <Text style={[styles.body14, { color: colors.mutedForeground }]}>
-              {isDocument ? tr("verify.subheadDoc") : tr("verify.subhead")}
+              {tr(copy.subhead)}
             </Text>
 
             {d.published && d.url ? (
@@ -191,10 +211,10 @@ export default function Verify() {
                 style={[styles.card, { backgroundColor: colors.card, borderColor: colors.border }]}
               >
                 <Text style={[styles.h2, { color: colors.foreground }]}>
-                  {isDocument ? tr("verify.notPublishedTitleDoc") : tr("verify.notPublishedTitle")}
+                  {tr(copy.notPublishedTitle)}
                 </Text>
                 <Text style={[styles.body14, { color: colors.mutedForeground }]}>
-                  {isDocument ? tr("verify.notPublishedBodyDoc") : tr("verify.notPublishedBody")}
+                  {tr(copy.notPublishedBody)}
                 </Text>
               </View>
             )}

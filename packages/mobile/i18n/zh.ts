@@ -333,6 +333,12 @@ export const zh: Catalog = {
   "verify.notPublishedTitleDoc": "文件未公开",
   "verify.notPublishedBodyDoc":
     "该记录已锁定并验证，但拥有它的工作区尚未公开此文件。请向其索取分享链接以阅读该文件。",
+  "verify.headlineVideo": "视频已验证",
+  "verify.subheadVideo":
+    "此页面显示已锁定的文件。下方的片段、水印和哈希值均来自原始录制内容，而非重新编码的副本。",
+  "verify.notPublishedTitleVideo": "视频未公开",
+  "verify.notPublishedBodyVideo":
+    "该记录已锁定并验证，但拥有它的工作区尚未公开此文件。请向其索取分享链接以观看该片段。",
   "verify.statusLabel": "状态",
   "verify.statusVerified": "已锁定并校验",
   "verify.statusUnverified": "已锁定，时间未验证",

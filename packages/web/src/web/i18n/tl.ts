@@ -692,6 +692,12 @@ export const tl: Catalog = {
   "verify.notPublishedTitleDoc": "Hindi naka-publish ang dokumento",
   "verify.notPublishedBodyDoc":
     "Naka-lock at verified ang record, pero hindi pa in-publish ng workspace na may-ari nito ang file. Humingi sa kanila ng share link para mabasa ang dokumento.",
+  "verify.headlineVideo": "Na-verify na video",
+  "verify.subheadVideo":
+    "Ipinapakita ng page na ito ang naka-lock na file. Ang clip, stamp, at hash sa ibaba ay mula sa orihinal na recording — hindi isang muling naka-encode na kopya.",
+  "verify.notPublishedTitleVideo": "Hindi naka-publish ang video",
+  "verify.notPublishedBodyVideo":
+    "Naka-lock at verified ang record, pero hindi pa in-publish ng workspace na may-ari nito ang file. Humingi sa kanila ng share link para mapanood ang clip.",
   "verify.statusLabel": "Status",
   "verify.statusVerified": "Naka-lock at beripikado",
   "verify.statusUnverified": "Naka-lock, hindi beripikado ang oras",

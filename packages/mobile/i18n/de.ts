@@ -348,6 +348,12 @@ export const de: Catalog = {
   "verify.notPublishedTitleDoc": "Dokument nicht veröffentlicht",
   "verify.notPublishedBodyDoc":
     "Der Datensatz ist gesperrt und verifiziert, aber der Workspace, dem er gehört, hat die Datei nicht öffentlich veröffentlicht. Bitten Sie um einen Freigabelink, um das Dokument zu lesen.",
+  "verify.headlineVideo": "Video verifiziert",
+  "verify.subheadVideo":
+    "Diese Seite zeigt die gesperrte Datei. Clip, Stempel und Hash unten stammen aus der Originalaufnahme — keine neu kodierte Kopie.",
+  "verify.notPublishedTitleVideo": "Video nicht veröffentlicht",
+  "verify.notPublishedBodyVideo":
+    "Der Datensatz ist gesperrt und verifiziert, aber der Workspace, dem er gehört, hat die Datei nicht öffentlich veröffentlicht. Bitten Sie um einen Freigabelink, um den Clip anzusehen.",
   "verify.statusLabel": "Status",
   "verify.statusVerified": "Gesperrt und verifiziert",
   "verify.statusUnverified": "Gesperrt, Zeit unbestätigt",

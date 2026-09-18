@@ -14,8 +14,8 @@ export type PhotoFilter = {
    * on both clients — the server decides whose unfiled work that means per role.
    */
   unassigned?: boolean;
-  /** Splits the personal page into stills and clips. */
-  kind?: "photo" | "video";
+  /** Splits the personal page into stills, clips and scanned documents. */
+  kind?: "photo" | "video" | "document";
   /**
    * Must stay in step with `tagEnum` in api/routes/photos.ts. "pickup" and "delivery" were added
    * there with the delivery-routes feature but never mirrored here, so the Teamspace tag filter

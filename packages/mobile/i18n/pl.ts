@@ -346,6 +346,12 @@ export const pl: Catalog = {
   "verify.notPublishedTitleDoc": "Dokument nieopublikowany",
   "verify.notPublishedBodyDoc":
     "Rekord jest zablokowany i zweryfikowany, ale przestrzeń robocza, która go posiada, nie opublikowała pliku publicznie. Poproś o link do udostępniania, aby przeczytać dokument.",
+  "verify.headlineVideo": "Wideo zweryfikowane",
+  "verify.subheadVideo":
+    "Ta strona pokazuje zablokowany plik. Klip, stempel i skrót poniżej pochodzą z oryginalnego nagrania, a nie z ponownie zakodowanej kopii.",
+  "verify.notPublishedTitleVideo": "Wideo nieopublikowane",
+  "verify.notPublishedBodyVideo":
+    "Rekord jest zablokowany i zweryfikowany, ale przestrzeń robocza, która go posiada, nie opublikowała pliku publicznie. Poproś o link do udostępniania, aby zobaczyć klip.",
   "verify.statusLabel": "Status",
   "verify.statusVerified": "Zablokowane i zweryfikowane",
   "verify.statusUnverified": "Zablokowane, czas niezweryfikowany",

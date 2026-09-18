@@ -550,7 +550,7 @@ export async function buildStampedDocument(ctx: EvidenceContext): Promise<Uint8A
 
   const pages = pdf.getPages();
   for (const page of pages) {
-    const { width, height } = page.getSize();
+    const { width } = page.getSize();
     const pad = 7;
     const lead = 10.5;
     const titleSize = 8.5;

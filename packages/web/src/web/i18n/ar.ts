@@ -670,6 +670,12 @@ export const ar: Catalog = {
   "verify.notPublishedTitleDoc": "المستند غير منشور",
   "verify.notPublishedBodyDoc":
     "السجل مُقفل ومُتحقق منه، لكن مساحة العمل المالكة له لم تنشر الملف علنًا. اطلب منهم رابط مشاركة لقراءة المستند.",
+  "verify.headlineVideo": "تم التحقق من الفيديو",
+  "verify.subheadVideo":
+    "تعرض هذه الصفحة الملف المُقفل. المقطع والطابع والبصمة أدناه من التسجيل الأصلي — وليست نسخة معادة الترميز.",
+  "verify.notPublishedTitleVideo": "الفيديو غير منشور",
+  "verify.notPublishedBodyVideo":
+    "السجل مُقفل ومُتحقق منه، لكن مساحة العمل المالكة له لم تنشر الملف علنًا. اطلب منهم رابط مشاركة لمشاهدة المقطع.",
   "verify.statusLabel": "الحالة",
   "verify.statusVerified": "مقفل وموثّق",
   "verify.statusUnverified": "مقفل، الوقت غير موثّق",

@@ -697,6 +697,12 @@ export const frCA: Catalog = {
   "verify.notPublishedTitleDoc": "Document non publié",
   "verify.notPublishedBodyDoc":
     "L'enregistrement est verrouillé et vérifié, mais l'espace de travail qui le détient n'a pas publié le fichier publiquement. Demandez-leur un lien de partage pour lire le document.",
+  "verify.headlineVideo": "Vidéo vérifiée",
+  "verify.subheadVideo":
+    "Cette page montre le fichier verrouillé. Le clip, le tampon et l'empreinte ci-dessous proviennent de l'enregistrement original, pas d'une copie réencodée.",
+  "verify.notPublishedTitleVideo": "Vidéo non publiée",
+  "verify.notPublishedBodyVideo":
+    "L'enregistrement est verrouillé et vérifié, mais l'espace de travail qui le détient n'a pas publié le fichier publiquement. Demandez-leur un lien de partage pour visionner le clip.",
   "verify.statusLabel": "Statut",
   "verify.statusVerified": "Verrouillé et vérifié",
   "verify.statusUnverified": "Verrouillé, heure non vérifiée",

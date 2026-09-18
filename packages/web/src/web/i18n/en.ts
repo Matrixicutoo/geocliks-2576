@@ -699,6 +699,12 @@ export const en = {
   "verify.notPublishedTitleDoc": "Document not published",
   "verify.notPublishedBodyDoc":
     "The record is locked and verified, but the workspace that owns it has not published the file publicly. Ask them for a share link to read the document.",
+  "verify.headlineVideo": "Video verified",
+  "verify.subheadVideo":
+    "This page shows the locked file. The clip, stamp, and hash below are the original recording — not a re-encoded copy.",
+  "verify.notPublishedTitleVideo": "Video not published",
+  "verify.notPublishedBodyVideo":
+    "The record is locked and verified, but the workspace that owns it has not published the file publicly. Ask them for a share link to watch the clip.",
   "verify.statusLabel": "Status",
   "verify.statusVerified": "Locked & verified",
   "verify.statusUnverified": "Locked, time unverified",
