@@ -168,17 +168,19 @@ function Hero() {
         animate="show"
         className="relative mx-auto flex max-w-[1180px] flex-col items-center justify-center px-5 py-20 text-center lg:min-h-[min(56.25vw,92vh)] lg:py-24"
       >
-        <div className="max-w-[720px]">
+        {/* 820 rather than 720: the body copy is four lines of it, and the narrower block broke
+            "network-verified timestamp" across a line in the one sentence that has to land. */}
+        <div className="max-w-[820px]">
           <motion.p
             variants={riseIn}
-            className="rounded-[6px] mono inline-flex items-center gap-2 border border-amber/40 bg-amber/10 px-2.5 py-1 text-[10.5px] uppercase tracking-[0.2em] text-amber"
+            className="rounded-[6px] mono inline-flex items-center gap-2 border border-amber/40 bg-amber/10 px-2.5 py-1 text-[11.5px] uppercase tracking-[0.2em] text-amber"
           >
             <ShieldCheck className="size-3.5" /> {t("home.hero.eyebrow")}
           </motion.p>
 
           <motion.h1
             variants={riseIn}
-            className="mt-6 font-display text-[42px] font-extrabold leading-[1.03] tracking-tight text-chalk sm:text-[58px]"
+            className="mt-6 font-display text-[46px] font-extrabold leading-[1.03] tracking-tight text-chalk sm:text-[64px]"
           >
             {t("home.hero.title1")}
             <br />
@@ -187,7 +189,7 @@ function Hero() {
 
           <motion.p
             variants={riseIn}
-            className="mx-auto mt-6 max-w-xl text-[17px] leading-relaxed text-fog"
+            className="mx-auto mt-6 max-w-[760px] text-[19px] leading-relaxed text-fog"
           >
             {t("home.hero.body")}
           </motion.p>
@@ -212,13 +214,13 @@ function Hero() {
 
           <motion.div
             variants={riseIn}
-            className="mt-8 flex flex-wrap items-center justify-center gap-x-7 gap-y-2 text-[12px] text-fog"
+            className="mt-8 flex flex-wrap items-center justify-center gap-x-7 gap-y-2 text-[13px] text-fog"
           >
             <span className="flex items-center gap-1.5">
-              <WifiOff className="size-3.5 text-amber" /> {t("home.hero.noSignal")}
+              <WifiOff className="size-4 text-amber" /> {t("home.hero.noSignal")}
             </span>
             <span className="flex items-center gap-1.5">
-              <Globe2 className="size-3.5 text-amber" /> {t("getapp.underButtons")}
+              <Globe2 className="size-4 text-amber" /> {t("getapp.underButtons")}
             </span>
           </motion.div>
         </div>
