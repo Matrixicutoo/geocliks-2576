@@ -9,6 +9,8 @@ export type StampData = {
   accuracyM?: number | null;
   address: string | null;
   project: string | null;
+  /** Free text typed on the NOTE tab. Burned in under the address, same as the server does. */
+  note?: string | null;
   code?: string | null;
   company?: string | null;
   /** Presigned link to the workspace logo. Null hides the slot, same as the web overlay. */
@@ -79,6 +81,20 @@ export function Stamp({ data, compact = false }: { data: StampData; compact?: bo
             {data.address ?? "Resolving street address…"}
           </Text>
 
+          {data.note ? (
+            <View style={styles.noteRow}>
+              <Text style={[styles.noteTag, { color: c.amber, fontFamily: Fonts?.mono }]}>
+                NOTE
+              </Text>
+              <Text
+                numberOfLines={compact ? 1 : 2}
+                style={[styles.note, { color: c.foreground }]}
+              >
+                {data.note}
+              </Text>
+            </View>
+          ) : null}
+
           <View style={styles.rowBottom}>
             <Text numberOfLines={1} style={[styles.project, { color: c.amber }]}>
               {data.project ?? "Unassigned"}
@@ -120,6 +136,9 @@ const styles = StyleSheet.create({
   tz: { fontSize: 10, letterSpacing: 0.6 },
   mono: { fontSize: 11, letterSpacing: 0.3 },
   address: { fontSize: 11 },
+  noteRow: { flexDirection: "row", alignItems: "flex-start", gap: 5 },
+  noteTag: { fontSize: 9, letterSpacing: 0.8, marginTop: 1 },
+  note: { fontSize: 11, flex: 1 },
   rowBottom: {
     flexDirection: "row",
     alignItems: "center",

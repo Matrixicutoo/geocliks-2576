@@ -22,6 +22,8 @@ export interface StampData {
   accuracyM?: number | null;
   address?: string | null;
   project?: string | null;
+  /** The capture note typed on the phone's NOTE tab, burned in like the rest of the stamp. */
+  note?: string | null;
   company?: string | null;
 }
 
@@ -95,6 +97,7 @@ export function stampLines(stamp: StampData): string[] {
       : "NO GPS FIX";
   const lines = [line1, coords];
   if (stamp.address) lines.push(stamp.address.slice(0, 64));
+  if (stamp.note) lines.push(`NOTE ${stamp.note.replace(/\s+/g, " ").trim()}`.slice(0, 64));
   if (stamp.project) lines.push(stamp.project.slice(0, 48));
   lines.push(stamp.code);
   return lines;

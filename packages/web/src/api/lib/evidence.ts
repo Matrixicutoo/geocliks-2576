@@ -347,10 +347,13 @@ function drawStamp(
   const line1 = fmtTime(photo.capturedAt);
   const line2 = `${coordLabel(photo)}  ${photo.accuracyM ? `+/-${Math.round(photo.accuracyM)}m` : ""}`.trim();
   const line3 = photo.address ?? "";
+  // The capture note, typed on the phone's NOTE tab. It gets its own row under the address with
+  // an amber NOTE tag, so a note is readable as a note and not mistaken for part of the street.
+  const noteLine = (photo.note ?? "").replace(/\s+/g, " ").trim();
   const line4 = `${photo.photoCode}  ·  ${orgName}`;
   const f1 = Math.round(30 * s);
   const f2 = Math.round(22 * s);
-  const barH = Math.round((line3 ? 150 : 124) * s);
+  const barH = Math.round(((line3 ? 150 : 124) + (noteLine ? 30 : 0)) * s);
   const barY = height - barH;
   const textX = pad + Math.round(14 * s);
   const right = mapW ? mapW + Math.round(24 * s) : 0;
@@ -383,6 +386,27 @@ function drawStamp(
       size: f2,
       color: STAMP_WHITE,
       alpha: 0.82,
+    });
+  }
+  if (noteLine) {
+    const noteY = capTop(barY + f1 + f2 * (line3 ? 3 : 2) + Math.round((line3 ? 42 : 34) * s), f2);
+    const tagSize = Math.round(f2 * 0.8);
+    // The tag is drawn first and its returned width becomes the note's left edge, so the two
+    // runs sit on one line without measuring the string twice.
+    const tagW = drawText(surface, "NOTE", {
+      x: textX,
+      y: noteY,
+      size: tagSize,
+      color: STAMP_AMBER,
+      weight: 0.12,
+    });
+    const noteX = textX + tagW + Math.round(8 * s);
+    drawText(surface, noteLine.slice(0, fitChars(width - right - noteX, f2)), {
+      x: noteX,
+      y: noteY,
+      size: f2,
+      color: STAMP_WHITE,
+      alpha: 0.92,
     });
   }
   drawText(surface, clip(line4, f2), {

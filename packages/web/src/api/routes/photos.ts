@@ -349,6 +349,7 @@ export const photos = {
         accuracyM: input.accuracyM ?? null,
         address: input.address ?? null,
         project: null as string | null,
+        note: input.note ?? null,
         company: context.org.name,
       };
 

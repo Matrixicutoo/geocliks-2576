@@ -159,6 +159,17 @@ export default function Capture() {
   const [projectHover, setProjectHover] = useState(false);
   const [tagHover, setTagHover] = useState(false);
   const [signHover, setSignHover] = useState(false);
+  // The third selector bar: a free-text note burned into the stamp of the next capture. It
+  // describes one photo, so it is cleared the moment the shot is committed rather than
+  // remembered like the project and the tag.
+  const [noteOpen, setNoteOpen] = useState(false);
+  const [noteHover, setNoteHover] = useState(false);
+  const [note, setNote] = useState("");
+  // The sheet edits a draft, so backing out of it leaves the committed note untouched.
+  const [noteDraft, setNoteDraft] = useState("");
+  // Same reason as the signature ref: `commit` reads the note out of a closure that can be a
+  // render behind the sheet's save, and a note typed and shot immediately must not be dropped.
+  const noteRef = useRef("");
   const [tag, setTag] = useState<QueuedPhoto["tag"]>("general");
   // Last tag used outside CLOCK mode — restored on launch and when returning to photo/video.
   const [photoTag, setPhotoTag] = useState<QueuedPhoto["tag"]>("general");
@@ -439,7 +450,9 @@ export default function Capture() {
         projectId,
         projectName: project?.name ?? null,
         tag: finalTag,
-        note: null,
+        // Read from the ref, not state: a note typed and shot in the same beat would otherwise
+        // be a render behind. Trimmed to null so an all-whitespace note is no note at all.
+        note: noteRef.current.trim() || null,
         lat: shotFix.lat,
         lng: shotFix.lng,
         accuracyM: shotFix.accuracyM,
@@ -472,6 +485,10 @@ export default function Capture() {
         setSignaturePath(null);
         setSignatureBox(null);
       }
+      // A note describes the shot that was just taken, so it does not carry to the next one.
+      noteRef.current = "";
+      setNote("");
+      setNoteDraft("");
       if ((extra.kind ?? "photo") === "photo") setLastShot(uri);
       // Signed out the camera still works, but there is no session to presign or seal an
       // upload with. The capture stays in the same offline queue a dead-zone photo uses and
@@ -653,6 +670,8 @@ export default function Capture() {
     accuracyM: fix.accuracyM,
     address: fix.address,
     project: project?.name ?? null,
+    // What the NOTE tab holds, previewed in the same place the server burns it in.
+    note: note.trim() || null,
     company: template?.companyLine ?? org.data?.org.name ?? null,
     // A template without its own logo falls back to the workspace's business logo, so the
     // one upload in settings is enough for the stamp to carry the brand.
@@ -1025,6 +1044,44 @@ export default function Capture() {
               />
             </View>
           </Pressable>
+
+          <Pressable
+            onPress={() => {
+              // The sheet always opens on what is committed, so re-opening it after a cancel
+              // shows the note that is actually going to be burned in.
+              setNoteDraft(note);
+              setNoteOpen((v) => !v);
+            }}
+            onHoverIn={() => setNoteHover(true)}
+            onHoverOut={() => setNoteHover(false)}
+            accessibilityLabel={tr("capture.note")}
+            style={({ pressed }) => [
+              styles.dropdownHead,
+              styles.selectorHalf,
+              {
+                borderColor: pressed || noteHover ? colors.amberDeep : colors.amber,
+                backgroundColor: pressed || noteHover ? colors.amberDeep : colors.amber,
+              },
+            ]}
+          >
+            <View style={styles.selectorLabelRow}>
+              <Text
+                style={[
+                  styles.selectorLabel,
+                  { color: colors.primaryForeground, fontFamily: Fonts?.display },
+                ]}
+              >
+                {tr("capture.note").toUpperCase()}
+              </Text>
+              <Ionicons
+                // A filled pencil says a note is attached to the next shot without spending
+                // room on the text itself — the stamp preview already shows that.
+                name={note.trim() ? "create" : noteOpen ? "chevron-up" : "chevron-down"}
+                size={12}
+                color={colors.primaryForeground}
+              />
+            </View>
+          </Pressable>
         </View>
         {/*
           The two lists used to render inline under the selector bar, which grew the panel and
@@ -1204,6 +1261,109 @@ export default function Capture() {
                     {tr("capture.mode.reports")}
                   </Text>
                   <Ionicons name="chevron-forward" size={13} color={colors.mutedForeground} />
+                </Pressable>
+              </View>
+            </ScrollView>
+          </View>
+        </Modal>
+
+        {/*
+          The note sheet. Same bottom sheet as the two lists above it, with a text field instead
+          of a pill grid. 1000 characters is the server's cap on photos.note, so the field stops
+          where the API would have rejected it.
+        */}
+        <Modal
+          visible={noteOpen}
+          transparent
+          animationType="slide"
+          onRequestClose={() => setNoteOpen(false)}
+        >
+          <Pressable style={styles.sheetBackdrop} onPress={() => setNoteOpen(false)} />
+          <View
+            style={[
+              styles.sheet,
+              { backgroundColor: colors.background, borderColor: colors.border },
+            ]}
+          >
+            <View style={[styles.sheetHead, { borderColor: colors.border }]}>
+              <Text
+                style={[styles.sheetTitle, { color: colors.foreground, fontFamily: Fonts?.mono }]}
+              >
+                {tr("capture.note").toUpperCase()}
+              </Text>
+              <Pressable
+                onPress={() => setNoteOpen(false)}
+                accessibilityLabel={tr("common.close")}
+                hitSlop={10}
+              >
+                <Ionicons name="close" size={20} color={colors.mutedForeground} />
+              </Pressable>
+            </View>
+            <ScrollView
+              contentContainerStyle={styles.sheetBody}
+              showsVerticalScrollIndicator={false}
+              keyboardShouldPersistTaps="handled"
+            >
+              <TextInput
+                value={noteDraft}
+                onChangeText={(v) => setNoteDraft(v.slice(0, 1000))}
+                placeholder={tr("capture.notePlaceholder")}
+                placeholderTextColor={colors.mutedForeground}
+                accessibilityLabel={tr("capture.note")}
+                multiline
+                autoFocus
+                style={[
+                  styles.noteInput,
+                  {
+                    borderColor: colors.border,
+                    color: colors.foreground,
+                    backgroundColor: colors.card,
+                  },
+                ]}
+              />
+              <View style={styles.noteActions}>
+                <Text
+                  style={[
+                    styles.noteCount,
+                    { color: colors.mutedForeground, fontFamily: Fonts?.mono },
+                  ]}
+                >
+                  {noteDraft.trim().length}/1000
+                </Text>
+                <Pressable
+                  onPress={() => setNoteDraft("")}
+                  accessibilityLabel={tr("capture.clearSign")}
+                  style={[styles.noteBtn, { borderColor: colors.border }]}
+                >
+                  <Text style={[styles.noteBtnText, { color: colors.mutedForeground }]}>
+                    {tr("capture.clearSign")}
+                  </Text>
+                </Pressable>
+                <Pressable
+                  onPress={() => {
+                    const next = noteDraft.trim();
+                    noteRef.current = next;
+                    setNote(next);
+                    setNoteDraft(next);
+                    setNoteOpen(false);
+                  }}
+                  accessibilityLabel={tr("capture.noteSave")}
+                  style={({ pressed }) => [
+                    styles.noteBtn,
+                    {
+                      borderColor: pressed ? colors.amberDeep : colors.amber,
+                      backgroundColor: pressed ? colors.amberDeep : colors.amber,
+                    },
+                  ]}
+                >
+                  <Text
+                    style={[
+                      styles.noteBtnText,
+                      { color: colors.primaryForeground, fontFamily: Fonts?.display },
+                    ]}
+                  >
+                    {tr("capture.noteSave")}
+                  </Text>
                 </Pressable>
               </View>
             </ScrollView>
@@ -1476,7 +1636,33 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     gap: 4,
   },
-  selectorLabel: { fontSize: 11, letterSpacing: 0.6, textAlign: "center" },
+  // Three bars now share the row, so the labels lose a little tracking to keep NOTE and
+  // EVIDENCE on one line on a narrow phone.
+  selectorLabel: { fontSize: 11, letterSpacing: 0.4, textAlign: "center" },
+  noteInput: {
+    borderWidth: 1,
+    borderRadius: 8,
+    paddingHorizontal: 12,
+    paddingVertical: 10,
+    fontSize: 14,
+    minHeight: 110,
+    textAlignVertical: "top",
+  },
+  noteActions: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "flex-end",
+    gap: 8,
+    marginTop: 12,
+  },
+  noteCount: { fontSize: 10, letterSpacing: 0.5, marginRight: "auto" },
+  noteBtn: {
+    borderWidth: 1,
+    borderRadius: 8,
+    paddingHorizontal: 14,
+    paddingVertical: 8,
+  },
+  noteBtnText: { fontSize: 12, letterSpacing: 0.5 },
   dropdownHead: {
     flexDirection: "row",
     alignItems: "center",
