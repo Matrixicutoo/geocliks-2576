@@ -94,13 +94,15 @@ export function NotificationsBell() {
 
   return (
     <div className="relative" ref={wrap}>
+      {/* A round well, one shade up from the header's own blue so it reads as a surface rather
+          than a button competing with the amber pills beside it. Only the bell is yellow. */}
       <button
         type="button"
         aria-label={t("notif.title")}
         title={t("notif.title")}
         aria-expanded={open}
         onClick={toggle}
-        className="rounded-[8px] relative flex size-9 items-center justify-center bg-amber text-on-amber hover:bg-sky hover:text-white"
+        className="relative flex size-9 items-center justify-center rounded-full bg-[#173350] text-amber hover:bg-[#1f4368]"
       >
         <Bell className="size-4" />
         {unseen > 0 && (
