@@ -685,6 +685,12 @@ export const es: Catalog = {
   "verify.notPublishedTitle": "Imagen no publicada",
   "verify.notPublishedBody":
     "El registro está bloqueado y verificado, pero el espacio de trabajo propietario no publicó el archivo. Pídeles un enlace para ver la imagen.",
+  "verify.headlineDoc": "Documento verificado",
+  "verify.subheadDoc":
+    "Esta página muestra el archivo bloqueado. Las páginas, el sello y el hash de abajo son del escaneo original, no una copia reimpresa.",
+  "verify.notPublishedTitleDoc": "Documento no publicado",
+  "verify.notPublishedBodyDoc":
+    "El registro está bloqueado y verificado, pero el espacio de trabajo que lo posee no ha publicado el archivo públicamente. Pídeles un enlace de uso compartido para leer el documento.",
   "verify.statusLabel": "Estado",
   "verify.statusVerified": "Bloqueado y verificado",
   "verify.statusUnverified": "Bloqueado, hora sin verificar",
@@ -1043,6 +1049,7 @@ export const es: Catalog = {
     "El certificado y la copia sellada llevan la hora, el GPS, la dirección, el mapa, el código de foto y la firma. El archivo original no lleva nada de eso.",
   "download.pdf": "PDF de evidencia",
   "download.stamped": "Imagen sellada",
+  "download.stampedDoc": "PDF sellado",
   "download.raw": "Archivo original",
   "download.failed": "No se pudo generar ese archivo. Inténtalo de nuevo.",
   "team.noMembers": "Todavía no hay miembros",
@@ -1082,6 +1089,7 @@ export const es: Catalog = {
   "mine.body": "Fotos y clips que aún no están en ningún proyecto.",
   "mine.photos": "Fotos",
   "mine.videos": "Vídeos",
+  "mine.docs": "Documentos",
   "mine.emptyBody": "Las capturas que tomas sin elegir un proyecto llegan aquí, incluido todo lo grabado antes de iniciar sesión.",
 
   // Passwordless sign-in: email code, invite claim, profile sign-in card

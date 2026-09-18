@@ -675,6 +675,12 @@ export const vi: Catalog = {
   "verify.notPublishedTitle": "Ảnh chưa được công bố",
   "verify.notPublishedBody":
     "Bản ghi đã được khóa và xác thực, nhưng không gian làm việc sở hữu nó chưa công bố tệp. Hãy yêu cầu liên kết chia sẻ để xem ảnh.",
+  "verify.headlineDoc": "Đã xác minh tài liệu",
+  "verify.subheadDoc":
+    "Trang này hiển thị tệp đã khóa. Các trang, dấu và mã hash bên dưới là bản quét gốc — không phải bản in lại.",
+  "verify.notPublishedTitleDoc": "Tài liệu chưa được công bố",
+  "verify.notPublishedBodyDoc":
+    "Bản ghi đã được khóa và xác minh, nhưng không gian làm việc sở hữu nó chưa công bố tệp. Hãy yêu cầu liên kết chia sẻ để đọc tài liệu.",
   "verify.statusLabel": "Trạng thái",
   "verify.statusVerified": "Đã khóa và xác thực",
   "verify.statusUnverified": "Đã khóa, thời gian chưa xác thực",
@@ -1026,6 +1032,7 @@ export const vi: Catalog = {
     "Bản chứng nhận và bản có dấu đều kèm thời gian, GPS, địa chỉ, bản đồ, mã ảnh và chữ ký. Tệp gốc thì không có gì trong số đó.",
   "download.pdf": "PDF bằng chứng",
   "download.stamped": "Ảnh có dấu",
+  "download.stampedDoc": "PDF có dấu",
   "download.raw": "Tệp gốc",
   "download.failed": "Không tạo được tệp đó. Hãy thử lại.",
   "team.noMembers": "Chưa có thành viên nào",
@@ -1066,6 +1073,7 @@ export const vi: Catalog = {
   "mine.body": "Ảnh và video clip chưa được xếp vào dự án nào.",
   "mine.photos": "Ảnh",
   "mine.videos": "Video",
+  "mine.docs": "Tài liệu",
   "mine.emptyBody": "Những gì bạn chụp mà chưa chọn dự án sẽ nằm ở đây, kể cả mọi thứ đã quay trước khi bạn đăng nhập.",
 
   // Passwordless sign-in: email code, invite claim, profile sign-in card

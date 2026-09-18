@@ -11,7 +11,7 @@ import { cn } from "../lib/utils";
 import { useInfiniteScroll } from "../lib/use-infinite-scroll";
 import { useT } from "../lib/i18n";
 
-const KINDS = ["photo", "video"] as const;
+const KINDS = ["photo", "video", "document"] as const;
 
 /**
  * My captures — the web half of the phone app's personal page.
@@ -59,7 +59,7 @@ export default function CapturesPage() {
                 : "border-line text-fog hover:text-chalk",
             )}
           >
-            {t(value === "photo" ? "mine.photos" : "mine.videos")}
+            {t(value === "photo" ? "mine.photos" : value === "video" ? "mine.videos" : "mine.docs")}
           </button>
         ))}
       </div>

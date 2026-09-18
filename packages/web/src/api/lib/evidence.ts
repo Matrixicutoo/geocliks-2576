@@ -62,8 +62,40 @@ const coordLabel = (photo: Photo) =>
     ? `${photo.lat.toFixed(6)}, ${photo.lng.toFixed(6)}`
     : "No GPS fix";
 
+/**
+ * The punctuation a real project name actually carries. Replacing these with `?` (the fallback
+ * below) is what turned "Ridgeline FTTH — Phase 2" into "Ridgeline FTTH ? Phase 2" on a stamped
+ * page: an em dash is not in WinAnsi, and a workspace that types one into a project name gets it
+ * back looking like a bug on the evidence it hands a client. Smart quotes arrive the same way,
+ * pasted out of a work order or an email.
+ */
+const WIN_ANSI_SUBSTITUTES: Record<string, string> = {
+  "—": "-", // em dash
+  "–": "-", // en dash
+  "−": "-", // minus sign
+  "‑": "-", // non-breaking hyphen
+  "‘": "'",
+  "’": "'",
+  "‚": "'",
+  "“": '"',
+  "”": '"',
+  "„": '"',
+  "•": "·", // bullet -> middle dot, which WinAnsi does have
+  "…": "...",
+  "→": "->",
+  " ": " ", // thin space
+  " ": " ", // narrow no-break space
+  " ": " ", // figure space
+};
+
 /** pdf-lib's standard fonts are WinAnsi-only; anything outside it throws while drawing. */
-const wa = (s: string) => s.replace(/[^\x20-\x7E\xA0-\xFF]/g, "?");
+const wa = (s: string) =>
+  s
+    .replace(
+      /[  ‑–—‘’‚“”„•… →−]/g,
+      (c) => WIN_ANSI_SUBSTITUTES[c] ?? "?",
+    )
+    .replace(/[^\x20-\x7E\xA0-\xFF]/g, "?");
 
 function wrap(text: string, max: number): string[] {
   const words = wa(text).split(/\s+/).filter(Boolean);
@@ -476,4 +508,102 @@ export async function buildStampedImage(ctx: EvidenceContext): Promise<Uint8Arra
 
   const out = await image.getBuffer("image/jpeg", { quality: 90 });
   return new Uint8Array(out);
+}
+
+/**
+ * A scanned document with the stamp burned onto every page.
+ *
+ * Photos go through `buildStampedImage`, which paints the stamp into the pixels. A scan is
+ * already a PDF the phone composed, so there is nothing to re-encode: the original pages are
+ * kept exactly as captured and the stamp is drawn over each one as native PDF text, which
+ * stays sharp at any zoom and survives printing.
+ *
+ * Built on demand and never written back over the stored file. That is what keeps both halves
+ * of the promise true at once — every shared copy carries the stamp, and the untouched
+ * original is always one click away for anyone who needs the bytes the hash was taken over.
+ *
+ * Null when the stored file cannot be read or is not a PDF, so the caller can report it
+ * rather than hand over a broken download.
+ */
+export async function buildStampedDocument(ctx: EvidenceContext): Promise<Uint8Array | null> {
+  const { photo, project, orgName, verifyUrl } = ctx;
+  const bytes = await photoBytes(photo.storageKey);
+  if (!bytes) return null;
+
+  let pdf: PDFDocument;
+  try {
+    pdf = await PDFDocument.load(bytes);
+  } catch {
+    return null;
+  }
+
+  const bold = await pdf.embedFont(StandardFonts.HelveticaBold);
+  const mono = await pdf.embedFont(StandardFonts.Courier);
+
+  const rows = [
+    { text: wa(fmtTime(photo.capturedAt)), font: mono, size: 8, color: WHITE },
+    { text: wa(coordLabel(photo)), font: mono, size: 8, color: WHITE },
+    ...(photo.address ? [{ text: wa(photo.address), font: bold, size: 8, color: PAPER }] : []),
+    ...(project ? [{ text: wa(`Project: ${project.name}`), font: bold, size: 8, color: AMBER }] : []),
+    { text: wa(`${photo.photoCode} · ${verifyUrl}`), font: mono, size: 7, color: FOG },
+  ];
+
+  const pages = pdf.getPages();
+  for (const page of pages) {
+    const { width, height } = page.getSize();
+    const pad = 7;
+    const lead = 10.5;
+    const titleSize = 8.5;
+    const widest = Math.max(
+      bold.widthOfTextAtSize(wa(orgName).toUpperCase(), titleSize),
+      ...rows.map((row) => row.font.widthOfTextAtSize(row.text, row.size)),
+    );
+    const boxW = Math.min(width - 24, widest + pad * 2 + 4);
+    const boxH = pad * 2 + titleSize + 3 + rows.length * lead;
+    const x = 12;
+    const y = 12;
+
+    page.drawRectangle({
+      x,
+      y,
+      width: boxW,
+      height: boxH,
+      color: INK,
+      opacity: 0.82,
+    });
+    // The amber spine is the stamp's tell across the product — the mobile overlay, the burned
+    // JPEG and this all carry it, so a stamped page is recognisable at a glance.
+    page.drawRectangle({ x, y, width: 2.5, height: boxH, color: AMBER });
+
+    page.drawText(wa(orgName).toUpperCase(), {
+      x: x + pad,
+      y: y + boxH - pad - titleSize,
+      size: titleSize,
+      font: bold,
+      color: AMBER,
+    });
+
+    let cursor = y + boxH - pad - titleSize - 3 - lead + 2;
+    for (const row of rows) {
+      page.drawText(row.text, {
+        x: x + pad,
+        y: cursor,
+        size: row.size,
+        font: row.font,
+        color: row.color,
+      });
+      cursor -= lead;
+    }
+
+    page.drawText("VERIFIED", {
+      x: Math.max(x + boxW + 8, width - 12 - mono.widthOfTextAtSize("VERIFIED", 7)),
+      y: y + 4,
+      size: 7,
+      font: mono,
+      color: GREEN,
+    });
+  }
+
+  pdf.setProducer("GeoCliks");
+  return pdf.save();
 }

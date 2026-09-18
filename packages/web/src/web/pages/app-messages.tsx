@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useSearch } from "wouter";
 import {
+  FileText,
   Image as ImageIcon,
   Loader2,
   Maximize2,
@@ -365,6 +366,7 @@ export default function AppMessages() {
                     const photo = item.photo;
                     const chatImage = item.imageUrl;
                     const isVideo = photo?.kind === "video";
+                    const isDoc = photo?.kind === "document";
                     // photo.url is the still preview; mediaUrl is the real file (video included).
                     const photoFull = photo ? (photo.mediaUrl ?? photo.url) : null;
                     return (
@@ -383,7 +385,35 @@ export default function AppMessages() {
                               {item.project.name}
                             </p>
                           )}
-                          {photo?.url && photoFull && (
+                          {photo?.url && photoFull && isDoc && (
+                            // A scanned document is a PDF — open it in a tab instead of the
+                            // in-page image/video viewer, which can only show stills and clips.
+                            <a
+                              href={photoFull}
+                              target="_blank"
+                              rel="noreferrer"
+                              aria-label={t("msg.openMedia")}
+                              title={t("msg.openMedia")}
+                              className="group relative mb-2 block w-full overflow-hidden rounded-[8px]"
+                            >
+                              {photo.posterUrl ? (
+                                <img
+                                  src={photo.posterUrl}
+                                  alt={photo.code}
+                                  className="max-h-56 w-full object-cover"
+                                />
+                              ) : (
+                                <span className="flex h-28 w-full items-center justify-center bg-ink-2">
+                                  <FileText className="size-8 text-fog" />
+                                </span>
+                              )}
+                              <span className="mono absolute bottom-1.5 right-1.5 flex items-center gap-1 rounded-[4px] bg-amber/90 px-1.5 py-0.5 text-[9px] tracking-widest text-ink">
+                                <FileText className="size-2.5" />
+                                {photo.pageCount ? `${photo.pageCount} PP` : "PDF"}
+                              </span>
+                            </a>
+                          )}
+                          {photo?.url && photoFull && !isDoc && (
                             <button
                               type="button"
                               aria-label={t("msg.openMedia")}

@@ -4,6 +4,7 @@ import {
   FlatList,
   Image,
   KeyboardAvoidingView,
+  Linking,
   Modal,
   Platform,
   Pressable,
@@ -210,6 +211,12 @@ export default function Thread() {
                     onPress={() => {
                       const p = item.photo;
                       if (!p) return;
+                      // A scanned document is a PDF — hand it to the OS/browser instead of
+                      // the in-app image/clip viewer, which can only show stills and video.
+                      if (p.kind === "document") {
+                        void Linking.openURL(resolve(p.mediaUrl ?? p.url));
+                        return;
+                      }
                       setViewer({
                         url: resolve(p.mediaUrl ?? p.url),
                         video: p.kind === "video",
@@ -219,10 +226,25 @@ export default function Thread() {
                     style={styles.refRow}
                   >
                     <View>
-                      <Image source={{ uri: item.photo.url }} style={styles.refThumb} />
+                      {item.photo.kind === "document" && !item.photo.posterUrl ? (
+                        <View style={[styles.refThumb, styles.refThumbFallback]}>
+                          <Ionicons
+                            name="document-text-outline"
+                            size={18}
+                            color={colors.mutedForeground}
+                          />
+                        </View>
+                      ) : (
+                        <Image source={{ uri: item.photo.url }} style={styles.refThumb} />
+                      )}
                       {item.photo.kind === "video" ? (
                         <View style={styles.playBadge}>
                           <Ionicons name="play" size={11} color="#FFFFFF" />
+                        </View>
+                      ) : null}
+                      {item.photo.kind === "document" ? (
+                        <View style={styles.playBadge}>
+                          <Ionicons name="document-text" size={10} color="#FFFFFF" />
                         </View>
                       ) : null}
                     </View>
@@ -398,7 +420,17 @@ export default function Thread() {
                   }}
                   style={styles.captureCell}
                 >
-                  <Image source={{ uri: item.url }} style={styles.captureThumb} />
+                  {item.posterUrl ? (
+                    <Image source={{ uri: item.posterUrl }} style={styles.captureThumb} />
+                  ) : (
+                    <View style={[styles.captureThumb, styles.refThumbFallback]}>
+                      <Ionicons
+                        name={item.kind === "document" ? "document-text-outline" : "videocam-outline"}
+                        size={18}
+                        color={colors.mutedForeground}
+                      />
+                    </View>
+                  )}
                   <Text
                     numberOfLines={1}
                     style={[styles.captureCode, { color: colors.mutedForeground, fontFamily: Fonts?.mono }]}
@@ -461,6 +493,11 @@ const styles = StyleSheet.create({
   attachment: { width: 200, height: 150, borderRadius: 8 },
   refRow: { flexDirection: "row", alignItems: "center", gap: 8 },
   refThumb: { width: 40, height: 40, borderRadius: 8 },
+  refThumbFallback: {
+    alignItems: "center",
+    justifyContent: "center",
+    backgroundColor: "rgba(148,163,184,0.18)",
+  },
   refText: { fontSize: 11, letterSpacing: 0.4 },
   playBadge: {
     position: "absolute",

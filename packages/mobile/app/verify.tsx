@@ -53,6 +53,9 @@ export default function Verify() {
   const q = useVerifyCode(code);
   const d = q.data;
   const ok = d?.integrity === "verified";
+  /* A scan is a PDF of pages, so the copy talks about a document instead of an image — the
+     "camera-roll copy" line means nothing to someone holding a signed work order. */
+  const isDocument = d?.kind === "document";
 
   const row = (label: string, value: string) => (
     <View key={label} style={[styles.row, { borderColor: colors.border }]}>
@@ -151,28 +154,47 @@ export default function Verify() {
               </Text>
             </View>
             <Text style={[styles.h1, { color: colors.foreground }]}>
-              {ok ? tr("verify.headline") : tr("verify.headlineUnverified")}
+              {ok
+                ? isDocument
+                  ? tr("verify.headlineDoc")
+                  : tr("verify.headline")
+                : tr("verify.headlineUnverified")}
             </Text>
             <Text style={[styles.code, { color: colors.primary }]}>{d.photoCode}</Text>
             <Text style={[styles.body14, { color: colors.mutedForeground }]}>
-              {tr("verify.subhead")}
+              {isDocument ? tr("verify.subheadDoc") : tr("verify.subhead")}
             </Text>
 
             {d.published && d.url ? (
-              <Image
-                source={{ uri: d.kind === "video" ? (d.posterUrl ?? d.url) : d.url }}
-                style={[styles.photo, { borderColor: colors.border }]}
-                resizeMode="cover"
-              />
+              d.kind === "document" && !d.posterUrl ? (
+                // A PDF has no still to show — the page image only exists when a poster was
+                // uploaded with it, so fall back to a plain placeholder rather than handing
+                // <Image> a PDF url it can only render blank.
+                <View
+                  style={[
+                    styles.photo,
+                    styles.docPlaceholder,
+                    { borderColor: colors.border },
+                  ]}
+                >
+                  <Ionicons name="document-text-outline" size={34} color={colors.mutedForeground} />
+                </View>
+              ) : (
+                <Image
+                  source={{ uri: d.kind === "photo" ? d.url : (d.posterUrl ?? d.url) }}
+                  style={[styles.photo, { borderColor: colors.border }]}
+                  resizeMode="cover"
+                />
+              )
             ) : (
               <View
                 style={[styles.card, { backgroundColor: colors.card, borderColor: colors.border }]}
               >
                 <Text style={[styles.h2, { color: colors.foreground }]}>
-                  {tr("verify.notPublishedTitle")}
+                  {isDocument ? tr("verify.notPublishedTitleDoc") : tr("verify.notPublishedTitle")}
                 </Text>
                 <Text style={[styles.body14, { color: colors.mutedForeground }]}>
-                  {tr("verify.notPublishedBody")}
+                  {isDocument ? tr("verify.notPublishedBodyDoc") : tr("verify.notPublishedBody")}
                 </Text>
               </View>
             )}
@@ -270,6 +292,7 @@ const styles = StyleSheet.create({
   body14: { fontFamily: Fonts.sans, fontSize: 14, lineHeight: 21 },
   small: { fontFamily: Fonts.sans, fontSize: 12, lineHeight: 18 },
   photo: { width: "100%", aspectRatio: 4 / 3, borderWidth: 1, backgroundColor: "#000" },
+  docPlaceholder: { alignItems: "center", justifyContent: "center" },
   fields: { borderWidth: 1 },
   row: { borderBottomWidth: StyleSheet.hairlineWidth, paddingHorizontal: 14, paddingVertical: 10, gap: 3 },
   rowLabel: { fontFamily: Fonts.mono, fontSize: 10, letterSpacing: 1.1, textTransform: "uppercase" },

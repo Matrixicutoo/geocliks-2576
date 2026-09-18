@@ -684,6 +684,12 @@ export const it: Catalog = {
   "verify.notPublishedTitle": "Immagine non pubblicata",
   "verify.notPublishedBody":
     "Il record è bloccato e verificato, ma lo spazio di lavoro proprietario non ha pubblicato il file. Chiedi un link di condivisione per vedere l'immagine.",
+  "verify.headlineDoc": "Documento verificato",
+  "verify.subheadDoc":
+    "Questa pagina mostra il file bloccato. Le pagine, il timbro e l'hash qui sotto provengono dalla scansione originale, non da una copia ristampata.",
+  "verify.notPublishedTitleDoc": "Documento non pubblicato",
+  "verify.notPublishedBodyDoc":
+    "Il record è bloccato e verificato, ma lo spazio di lavoro che lo possiede non ha pubblicato il file pubblicamente. Chiedi un link di condivisione per leggere il documento.",
   "verify.statusLabel": "Stato",
   "verify.statusVerified": "Bloccato e verificato",
   "verify.statusUnverified": "Bloccato, ora non verificata",
@@ -1043,6 +1049,7 @@ export const it: Catalog = {
     "Il certificato e la copia timbrata riportano ora, GPS, indirizzo, mappa, codice foto e firma. Il file originale non riporta nulla di tutto questo.",
   "download.pdf": "PDF di prova",
   "download.stamped": "Immagine timbrata",
+  "download.stampedDoc": "PDF timbrato",
   "download.raw": "File originale",
   "download.failed": "Impossibile generare il file. Riprova.",
   "team.noMembers": "Ancora nessun membro",
@@ -1083,6 +1090,7 @@ export const it: Catalog = {
   "mine.body": "Foto e clip non ancora archiviate in un progetto.",
   "mine.photos": "Foto",
   "mine.videos": "Video",
+  "mine.docs": "Documenti",
   "mine.emptyBody": "Le acquisizioni fatte senza scegliere un progetto finiscono qui, compreso tutto ciò che è stato ripreso prima dell'accesso.",
 
   // Passwordless sign-in: email code, invite claim, profile sign-in card

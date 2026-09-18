@@ -691,6 +691,12 @@ export const frCA: Catalog = {
   "verify.notPublishedTitle": "Image non publiée",
   "verify.notPublishedBody":
     "Le dossier est verrouillé et vérifié, mais l'espace de travail propriétaire n'a pas publié le fichier. Demandez-lui un lien de partage pour voir l'image.",
+  "verify.headlineDoc": "Document vérifié",
+  "verify.subheadDoc":
+    "Cette page montre le fichier verrouillé. Les pages, le tampon et l'empreinte ci-dessous proviennent du scan original, pas d'une copie réimprimée.",
+  "verify.notPublishedTitleDoc": "Document non publié",
+  "verify.notPublishedBodyDoc":
+    "L'enregistrement est verrouillé et vérifié, mais l'espace de travail qui le détient n'a pas publié le fichier publiquement. Demandez-leur un lien de partage pour lire le document.",
   "verify.statusLabel": "Statut",
   "verify.statusVerified": "Verrouillé et vérifié",
   "verify.statusUnverified": "Verrouillé, heure non vérifiée",
@@ -1049,6 +1055,7 @@ export const frCA: Catalog = {
     "Le certificat et la copie estampillée portent l'heure, le GPS, l'adresse, la carte, le code photo et la signature. Le fichier original n'en porte rien.",
   "download.pdf": "PDF de preuve",
   "download.stamped": "Image estampillée",
+  "download.stampedDoc": "PDF estampillé",
   "download.raw": "Fichier original",
   "download.failed": "Ce fichier n'a pas pu être généré. Réessayez.",
   "team.noMembers": "Aucun membre pour le moment",
@@ -1089,6 +1096,7 @@ export const frCA: Catalog = {
   "mine.body": "Photos et clips pas encore classés dans un projet.",
   "mine.photos": "Photos",
   "mine.videos": "Vidéos",
+  "mine.docs": "Documents",
   "mine.emptyBody": "Les captures prises sans choisir de projet arrivent ici, y compris tout ce qui a été pris avant votre connexion.",
 
   // Passwordless sign-in: email code, invite claim, profile sign-in card

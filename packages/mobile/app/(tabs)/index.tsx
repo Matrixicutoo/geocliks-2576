@@ -30,6 +30,15 @@ import { TeamspaceSheet } from "@/components/teamspace-sheet";
 import { drainQueue, enqueue, readQueue, subscribeQueue, type QueuedPhoto } from "@/lib/queue";
 import { clockStampForCapture, ensureClockSync } from "@/lib/clock";
 import { SignaturePad } from "@/components/signature-pad";
+import { ScanReview } from "@/components/scan-review";
+import {
+  buildScanPdf,
+  hasNativeScanner,
+  pageOf,
+  scanFileName,
+  scanWithNativeScanner,
+  type ScanPage,
+} from "@/lib/doc-scan";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 // Remembered capture selections. A crew member doing forty drops a day should not have to
@@ -51,9 +60,10 @@ const TAGS: { key: QueuedPhoto["tag"]; label: TKey; icon: keyof typeof Ionicons.
 ];
 
 /** Bottom mode strip — Photo sits in the middle and is the default. */
-type Mode = "video" | "photo" | "clock";
+type Mode = "scan" | "video" | "photo" | "clock";
 
 const MODES: { key: Mode; label: TKey }[] = [
+  { key: "scan", label: "capture.mode.scan" },
   { key: "video", label: "capture.mode.video" },
   { key: "photo", label: "capture.mode.photo" },
   { key: "clock", label: "capture.mode.clock" },
@@ -204,6 +214,18 @@ export default function Capture() {
   const [zoomStep, setZoomStep] = useState(0);
   const [recording, setRecording] = useState(false);
   const [elapsed, setElapsed] = useState(0);
+  /**
+   * SCAN mode session. Pages accumulate here and nothing is filed until SAVE PDF — a
+   * two-page work order is one document, not two captures, so the queue only ever sees the
+   * finished PDF. The name is minted with the first page so the crew member can read what
+   * they are building before it is saved.
+   */
+  const [scanPages, setScanPages] = useState<ScanPage[]>([]);
+  const [scanName, setScanName] = useState<string | null>(null);
+  // The page open in the review sheet, and whether keeping it appends to the session (a
+  // fresh capture) or replaces the page already in it (a re-edit).
+  const [reviewPage, setReviewPage] = useState<ScanPage | null>(null);
+  const [reviewIndex, setReviewIndex] = useState<number | null>(null);
 
   const projects = useProjects();
   const org = useOrg();
@@ -427,9 +449,12 @@ export default function Capture() {
       width: number | null,
       height: number | null,
       extra: {
-        kind?: "photo" | "video";
+        kind?: "photo" | "video" | "document";
         durationMs?: number | null;
         tag?: QueuedPhoto["tag"];
+        pageCount?: number | null;
+        posterUri?: string | null;
+        fileName?: string | null;
       } = {},
     ) => {
       const capturedAt = Date.now();
@@ -467,6 +492,9 @@ export default function Capture() {
         signatureBox: pod ? signatureBox : null,
         kind: extra.kind ?? "photo",
         durationMs: extra.durationMs ?? null,
+        pageCount: extra.pageCount ?? null,
+        posterUri: extra.posterUri ?? null,
+        fileName: extra.fileName ?? null,
         routeStopId: stopId,
         routeId: stopRouteId,
         routeOutcome: stopId ? stopOutcome : null,
@@ -490,6 +518,8 @@ export default function Capture() {
       setNote("");
       setNoteDraft("");
       if ((extra.kind ?? "photo") === "photo") setLastShot(uri);
+      // A PDF cannot be drawn into the viewfinder placeholder, so the first page stands in.
+      if (extra.kind === "document" && extra.posterUri) setLastShot(extra.posterUri);
       // Signed out the camera still works, but there is no session to presign or seal an
       // upload with. The capture stays in the same offline queue a dead-zone photo uses and
       // drains by itself the moment an account exists — see hooks/use-drain-on-signin.ts.
@@ -638,6 +668,99 @@ export default function Capture() {
     }
   };
 
+  /**
+   * SCAN shutter. The OS scanner is tried first and, when this build has one, it owns the
+   * whole capture: live edge tracking, auto-shutter, multi-page, its own crop. Its pages
+   * come back already straightened, so they drop straight into the session.
+   *
+   * Returning null means there is no native scanner in this build (Expo Go, web preview).
+   * Then the camera takes a plain frame and the review sheet does the straightening by
+   * hand, so a scan is never unavailable — only more manual.
+   */
+  const scanShoot = async () => {
+    if (busy) return;
+    setBusy(true);
+    try {
+      const native = await scanWithNativeScanner();
+      if (native !== null) {
+        // An empty array is a deliberate back-out, not a failure.
+        if (native.length > 0) {
+          setScanName((current) => current ?? scanFileName());
+          setScanPages((prev) => [...prev, ...native.map((uri) => pageOf(uri))]);
+        }
+        return;
+      }
+      const shot =
+        isNative && camera.current
+          ? await camera.current.takePictureAsync({ quality: 0.9 })
+          : // Web preview has no camera pipeline — a sample page keeps the flow testable.
+            { uri: "/images/samples/fiber-technician.jpg", width: 1600, height: 1067 };
+      if (!shot?.uri) return;
+      setReviewIndex(null);
+      setReviewPage(pageOf(shot.uri, shot.width ?? null, shot.height ?? null));
+    } catch (err) {
+      setStatus(err instanceof Error ? err.message : tr("capture.failed"));
+      setTimeout(() => setStatus(null), 4000);
+    } finally {
+      setBusy(false);
+    }
+  };
+
+  /** Keep the reviewed page: append when it is a fresh capture, replace when it is a re-edit. */
+  const keepReviewedPage = (page: ScanPage) => {
+    setScanPages((prev) => {
+      if (reviewIndex === null) return [...prev, page];
+      const next = prev.slice();
+      next[reviewIndex] = page;
+      return next;
+    });
+    setScanName((current) => current ?? scanFileName());
+    setReviewPage(null);
+    setReviewIndex(null);
+  };
+
+  const deleteReviewedPage = () => {
+    if (reviewIndex !== null) setScanPages((prev) => prev.filter((_, i) => i !== reviewIndex));
+    setReviewPage(null);
+    setReviewIndex(null);
+  };
+
+  /**
+   * One PDF per save. The document is composed on the device before anything is queued, so a
+   * two-page work order filed in a dead zone is already the finished artefact and drains
+   * through the same queue as every photo.
+   */
+  const saveScan = async () => {
+    if (busy || scanPages.length === 0) return;
+    const name = scanName ?? scanFileName();
+    setBusy(true);
+    setStatus(tr("scan.saving"));
+    try {
+      const built = await buildScanPdf(scanPages, name);
+      await commit(built.uri, null, null, {
+        kind: "document",
+        pageCount: built.pageCount,
+        // The first page stands in as the thumbnail — a PDF cannot be drawn as an image.
+        posterUri: scanPages[0]?.uri ?? null,
+        fileName: name,
+      });
+      setScanPages([]);
+      setScanName(null);
+    } catch (err) {
+      setStatus(err instanceof Error ? err.message : tr("scan.failed"));
+      setTimeout(() => setStatus(null), 4000);
+    } finally {
+      setBusy(false);
+    }
+  };
+
+  const discardScan = () => {
+    setScanPages([]);
+    setScanName(null);
+    setReviewPage(null);
+    setReviewIndex(null);
+  };
+
   const rememberTag = (next: QueuedPhoto["tag"]) => {
     setPhotoTag(next);
     void AsyncStorage.setItem(TAG_KEY, next);
@@ -680,6 +803,7 @@ export default function Capture() {
   };
 
   const isVideo = mode === "video";
+  const isScan = mode === "scan";
   const trialLeft = policy.data?.trialDaysLeft ?? 0;
 
   return (
@@ -694,7 +818,12 @@ export default function Capture() {
             numberOfLines={1}
             style={[styles.title, { color: colors.amber, fontFamily: Fonts?.display }]}
           >
-            {(isVideo ? tr("capture.recordTitle") : tr("capture.title")).toUpperCase()}
+            {(isVideo
+              ? tr("capture.recordTitle")
+              : isScan
+                ? tr("capture.mode.scan")
+                : tr("capture.title")
+            ).toUpperCase()}
           </Text>
         </View>
         <View style={styles.headerRight}>
@@ -766,16 +895,20 @@ export default function Capture() {
         ) : (
           <View style={[StyleSheet.absoluteFillObject, styles.fallback]}>
             <Ionicons
-              name={isVideo ? "videocam-outline" : "camera-outline"}
+              name={
+                isScan ? "document-text-outline" : isVideo ? "videocam-outline" : "camera-outline"
+              }
               size={38}
               color={colors.mutedForeground}
             />
             <Text style={[styles.fallbackText, { color: colors.mutedForeground }]}>
               {isNative
                 ? tr("capture.camPermission")
-                : isVideo
-                  ? tr("capture.hintRecording")
-                  : tr("capture.hintCamera")}
+                : isScan
+                  ? tr("scan.guideHint")
+                  : isVideo
+                    ? tr("capture.hintRecording")
+                    : tr("capture.hintCamera")}
             </Text>
             {isNative && !permission?.granted ? (
               <Pressable
@@ -789,6 +922,23 @@ export default function Capture() {
             ) : null}
           </View>
         )}
+
+        {/* SCAN framing guide. Deliberately dumb: the native scanner draws its own live edge
+            box once the shutter opens it, and faking a second tracking box in JS over the
+            preview would only disagree with the real one. This says where to hold the page. */}
+        {isScan ? (
+          <View style={[StyleSheet.absoluteFillObject, styles.scanGuide]} pointerEvents="none">
+            <View style={[styles.scanFrame, { borderColor: colors.amber }]} />
+            <View style={[styles.scanGuidePill, { borderColor: colors.amber }]}>
+              <Ionicons name="scan-outline" size={13} color={colors.amber} />
+              <Text
+                style={[styles.scanGuideText, { color: colors.amber, fontFamily: Fonts?.mono }]}
+              >
+                {tr("scan.guide").toUpperCase()}
+              </Text>
+            </View>
+          </View>
+        ) : null}
 
         <View style={styles.camControls} pointerEvents="box-none">
           <Pressable
@@ -851,7 +1001,15 @@ export default function Capture() {
 
       <View style={styles.shutterRow}>
         <Pressable
-          onPress={() => (isVideo ? (recording ? stopRecording() : void record()) : void shoot())}
+          onPress={() =>
+            isScan
+              ? void scanShoot()
+              : isVideo
+                ? recording
+                  ? stopRecording()
+                  : void record()
+                : void shoot()
+          }
           disabled={busy && !recording}
           style={[
             styles.shutter,
@@ -861,17 +1019,25 @@ export default function Capture() {
             },
           ]}
           accessibilityLabel={
-            isVideo
-              ? recording
-                ? tr("capture.stopRecording")
-                : tr("capture.startRecording")
-              : tr("capture.takePhoto")
+            isScan
+              ? tr("scan.addPage")
+              : isVideo
+                ? recording
+                  ? tr("capture.stopRecording")
+                  : tr("capture.startRecording")
+                : tr("capture.takePhoto")
           }
         >
           {busy && !recording ? (
             <ActivityIndicator color={colors.background} />
           ) : recording ? (
             <View style={[styles.stopCore, { backgroundColor: colors.alert }]} />
+          ) : isScan ? (
+            // The scan shutter opens a scanner rather than freezing a frame, so it carries a
+            // document mark instead of the plain photo disc.
+            <View style={[styles.shutterCore, styles.shutterIconCore, { backgroundColor: colors.amber }]}>
+              <Ionicons name="document-text" size={22} color={colors.background} />
+            </View>
           ) : (
             <View
               style={[
@@ -930,6 +1096,105 @@ export default function Capture() {
         contentContainerStyle={styles.controlsInner}
         showsVerticalScrollIndicator={false}
       >
+        {/* The scan session. Pages live here until SAVE PDF files them as one document, so a
+            multi-page work order is one piece of evidence rather than four loose photos. */}
+        {isScan ? (
+          <View style={[styles.scanPanel, { borderColor: colors.border }]}>
+            <View style={styles.scanPanelHead}>
+              <Ionicons name="documents-outline" size={14} color={colors.amber} />
+              <Text
+                numberOfLines={1}
+                style={[styles.scanPanelTitle, { color: colors.amber, fontFamily: Fonts?.mono }]}
+              >
+                {(scanName ?? tr("scan.sessionTitle")).toUpperCase()}
+              </Text>
+              {scanPages.length > 0 ? (
+                <Text style={[styles.scanPanelCount, { color: colors.mutedForeground }]}>
+                  {scanPages.length === 1
+                    ? tr("scan.onePage")
+                    : tr("scan.pages", { count: scanPages.length })}
+                </Text>
+              ) : null}
+            </View>
+
+            {scanPages.length === 0 ? (
+              <Text style={[styles.scanEmpty, { color: colors.mutedForeground }]}>
+                {tr("scan.emptySession")}
+              </Text>
+            ) : (
+              <ScrollView
+                horizontal
+                showsHorizontalScrollIndicator={false}
+                contentContainerStyle={styles.scanStrip}
+              >
+                {scanPages.map((p, index) => (
+                  <Pressable
+                    key={p.id}
+                    onPress={() => {
+                      setReviewIndex(index);
+                      setReviewPage(p);
+                    }}
+                    accessibilityLabel={tr("scan.pageLabel", {
+                      index: index + 1,
+                      total: scanPages.length,
+                    })}
+                    style={[styles.scanThumb, { borderColor: colors.border }]}
+                  >
+                    <Image
+                      source={{ uri: p.uri }}
+                      style={StyleSheet.absoluteFillObject}
+                      resizeMode="cover"
+                    />
+                    <View style={styles.scanThumbBadge}>
+                      <Text
+                        style={[
+                          styles.scanThumbBadgeText,
+                          { color: colors.background, fontFamily: Fonts?.mono },
+                        ]}
+                      >
+                        {index + 1}
+                      </Text>
+                    </View>
+                  </Pressable>
+                ))}
+              </ScrollView>
+            )}
+
+            <View style={styles.scanActions}>
+              <Pressable
+                onPress={() => void saveScan()}
+                disabled={busy || scanPages.length === 0}
+                accessibilityLabel={tr("scan.savePdf")}
+                style={[
+                  styles.scanSave,
+                  {
+                    backgroundColor: colors.amber,
+                    opacity: busy || scanPages.length === 0 ? 0.45 : 1,
+                  },
+                ]}
+              >
+                <Ionicons name="cloud-upload-outline" size={15} color={colors.background} />
+                <Text style={[styles.scanSaveText, { color: colors.background }]}>
+                  {tr("scan.savePdf").toUpperCase()}
+                </Text>
+              </Pressable>
+              {scanPages.length > 0 ? (
+                <Pressable
+                  onPress={discardScan}
+                  disabled={busy}
+                  accessibilityLabel={tr("scan.discard")}
+                  style={[styles.scanDiscard, { borderColor: colors.alert }]}
+                >
+                  <Ionicons name="trash-outline" size={15} color={colors.alert} />
+                  <Text style={[styles.scanDiscardText, { color: colors.alert }]}>
+                    {tr("scan.discard").toUpperCase()}
+                  </Text>
+                </Pressable>
+              ) : null}
+            </View>
+          </View>
+        ) : null}
+
         {isVideo ? (
           <View
             style={[styles.videoNote, { borderColor: videoLocked ? colors.alert : colors.border }]}
@@ -1490,6 +1755,23 @@ export default function Capture() {
         </View>
 
       </ScrollView>
+      <ScanReview
+        page={reviewPage}
+        pageLabel={
+          reviewPage
+            ? tr("scan.pageLabel", {
+                index: reviewIndex === null ? scanPages.length + 1 : reviewIndex + 1,
+                total: reviewIndex === null ? scanPages.length + 1 : scanPages.length,
+              })
+            : null
+        }
+        onCancel={() => {
+          setReviewPage(null);
+          setReviewIndex(null);
+        }}
+        onSave={keepReviewedPage}
+        onDelete={deleteReviewedPage}
+      />
       <TeamspaceSheet visible={nudge.visible} onClose={nudge.dismiss} />
     </SafeAreaView>
   );
@@ -1725,6 +2007,76 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   shutterCore: { width: 44, height: 44, borderRadius: 22 },
+  shutterIconCore: { alignItems: "center", justifyContent: "center" },
+  scanGuide: { alignItems: "center", justifyContent: "center", padding: 22 },
+  scanFrame: {
+    flex: 1,
+    alignSelf: "stretch",
+    borderWidth: 2,
+    borderStyle: "dashed",
+    borderRadius: 10,
+    opacity: 0.75,
+  },
+  scanGuidePill: {
+    position: "absolute",
+    bottom: 12,
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 6,
+    paddingHorizontal: 10,
+    paddingVertical: 5,
+    borderWidth: 1,
+    borderRadius: 999,
+    backgroundColor: "rgba(0,0,0,0.55)",
+  },
+  scanGuideText: { fontSize: 10, letterSpacing: 1 },
+  scanPanel: { borderWidth: 1, borderRadius: 12, padding: 12, gap: 10 },
+  scanPanelHead: { flexDirection: "row", alignItems: "center", gap: 6 },
+  scanPanelTitle: { flex: 1, fontSize: 10, letterSpacing: 1, minWidth: 0 },
+  scanPanelCount: { fontSize: 11 },
+  scanEmpty: { fontSize: 12, lineHeight: 18 },
+  scanStrip: { flexDirection: "row", gap: 8, paddingVertical: 2 },
+  scanThumb: {
+    width: 58,
+    height: 78,
+    borderWidth: 1,
+    borderRadius: 8,
+    overflow: "hidden",
+    backgroundColor: "rgba(255,255,255,0.06)",
+  },
+  scanThumbBadge: {
+    position: "absolute",
+    top: 3,
+    left: 3,
+    minWidth: 16,
+    paddingHorizontal: 4,
+    paddingVertical: 1,
+    borderRadius: 8,
+    alignItems: "center",
+    backgroundColor: "rgba(255,176,33,0.92)",
+  },
+  scanThumbBadgeText: { fontSize: 9 },
+  scanActions: { flexDirection: "row", alignItems: "center", gap: 8 },
+  scanSave: {
+    flex: 1,
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
+    gap: 6,
+    paddingVertical: 11,
+    borderRadius: 10,
+  },
+  scanSaveText: { fontSize: 12, fontWeight: "800", letterSpacing: 1 },
+  scanDiscard: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 6,
+    paddingHorizontal: 12,
+    paddingVertical: 10,
+    borderWidth: 1,
+    borderRadius: 10,
+  },
+  scanDiscardText: { fontSize: 11, fontWeight: "700", letterSpacing: 1 },
   stopCore: { width: 26, height: 26, borderRadius: 3 },
   modeTabs: {
     flexDirection: "row",

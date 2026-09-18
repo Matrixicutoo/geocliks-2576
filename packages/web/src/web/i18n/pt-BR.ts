@@ -681,6 +681,12 @@ export const ptBR: Catalog = {
   "verify.notPublishedTitle": "Imagem não publicada",
   "verify.notPublishedBody":
     "O registro está travado e verificado, mas o workspace proprietário não publicou o arquivo. Peça um link de compartilhamento para ver a imagem.",
+  "verify.headlineDoc": "Documento verificado",
+  "verify.subheadDoc":
+    "Esta página mostra o arquivo bloqueado. As páginas, o selo e o hash abaixo são da digitalização original, não uma cópia reimpressa.",
+  "verify.notPublishedTitleDoc": "Documento não publicado",
+  "verify.notPublishedBodyDoc":
+    "O registro está bloqueado e verificado, mas o espaço de trabalho que o possui não publicou o arquivo publicamente. Peça um link de compartilhamento para ler o documento.",
   "verify.statusLabel": "Status",
   "verify.statusVerified": "Travado e verificado",
   "verify.statusUnverified": "Travado, hora não verificada",
@@ -1036,6 +1042,7 @@ export const ptBR: Catalog = {
     "O certificado e a cópia com selo trazem hora, GPS, endereço, mapa, código da foto e assinatura. O arquivo original não traz nada disso.",
   "download.pdf": "PDF de evidência",
   "download.stamped": "Imagem com selo",
+  "download.stampedDoc": "PDF com selo",
   "download.raw": "Arquivo original",
   "download.failed": "Não foi possível gerar o arquivo. Tente novamente.",
   "team.noMembers": "Ainda não há membros",
@@ -1076,6 +1083,7 @@ export const ptBR: Catalog = {
   "mine.body": "Fotos e clipes ainda não arquivados em um projeto.",
   "mine.photos": "Fotos",
   "mine.videos": "Vídeos",
+  "mine.docs": "Documentos",
   "mine.emptyBody": "As capturas feitas sem escolher um projeto chegam aqui, incluindo tudo o que foi gravado antes de você entrar.",
 
   // Passwordless sign-in: email code, invite claim, profile sign-in card

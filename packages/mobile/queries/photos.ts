@@ -6,7 +6,7 @@ export function usePhotos(filter: {
   projectId?: string | null;
   /** Personal captures — everything not filed under a project yet. */
   unassigned?: boolean;
-  kind?: "photo" | "video";
+  kind?: "photo" | "video" | "document";
   tag?:
     | "general"
     | "before"

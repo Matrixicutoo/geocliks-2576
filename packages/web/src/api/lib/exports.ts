@@ -36,11 +36,12 @@ export async function photoBytes(storageKey: string): Promise<Uint8Array | null>
 }
 
 /**
- * The key that holds a still frame for a record: the image itself for photos,
- * the extracted poster frame for clips. Used by PDF/XLSX/KMZ, which cannot embed video.
+ * The key that holds a still frame for a record: the image itself for photos, the extracted
+ * poster frame for clips, the first scanned page for documents. Used by PDF/XLSX/KMZ, which
+ * can embed neither a video nor a nested PDF.
  */
 export const stillKey = (photo: Photo) =>
-  photo.kind === "video" ? (photo.posterKey ?? null) : photo.storageKey;
+  photo.kind === "photo" ? photo.storageKey : (photo.posterKey ?? null);
 
 /** The content type a built package is stored and served with. */
 export const exportMime: Record<string, string> = {

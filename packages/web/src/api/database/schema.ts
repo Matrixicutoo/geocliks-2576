@@ -144,10 +144,14 @@ export const photos = sqliteTable(
     userId: text("user_id").notNull(),
     photoCode: text("photo_code").notNull().unique(),
     storageKey: text("storage_key").notNull(),
-    /** photo | video — videos carry the same verification seal as photos. */
+    /** photo | video | document — all three carry the same verification seal. */
     kind: text("kind").notNull().default("photo"),
     /** Clip length for videos, null for photos. */
     durationMs: integer("duration_ms"),
+    /** Pages in a scanned PDF (kind = document), null otherwise. */
+    pageCount: integer("page_count"),
+    /** The name a scan was saved under, e.g. "Doc Sep 18 174755.pdf". */
+    fileName: text("file_name"),
     /** Poster frame key for videos (thumbnail in feeds and reports). */
     posterKey: text("poster_key"),
     /** true once the stamp is burned into the pixels server-side (ffmpeg). */

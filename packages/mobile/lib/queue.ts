@@ -49,8 +49,16 @@ export type QueuedPhoto = {
   recipient?: string | null;
   signaturePath?: string | null;
   signatureBox?: string | null;
-  kind?: "photo" | "video";
+  kind?: "photo" | "video" | "document";
   durationMs?: number | null;
+  /**
+   * SCAN mode: how many pages the PDF carries, and the first page as an image so every
+   * gallery has something to draw for a document instead of a broken tile. The poster is
+   * uploaded alongside the PDF when the queue drains.
+   */
+  pageCount?: number | null;
+  posterUri?: string | null;
+  fileName?: string | null;
   error?: string | null;
   // Delivery-route context. When a capture closes out a route stop, the stop is closed
   // by the SAME code path that uploads the photo — so a drop made in a dead zone is
@@ -145,8 +153,10 @@ export async function uploadOne(item: QueuedPhoto) {
   }
 
   const isVideo = item.kind === "video";
-  const contentType = isVideo ? "video/mp4" : "image/jpeg";
-  const filename = `${item.id}.${isVideo ? "mp4" : "jpg"}`;
+  const isDocument = item.kind === "document";
+  const contentType = isVideo ? "video/mp4" : isDocument ? "application/pdf" : "image/jpeg";
+  const extension = isVideo ? "mp4" : isDocument ? "pdf" : "jpg";
+  const filename = `${item.id}.${extension}`;
 
   const presigned = isVideo
     ? await client.upload.presignVideo({ filename, contentType })
@@ -160,6 +170,31 @@ export async function uploadOne(item: QueuedPhoto) {
     headers: { "Content-Type": contentType },
   });
   if (!put.ok) throw new Error(`Storage rejected the upload (${put.status})`);
+
+  // The first page, uploaded as a plain JPEG next to the PDF. A gallery cannot thumbnail a
+  // PDF, and a scan with no poster renders as a black tile the same way an unprocessed clip
+  // used to. A poster that fails to upload is not worth failing the scan over.
+  let posterKey: string | null = null;
+  if (isDocument && item.posterUri) {
+    try {
+      const poster = (
+        await client.upload.presignBatch({
+          files: [{ filename: `${item.id}-poster.jpg`, contentType: "image/jpeg" }],
+        })
+      )[0];
+      if (poster) {
+        const posterBlob = await (await fetch(item.posterUri)).blob();
+        const posterPut = await fetch(poster.url, {
+          method: "PUT",
+          body: posterBlob,
+          headers: { "Content-Type": "image/jpeg" },
+        });
+        if (posterPut.ok) posterKey = poster.key;
+      }
+    } catch {
+      posterKey = null;
+    }
+  }
 
   const photo = await client.photos.create({
     storageKey: presigned.key,
@@ -191,6 +226,10 @@ export async function uploadOne(item: QueuedPhoto) {
     // every gallery renders an <img> pointing at an MP4 — a black tile.
     kind: item.kind ?? "photo",
     durationMs: item.durationMs ?? null,
+    // Scanned PDFs: page count and the poster the server should thumbnail with.
+    pageCount: item.pageCount ?? null,
+    posterKey,
+    fileName: item.fileName ?? null,
   });
 
   // Close the route stop with the photo that was just sealed. This runs inside the

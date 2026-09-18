@@ -693,6 +693,12 @@ export const en = {
   "verify.notPublishedTitle": "Image not published",
   "verify.notPublishedBody":
     "The record is locked and verified, but the workspace that owns it has not published the file publicly. Ask them for a share link to see the image.",
+  "verify.headlineDoc": "Document verified",
+  "verify.subheadDoc":
+    "This page shows the locked file. The pages, stamp, and hash below are the original scan — not a re-printed copy.",
+  "verify.notPublishedTitleDoc": "Document not published",
+  "verify.notPublishedBodyDoc":
+    "The record is locked and verified, but the workspace that owns it has not published the file publicly. Ask them for a share link to read the document.",
   "verify.statusLabel": "Status",
   "verify.statusVerified": "Locked & verified",
   "verify.statusUnverified": "Locked, time unverified",
@@ -1044,6 +1050,7 @@ export const en = {
     "The certificate and the stamped copy both carry the time, GPS, address, map, photo code and signature. The original file carries none of it.",
   "download.pdf": "Evidence PDF",
   "download.stamped": "Stamped image",
+  "download.stampedDoc": "Stamped PDF",
   "download.raw": "Original file",
   "download.failed": "That file could not be built. Try again.",
   "team.noMembers": "No members yet",
@@ -1083,6 +1090,7 @@ export const en = {
   "mine.body": "Photos and clips not filed under a project yet.",
   "mine.photos": "Pictures",
   "mine.videos": "Videos",
+  "mine.docs": "Documents",
   "mine.emptyBody": "Captures you take without choosing a project land here, including everything shot before you signed in.",
 
   // Passwordless sign-in: email code, invite claim, profile sign-in card

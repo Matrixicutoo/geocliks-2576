@@ -681,6 +681,12 @@ export const pl: Catalog = {
   "verify.notPublishedTitle": "Obraz nieopublikowany",
   "verify.notPublishedBody":
     "Zapis jest zablokowany i zweryfikowany, ale właściciel nie opublikował pliku. Poproś o link, aby zobaczyć obraz.",
+  "verify.headlineDoc": "Dokument zweryfikowany",
+  "verify.subheadDoc":
+    "Ta strona pokazuje zablokowany plik. Strony, stempel i skrót poniżej pochodzą z oryginalnego skanu, a nie z przedrukowanej kopii.",
+  "verify.notPublishedTitleDoc": "Dokument nieopublikowany",
+  "verify.notPublishedBodyDoc":
+    "Rekord jest zablokowany i zweryfikowany, ale przestrzeń robocza, która go posiada, nie opublikowała pliku publicznie. Poproś o link do udostępniania, aby przeczytać dokument.",
   "verify.statusLabel": "Status",
   "verify.statusVerified": "Zablokowane i zweryfikowane",
   "verify.statusUnverified": "Zablokowane, czas niezweryfikowany",
@@ -1035,6 +1041,7 @@ export const pl: Catalog = {
     "Certyfikat i kopia ze stemplem zawierają godzinę, GPS, adres, mapę, kod zdjęcia i podpis. Plik oryginalny nie zawiera żadnej z tych informacji.",
   "download.pdf": "PDF z dowodem",
   "download.stamped": "Zdjęcie ze stemplem",
+  "download.stampedDoc": "PDF ze stemplem",
   "download.raw": "Plik oryginalny",
   "download.failed": "Nie udało się utworzyć pliku. Spróbuj ponownie.",
   "team.noMembers": "Nie ma jeszcze członków",
@@ -1074,6 +1081,7 @@ export const pl: Catalog = {
   "mine.body": "Zdjęcia i klipy jeszcze nieprzypisane do projektu.",
   "mine.photos": "Zdjęcia",
   "mine.videos": "Filmy",
+  "mine.docs": "Dokumenty",
   "mine.emptyBody": "Ujęcia zrobione bez wyboru projektu trafiają tutaj, łącznie ze wszystkim, co nagrano przed zalogowaniem.",
 
   // Passwordless sign-in: email code, invite claim, profile sign-in card

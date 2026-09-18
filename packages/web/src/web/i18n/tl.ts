@@ -686,6 +686,12 @@ export const tl: Catalog = {
   "verify.notPublishedTitle": "Hindi nakapublish ang larawan",
   "verify.notPublishedBody":
     "Naka-lock at beripikado ang rekord, ngunit hindi pa nailabas ng nagmamay-aring workspace ang file. Humingi ng share link para makita ang larawan.",
+  "verify.headlineDoc": "Na-verify na dokumento",
+  "verify.subheadDoc":
+    "Ipinapakita ng page na ito ang naka-lock na file. Ang mga pahina, stamp, at hash sa ibaba ay mula sa orihinal na scan — hindi isang muling naka-print na kopya.",
+  "verify.notPublishedTitleDoc": "Hindi naka-publish ang dokumento",
+  "verify.notPublishedBodyDoc":
+    "Naka-lock at verified ang record, pero hindi pa in-publish ng workspace na may-ari nito ang file. Humingi sa kanila ng share link para mabasa ang dokumento.",
   "verify.statusLabel": "Status",
   "verify.statusVerified": "Naka-lock at beripikado",
   "verify.statusUnverified": "Naka-lock, hindi beripikado ang oras",
@@ -1046,6 +1052,7 @@ export const tl: Catalog = {
     "Ang sertipiko at ang naka-stamp na kopya ay may oras, GPS, address, mapa, photo code at lagda. Ang orihinal na file ay wala nito.",
   "download.pdf": "Evidence PDF",
   "download.stamped": "Naka-stamp na larawan",
+  "download.stampedDoc": "Naka-stamp na PDF",
   "download.raw": "Orihinal na file",
   "download.failed": "Hindi nabuo ang file. Subukan muli.",
   "team.noMembers": "Wala pa pong miyembro",
@@ -1086,6 +1093,7 @@ export const tl: Catalog = {
   "mine.body": "Mga larawan at clip na wala pa sa anumang proyekto.",
   "mine.photos": "Mga larawan",
   "mine.videos": "Mga video",
+  "mine.docs": "Mga dokumento",
   "mine.emptyBody": "Dito napupunta ang mga capture na kinuha nang hindi pumipili ng proyekto, pati na ang lahat ng kinunan bago ka nag-log in.",
 
   // Passwordless sign-in: email code, invite claim, profile sign-in card

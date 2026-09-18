@@ -86,7 +86,8 @@
           "photosPermission": "GeoCliks needs your photo library so you can attach pictures you already took to a project."
         }
       ],
-      "expo-iap"
+      "expo-iap",
+      "react-native-document-scanner-plugin"
     ]
   }
 }

@@ -16,4 +16,18 @@ config.resolver = {
   nodeModulesPaths: [resolve(__dirname, "node_modules"), resolve(workspaceRoot, "node_modules")],
 };
 
+// ── tslib ─────────────────────────────────────────────────────────────
+// pdf-lib (the scan → PDF builder) is compiled against tslib and imports its helpers by
+// name. tslib's package exports point an `import` at `modules/index.js`, which re-exports a
+// CJS file through a default import — under Metro that default lands as `undefined` and
+// every helper destructured from it blows up at bundle start ("Cannot destructure property
+// '__extends' of 'tslib.default'"), taking the whole app down. Point every `tslib` request
+// straight at the ES module build, which has no interop hop.
+const tslibEs6 = require.resolve("tslib/tslib.es6.js", { paths: [__dirname] });
+const defaultResolveRequest = config.resolver.resolveRequest;
+config.resolver.resolveRequest = (context, moduleName, platform) => {
+  if (moduleName === "tslib") return { type: "sourceFile", filePath: tslibEs6 };
+  return (defaultResolveRequest ?? context.resolveRequest)(context, moduleName, platform);
+};
+
 module.exports = config;

@@ -9,6 +9,7 @@ import {
   Navigation,
   Download,
   FileText,
+  FileDown,
   ImageDown,
 } from "lucide-react";
 import { type TKey, useT } from "../lib/i18n";
@@ -81,6 +82,7 @@ export function PhotoDrawer({ photoId, onClose }: { photoId: string | null; onCl
    * URL is a presigned storage link on another origin.
    */
   const evidence = usePhotoEvidence();
+
   const [building, setBuilding] = useState<"pdf" | "image" | null>(null);
   /** Field crews capture evidence; only manager and above can remove it. */
   const canDelete = canManageWorkspace(org.data?.role);
@@ -88,6 +90,8 @@ export function PhotoDrawer({ photoId, onClose }: { photoId: string | null; onCl
   if (!photoId) return null;
 
   const data = photo.data;
+  /** A scan is a PDF end to end: its stamped copy and its raw download are both PDFs. */
+  const isDocument = data?.kind === "document";
 
   return (
     <div className="fixed inset-0 z-50 flex justify-end bg-ink/80 backdrop-blur-sm">
@@ -127,6 +131,32 @@ export function PhotoDrawer({ photoId, onClose }: { photoId: string | null; onCl
                 >
                   <track kind="captions" />
                 </video>
+              ) : data.kind === "document" ? (
+                /* A PDF cannot be an <img>, and an <iframe> of one inside a 560px drawer is
+                   unreadable. Page one stands in, and the click opens the real document in
+                   the browser's own viewer. */
+                <a
+                  href={data.url}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="group relative block"
+                >
+                  {data.posterUrl ? (
+                    <img
+                      src={data.posterUrl}
+                      alt={data.note ?? data.fileName ?? ""}
+                      className="w-full object-cover"
+                    />
+                  ) : (
+                    <div className="flex aspect-[4/3] w-full items-center justify-center bg-ink">
+                      <FileText className="size-8 text-fog" />
+                    </div>
+                  )}
+                  <span className="mono absolute right-2 top-2 flex items-center gap-1.5 border border-white/25 bg-black/70 px-2 py-1 text-[10px] uppercase tracking-widest text-white transition-colors group-hover:border-amber group-hover:text-amber">
+                    <FileText className="size-3" />
+                    {data.pageCount && data.pageCount > 1 ? `${data.pageCount} PP` : "PDF"}
+                  </span>
+                </a>
               ) : (
                 <img src={data.url} alt={data.note ?? ""} className="w-full object-cover" />
               )}
@@ -362,16 +392,24 @@ export function PhotoDrawer({ photoId, onClose }: { photoId: string | null; onCl
                 >
                   {building === "image" ? (
                     <Loader2 className="size-3.5 animate-spin" />
+                  ) : isDocument ? (
+                    <FileDown className="size-3.5" />
                   ) : (
                     <ImageDown className="size-3.5" />
                   )}
-                  {t("download.stamped")}
+                  {/* A scan's stamped copy is the whole PDF with every page stamped, not a JPEG
+                      of page one — calling it "stamped image" would promise the wrong file. */}
+                  {isDocument ? t("download.stampedDoc") : t("download.stamped")}
                 </button>
                 {/* The untouched original stays one click away: some workflows need the exact
                     bytes the hash was taken over, not a re-encoded copy. */}
                 <a
                   href={data.url}
-                  download={`${data.photoCode}.${data.kind === "video" ? "mp4" : "jpg"}`}
+                  download={
+                    data.kind === "document"
+                      ? (data.fileName ?? `${data.photoCode}.pdf`)
+                      : `${data.photoCode}.${data.kind === "video" ? "mp4" : "jpg"}`
+                  }
                   className="mono flex items-center gap-2 rounded-[8px] border border-line px-3 py-2 text-[10.5px] uppercase tracking-widest text-fog transition-colors hover:border-amber/60 hover:text-amber"
                 >
                   <Download className="size-3.5" />

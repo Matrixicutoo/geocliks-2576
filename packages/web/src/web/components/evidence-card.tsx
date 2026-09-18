@@ -1,4 +1,4 @@
-import { Check, FolderOpen, MapPin, Play, ShieldAlert, ShieldCheck } from "lucide-react";
+import { Check, FileText, FolderOpen, MapPin, Play, ShieldAlert, ShieldCheck } from "lucide-react";
 import { type TKey, useT } from "../lib/i18n";
 import { cn } from "../lib/utils";
 import { PhotoShareButton } from "./share-menu";
@@ -28,6 +28,10 @@ export type EvidencePhoto = {
   kind?: string | null;
   posterUrl?: string | null;
   durationMs?: number | null;
+  /** Pages in a scanned document. */
+  pageCount?: number | null;
+  /** The name a scan was saved under, e.g. "Doc Sep 18 174755.pdf". */
+  fileName?: string | null;
   recipient?: string | null;
   signaturePath?: string | null;
   signatureBox?: string | null;
@@ -127,10 +131,12 @@ export function EvidenceCard({
             {selected && <Check className="size-3.5" />}
           </span>
         )}
-        {/* An <img> pointing at an .mp4 renders a black tile, so a poster-less clip gets a
-            deliberate dark placeholder instead of a broken image. */}
-        {photo.kind === "video" && !photo.posterUrl ? (
-          <div className="flex h-full w-full items-center justify-center bg-ink" />
+        {/* An <img> pointing at an .mp4 or a .pdf renders a black or broken tile, so a clip or
+            scan with no poster gets a deliberate dark placeholder instead. */}
+        {photo.kind !== "photo" && !photo.posterUrl ? (
+          <div className="flex h-full w-full items-center justify-center bg-ink">
+            {photo.kind === "document" && <FileText className="size-6 text-fog" />}
+          </div>
         ) : (
           <img
             src={photo.posterUrl ?? photo.url}
@@ -138,6 +144,14 @@ export function EvidenceCard({
             loading="lazy"
             className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-[1.03]"
           />
+        )}
+        {/* A scan is a PDF: it reads as a document, and how many pages it holds is the one
+            thing the thumbnail of page one cannot say. */}
+        {photo.kind === "document" && (
+          <span className="mono absolute bottom-11 right-2 flex items-center gap-1 border border-white/25 bg-black/65 px-1.5 py-0.5 text-[9.5px] tracking-widest text-white">
+            <FileText className="size-3" />
+            {photo.pageCount && photo.pageCount > 1 ? `${photo.pageCount} PP` : "PDF"}
+          </span>
         )}
         {photo.kind === "video" && (
           <>

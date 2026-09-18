@@ -61,6 +61,9 @@ export default function VerifyPage() {
 
   const d = q.data;
   const ok = d?.integrity === "verified";
+  /* A scan is a PDF of pages, so the page's copy talks about a document instead of an image —
+     "not a camera-roll copy" says nothing to someone holding a signed work order. */
+  const isDocument = d?.kind === "document";
 
   return (
     <div data-theme="light" className="min-h-screen bg-ink text-chalk">
@@ -116,11 +119,15 @@ export default function VerifyPage() {
             </div>
 
             <h1 className="mt-5 text-[32px] leading-tight font-black tracking-tight sm:text-[44px]">
-              {ok ? t("verify.headline") : t("verify.headlineUnverified")}
+              {ok
+                ? isDocument
+                  ? t("verify.headlineDoc")
+                  : t("verify.headline")
+                : t("verify.headlineUnverified")}
             </h1>
             <p className="mono mt-2 text-[16px] tracking-widest text-amber">{d.photoCode}</p>
             <p className="mt-4 max-w-2xl text-[15px] leading-relaxed text-fog">
-              {t("verify.subhead")}
+              {isDocument ? t("verify.subheadDoc") : t("verify.subhead")}
             </p>
 
             {/* the locked file */}
@@ -136,6 +143,27 @@ export default function VerifyPage() {
                   >
                     <track kind="captions" />
                   </video>
+                ) : d.kind === "document" ? (
+                  // A scanned document is a PDF: show it in an object frame so the browser's own
+                  // viewer renders the pages, with the poster still as the fallback.
+                  <object
+                    data={d.url}
+                    type="application/pdf"
+                    aria-label={d.photoCode}
+                    className="h-[70vh] w-full bg-black"
+                  >
+                    {d.posterUrl ? (
+                      <img
+                        src={d.posterUrl}
+                        alt={d.photoCode}
+                        className="w-full bg-black object-contain"
+                      />
+                    ) : (
+                      <a href={d.url} className="mono block p-6 text-[12px] text-amber">
+                        {d.photoCode}.pdf
+                      </a>
+                    )}
+                  </object>
                 ) : (
                   <img src={d.url} alt={d.photoCode} className="w-full bg-black object-contain" />
                 )
@@ -143,9 +171,13 @@ export default function VerifyPage() {
                 <div className="flex items-start gap-3 p-6">
                   <Lock className="mt-0.5 size-4 shrink-0 text-amber" />
                   <div>
-                    <h2 className="text-[15px] font-bold">{t("verify.notPublishedTitle")}</h2>
+                    <h2 className="text-[15px] font-bold">
+                      {isDocument
+                        ? t("verify.notPublishedTitleDoc")
+                        : t("verify.notPublishedTitle")}
+                    </h2>
                     <p className="mt-2 text-[13px] leading-relaxed text-fog">
-                      {t("verify.notPublishedBody")}
+                      {isDocument ? t("verify.notPublishedBodyDoc") : t("verify.notPublishedBody")}
                     </p>
                   </div>
                 </div>

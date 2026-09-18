@@ -10,7 +10,7 @@ import { photoUrl } from "../lib/media";
 import { deleteObject, getObjectBytes, presignGet, putObject } from "../lib/s3";
 import { resolveClock, sha256, sign, verifySignature } from "../lib/verify";
 import { burnStamp, hasFfmpeg, posterFrame } from "../lib/video";
-import { buildEvidencePdf, buildStampedImage } from "../lib/evidence";
+import { buildEvidencePdf, buildStampedDocument, buildStampedImage } from "../lib/evidence";
 import { siteUrl } from "../services/email";
 
 const tagEnum = z.enum([
@@ -78,7 +78,7 @@ export const photos = {
            */
           unassigned: z.boolean().optional(),
           /** Split the personal page into stills and clips. */
-          kind: z.enum(["photo", "video"]).optional(),
+          kind: z.enum(["photo", "video", "document"]).optional(),
           userId: z.string().nullish(),
           tag: tagEnum.nullish(),
           search: z.string().nullish(),
@@ -222,17 +222,28 @@ export const photos = {
         verifyUrl: `${siteUrl()}/v/${photo.photoCode}`,
       };
 
-      const bytes =
-        input.format === "pdf" ? await buildEvidencePdf(ctx) : await buildStampedImage(ctx);
+      /*
+        A scan is already a PDF, so its stamped copy is the same PDF with the stamp drawn over
+        every page — not a JPEG of page one, which would quietly drop pages two and three of a
+        work order. The certificate format is unchanged: it embeds the first page like it
+        embeds a video's poster frame.
+      */
+      const stamped = input.format === "image";
+      const isDocument = photo.kind === "document";
+      const bytes = !stamped
+        ? await buildEvidencePdf(ctx)
+        : isDocument
+          ? await buildStampedDocument(ctx)
+          : await buildStampedImage(ctx);
       if (!bytes) {
         throw new ORPCError("BAD_REQUEST", {
           message: "The original file could not be read, so a stamped copy can't be built.",
         });
       }
 
-      const ext = input.format === "pdf" ? "pdf" : "jpg";
+      const ext = stamped && !isDocument ? "jpg" : "pdf";
       const key = `orgs/${context.org.id}/evidence/${photo.photoCode}-${Date.now()}.${ext}`;
-      await putObject(key, bytes, input.format === "pdf" ? "application/pdf" : "image/jpeg");
+      await putObject(key, bytes, ext === "pdf" ? "application/pdf" : "image/jpeg");
 
       await db.insert(schema.photoEvents).values({
         id: id("evt"),
@@ -240,7 +251,7 @@ export const photos = {
         orgId: context.org.id,
         type: "exported",
         actor: context.user.id,
-        detail: input.format === "pdf" ? "Evidence PDF" : "Stamped image",
+        detail: !stamped ? "Evidence PDF" : isDocument ? "Stamped document" : "Stamped image",
       });
 
       const filename = `${photo.photoCode}-evidence.${ext}`;
@@ -287,8 +298,16 @@ export const photos = {
         width: z.number().nullish(),
         height: z.number().nullish(),
         bytes: z.number().nullish(),
-        kind: z.enum(["photo", "video"]).default("photo"),
+        kind: z.enum(["photo", "video", "document"]).default("photo"),
         durationMs: z.number().nullish(),
+        /**
+         * Scanned documents arrive as a PDF the phone composed, so the thumbnail cannot be
+         * derived server-side the way a video poster frame is — the device uploads the first
+         * page as an image and names its key here.
+         */
+        posterKey: z.string().nullish(),
+        pageCount: z.number().int().min(1).max(200).nullish(),
+        fileName: z.string().max(160).nullish(),
       }),
     )
     .handler(async ({ input, context }) => {
@@ -417,7 +436,9 @@ export const photos = {
           bytes: burn?.bytes ?? input.bytes ?? null,
           kind: input.kind,
           durationMs: burn?.durationMs ?? salvage?.durationMs ?? input.durationMs ?? null,
-          posterKey: burn?.posterKey ?? salvage?.posterKey ?? null,
+          posterKey: burn?.posterKey ?? salvage?.posterKey ?? input.posterKey ?? null,
+          pageCount: input.kind === "document" ? (input.pageCount ?? 1) : null,
+          fileName: input.fileName ?? null,
           stampBurned: burn?.burned ?? false,
           stampData,
           signature,

@@ -649,6 +649,12 @@ export const zh: Catalog = {
   "verify.notPublishedTitle": "图像未公开",
   "verify.notPublishedBody":
     "该记录已锁定并校验，但所属工作区尚未公开该文件。请向其索取分享链接以查看图像。",
+  "verify.headlineDoc": "文件已验证",
+  "verify.subheadDoc":
+    "此页面显示已锁定的文件。下方的页面、水印和哈希值均来自原始扫描件，而非重新打印的副本。",
+  "verify.notPublishedTitleDoc": "文件未公开",
+  "verify.notPublishedBodyDoc":
+    "该记录已锁定并验证，但拥有它的工作区尚未公开此文件。请向其索取分享链接以阅读该文件。",
   "verify.statusLabel": "状态",
   "verify.statusVerified": "已锁定并校验",
   "verify.statusUnverified": "已锁定，时间未验证",
@@ -976,6 +982,7 @@ export const zh: Catalog = {
     "证书和带戳副本都包含时间、GPS、地址、地图、照片编码和签名。原始文件不含这些信息。",
   "download.pdf": "证据 PDF",
   "download.stamped": "带戳图片",
+  "download.stampedDoc": "带戳 PDF",
   "download.raw": "原始文件",
   "download.failed": "无法生成该文件，请重试。",
   "team.noMembers": "还没有成员",
@@ -1015,6 +1022,7 @@ export const zh: Catalog = {
   "mine.body": "尚未归入任何项目的照片和视频。",
   "mine.photos": "照片",
   "mine.videos": "视频",
+  "mine.docs": "文档",
   "mine.emptyBody": "未选择项目时拍摄的内容会存放在这里，包括你登录之前拍摄的全部内容。",
 
   // Passwordless sign-in: email code, invite claim, profile sign-in card

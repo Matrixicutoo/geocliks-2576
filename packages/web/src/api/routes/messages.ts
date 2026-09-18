@@ -299,6 +299,7 @@ export const messages = {
               storageKey: schema.photos.storageKey,
               posterKey: schema.photos.posterKey,
               kind: schema.photos.kind,
+              pageCount: schema.photos.pageCount,
             })
             .from(schema.photos)
             .where(
@@ -307,7 +308,15 @@ export const messages = {
         : [];
       const photoRefs = new Map<
         string,
-        { id: string; code: string; url: string; kind: string; mediaUrl: string }
+        {
+          id: string;
+          code: string;
+          url: string;
+          kind: string;
+          mediaUrl: string;
+          posterUrl: string | null;
+          pageCount: number | null;
+        }
       >();
       await Promise.all(
         photos.map(async (photo) => {
@@ -322,6 +331,11 @@ export const messages = {
             url,
             kind: photo.kind,
             mediaUrl,
+            // A scanned document is a PDF: it only has a still to show when a first-page
+            // poster was uploaded alongside it, so say so explicitly rather than letting a
+            // client hand the PDF url to an <Image>.
+            posterUrl: photo.posterKey ? url : null,
+            pageCount: photo.pageCount ?? null,
           });
         }),
       );
@@ -575,6 +589,7 @@ export const messages = {
         .select({
           id: schema.photos.id,
           photoCode: schema.photos.photoCode,
+          kind: schema.photos.kind,
           storageKey: schema.photos.storageKey,
           posterKey: schema.photos.posterKey,
           capturedAt: schema.photos.capturedAt,
@@ -587,8 +602,13 @@ export const messages = {
         rows.map(async (row) => ({
           id: row.id,
           code: row.photoCode,
+          kind: row.kind,
           capturedAt: row.capturedAt,
           url: await photoUrl(row.posterKey ?? row.storageKey),
+          // The still a picker can actually draw. A video or a scanned document only has one
+          // when a poster frame was uploaded with it; otherwise the picker shows a glyph
+          // rather than pointing <img> at an mp4 or a PDF.
+          posterUrl: row.kind === "photo" ? await photoUrl(row.storageKey) : row.posterKey ? await photoUrl(row.posterKey) : null,
         })),
       );
     }),

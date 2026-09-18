@@ -664,6 +664,12 @@ export const ar: Catalog = {
   "verify.notPublishedTitle": "الصورة غير منشورة",
   "verify.notPublishedBody":
     "السجل مقفل وموثّق، لكن مساحة العمل المالكة لم تنشر الملف. اطلب رابط مشاركة لعرض الصورة.",
+  "verify.headlineDoc": "تم التحقق من المستند",
+  "verify.subheadDoc":
+    "تعرض هذه الصفحة الملف المُقفل. الصفحات والطابع والبصمة أدناه من المسح الأصلي — وليست نسخة معادة الطباعة.",
+  "verify.notPublishedTitleDoc": "المستند غير منشور",
+  "verify.notPublishedBodyDoc":
+    "السجل مُقفل ومُتحقق منه، لكن مساحة العمل المالكة له لم تنشر الملف علنًا. اطلب منهم رابط مشاركة لقراءة المستند.",
   "verify.statusLabel": "الحالة",
   "verify.statusVerified": "مقفل وموثّق",
   "verify.statusUnverified": "مقفل، الوقت غير موثّق",
@@ -1006,6 +1012,7 @@ export const ar: Catalog = {
     "تحمل الشهادة والنسخة المختومة الوقت وإحداثيات GPS والعنوان والخريطة ورمز الصورة والتوقيع. الملف الأصلي لا يحمل أيًّا من ذلك.",
   "download.pdf": "شهادة PDF",
   "download.stamped": "صورة مختومة",
+  "download.stampedDoc": "PDF مختوم",
   "download.raw": "الملف الأصلي",
   "download.failed": "تعذّر إنشاء الملف. حاول مرة أخرى.",
   "team.noMembers": "لا يوجد أعضاء بعد",
@@ -1045,6 +1052,7 @@ export const ar: Catalog = {
   "mine.body": "صور ومقاطع لم تُصنَّف ضمن أي مشروع بعد.",
   "mine.photos": "الصور",
   "mine.videos": "الفيديوهات",
+  "mine.docs": "المستندات",
   "mine.emptyBody": "اللقطات التي تلتقطها دون اختيار مشروع تصل إلى هنا، بما في ذلك كل ما صُوِّر قبل تسجيل دخولك.",
 
   // Passwordless sign-in: email code, invite claim, profile sign-in card

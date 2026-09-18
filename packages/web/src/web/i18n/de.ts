@@ -686,6 +686,12 @@ export const de: Catalog = {
   "verify.notPublishedTitle": "Bild nicht veröffentlicht",
   "verify.notPublishedBody":
     "Der Datensatz ist gesperrt und verifiziert, aber der Eigentümer-Workspace hat die Datei nicht veröffentlicht. Fragen Sie nach einem Freigabelink, um das Bild zu sehen.",
+  "verify.headlineDoc": "Dokument verifiziert",
+  "verify.subheadDoc":
+    "Diese Seite zeigt die gesperrte Datei. Seiten, Stempel und Hash unten stammen aus dem Original-Scan — keine nachgedruckte Kopie.",
+  "verify.notPublishedTitleDoc": "Dokument nicht veröffentlicht",
+  "verify.notPublishedBodyDoc":
+    "Der Datensatz ist gesperrt und verifiziert, aber der Workspace, dem er gehört, hat die Datei nicht öffentlich veröffentlicht. Bitten Sie um einen Freigabelink, um das Dokument zu lesen.",
   "verify.statusLabel": "Status",
   "verify.statusVerified": "Gesperrt und verifiziert",
   "verify.statusUnverified": "Gesperrt, Zeit unbestätigt",
@@ -1045,6 +1051,7 @@ export const de: Catalog = {
     "Zertifikat und gestempelte Kopie enthalten Zeit, GPS, Adresse, Karte, Foto-Code und Unterschrift. Die Originaldatei enthält davon nichts.",
   "download.pdf": "Nachweis-PDF",
   "download.stamped": "Gestempeltes Bild",
+  "download.stampedDoc": "Gestempeltes PDF",
   "download.raw": "Originaldatei",
   "download.failed": "Diese Datei konnte nicht erstellt werden. Bitte erneut versuchen.",
   "team.noMembers": "Noch keine Mitglieder",
@@ -1085,6 +1092,7 @@ export const de: Catalog = {
   "mine.body": "Fotos und Clips, die noch keinem Projekt zugeordnet sind.",
   "mine.photos": "Bilder",
   "mine.videos": "Videos",
+  "mine.docs": "Dokumente",
   "mine.emptyBody": "Aufnahmen ohne ausgewähltes Projekt landen hier, einschließlich allem, was vor Ihrer Anmeldung aufgenommen wurde.",
 
   // Passwordless sign-in: email code, invite claim, profile sign-in card

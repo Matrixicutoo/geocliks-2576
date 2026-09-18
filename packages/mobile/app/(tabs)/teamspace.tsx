@@ -389,13 +389,17 @@ export default function Teamspace() {
               style={[styles.card, { borderColor: colors.border, backgroundColor: colors.card }]}
             >
               <View>
-                {item.kind === "video" && !item.posterUrl ? (
+                {item.kind !== "photo" && !item.posterUrl ? (
                   <View style={[styles.photo, styles.videoFallback]}>
-                    <Ionicons name="videocam-outline" size={26} color={colors.mutedForeground} />
+                    <Ionicons
+                      name={item.kind === "document" ? "document-text-outline" : "videocam-outline"}
+                      size={26}
+                      color={colors.mutedForeground}
+                    />
                   </View>
                 ) : (
                   <Image
-                    source={{ uri: resolve(item.kind === "video" ? item.posterUrl! : item.url) }}
+                    source={{ uri: resolve(item.kind === "photo" ? item.url : item.posterUrl!) }}
                     style={styles.photo}
                     resizeMode="cover"
                   />
@@ -403,6 +407,14 @@ export default function Teamspace() {
                 {item.kind === "video" ? (
                   <View style={styles.playBadge}>
                     <Ionicons name="play" size={16} color="#0B0F14" />
+                  </View>
+                ) : null}
+                {item.kind === "document" ? (
+                  <View style={styles.docBadge}>
+                    <Ionicons name="document-text" size={11} color="#0B0F14" />
+                    <Text style={[styles.docBadgeText, { fontFamily: Fonts?.mono }]}>
+                      {item.pageCount ? `${item.pageCount} PP` : "PDF"}
+                    </Text>
                   </View>
                 ) : null}
               </View>
@@ -528,6 +540,19 @@ const styles = StyleSheet.create({
   card: { borderWidth: 1 },
   photo: { width: "100%", height: 190, backgroundColor: "#1A212C" },
   videoFallback: { alignItems: "center", justifyContent: "center" },
+  docBadge: {
+    position: "absolute",
+    right: 10,
+    bottom: 10,
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 4,
+    paddingHorizontal: 8,
+    paddingVertical: 4,
+    borderRadius: 4,
+    backgroundColor: "rgba(255,176,33,0.92)",
+  },
+  docBadgeText: { fontSize: 9, letterSpacing: 1, color: "#0B0F14" },
   playBadge: {
     position: "absolute",
     left: 10,
