@@ -60,6 +60,7 @@ export const frCA: Catalog = {
   "evidence.coords": "Coordonnées",
   "evidence.address": "Adresse",
   "evidence.author": "Capturée par",
+  "evidence.note": "Note",
   "evidence.verificationRecord": "Registre de vérification",
   "evidence.chainOfCustody": "Chaîne de possession",
   "evidence.reverify": "Revérifier le sceau",

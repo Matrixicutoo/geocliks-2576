@@ -59,6 +59,7 @@ export const zh: Catalog = {
   "evidence.coords": "坐标",
   "evidence.address": "地址",
   "evidence.author": "拍摄者",
+  "evidence.note": "备注",
   "evidence.verificationRecord": "验证记录",
   "evidence.chainOfCustody": "证据链",
   "evidence.reverify": "重新验证封印",

@@ -70,6 +70,7 @@ export const en = {
   "evidence.coords": "Coordinates",
   "evidence.address": "Address",
   "evidence.author": "Captured by",
+  "evidence.note": "Note",
   "evidence.verificationRecord": "Verification record",
   "evidence.chainOfCustody": "Chain of custody",
   "evidence.reverify": "Re-verify seal",

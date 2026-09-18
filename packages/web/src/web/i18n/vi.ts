@@ -59,6 +59,7 @@ export const vi: Catalog = {
   "evidence.coords": "Tọa độ",
   "evidence.address": "Địa chỉ",
   "evidence.author": "Người chụp",
+  "evidence.note": "Ghi chú",
   "evidence.verificationRecord": "Bản ghi xác thực",
   "evidence.chainOfCustody": "Chuỗi lưu giữ",
   "evidence.reverify": "Xác thực lại niêm phong",

@@ -60,6 +60,7 @@ export const it: Catalog = {
   "evidence.coords": "Coordinate",
   "evidence.address": "Indirizzo",
   "evidence.author": "Acquisita da",
+  "evidence.note": "Nota",
   "evidence.verificationRecord": "Registro di verifica",
   "evidence.chainOfCustody": "Catena di custodia",
   "evidence.reverify": "Verifica di nuovo il sigillo",

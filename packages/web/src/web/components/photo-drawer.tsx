@@ -182,7 +182,14 @@ export function PhotoDrawer({ photoId, onClose }: { photoId: string | null; onCl
               </div>
             )}
 
-            {data.note && <p className="text-sm leading-relaxed text-chalk">{data.note}</p>}
+            {/* The note is detail-only: the feed tiles no longer print it, so this panel is the
+                one place it reads, and it gets a label like every other field here. */}
+            {data.note && (
+              <div>
+                <p className="label">{t("evidence.note")}</p>
+                <p className="mt-2 text-sm leading-relaxed text-chalk">{data.note}</p>
+              </div>
+            )}
 
             <div>
               <p className="label">{t("evidence.verificationRecord")}</p>

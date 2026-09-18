@@ -60,6 +60,7 @@ export const ptBR: Catalog = {
   "evidence.coords": "Coordenadas",
   "evidence.address": "Endereço",
   "evidence.author": "Capturada por",
+  "evidence.note": "Nota",
   "evidence.verificationRecord": "Registro de verificação",
   "evidence.chainOfCustody": "Cadeia de custódia",
   "evidence.reverify": "Verificar o selo novamente",

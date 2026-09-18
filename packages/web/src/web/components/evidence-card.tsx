@@ -185,7 +185,9 @@ export function EvidenceCard({
 
       <div className={cn("space-y-1.5 p-3", shareable && "pr-12")}>
         <p className="mono text-[10.5px] tracking-widest text-amber">{photo.photoCode}</p>
-        {photo.note && <p className="line-clamp-2 text-sm text-chalk">{photo.note}</p>}
+        {/* No note on the tile. A two-line note pushed the address and project down and made
+            neighbouring tiles different heights; it reads in the detail panel instead, where
+            the whole note fits and nothing is truncated. */}
         <p className="flex items-start gap-1.5 text-[11px] text-fog">
           <MapPin className="mt-0.5 size-3 shrink-0" />
           <span className="line-clamp-1">{photo.address ?? t("photo.addressUnavailable")}</span>

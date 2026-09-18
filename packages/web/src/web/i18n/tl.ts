@@ -60,6 +60,7 @@ export const tl: Catalog = {
   "evidence.coords": "Mga koordinado",
   "evidence.address": "Address",
   "evidence.author": "Kinuha ni",
+  "evidence.note": "Tala",
   "evidence.verificationRecord": "Rekord ng beripikasyon",
   "evidence.chainOfCustody": "Chain of custody",
   "evidence.reverify": "I-verify muli ang selyo",

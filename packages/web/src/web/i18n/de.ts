@@ -59,6 +59,7 @@ export const de: Catalog = {
   "evidence.coords": "Koordinaten",
   "evidence.address": "Adresse",
   "evidence.author": "Aufgenommen von",
+  "evidence.note": "Notiz",
   "evidence.verificationRecord": "Verifizierungsprotokoll",
   "evidence.chainOfCustody": "Beweiskette",
   "evidence.reverify": "Siegel erneut prüfen",

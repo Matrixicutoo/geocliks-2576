@@ -59,6 +59,7 @@ export const ar: Catalog = {
   "evidence.coords": "الإحداثيات",
   "evidence.address": "العنوان",
   "evidence.author": "التصوير بواسطة",
+  "evidence.note": "ملاحظة",
   "evidence.verificationRecord": "سجل التحقق",
   "evidence.chainOfCustody": "سلسلة الحفظ",
   "evidence.reverify": "إعادة التحقق من الختم",

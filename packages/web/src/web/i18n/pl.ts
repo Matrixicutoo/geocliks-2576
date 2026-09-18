@@ -59,6 +59,7 @@ export const pl: Catalog = {
   "evidence.coords": "Współrzędne",
   "evidence.address": "Adres",
   "evidence.author": "Autor",
+  "evidence.note": "Notatka",
   "evidence.verificationRecord": "Zapis weryfikacji",
   "evidence.chainOfCustody": "Łańcuch dowodowy",
   "evidence.reverify": "Zweryfikuj pieczęć ponownie",
