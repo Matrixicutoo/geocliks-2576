@@ -104,7 +104,9 @@ export function NotificationsBell() {
         onClick={toggle}
         className="relative flex size-9 items-center justify-center rounded-full bg-[#173350] text-amber hover:bg-[#1f4368]"
       >
-        <Bell className="size-4" />
+        {/* Filled, not outlined: at 16px a stroke-only bell reads as a thin sketch against the
+            dark well. Same amber, painted solid. */}
+        <Bell className="size-4 fill-current" />
         {unseen > 0 && (
           <span className="mono absolute -right-1 -top-1 flex min-w-[17px] items-center justify-center rounded-full bg-alert px-1 text-[10px] font-bold leading-[17px] text-white">
             {unseen > 9 ? "9+" : unseen}
