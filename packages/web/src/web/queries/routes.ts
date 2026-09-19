@@ -1,3 +1,4 @@
+import { useEffect, useRef } from "react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { orpc } from "../lib/api";
 
@@ -21,6 +22,52 @@ function useRouteInvalidate() {
   return () => {
     queryClient.invalidateQueries({ queryKey: orpc.routes.key() });
   };
+}
+
+const PULSE_MS = 15_000;
+
+/**
+ * Keeps the delivery board current while a run is out, with no browser refresh.
+ *
+ * The dispatcher's half of what `useLivePhotoFeed` does for captures: the driver's phone is
+ * what changes this data, so nothing in the watching browser ever invalidated it and the board
+ * sat on the state it was loaded with — a run showing 0 of 12 long after the driver had
+ * finished. `routes.pulse` is a cheap fingerprint of the board; the real queries are refetched
+ * only when it moves.
+ *
+ * `enabled` matters here rather than being a nicety: the endpoint refuses a field member, so
+ * polling it from the field dashboard would be a 403 every 15 seconds. The delivery pages are
+ * behind the same check, so nobody who can see a route is left out.
+ */
+export function useLiveDeliveryBoard(enabled: boolean) {
+  const queryClient = useQueryClient();
+  const pulse = useQuery(
+    orpc.routes.pulse.queryOptions({
+      enabled,
+      staleTime: 0,
+      refetchInterval: PULSE_MS,
+      // Not in the background: a hidden tab has no board to keep fresh, and React Query
+      // refetches on focus, so coming back catches up anyway.
+      retry: false,
+    }),
+  );
+
+  const seen = useRef<string | null>(null);
+  const token = pulse.data?.token ?? null;
+
+  useEffect(() => {
+    if (!token) return;
+    // The first token is the state the page already rendered — remember it, refetch nothing.
+    if (seen.current === null) {
+      seen.current = token;
+      return;
+    }
+    if (seen.current === token) return;
+    seen.current = token;
+    // The whole routes namespace: the runs list, the open run's stops, and its event log all
+    // describe the same delivery that just moved.
+    void queryClient.invalidateQueries({ queryKey: orpc.routes.key() });
+  }, [token, queryClient]);
 }
 
 export function useCreateRoute() {

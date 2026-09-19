@@ -195,6 +195,39 @@ export function PhotoDetail({ photoId, onClose }: { photoId: string | null; onCl
                   uri={resolve(data.url)}
                   poster={data.posterUrl ? resolve(data.posterUrl) : null}
                 />
+              ) : data.kind === "document" ? (
+                /* A scan's `url` is the PDF itself, and an <Image> pointed at a PDF renders an
+                   empty black frame — which is all this sheet used to show for a document. Page
+                   one (the poster the scan upload already stores) stands in, same as the grid
+                   tile and the web drawer, and a tap hands the real PDF to the system viewer. */
+                <Pressable
+                  onPress={() => void Linking.openURL(resolve(data.url))}
+                  accessibilityLabel={data.fileName ?? data.photoCode}
+                >
+                  {data.posterUrl ? (
+                    /* "contain" on a taller frame, not the photo crop: a page cropped to a
+                       band of whitespace tells the reader nothing about the document. */
+                    <Image
+                      source={{ uri: resolve(data.posterUrl) }}
+                      style={styles.doc}
+                      resizeMode="contain"
+                    />
+                  ) : (
+                    <View style={[styles.photo, styles.docFallback]}>
+                      <Ionicons
+                        name="document-text-outline"
+                        size={26}
+                        color={colors.mutedForeground}
+                      />
+                    </View>
+                  )}
+                  <View style={styles.docBadge}>
+                    <Ionicons name="document-text" size={11} color="#0B0F14" />
+                    <Text style={[styles.docBadgeText, { fontFamily: Fonts?.mono }]}>
+                      {data.pageCount && data.pageCount > 1 ? `${data.pageCount} PP` : "PDF"}
+                    </Text>
+                  </View>
+                </Pressable>
               ) : (
                 <Image
                   source={{ uri: resolve(data.url) }}
@@ -469,7 +502,21 @@ export function PhotoDetail({ photoId, onClose }: { photoId: string | null; onCl
               disabled={download === "busy"}
               onPress={async () => {
                 setDownload("busy");
-                const name = `${data.photoCode}.${data.kind === "video" ? "mp4" : "jpg"}`;
+                const ext =
+                  data.kind === "video" ? "mp4" : data.kind === "document" ? "pdf" : "jpg";
+                const name = `${data.photoCode}.${ext}`;
+                const mime =
+                  data.kind === "video"
+                    ? "video/mp4"
+                    : data.kind === "document"
+                      ? "application/pdf"
+                      : "image/jpeg";
+                const uti =
+                  data.kind === "video"
+                    ? "public.mpeg-4"
+                    : data.kind === "document"
+                      ? "com.adobe.pdf"
+                      : "public.jpeg";
                 const src = resolve(data.url);
                 try {
                   if (Platform.OS === "web") {
@@ -498,8 +545,8 @@ export function PhotoDetail({ photoId, onClose }: { photoId: string | null; onCl
                     if (await Sharing.isAvailableAsync()) {
                       await Sharing.shareAsync(file.uri, {
                         dialogTitle: name,
-                        mimeType: data.kind === "video" ? "video/mp4" : "image/jpeg",
-                        UTI: data.kind === "video" ? "public.mpeg-4" : "public.jpeg",
+                        mimeType: mime,
+                        UTI: uti,
                       });
                     } else {
                       await Share.share({ title: name, url: file.uri });
@@ -702,6 +749,22 @@ const styles = StyleSheet.create({
   body: { padding: 16, paddingBottom: 40, gap: 10 },
   frame: { borderWidth: 1, overflow: "hidden" },
   photo: { width: "100%", height: 260, backgroundColor: "#0B0F14" },
+  doc: { width: "100%", height: 380, backgroundColor: "#0B0F14" },
+  docFallback: { alignItems: "center", justifyContent: "center" },
+  /* Top right, not bottom: the time/GPS stamp owns the bottom of this frame. */
+  docBadge: {
+    position: "absolute",
+    right: 10,
+    top: 10,
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 4,
+    paddingHorizontal: 8,
+    paddingVertical: 4,
+    borderRadius: 4,
+    backgroundColor: "rgba(255,176,33,0.92)",
+  },
+  docBadgeText: { fontSize: 9, letterSpacing: 1, color: "#0B0F14" },
   overlay: {
     position: "absolute",
     left: 0,

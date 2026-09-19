@@ -1,5 +1,5 @@
 import { ORPCError } from "@orpc/server";
-import { and, asc, count, desc, eq, gte, inArray } from "drizzle-orm";
+import { and, asc, count, desc, eq, gte, inArray, sql } from "drizzle-orm";
 import { z } from "zod";
 import { db } from "../database";
 import * as schema from "../database/schema";
@@ -1065,6 +1065,95 @@ export const routes = {
       await notifyUpcoming(route.id);
       return state;
     }),
+
+  /**
+   * A fingerprint of the whole delivery board, for the same reason `photos.pulse` exists: no
+   * websockets in this stack, so an open dispatcher board only learns what the driver is doing
+   * by asking. What it must notice is everything that happens out on the road — a run started,
+   * a drop closed out with its proof, a failed delivery, a run finishing, an extra stop slotted
+   * in by dispatch — and none of that is the watching browser's own doing.
+   *
+   * Two aggregates over indexed columns, no joins and no rows returned, so it stays cheap at a
+   * 15-second cadence. Deliberately NOT built on `route_events`, which would have been the
+   * tidier fingerprint: that table is indexed by route, not by org, so counting an org's events
+   * is a table scan that grows forever, while these two are bounded by the work that exists.
+   *
+   * Scoped exactly like `list`: a driver's board is their own runs, so their own pulse must not
+   * move for somebody else's route.
+   */
+  pulse: orgProc.handler(async ({ context }) => {
+    requireDelivery(context.role);
+    const ownRoutes = isOwnRoutesOnly(context.role);
+    const routeScope = ownRoutes ? [eq(schema.routes.driverId, context.user.id)] : [];
+
+    // Stops carry orgId, so the common case needs no join. A driver is narrowed by their own
+    // route ids instead — a subquery over the same (orgId, driverId) rows read just above.
+    const stopScope = ownRoutes
+      ? [
+          inArray(
+            schema.routeStops.routeId,
+            db
+              .select({ id: schema.routes.id })
+              .from(schema.routes)
+              .where(
+                and(
+                  eq(schema.routes.orgId, context.org.id),
+                  eq(schema.routes.driverId, context.user.id),
+                ),
+              ),
+          ),
+        ]
+      : [];
+
+    const [runs, stops] = await Promise.all([
+      db
+        .select({
+          total: count(),
+          newest: sql<number | null>`max(${schema.routes.createdAt})`,
+          // A run going out and a run finishing are the two state changes the board's own
+          // columns are made of, and both happen on the phone.
+          started: sql<number>`sum(case when ${schema.routes.startedAt} is not null then 1 else 0 end)`,
+          done: sql<number>`sum(case when ${schema.routes.status} in ('completed','cancelled') then 1 else 0 end)`,
+          live: sql<number>`sum(case when ${schema.routes.status} = 'active' then 1 else 0 end)`,
+          // Assignment happens on the board, but from anyone's browser — including the phone.
+          crewed: sql<number>`sum(case when ${schema.routes.driverId} is not null then 1 else 0 end)`,
+          lastFinish: sql<number | null>`max(${schema.routes.completedAt})`,
+        })
+        .from(schema.routes)
+        .where(and(eq(schema.routes.orgId, context.org.id), ...routeScope)),
+      db
+        .select({
+          total: count(),
+          // The heartbeat of a run in progress: every closed drop moves both of these.
+          closed: sql<number>`sum(case when ${schema.routeStops.status} <> 'pending' then 1 else 0 end)`,
+          failed: sql<number>`sum(case when ${schema.routeStops.status} = 'failed' then 1 else 0 end)`,
+          proofs: sql<number>`sum(case when ${schema.routeStops.photoId} is not null then 1 else 0 end)`,
+          lastDrop: sql<number | null>`max(${schema.routeStops.completedAt})`,
+        })
+        .from(schema.routeStops)
+        .where(and(eq(schema.routeStops.orgId, context.org.id), ...stopScope)),
+    ]);
+
+    const r = runs[0];
+    const s = stops[0];
+    // One opaque string: the client only ever asks whether this differs from last time.
+    return {
+      token: [
+        r?.total ?? 0,
+        Number(r?.newest ?? 0),
+        Number(r?.started ?? 0),
+        Number(r?.done ?? 0),
+        Number(r?.live ?? 0),
+        Number(r?.crewed ?? 0),
+        Number(r?.lastFinish ?? 0),
+        s?.total ?? 0,
+        Number(s?.closed ?? 0),
+        Number(s?.failed ?? 0),
+        Number(s?.proofs ?? 0),
+        Number(s?.lastDrop ?? 0),
+      ].join(":"),
+    };
+  }),
 
   /** Where the run stands: used by the driver screen after every action. */
   runState: orgProc.input(z.object({ routeId: z.string() })).handler(async ({ input, context }) => {

@@ -18,6 +18,7 @@ import {
 } from "lucide-react";
 import { useOrg } from "../queries/orgs";
 import { useLivePhotoFeed } from "../queries/photos";
+import { useLiveDeliveryBoard } from "../queries/routes";
 import { useAdminMe } from "../queries/admin";
 import { stopImpersonation } from "../lib/impersonate";
 import { useWorkspaceTheme } from "../lib/theme";
@@ -29,7 +30,7 @@ import { NotificationsBell } from "./notifications-bell";
 import { SidebarBody } from "./sidebar-body";
 import { InviteDialog } from "./invite-form";
 import { TrialBanner } from "./trial-banner";
-import { canManageWatermarks, canManageWorkspace } from "../lib/roles";
+import { canManageWatermarks, canManageWorkspace, canUseDelivery } from "../lib/roles";
 import { showsProduct } from "../lib/product";
 
 /** Nav entries a field member can't act on — the pages are manager/owner only. */
@@ -99,6 +100,10 @@ export function DashboardShell({
   // Here rather than in each page so one timer serves the strip, the grids, the map and the
   // project lists.
   useLivePhotoFeed();
+  // Same for the delivery board: a driver closing out a drop is the one thing on those pages
+  // that nothing in this browser would ever invalidate. Gated on the role because the delivery
+  // pulse refuses a field member outright.
+  useLiveDeliveryBoard(canUseDelivery(org.data?.role));
   // The invite sheet lives here, not in the menu: the drawer unmounts its menu when it closes.
   const [inviting, setInviting] = useState(false);
   const impersonating = me.data?.impersonating;
