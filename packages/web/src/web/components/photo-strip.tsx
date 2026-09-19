@@ -84,6 +84,8 @@ export function PhotoStrip({ board }: { board: "field" | "delivery" }) {
    */
   const rail = useRef<HTMLDivElement | null>(null);
   const [ends, setEnds] = useState({ start: false, end: false });
+  /** Same fact as `!ends.start`, kept in a ref so an effect can read it without re-subscribing. */
+  const atStart = useRef(true);
 
   const measure = useCallback(() => {
     const el = rail.current;
@@ -91,6 +93,7 @@ export function PhotoStrip({ board }: { board: "field" | "delivery" }) {
     // Sub-pixel widths and browser zoom leave a fraction of a pixel behind at either end, which
     // would keep an arrow lit with nowhere left to go.
     const slack = 8;
+    atStart.current = el.scrollLeft <= slack;
     setEnds({
       start: el.scrollLeft > slack,
       end: el.scrollLeft + el.clientWidth < el.scrollWidth - slack,
@@ -110,6 +113,22 @@ export function PhotoStrip({ board }: { board: "field" | "delivery" }) {
     for (const child of Array.from(el.children)) observer.observe(child);
     return () => observer.disconnect();
   }, [measure, loaded.length]);
+
+  /**
+   * A capture that arrives while the page is open lands at the head of the row, and the browser's
+   * scroll anchoring holds the tiles that were already on screen still — which pushes the newest
+   * tile just past the left edge, the one tile the person watching wanted to see. So anchoring is
+   * switched off while the row sits at its start (see the row's `overflowAnchor` below) and this
+   * belt-and-braces reset catches anything that still drifts. Someone who HAS scrolled off down
+   * the row keeps anchoring and keeps their place: yanking the row out from under them would be
+   * worse than a tile they can reach with the chevron.
+   */
+  const newestId = loaded[0]?.id ?? null;
+  useEffect(() => {
+    const el = rail.current;
+    if (!el || !atStart.current || el.scrollLeft === 0) return;
+    el.scrollLeft = 0;
+  }, [newestId]);
 
   /** Just under a screenful, so the tile you were looking at stays on screen as an anchor. */
   const nudge = (direction: -1 | 1) => {
@@ -217,7 +236,15 @@ export function PhotoStrip({ board }: { board: "field" | "delivery" }) {
           // rather than halfway through a photo. The wrapper is the positioning context for the
           // two chevrons, which float over the row rather than taking width from it.
           <div className="relative">
-            <div ref={rail} onScroll={measure} className="flex snap-x gap-3 overflow-x-auto pb-1">
+            <div
+              ref={rail}
+              onScroll={measure}
+              // At the start of the row, a capture arriving live should push the row along and
+              // show itself; once scrolled away, anchoring is what keeps the tiles being looked
+              // at from sliding sideways under the cursor.
+              style={{ overflowAnchor: ends.start ? "auto" : "none" }}
+              className="flex snap-x gap-3 overflow-x-auto pb-1"
+            >
               {loaded.map((photo) => (
                 <EvidenceCard
                   key={photo.id}

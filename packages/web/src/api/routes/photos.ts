@@ -680,6 +680,55 @@ export const photos = {
       );
     }),
 
+  /**
+   * A fingerprint of everything the workspace's feeds are showing, in one row and no joins.
+   *
+   * There are no websockets in this stack, so the only way a capture taken on a phone reaches
+   * an open dashboard is polling. Polling the feeds themselves is the expensive way to do it:
+   * the grid is an infinite query, so a refetch replays every page the person has scrolled,
+   * and the map hands back up to 400 presigned URLs. This is what gets polled instead — the
+   * count and the newest capture, which together move whenever anything is added, filed or
+   * deleted. The client refetches the real feeds only when this changes.
+   *
+   * Scoped exactly like `list`, not like `stats` — assigned projects PLUS the person's own
+   * unfiled captures. That second half is the whole point for a field member or a driver: the
+   * shot they just took on their phone lands unfiled, and a pulse that ignored it would leave
+   * their own My captures page as stale as before. `orgProc` for the same reason: a driver has
+   * no field pages but does take proof-of-delivery photos, and their strip has to move too.
+   */
+  pulse: orgProc.handler(async ({ context }) => {
+    const allowed = await visibleProjectIds(context.org.id, context.user.id, context.role);
+    const scope = [];
+    if (allowed) {
+      const own = and(isNull(schema.photos.projectId), eq(schema.photos.userId, context.user.id))!;
+      scope.push(allowed.length === 0 ? own : or(inArray(schema.photos.projectId, allowed), own)!);
+    }
+    const [row] = await db
+      .select({
+        // Rises on a capture, falls on a delete.
+        photos: count(),
+        // Moves when the newest row is newer than the newest row we had — the ordinary case of
+        // a phone finishing an upload while somebody watches the dashboard.
+        newest: sql<number | null>`max(${schema.photos.createdAt})`,
+        // The two edits made from a phone or another browser that the grids draw but a count
+        // would not notice: filing a loose capture under a project, and sealing one.
+        filed: sql<number>`sum(case when ${schema.photos.projectId} is not null then 1 else 0 end)`,
+        verified: sql<number>`sum(case when ${schema.photos.integrity} = 'verified' then 1 else 0 end)`,
+      })
+      .from(schema.photos)
+      .where(and(eq(schema.photos.orgId, context.org.id), ...scope));
+    // One opaque string: the client only ever asks "is this the same as last time", and a
+    // token keeps it from growing a comparison per field as this list changes.
+    return {
+      token: [
+        row?.photos ?? 0,
+        Number(row?.newest ?? 0),
+        Number(row?.filed ?? 0),
+        Number(row?.verified ?? 0),
+      ].join(":"),
+    };
+  }),
+
   /** Dashboard headline stats. */
   stats: fieldProc.handler(async ({ context }) => {
     // A field member's counters cover the projects they are assigned to, never the whole

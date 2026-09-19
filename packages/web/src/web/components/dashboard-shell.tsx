@@ -17,6 +17,7 @@ import {
   MessageSquare,
 } from "lucide-react";
 import { useOrg } from "../queries/orgs";
+import { useLivePhotoFeed } from "../queries/photos";
 import { useAdminMe } from "../queries/admin";
 import { stopImpersonation } from "../lib/impersonate";
 import { useWorkspaceTheme } from "../lib/theme";
@@ -94,6 +95,10 @@ export function DashboardShell({
 }) {
   const org = useOrg();
   const me = useAdminMe();
+  // Captures taken on a phone appear in this page's feeds on their own, no browser refresh.
+  // Here rather than in each page so one timer serves the strip, the grids, the map and the
+  // project lists.
+  useLivePhotoFeed();
   // The invite sheet lives here, not in the menu: the drawer unmounts its menu when it closes.
   const [inviting, setInviting] = useState(false);
   const impersonating = me.data?.impersonating;
