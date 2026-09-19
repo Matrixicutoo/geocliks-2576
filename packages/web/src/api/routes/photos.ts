@@ -10,6 +10,7 @@ import { photoUrl } from "../lib/media";
 import { deleteObject, getObjectBytes, presignGet, putObject } from "../lib/s3";
 import { resolveClock, sha256, sign, verifySignature } from "../lib/verify";
 import { burnStamp, hasFfmpeg, posterFrame } from "../lib/video";
+import { repairPosters, repairPostersInBackground } from "../lib/poster-repair";
 import { buildEvidencePdf, buildStampedDocument, buildStampedImage } from "../lib/evidence";
 import { siteUrl } from "../services/email";
 
@@ -35,6 +36,9 @@ const startOfMonth = () => {
 export type PhotoRow = typeof schema.photos.$inferSelect;
 
 export async function decoratePhotos(rows: PhotoRow[]) {
+  // A clip that lost its poster at upload time would otherwise stay a blank tile forever.
+  // Detached on purpose: the gallery renders now and the poster lands in the next refresh.
+  repairPostersInBackground(rows);
   return Promise.all(
     rows.map(async (row) => ({
       ...row,
@@ -156,6 +160,11 @@ export const photos = {
       throw new ORPCError("NOT_FOUND", { message: "Photo not found" });
     }
 
+    // One clip, opened deliberately — worth waiting on the ffmpeg pass so the poster is
+    // there for this response instead of the next one.
+    const recovered = await repairPosters([photo]);
+    const posterKey = recovered.get(photo.id) ?? photo.posterKey;
+
     const events = await db
       .select()
       .from(schema.photoEvents)
@@ -173,8 +182,9 @@ export const photos = {
 
     return {
       ...photo,
+      posterKey,
       url: await photoUrl(photo.storageKey),
-      posterUrl: photo.posterKey ? await photoUrl(photo.posterKey) : null,
+      posterUrl: posterKey ? await photoUrl(posterKey) : null,
       events,
       project: project ?? null,
       author: author ?? null,

@@ -64,12 +64,23 @@ function run(cmd: string, args: string[], timeoutMs = 120_000): Promise<{ ok: bo
   });
 }
 
-let ffmpegAvailable: boolean | null = null;
+let ffmpegAvailable = false;
+let ffmpegProbedAt = 0;
+/**
+ * A "no" is only believed for this long. A permanently cached "no" was the bug behind
+ * poster-less clips: one spawn that failed under load (or a probe that ran before the
+ * binary was reachable) made every video for the rest of that process's life skip both
+ * burn-in and the poster frame, and nothing ever retried. A "yes" is cached forever —
+ * ffmpeg does not disappear mid-process.
+ */
+const FFMPEG_RETRY_MS = 60_000;
 
 /** Cached probe — burn-in is only promised when this is true. */
 export async function hasFfmpeg(): Promise<boolean> {
-  if (ffmpegAvailable !== null) return ffmpegAvailable;
+  if (ffmpegAvailable) return true;
+  if (ffmpegProbedAt && Date.now() - ffmpegProbedAt < FFMPEG_RETRY_MS) return false;
   const res = await run("ffmpeg", ["-version"], 10_000);
+  ffmpegProbedAt = Date.now();
   ffmpegAvailable = res.ok;
   return ffmpegAvailable;
 }
