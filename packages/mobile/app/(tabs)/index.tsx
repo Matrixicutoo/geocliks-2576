@@ -7,6 +7,7 @@ import {
   Pressable,
   ScrollView,
   StyleSheet,
+  useWindowDimensions,
   View,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -804,6 +805,12 @@ export default function Capture() {
 
   const isVideo = mode === "video";
   const isScan = mode === "scan";
+  // Long-locale headers do not fit a small phone: "NUMERISER" + "SYNCHRONISE" + the language
+  // chip overflow a 5" screen and the mode title is the one that gets clipped. On narrow
+  // screens the idle sync chip drops to its icon, which already says synced by shape and
+  // colour. A pending count keeps its words — that one is actionable.
+  const { width: screenW } = useWindowDimensions();
+  const tightHeader = screenW < 380;
   const trialLeft = policy.data?.trialDaysLeft ?? 0;
 
   return (
@@ -828,6 +835,12 @@ export default function Capture() {
         </View>
         <View style={styles.headerRight}>
           <View
+            accessible
+            accessibilityLabel={
+              pending > 0
+                ? tr("capture.queuedCount", { n: pending })
+                : tr("capture.synced")
+            }
             style={[styles.chip, { borderColor: pending > 0 ? colors.amber : colors.verified }]}
           >
             <Ionicons
@@ -835,17 +848,19 @@ export default function Capture() {
               size={13}
               color={pending > 0 ? colors.amber : colors.verified}
             />
-            <Text
-              numberOfLines={1}
-              style={[
-                styles.chipText,
-                { color: pending > 0 ? colors.amber : colors.verified, fontFamily: Fonts?.mono },
-              ]}
-            >
-              {pending > 0
-                ? tr("capture.queuedCount", { n: pending }).toUpperCase()
-                : tr("capture.synced").toUpperCase()}
-            </Text>
+            {tightHeader && pending === 0 ? null : (
+              <Text
+                numberOfLines={1}
+                style={[
+                  styles.chipText,
+                  { color: pending > 0 ? colors.amber : colors.verified, fontFamily: Fonts?.mono },
+                ]}
+              >
+                {pending > 0
+                  ? tr("capture.queuedCount", { n: pending }).toUpperCase()
+                  : tr("capture.synced").toUpperCase()}
+              </Text>
+            )}
           </View>
           <LanguageMenu />
         </View>
@@ -1073,6 +1088,8 @@ export default function Capture() {
             >
               <Text
                 numberOfLines={1}
+                adjustsFontSizeToFit
+                minimumFontScale={0.7}
                 style={[
                   styles.modeText,
                   {
@@ -1174,7 +1191,7 @@ export default function Capture() {
                 ]}
               >
                 <Ionicons name="cloud-upload-outline" size={15} color={colors.background} />
-                <Text style={[styles.scanSaveText, { color: colors.background }]}>
+                <Text numberOfLines={1} style={[styles.scanSaveText, { color: colors.background }]}>
                   {tr("scan.savePdf").toUpperCase()}
                 </Text>
               </Pressable>
@@ -1186,7 +1203,7 @@ export default function Capture() {
                   style={[styles.scanDiscard, { borderColor: colors.alert }]}
                 >
                   <Ionicons name="trash-outline" size={15} color={colors.alert} />
-                  <Text style={[styles.scanDiscardText, { color: colors.alert }]}>
+                  <Text numberOfLines={1} style={[styles.scanDiscardText, { color: colors.alert }]}>
                     {tr("scan.discard").toUpperCase()}
                   </Text>
                 </Pressable>
@@ -1801,19 +1818,26 @@ const styles = StyleSheet.create({
     paddingBottom: 12,
   },
   headerLeft: { flexShrink: 1, minWidth: 0, marginRight: 8 },
-  title: { fontSize: 15, letterSpacing: 1.5 },
-  headerRight: { flexDirection: "row", alignItems: "center", gap: 6, flexShrink: 0 },
+  title: { fontSize: 15, letterSpacing: 0.8 },
+  headerRight: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 6,
+    flexShrink: 1,
+    minWidth: 0,
+  },
   chip: {
     flexDirection: "row",
     alignItems: "center",
     gap: 5,
     borderWidth: 1,
-    flexShrink: 0,
+    flexShrink: 1,
+    minWidth: 0,
     paddingHorizontal: 7,
     paddingVertical: 4,
     borderRadius: 8,
   },
-  chipText: { fontSize: 10, letterSpacing: 0.5 },
+  chipText: { fontSize: 10, letterSpacing: 0.2, flexShrink: 1, minWidth: 0 },
   viewfinder: {
     flex: 1,
     minHeight: 300,
@@ -2056,27 +2080,36 @@ const styles = StyleSheet.create({
     backgroundColor: "rgba(255,176,33,0.92)",
   },
   scanThumbBadgeText: { fontSize: 9 },
-  scanActions: { flexDirection: "row", alignItems: "center", gap: 8 },
+  scanActions: { flexDirection: "row", flexWrap: "wrap", alignItems: "center", gap: 8 },
   scanSave: {
-    flex: 1,
+    flexGrow: 1,
+    flexShrink: 1,
+    flexBasis: "auto",
+    minWidth: 0,
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "center",
     gap: 6,
+    paddingHorizontal: 14,
     paddingVertical: 11,
     borderRadius: 10,
   },
-  scanSaveText: { fontSize: 12, fontWeight: "800", letterSpacing: 1 },
+  scanSaveText: { fontSize: 12, fontWeight: "800", letterSpacing: 0.5 },
   scanDiscard: {
+    flexGrow: 1,
+    flexShrink: 1,
+    flexBasis: "auto",
+    minWidth: 0,
     flexDirection: "row",
     alignItems: "center",
+    justifyContent: "center",
     gap: 6,
     paddingHorizontal: 12,
     paddingVertical: 10,
     borderWidth: 1,
     borderRadius: 10,
   },
-  scanDiscardText: { fontSize: 11, fontWeight: "700", letterSpacing: 1 },
+  scanDiscardText: { fontSize: 11, fontWeight: "700", letterSpacing: 0.5 },
   stopCore: { width: 26, height: 26, borderRadius: 3 },
   modeTabs: {
     flexDirection: "row",
@@ -2088,12 +2121,14 @@ const styles = StyleSheet.create({
   },
   modeTab: {
     flex: 1,
+    minWidth: 0,
     alignItems: "center",
     justifyContent: "center",
     paddingVertical: 6,
+    paddingHorizontal: 3,
     borderBottomWidth: 2,
   },
-  modeText: { fontSize: 11, letterSpacing: 0.6 },
+  modeText: { fontSize: 10, letterSpacing: 0.2, textAlign: "center" },
   videoNote: {
     flexDirection: "row",
     alignItems: "flex-start",

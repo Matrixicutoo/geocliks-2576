@@ -61,7 +61,7 @@ export const de: Catalog = {
   "capture.mode.reports": "Berichte",
   "capture.mode.video": "Video",
   "capture.mode.photo": "Foto",
-  "capture.mode.clock": "Zeiterfassung",
+  "capture.mode.clock": "Zeit",
   "capture.mode.scan": "Scannen",
   "scan.guide": "Dokument wird gesucht",
   "scan.guideHint": "Das ganze Dokument in den Rahmen legen",
