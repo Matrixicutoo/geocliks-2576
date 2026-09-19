@@ -1531,21 +1531,6 @@ export default function Capture() {
                     </Pressable>
                   );
                 })}
-
-                <Pressable
-                  onPress={() => {
-                    setTagOpen(false);
-                    router.push("/teamspace");
-                  }}
-                  accessibilityLabel={tr("capture.mode.reports")}
-                  style={[styles.tag, { borderColor: colors.border, backgroundColor: colors.card }]}
-                >
-                  <Ionicons name="document-text-outline" size={14} color={colors.mutedForeground} />
-                  <Text style={[styles.tagText, { color: colors.foreground }]}>
-                    {tr("capture.mode.reports")}
-                  </Text>
-                  <Ionicons name="chevron-forward" size={13} color={colors.mutedForeground} />
-                </Pressable>
               </View>
             </ScrollView>
           </View>
