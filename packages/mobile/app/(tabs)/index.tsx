@@ -1023,56 +1023,156 @@ export default function Capture() {
             </Text>
           </View>
         ) : null}
-      </View>
 
-      <View style={styles.shutterRow}>
+        {/* NOTE rides in the corner of the viewfinder, not beside the shutter: it annotates
+            what is in frame, and a filled pencil shows at a glance that the next shot already
+            carries a note. The stamp preview is inset to its left so the two never collide. */}
         <Pressable
-          onPress={() =>
-            isScan
-              ? void scanShoot()
-              : isVideo
-                ? recording
-                  ? stopRecording()
-                  : void record()
-                : void shoot()
-          }
-          disabled={busy && !recording}
-          style={[
-            styles.shutter,
+          onPress={() => {
+            // The sheet always opens on what is committed, so re-opening it after a cancel
+            // shows the note that is actually going to be burned in.
+            setNoteDraft(note);
+            setNoteOpen((v) => !v);
+          }}
+          onHoverIn={() => setNoteHover(true)}
+          onHoverOut={() => setNoteHover(false)}
+          accessibilityLabel={tr("capture.note")}
+          style={({ pressed }) => [
+            styles.noteFab,
             {
-              borderColor: isVideo ? colors.alert : colors.amber,
-              opacity: busy && !recording ? 0.6 : 1,
+              borderColor: colors.amber,
+              backgroundColor:
+                pressed || noteHover || noteOpen || note.trim()
+                  ? colors.amber
+                  : "rgba(0,0,0,0.45)",
             },
           ]}
-          accessibilityLabel={
-            isScan
-              ? tr("scan.addPage")
-              : isVideo
-                ? recording
-                  ? tr("capture.stopRecording")
-                  : tr("capture.startRecording")
-                : tr("capture.takePhoto")
-          }
         >
-          {busy && !recording ? (
-            <ActivityIndicator color={colors.background} />
-          ) : recording ? (
-            <View style={[styles.stopCore, { backgroundColor: colors.alert }]} />
-          ) : isScan ? (
-            // The scan shutter opens a scanner rather than freezing a frame, so it carries a
-            // document mark instead of the plain photo disc.
-            <View style={[styles.shutterCore, styles.shutterIconCore, { backgroundColor: colors.amber }]}>
-              <Ionicons name="document-text" size={22} color={colors.background} />
-            </View>
-          ) : (
-            <View
-              style={[
-                styles.shutterCore,
-                { backgroundColor: isVideo ? colors.alert : colors.amber },
-              ]}
+          {({ pressed }) => (
+            <Ionicons
+              name={note.trim() ? "create" : "create-outline"}
+              size={19}
+              color={
+                pressed || noteHover || noteOpen || note.trim()
+                  ? colors.primaryForeground
+                  : colors.amber
+              }
             />
           )}
         </Pressable>
+      </View>
+
+      <View style={styles.shutterRow}>
+        <View style={styles.shutterControls}>
+          {/* PROJECT and EVIDENCE flank the shutter: they decide where the next shot is filed,
+              so they sit within a thumb's reach of the button that takes it. Icon only — the
+              sheet each one opens carries the words. */}
+          <Pressable
+            onPress={() => setProjectOpen((v) => !v)}
+            onHoverIn={() => setProjectHover(true)}
+            onHoverOut={() => setProjectHover(false)}
+            accessibilityLabel={tr("common.project")}
+            style={({ pressed }) => [
+              styles.shutterSideBtn,
+              {
+                borderColor: colors.amber,
+                backgroundColor:
+                  pressed || projectHover || projectOpen ? colors.amber : "rgba(255,176,33,0.12)",
+              },
+            ]}
+          >
+            {({ pressed }) => (
+              <Ionicons
+                // A filled folder says a project is assigned to the next shot; the outline says
+                // it is still headed for the unassigned pile.
+                name={projectId ? "folder" : "folder-outline"}
+                size={20}
+                color={
+                  pressed || projectHover || projectOpen ? colors.primaryForeground : colors.amber
+                }
+              />
+            )}
+          </Pressable>
+
+          <Pressable
+            onPress={() =>
+              isScan
+                ? void scanShoot()
+                : isVideo
+                  ? recording
+                    ? stopRecording()
+                    : void record()
+                  : void shoot()
+            }
+            disabled={busy && !recording}
+            style={[
+              styles.shutter,
+              {
+                borderColor: isVideo ? colors.alert : colors.amber,
+                opacity: busy && !recording ? 0.6 : 1,
+              },
+            ]}
+            accessibilityLabel={
+              isScan
+                ? tr("scan.addPage")
+                : isVideo
+                  ? recording
+                    ? tr("capture.stopRecording")
+                    : tr("capture.startRecording")
+                  : tr("capture.takePhoto")
+            }
+          >
+            {busy && !recording ? (
+              <ActivityIndicator color={colors.background} />
+            ) : recording ? (
+              <View style={[styles.stopCore, { backgroundColor: colors.alert }]} />
+            ) : isScan ? (
+              // The scan shutter opens a scanner rather than freezing a frame, so it carries a
+              // document mark instead of the plain photo disc.
+              <View
+                style={[
+                  styles.shutterCore,
+                  styles.shutterIconCore,
+                  { backgroundColor: colors.amber },
+                ]}
+              >
+                <Ionicons name="document-text" size={22} color={colors.background} />
+              </View>
+            ) : (
+              <View
+                style={[
+                  styles.shutterCore,
+                  { backgroundColor: isVideo ? colors.alert : colors.amber },
+                ]}
+              />
+            )}
+          </Pressable>
+
+          <Pressable
+            onPress={() => setTagOpen((v) => !v)}
+            onHoverIn={() => setTagHover(true)}
+            onHoverOut={() => setTagHover(false)}
+            accessibilityLabel={tr("capture.evidenceType")}
+            style={({ pressed }) => [
+              styles.shutterSideBtn,
+              {
+                borderColor: colors.amber,
+                backgroundColor:
+                  pressed || tagHover || tagOpen ? colors.amber : "rgba(255,176,33,0.12)",
+              },
+            ]}
+          >
+            {({ pressed }) => (
+              <Ionicons
+                // The evidence button wears the mark of the tag that is selected, so the row
+                // still answers "what am I filing this as?" without a label.
+                name={TAGS.find((t) => t.key === tag)?.icon ?? "pricetag-outline"}
+                size={20}
+                color={pressed || tagHover || tagOpen ? colors.primaryForeground : colors.amber}
+              />
+            )}
+          </Pressable>
+        </View>
         {status ? (
           <Text style={[styles.status, { color: colors.verified, fontFamily: Fonts?.mono }]}>
             {status}
@@ -1267,115 +1367,6 @@ export default function Capture() {
             </Pressable>
           </View>
         ) : null}
-
-        <View style={styles.selectorRow}>
-          <Pressable
-            onPress={() => setProjectOpen((v) => !v)}
-            onHoverIn={() => setProjectHover(true)}
-            onHoverOut={() => setProjectHover(false)}
-            accessibilityLabel={tr("common.project")}
-            style={({ pressed }) => [
-              styles.dropdownHead,
-              styles.selectorHalf,
-              // Filled amber like the drawer tiles: the two selectors are the controls that
-              // decide where a shot is filed, so they read as actions rather than labels.
-              // Deeper amber while hovered or held so the bar answers the pointer.
-              {
-                borderColor: pressed || projectHover ? colors.amberDeep : colors.amber,
-                backgroundColor: pressed || projectHover ? colors.amberDeep : colors.amber,
-              },
-            ]}
-          >
-            <View style={styles.selectorLabelRow}>
-              <Text
-                style={[
-                  styles.selectorLabel,
-                  // Sora bold, like the mode tabs and the signature tab: the amber bars are
-                  // controls, and their labels should carry a control's weight.
-                  { color: colors.primaryForeground, fontFamily: Fonts?.display },
-                ]}
-              >
-                {tr("common.project").toUpperCase()}
-              </Text>
-              <Ionicons
-                name={projectOpen ? "chevron-up" : "chevron-down"}
-                size={12}
-                color={colors.primaryForeground}
-              />
-            </View>
-          </Pressable>
-
-          <Pressable
-            onPress={() => setTagOpen((v) => !v)}
-            onHoverIn={() => setTagHover(true)}
-            onHoverOut={() => setTagHover(false)}
-            accessibilityLabel={tr("capture.evidenceType")}
-            style={({ pressed }) => [
-              styles.dropdownHead,
-              styles.selectorHalf,
-              {
-                borderColor: pressed || tagHover ? colors.amberDeep : colors.amber,
-                backgroundColor: pressed || tagHover ? colors.amberDeep : colors.amber,
-              },
-            ]}
-          >
-            <View style={styles.selectorLabelRow}>
-              <Text
-                style={[
-                  styles.selectorLabel,
-                  // Sora bold, like the mode tabs and the signature tab: the amber bars are
-                  // controls, and their labels should carry a control's weight.
-                  { color: colors.primaryForeground, fontFamily: Fonts?.display },
-                ]}
-              >
-                {tr("capture.evidenceShort").toUpperCase()}
-              </Text>
-              <Ionicons
-                name={tagOpen ? "chevron-up" : "chevron-down"}
-                size={12}
-                color={colors.primaryForeground}
-              />
-            </View>
-          </Pressable>
-
-          <Pressable
-            onPress={() => {
-              // The sheet always opens on what is committed, so re-opening it after a cancel
-              // shows the note that is actually going to be burned in.
-              setNoteDraft(note);
-              setNoteOpen((v) => !v);
-            }}
-            onHoverIn={() => setNoteHover(true)}
-            onHoverOut={() => setNoteHover(false)}
-            accessibilityLabel={tr("capture.note")}
-            style={({ pressed }) => [
-              styles.dropdownHead,
-              styles.selectorHalf,
-              {
-                borderColor: pressed || noteHover ? colors.amberDeep : colors.amber,
-                backgroundColor: pressed || noteHover ? colors.amberDeep : colors.amber,
-              },
-            ]}
-          >
-            <View style={styles.selectorLabelRow}>
-              <Text
-                style={[
-                  styles.selectorLabel,
-                  { color: colors.primaryForeground, fontFamily: Fonts?.display },
-                ]}
-              >
-                {tr("capture.note").toUpperCase()}
-              </Text>
-              <Ionicons
-                // A filled pencil says a note is attached to the next shot without spending
-                // room on the text itself — the stamp preview already shows that.
-                name={note.trim() ? "create" : noteOpen ? "chevron-up" : "chevron-down"}
-                size={12}
-                color={colors.primaryForeground}
-              />
-            </View>
-          </Pressable>
-        </View>
         {/*
           The two lists used to render inline under the selector bar, which grew the panel and
           pushed the viewfinder and the shutter up the screen - with a long project list the
@@ -1890,7 +1881,20 @@ const styles = StyleSheet.create({
   fallbackText: { fontSize: 12, textAlign: "center", lineHeight: 18 },
   smallBtn: { paddingHorizontal: 14, paddingVertical: 8, marginTop: 4, borderRadius: 8 },
   smallBtnText: { fontSize: 12, fontWeight: "700" },
-  stampOverlay: { position: "absolute", left: 10, right: 10, bottom: 10 },
+  // Right inset clears the NOTE button in the corner, so a long stamp line never runs
+  // underneath it.
+  stampOverlay: { position: "absolute", left: 10, right: 62, bottom: 10 },
+  noteFab: {
+    position: "absolute",
+    right: 12,
+    bottom: 12,
+    width: 40,
+    height: 40,
+    borderRadius: 20,
+    borderWidth: 1,
+    alignItems: "center",
+    justifyContent: "center",
+  },
   recBadge: {
     position: "absolute",
     top: 10,
@@ -1936,26 +1940,6 @@ const styles = StyleSheet.create({
   },
   sheetTitle: { fontSize: 12, letterSpacing: 1 },
   sheetBody: { padding: 14, paddingBottom: 26 },
-  // Project and Evidence type sit side by side on one row. Each half now shows only its
-  // title plus a chevron, centred, so the two bars stay short and read as dropdowns.
-  selectorRow: { flexDirection: "row", gap: 8, marginTop: 6 },
-  selectorHalf: {
-    flex: 1,
-    minWidth: 0,
-    flexDirection: "column",
-    alignItems: "center",
-    justifyContent: "center",
-    marginTop: 0,
-  },
-  selectorLabelRow: {
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "center",
-    gap: 4,
-  },
-  // Three bars now share the row, so the labels lose a little tracking to keep NOTE and
-  // EVIDENCE on one line on a narrow phone.
-  selectorLabel: { fontSize: 11, letterSpacing: 0.4, textAlign: "center" },
   noteInput: {
     borderWidth: 1,
     borderRadius: 8,
@@ -1980,16 +1964,6 @@ const styles = StyleSheet.create({
     paddingVertical: 8,
   },
   noteBtnText: { fontSize: 12, letterSpacing: 0.5 },
-  dropdownHead: {
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "center",
-    borderWidth: 1,
-    paddingHorizontal: 10,
-    paddingVertical: 4,
-    marginTop: 6,
-    borderRadius: 8,
-  },
   tag: {
     flexDirection: "row",
     alignItems: "center",
@@ -2033,6 +2007,22 @@ const styles = StyleSheet.create({
   gps: { fontSize: 10.5, flex: 1 },
   status: { fontSize: 11, marginTop: 6, textAlign: "center", paddingHorizontal: 16 },
   shutterRow: { alignItems: "center", marginTop: 12 },
+  // PROJECT left, shutter centre, EVIDENCE right. The gap is wide enough that a thumb aiming
+  // for the shutter cannot catch a selector by accident.
+  shutterControls: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
+    gap: 26,
+  },
+  shutterSideBtn: {
+    width: 44,
+    height: 44,
+    borderRadius: 22,
+    borderWidth: 1,
+    alignItems: "center",
+    justifyContent: "center",
+  },
   shutter: {
     width: 58,
     height: 58,
