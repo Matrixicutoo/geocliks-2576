@@ -3,10 +3,10 @@ import {
   ActivityIndicator,
   FlatList,
   Image,
+  Keyboard,
   KeyboardAvoidingView,
   Linking,
   Modal,
-  Platform,
   Pressable,
   StyleSheet,
   View,
@@ -98,6 +98,16 @@ export default function Thread() {
     markReadRef.current({ conversationId });
   }, [conversationId, count]);
 
+  // The composer rising above the keyboard shortens the list, which would otherwise leave the
+  // newest messages hidden behind it — you tap to reply and lose sight of what you are replying
+  // to. `didShow` fires after the inset has been applied, so the list is already its new height.
+  useEffect(() => {
+    const show = Keyboard.addListener("keyboardDidShow", () => {
+      listRef.current?.scrollToEnd({ animated: true });
+    });
+    return () => show.remove();
+  }, []);
+
   const clearRefs = () => {
     setImageKey(null);
     setImagePreview(null);
@@ -165,11 +175,14 @@ export default function Thread() {
         <View style={{ width: 24 }} />
       </View>
 
-      <KeyboardAvoidingView
-        style={{ flex: 1 }}
-        behavior={Platform.OS === "ios" ? "padding" : undefined}
-        keyboardVerticalOffset={8}
-      >
+      {/*
+        `padding` on Android too, not just iOS. Android used to get away with no behavior at
+        all because the window itself resized for the keyboard (adjustResize) and the composer
+        rode up with it. Under edge-to-edge that resize no longer happens — the app keeps the
+        full screen height and the keyboard is drawn on top of it — so a KeyboardAvoidingView
+        with no behavior renders a plain View and the keyboard buries the input you are typing in.
+      */}
+      <KeyboardAvoidingView style={{ flex: 1 }} behavior="padding" keyboardVerticalOffset={0}>
         {thread.isLoading ? (
           <View style={styles.center}>
             <ActivityIndicator color={colors.amber} />

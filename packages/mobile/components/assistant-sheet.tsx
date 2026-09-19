@@ -550,10 +550,8 @@ export function AssistantSheet() {
               },
             ]}
           >
-            <KeyboardAvoidingView
-              style={styles.fill}
-              behavior={Platform.OS === "ios" ? "padding" : undefined}
-            >
+            {/* Android needs a behavior too — see the note in app/messages/[id].tsx. */}
+            <KeyboardAvoidingView style={styles.fill} behavior="padding">
               <View style={[styles.head, { borderColor: colors.border }]}>
                 <Ionicons name="sparkles" size={16} color={colors.amber} />
                 <Text
