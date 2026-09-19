@@ -63,7 +63,7 @@ export const ar: Catalog = {
   "capture.mode.photo": "صورة",
   "capture.mode.clock": "الوقت",
   "capture.mode.scan": "مسح",
-  "scan.guide": "جارٍ البحث عن مستند",
+  "scan.guide": "جاهز للمسح",
   "scan.guideHint": "ضع المستند بالكامل داخل الإطار",
   "scan.emptySession": "لا توجد عمليات مسح في جلستك الحالية",
   "scan.sessionTitle": "الجلسة الحالية",

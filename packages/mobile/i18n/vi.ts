@@ -63,7 +63,7 @@ export const vi: Catalog = {
   "capture.mode.photo": "Ảnh",
   "capture.mode.clock": "Bấm giờ",
   "capture.mode.scan": "Quét",
-  "scan.guide": "Đang tìm tài liệu",
+  "scan.guide": "Sẵn sàng quét",
   "scan.guideHint": "Đưa toàn bộ tài liệu vào trong khung",
   "scan.emptySession": "Chưa có bản quét nào trong phiên này",
   "scan.sessionTitle": "Phiên hiện tại",

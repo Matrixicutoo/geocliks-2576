@@ -63,7 +63,7 @@ export const pl: Catalog = {
   "capture.mode.photo": "Zdjęcie",
   "capture.mode.clock": "Czas pracy",
   "capture.mode.scan": "Skanuj",
-  "scan.guide": "Szukanie dokumentu",
+  "scan.guide": "Gotowy do skanowania",
   "scan.guideHint": "Umieść cały dokument w kadrze",
   "scan.emptySession": "Brak skanów w tej sesji",
   "scan.sessionTitle": "Bieżąca sesja",

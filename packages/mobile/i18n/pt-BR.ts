@@ -64,7 +64,7 @@ export const ptBR: Catalog = {
   "capture.mode.photo": "Foto",
   "capture.mode.clock": "Relógio",
   "capture.mode.scan": "Digitalizar",
-  "scan.guide": "Procurando documento",
+  "scan.guide": "Pronto para digitalizar",
   "scan.guideHint": "Encaixe o documento todo dentro do quadro",
   "scan.emptySession": "Nenhuma digitalização na sessão atual",
   "scan.sessionTitle": "Sessão atual",

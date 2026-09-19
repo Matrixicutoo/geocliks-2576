@@ -79,7 +79,7 @@ export const en = {
   "capture.mode.photo": "Photo",
   "capture.mode.clock": "Clock",
   "capture.mode.scan": "Scan",
-  "scan.guide": "Looking for document",
+  "scan.guide": "Ready to scan",
   "scan.guideHint": "Fit the whole document inside the frame",
   "scan.emptySession": "No scans in your current session",
   "scan.sessionTitle": "Current session",

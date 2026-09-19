@@ -785,6 +785,15 @@ export default function Capture() {
     // Clock in/out keeps its own override; photo and video come back to the remembered tag.
     if (next === "clock") setTag("arrival");
     else setTag(photoTag);
+    /*
+      Real edge detection lives in the OS scanner, which opens as its own full-screen
+      activity and cannot be embedded in our preview. So picking SCAN opens it straight
+      away: pointing the phone at a work order starts live tracking and auto-shutter with
+      no second tap. Backing out of it lands on the preview behind, where the round button
+      re-opens it — a back-out must not bounce the crew member straight back in, so this
+      only fires on the tab press, never on the return.
+    */
+    if (next === "scan" && scanPages.length === 0 && hasNativeScanner()) void scanShoot();
   };
 
   const stampData = {
@@ -939,8 +948,10 @@ export default function Capture() {
         )}
 
         {/* SCAN framing guide. Deliberately dumb: the native scanner draws its own live edge
-            box once the shutter opens it, and faking a second tracking box in JS over the
-            preview would only disagree with the real one. This says where to hold the page. */}
+            box once it opens, and faking a second tracking box in JS over the preview would
+            only disagree with the real one. Nothing is being detected while this is on screen,
+            so the pill promises readiness, not progress — it says where to hold the page and
+            that the round button will open the real scanner. */}
         {isScan ? (
           <View style={[StyleSheet.absoluteFillObject, styles.scanGuide]} pointerEvents="none">
             <View style={[styles.scanFrame, { borderColor: colors.amber }]} />

@@ -63,7 +63,7 @@ export const zh: Catalog = {
   "capture.mode.photo": "照片",
   "capture.mode.clock": "打卡",
   "capture.mode.scan": "扫描",
-  "scan.guide": "正在识别文档",
+  "scan.guide": "准备扫描",
   "scan.guideHint": "请将整份文档置于取景框内",
   "scan.emptySession": "当前会话中还没有扫描件",
   "scan.sessionTitle": "当前会话",

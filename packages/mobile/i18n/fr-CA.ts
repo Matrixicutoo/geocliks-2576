@@ -64,7 +64,7 @@ export const frCA: Catalog = {
   "capture.mode.photo": "Photo",
   "capture.mode.clock": "Horloge",
   "capture.mode.scan": "Numériser",
-  "scan.guide": "Recherche du document",
+  "scan.guide": "Prêt à numériser",
   "scan.guideHint": "Placez tout le document dans le cadre",
   "scan.emptySession": "Aucune numérisation dans la session en cours",
   "scan.sessionTitle": "Session en cours",

@@ -64,7 +64,7 @@ export const tl: Catalog = {
   "capture.mode.photo": "Larawan",
   "capture.mode.clock": "Oras",
   "capture.mode.scan": "I-scan",
-  "scan.guide": "Hinahanap ang dokumento",
+  "scan.guide": "Handa nang i-scan",
   "scan.guideHint": "Ilagay ang buong dokumento sa loob ng frame",
   "scan.emptySession": "Wala pang scan sa kasalukuyang session",
   "scan.sessionTitle": "Kasalukuyang session",
