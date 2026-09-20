@@ -876,12 +876,17 @@ export const routes = {
         }
       }
 
+      // Handing a run to someone new puts it back in the not-yet-started state, even if the
+      // previous driver had already tapped START. It is his progress, not the new driver's: the
+      // route has to read as waiting for the person now holding it, or he gets the push about a
+      // new run and finds nothing badged anywhere in the app. Finished and cancelled runs keep
+      // their status — there is nothing left to start.
+      const handedOver = !!input.driverId && input.driverId !== route.driverId;
+      const startable = route.status === "draft" || (handedOver && route.status === "active");
+      const status = !input.driverId ? "draft" : startable ? "assigned" : route.status;
       await db
         .update(schema.routes)
-        .set({
-          driverId: input.driverId,
-          status: input.driverId ? (route.status === "draft" ? "assigned" : route.status) : "draft",
-        })
+        .set({ driverId: input.driverId, status })
         .where(eq(schema.routes.id, route.id));
 
       await logEvent({
@@ -894,7 +899,7 @@ export const routes = {
       // Tell the driver his phone has work on it. Only on a real handover: re-saving the same
       // driver onto the same run, which the dispatch screen does whenever anything else on the
       // row is touched, must not buzz him again for a route he already knows about.
-      if (input.driverId && input.driverId !== route.driverId) {
+      if (handedOver && input.driverId) {
         await notifyDriverAssigned({ ...route, driverId: input.driverId });
       }
 

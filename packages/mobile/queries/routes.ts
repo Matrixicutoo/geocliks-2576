@@ -9,18 +9,17 @@ import { useOrg } from "@/queries/orgs";
 type WaitingShape = { driverId: string | null; status: string; date: string };
 
 /**
- * The runs waiting for one driver: handed to him, due by now, and not yet started.
+ * The runs waiting for one driver: handed to him and not yet started.
  *
  * This is the single definition of "there is a delivery waiting for you", because two places
  * show it and they must never disagree — the red count on the truck beside the shutter, and the
  * red count on the Routes tab. `assigned` is precisely the not-yet-started state: the moment he
  * taps START the route turns `active` and stops being a thing he has to be prodded about.
  *
- * Due by now rather than dated today exactly. Today's run is the usual case, but a run dispatch
- * handed over on Friday and nobody drove is still waiting on Monday — matching only today made
- * the badge vanish for exactly the routes that most need chasing, which is how a driver ends up
- * never seeing one at all. Future dates stay out: a run lined up for Thursday is not something
- * to nag him about on Monday, and it starts counting on its own when Thursday arrives.
+ * Every date counts, not just today's. Dispatch plans ahead — a run built on Sunday for
+ * Thursday is the normal case, not the exception — and a date window meant the driver got the
+ * push telling him about a new run and then found no badge anywhere in the app, which is worse
+ * than no badge at all. If it has his name on it and he has not started it, it is waiting.
  */
 export function waitingRoutesFor<T extends WaitingShape>(
   rows: T[] | undefined,
@@ -28,12 +27,20 @@ export function waitingRoutesFor<T extends WaitingShape>(
 ): T[] {
   if (!myUserId || !rows) return [];
   const today = todayLocal();
-  // Route dates are YYYY-MM-DD, so a string compare is a date compare.
+  // Which one the truck opens, since it opens the first: today's run, else the next one coming
+  // up, else the most recently missed. Dates are YYYY-MM-DD, so a string compare is a date
+  // compare.
+  const rank = (d: string) => (d === today ? 0 : d > today ? 1 : 2);
   return rows
-    .filter((r) => r.driverId === myUserId && r.status === "assigned" && r.date <= today)
-    // Newest first, because the truck opens the first one: today's run is what he is driving,
-    // and an older one that was never started should not get in front of it.
-    .sort((a, b) => (a.date < b.date ? 1 : a.date > b.date ? -1 : 0));
+    .filter((r) => r.driverId === myUserId && r.status === "assigned")
+    .sort((a, b) => {
+      const ra = rank(a.date);
+      const rb = rank(b.date);
+      if (ra !== rb) return ra - rb;
+      // Upcoming: soonest first. Missed: most recent first. Both are "closest to today".
+      if (a.date === b.date) return 0;
+      return ra === 1 ? (a.date < b.date ? -1 : 1) : a.date > b.date ? -1 : 1;
+    });
 }
 
 /** Routes the signed-in user may see. A field member only ever gets their own. */
