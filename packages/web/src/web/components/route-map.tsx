@@ -29,10 +29,16 @@ export type RouteStopPin = {
 
 type PlanStop = RouteStopPin & { lat: number; lng: number; label: string };
 
-/** Marker fill per stop outcome. Light-theme hexes: the map styling is light in both themes. */
+/**
+ * Marker fill per stop outcome. Light-theme hexes: the map styling is light in both themes.
+ *
+ * `done` is the same green as `delivered`: older runs closed their stops under that word, and a
+ * finished drop showing an amber "still coming" pin is a lie the dispatcher has to chase.
+ */
 const FILL: Record<string, string> = {
   pending: "#FFB021",
   delivered: "#0F9D58",
+  done: "#0F9D58",
   failed: "#D93A28",
   skipped: "#4B5A6E",
 };
@@ -41,6 +47,7 @@ const FILL: Record<string, string> = {
 const LABEL: Record<string, string> = {
   pending: "#0B0E13",
   delivered: "#FFFFFF",
+  done: "#FFFFFF",
   failed: "#FFFFFF",
   skipped: "#FFFFFF",
 };
@@ -151,7 +158,22 @@ export function RouteMap({
           styles={MAP_STYLES}
           disableDefaultUI
           zoomControl
-          gestureHandling="cooperative"
+          /**
+           * The dispatcher's map is a thing to work in, not a picture to look at: the wheel zooms
+           * directly, satellite and terrain are a click away for reading an industrial park or a
+           * rural drop, and fullscreen gets the whole run on the screen at once. `greedy` rather
+           * than `cooperative` because this map is never a scroll hazard inside a short page —
+           * it is tall enough that the cursor is over it on purpose.
+           */
+          gestureHandling="greedy"
+          mapTypeControl
+          mapTypeId="roadmap"
+          // No `position`: the enum only exists once the Maps script has loaded, and naming it at
+          // module scope throws before the map ever mounts.
+          mapTypeControlOptions={{ mapTypeIds: ["roadmap", "satellite", "hybrid", "terrain"] }}
+          fullscreenControl
+          scaleControl
+          streetViewControl
           className="size-full"
         >
           <PlanLine stops={points} />

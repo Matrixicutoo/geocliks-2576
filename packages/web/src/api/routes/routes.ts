@@ -5,6 +5,7 @@ import { db } from "../database";
 import * as schema from "../database/schema";
 import { geocodeAll, geocodingAvailable } from "../lib/geocode";
 import { id, shareToken } from "../lib/ids";
+import { photoUrl } from "../lib/media";
 import { insertionIndex, optimizeStops } from "../lib/optimize";
 import { assertDeliveryEnabled } from "../lib/plan-guards";
 import { type Plan, planOf } from "../lib/plans";
@@ -98,6 +99,63 @@ async function loadStops(routeId: string) {
     .where(eq(schema.routeStops.routeId, routeId))
     .orderBy(asc(schema.routeStops.seq));
 }
+
+/**
+ * The proof photo behind each closed stop, ready to render beside the address.
+ *
+ * The office's question about a delivered stop is never "is there a photo id on the row" — it is
+ * "show me the picture". So the stops list carries the thumbnail itself. One query for the whole
+ * route rather than one per stop, because a fifty-drop run would otherwise open fifty round trips
+ * and fifty presign calls to draw a single page.
+ */
+async function loadProofs(orgId: string, stops: { photoId: string | null }[]) {
+  const ids = [...new Set(stops.map((s) => s.photoId).filter((p): p is string => !!p))];
+  if (ids.length === 0) return new Map<string, Proof>();
+
+  const rows = await db
+    .select({
+      id: schema.photos.id,
+      photoCode: schema.photos.photoCode,
+      storageKey: schema.photos.storageKey,
+      capturedAt: schema.photos.capturedAt,
+      kind: schema.photos.kind,
+      posterKey: schema.photos.posterKey,
+    })
+    .from(schema.photos)
+    .where(and(inArray(schema.photos.id, ids), eq(schema.photos.orgId, orgId)));
+
+  const resolved = await Promise.all(
+    rows.map(async (row) => {
+      // A clip closes a stop as legitimately as a still does, and an <img> pointing at an .mp4
+      // renders a broken tile — so the poster frame is the thumbnail when there is one.
+      const [url, posterUrl] = await Promise.all([
+        photoUrl(row.storageKey),
+        row.posterKey ? photoUrl(row.posterKey) : Promise.resolve(null),
+      ]);
+      return [
+        row.id,
+        {
+          id: row.id,
+          photoCode: row.photoCode,
+          url,
+          posterUrl,
+          capturedAt: row.capturedAt,
+          kind: row.kind,
+        } satisfies Proof,
+      ] as const;
+    }),
+  );
+  return new Map(resolved);
+}
+
+type Proof = {
+  id: string;
+  photoCode: string;
+  url: string;
+  posterUrl: string | null;
+  capturedAt: Date;
+  kind: string | null;
+};
 
 async function logEvent(input: {
   routeId: string;
@@ -296,6 +354,7 @@ export const routes = {
     assertRouteAccess(route, context);
 
     const stops = await loadStops(route.id);
+    const proofs = await loadProofs(context.org.id, stops);
     let driverName: string | null = null;
     if (route.driverId) {
       const [driver] = await db
@@ -308,7 +367,10 @@ export const routes = {
 
     return {
       route: { ...route, driverName },
-      stops,
+      stops: stops.map((stop) => ({
+        ...stop,
+        proof: (stop.photoId ? proofs.get(stop.photoId) : null) ?? null,
+      })),
       geocodingAvailable: geocodingAvailable(),
     };
   }),

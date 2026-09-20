@@ -27,9 +27,10 @@ import {
   useRoute,
 } from "../queries/routes";
 import { cn } from "../lib/utils";
-import { useT } from "../lib/i18n";
+import { type TKey, useT } from "../lib/i18n";
 import { parseStops } from "../lib/parse-stops";
 import { RouteMap } from "../components/route-map";
+import { PhotoDrawer } from "../components/photo-drawer";
 import { STATUS_LABEL, STATUS_STYLE } from "./app-routes";
 import { canRunDeliveries } from "../lib/roles";
 
@@ -41,6 +42,42 @@ const PIN_STYLE: Record<string, string> = {
   manual: "border-sky/40 bg-sky/10 text-sky",
   pending: "border-line bg-ink-3 text-fog",
   failed: "border-alert/40 bg-alert/10 text-alert",
+};
+
+/**
+ * How the stop actually ended — which is not the same question as whether it was geocoded.
+ *
+ * The list used to badge `geocodeStatus` alone, so a delivered stop read "Located" and nothing
+ * else while its pin had already gone green on the map. Same colours as the map markers, so a
+ * green dot up there and a green row down here are visibly the same fact.
+ */
+const OUTCOME_STYLE: Record<string, string> = {
+  pending: "border-amber/40 bg-amber/10 text-amber",
+  delivered: "border-verified/40 bg-verified/10 text-verified",
+  done: "border-verified/40 bg-verified/10 text-verified",
+  failed: "border-alert/40 bg-alert/10 text-alert",
+  skipped: "border-line bg-ink-3 text-fog",
+};
+
+const OUTCOME_LABEL: Record<string, TKey> = {
+  pending: "routes.stop.pending",
+  delivered: "routes.stop.delivered",
+  done: "routes.stop.delivered",
+  failed: "routes.stop.failed",
+  skipped: "routes.stop.skipped",
+};
+
+/**
+ * Why a stop failed. The same six the driver picks from on the run screen, and the same keys
+ * the public tracking page reads them back with — one vocabulary, three places.
+ */
+const REASON_LABEL: Record<string, TKey> = {
+  nobody_home: "track.reason.nobody_home",
+  refused: "track.reason.refused",
+  wrong_address: "track.reason.wrong_address",
+  closed: "track.reason.closed",
+  inaccessible: "track.reason.inaccessible",
+  other: "track.reason.other",
 };
 
 /** How the pasted block was read, spelled out for the dispatcher before anything is created. */
@@ -92,6 +129,8 @@ export default function AppRoutePage() {
    */
   const [dragId, setDragId] = useState<string | null>(null);
   const [overId, setOverId] = useState<string | null>(null);
+  // The delivery photo behind a stop, opened from its thumbnail or its address.
+  const [openPhoto, setOpenPhoto] = useState<string | null>(null);
 
   const route = detail.data?.route;
   const stops = detail.data?.stops ?? [];
@@ -345,7 +384,9 @@ export default function AppRoutePage() {
               </div>
               <RouteMap
                 stops={stops}
-                className="mt-3 h-[320px]"
+                // Roughly double the old 320px, and taller again on a desktop: the map is where
+                // the dispatcher reads the run, so it gets the screen rather than a strip of it.
+                className="mt-3 h-[420px] sm:h-[600px] lg:h-[720px]"
                 emptyMessage={t("routes.mapEmpty")}
                 noKeyMessage={t("routes.mapNoKey")}
               />
@@ -403,31 +444,85 @@ export default function AppRoutePage() {
                       {index + 1}
                     </span>
 
+                    {/* The proof, where the question gets asked. A delivered address with no
+                        thumbnail beside it is the one thing the office needs to notice. */}
+                    {stop.proof ? (
+                      <button
+                        type="button"
+                        onClick={() => setOpenPhoto(stop.proof?.id ?? null)}
+                        aria-label={t("routes.stop.viewProof")}
+                        title={t("routes.stop.viewProof")}
+                        className="shrink-0 overflow-hidden rounded-[6px] border border-line transition hover:border-amber focus:border-amber focus:outline-none"
+                      >
+                        <img
+                          src={stop.proof.posterUrl ?? stop.proof.url}
+                          alt={t("routes.stop.viewProof")}
+                          loading="lazy"
+                          className="size-10 object-cover"
+                        />
+                      </button>
+                    ) : null}
+
                     <div className="min-w-[200px] flex-1">
-                      <p className="text-[13.5px] text-chalk">{stop.address ?? stop.addressRaw}</p>
+                      {/* Clickable only when there is something to open: a plain address is not a
+                          button, and pretending otherwise teaches a dead click. */}
+                      {stop.proof ? (
+                        <button
+                          type="button"
+                          onClick={() => setOpenPhoto(stop.proof?.id ?? null)}
+                          className="text-left text-[13.5px] text-chalk hover:text-amber focus:text-amber focus:outline-none"
+                        >
+                          {stop.address ?? stop.addressRaw}
+                        </button>
+                      ) : (
+                        <p className="text-[13.5px] text-chalk">{stop.address ?? stop.addressRaw}</p>
+                      )}
                       {(stop.recipientName || stop.reference) && (
                         <p className="text-[12.5px] text-fog">
                           {[stop.recipientName, stop.reference].filter(Boolean).join(" · ")}
                         </p>
                       )}
+                      {/* Why it did not land, in the row rather than buried in a drawer. */}
+                      {stop.status === "failed" && (stop.failedReason || stop.failedNote) && (
+                        <p className="text-[12.5px] text-alert">
+                          {[
+                            stop.failedReason
+                              ? t(REASON_LABEL[stop.failedReason] ?? "track.reason.other")
+                              : null,
+                            stop.failedNote,
+                          ]
+                            .filter(Boolean)
+                            .join(" · ")}
+                        </p>
+                      )}
                     </div>
 
+                    {/* What happened to the stop. */}
                     <span
                       className={cn(
                         "rounded-[6px] border px-2 py-0.5 text-[11px] font-semibold uppercase tracking-wide",
-                        PIN_STYLE[stop.geocodeStatus] ?? PIN_STYLE.pending,
+                        OUTCOME_STYLE[stop.status] ?? OUTCOME_STYLE.pending,
                       )}
                     >
-                      {t(
-                        stop.geocodeStatus === "ok"
-                          ? "routes.pin.ok"
-                          : stop.geocodeStatus === "manual"
-                            ? "routes.pin.manual"
-                            : stop.geocodeStatus === "failed"
-                              ? "routes.pin.failed"
-                              : "routes.pin.pending",
-                      )}
+                      {t(OUTCOME_LABEL[stop.status] ?? "routes.stop.pending")}
                     </span>
+
+                    {/* The geocoding badge only when it is still a problem: "Located" next to a
+                        delivered stop is noise, but "Not found" is a job for the dispatcher. */}
+                    {stop.geocodeStatus !== "ok" && stop.geocodeStatus !== "manual" && (
+                      <span
+                        className={cn(
+                          "rounded-[6px] border px-2 py-0.5 text-[11px] font-semibold uppercase tracking-wide",
+                          PIN_STYLE[stop.geocodeStatus] ?? PIN_STYLE.pending,
+                        )}
+                      >
+                        {t(
+                          stop.geocodeStatus === "failed"
+                            ? "routes.pin.failed"
+                            : "routes.pin.pending",
+                        )}
+                      </span>
+                    )}
 
                     {canManage && (
                       <div className="flex items-center gap-1">
@@ -647,6 +742,8 @@ export default function AppRoutePage() {
           onClose={() => setAssignOpen(false)}
         />
       )}
+
+      <PhotoDrawer photoId={openPhoto} onClose={() => setOpenPhoto(null)} />
     </DashboardShell>
   );
 }
