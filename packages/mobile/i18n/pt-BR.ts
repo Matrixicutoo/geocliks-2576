@@ -500,7 +500,7 @@ export const ptBR: Catalog = {
   "run.cantDeliver": "Não foi possível entregar",
   "run.delivered": "Entregue",
   "run.failedLabel": "Não entregue",
-  "run.remaining": "Paradas restantes",
+  "run.remainingCount": "Faltam {n} paradas depois desta",
   "run.doneTitle": "Rota concluída",
   "run.doneBody": "Todas as paradas estão fechadas. Bom trabalho.",
   "run.pendingSync": "Aguardando sincronização",

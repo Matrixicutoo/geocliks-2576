@@ -501,7 +501,7 @@ export const pl: Catalog = {
   "run.cantDeliver": "Nie udało się dostarczyć",
   "run.delivered": "Dostarczono",
   "run.failedLabel": "Nie dostarczono",
-  "run.remaining": "Pozostałe przystanki",
+  "run.remainingCount": "Po tym przystanku zostaje {n}",
   "run.doneTitle": "Trasa ukończona",
   "run.doneBody": "Wszystkie przystanki są zamknięte. Dobra robota.",
   "run.pendingSync": "Czeka na synchronizację",

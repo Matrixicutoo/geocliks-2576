@@ -565,52 +565,17 @@ export default function RouteRun() {
             </View>
           ) : null}
 
+          {/*
+            One stop at a time. The full list of what is still to come used to sit right under
+            the current card, which is a scroll of addresses a driver cannot act on yet and a
+            standing invitation to read ahead at the wheel. The count in the header says where
+            the run is; this screen says what to do next, and nothing else.
+          */}
           {remaining.length > 0 ? (
             <Text style={[styles.section, { color: colors.mutedForeground }]}>
-              {t("run.remaining").toUpperCase()}
+              {t("run.remainingCount", { n: remaining.length }).toUpperCase()}
             </Text>
           ) : null}
-          {remaining.map((stop) => (
-            <View
-              key={stop.id}
-              style={[styles.row, { borderColor: colors.border, backgroundColor: colors.card }]}
-            >
-              <Text
-                style={[styles.seq, { color: colors.mutedForeground, fontFamily: Fonts?.mono }]}
-              >
-                {stop.seq + 1}
-              </Text>
-              <View style={styles.rowBody}>
-                <Text style={[styles.rowAddress, { color: colors.foreground }]}>
-                  {stop.address ?? stop.addressRaw}
-                </Text>
-                {/* Name, email, phone on one line, in the order the office pastes them. */}
-                {stop.recipientName || stop.recipientEmail || stop.recipientPhone ? (
-                  <Text style={[styles.meta, { color: colors.mutedForeground }]}>
-                    {stop.recipientName ? stop.recipientName : null}
-                    {stop.recipientName && stop.recipientEmail ? " · " : null}
-                    {stop.recipientEmail ? (
-                      <Text onPress={() => void Linking.openURL(`mailto:${stop.recipientEmail}`)}>
-                        {stop.recipientEmail}
-                      </Text>
-                    ) : null}
-                    {(stop.recipientName || stop.recipientEmail) && stop.recipientPhone
-                      ? " · "
-                      : null}
-                    {stop.recipientPhone ? (
-                      <Text
-                        onPress={() =>
-                          void Linking.openURL(`tel:${stop.recipientPhone?.replace(/[^\d+]/g, "")}`)
-                        }
-                      >
-                        {stop.recipientPhone}
-                      </Text>
-                    ) : null}
-                  </Text>
-                ) : null}
-              </View>
-            </View>
-          ))}
 
           {canAddLive ? (
             <View style={styles.liveWrap}>
@@ -693,79 +658,48 @@ export default function RouteRun() {
             </View>
           ) : null}
 
-          {stops.filter((s) => isClosed(s)).length > 0 ? (
+          {/*
+            Finished stops are history, and history is what the office screen is for — the only
+            closed rows kept here are the ones still sitting in the upload queue, because those
+            carry the retry the driver may have to tap before leaving signal.
+          */}
+          {done > 0 ? (
             <Text style={[styles.section, { color: colors.mutedForeground }]}>
               {t("routes.progress", { n: done, total: stops.length }).toUpperCase()}
             </Text>
           ) : null}
           {stops
-            .filter((s) => isClosed(s))
+            .filter((s) => isClosed(s) && s.status === "pending")
             .map((stop) => {
-              const pending = stop.status === "pending";
-              const failed = stop.status === "failed";
-              const skipped = stop.status === "skipped";
               const stuck = stuckStopIds.includes(stop.id);
               return (
                 <View
                   key={stop.id}
                   style={[styles.row, { borderColor: colors.border, backgroundColor: colors.card }]}
                 >
-                  <Ionicons
-                    name={
-                      pending
-                        ? "cloud-upload-outline"
-                        : failed
-                          ? "alert-circle-outline"
-                          : skipped
-                            ? "play-skip-forward-circle-outline"
-                            : "checkmark-circle"
-                    }
-                    size={18}
-                    color={
-                      pending
-                        ? colors.amber
-                        : failed
-                          ? colors.destructive
-                          : skipped
-                            ? colors.mutedForeground
-                            : colors.verified
-                    }
-                  />
+                  <Ionicons name="cloud-upload-outline" size={18} color={colors.amber} />
                   <View style={styles.rowBody}>
                     <Text style={[styles.rowAddress, { color: colors.mutedForeground }]}>
                       {stop.address ?? stop.addressRaw}
                     </Text>
                     <Text style={[styles.meta, { color: colors.mutedForeground }]}>
-                      {pending
-                        ? stuck
-                          ? t("run.retryHint")
-                          : t("run.pendingSync")
-                        : failed
-                          ? t("run.failedLabel")
-                          : skipped
-                            ? t("run.skipped")
-                            : t("run.delivered")}
+                      {stuck ? t("run.retryHint") : t("run.pendingSync")}
                     </Text>
                   </View>
-                  {pending ? (
-                    <Pressable
-                      onPress={() => void retrySync()}
-                      disabled={retrying}
-                      accessibilityLabel={t("run.retry")}
-                      style={[
-                        styles.chip,
-                        { borderColor: colors.amber, opacity: retrying ? 0.5 : 1 },
-                      ]}
-                    >
-                      {retrying ? (
-                        <ActivityIndicator size="small" color={colors.amber} />
-                      ) : (
-                        <Text style={[styles.chipText, { color: colors.amber }]}>
-                          {t("run.retry")}
-                        </Text>
-                      )}
-                    </Pressable>
-                  ) : null}
+                  <Pressable
+                    onPress={() => void retrySync()}
+                    disabled={retrying}
+                    accessibilityLabel={t("run.retry")}
+                    style={[styles.chip, { borderColor: colors.amber, opacity: retrying ? 0.5 : 1 }]}
+                  >
+                    {retrying ? (
+                      <ActivityIndicator size="small" color={colors.amber} />
+                    ) : (
+                      <Text style={[styles.chipText, { color: colors.amber }]}>
+                        {t("run.retry")}
+                      </Text>
+                    )}
+                  </Pressable>
                 </View>
               );
             })}

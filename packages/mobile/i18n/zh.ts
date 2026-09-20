@@ -480,7 +480,7 @@ export const zh: Catalog = {
   "run.cantDeliver": "无法送达",
   "run.delivered": "已送达",
   "run.failedLabel": "未送达",
-  "run.remaining": "剩余站点",
+  "run.remainingCount": "此站之后还剩 {n} 站",
   "run.doneTitle": "路线已完成",
   "run.doneBody": "所有站点均已完成。干得好。",
   "run.pendingSync": "等待同步",

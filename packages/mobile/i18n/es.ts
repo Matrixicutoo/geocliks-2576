@@ -501,7 +501,7 @@ export const es: Catalog = {
   "run.cantDeliver": "No se pudo entregar",
   "run.delivered": "Entregado",
   "run.failedLabel": "No entregado",
-  "run.remaining": "Paradas restantes",
+  "run.remainingCount": "Quedan {n} paradas después de esta",
   "run.doneTitle": "Ruta completada",
   "run.doneBody": "Todas las paradas están cerradas. Buen trabajo.",
   "run.pendingSync": "Esperando sincronización",
