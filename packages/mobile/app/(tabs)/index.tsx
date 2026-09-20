@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import {
   ActivityIndicator,
   Image,
@@ -20,7 +20,9 @@ import { useColors } from "@/hooks/use-colors";
 import { Fonts } from "@/constants/theme";
 import { Stamp, formatCoords } from "@/components/stamp";
 import { useProjects } from "@/queries/projects";
+import { useRoutes } from "@/queries/routes";
 import { useOrg, useTemplates } from "@/queries/orgs";
+import { showsProduct } from "@/lib/product";
 import { useT, type TKey } from "@/lib/i18n";
 import { LanguageMenu } from "@/components/language-menu";
 import { ProfileMenu } from "@/components/profile-menu";
@@ -48,6 +50,18 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 const TAG_KEY = "geocliks.capture.tag.v1";
 const PROJECT_KEY = "geocliks.capture.project.v1";
 const STAMP_KEY = "geocliks.capture.stamp.v1";
+
+/**
+ * Today as YYYY-MM-DD in the phone's OWN timezone — the same form a route's `date` carries.
+ *
+ * Deliberately not `toISOString().slice(0, 10)`: that is UTC, so a driver in Moncton opening the
+ * camera after 8pm would be auto-assigned tomorrow's run instead of the one he is still driving.
+ */
+function todayLocal(): string {
+  const d = new Date();
+  const pad = (n: number) => String(n).padStart(2, "0");
+  return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}`;
+}
 
 /**
  * An evidence tag's mark. Nearly all of them exist in Ionicons, but DELIVERY wants a delivery
@@ -225,6 +239,13 @@ export default function Capture() {
   // null until the stored value has been read; wrapped so "no saved project" is distinguishable.
   const [savedProject, setSavedProject] = useState<{ id: string | null } | null>(null);
   const projectApplied = useRef(false);
+  /**
+   * The run this capture belongs to, on the delivery side of the app. It stands in for the
+   * project chip there — see `deliverySide` below — and it is picked for the driver rather
+   * than asked of him.
+   */
+  const [pickedRouteId, setPickedRouteId] = useState<string | null>(null);
+  const routeApplied = useRef(false);
   const [now, setNow] = useState(new Date());
   const [busy, setBusy] = useState(false);
   const [status, setStatus] = useState<string | null>(null);
@@ -249,6 +270,7 @@ export default function Capture() {
   const [reviewIndex, setReviewIndex] = useState<number | null>(null);
 
   const projects = useProjects();
+  const routes = useRoutes();
   const org = useOrg();
   const templates = useTemplates();
   const invalidate = useInvalidatePhotos();
@@ -271,6 +293,55 @@ export default function Capture() {
   const template = templates.data?.find((t) => t.isDefault) ?? templates.data?.[0] ?? null;
   const project = projects.data?.find((p) => p.id === projectId) ?? null;
 
+  /**
+   * Is this camera a DELIVERY camera?
+   *
+   * True for everyone on the delivery side: a driver whatever his workspace runs, and everybody
+   * in a workspace that answered "deliveries" at onboarding. It changes two things about the
+   * screen, and both exist because a delivery member has exactly one thing to file — proof of a
+   * drop, against the run the dispatcher already built:
+   *
+   * 1. EVIDENCE TYPE is DELIVERY and stays there. Asking a driver to pick it forty times a day
+   *    is forty chances to file a drop as "Work" — and no other tag in the list means anything
+   *    on a route.
+   * 2. The folder chip offers his ROUTES instead of projects. Projects are the field product:
+   *    `projects.list` is `fieldProc`, so a driver cannot read one at all and that sheet was
+   *    empty for him. His route is the thing his day is actually divided into.
+   *
+   * `org.data` has to be in hand first. Read before it loads, the role is undefined and
+   * `showsProduct` says no to both sides, which would lock a field member's evidence type to
+   * DELIVERY for the first second of every launch.
+   */
+  const deliverySide = org.data
+    ? !showsProduct(org.data.org.product, org.data.role, "field")
+    : false;
+  // Async work started before `deliverySide` settles reads the answer from here, so a
+  // remembered tag landing late cannot unlock what the workspace fixed.
+  const deliveryRef = useRef(false);
+  deliveryRef.current = deliverySide;
+
+  /**
+   * The runs this member may file against, and the ones he is the driver of.
+   *
+   * The server already narrows a driver's list to his own. A dispatcher or an owner holding
+   * the same camera gets the whole workspace, and auto-filing their capture under somebody
+   * else's run would be a lie — so only routes they drive themselves are ever picked for them,
+   * while the sheet still lets them choose any run of the workspace by hand.
+   */
+  const myUserId = org.data?.user?.id ?? null;
+  const routeRows = useMemo(
+    () => (routes.data ?? []).filter((r) => r.status !== "cancelled"),
+    [routes.data],
+  );
+  const ownRoutes = useMemo(
+    () => (myUserId ? routeRows.filter((r) => r.driverId === myUserId) : []),
+    [routeRows, myUserId],
+  );
+  const pickableRoutes = ownRoutes.length > 0 ? ownRoutes : routeRows;
+  const pickedRoute = routeRows.find((r) => r.id === pickedRouteId) ?? null;
+  // The "nothing picked" pill in the chip's sheet answers for whichever list it is showing.
+  const noneSelected = deliverySide ? pickedRouteId === null : projectId === null;
+
   const maxSeconds = policy.data?.maxSeconds ?? 30;
   const videoLocked = policy.data ? !policy.data.enabled : false;
 
@@ -292,6 +363,10 @@ export default function Capture() {
   useEffect(() => {
     void AsyncStorage.getItem(TAG_KEY).then((stored) => {
       if (!stored || !TAGS.some((entry) => entry.key === stored)) return;
+      // A delivery camera has no remembered tag to restore: it is DELIVERY, fixed. Storage
+      // resolves after the first paint, so this can land either side of the effect below —
+      // the ref is what makes both orders come out the same.
+      if (deliveryRef.current) return;
       const next = stored as QueuedPhoto["tag"];
       setPhotoTag(next);
       setTag((current) => (current === "general" ? next : current));
@@ -312,18 +387,61 @@ export default function Capture() {
     setMode("photo");
     setRequireSignature(handedSignature);
     if (handedRecipient) setRecipient(handedRecipient);
-  }, [stopId, handedRecipient, handedSignature]);
+    // The run screen already knows which route this stop belongs to, so that answer beats
+    // anything the date-based pick below would work out for itself.
+    if (stopRouteId) {
+      routeApplied.current = true;
+      setPickedRouteId(stopRouteId);
+    }
+  }, [stopId, stopRouteId, handedRecipient, handedSignature]);
+
+  /**
+   * DELIVERY, fixed, on the delivery side. CLOCK mode is the one exception: clocking in and out
+   * is timekeeping, not evidence, and it owns the tag while it is open.
+   */
+  useEffect(() => {
+    if (!deliverySide) return;
+    setPhotoTag("delivery");
+    setTag((current) => (current === "arrival" || current === "departure" ? current : "delivery"));
+  }, [deliverySide]);
+
+  /**
+   * Assign the driver his own run, the way the dispatcher assigned it to him: today's route,
+   * whatever state it is in. Nothing to pick, nothing to get wrong.
+   *
+   * `routeApplied` is only latched once a route has actually been chosen — a driver who opens
+   * the camera before dispatch has assigned him anything gets the run the moment the list
+   * refreshes, mid-shift, without relaunching the app.
+   */
+  useEffect(() => {
+    if (!deliverySide || routeApplied.current) return;
+    const today = todayLocal();
+    const pick = ownRoutes.find((r) => r.date === today);
+    if (!pick) return;
+    routeApplied.current = true;
+    setPickedRouteId(pick.id);
+    // A run the office hung off a project keeps filing evidence there; a standalone run files
+    // as unassigned rather than borrowing somebody else's project.
+    setProjectId(pick.projectId ?? null);
+  }, [deliverySide, ownRoutes]);
 
   // Restore the remembered project once the project list is in hand. If it was deleted, archived,
   // or this member's assignment was pulled, fall back to Unassigned rather than misfile evidence.
   useEffect(() => {
     if (projectApplied.current) return;
+    // Wait for the workspace before touching the project: on the delivery side the route
+    // decides where evidence is filed, and a remembered project must not race it.
+    if (!org.data) return;
+    if (deliverySide) {
+      projectApplied.current = true;
+      return;
+    }
     const rows = projects.data;
     if (!savedProject || !rows) return;
     projectApplied.current = true;
     const saved = savedProject.id;
     if (saved && rows.some((p) => p.id === saved)) setProjectId(saved);
-  }, [savedProject, projects.data]);
+  }, [savedProject, projects.data, org.data, deliverySide]);
 
   // Live recording timer; the hard stop is enforced by the recorder itself too.
   useEffect(() => {
@@ -494,7 +612,9 @@ export default function Capture() {
         clockOffsetMs: clockStamp.clockOffsetMs,
         clockSyncedAt: clockStamp.clockSyncedAt,
         projectId,
-        projectName: project?.name ?? null,
+        // The run stands in for the project name on the delivery side, so the queue tile and
+        // the stamp both read the thing the driver recognises: his route.
+        projectName: project?.name ?? pickedRoute?.name ?? null,
         tag: finalTag,
         // Read from the ref, not state: a note typed and shot in the same beat would otherwise
         // be a render behind. Trimmed to null so an all-whitespace note is no note at all.
@@ -517,7 +637,8 @@ export default function Capture() {
         posterUri: extra.posterUri ?? null,
         fileName: extra.fileName ?? null,
         routeStopId: stopId,
-        routeId: stopRouteId,
+        // A capture taken off a stop still belongs to the run it was taken on.
+        routeId: stopRouteId ?? pickedRouteId,
         routeOutcome: stopId ? stopOutcome : null,
         routeFailedReason:
           stopId && stopOutcome === "failed"
@@ -574,6 +695,8 @@ export default function Capture() {
       invalidate,
       params.note,
       params.reason,
+      pickedRoute,
+      pickedRouteId,
       project,
       projectId,
       recipient,
@@ -804,7 +927,7 @@ export default function Capture() {
     setMode(next);
     // Clock in/out keeps its own override; photo and video come back to the remembered tag.
     if (next === "clock") setTag("arrival");
-    else setTag(photoTag);
+    else setTag(deliverySide ? "delivery" : photoTag);
     /*
       Real edge detection lives in the OS scanner, which opens as its own full-screen
       activity and cannot be embedded in our preview. So picking SCAN opens it straight
@@ -822,7 +945,7 @@ export default function Capture() {
     lng: fix.lng,
     accuracyM: fix.accuracyM,
     address: fix.address,
-    project: project?.name ?? null,
+    project: project?.name ?? pickedRoute?.name ?? null,
     // What the NOTE tab holds, previewed in the same place the server burns it in.
     note: note.trim() || null,
     company: template?.companyLine ?? org.data?.org.name ?? null,
@@ -834,6 +957,20 @@ export default function Capture() {
 
   const isVideo = mode === "video";
   const isScan = mode === "scan";
+  // CLOCK owns the tag while it is open — arrival and departure are timekeeping, not evidence —
+  // so the evidence chip is only the fixed DELIVERY one outside of it.
+  const tagFixed = deliverySide && mode !== "clock";
+  /**
+   * Do we know yet which side of the app this is?
+   *
+   * Until the workspace loads, `deliverySide` has to answer "no" — guessing "yes" would lock a
+   * field member's evidence type to DELIVERY for a second on every launch. So the two chips
+   * flanking the shutter would read as the FIELD camera first and then swap to the delivery one
+   * a beat later: a driver watching a folder turn into a map and Work turn into Delivery every
+   * time he opens the app. They wait, greyed, until the answer is in — a second of "loading" is
+   * honest where a second of the wrong product is not.
+   */
+  const sideKnown = !!org.data;
   // Long-locale headers do not fit a small phone: "NUMERISER" + "SYNCHRONISE" + the language
   // chip overflow a 5" screen and the mode title is the one that gets clipped. On narrow
   // screens the idle sync chip drops to its icon, which already says synced by shape and
@@ -1091,21 +1228,32 @@ export default function Capture() {
             onPress={() => setProjectOpen((v) => !v)}
             onHoverIn={() => setProjectHover(true)}
             onHoverOut={() => setProjectHover(false)}
-            accessibilityLabel={tr("common.project")}
+            disabled={!sideKnown}
+            accessibilityLabel={deliverySide ? tr("capture.route") : tr("common.project")}
             style={({ pressed }) => [
               styles.shutterSideBtn,
               {
                 borderColor: colors.amber,
                 backgroundColor:
                   pressed || projectHover || projectOpen ? colors.amber : "rgba(255,176,33,0.12)",
+                opacity: sideKnown ? 1 : 0.35,
               },
             ]}
           >
             {({ pressed }) => (
               <Ionicons
-                // A filled folder says a project is assigned to the next shot; the outline says
-                // it is still headed for the unassigned pile.
-                name={projectId ? "folder" : "folder-outline"}
+                // A filled mark says the next shot has somewhere to go, an outline says it is
+                // still headed for the unassigned pile. Which mark depends on which side of the
+                // app this is: a folder holds projects, a map holds the day's run.
+                name={
+                  deliverySide
+                    ? pickedRouteId
+                      ? "map"
+                      : "map-outline"
+                    : projectId
+                      ? "folder"
+                      : "folder-outline"
+                }
                 size={20}
                 color={
                   pressed || projectHover || projectOpen ? colors.primaryForeground : colors.amber
@@ -1168,28 +1316,50 @@ export default function Capture() {
             )}
           </Pressable>
 
+          {/* On a delivery camera this stops being a picker: it reads DELIVERY, wears the
+              padlock that says so, and opens nothing. */}
           <Pressable
             onPress={() => setTagOpen((v) => !v)}
             onHoverIn={() => setTagHover(true)}
             onHoverOut={() => setTagHover(false)}
-            accessibilityLabel={tr("capture.evidenceType")}
+            disabled={tagFixed || !sideKnown}
+            accessibilityLabel={tagFixed ? tr("capture.evidenceFixed") : tr("capture.evidenceType")}
             style={({ pressed }) => [
               styles.shutterSideBtn,
               {
                 borderColor: colors.amber,
                 backgroundColor:
-                  pressed || tagHover || tagOpen ? colors.amber : "rgba(255,176,33,0.12)",
+                  !tagFixed && (pressed || tagHover || tagOpen)
+                    ? colors.amber
+                    : "rgba(255,176,33,0.12)",
+                opacity: sideKnown ? 1 : 0.35,
               },
             ]}
           >
             {({ pressed }) => (
-              <TagIcon
-                // The evidence button wears the mark of the tag that is selected, so the row
-                // still answers "what am I filing this as?" without a label.
-                icon={TAGS.find((t) => t.key === tag)?.icon ?? { name: "pricetag-outline" }}
-                size={20}
-                color={pressed || tagHover || tagOpen ? colors.primaryForeground : colors.amber}
-              />
+              <>
+                <TagIcon
+                  // The evidence button wears the mark of the tag that is selected, so the row
+                  // still answers "what am I filing this as?" without a label.
+                  icon={TAGS.find((t) => t.key === tag)?.icon ?? { name: "pricetag-outline" }}
+                  size={20}
+                  color={
+                    !tagFixed && (pressed || tagHover || tagOpen)
+                      ? colors.primaryForeground
+                      : colors.amber
+                  }
+                />
+                {tagFixed ? (
+                  <View
+                    style={[
+                      styles.lockBadge,
+                      { backgroundColor: colors.background, borderColor: colors.amber },
+                    ]}
+                  >
+                    <Ionicons name="lock-closed" size={9} color={colors.amber} />
+                  </View>
+                ) : null}
+              </>
             )}
           </Pressable>
         </View>
@@ -1410,7 +1580,7 @@ export default function Capture() {
               <Text
                 style={[styles.sheetTitle, { color: colors.foreground, fontFamily: Fonts?.mono }]}
               >
-                {tr("common.project").toUpperCase()}
+                {(deliverySide ? tr("capture.route") : tr("common.project")).toUpperCase()}
               </Text>
               <Pressable
                 onPress={() => setProjectOpen(false)}
@@ -1427,6 +1597,15 @@ export default function Capture() {
               <View style={styles.tagGrid}>
                 <Pressable
                   onPress={() => {
+                    if (deliverySide) {
+                      // Clearing the run is a deliberate pick too: it must not be silently
+                      // re-assigned by the date match a beat later.
+                      routeApplied.current = true;
+                      setPickedRouteId(null);
+                      setProjectId(null);
+                      setProjectOpen(false);
+                      return;
+                    }
                     setProjectId(null);
                     rememberProject(null);
                     setProjectOpen(false);
@@ -1434,46 +1613,84 @@ export default function Capture() {
                   style={[
                     styles.pill,
                     {
-                      borderColor: projectId === null ? colors.amber : colors.border,
-                      backgroundColor: projectId === null ? "rgba(255,176,33,0.12)" : colors.card,
+                      borderColor: noneSelected ? colors.amber : colors.border,
+                      backgroundColor: noneSelected ? "rgba(255,176,33,0.12)" : colors.card,
                     },
                   ]}
                 >
                   <Text
                     style={[
                       styles.pillText,
-                      { color: projectId === null ? colors.amber : colors.mutedForeground },
+                      { color: noneSelected ? colors.amber : colors.mutedForeground },
                     ]}
                   >
-                    {tr("queue.unassigned")}
+                    {deliverySide ? tr("capture.routeNone") : tr("queue.unassigned")}
                   </Text>
                 </Pressable>
-                {projects.data?.map((p) => (
-                  <Pressable
-                    key={p.id}
-                    onPress={() => {
-                      setProjectId(p.id);
-                      rememberProject(p.id);
-                      setProjectOpen(false);
-                    }}
-                    style={[
-                      styles.pill,
-                      {
-                        borderColor: projectId === p.id ? colors.amber : colors.border,
-                        backgroundColor: projectId === p.id ? "rgba(255,176,33,0.12)" : colors.card,
-                      },
-                    ]}
-                  >
-                    <Text
-                      style={[
-                        styles.pillText,
-                        { color: projectId === p.id ? colors.amber : colors.foreground },
-                      ]}
-                    >
-                      {p.name}
-                    </Text>
-                  </Pressable>
-                ))}
+                {/*
+                  Two different lists behind one chip. A delivery member picks the run his drop
+                  belongs to — today's is already selected for him, so this is only ever used to
+                  correct it or to shoot against yesterday's unfinished run. A field member picks
+                  a project, which is the only thing that side of the app files against.
+                */}
+                {deliverySide
+                  ? pickableRoutes.map((r) => (
+                      <Pressable
+                        key={r.id}
+                        onPress={() => {
+                          routeApplied.current = true;
+                          setPickedRouteId(r.id);
+                          setProjectId(r.projectId ?? null);
+                          setProjectOpen(false);
+                        }}
+                        style={[
+                          styles.pill,
+                          {
+                            borderColor: pickedRouteId === r.id ? colors.amber : colors.border,
+                            backgroundColor:
+                              pickedRouteId === r.id ? "rgba(255,176,33,0.12)" : colors.card,
+                          },
+                        ]}
+                      >
+                        <Text
+                          style={[
+                            styles.pillText,
+                            {
+                              color: pickedRouteId === r.id ? colors.amber : colors.foreground,
+                            },
+                          ]}
+                        >
+                          {r.date === todayLocal() ? `${r.name} — ${tr("common.today")}` : r.name}
+                        </Text>
+                      </Pressable>
+                    ))
+                  : projects.data?.map((p) => (
+                      <Pressable
+                        key={p.id}
+                        onPress={() => {
+                          setProjectId(p.id);
+                          rememberProject(p.id);
+                          setProjectOpen(false);
+                        }}
+                        style={[
+                          styles.pill,
+                          {
+                            borderColor: projectId === p.id ? colors.amber : colors.border,
+                            backgroundColor:
+                              projectId === p.id ? "rgba(255,176,33,0.12)" : colors.card,
+                          },
+                        ]}
+                      >
+                        <Text
+                          style={[
+                            styles.pillText,
+                            { color: projectId === p.id ? colors.amber : colors.foreground },
+                          ]}
+                        >
+                          {p.name}
+                        </Text>
+                      </Pressable>
+                    ))}
               </View>
             </ScrollView>
           </View>
@@ -2024,6 +2241,18 @@ const styles = StyleSheet.create({
     width: 44,
     height: 44,
     borderRadius: 22,
+    borderWidth: 1,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  /** The padlock on a fixed evidence type, tucked into the button's bottom-right corner. */
+  lockBadge: {
+    position: "absolute",
+    right: -1,
+    bottom: -1,
+    width: 15,
+    height: 15,
+    borderRadius: 8,
     borderWidth: 1,
     alignItems: "center",
     justifyContent: "center",
