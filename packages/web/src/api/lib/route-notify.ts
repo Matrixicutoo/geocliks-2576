@@ -1,10 +1,11 @@
-import { and, asc, eq } from "drizzle-orm";
+import { and, asc, count, eq } from "drizzle-orm";
 import { db } from "../database";
 import * as schema from "../database/schema";
 import { emailConfigured } from "../services/email";
 import { routeDeliveredEmail, routeNextEmail, routeStartEmail } from "../services/route-emails";
 import { id } from "./ids";
 import { photoUrl } from "./media";
+import { sendPush } from "./push";
 
 /**
  * Who gets told what, and — far more important — who does NOT.
@@ -218,5 +219,51 @@ export async function notifyStopDelivered(stopId: string): Promise<void> {
     await logNotified(stop, `Proof of delivery sent to ${stop.recipientEmail}`);
   } catch (err) {
     console.error("[route-notify] notifyStopDelivered", err);
+  }
+}
+
+/**
+ * The driver's own notification — the only one in this file that goes to a phone rather than a
+ * recipient's inbox.
+ *
+ * Dispatch handing over a run used to be silent: the route appeared in the app's list and the
+ * driver found out whenever he next happened to look. A run assigned at 6am for an 8am start is
+ * exactly the thing he needs told, so his devices get a push, and tapping it opens that run.
+ * The same assignment is what lights the red count on the truck beside the shutter, so the push
+ * and the badge are two faces of one fact and cannot disagree.
+ *
+ * Best effort like everything else here: no devices registered, or Expo refusing the message,
+ * must never fail the dispatcher's assignment.
+ */
+export async function notifyDriverAssigned(route: RouteRow): Promise<void> {
+  try {
+    if (!route.driverId) return;
+    const tokens = await db
+      .select({ token: schema.pushTokens.token })
+      .from(schema.pushTokens)
+      .where(eq(schema.pushTokens.userId, route.driverId));
+    if (tokens.length === 0) return;
+
+    const [counted] = await db
+      .select({ stops: count() })
+      .from(schema.routeStops)
+      .where(eq(schema.routeStops.routeId, route.id));
+    const stops = Number(counted?.stops ?? 0);
+    const name = await orgName(route.orgId);
+
+    await sendPush(
+      tokens.map((t) => t.token),
+      {
+        title: `New route — ${route.name}`,
+        // The two facts a driver acts on: how much work, and for which day.
+        body:
+          stops > 0
+            ? `${name} assigned you ${stops} ${stops === 1 ? "stop" : "stops"} for ${route.date}.`
+            : `${name} assigned you this run for ${route.date}.`,
+        data: { kind: "route", routeId: route.id },
+      },
+    );
+  } catch (err) {
+    console.error("[route-notify] notifyDriverAssigned", err);
   }
 }

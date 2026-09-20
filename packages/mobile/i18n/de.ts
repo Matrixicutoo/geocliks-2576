@@ -243,6 +243,7 @@ export const de: Catalog = {
   "capture.evidenceType": "Nachweistyp",
   "capture.route": "Route",
   "capture.routeNone": "Keine Route",
+  "capture.routeWaiting": "Route wartet",
   "capture.evidenceFixed": "Zustellung — für diesen Arbeitsbereich festgelegt",
   "capture.evidenceShort": "Nachweis",
   "capture.note": "Notiz",

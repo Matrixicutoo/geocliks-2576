@@ -241,6 +241,7 @@ export const pl: Catalog = {
   "capture.evidenceType": "Typ dowodu",
   "capture.route": "Trasa",
   "capture.routeNone": "Brak trasy",
+  "capture.routeWaiting": "Trasa oczekuje",
   "capture.evidenceFixed": "Dostawa — ustalone dla tej przestrzeni",
   "capture.evidenceShort": "Dowód",
   "capture.note": "Notatka",

@@ -8,7 +8,12 @@ import { id, shareToken } from "../lib/ids";
 import { insertionIndex, optimizeStops } from "../lib/optimize";
 import { assertDeliveryEnabled } from "../lib/plan-guards";
 import { type Plan, planOf } from "../lib/plans";
-import { notifyRouteStarted, notifyStopDelivered, notifyUpcoming } from "../lib/route-notify";
+import {
+  notifyDriverAssigned,
+  notifyRouteStarted,
+  notifyStopDelivered,
+  notifyUpcoming,
+} from "../lib/route-notify";
 import { suggestAddresses } from "../lib/places";
 import { orgProc, requireDelivery, requireRole, type Role } from "../middleware/auth";
 
@@ -885,6 +890,13 @@ export const routes = {
         event: input.driverId ? "assigned" : "unassigned",
         actorId: context.user.id,
       });
+
+      // Tell the driver his phone has work on it. Only on a real handover: re-saving the same
+      // driver onto the same run, which the dispatch screen does whenever anything else on the
+      // row is touched, must not buzz him again for a route he already knows about.
+      if (input.driverId && input.driverId !== route.driverId) {
+        await notifyDriverAssigned({ ...route, driverId: input.driverId });
+      }
 
       return { ok: true };
     }),

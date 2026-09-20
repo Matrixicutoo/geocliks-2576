@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useState } from "react";
 import { Tabs } from "expo-router";
 import { Ionicons } from "@expo/vector-icons";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
@@ -6,7 +6,7 @@ import { useColors } from "@/hooks/use-colors";
 import { useT } from "@/lib/i18n";
 import { useUnreadMessages } from "@/queries/messages";
 import { useOrg } from "@/queries/orgs";
-import { useRoutes } from "@/queries/routes";
+import { useWaitingRoutes } from "@/queries/routes";
 import { useHasSession } from "@/hooks/use-session";
 import { AuthGate } from "@/components/auth-gate";
 import { showsProduct } from "@/lib/product";
@@ -23,10 +23,12 @@ export default function TabLayout() {
   // Unread total drives the Messages tab badge, so a new message is visible from any tab.
   const unread = useUnreadMessages();
   const unreadTotal = unread.data?.total ?? 0;
-  // Routes badge = stops still owed on the driver's own runs, so an order added mid-shift
-  // shows up from any tab. Counts assigned routes too: the run he has not started yet is
-  // exactly the one he needs prodding about.
-  const myRoutes = useRoutes();
+  // Routes badge = runs handed to this driver for today that he has not started yet, in red.
+  // It used to count stops still owed across his active runs, in amber, which meant the badge
+  // was loudest in the middle of a shift that was going fine and said nothing special about the
+  // one thing he actually has to act on: a route dispatch just gave him. Same signal as the red
+  // count on the truck beside the shutter, so the two can never contradict each other.
+  const waiting = useWaitingRoutes();
   const org = useOrg();
   // Capture is the one public tab. Every other tab press signed out opens the
   // register/login prompt instead of navigating to a screen with no workspace behind it.
@@ -42,17 +44,6 @@ export default function TabLayout() {
       setGateOpen(true);
     },
   };
-  const myId = org.data?.user?.id ?? null;
-  const stopsLeft = useMemo(() => {
-    let left = 0;
-    for (const route of myRoutes.data ?? []) {
-      if (route.driverId !== myId) continue;
-      if (route.status !== "active" && route.status !== "assigned") continue;
-      left += Math.max(0, (route.stopCount ?? 0) - (route.doneCount ?? 0));
-    }
-    return left;
-  }, [myRoutes.data, myId]);
-
   return (
     <>
       <Tabs
@@ -117,8 +108,8 @@ export default function TabLayout() {
               ? undefined
               : null,
             title: t("tabs.routes"),
-            tabBarBadge: stopsLeft > 0 ? stopsLeft : undefined,
-            tabBarBadgeStyle: { backgroundColor: colors.amber, color: colors.background },
+            tabBarBadge: waiting.length > 0 ? waiting.length : undefined,
+            tabBarBadgeStyle: { backgroundColor: colors.alert, color: "#FFFFFF" },
             tabBarIcon: ({ color, size, focused }) => (
               <Ionicons
                 name={focused ? "navigate-circle" : "navigate-circle-outline"}

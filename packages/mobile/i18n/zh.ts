@@ -234,6 +234,7 @@ export const zh: Catalog = {
   "capture.evidenceType": "证据类型",
   "capture.route": "路线",
   "capture.routeNone": "无路线",
+  "capture.routeWaiting": "有待处理路线",
   "capture.evidenceFixed": "送达 — 本工作区固定",
   "capture.evidenceShort": "证据",
   "capture.note": "备注",

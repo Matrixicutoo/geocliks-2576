@@ -253,6 +253,7 @@ export const en = {
   "capture.evidenceType": "Evidence type",
   "capture.route": "Route",
   "capture.routeNone": "No route",
+  "capture.routeWaiting": "Route waiting",
   "capture.evidenceFixed": "Delivery — fixed for this workspace",
   "capture.evidenceShort": "Evidence",
   "capture.note": "Note",

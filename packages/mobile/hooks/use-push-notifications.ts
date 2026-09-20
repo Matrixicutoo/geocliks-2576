@@ -41,6 +41,10 @@ function routeFor(data: unknown): string | null {
   const d = data as Record<string, unknown>;
   const conversationId = typeof d.conversationId === "string" ? d.conversationId : null;
   if (d.kind === "message" && conversationId) return `/messages/${conversationId}`;
+  // A run dispatch just handed him. Opens the run itself, not the list: the notification already
+  // named it, so making him pick it out of a list again would waste the tap.
+  const routeId = typeof d.routeId === "string" ? d.routeId : null;
+  if (d.kind === "route" && routeId) return `/route/${routeId}`;
   return null;
 }
 

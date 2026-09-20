@@ -1,6 +1,35 @@
+import { useMemo } from "react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { orpc } from "@/lib/api";
 import { useHasSession } from "@/hooks/use-session";
+import { todayLocal } from "@/lib/day";
+import { useOrg } from "@/queries/orgs";
+
+/** The little of a route row that decides whether it is waiting for the driver. */
+type WaitingShape = { driverId: string | null; status: string; date: string };
+
+/**
+ * The runs waiting for one driver: handed to him, dated today, and not yet started.
+ *
+ * This is the single definition of "there is a delivery waiting for you", because two places
+ * show it and they must never disagree — the red count on the truck beside the shutter, and the
+ * red count on the Routes tab. `assigned` is precisely the not-yet-started state: the moment he
+ * taps START the route turns `active` and stops being a thing he has to be prodded about.
+ *
+ * Dated today on purpose. A run the office lines up for Thursday is not something to nag a
+ * driver about on Monday; it becomes a waiting run when Thursday arrives, with no push, no
+ * relaunch and no refresh needed beyond the list's own poll.
+ */
+export function waitingRoutesFor<T extends WaitingShape>(
+  rows: T[] | undefined,
+  myUserId: string | null,
+): T[] {
+  if (!myUserId || !rows) return [];
+  const today = todayLocal();
+  return rows.filter(
+    (r) => r.driverId === myUserId && r.status === "assigned" && r.date === today,
+  );
+}
 
 /** Routes the signed-in user may see. A field member only ever gets their own. */
 export function useRoutes() {
@@ -9,6 +38,14 @@ export function useRoutes() {
   return useQuery(
     orpc.routes.list.queryOptions({ input: {}, enabled: hasSession, staleTime: 15_000 }),
   );
+}
+
+/** `waitingRoutesFor` over the signed-in member's own list. */
+export function useWaitingRoutes() {
+  const routes = useRoutes();
+  const org = useOrg();
+  const myUserId = org.data?.user?.id ?? null;
+  return useMemo(() => waitingRoutesFor(routes.data, myUserId), [routes.data, myUserId]);
 }
 
 export function useRoute(id: string | null) {

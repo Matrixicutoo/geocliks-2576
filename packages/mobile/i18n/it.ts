@@ -242,6 +242,7 @@ export const it: Catalog = {
   "capture.evidenceType": "Tipo di prova",
   "capture.route": "Percorso",
   "capture.routeNone": "Nessun percorso",
+  "capture.routeWaiting": "Percorso in attesa",
   "capture.evidenceFixed": "Consegna — fissato per questo spazio",
   "capture.evidenceShort": "Prova",
   "capture.note": "Nota",

@@ -241,6 +241,7 @@ export const ptBR: Catalog = {
   "capture.evidenceType": "Tipo de evidência",
   "capture.route": "Rota",
   "capture.routeNone": "Sem rota",
+  "capture.routeWaiting": "Rota aguardando",
   "capture.evidenceFixed": "Entrega — fixo para este espaço",
   "capture.evidenceShort": "Evidência",
   "capture.note": "Nota",

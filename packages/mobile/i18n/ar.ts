@@ -238,6 +238,7 @@ export const ar: Catalog = {
   "capture.evidenceType": "نوع الدليل",
   "capture.route": "المسار",
   "capture.routeNone": "لا مسار",
+  "capture.routeWaiting": "مسار في الانتظار",
   "capture.evidenceFixed": "التسليم — ثابت لمساحة العمل هذه",
   "capture.evidenceShort": "الدليل",
   "capture.note": "ملاحظة",

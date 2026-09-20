@@ -239,6 +239,7 @@ export const vi: Catalog = {
   "capture.evidenceType": "Loại bằng chứng",
   "capture.route": "Tuyến",
   "capture.routeNone": "Không có tuyến",
+  "capture.routeWaiting": "Tuyến đang chờ",
   "capture.evidenceFixed": "Giao hàng — cố định cho không gian này",
   "capture.evidenceShort": "Bằng chứng",
   "capture.note": "Ghi chú",

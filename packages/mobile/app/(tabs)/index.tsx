@@ -20,9 +20,10 @@ import { useColors } from "@/hooks/use-colors";
 import { Fonts } from "@/constants/theme";
 import { Stamp, formatCoords } from "@/components/stamp";
 import { useProjects } from "@/queries/projects";
-import { useRoutes } from "@/queries/routes";
+import { useRoutes, waitingRoutesFor } from "@/queries/routes";
 import { useOrg, useTemplates } from "@/queries/orgs";
 import { showsProduct } from "@/lib/product";
+import { todayLocal } from "@/lib/day";
 import { useT, type TKey } from "@/lib/i18n";
 import { LanguageMenu } from "@/components/language-menu";
 import { ProfileMenu } from "@/components/profile-menu";
@@ -50,18 +51,6 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 const TAG_KEY = "geocliks.capture.tag.v1";
 const PROJECT_KEY = "geocliks.capture.project.v1";
 const STAMP_KEY = "geocliks.capture.stamp.v1";
-
-/**
- * Today as YYYY-MM-DD in the phone's OWN timezone — the same form a route's `date` carries.
- *
- * Deliberately not `toISOString().slice(0, 10)`: that is UTC, so a driver in Moncton opening the
- * camera after 8pm would be auto-assigned tomorrow's run instead of the one he is still driving.
- */
-function todayLocal(): string {
-  const d = new Date();
-  const pad = (n: number) => String(n).padStart(2, "0");
-  return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}`;
-}
 
 /**
  * An evidence tag's mark. Nearly all of them exist in Ionicons, but DELIVERY wants a delivery
@@ -337,6 +326,16 @@ export default function Capture() {
     () => (myUserId ? routeRows.filter((r) => r.driverId === myUserId) : []),
     [routeRows, myUserId],
   );
+  /**
+   * The runs dispatch has handed him for today and he has not started yet — the same list the
+   * Routes tab badges, so the red count beside the shutter and the red count on the tab are
+   * always the same number. While it is non-zero the truck stops being a picker and becomes a
+   * shortcut straight into the run, because a driver who has just been given work wants the
+   * stops, not a list with one row in it.
+   */
+  const waitingRoutes = useMemo(() => waitingRoutesFor(routeRows, myUserId), [routeRows, myUserId]);
+  const waitingRoute = deliverySide ? (waitingRoutes[0] ?? null) : null;
+
   const pickableRoutes = ownRoutes.length > 0 ? ownRoutes : routeRows;
   const pickedRoute = routeRows.find((r) => r.id === pickedRouteId) ?? null;
   // The "nothing picked" pill in the chip's sheet answers for whichever list it is showing.
@@ -1225,11 +1224,26 @@ export default function Capture() {
               so they sit within a thumb's reach of the button that takes it. Icon only — the
               sheet each one opens carries the words. */}
           <Pressable
-            onPress={() => setProjectOpen((v) => !v)}
+            onPress={() => {
+              // A run waiting for him beats the picker: the truck goes straight to it. Only ever
+              // true on the delivery side, and only while the red count is showing, so the chip
+              // behaves exactly as it looks.
+              if (waitingRoute) {
+                router.push({ pathname: "/route/[id]", params: { id: waitingRoute.id } });
+                return;
+              }
+              setProjectOpen((v) => !v);
+            }}
             onHoverIn={() => setProjectHover(true)}
             onHoverOut={() => setProjectHover(false)}
             disabled={!sideKnown}
-            accessibilityLabel={deliverySide ? tr("capture.route") : tr("common.project")}
+            accessibilityLabel={
+              waitingRoute
+                ? tr("capture.routeWaiting")
+                : deliverySide
+                  ? tr("capture.route")
+                  : tr("common.project")
+            }
             style={({ pressed }) => [
               styles.shutterSideBtn,
               {
@@ -1241,24 +1255,49 @@ export default function Capture() {
             ]}
           >
             {({ pressed }) => (
-              <Ionicons
-                // A filled mark says the next shot has somewhere to go, an outline says it is
-                // still headed for the unassigned pile. Which mark depends on which side of the
-                // app this is: a folder holds projects, a map holds the day's run.
-                name={
-                  deliverySide
-                    ? pickedRouteId
-                      ? "map"
-                      : "map-outline"
-                    : projectId
-                      ? "folder"
-                      : "folder-outline"
-                }
-                size={20}
-                color={
-                  pressed || projectHover || projectOpen ? colors.primaryForeground : colors.amber
-                }
-              />
+              <>
+                {/* A filled mark says the next shot has somewhere to go, an outline says it is
+                    still headed for the unassigned pile. Which mark depends on which side of the
+                    app this is: a folder holds projects, a delivery truck holds the day's run —
+                    the same truck the DELIVERY evidence type wears, from Material Community
+                    Icons, because Ionicons has no truck at all. */}
+                {deliverySide ? (
+                  <MaterialCommunityIcons
+                    // A box truck, not the speed-lined `truck-fast` the DELIVERY evidence type
+                    // wears: the two chips sit side by side and have to stay tellable apart.
+                    name={pickedRouteId ? "truck-delivery" : "truck-delivery-outline"}
+                    size={20}
+                    color={
+                      pressed || projectHover || projectOpen
+                        ? colors.primaryForeground
+                        : colors.amber
+                    }
+                  />
+                ) : (
+                  <Ionicons
+                    name={projectId ? "folder" : "folder-outline"}
+                    size={20}
+                    color={
+                      pressed || projectHover || projectOpen
+                        ? colors.primaryForeground
+                        : colors.amber
+                    }
+                  />
+                )}
+                {/* Runs waiting for him, in red on the truck. Red and not amber on purpose: the
+                    whole camera is amber, so work he has not looked at yet needs a colour of its
+                    own to be seen at a glance across a windscreen. */}
+                {waitingRoutes.length > 0 && deliverySide ? (
+                  <View
+                    style={[
+                      styles.countBadge,
+                      { backgroundColor: colors.alert, borderColor: colors.background },
+                    ]}
+                  >
+                    <Text style={styles.countBadgeText}>{waitingRoutes.length}</Text>
+                  </View>
+                ) : null}
+              </>
             )}
           </Pressable>
 
@@ -2244,6 +2283,25 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     alignItems: "center",
     justifyContent: "center",
+  },
+  /** Runs waiting for the driver, counted in red on the truck's top-right corner. */
+  countBadge: {
+    position: "absolute",
+    right: -4,
+    top: -4,
+    minWidth: 17,
+    height: 17,
+    borderRadius: 9,
+    borderWidth: 1.5,
+    paddingHorizontal: 3,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  countBadgeText: {
+    color: "#FFFFFF",
+    fontSize: 10,
+    lineHeight: 13,
+    fontFamily: Fonts.semibold,
   },
   /** The padlock on a fixed evidence type, tucked into the button's bottom-right corner. */
   lockBadge: {

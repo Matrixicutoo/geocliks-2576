@@ -243,6 +243,7 @@ export const frCA: Catalog = {
   "capture.evidenceType": "Type de preuve",
   "capture.route": "Tournée",
   "capture.routeNone": "Aucune tournée",
+  "capture.routeWaiting": "Tournée en attente",
   "capture.evidenceFixed": "Livraison — imposé pour cet espace",
   "capture.evidenceShort": "Preuve",
   "capture.note": "Note",

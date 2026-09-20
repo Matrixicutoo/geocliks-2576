@@ -242,6 +242,7 @@ export const tl: Catalog = {
   "capture.evidenceType": "Uri ng ebidensya",
   "capture.route": "Ruta",
   "capture.routeNone": "Walang ruta",
+  "capture.routeWaiting": "Nakahintay na ruta",
   "capture.evidenceFixed": "Paghahatid — nakatakda para sa workspace na ito",
   "capture.evidenceShort": "Ebidensya",
   "capture.note": "Tala",
