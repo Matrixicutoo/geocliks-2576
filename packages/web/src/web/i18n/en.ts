@@ -30,6 +30,7 @@ export const en = {
 
   // Common
   "common.cancel": "Cancel",
+  "common.save": "Save",
   "common.close": "Close",
   "common.loading": "Loading",
   "common.download": "Download",
@@ -867,6 +868,7 @@ export const en = {
   "routes.stop.failed": "Not delivered",
   "routes.stop.skipped": "Skipped",
   "routes.stop.viewProof": "See the delivery photo",
+  "routes.stop.editAddress": "Edit this address",
   "routes.moveUp": "Move up",
   "routes.moveDown": "Move down",
   "routes.mapTitle": "Route map",

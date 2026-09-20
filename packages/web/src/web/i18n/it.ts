@@ -21,6 +21,8 @@ export const it: Catalog = {
   "shell.stopImpersonating": "Termina impersonificazione",
 
   "common.cancel": "Annulla",
+
+  "common.save": "Salva",
   "common.close": "Chiudi",
   "common.loading": "Caricamento",
   "common.download": "Scarica",
@@ -859,6 +861,7 @@ export const it: Catalog = {
   "routes.stop.failed": "Non consegnata",
   "routes.stop.skipped": "Saltata",
   "routes.stop.viewProof": "Vedi la foto di consegna",
+  "routes.stop.editAddress": "Modifica questo indirizzo",
   "routes.moveUp": "Sposta su",
   "routes.moveDown": "Sposta giù",
   "routes.mapTitle": "Mappa del percorso",

@@ -21,6 +21,8 @@ export const frCA: Catalog = {
   "shell.stopImpersonating": "Arrêter l'usurpation",
 
   "common.cancel": "Annuler",
+
+  "common.save": "Enregistrer",
   "common.close": "Fermer",
   "common.loading": "Chargement",
   "common.download": "Télécharger",
@@ -867,6 +869,7 @@ export const frCA: Catalog = {
   "routes.stop.failed": "Non livrée",
   "routes.stop.skipped": "Ignorée",
   "routes.stop.viewProof": "Voir la photo de livraison",
+  "routes.stop.editAddress": "Modifier cette adresse",
   "routes.moveUp": "Monter",
   "routes.moveDown": "Descendre",
   "routes.mapTitle": "Carte du trajet",

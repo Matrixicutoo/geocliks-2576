@@ -27,6 +27,7 @@ import { parseStops } from "../lib/parse-stops";
 import { cn } from "../lib/utils";
 import { useT } from "../lib/i18n";
 import { sigChoice, sigRouteLabel, sigValue } from "../lib/signature";
+import { StopAddress } from "./stop-address";
 
 const FIELD =
   "w-full rounded-[8px] border border-line bg-ink px-3 py-2 text-[13.5px] text-chalk outline-none focus:border-amber";
@@ -309,7 +310,17 @@ export function RouteStopsDialog({
                       {index + 1}
                     </span>
                     <div className="min-w-[160px] flex-1">
-                      <p className="text-[13px] text-chalk">{stop.address ?? stop.addressRaw}</p>
+                      {/* Correctable here too: the popup is where most lists are loaded, so a
+                          typo is usually spotted before the page is ever opened. */}
+                      <StopAddress
+                        stopId={stop.id}
+                        routeId={routeId}
+                        addressRaw={stop.addressRaw}
+                        display={stop.address ?? stop.addressRaw}
+                        canEdit
+                        textClass="text-[13px] text-chalk"
+                        onError={setError}
+                      />
                       {/* One contact line, in the pasted order: name, email, phone, reference.
                           The popup is where most lists are loaded, so hiding the contact
                           details here hid them for good. */}

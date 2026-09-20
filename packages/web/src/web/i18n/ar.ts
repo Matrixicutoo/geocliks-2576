@@ -21,6 +21,8 @@ export const ar: Catalog = {
   "shell.stopImpersonating": "إيقاف انتحال الهوية",
 
   "common.cancel": "إلغاء",
+
+  "common.save": "حفظ",
   "common.close": "إغلاق",
   "common.loading": "جارٍ التحميل",
   "common.download": "تنزيل",
@@ -836,6 +838,7 @@ export const ar: Catalog = {
   "routes.stop.failed": "لم يُسلَّم",
   "routes.stop.skipped": "تم تخطيه",
   "routes.stop.viewProof": "شاهد صورة التسليم",
+  "routes.stop.editAddress": "تعديل هذا العنوان",
   "routes.moveUp": "تحريك لأعلى",
   "routes.moveDown": "تحريك لأسفل",
   "routes.mapTitle": "خريطة المسار",

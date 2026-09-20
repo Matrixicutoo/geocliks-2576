@@ -21,6 +21,8 @@ export const vi: Catalog = {
   "shell.stopImpersonating": "Dừng đóng vai",
 
   "common.cancel": "Hủy",
+
+  "common.save": "Lưu",
   "common.close": "Đóng",
   "common.loading": "Đang tải",
   "common.download": "Tải xuống",
@@ -850,6 +852,7 @@ export const vi: Catalog = {
   "routes.stop.failed": "Chưa giao",
   "routes.stop.skipped": "Đã bỏ qua",
   "routes.stop.viewProof": "Xem ảnh giao hàng",
+  "routes.stop.editAddress": "Sửa địa chỉ này",
   "routes.moveUp": "Lên trên",
   "routes.moveDown": "Xuống dưới",
   "routes.mapTitle": "Bản đồ lộ trình",

@@ -21,6 +21,8 @@ export const ptBR: Catalog = {
   "shell.stopImpersonating": "Parar de personificar",
 
   "common.cancel": "Cancelar",
+
+  "common.save": "Salvar",
   "common.close": "Fechar",
   "common.loading": "Carregando",
   "common.download": "Baixar",
@@ -856,6 +858,7 @@ export const ptBR: Catalog = {
   "routes.stop.failed": "Não entregue",
   "routes.stop.skipped": "Ignorada",
   "routes.stop.viewProof": "Ver a foto da entrega",
+  "routes.stop.editAddress": "Editar este endereço",
   "routes.moveUp": "Mover para cima",
   "routes.moveDown": "Mover para baixo",
   "routes.mapTitle": "Mapa da rota",

@@ -21,6 +21,8 @@ export const zh: Catalog = {
   "shell.stopImpersonating": "停止模拟登录",
 
   "common.cancel": "取消",
+
+  "common.save": "保存",
   "common.close": "关闭",
   "common.loading": "加载中",
   "common.download": "下载",
@@ -818,6 +820,7 @@ export const zh: Catalog = {
   "routes.stop.failed": "未送达",
   "routes.stop.skipped": "已跳过",
   "routes.stop.viewProof": "查看送达照片",
+  "routes.stop.editAddress": "编辑此地址",
   "routes.moveUp": "上移",
   "routes.moveDown": "下移",
   "routes.mapTitle": "路线地图",

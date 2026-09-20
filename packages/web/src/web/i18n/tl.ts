@@ -21,6 +21,8 @@ export const tl: Catalog = {
   "shell.stopImpersonating": "Itigil ang pag-impersonate",
 
   "common.cancel": "Kanselahin",
+
+  "common.save": "I-save",
   "common.close": "Isara",
   "common.loading": "Naglo-load",
   "common.download": "I-download",
@@ -863,6 +865,7 @@ export const tl: Catalog = {
   "routes.stop.failed": "Hindi naihatid",
   "routes.stop.skipped": "Nilaktawan",
   "routes.stop.viewProof": "Tingnan ang litrato ng paghahatid",
+  "routes.stop.editAddress": "I-edit ang address na ito",
   "routes.moveUp": "Itaas",
   "routes.moveDown": "Ibaba",
   "routes.mapTitle": "Mapa ng ruta",

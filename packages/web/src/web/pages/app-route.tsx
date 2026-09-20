@@ -40,6 +40,7 @@ import {
 import { parseStops } from "../lib/parse-stops";
 import { RouteMap } from "../components/route-map";
 import { PhotoDrawer } from "../components/photo-drawer";
+import { StopAddress } from "../components/stop-address";
 import { STATUS_LABEL, STATUS_STYLE } from "./app-routes";
 import { canRunDeliveries } from "../lib/roles";
 
@@ -474,19 +475,21 @@ export default function AppRoutePage() {
                     ) : null}
 
                     <div className="min-w-[200px] flex-1">
-                      {/* Clickable only when there is something to open: a plain address is not a
-                          button, and pretending otherwise teaches a dead click. */}
-                      {stop.proof ? (
-                        <button
-                          type="button"
-                          onClick={() => setOpenPhoto(stop.proof?.id ?? null)}
-                          className="text-left text-[13.5px] text-chalk hover:text-amber focus:text-amber focus:outline-none"
-                        >
-                          {stop.address ?? stop.addressRaw}
-                        </button>
-                      ) : (
-                        <p className="text-[13.5px] text-chalk">{stop.address ?? stop.addressRaw}</p>
-                      )}
+                      {/* The address itself, correctable in place. Clickable only when there is
+                          something to open: a plain address is not a button, and pretending
+                          otherwise teaches a dead click. */}
+                      <StopAddress
+                        stopId={stop.id}
+                        routeId={route.id}
+                        addressRaw={stop.addressRaw}
+                        display={stop.address ?? stop.addressRaw}
+                        canEdit={canManage}
+                        textClass="text-[13.5px] text-chalk"
+                        onOpenProof={
+                          stop.proof ? () => setOpenPhoto(stop.proof?.id ?? null) : undefined
+                        }
+                        onError={setError}
+                      />
                       {/*
                         One contact line under the address, in the order the list is pasted in:
                         name, email, phone — then the reference. The email and phone were being

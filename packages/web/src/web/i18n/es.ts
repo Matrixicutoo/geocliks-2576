@@ -21,6 +21,8 @@ export const es: Catalog = {
   "shell.stopImpersonating": "Dejar de suplantar",
 
   "common.cancel": "Cancelar",
+
+  "common.save": "Guardar",
   "common.close": "Cerrar",
   "common.loading": "Cargando",
   "common.download": "Descargar",
@@ -860,6 +862,7 @@ export const es: Catalog = {
   "routes.stop.failed": "No entregada",
   "routes.stop.skipped": "Omitida",
   "routes.stop.viewProof": "Ver la foto de entrega",
+  "routes.stop.editAddress": "Editar esta dirección",
   "routes.moveUp": "Subir",
   "routes.moveDown": "Bajar",
   "routes.mapTitle": "Mapa de la ruta",

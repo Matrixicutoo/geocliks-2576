@@ -21,6 +21,8 @@ export const de: Catalog = {
   "shell.stopImpersonating": "Identitätsübernahme beenden",
 
   "common.cancel": "Abbrechen",
+
+  "common.save": "Speichern",
   "common.close": "Schließen",
   "common.loading": "Wird geladen",
   "common.download": "Herunterladen",
@@ -862,6 +864,7 @@ export const de: Catalog = {
   "routes.stop.failed": "Nicht geliefert",
   "routes.stop.skipped": "Übersprungen",
   "routes.stop.viewProof": "Lieferfoto ansehen",
+  "routes.stop.editAddress": "Diese Adresse bearbeiten",
   "routes.moveUp": "Nach oben",
   "routes.moveDown": "Nach unten",
   "routes.mapTitle": "Routenkarte",
