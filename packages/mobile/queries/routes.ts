@@ -9,16 +9,18 @@ import { useOrg } from "@/queries/orgs";
 type WaitingShape = { driverId: string | null; status: string; date: string };
 
 /**
- * The runs waiting for one driver: handed to him, dated today, and not yet started.
+ * The runs waiting for one driver: handed to him, due by now, and not yet started.
  *
  * This is the single definition of "there is a delivery waiting for you", because two places
  * show it and they must never disagree — the red count on the truck beside the shutter, and the
  * red count on the Routes tab. `assigned` is precisely the not-yet-started state: the moment he
  * taps START the route turns `active` and stops being a thing he has to be prodded about.
  *
- * Dated today on purpose. A run the office lines up for Thursday is not something to nag a
- * driver about on Monday; it becomes a waiting run when Thursday arrives, with no push, no
- * relaunch and no refresh needed beyond the list's own poll.
+ * Due by now rather than dated today exactly. Today's run is the usual case, but a run dispatch
+ * handed over on Friday and nobody drove is still waiting on Monday — matching only today made
+ * the badge vanish for exactly the routes that most need chasing, which is how a driver ends up
+ * never seeing one at all. Future dates stay out: a run lined up for Thursday is not something
+ * to nag him about on Monday, and it starts counting on its own when Thursday arrives.
  */
 export function waitingRoutesFor<T extends WaitingShape>(
   rows: T[] | undefined,
@@ -26,9 +28,12 @@ export function waitingRoutesFor<T extends WaitingShape>(
 ): T[] {
   if (!myUserId || !rows) return [];
   const today = todayLocal();
-  return rows.filter(
-    (r) => r.driverId === myUserId && r.status === "assigned" && r.date === today,
-  );
+  // Route dates are YYYY-MM-DD, so a string compare is a date compare.
+  return rows
+    .filter((r) => r.driverId === myUserId && r.status === "assigned" && r.date <= today)
+    // Newest first, because the truck opens the first one: today's run is what he is driving,
+    // and an older one that was never started should not get in front of it.
+    .sort((a, b) => (a.date < b.date ? 1 : a.date > b.date ? -1 : 0));
 }
 
 /** Routes the signed-in user may see. A field member only ever gets their own. */

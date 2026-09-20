@@ -1681,6 +1681,12 @@ export default function Capture() {
                           setPickedRouteId(r.id);
                           setProjectId(r.projectId ?? null);
                           setProjectOpen(false);
+                          // And open it. Picking a run here used to only file the next photo
+                          // against it and drop him back on the camera, which reads as the tap
+                          // having done nothing — a driver tapping the name of his run means
+                          // "take me to it". The pick is kept, so coming back to the camera
+                          // still shoots against this run.
+                          router.push({ pathname: "/route/[id]", params: { id: r.id } });
                         }}
                         style={[
                           styles.pill,
