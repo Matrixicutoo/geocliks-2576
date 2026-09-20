@@ -104,6 +104,18 @@ export default function RouteRun() {
   const started = route?.status === "active" || route?.status === "completed";
   const current = stops.find((s) => !isClosed(s)) ?? null;
   const done = stops.filter((s) => isClosed(s)).length;
+  /**
+   * One stop of look-ahead, and no more.
+   *
+   * The full remaining list was a scroll of addresses he cannot act on yet. But knowing the
+   * single next one is real work: it is the difference between choosing a lane and missing an
+   * exit. So exactly one upcoming stop is named here, with no buttons on it.
+   */
+  const upcoming = useMemo(() => {
+    if (!current) return null;
+    const at = stops.findIndex((s) => s.id === current.id);
+    return at < 0 ? null : stops[at + 1] ?? null;
+  }, [stops, current]);
   // Closed on the phone but not yet accepted by the server: the only past stops this screen
   // still shows, because they carry a Retry the driver may need before he loses signal.
   const queued = stops.filter((s) => isClosed(s) && s.status === "pending");
@@ -369,15 +381,17 @@ export default function RouteRun() {
                 </Pressable>
               ) : null}
 
+              {/* Driving there is the first thing he does at every stop, so it carries the same
+                  weight as closing one: filled, not an outline he has to hunt for. */}
               <Pressable
                 onPress={() =>
                   navigateTo(current.address ?? current.addressRaw, current.lat, current.lng)
                 }
-                style={[styles.outline, { borderColor: colors.border }]}
+                style={[styles.primary, { backgroundColor: colors.amber }]}
               >
-                <Ionicons name="navigate-outline" size={16} color={colors.foreground} />
-                <Text style={[styles.outlineText, { color: colors.foreground }]}>
-                  {t("run.navigate")}
+                <Ionicons name="navigate" size={17} color={colors.primaryForeground} />
+                <Text style={[styles.primaryText, { color: colors.primaryForeground }]}>
+                  {t("run.navigate").toUpperCase()}
                 </Text>
               </Pressable>
 
@@ -568,11 +582,32 @@ export default function RouteRun() {
           ) : null}
 
           {/*
-            One stop at a time. The list of what is still to come, and the count of what is
-            behind, both used to sit under the card: addresses a driver cannot act on yet, and
-            an invitation to read ahead at the wheel. The header carries the progress counter
-            for whoever wants it; this screen shows the next stop, and nothing else.
+            One stop at a time, plus one line of look-ahead. The full remaining list and the
+            count of what is behind both used to sit here; the header carries progress, and
+            the office screen carries history.
           */}
+          {upcoming ? (
+            <View style={[styles.upcoming, { borderColor: colors.border }]}>
+              <Text
+                style={[
+                  styles.section,
+                  { color: colors.mutedForeground, fontFamily: Fonts?.mono, paddingTop: 0 },
+                ]}
+              >
+                {t("run.upcoming", {
+                  n: stops.findIndex((s) => s.id === upcoming.id) + 1,
+                  total: stops.length,
+                }).toUpperCase()}
+              </Text>
+              <Text
+                numberOfLines={1}
+                style={[styles.upcomingAddress, { color: colors.mutedForeground }]}
+              >
+                {upcoming.address ?? upcoming.addressRaw}
+              </Text>
+            </View>
+          ) : null}
+
 
           {canAddLive ? (
             <View style={styles.liveWrap}>
@@ -770,6 +805,8 @@ const styles = StyleSheet.create({
     borderRadius: 8,
   },
   outlineText: { fontSize: 13, fontWeight: "600" },
+  upcoming: { borderWidth: 1, borderRadius: 10, borderStyle: "dashed", padding: 12, gap: 4 },
+  upcomingAddress: { fontSize: 13, fontWeight: "600" },
   sheet: { borderWidth: 1, borderRadius: 12, padding: 12, gap: 10 },
   liveWrap: { gap: 8, paddingTop: 4 },
   sheetTitle: { fontSize: 14, fontWeight: "700" },
