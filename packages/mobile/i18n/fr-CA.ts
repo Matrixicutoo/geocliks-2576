@@ -497,6 +497,7 @@ export const frCA: Catalog = {
   "run.start": "Démarrer la tournée",
   "run.stopOf": "Arrêt {n} sur {total}",
   "run.navigate": "Naviguer",
+  "run.call": "Appeler",
   "run.takePhoto": "Prendre la photo de livraison",
   "run.arriveFirst": "Rends-toi à l'adresse pour débloquer la photo",
   "run.away": "à {d}",

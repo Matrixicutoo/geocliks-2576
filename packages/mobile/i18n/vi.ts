@@ -488,6 +488,7 @@ export const vi: Catalog = {
   "run.start": "Bắt đầu tuyến",
   "run.stopOf": "Điểm {n} trên {total}",
   "run.navigate": "Chỉ đường",
+  "run.call": "Gọi",
   "run.takePhoto": "Chụp ảnh giao hàng",
   "run.arriveFirst": "Hãy đến địa chỉ để mở khóa ảnh",
   "run.away": "cách {d}",

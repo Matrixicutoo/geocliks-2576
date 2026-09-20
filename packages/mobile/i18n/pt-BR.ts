@@ -491,6 +491,7 @@ export const ptBR: Catalog = {
   "run.start": "Iniciar rota",
   "run.stopOf": "Parada {n} de {total}",
   "run.navigate": "Navegar",
+  "run.call": "Ligar",
   "run.takePhoto": "Tirar foto da entrega",
   "run.arriveFirst": "Chegue ao endereço para liberar a foto",
   "run.away": "a {d}",

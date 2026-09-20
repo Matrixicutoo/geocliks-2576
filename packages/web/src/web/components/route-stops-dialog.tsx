@@ -20,11 +20,13 @@ import {
   useRemoveStop,
   useReorderStops,
   useRoute,
+  useUpdateStop,
 } from "../queries/routes";
 import { useTeam } from "../queries/team";
 import { parseStops } from "../lib/parse-stops";
 import { cn } from "../lib/utils";
 import { useT } from "../lib/i18n";
+import { sigChoice, sigRouteLabel, sigValue } from "../lib/signature";
 
 const FIELD =
   "w-full rounded-[8px] border border-line bg-ink px-3 py-2 text-[13.5px] text-chalk outline-none focus:border-amber";
@@ -73,6 +75,7 @@ export function RouteStopsDialog({
   const optimize = useOptimizeRoute();
   const reorder = useReorderStops();
   const removeStop = useRemoveStop();
+  const updateStop = useUpdateStop();
   const assign = useAssignRoute();
 
   const [paste, setPaste] = useState("");
@@ -307,12 +310,67 @@ export function RouteStopsDialog({
                     </span>
                     <div className="min-w-[160px] flex-1">
                       <p className="text-[13px] text-chalk">{stop.address ?? stop.addressRaw}</p>
-                      {(stop.recipientName || stop.reference) && (
-                        <p className="text-[12px] text-fog">
-                          {[stop.recipientName, stop.reference].filter(Boolean).join(" · ")}
+                      {/* One contact line, in the pasted order: name, email, phone, reference.
+                          The popup is where most lists are loaded, so hiding the contact
+                          details here hid them for good. */}
+                      {(stop.recipientName ||
+                        stop.recipientEmail ||
+                        stop.recipientPhone ||
+                        stop.reference) && (
+                        <p className="flex flex-wrap items-center gap-x-2 text-[12px] text-fog">
+                          {stop.recipientName && <span>{stop.recipientName}</span>}
+                          {stop.recipientName && stop.recipientEmail && (
+                            <span aria-hidden="true">·</span>
+                          )}
+                          {stop.recipientEmail && (
+                            <a
+                              href={`mailto:${stop.recipientEmail}`}
+                              className="break-all hover:text-amber focus:text-amber focus:outline-none"
+                            >
+                              {stop.recipientEmail}
+                            </a>
+                          )}
+                          {(stop.recipientName || stop.recipientEmail) && stop.recipientPhone && (
+                            <span aria-hidden="true">·</span>
+                          )}
+                          {stop.recipientPhone && (
+                            <a
+                              href={`tel:${stop.recipientPhone.replace(/[^\d+]/g, "")}`}
+                              className="hover:text-amber focus:text-amber focus:outline-none"
+                            >
+                              {stop.recipientPhone}
+                            </a>
+                          )}
+                          {(stop.recipientName || stop.recipientEmail || stop.recipientPhone) &&
+                            stop.reference && <span aria-hidden="true">·</span>}
+                          {stop.reference && <span>{stop.reference}</span>}
                         </p>
                       )}
                     </div>
+
+                    {/* This address's own signature rule, or the run's when it has none. */}
+                    <select
+                      aria-label={t("routes.sigLabel")}
+                      value={sigChoice(stop.requireSignature)}
+                      onChange={(event) => {
+                        const choice = event.target.value;
+                        run(async () => {
+                          await updateStop.mutateAsync({
+                            stopId: stop.id,
+                            requireSignature: sigValue(choice),
+                          });
+                          return null;
+                        });
+                      }}
+                      className="rounded-[6px] max-w-[170px] border border-line bg-ink px-1.5 py-1 text-[11px] text-fog outline-none focus:border-amber"
+                    >
+                      <option value="route">
+                        {t(sigRouteLabel(route?.requireSignature ?? false))}
+                      </option>
+                      <option value="on">{t("routes.sigOn")}</option>
+                      <option value="off">{t("routes.sigOff")}</option>
+                    </select>
+
                     <span
                       className={cn(
                         "rounded-[6px] border px-1.5 py-0.5 text-[10px] font-semibold uppercase tracking-wide",
@@ -533,12 +591,14 @@ export function RouteStopsDialog({
 
                 {previewRows.length > 0 && (
                   <div className="mt-2 overflow-x-auto">
-                    <table className="w-full min-w-[420px] text-left text-[12px]">
+                    <table className="w-full min-w-[560px] text-left text-[12px]">
                       <thead>
                         <tr className="text-fog">
                           <th className="py-1 pr-3 font-medium">{t("routes.colAddress")}</th>
                           <th className="py-1 pr-3 font-medium">{t("routes.colName")}</th>
-                          <th className="py-1 font-medium">{t("routes.colPhone")}</th>
+                          <th className="py-1 pr-3 font-medium">{t("routes.colEmail")}</th>
+                          <th className="py-1 pr-3 font-medium">{t("routes.colPhone")}</th>
+                          <th className="py-1 font-medium">{t("routes.colSignature")}</th>
                         </tr>
                       </thead>
                       <tbody>
@@ -546,7 +606,17 @@ export function RouteStopsDialog({
                           <tr key={row.key} className="border-t border-line align-top">
                             <td className="py-1 pr-3 text-chalk">{row.addressRaw}</td>
                             <td className="py-1 pr-3 text-fog">{row.recipientName ?? "-"}</td>
-                            <td className="py-1 text-fog">{row.recipientPhone ?? "-"}</td>
+                            <td className="py-1 pr-3 text-fog">{row.recipientEmail ?? "-"}</td>
+                            <td className="py-1 pr-3 text-fog">{row.recipientPhone ?? "-"}</td>
+                            <td className="py-1 text-fog">
+                              {row.requireSignature === null
+                                ? t("routes.sigCellRoute")
+                                : t(
+                                    row.requireSignature
+                                      ? "routes.sigBadgeOn"
+                                      : "routes.sigBadgeOff",
+                                  )}
+                            </td>
                           </tr>
                         ))}
                       </tbody>

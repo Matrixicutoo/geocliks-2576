@@ -492,6 +492,7 @@ export const es: Catalog = {
   "run.start": "Iniciar ruta",
   "run.stopOf": "Parada {n} de {total}",
   "run.navigate": "Navegar",
+  "run.call": "Llamar",
   "run.takePhoto": "Tomar foto de entrega",
   "run.arriveFirst": "Llega a la dirección para desbloquear la foto",
   "run.away": "a {d}",

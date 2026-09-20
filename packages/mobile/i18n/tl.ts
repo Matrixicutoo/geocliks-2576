@@ -497,6 +497,7 @@ export const tl: Catalog = {
   "run.start": "Simulan ang ruta",
   "run.stopOf": "Hinto {n} ng {total}",
   "run.navigate": "Mag-navigate",
+  "run.call": "Tumawag",
   "run.takePhoto": "Kunan ng larawan ang delivery",
   "run.arriveFirst": "Puntahan ang address para ma-unlock ang larawan",
   "run.away": "{d} ang layo",

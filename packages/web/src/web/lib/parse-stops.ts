@@ -24,9 +24,18 @@ export type ParsedStop = {
   recipientPhone: string | null;
   reference: string | null;
   notes: string | null;
+  /**
+   * Whether this one address needs a signature, when the pasted list says so. Null means the
+   * list did not say, and the route's own setting decides — which is every stop on a list that
+   * has no signature column at all.
+   */
+  requireSignature: boolean | null;
 };
 
 export type StopField = keyof ParsedStop;
+
+/** Every field that is simply the cell's text. The signature column is a flag, read apart. */
+type TextField = Exclude<StopField, "requireSignature">;
 
 export type ParseResult = {
   stops: ParsedStop[];
@@ -211,11 +220,66 @@ const HEADER_ALIASES: Record<StopField, string[]> = {
     "ghi chú", "chú thích", "lưu ý", "hướng dẫn", "hướng dẫn giao hàng",
     "nhận xét", "mô tả", "chi tiết", "thông tin thêm",
   ],
+  // A signature column, for the lists where only some of the drops need one. Bare "firma" is
+  // deliberately absent: the Polish lists above already claim it as the company name, and
+  // FIELD_ORDER gives the first claimant the word — so an Italian sheet says "firma richiesta".
+  requireSignature: [
+    "signature", "signatures", "signature required", "signature needed", "require signature",
+    "requires signature", "required signature", "needs signature", "sign", "signed", "sig",
+    "pod", "proof of delivery",
+    // French
+    "signature obligatoire", "signature requise",
+    // Portuguese
+    "assinatura", "assinatura obrigatória", "assinatura obrigatoria", "requer assinatura",
+    "exige assinatura",
+    // German
+    "unterschrift", "unterschrift erforderlich", "signatur", "unterschrift nötig",
+    // Italian
+    "firma richiesta", "firma obbligatoria", "richiede firma",
+    // Spanish
+    "firma requerida", "firma obligatoria", "requiere firma",
+    // Polish
+    "podpis", "wymagany podpis", "podpis wymagany",
+    // Chinese
+    "签名", "签字", "需要签名", "是否签名", "签收", "需要签收", "是否签收",
+    // Vietnamese. "chữ ký" carries no stroked "đ", so folding handles it; "cần"/"yêu cầu" do
+    // not either, and each phrase is listed once.
+    "chữ ký", "chu ky", "cần chữ ký", "can chu ky", "yêu cầu chữ ký", "yeu cau chu ky",
+    "ký nhận", "ky nhan",
+    // Tagalog and Arabic
+    "lagda", "kailangan ng lagda", "توقيع", "يتطلب توقيع",
+  ],
 };
 
 const FIELD_ORDER: StopField[] = [
   "addressRaw", "recipientName", "recipientEmail", "recipientPhone", "reference", "notes",
+  // Last, so a word another field already claims stays where it was.
+  "requireSignature",
 ];
+
+/**
+ * What a signature cell can say. Folded the same way header cells are, so "Sí", "SI" and "si"
+ * are one key — and an unticked cell that says nothing at all stays null, which means the
+ * route decides rather than this row deciding for it.
+ */
+const FLAG_TRUE = new Set([
+  "yes", "y", "true", "1", "x", "✓", "✔", "required", "require", "requis", "needed", "need",
+  "sig", "signature", "sign", "oui", "o", "si", "sim", "s", "ja", "tak", "有", "是", "需要",
+  "要", "co", "kailangan", "oo", "نعم",
+]);
+
+const FLAG_FALSE = new Set([
+  "no", "n", "false", "0", "-", "--", "none", "not required", "no signature", "optional",
+  "non", "nao", "nein", "nie", "brak", "否", "不", "不需要", "khong", "hindi", "لا",
+]);
+
+/** Read a signature cell. Null when the cell says something this does not recognise. */
+function readFlag(value: string): boolean | null {
+  const key = normalizeHeader(value);
+  if (FLAG_TRUE.has(key)) return true;
+  if (FLAG_FALSE.has(key)) return false;
+  return null;
+}
 
 /** Words that mean a field is part of a street address, never a person's name. */
 const STREET_WORDS = new Set([
@@ -383,6 +447,7 @@ function emptyStop(): ParsedStop {
     recipientPhone: null,
     reference: null,
     notes: null,
+    requireSignature: null,
   };
 }
 
@@ -400,7 +465,12 @@ function fromHeader(cells: string[], mapping: (StopField | null)[]): ParsedStop 
       extras.push(value);
       return;
     }
-    if (!stop[field]) stop[field] = value;
+    if (field === "requireSignature") {
+      if (stop.requireSignature === null) stop.requireSignature = readFlag(value);
+      return;
+    }
+    const text: TextField = field;
+    if (!stop[text]) stop[text] = value;
   });
 
   stop.addressRaw = extras.join(", ");
@@ -493,6 +563,7 @@ export function parseStops(text: string): ParseResult {
       recipientPhone: clean(stop.recipientPhone, 50),
       reference: clean(stop.reference, 80),
       notes: clean(stop.notes, 500),
+      requireSignature: stop.requireSignature,
     });
   }
 

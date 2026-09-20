@@ -495,6 +495,7 @@ export const de: Catalog = {
   "run.start": "Tour starten",
   "run.stopOf": "Stopp {n} von {total}",
   "run.navigate": "Navigieren",
+  "run.call": "Anrufen",
   "run.takePhoto": "Lieferfoto aufnehmen",
   "run.arriveFirst": "Fahre zur Adresse, um das Foto freizuschalten",
   "run.away": "{d} entfernt",

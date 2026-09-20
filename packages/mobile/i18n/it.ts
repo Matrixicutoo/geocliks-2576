@@ -494,6 +494,7 @@ export const it: Catalog = {
   "run.start": "Avvia il giro",
   "run.stopOf": "Fermata {n} di {total}",
   "run.navigate": "Naviga",
+  "run.call": "Chiama",
   "run.takePhoto": "Scatta la foto di consegna",
   "run.arriveFirst": "Raggiungi l'indirizzo per sbloccare la foto",
   "run.away": "a {d}",

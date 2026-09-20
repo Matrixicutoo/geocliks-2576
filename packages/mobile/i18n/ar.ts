@@ -484,6 +484,7 @@ export const ar: Catalog = {
   "run.start": "ابدأ المسار",
   "run.stopOf": "المحطة {n} من {total}",
   "run.navigate": "التنقل",
+  "run.call": "اتصال",
   "run.takePhoto": "التقط صورة التسليم",
   "run.arriveFirst": "توجّه إلى العنوان لتفعيل الصورة",
   "run.away": "على بعد {d}",

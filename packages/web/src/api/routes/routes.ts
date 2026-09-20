@@ -480,6 +480,8 @@ export const routes = {
               windowStart: z.number().int().min(0).max(1439).nullish(),
               windowEnd: z.number().int().min(0).max(1439).nullish(),
               serviceMinutes: z.number().int().min(0).max(240).nullish(),
+              /** Null - the usual case - leaves this address following the route's setting. */
+              requireSignature: z.boolean().nullish(),
             }),
           )
           .min(1)
@@ -508,6 +510,7 @@ export const routes = {
         windowStart: stop.windowStart ?? null,
         windowEnd: stop.windowEnd ?? null,
         serviceMinutes: stop.serviceMinutes ?? null,
+        requireSignature: stop.requireSignature ?? null,
         trackToken: shareToken(),
       }));
 
@@ -543,6 +546,7 @@ export const routes = {
         reference: z.string().trim().max(80).nullish(),
         notes: z.string().trim().max(500).nullish(),
         serviceMinutes: z.number().int().min(0).max(240).nullish(),
+        requireSignature: z.boolean().nullish(),
       }),
     )
     .handler(async ({ input, context }) => {
@@ -580,6 +584,7 @@ export const routes = {
         reference: input.reference ?? null,
         notes: input.notes ?? null,
         serviceMinutes: input.serviceMinutes ?? null,
+        requireSignature: input.requireSignature ?? null,
         trackToken: shareToken(),
       });
 
@@ -740,6 +745,8 @@ export const routes = {
         windowStart: z.number().int().min(0).max(1439).nullish(),
         windowEnd: z.number().int().min(0).max(1439).nullish(),
         serviceMinutes: z.number().int().min(0).max(240).nullish(),
+        /** True, false, or null to hand this address back to the route's own setting. */
+        requireSignature: z.boolean().nullish(),
       }),
     )
     .handler(async ({ input, context }) => {

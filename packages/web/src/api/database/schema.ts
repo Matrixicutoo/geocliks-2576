@@ -568,6 +568,15 @@ export const routeStops = sqliteTable(
     windowEnd: integer("window_end"),
     /** Per-stop override of the route's service time. */
     serviceMinutes: integer("service_minutes"),
+    /**
+     * Per-address override of the route's signature rule.
+     *
+     * Null means "whatever the route says", which is what every stop starts as — so changing
+     * the route's own setting still moves every address nobody has answered for. One explicit
+     * answer here is what makes a single high-value drop demand a signature on a run where the
+     * rest are no-contact, and the other way round.
+     */
+    requireSignature: integer("require_signature", { mode: "boolean" }),
     status: text("status").notNull().default("pending"), // pending | delivered | failed | skipped
     /** The evidence photo proving this stop. */
     photoId: text("photo_id"),

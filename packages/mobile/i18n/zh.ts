@@ -471,6 +471,7 @@ export const zh: Catalog = {
   "run.start": "开始路线",
   "run.stopOf": "第 {n} 站，共 {total} 站",
   "run.navigate": "导航",
+  "run.call": "拨打",
   "run.takePhoto": "拍摄送达照片",
   "run.arriveFirst": "到达地址后才能拍照",
   "run.away": "还有 {d}",

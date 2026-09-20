@@ -163,8 +163,9 @@ export default function RouteRun() {
         outcome,
         reason: outcome === "failed" ? (reason ?? "other") : "",
         note: outcome === "failed" ? note.trim() : "",
-        // Ticked by the office on the route; without this the camera never asks for one.
-        requireSignature: route.requireSignature ? "1" : "",
+        // This address's own answer first, and the route's only when it has none: a run of
+        // no-contact drops can still carry the one parcel that has to be signed for.
+        requireSignature: (current.requireSignature ?? route.requireSignature) ? "1" : "",
       },
     });
     setReasonOpen(false);
@@ -322,9 +323,17 @@ export default function RouteRun() {
               <Text style={[styles.address, { color: colors.foreground }]}>
                 {current.address ?? current.addressRaw}
               </Text>
-              {current.recipientName ? (
+              {/* Name and email on one line, in pasted order; the number is the call button
+                  below, where a thumb can reach it. */}
+              {current.recipientName || current.recipientEmail ? (
                 <Text style={[styles.line, { color: colors.foreground }]}>
-                  {current.recipientName}
+                  {current.recipientName ? current.recipientName : null}
+                  {current.recipientName && current.recipientEmail ? " · " : null}
+                  {current.recipientEmail ? (
+                    <Text onPress={() => void Linking.openURL(`mailto:${current.recipientEmail}`)}>
+                      {current.recipientEmail}
+                    </Text>
+                  ) : null}
                 </Text>
               ) : null}
               {current.reference ? (
@@ -338,6 +347,24 @@ export default function RouteRun() {
                 <Text style={[styles.meta, { color: colors.mutedForeground }]}>
                   {t("run.notes")}: {current.notes}
                 </Text>
+              ) : null}
+
+              {/*
+                The recipient's number, one tap from the door. It was being collected by the
+                office and shown to nobody, which made "nobody home" the only move available
+                when a driver was standing outside a locked lobby.
+              */}
+              {current.recipientPhone ? (
+                <Pressable
+                  onPress={() => void Linking.openURL(`tel:${current.recipientPhone}`)}
+                  accessibilityLabel={t("run.call")}
+                  style={[styles.outline, { borderColor: colors.border }]}
+                >
+                  <Ionicons name="call-outline" size={16} color={colors.foreground} />
+                  <Text style={[styles.outlineText, { color: colors.foreground }]}>
+                    {t("run.call")} · {current.recipientPhone}
+                  </Text>
+                </Pressable>
               ) : null}
 
               <Pressable
@@ -557,9 +584,28 @@ export default function RouteRun() {
                 <Text style={[styles.rowAddress, { color: colors.foreground }]}>
                   {stop.address ?? stop.addressRaw}
                 </Text>
-                {stop.recipientName ? (
+                {/* Name, email, phone on one line, in the order the office pastes them. */}
+                {stop.recipientName || stop.recipientEmail || stop.recipientPhone ? (
                   <Text style={[styles.meta, { color: colors.mutedForeground }]}>
-                    {stop.recipientName}
+                    {stop.recipientName ? stop.recipientName : null}
+                    {stop.recipientName && stop.recipientEmail ? " · " : null}
+                    {stop.recipientEmail ? (
+                      <Text onPress={() => void Linking.openURL(`mailto:${stop.recipientEmail}`)}>
+                        {stop.recipientEmail}
+                      </Text>
+                    ) : null}
+                    {(stop.recipientName || stop.recipientEmail) && stop.recipientPhone
+                      ? " · "
+                      : null}
+                    {stop.recipientPhone ? (
+                      <Text
+                        onPress={() =>
+                          void Linking.openURL(`tel:${stop.recipientPhone?.replace(/[^\d+]/g, "")}`)
+                        }
+                      >
+                        {stop.recipientPhone}
+                      </Text>
+                    ) : null}
                   </Text>
                 ) : null}
               </View>

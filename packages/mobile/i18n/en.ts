@@ -504,6 +504,7 @@ export const en = {
   "run.start": "Start route",
   "run.stopOf": "Stop {n} of {total}",
   "run.navigate": "Navigate",
+  "run.call": "Call",
   "run.takePhoto": "Take delivery photo",
   "run.arriveFirst": "Drive to the address to unlock the photo",
   "run.away": "{d} away",

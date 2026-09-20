@@ -25,9 +25,18 @@ import {
   useRemoveStop,
   useReorderStops,
   useRoute,
+  useUpdateStop,
 } from "../queries/routes";
 import { cn } from "../lib/utils";
 import { type TKey, useT } from "../lib/i18n";
+import {
+  SIG_BADGE_STYLE,
+  sigBadgeLabel,
+  sigChoice,
+  sigEffective,
+  sigRouteLabel,
+  sigValue,
+} from "../lib/signature";
 import { parseStops } from "../lib/parse-stops";
 import { RouteMap } from "../components/route-map";
 import { PhotoDrawer } from "../components/photo-drawer";
@@ -106,6 +115,7 @@ export default function AppRoutePage() {
   const optimize = useOptimizeRoute();
   const reorder = useReorderStops();
   const removeStop = useRemoveStop();
+  const updateStop = useUpdateStop();
   const removeRoute = useRemoveRoute();
 
   // A late order typed straight into a run that is already moving.
@@ -477,9 +487,47 @@ export default function AppRoutePage() {
                       ) : (
                         <p className="text-[13.5px] text-chalk">{stop.address ?? stop.addressRaw}</p>
                       )}
-                      {(stop.recipientName || stop.reference) && (
-                        <p className="text-[12.5px] text-fog">
-                          {[stop.recipientName, stop.reference].filter(Boolean).join(" · ")}
+                      {/*
+                        One contact line under the address, in the order the list is pasted in:
+                        name, email, phone — then the reference. The email and phone were being
+                        collected, stored and shown to nobody, so the one moment they matter
+                        ("the driver is outside and nobody answers") meant digging through the
+                        spreadsheet the list came from. Real links: the answer to that moment is
+                        a call, not a string to copy out by hand.
+                      */}
+                      {(stop.recipientName ||
+                        stop.recipientEmail ||
+                        stop.recipientPhone ||
+                        stop.reference) && (
+                        <p className="flex flex-wrap items-center gap-x-2 text-[12.5px] text-fog">
+                          {stop.recipientName && <span>{stop.recipientName}</span>}
+                          {stop.recipientName && stop.recipientEmail && (
+                            <span aria-hidden="true">·</span>
+                          )}
+                          {stop.recipientEmail && (
+                            <a
+                              href={`mailto:${stop.recipientEmail}`}
+                              className="break-all hover:text-amber focus:text-amber focus:outline-none"
+                            >
+                              {stop.recipientEmail}
+                            </a>
+                          )}
+                          {(stop.recipientName || stop.recipientEmail) && stop.recipientPhone && (
+                            <span aria-hidden="true">·</span>
+                          )}
+                          {stop.recipientPhone && (
+                            <a
+                              href={`tel:${stop.recipientPhone.replace(/[^\d+]/g, "")}`}
+                              className="hover:text-amber focus:text-amber focus:outline-none"
+                            >
+                              {stop.recipientPhone}
+                            </a>
+                          )}
+                          {(stop.recipientName ||
+                            stop.recipientEmail ||
+                            stop.recipientPhone) &&
+                            stop.reference && <span aria-hidden="true">·</span>}
+                          {stop.reference && <span>{stop.reference}</span>}
                         </p>
                       )}
                       {/* Why it did not land, in the row rather than buried in a drawer. */}
@@ -520,6 +568,52 @@ export default function AppRoutePage() {
                           stop.geocodeStatus === "failed"
                             ? "routes.pin.failed"
                             : "routes.pin.pending",
+                        )}
+                      </span>
+                    )}
+
+                    {/*
+                      The signature rule, on every address rather than once on the run. A
+                      dispatcher's list is rarely uniform — the one parcel worth signing for
+                      sits among forty that are not — and until now the whole run had to agree.
+                      Read-only viewers get the answer as a badge; nobody has to open a stop to
+                      find out what the driver will be asked for at the door.
+                    */}
+                    {canManage ? (
+                      <select
+                        aria-label={t("routes.sigLabel")}
+                        value={sigChoice(stop.requireSignature)}
+                        onChange={(event) => {
+                          const choice = event.target.value;
+                          run(async () => {
+                            await updateStop.mutateAsync({
+                              stopId: stop.id,
+                              requireSignature: sigValue(choice),
+                            });
+                            return null;
+                          });
+                        }}
+                        className="rounded-[6px] max-w-[190px] border border-line bg-ink px-2 py-1 text-[11.5px] text-fog outline-none focus:border-amber"
+                      >
+                        <option value="route">{t(sigRouteLabel(route.requireSignature))}</option>
+                        <option value="on">{t("routes.sigOn")}</option>
+                        <option value="off">{t("routes.sigOff")}</option>
+                      </select>
+                    ) : (
+                      <span
+                        className={cn(
+                          "rounded-[6px] border px-2 py-0.5 text-[11px] font-semibold uppercase tracking-wide",
+                          SIG_BADGE_STYLE[
+                            sigEffective(stop.requireSignature, route.requireSignature)
+                              ? "on"
+                              : "off"
+                          ],
+                        )}
+                      >
+                        {t(
+                          sigBadgeLabel(
+                            sigEffective(stop.requireSignature, route.requireSignature),
+                          ),
                         )}
                       </span>
                     )}
@@ -669,13 +763,14 @@ export default function AppRoutePage() {
 
                   {previewRows.length > 0 && (
                     <div className="mt-2 overflow-x-auto">
-                      <table className="w-full min-w-[520px] text-left text-[12px]">
+                      <table className="w-full min-w-[620px] text-left text-[12px]">
                         <thead>
                           <tr className="text-fog">
                             <th className="py-1 pr-3 font-medium">{t("routes.colAddress")}</th>
                             <th className="py-1 pr-3 font-medium">{t("routes.colName")}</th>
                             <th className="py-1 pr-3 font-medium">{t("routes.colEmail")}</th>
-                            <th className="py-1 font-medium">{t("routes.colPhone")}</th>
+                            <th className="py-1 pr-3 font-medium">{t("routes.colPhone")}</th>
+                            <th className="py-1 font-medium">{t("routes.colSignature")}</th>
                           </tr>
                         </thead>
                         <tbody>
@@ -684,7 +779,17 @@ export default function AppRoutePage() {
                               <td className="py-1 pr-3 text-chalk">{row.addressRaw}</td>
                               <td className="py-1 pr-3 text-fog">{row.recipientName ?? "-"}</td>
                               <td className="py-1 pr-3 text-fog">{row.recipientEmail ?? "-"}</td>
-                              <td className="py-1 text-fog">{row.recipientPhone ?? "-"}</td>
+                              <td className="py-1 pr-3 text-fog">{row.recipientPhone ?? "-"}</td>
+                              {/* A blank cell is not "no signature" — it is this run's own rule. */}
+                              <td className="py-1 text-fog">
+                                {row.requireSignature === null
+                                  ? t("routes.sigCellRoute")
+                                  : t(
+                                      row.requireSignature
+                                        ? "routes.sigBadgeOn"
+                                        : "routes.sigBadgeOff",
+                                    )}
+                              </td>
                             </tr>
                           ))}
                         </tbody>
