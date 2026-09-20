@@ -821,6 +821,7 @@ export const zh: Catalog = {
   "routes.stop.skipped": "已跳过",
   "routes.stop.viewProof": "查看送达照片",
   "routes.stop.editAddress": "编辑此地址",
+  "routes.stop.addressLocked": "此站点已结束，地址属于配送记录的一部分",
   "routes.moveUp": "上移",
   "routes.moveDown": "下移",
   "routes.mapTitle": "路线地图",

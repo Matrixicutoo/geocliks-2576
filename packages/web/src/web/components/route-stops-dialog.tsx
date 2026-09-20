@@ -318,6 +318,7 @@ export function RouteStopsDialog({
                         addressRaw={stop.addressRaw}
                         display={stop.address ?? stop.addressRaw}
                         canEdit
+                        locked={stop.status !== "pending"}
                         textClass="text-[13px] text-chalk"
                         onError={setError}
                       />

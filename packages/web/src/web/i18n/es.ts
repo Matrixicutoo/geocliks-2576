@@ -863,6 +863,7 @@ export const es: Catalog = {
   "routes.stop.skipped": "Omitida",
   "routes.stop.viewProof": "Ver la foto de entrega",
   "routes.stop.editAddress": "Editar esta dirección",
+  "routes.stop.addressLocked": "Esta parada está cerrada: su dirección forma parte del registro de entrega",
   "routes.moveUp": "Subir",
   "routes.moveDown": "Bajar",
   "routes.mapTitle": "Mapa de la ruta",

@@ -859,6 +859,7 @@ export const ptBR: Catalog = {
   "routes.stop.skipped": "Ignorada",
   "routes.stop.viewProof": "Ver a foto da entrega",
   "routes.stop.editAddress": "Editar este endereço",
+  "routes.stop.addressLocked": "Esta parada está encerrada - o endereço faz parte do registro da entrega",
   "routes.moveUp": "Mover para cima",
   "routes.moveDown": "Mover para baixo",
   "routes.mapTitle": "Mapa da rota",

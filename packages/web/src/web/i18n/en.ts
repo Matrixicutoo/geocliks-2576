@@ -869,6 +869,7 @@ export const en = {
   "routes.stop.skipped": "Skipped",
   "routes.stop.viewProof": "See the delivery photo",
   "routes.stop.editAddress": "Edit this address",
+  "routes.stop.addressLocked": "This stop is closed - its address is part of the delivery record",
   "routes.moveUp": "Move up",
   "routes.moveDown": "Move down",
   "routes.mapTitle": "Route map",

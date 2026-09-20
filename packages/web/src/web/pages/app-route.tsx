@@ -484,6 +484,7 @@ export default function AppRoutePage() {
                         addressRaw={stop.addressRaw}
                         display={stop.address ?? stop.addressRaw}
                         canEdit={canManage}
+                        locked={stop.status !== "pending"}
                         textClass="text-[13.5px] text-chalk"
                         onOpenProof={
                           stop.proof ? () => setOpenPhoto(stop.proof?.id ?? null) : undefined

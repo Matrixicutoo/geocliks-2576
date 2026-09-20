@@ -853,6 +853,7 @@ export const vi: Catalog = {
   "routes.stop.skipped": "Đã bỏ qua",
   "routes.stop.viewProof": "Xem ảnh giao hàng",
   "routes.stop.editAddress": "Sửa địa chỉ này",
+  "routes.stop.addressLocked": "Điểm dừng này đã đóng - địa chỉ là một phần của hồ sơ giao hàng",
   "routes.moveUp": "Lên trên",
   "routes.moveDown": "Xuống dưới",
   "routes.mapTitle": "Bản đồ lộ trình",

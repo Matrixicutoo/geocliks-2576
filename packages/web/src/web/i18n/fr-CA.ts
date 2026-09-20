@@ -870,6 +870,7 @@ export const frCA: Catalog = {
   "routes.stop.skipped": "Ignorée",
   "routes.stop.viewProof": "Voir la photo de livraison",
   "routes.stop.editAddress": "Modifier cette adresse",
+  "routes.stop.addressLocked": "Cet arrêt est clos - son adresse fait partie du dossier de livraison",
   "routes.moveUp": "Monter",
   "routes.moveDown": "Descendre",
   "routes.mapTitle": "Carte du trajet",

@@ -866,6 +866,7 @@ export const tl: Catalog = {
   "routes.stop.skipped": "Nilaktawan",
   "routes.stop.viewProof": "Tingnan ang litrato ng paghahatid",
   "routes.stop.editAddress": "I-edit ang address na ito",
+  "routes.stop.addressLocked": "Sarado na ang hintong ito - bahagi ng rekord ng paghahatid ang address nito",
   "routes.moveUp": "Itaas",
   "routes.moveDown": "Ibaba",
   "routes.mapTitle": "Mapa ng ruta",

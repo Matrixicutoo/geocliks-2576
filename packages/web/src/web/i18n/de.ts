@@ -865,6 +865,7 @@ export const de: Catalog = {
   "routes.stop.skipped": "Übersprungen",
   "routes.stop.viewProof": "Lieferfoto ansehen",
   "routes.stop.editAddress": "Diese Adresse bearbeiten",
+  "routes.stop.addressLocked": "Dieser Stopp ist abgeschlossen - die Adresse gehört zum Liefernachweis",
   "routes.moveUp": "Nach oben",
   "routes.moveDown": "Nach unten",
   "routes.mapTitle": "Routenkarte",

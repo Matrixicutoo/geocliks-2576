@@ -766,6 +766,15 @@ export const routes = {
       );
       // Changing the address invalidates the pin.
       if (typeof patch.addressRaw === "string" && patch.addressRaw !== stop.addressRaw) {
+        // A closed stop's address is the record of where its proof photo was taken. Rewriting
+        // it would quietly re-label evidence that has already been delivered and reported on,
+        // so the text is frozen the moment the stop stops being pending. Everything else on
+        // the row — the reference, the note, the signature rule — stays editable.
+        if (stop.status !== "pending") {
+          throw new ORPCError("BAD_REQUEST", {
+            message: "A closed stop's address cannot be changed",
+          });
+        }
         patch.geocodeStatus = "pending";
         patch.lat = null;
         patch.lng = null;

@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Check, Loader2, Pencil, X } from "lucide-react";
+import { Check, Loader2, Lock, Pencil, X } from "lucide-react";
 import { useAddressSuggestions, useGeocodeStops, useUpdateStop } from "../queries/routes";
 import { useT } from "../lib/i18n";
 import { cn } from "../lib/utils";
@@ -23,6 +23,7 @@ export function StopAddress({
   addressRaw,
   display,
   canEdit,
+  locked,
   textClass,
   onOpenProof,
   onError,
@@ -34,6 +35,11 @@ export function StopAddress({
   /** What the geocoder made of it, shown when it is there. */
   display: string;
   canEdit: boolean;
+  /**
+   * The stop is closed, so its address is the record of where its proof photo was taken.
+   * The pencil goes away and says why, rather than offering an edit the server will refuse.
+   */
+  locked?: boolean;
   textClass: string;
   /** Given for a stop with a delivery photo: the address opens it, as it did before. */
   onOpenProof?: () => void;
@@ -175,7 +181,7 @@ export function StopAddress({
       ) : (
         <p className={textClass}>{display}</p>
       )}
-      {canEdit && (
+      {canEdit && !locked && (
         <button
           type="button"
           aria-label={t("routes.stop.editAddress")}
@@ -185,6 +191,15 @@ export function StopAddress({
         >
           <Pencil className="size-3" />
         </button>
+      )}
+      {canEdit && locked && (
+        <span
+          aria-label={t("routes.stop.addressLocked")}
+          title={t("routes.stop.addressLocked")}
+          className="mt-0.5 shrink-0 text-fog/50"
+        >
+          <Lock className="size-3" />
+        </span>
       )}
     </div>
   );

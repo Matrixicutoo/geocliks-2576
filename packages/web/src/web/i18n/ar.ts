@@ -839,6 +839,7 @@ export const ar: Catalog = {
   "routes.stop.skipped": "تم تخطيه",
   "routes.stop.viewProof": "شاهد صورة التسليم",
   "routes.stop.editAddress": "تعديل هذا العنوان",
+  "routes.stop.addressLocked": "هذه المحطة مغلقة - عنوانها جزء من سجل التسليم",
   "routes.moveUp": "تحريك لأعلى",
   "routes.moveDown": "تحريك لأسفل",
   "routes.mapTitle": "خريطة المسار",
