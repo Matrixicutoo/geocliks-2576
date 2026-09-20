@@ -513,7 +513,7 @@ export const en = {
   "run.cantDeliver": "Couldn't deliver",
   "run.delivered": "Delivered",
   "run.failedLabel": "Not delivered",
-  "run.remainingCount": "{n} stops left after this one",
+  "run.nextStop": "Next stop",
   "run.doneTitle": "Route complete",
   "run.doneBody": "Every stop is closed. Nice work.",
   "run.pendingSync": "Waiting to sync",

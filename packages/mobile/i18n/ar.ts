@@ -493,7 +493,7 @@ export const ar: Catalog = {
   "run.cantDeliver": "تعذّر التسليم",
   "run.delivered": "تم التسليم",
   "run.failedLabel": "لم يتم التسليم",
-  "run.remainingCount": "تبقى {n} محطات بعد هذه",
+  "run.nextStop": "المحطة التالية",
   "run.doneTitle": "اكتمل المسار",
   "run.doneBody": "تم إغلاق كل المحطات. عمل رائع.",
   "run.pendingSync": "بانتظار المزامنة",

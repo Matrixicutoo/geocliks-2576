@@ -506,7 +506,7 @@ export const frCA: Catalog = {
   "run.cantDeliver": "Livraison impossible",
   "run.delivered": "Livré",
   "run.failedLabel": "Non livré",
-  "run.remainingCount": "{n} arrêts restants après celui-ci",
+  "run.nextStop": "Prochain arrêt",
   "run.doneTitle": "Tournée terminée",
   "run.doneBody": "Tous les arrêts sont fermés. Beau travail.",
   "run.pendingSync": "En attente de synchronisation",

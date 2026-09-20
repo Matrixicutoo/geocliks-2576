@@ -104,7 +104,9 @@ export default function RouteRun() {
   const started = route?.status === "active" || route?.status === "completed";
   const current = stops.find((s) => !isClosed(s)) ?? null;
   const done = stops.filter((s) => isClosed(s)).length;
-  const remaining = stops.filter((s) => !isClosed(s) && s.id !== current?.id);
+  // Closed on the phone but not yet accepted by the server: the only past stops this screen
+  // still shows, because they carry a Retry the driver may need before he loses signal.
+  const queued = stops.filter((s) => isClosed(s) && s.status === "pending");
 
   /**
    * The arrival gate on the delivery photo.
@@ -318,7 +320,7 @@ export default function RouteRun() {
               style={[styles.card, { borderColor: colors.amber, backgroundColor: colors.card }]}
             >
               <Text style={[styles.stopOf, { color: colors.amber, fontFamily: Fonts?.mono }]}>
-                {t("run.stopOf", { n: current.seq + 1, total: stops.length }).toUpperCase()}
+                {t("run.nextStop").toUpperCase()}
               </Text>
               <Text style={[styles.address, { color: colors.foreground }]}>
                 {current.address ?? current.addressRaw}
@@ -566,16 +568,11 @@ export default function RouteRun() {
           ) : null}
 
           {/*
-            One stop at a time. The full list of what is still to come used to sit right under
-            the current card, which is a scroll of addresses a driver cannot act on yet and a
-            standing invitation to read ahead at the wheel. The count in the header says where
-            the run is; this screen says what to do next, and nothing else.
+            One stop at a time. The list of what is still to come, and the count of what is
+            behind, both used to sit under the card: addresses a driver cannot act on yet, and
+            an invitation to read ahead at the wheel. The header carries the progress counter
+            for whoever wants it; this screen shows the next stop, and nothing else.
           */}
-          {remaining.length > 0 ? (
-            <Text style={[styles.section, { color: colors.mutedForeground }]}>
-              {t("run.remainingCount", { n: remaining.length }).toUpperCase()}
-            </Text>
-          ) : null}
 
           {canAddLive ? (
             <View style={styles.liveWrap}>
@@ -663,13 +660,7 @@ export default function RouteRun() {
             closed rows kept here are the ones still sitting in the upload queue, because those
             carry the retry the driver may have to tap before leaving signal.
           */}
-          {done > 0 ? (
-            <Text style={[styles.section, { color: colors.mutedForeground }]}>
-              {t("routes.progress", { n: done, total: stops.length }).toUpperCase()}
-            </Text>
-          ) : null}
-          {stops
-            .filter((s) => isClosed(s) && s.status === "pending")
+          {queued
             .map((stop) => {
               const stuck = stuckStopIds.includes(stop.id);
               return (

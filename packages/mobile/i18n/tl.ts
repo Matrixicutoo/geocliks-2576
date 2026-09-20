@@ -506,7 +506,7 @@ export const tl: Catalog = {
   "run.cantDeliver": "Hindi na-deliver",
   "run.delivered": "Na-deliver",
   "run.failedLabel": "Hindi na-deliver",
-  "run.remainingCount": "{n} hinto pa pagkatapos nito",
+  "run.nextStop": "Susunod na hinto",
   "run.doneTitle": "Tapos na ang ruta",
   "run.doneBody": "Sarado na ang lahat ng hinto. Magaling.",
   "run.pendingSync": "Naghihintay mag-sync",

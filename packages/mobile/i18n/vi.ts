@@ -497,7 +497,7 @@ export const vi: Catalog = {
   "run.cantDeliver": "Không giao được",
   "run.delivered": "Đã giao",
   "run.failedLabel": "Chưa giao",
-  "run.remainingCount": "Còn {n} điểm sau điểm này",
+  "run.nextStop": "Điểm dừng tiếp theo",
   "run.doneTitle": "Hoàn thành tuyến",
   "run.doneBody": "Tất cả các điểm đã đóng. Làm tốt lắm.",
   "run.pendingSync": "Đang chờ đồng bộ",

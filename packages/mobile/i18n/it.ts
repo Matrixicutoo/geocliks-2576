@@ -503,7 +503,7 @@ export const it: Catalog = {
   "run.cantDeliver": "Consegna non riuscita",
   "run.delivered": "Consegnato",
   "run.failedLabel": "Non consegnato",
-  "run.remainingCount": "Altre {n} fermate dopo questa",
+  "run.nextStop": "Prossima fermata",
   "run.doneTitle": "Giro completato",
   "run.doneBody": "Tutte le fermate sono chiuse. Ottimo lavoro.",
   "run.pendingSync": "In attesa di sincronizzazione",
