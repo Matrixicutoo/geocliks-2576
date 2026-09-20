@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import {
   ActivityIndicator,
   Linking,
@@ -18,6 +18,7 @@ import { LanguageMenu } from "@/components/language-menu";
 import { useT, type TKey } from "@/lib/i18n";
 import { drainQueue, readQueue, type FailedReason } from "@/lib/queue";
 import { useAddLiveStop, useRoute, useSkipStop, useStartRoute } from "@/queries/routes";
+import { formatDistance, useArrival } from "@/hooks/use-arrival";
 import { AssignDriverSheet } from "@/components/assign-driver-sheet";
 import { useOrg } from "@/queries/orgs";
 import { AddressInput } from "@/components/address-input";
@@ -46,7 +47,9 @@ export default function RouteRun() {
   const colors = useColors();
   const t = useT();
   const router = useRouter();
-  const { id } = useLocalSearchParams<{ id: string }>();
+  // `after` is the stop the camera just closed — see the auto-navigate effect below.
+  const params = useLocalSearchParams<{ id: string; after?: string }>();
+  const id = params.id;
   const routeId = typeof id === "string" ? id : null;
   const query = useRoute(routeId);
   const startRoute = useStartRoute();
@@ -98,9 +101,53 @@ export default function RouteRun() {
     [queuedStopIds],
   );
 
+  const started = route?.status === "active" || route?.status === "completed";
   const current = stops.find((s) => !isClosed(s)) ?? null;
   const done = stops.filter((s) => isClosed(s)).length;
   const remaining = stops.filter((s) => !isClosed(s) && s.id !== current?.id);
+
+  /**
+   * The arrival gate on the delivery photo.
+   *
+   * A proof-of-delivery photo taken three streets away proves nothing, and the honest mistake
+   * is easy: tap the big amber button while still rolling and the stop closes. So the button
+   * only comes alive within `ARRIVAL_RADIUS_M` of the pin, and the card says how far out he is
+   * until then. Only measured distance blocks: no pin on the stop, or location off or denied,
+   * leaves the gate open, because a gate that fires on missing data blocks work rather than
+   * protecting it. Watched only while the run is moving, so a dispatcher reading the screen
+   * from the office never wakes the driver's GPS.
+   */
+  const arrival = useArrival(current, started && !!current);
+  /**
+   * His way past the gate: the map never resolved this address, the pin is on the wrong side of
+   * a block, the GPS is drifting in a parkade. He is holding the parcel and the customer is
+   * waiting — he taps this, shoots, and carries on. Nothing is hidden from the office: every
+   * capture is stamped with the coordinates it was taken at, so a photo shot away from the
+   * address says so by itself. Per stop, so the next one gates again.
+   */
+  const [overrideStopId, setOverrideStopId] = useState<string | null>(null);
+  const gateOpen = arrival.state !== "away" || overrideStopId === current?.id;
+
+  /**
+   * Straight into the map for the next stop.
+   *
+   * The camera hands him back here after each delivery, and what he wants next is never this
+   * screen — it is the road to the following address. So the maps app opens itself, once, as
+   * soon as the run has actually moved on. `after` carries the stop he just photographed:
+   * waiting for `current` to be a different stop is what stops it from navigating him back to
+   * the doorstep he is standing on, because the close can land a beat later than the screen
+   * does when the queue is draining. Nothing fires on the last stop — there is no next address.
+   */
+  const shotStopId = typeof params.after === "string" && params.after ? params.after : null;
+  const autoNavigated = useRef<string | null>(null);
+  useEffect(() => {
+    if (!shotStopId || !current || current.id === shotStopId) return;
+    if (autoNavigated.current === current.id) return;
+    autoNavigated.current = current.id;
+    navigateTo(current.address ?? current.addressRaw, current.lat, current.lng);
+    // Spent: a remount, or coming back from the map, must not re-open it.
+    router.setParams({ after: "" });
+  }, [shotStopId, current, router]);
 
   const goShoot = (outcome: "delivered" | "failed") => {
     if (!current || !route) return;
@@ -151,8 +198,6 @@ export default function RouteRun() {
       setRetrying(false);
     }
   }, [refreshQueue, query]);
-
-  const started = route?.status === "active" || route?.status === "completed";
 
   // A dispatcher can tack a stop onto any run that is still open. A driver can only do it on a
   // run that is already moving - which is also exactly what the server allows, so the button is
@@ -308,14 +353,61 @@ export default function RouteRun() {
               </Pressable>
 
               <Pressable
-                onPress={() => goShoot("delivered")}
-                style={[styles.primary, { backgroundColor: colors.amber }]}
+                onPress={() => gateOpen && goShoot("delivered")}
+                disabled={!gateOpen}
+                accessibilityLabel={t("run.takePhoto")}
+                accessibilityState={{ disabled: !gateOpen }}
+                style={[
+                  styles.primary,
+                  // Greyed rather than hidden: he can see the delivery button is there and
+                  // waiting on the drive, which is the whole message.
+                  { backgroundColor: gateOpen ? colors.amber : colors.border },
+                ]}
               >
-                <Ionicons name="camera" size={17} color={colors.primaryForeground} />
-                <Text style={[styles.primaryText, { color: colors.primaryForeground }]}>
+                <Ionicons
+                  name={gateOpen ? "camera" : "lock-closed"}
+                  size={17}
+                  color={gateOpen ? colors.primaryForeground : colors.mutedForeground}
+                />
+                <Text
+                  style={[
+                    styles.primaryText,
+                    { color: gateOpen ? colors.primaryForeground : colors.mutedForeground },
+                  ]}
+                >
                   {t("run.takePhoto").toUpperCase()}
                 </Text>
               </Pressable>
+
+              {/* Why the button is asleep, and how far he still has to drive. The override sits
+                  under it rather than beside it: reachable when he needs it, not the thing his
+                  thumb finds first. */}
+              {arrival.state === "away" && overrideStopId !== current.id ? (
+                <View style={styles.gate}>
+                  <Text style={[styles.gateText, { color: colors.mutedForeground }]}>
+                    {t("run.arriveFirst")}
+                    {arrival.metres != null
+                      ? ` · ${t("run.away", { d: formatDistance(arrival.metres) })}`
+                      : ""}
+                  </Text>
+                  <Pressable
+                    onPress={() => setOverrideStopId(current.id)}
+                    accessibilityLabel={t("run.photoAnyway")}
+                    hitSlop={8}
+                  >
+                    <Text style={[styles.gateLink, { color: colors.amber }]}>
+                      {t("run.photoAnyway")}
+                    </Text>
+                  </Pressable>
+                </View>
+              ) : null}
+              {/* Once he has taken the override, the card stops nagging and only notes that the
+                  shot carries its own coordinates. */}
+              {overrideStopId === current.id && arrival.state === "away" ? (
+                <Text style={[styles.gateText, { color: colors.mutedForeground }]}>
+                  {t("run.offsite")}
+                </Text>
+              ) : null}
 
               <Pressable
                 onPress={() => setReasonOpen((v) => !v)}
@@ -684,6 +776,19 @@ const styles = StyleSheet.create({
     borderRadius: 8,
   },
   primaryText: { fontSize: 13, fontWeight: "700", letterSpacing: 0.6 },
+  // Sits tight under the locked photo button, reading as its caption rather than a row of its
+  // own. Wraps, because "Drive to the address to unlock the photo · 2.4 km away" is long in
+  // every language and the override must never be pushed off the edge.
+  gate: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+    flexWrap: "wrap",
+    gap: 8,
+    marginTop: -2,
+  },
+  gateText: { fontSize: 11, lineHeight: 16, flexShrink: 1 },
+  gateLink: { fontSize: 11, lineHeight: 16, fontWeight: "700" },
   outline: {
     flexDirection: "row",
     alignItems: "center",

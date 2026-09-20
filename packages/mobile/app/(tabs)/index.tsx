@@ -683,7 +683,9 @@ export default function Capture() {
       // queue drains, so this works the same in a dead zone as it does on LTE.
       if (stopId && stopRouteId) {
         setStatus(tr("run.photoQueued"));
-        router.replace(`/route/${stopRouteId}`);
+        // `after` names the stop just closed, which is how the run screen knows to open the map
+        // on the NEXT address by itself instead of the doorstep he is standing on.
+        router.replace({ pathname: "/route/[id]", params: { id: stopRouteId, after: stopId } });
       }
       setTimeout(() => setStatus(null), 4000);
     },
