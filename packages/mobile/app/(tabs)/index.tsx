@@ -11,7 +11,7 @@ import {
   View,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { Ionicons } from "@expo/vector-icons";
+import { Ionicons, MaterialCommunityIcons } from "@expo/vector-icons";
 import { useLocalSearchParams, useRouter } from "expo-router";
 import { CameraView, useCameraPermissions, useMicrophonePermissions } from "expo-camera";
 import * as Location from "expo-location";
@@ -49,15 +49,35 @@ const TAG_KEY = "geocliks.capture.tag.v1";
 const PROJECT_KEY = "geocliks.capture.project.v1";
 const STAMP_KEY = "geocliks.capture.stamp.v1";
 
-const TAGS: { key: QueuedPhoto["tag"]; label: TKey; icon: keyof typeof Ionicons.glyphMap }[] = [
-  { key: "arrival", label: "tag.arrival", icon: "enter-outline" },
-  { key: "before", label: "tag.before", icon: "time-outline" },
-  { key: "general", label: "tag.work", icon: "hammer-outline" },
-  { key: "after", label: "tag.after", icon: "checkmark-done-outline" },
-  { key: "issue", label: "tag.issue", icon: "warning-outline" },
-  { key: "departure", label: "tag.departure", icon: "exit-outline" },
-  { key: "pickup", label: "tag.pickup", icon: "cube-outline" },
-  { key: "delivery", label: "tag.delivery", icon: "checkmark-circle-outline" },
+/**
+ * An evidence tag's mark. Nearly all of them exist in Ionicons, but DELIVERY wants a delivery
+ * truck and Ionicons has no truck at all, so that one entry names its family and renders from
+ * Material Community Icons instead.
+ */
+type TagIconSpec =
+  | { family?: "ion"; name: keyof typeof Ionicons.glyphMap }
+  | { family: "mci"; name: keyof typeof MaterialCommunityIcons.glyphMap };
+
+function TagIcon({ icon, size, color }: { icon: TagIconSpec; size: number; color: string }) {
+  if (icon.family === "mci") {
+    return <MaterialCommunityIcons name={icon.name} size={size} color={color} />;
+  }
+  return <Ionicons name={icon.name} size={size} color={color} />;
+}
+
+const TAGS: { key: QueuedPhoto["tag"]; label: TKey; icon: TagIconSpec }[] = [
+  { key: "arrival", label: "tag.arrival", icon: { name: "enter-outline" } },
+  { key: "before", label: "tag.before", icon: { name: "time-outline" } },
+  { key: "general", label: "tag.work", icon: { name: "hammer-outline" } },
+  { key: "after", label: "tag.after", icon: { name: "checkmark-done-outline" } },
+  { key: "issue", label: "tag.issue", icon: { name: "warning-outline" } },
+  { key: "departure", label: "tag.departure", icon: { name: "exit-outline" } },
+  { key: "pickup", label: "tag.pickup", icon: { name: "cube-outline" } },
+  {
+    key: "delivery",
+    label: "tag.delivery",
+    icon: { family: "mci", name: "truck-fast-outline" },
+  },
 ];
 
 /** Bottom mode strip — Photo sits in the middle and is the default. */
@@ -1163,10 +1183,10 @@ export default function Capture() {
             ]}
           >
             {({ pressed }) => (
-              <Ionicons
+              <TagIcon
                 // The evidence button wears the mark of the tag that is selected, so the row
                 // still answers "what am I filing this as?" without a label.
-                name={TAGS.find((t) => t.key === tag)?.icon ?? "pricetag-outline"}
+                icon={TAGS.find((t) => t.key === tag)?.icon ?? { name: "pricetag-outline" }}
                 size={20}
                 color={pressed || tagHover || tagOpen ? colors.primaryForeground : colors.amber}
               />
@@ -1515,8 +1535,8 @@ export default function Capture() {
                         },
                       ]}
                     >
-                      <Ionicons
-                        name={entry.icon}
+                      <TagIcon
+                        icon={entry.icon}
                         size={14}
                         color={active ? colors.amber : colors.mutedForeground}
                       />
