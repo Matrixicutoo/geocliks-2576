@@ -488,6 +488,8 @@ export const pl: Catalog = {
   "routes.liveTitle": "Dodaj zlecenie teraz",
   "routes.liveAddress": "Adres dostawy",
   "routes.liveRecipient": "Nazwa odbiorcy",
+  "routes.liveEmail": "Adres e-mail",
+  "routes.livePhone": "Numer telefonu",
   "routes.liveAdd": "Dodaj do trasy",
   "routes.liveHint":
     "Trafia między przystanki, do których kierowca jeszcze nie dojechał. Nic już dostarczonego się nie zmienia.",

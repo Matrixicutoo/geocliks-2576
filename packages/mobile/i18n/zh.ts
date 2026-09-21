@@ -468,6 +468,8 @@ export const zh: Catalog = {
   "routes.liveTitle": "立即添加订单",
   "routes.liveAddress": "送达地址",
   "routes.liveRecipient": "收件人姓名",
+  "routes.liveEmail": "电子邮箱",
+  "routes.livePhone": "电话号码",
   "routes.liveAdd": "加入路线",
   "routes.liveHint": "它会插入司机尚未到达的站点之间。已送达的站点不会移动。",
   "routes.liveAdded": "已添加为第 {n} 站，共 {total} 站",

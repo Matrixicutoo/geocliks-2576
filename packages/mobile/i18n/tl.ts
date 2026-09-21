@@ -493,6 +493,8 @@ export const tl: Catalog = {
   "routes.liveTitle": "Magdagdag ng order ngayon",
   "routes.liveAddress": "Address ng paghahatid",
   "routes.liveRecipient": "Pangalan ng tatanggap",
+  "routes.liveEmail": "Email address",
+  "routes.livePhone": "Numero ng telepono",
   "routes.liveAdd": "Idagdag sa ruta",
   "routes.liveHint":
     "Isinisingit ito sa mga hinto na hindi pa narating ng driver. Walang naihatid na nagbabago.",

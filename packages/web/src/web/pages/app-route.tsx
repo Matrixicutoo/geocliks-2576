@@ -130,8 +130,10 @@ export default function AppRoutePage() {
   const updateStop = useUpdateStop();
   const removeRoute = useRemoveRoute();
 
-  // A late order typed straight into a run that is already moving.
-  const [live, setLive] = useState({ address: "", name: "" });
+  // A late order typed straight into a run that is already moving. The contact details belong
+  // here for the same reason they belong on the popup's one-stop form: the phone number is what
+  // the driver taps on arrival, and the dispatcher has it in front of them while they type.
+  const [live, setLive] = useState({ address: "", name: "", email: "", phone: "" });
   const [paste, setPaste] = useState("");
   // The driver popup, opened from the run header.
   const [assignOpen, setAssignOpen] = useState(false);
@@ -201,8 +203,10 @@ export default function AppRoutePage() {
         routeId,
         addressRaw: address,
         recipientName: live.name.trim() || null,
+        recipientEmail: live.email.trim() || null,
+        recipientPhone: live.phone.trim() || null,
       });
-      setLive({ address: "", name: "" });
+      setLive({ address: "", name: "", email: "", phone: "" });
       if (!res.located) return t("routes.liveNotLocated");
       return t("routes.liveAdded", { n: res.position, total: res.total });
     });
@@ -411,7 +415,9 @@ export default function AppRoutePage() {
                   {t("routes.liveTitle")}
                 </p>
                 <p className="mt-1 text-[12px] text-fog">{t("routes.liveHint")}</p>
-                <div className="mt-3 grid gap-2 sm:grid-cols-[2fr_1fr_auto]">
+                {/* Two fields to a row, as on the popup's one-stop form, so the address keeps
+                    its width instead of being crushed into a fifth column. */}
+                <div className="mt-3 grid gap-2 sm:grid-cols-[2fr_1fr]">
                   <input
                     aria-label={t("routes.liveAddress")}
                     placeholder={t("routes.liveAddress")}
@@ -426,11 +432,29 @@ export default function AppRoutePage() {
                     onChange={(e) => setLive({ ...live, name: e.target.value })}
                     className={FIELD}
                   />
+                  <input
+                    type="email"
+                    aria-label={t("routes.oneEmail")}
+                    placeholder={t("routes.oneEmail")}
+                    value={live.email}
+                    onChange={(e) => setLive({ ...live, email: e.target.value })}
+                    className={FIELD}
+                  />
+                  <input
+                    type="tel"
+                    aria-label={t("routes.onePhone")}
+                    placeholder={t("routes.onePhone")}
+                    value={live.phone}
+                    onChange={(e) => setLive({ ...live, phone: e.target.value })}
+                    className={FIELD}
+                  />
+                </div>
+                <div className="mt-2 flex sm:justify-end">
                   <button
                     type="button"
                     disabled={liveStop.isPending || live.address.trim().length === 0}
                     onClick={addLive}
-                    className="inline-flex items-center justify-center gap-2 rounded-[8px] bg-amber px-3 py-2 text-[13px] font-semibold text-on-amber hover:bg-amber-deep disabled:opacity-50"
+                    className="inline-flex w-full items-center justify-center gap-2 rounded-[8px] bg-amber px-3 py-2 text-[13px] font-semibold text-on-amber hover:bg-amber-deep disabled:opacity-50 sm:w-auto"
                   >
                     {liveStop.isPending ? (
                       <Loader2 className="size-4 animate-spin" />

@@ -493,6 +493,8 @@ export const frCA: Catalog = {
   "routes.liveTitle": "Ajouter une commande",
   "routes.liveAddress": "Adresse de livraison",
   "routes.liveRecipient": "Nom du destinataire",
+  "routes.liveEmail": "Adresse courriel",
+  "routes.livePhone": "Numéro de téléphone",
   "routes.liveAdd": "Ajouter à la tournée",
   "routes.liveHint":
     "Elle s'insère parmi les arrêts que le chauffeur n'a pas encore atteints. Rien de déjà livré ne bouge.",

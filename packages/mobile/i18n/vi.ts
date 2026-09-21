@@ -484,6 +484,8 @@ export const vi: Catalog = {
   "routes.liveTitle": "Thêm đơn ngay",
   "routes.liveAddress": "Địa chỉ giao hàng",
   "routes.liveRecipient": "Tên người nhận",
+  "routes.liveEmail": "Địa chỉ email",
+  "routes.livePhone": "Số điện thoại",
   "routes.liveAdd": "Thêm vào tuyến",
   "routes.liveHint":
     "Đơn được chèn vào những điểm dừng tài xế chưa tới. Những điểm đã giao không bị thay đổi.",

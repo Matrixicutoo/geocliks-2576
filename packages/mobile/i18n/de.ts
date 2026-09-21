@@ -490,6 +490,8 @@ export const de: Catalog = {
   "routes.liveTitle": "Auftrag jetzt hinzufügen",
   "routes.liveAddress": "Lieferadresse",
   "routes.liveRecipient": "Name des Empfängers",
+  "routes.liveEmail": "E-Mail-Adresse",
+  "routes.livePhone": "Telefonnummer",
   "routes.liveAdd": "Zur Tour hinzufügen",
   "routes.liveHint":
     "Er wird zwischen die Stopps eingefügt, die der Fahrer noch nicht erreicht hat. Bereits Zugestelltes bleibt unverändert.",

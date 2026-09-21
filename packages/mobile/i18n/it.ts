@@ -489,6 +489,8 @@ export const it: Catalog = {
   "routes.liveTitle": "Aggiungi ordine ora",
   "routes.liveAddress": "Indirizzo di consegna",
   "routes.liveRecipient": "Nome del destinatario",
+  "routes.liveEmail": "Indirizzo email",
+  "routes.livePhone": "Numero di telefono",
   "routes.liveAdd": "Aggiungi al giro",
   "routes.liveHint":
     "Si inserisce tra le fermate che l'autista non ha ancora raggiunto. Nulla di già consegnato viene spostato.",

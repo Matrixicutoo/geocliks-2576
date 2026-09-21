@@ -481,6 +481,8 @@ export const ar: Catalog = {
   "routes.liveTitle": "أضف طلباً الآن",
   "routes.liveAddress": "عنوان التسليم",
   "routes.liveRecipient": "اسم المستلم",
+  "routes.liveEmail": "البريد الإلكتروني",
+  "routes.livePhone": "رقم الهاتف",
   "routes.liveAdd": "أضف إلى المسار",
   "routes.liveHint": "يُدرج ضمن المحطات التي لم يصل إليها السائق بعد. لا يتغير أي شيء تم تسليمه.",
   "routes.liveAdded": "أُضيف كمحطة {n} من {total}",

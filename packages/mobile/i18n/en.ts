@@ -500,6 +500,8 @@ export const en = {
   "routes.liveTitle": "Add order now",
   "routes.liveAddress": "Delivery address",
   "routes.liveRecipient": "Recipient name",
+  "routes.liveEmail": "Email address",
+  "routes.livePhone": "Phone number",
   "routes.liveAdd": "Add to run",
   "routes.liveHint":
     "It slots into the stops the driver has not reached yet. Nothing already delivered moves.",

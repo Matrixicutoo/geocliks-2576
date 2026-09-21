@@ -69,6 +69,10 @@ export default function RouteRun() {
   const [liveOpen, setLiveOpen] = useState(false);
   const [liveAddress, setLiveAddress] = useState("");
   const [liveRecipient, setLiveRecipient] = useState("");
+  // The contact details of a late order, same as the web dispatcher has. Without them the phone
+  // number the driver taps on arrival could only be attached from a desk.
+  const [liveEmail, setLiveEmail] = useState("");
+  const [livePhone, setLivePhone] = useState("");
   const [liveNote, setLiveNote] = useState<string | null>(null);
   const [liveError, setLiveError] = useState<string | null>(null);
   const org = useOrg();
@@ -235,12 +239,16 @@ export default function RouteRun() {
         routeId,
         addressRaw: liveAddress.trim(),
         recipientName: liveRecipient.trim() || null,
+        recipientEmail: liveEmail.trim() || null,
+        recipientPhone: livePhone.trim() || null,
       });
       const placed = t("routes.liveAdded", { n: added.position, total: added.total });
       // The server slots the stop by distance, but only if it could place the address on the map.
       setLiveNote(added.located ? placed : `${placed} ${t("routes.liveNotLocated")}`);
       setLiveAddress("");
       setLiveRecipient("");
+      setLiveEmail("");
+      setLivePhone("");
       setLiveOpen(false);
     } catch (e) {
       // Shown as-is. "Start the route before adding a stop" is the one a driver will actually hit.
@@ -631,6 +639,26 @@ export default function RouteRun() {
                     placeholder={t("routes.liveRecipient")}
                     placeholderTextColor={colors.mutedForeground}
                     accessibilityLabel={t("routes.liveRecipient")}
+                    style={[styles.input, { borderColor: colors.border, color: colors.foreground }]}
+                  />
+                  <TextInput
+                    value={liveEmail}
+                    onChangeText={setLiveEmail}
+                    placeholder={t("routes.liveEmail")}
+                    placeholderTextColor={colors.mutedForeground}
+                    accessibilityLabel={t("routes.liveEmail")}
+                    keyboardType="email-address"
+                    autoCapitalize="none"
+                    autoCorrect={false}
+                    style={[styles.input, { borderColor: colors.border, color: colors.foreground }]}
+                  />
+                  <TextInput
+                    value={livePhone}
+                    onChangeText={setLivePhone}
+                    placeholder={t("routes.livePhone")}
+                    placeholderTextColor={colors.mutedForeground}
+                    accessibilityLabel={t("routes.livePhone")}
+                    keyboardType="phone-pad"
                     style={[styles.input, { borderColor: colors.border, color: colors.foreground }]}
                   />
                   {liveError ? (

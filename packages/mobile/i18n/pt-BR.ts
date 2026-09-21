@@ -487,6 +487,8 @@ export const ptBR: Catalog = {
   "routes.liveTitle": "Adicionar pedido agora",
   "routes.liveAddress": "Endereço de entrega",
   "routes.liveRecipient": "Nome do destinatário",
+  "routes.liveEmail": "Endereço de e-mail",
+  "routes.livePhone": "Número de telefone",
   "routes.liveAdd": "Adicionar à rota",
   "routes.liveHint":
     "Ele entra entre as paradas que o motorista ainda não alcançou. Nada já entregue é movido.",

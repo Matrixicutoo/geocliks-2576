@@ -488,6 +488,8 @@ export const es: Catalog = {
   "routes.liveTitle": "Agregar pedido ahora",
   "routes.liveAddress": "Dirección de entrega",
   "routes.liveRecipient": "Nombre del destinatario",
+  "routes.liveEmail": "Correo electrónico",
+  "routes.livePhone": "Número de teléfono",
   "routes.liveAdd": "Agregar a la ruta",
   "routes.liveHint":
     "Se inserta entre las paradas que el conductor aún no ha alcanzado. Nada ya entregado se mueve.",
