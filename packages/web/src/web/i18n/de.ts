@@ -830,6 +830,8 @@ export const de: Catalog = {
     "Alles hier wird sofort gespeichert. Schließen Sie das Fenster, wenn Sie fertig sind — die Tour wartet dann unter Alle Touren.",
   "routes.oneTitle": "Einen Stopp hinzufügen",
   "routes.oneAdd": "Stopp hinzufügen",
+  "routes.oneEmail": "E-Mail-Adresse",
+  "routes.onePhone": "Telefonnummer",
   "routes.fName": "Tourname",
   "routes.fDate": "Datum",
   "routes.fStartTime": "Startzeit",

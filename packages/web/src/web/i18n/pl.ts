@@ -824,6 +824,8 @@ export const pl: Catalog = {
     "Wszystko zapisuje się na bieżąco. Zamknij okno, gdy skończysz — przejazd będzie czekał na liście Wszystkie przejazdy.",
   "routes.oneTitle": "Dodaj jeden przystanek",
   "routes.oneAdd": "Dodaj przystanek",
+  "routes.oneEmail": "Adres e-mail",
+  "routes.onePhone": "Numer telefonu",
   "routes.fName": "Nazwa trasy",
   "routes.fDate": "Data",
   "routes.fStartTime": "Godzina startu",

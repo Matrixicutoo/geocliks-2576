@@ -80,7 +80,11 @@ export function RouteStopsDialog({
   const assign = useAssignRoute();
 
   const [paste, setPaste] = useState("");
-  const [one, setOne] = useState({ address: "", name: "" });
+  // Email and phone belong here as much as the name does: a dispatcher typing a single
+  // restaurant order has the contact details in front of them, and the paste box has always
+  // accepted both columns. Without these two the only way to add a phone number one stop at a
+  // time was to type the stop, then edit the row.
+  const [one, setOne] = useState({ address: "", name: "", email: "", phone: "" });
   const [error, setError] = useState<string | null>(null);
   const [notice, setNotice] = useState<string | null>(null);
 
@@ -195,9 +199,16 @@ export function RouteStopsDialog({
     await run(async () => {
       await addStops.mutateAsync({
         routeId,
-        stops: [{ addressRaw: address, recipientName: one.name.trim() || null }],
+        stops: [
+          {
+            addressRaw: address,
+            recipientName: one.name.trim() || null,
+            recipientEmail: one.email.trim() || null,
+            recipientPhone: one.phone.trim() || null,
+          },
+        ],
       });
-      setOne({ address: "", name: "" });
+      setOne({ address: "", name: "", email: "", phone: "" });
       setSuggestOpen(false);
       return t("routes.added", { n: 1 });
     });
@@ -495,7 +506,9 @@ export function RouteStopsDialog({
             <p className="font-display text-[14px] font-semibold text-chalk">
               {t("routes.oneTitle")}
             </p>
-            <div className="mt-2.5 grid gap-2 sm:grid-cols-[2fr_1fr_auto]">
+            {/* Four fields over two rows rather than one long strip: the address needs the room,
+                and an email squeezed into a fifth column is unusable on a laptop. */}
+            <div className="mt-2.5 grid gap-2 sm:grid-cols-[2fr_1fr]">
               <div className="relative">
                 <input
                   aria-label={t("routes.liveAddress")}
@@ -536,10 +549,28 @@ export function RouteStopsDialog({
                 onChange={(e) => setOne({ ...one, name: e.target.value })}
                 className={FIELD}
               />
+              <input
+                type="email"
+                aria-label={t("routes.oneEmail")}
+                placeholder={t("routes.oneEmail")}
+                value={one.email}
+                onChange={(e) => setOne({ ...one, email: e.target.value })}
+                className={FIELD}
+              />
+              <input
+                type="tel"
+                aria-label={t("routes.onePhone")}
+                placeholder={t("routes.onePhone")}
+                value={one.phone}
+                onChange={(e) => setOne({ ...one, phone: e.target.value })}
+                className={FIELD}
+              />
+            </div>
+            <div className="mt-2 flex sm:justify-end">
               <button
                 type="submit"
                 disabled={addStops.isPending || one.address.trim().length === 0}
-                className="inline-flex items-center justify-center gap-2 rounded-[8px] bg-amber px-3 py-2 text-[13px] font-semibold text-on-amber hover:bg-amber-deep disabled:opacity-50"
+                className="inline-flex w-full items-center justify-center gap-2 rounded-[8px] bg-amber px-3 py-2 text-[13px] font-semibold text-on-amber hover:bg-amber-deep disabled:opacity-50 sm:w-auto"
               >
                 {addStops.isPending ? (
                   <Loader2 className="size-4 animate-spin" />

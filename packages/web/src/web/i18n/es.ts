@@ -828,6 +828,8 @@ export const es: Catalog = {
     "Todo se guarda al instante. Cierre cuando termine y la jornada estará en Todas las rutas.",
   "routes.oneTitle": "Agregar una parada",
   "routes.oneAdd": "Agregar parada",
+  "routes.oneEmail": "Correo electrónico",
+  "routes.onePhone": "Número de teléfono",
   "routes.fName": "Nombre de la ruta",
   "routes.fDate": "Fecha",
   "routes.fStartTime": "Hora de inicio",

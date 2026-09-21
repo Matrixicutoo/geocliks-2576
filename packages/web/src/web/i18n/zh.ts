@@ -787,6 +787,8 @@ export const zh: Catalog = {
     "此处的更改会即时保存。完成后关闭即可，行程会出现在“所有行程”中。",
   "routes.oneTitle": "添加单个站点",
   "routes.oneAdd": "添加站点",
+  "routes.oneEmail": "电子邮箱",
+  "routes.onePhone": "电话号码",
   "routes.fName": "路线名称",
   "routes.fDate": "日期",
   "routes.fStartTime": "出发时间",

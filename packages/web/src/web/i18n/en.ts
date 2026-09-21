@@ -834,6 +834,8 @@ export const en = {
     "Everything here saves as you go. Close when you're done and the run is waiting in All routes.",
   "routes.oneTitle": "Add one stop",
   "routes.oneAdd": "Add stop",
+  "routes.oneEmail": "Email address",
+  "routes.onePhone": "Phone number",
   "routes.fName": "Route name",
   "routes.fDate": "Date",
   "routes.fStartTime": "Start time",

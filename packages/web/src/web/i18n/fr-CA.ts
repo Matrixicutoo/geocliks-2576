@@ -835,6 +835,8 @@ export const frCA: Catalog = {
     "Tout s'enregistre au fur et à mesure. Fermez quand vous avez terminé : la tournée vous attend dans Toutes les tournées.",
   "routes.oneTitle": "Ajouter un arrêt",
   "routes.oneAdd": "Ajouter l'arrêt",
+  "routes.oneEmail": "Adresse courriel",
+  "routes.onePhone": "Numéro de téléphone",
   "routes.fName": "Nom de la tournée",
   "routes.fDate": "Date",
   "routes.fStartTime": "Heure de départ",

@@ -804,6 +804,8 @@ export const ar: Catalog = {
     "كل شيء هنا يُحفظ تلقائيًا. أغلق النافذة عند الانتهاء وستجد الرحلة في كل الرحلات.",
   "routes.oneTitle": "أضف محطة واحدة",
   "routes.oneAdd": "أضف محطة",
+  "routes.oneEmail": "البريد الإلكتروني",
+  "routes.onePhone": "رقم الهاتف",
   "routes.fName": "اسم المسار",
   "routes.fDate": "التاريخ",
   "routes.fStartTime": "وقت الانطلاق",

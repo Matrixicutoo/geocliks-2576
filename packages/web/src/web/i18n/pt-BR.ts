@@ -824,6 +824,8 @@ export const ptBR: Catalog = {
     "Tudo é salvo na hora. Feche quando terminar e a jornada estará em Todas as rotas.",
   "routes.oneTitle": "Adicionar uma parada",
   "routes.oneAdd": "Adicionar parada",
+  "routes.oneEmail": "Endereço de e-mail",
+  "routes.onePhone": "Número de telefone",
   "routes.fName": "Nome da rota",
   "routes.fDate": "Data",
   "routes.fStartTime": "Horário de início",

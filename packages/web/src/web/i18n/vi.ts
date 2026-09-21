@@ -818,6 +818,8 @@ export const vi: Catalog = {
     "Mọi thay đổi được lưu ngay. Đóng lại khi xong và chuyến sẽ nằm trong Tất cả các chuyến.",
   "routes.oneTitle": "Thêm một điểm dừng",
   "routes.oneAdd": "Thêm điểm dừng",
+  "routes.oneEmail": "Địa chỉ email",
+  "routes.onePhone": "Số điện thoại",
   "routes.fName": "Tên tuyến",
   "routes.fDate": "Ngày",
   "routes.fStartTime": "Giờ khởi hành",

@@ -830,6 +830,8 @@ export const tl: Catalog = {
     "Naka-save agad ang lahat dito. Isara kapag tapos na — nasa Lahat ng ruta na ang biyahe.",
   "routes.oneTitle": "Magdagdag ng isang hinto",
   "routes.oneAdd": "Idagdag ang hinto",
+  "routes.oneEmail": "Email address",
+  "routes.onePhone": "Numero ng telepono",
   "routes.fName": "Pangalan ng ruta",
   "routes.fDate": "Petsa",
   "routes.fStartTime": "Oras ng simula",
