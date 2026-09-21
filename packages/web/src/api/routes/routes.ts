@@ -46,6 +46,33 @@ function hasPin(stop: { lat: number | null; lng: number | null; geocodeStatus: s
   );
 }
 
+/**
+ * The start address, turned into a pin the optimizer can actually anchor on.
+ *
+ * Without this the column was dead text: the address was stored, nothing ever geocoded it, and
+ * `optimize` fell back to "first stop is the anchor" — so a run booked out of the depot was
+ * ordered as if the driver woke up at the first drop, and Return to start closed the loop back
+ * to that drop instead of the depot.
+ *
+ * A start we cannot place is kept as text with no pin rather than rejected: the address may be a
+ * yard with no civic number, and the run must still be buildable.
+ */
+async function resolveStart(
+  address: string | null,
+): Promise<{ startAddress: string | null; startLat: number | null; startLng: number | null }> {
+  const trimmed = address?.trim() || null;
+  if (!trimmed) return { startAddress: null, startLat: null, startLng: null };
+
+  const [hit] = await geocodeAll([trimmed], "ca");
+  const located = hit?.ok === true && typeof hit.lat === "number" && typeof hit.lng === "number";
+  return {
+    // Google's tidied-up form when it knows the place, so the map label and the pin agree.
+    startAddress: located ? (hit?.address ?? trimmed) : trimmed,
+    startLat: located ? (hit?.lat ?? null) : null,
+    startLng: located ? (hit?.lng ?? null) : null,
+  };
+}
+
 const startOfMonth = () => {
   const d = new Date();
   return new Date(d.getFullYear(), d.getMonth(), 1).getTime();
@@ -401,6 +428,7 @@ export const routes = {
       }
 
       const routeId = id("rte");
+      const start = await resolveStart(input.startAddress ?? null);
       await db.insert(schema.routes).values({
         id: routeId,
         orgId: context.org.id,
@@ -408,7 +436,9 @@ export const routes = {
         name: input.name,
         date: input.date,
         mode: input.mode,
-        startAddress: input.startAddress ?? null,
+        startAddress: start.startAddress,
+        startLat: start.startLat,
+        startLng: start.startLng,
         returnToStart: input.returnToStart,
         startMinutes: input.startMinutes,
         serviceMinutes: input.serviceMinutes,
@@ -457,6 +487,19 @@ export const routes = {
 
       const { id: _ignored, ...rest } = input;
       const patch = Object.fromEntries(Object.entries(rest).filter(([, v]) => v !== undefined));
+
+      /**
+       * A changed start address has to bring its pin with it. Coordinates passed explicitly are a
+       * hand-dropped pin and win; otherwise the new text is geocoded here, exactly as on create,
+       * so editing the depot moves the anchor instead of leaving the old one behind.
+       */
+      if (patch.startAddress !== undefined && input.startLat == null && input.startLng == null) {
+        const start = await resolveStart(input.startAddress ?? null);
+        patch.startAddress = start.startAddress;
+        patch.startLat = start.startLat;
+        patch.startLng = start.startLng;
+      }
+
       if (Object.keys(patch).length === 0) return { ok: true };
 
       await db.update(schema.routes).set(patch).where(eq(schema.routes.id, route.id));

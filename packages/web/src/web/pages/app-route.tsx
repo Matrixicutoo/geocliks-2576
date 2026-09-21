@@ -243,6 +243,28 @@ export default function AppRoutePage() {
 
             <p className="text-[13px] text-fog">{t("routes.stopsCount", { n: stops.length })}</p>
 
+            {/* The start address, and whether it could be placed. It used to be stored and never
+                shown anywhere, which is how a depot nobody could see came to look ignored. */}
+            {route.startAddress && (
+              <p className="flex flex-wrap items-center gap-x-2 text-[13px] text-fog">
+                <span className="mono text-[10.5px] uppercase tracking-widest">
+                  {t("routes.fStartAddress")}
+                </span>
+                <span className="text-chalk">{route.startAddress}</span>
+                <span
+                  className={cn(
+                    "rounded-[6px] border px-1.5 py-0.5 text-[10px] font-semibold uppercase tracking-wide",
+                    typeof route.startLat === "number"
+                      ? "border-verified/40 bg-verified/10 text-verified"
+                      : "border-alert/40 bg-alert/10 text-alert",
+                  )}
+                >
+                  {t(typeof route.startLat === "number" ? "routes.pin.ok" : "routes.pin.failed")}
+                </span>
+                {route.returnToStart && <span>· {t("routes.fReturnToStart")}</span>}
+              </p>
+            )}
+
             {typeof route.planMetres === "number" && route.planMetres > 0 && (
               <p className="text-[13px] text-fog">
                 {Math.round(route.planMetres / 100) / 10} km ·{" "}
@@ -395,6 +417,10 @@ export default function AppRoutePage() {
               </div>
               <RouteMap
                 stops={stops}
+                start={{ lat: route.startLat, lng: route.startLng, address: route.startAddress }}
+                returnToStart={route.returnToStart}
+                startLabel={t("routes.fStartAddress")}
+                returnLabel={t("routes.fReturnToStart")}
                 // Roughly double the old 320px, and taller again on a desktop: the map is where
                 // the dispatcher reads the run, so it gets the screen rather than a strip of it.
                 className="mt-3 h-[420px] sm:h-[600px] lg:h-[720px]"

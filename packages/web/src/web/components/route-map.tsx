@@ -29,6 +29,9 @@ export type RouteStopPin = {
 
 type PlanStop = RouteStopPin & { lat: number; lng: number; label: string };
 
+/** Where the run starts — the depot, the yard, the driver's own driveway. */
+export type StartPin = { lat: number; lng: number; address?: string | null };
+
 /**
  * Marker fill per stop outcome. Light-theme hexes: the map styling is light in both themes.
  *
@@ -53,6 +56,8 @@ const LABEL: Record<string, string> = {
 };
 
 const CIRCLE = "M 0,-11 A 11,11 0 1,0 0,11 A 11,11 0 1,0 0,-11 Z";
+/** A square, so the depot never reads as "stop zero" among the round drops. */
+const SQUARE = "M -10,-10 L 10,-10 L 10,10 L -10,10 Z";
 
 const stopIcon = (status: string): google.maps.Symbol => ({
   path: CIRCLE,
@@ -63,25 +68,56 @@ const stopIcon = (status: string): google.maps.Symbol => ({
   scale: 1,
 });
 
+const START_ICON: google.maps.Symbol = {
+  path: SQUARE,
+  fillColor: "#0B0E13",
+  fillOpacity: 1,
+  strokeColor: "#FFB021",
+  strokeWeight: 2.5,
+  scale: 1,
+};
+
 /**
  * The driving order, drawn imperatively — this binding has no declarative polyline.
  *
  * Solid rather than the evidence map's dotted line: that one is a trail of where someone has
  * already been, this one is an instruction about where to go next.
  */
-function PlanLine({ stops }: { stops: PlanStop[] }) {
+function PlanLine({
+  stops,
+  start,
+  returnToStart,
+}: {
+  stops: PlanStop[];
+  start: StartPin | null;
+  returnToStart: boolean;
+}) {
   const map = useMap();
   const maps = useMapsLibrary("maps");
   const drawn = useRef<google.maps.Polyline | null>(null);
 
+  /**
+   * The driving order as the driver actually drives it: out of the yard, round the drops, and
+   * back to the yard when the run is booked to return there. Before this the line began at the
+   * first drop, which is what made a set start address look like it had been ignored.
+   */
+  const path = useMemo(() => {
+    const points: google.maps.LatLngLiteral[] = stops.map((s) => ({ lat: s.lat, lng: s.lng }));
+    if (start) {
+      points.unshift({ lat: start.lat, lng: start.lng });
+      if (returnToStart) points.push({ lat: start.lat, lng: start.lng });
+    }
+    return points;
+  }, [stops, start, returnToStart]);
+
   useEffect(() => {
     drawn.current?.setMap(null);
     drawn.current = null;
-    if (!map || !maps || stops.length < 2) return;
+    if (!map || !maps || path.length < 2) return;
 
     drawn.current = new maps.Polyline({
       map,
-      path: stops.map((s) => ({ lat: s.lat, lng: s.lng })),
+      path,
       strokeColor: "#E08A00",
       strokeOpacity: 0.85,
       strokeWeight: 3,
@@ -92,7 +128,7 @@ function PlanLine({ stops }: { stops: PlanStop[] }) {
       drawn.current?.setMap(null);
       drawn.current = null;
     };
-  }, [map, maps, stops]);
+  }, [map, maps, path]);
 
   return null;
 }
@@ -115,12 +151,22 @@ function Placeholder({ message, className }: { message: string; className?: stri
 
 export function RouteMap({
   stops,
+  start,
+  returnToStart = false,
+  startLabel,
+  returnLabel,
   className,
   emptyMessage,
   noKeyMessage,
   onSelect,
 }: {
   stops: RouteStopPin[];
+  /** The run's start point, when it has one that could be placed on the map. */
+  start?: { lat: number | null; lng: number | null; address?: string | null } | null;
+  returnToStart?: boolean;
+  /** Marker tooltips, passed in already translated. */
+  startLabel?: string;
+  returnLabel?: string;
   className?: string;
   emptyMessage: string;
   noKeyMessage: string;
@@ -140,20 +186,33 @@ export function RouteMap({
     [stops],
   );
 
-  // `FitBounds` speaks the evidence map's pin shape; the id and coordinates are all it reads.
-  const bounds = useMemo<Located[]>(
-    () => points.map((p) => ({ id: p.id, lat: p.lat, lng: p.lng })),
-    [points],
+  const anchor = useMemo<StartPin | null>(
+    () =>
+      start && typeof start.lat === "number" && typeof start.lng === "number"
+        ? { lat: start.lat, lng: start.lng, address: start.address ?? null }
+        : null,
+    [start],
   );
 
+  // `FitBounds` speaks the evidence map's pin shape; the id and coordinates are all it reads.
+  // The depot is framed with the drops — a start an hour out of town is the whole point of
+  // setting one, and a map that crops it out hides the longest leg of the run.
+  const bounds = useMemo<Located[]>(() => {
+    const pins: Located[] = points.map((p) => ({ id: p.id, lat: p.lat, lng: p.lng }));
+    if (anchor) pins.push({ id: "route-start", lat: anchor.lat, lng: anchor.lng });
+    return pins;
+  }, [points, anchor]);
+
+  const centre = points[0] ?? anchor;
+
   if (!API_KEY) return <Placeholder message={noKeyMessage} className={className} />;
-  if (points.length === 0) return <Placeholder message={emptyMessage} className={className} />;
+  if (!centre) return <Placeholder message={emptyMessage} className={className} />;
 
   return (
     <div className={cn("relative overflow-hidden rounded-[12px] border border-line bg-ink-2", className)}>
       <APIProvider apiKey={API_KEY}>
         <GoogleMap
-          defaultCenter={{ lat: points[0].lat, lng: points[0].lng }}
+          defaultCenter={{ lat: centre.lat, lng: centre.lng }}
           defaultZoom={12}
           styles={MAP_STYLES}
           disableDefaultUI
@@ -176,8 +235,19 @@ export function RouteMap({
           streetViewControl
           className="size-full"
         >
-          <PlanLine stops={points} />
+          <PlanLine stops={points} start={anchor} returnToStart={returnToStart} />
           <FitBounds pins={bounds} />
+          {anchor && (
+            <Marker
+              position={{ lat: anchor.lat, lng: anchor.lng }}
+              title={[startLabel, anchor.address, returnToStart ? returnLabel : null]
+                .filter(Boolean)
+                .join(" · ")}
+              icon={START_ICON}
+              label={{ text: "S", color: "#FFB021", fontSize: "10px", fontWeight: "700" }}
+              zIndex={2}
+            />
+          )}
           {points.map((p) => (
             <Marker
               key={p.id}

@@ -142,6 +142,52 @@ export function RouteStopsDialog({
     });
   }
 
+  /**
+   * Add a parsed block, and say what came of it.
+   *
+   * Shared by the paste form, the CSV picker and the Done button, so a list of addresses lands
+   * the same way however it got into the dialog. It reports skipped lines alongside the count:
+   * a CSV whose address column is not first used to add nothing and say "0 stops added", which
+   * read like the upload had failed rather than like the file needed a second look.
+   */
+  async function addParsed(block: string): Promise<boolean> {
+    const batch = parseStops(block);
+    if (batch.stops.length === 0) {
+      setError(
+        batch.skipped > 0 ? t("routes.previewSkipped", { n: batch.skipped }) : t("routes.noStops"),
+      );
+      return false;
+    }
+    const res = await addStops.mutateAsync({ routeId, stops: batch.stops });
+    setPaste("");
+    setError(null);
+    setNotice(
+      batch.skipped > 0
+        ? `${t("routes.added", { n: res.added })} · ${t("routes.previewSkipped", { n: batch.skipped })}`
+        : t("routes.added", { n: res.added }),
+    );
+    return true;
+  }
+
+  /**
+   * Done. Anything still sitting in the paste box is added before the dialog closes — it used to
+   * be thrown away on close, so uploading a CSV and pressing Done left a run with no addresses
+   * in it and no warning that the file had gone nowhere.
+   */
+  async function done() {
+    if (paste.trim().length === 0) {
+      onClose();
+      return;
+    }
+    setError(null);
+    setNotice(null);
+    try {
+      if (await addParsed(paste)) onClose();
+    } catch (err) {
+      setError(err instanceof Error ? err.message : String(err));
+    }
+  }
+
   /** One stop, typed or picked from the suggestion list. */
   async function addOne() {
     const address = one.address.trim();
@@ -511,9 +557,8 @@ export function RouteStopsDialog({
               event.preventDefault();
               if (parsed.stops.length === 0) return;
               run(async () => {
-                const res = await addStops.mutateAsync({ routeId, stops: parsed.stops });
-                setPaste("");
-                return t("routes.added", { n: res.added });
+                await addParsed(paste);
+                return null;
               });
             }}
             className="rounded-[12px] border border-line bg-ink p-4"
@@ -558,11 +603,14 @@ export function RouteStopsDialog({
                       const text = (await file.text()).replace(/\r\n?/g, "\n");
                       setError(null);
                       setNotice(t("routes.csvLoaded", { file: file.name }));
-                      setPaste((prev) =>
-                        prev.trim().length > 0 ? `${prev.replace(/\n*$/, "")}\n${text}` : text,
-                      );
-                    } catch {
-                      setError(t("routes.csvError"));
+                      const block =
+                        paste.trim().length > 0 ? `${paste.replace(/\n*$/, "")}\n${text}` : text;
+                      // Straight in, like every other action in this dialog. Staging the file in
+                      // the box and waiting for a second click is what let an upload be lost on
+                      // close; the stops list below is the preview, and a stop is removable.
+                      await addParsed(block);
+                    } catch (err) {
+                      setError(err instanceof Error ? err.message : t("routes.csvError"));
                     }
                   }}
                 />
@@ -664,9 +712,11 @@ export function RouteStopsDialog({
           </span>
           <button
             type="button"
-            onClick={onClose}
-            className="rounded-[8px] mono bg-amber px-3.5 py-2 text-[10.5px] font-bold uppercase tracking-widest text-ink hover:bg-amber-deep"
+            disabled={addStops.isPending}
+            onClick={done}
+            className="rounded-[8px] mono inline-flex items-center gap-2 bg-amber px-3.5 py-2 text-[10.5px] font-bold uppercase tracking-widest text-ink hover:bg-amber-deep disabled:opacity-60"
           >
+            {addStops.isPending && <Loader2 className="size-3 animate-spin" />}
             {t("driver.done")}
           </button>
         </div>
