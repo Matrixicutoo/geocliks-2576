@@ -235,6 +235,37 @@ export default function AppRoutePage() {
         <div className="h-40 animate-pulse rounded-[12px] bg-ink-2" />
       ) : (
         <div className="grid gap-4">
+          {/* Map preview.
+              First thing on the page, ahead of the summary bar and the buttons that used to sit
+              above it: opening a run, what a dispatcher wants to see is the shape of the drive,
+              and the plan figures read better as a caption under it than as a header over it. */}
+          {stops.length > 0 && (
+            <div className="rounded-[12px] border border-line bg-ink-2 p-4">
+              <div className="flex flex-wrap items-center gap-x-3 gap-y-1">
+                <p className="font-display text-[15px] font-semibold text-chalk">
+                  {t("routes.mapTitle")}
+                </p>
+                {unlocated > 0 && (
+                  <span className="text-[12px] text-fog">
+                    {t("routes.mapUnlocated", { n: unlocated })}
+                  </span>
+                )}
+              </div>
+              <RouteMap
+                stops={stops}
+                start={{ lat: route.startLat, lng: route.startLng, address: route.startAddress }}
+                returnToStart={route.returnToStart}
+                startLabel={t("routes.fStartAddress")}
+                returnLabel={t("routes.fReturnToStart")}
+                // Roughly double the old 320px, and taller again on a desktop: the map is where
+                // the dispatcher reads the run, so it gets the screen rather than a strip of it.
+                className="mt-3 h-[420px] sm:h-[600px] lg:h-[720px]"
+                emptyMessage={t("routes.mapEmpty")}
+                noKeyMessage={t("routes.mapNoKey")}
+              />
+            </div>
+          )}
+
           {/* Status + plan summary */}
           <div className="rounded-[12px] flex flex-wrap items-center gap-x-6 gap-y-3 border border-line bg-ink-2 px-4 py-3.5">
             <span
@@ -411,34 +442,6 @@ export default function AppRoutePage() {
                 </div>
               </div>
             )}
-
-          {/* Map preview */}
-          {stops.length > 0 && (
-            <div className="rounded-[12px] border border-line bg-ink-2 p-4">
-              <div className="flex flex-wrap items-center gap-x-3 gap-y-1">
-                <p className="font-display text-[15px] font-semibold text-chalk">
-                  {t("routes.mapTitle")}
-                </p>
-                {unlocated > 0 && (
-                  <span className="text-[12px] text-fog">
-                    {t("routes.mapUnlocated", { n: unlocated })}
-                  </span>
-                )}
-              </div>
-              <RouteMap
-                stops={stops}
-                start={{ lat: route.startLat, lng: route.startLng, address: route.startAddress }}
-                returnToStart={route.returnToStart}
-                startLabel={t("routes.fStartAddress")}
-                returnLabel={t("routes.fReturnToStart")}
-                // Roughly double the old 320px, and taller again on a desktop: the map is where
-                // the dispatcher reads the run, so it gets the screen rather than a strip of it.
-                className="mt-3 h-[420px] sm:h-[600px] lg:h-[720px]"
-                emptyMessage={t("routes.mapEmpty")}
-                noKeyMessage={t("routes.mapNoKey")}
-              />
-            </div>
-          )}
 
           {/* Stops */}
           <div className="rounded-[12px] overflow-hidden border border-line bg-ink-2">
