@@ -737,6 +737,14 @@ export const timeClockEntries = sqliteTable(
     photoId: text("photo_id"),
     /** The run he was holding at the time, for a delivery workspace. */
     routeId: text("route_id"),
+    /**
+     * The job the crew member was on at the time, for a field workspace — the same answer
+     * `routeId` gives on the delivery side, in the noun that side uses. A field punch is read
+     * against a site the way a driver's is read against a run: payroll asking why Tuesday was
+     * eleven hours wants to know which job it was eleven hours of. Null on a delivery punch,
+     * and null on a field punch taken with no project picked.
+     */
+    projectId: text("project_id"),
     /** capture | manual */
     source: text("source").notNull().default("capture"),
     note: text("note"),

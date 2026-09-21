@@ -734,7 +734,15 @@ export default function Capture() {
     if (busy || clockStamp.pending) return;
     setBusy(true);
     try {
-      const result = await clockStamp.stamp(kind, fixRef.current, stopRouteId ?? pickedRouteId);
+      // What he was on when he punched, in whichever noun this workspace works in: the run on
+      // the delivery side, the job on the field side. The other one goes null rather than being
+      // left stale — a field punch has no run and a driver's has no job.
+      const result = await clockStamp.stamp(
+        kind,
+        fixRef.current,
+        deliverySide ? (stopRouteId ?? pickedRouteId) : null,
+        deliverySide ? null : projectId,
+      );
       setStatus(
         result.queued
           ? tr("capture.clockQueued")

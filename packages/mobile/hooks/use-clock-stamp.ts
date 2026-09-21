@@ -43,7 +43,13 @@ export function useClockStamp() {
   }, [queryClient]);
 
   const stamp = useCallback(
-    async (kind: "in" | "out", fix: StampFix, routeId: string | null): Promise<StampResult> => {
+    async (
+      kind: "in" | "out",
+      fix: StampFix,
+      /** The run he was holding, delivery side; the job he was on, field side. Either may be null. */
+      routeId: string | null,
+      projectId: string | null,
+    ): Promise<StampResult> => {
       setPending(true);
       const at = Date.now();
       // Read from storage, not the network: the offset that was true at the tap is the one the
@@ -62,6 +68,7 @@ export function useClockStamp() {
         heading: fix.heading,
         address: fix.address,
         routeId,
+        projectId,
         deviceModel: Constants.deviceName ?? null,
         platform: Platform.OS,
         note: null,
@@ -81,6 +88,7 @@ export function useClockStamp() {
           heading: punch.heading,
           address: punch.address,
           routeId: punch.routeId,
+          projectId: punch.projectId,
           deviceModel: punch.deviceModel,
           platform: punch.platform,
           note: punch.note,

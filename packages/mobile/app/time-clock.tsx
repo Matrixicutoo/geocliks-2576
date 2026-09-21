@@ -504,7 +504,11 @@ export default function TimeClockScreen() {
               <Text style={[styles.meta, { color: colors.mutedForeground }]}>
                 {entry.userName} ·{" "}
                 {t(entry.source === "manual" ? "tc.sourceManual" : "tc.sourceCapture")}
-                {entry.routeName ? ` · ${entry.routeName}` : ""}
+                {/* The run he was holding, or the job he was on — one workspace has runs, the
+                    other has jobs, and a punch carries whichever its side works in. */}
+                {entry.projectName || entry.routeName
+                  ? ` · ${entry.projectName || entry.routeName}`
+                  : ""}
               </Text>
 
               {entry.code ? (

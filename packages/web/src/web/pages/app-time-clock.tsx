@@ -502,8 +502,13 @@ export default function TimeClockPage() {
                       {[entry.deviceModel, entry.platform].filter(Boolean).join(" · ")}
                     </p>
                   )}
-                  {entry.routeName && (
-                    <p className="mt-1 text-[10.5px] text-fog">{entry.routeName}</p>
+                  {/* What he was working on: the run on a delivery workspace, the job on a field
+                      one. A punch carries whichever noun its side works in, so the panel reads
+                      the same on both products without knowing which it is on. */}
+                  {(entry.projectName || entry.routeName) && (
+                    <p className="mt-1 text-[10.5px] text-fog">
+                      {entry.projectName || entry.routeName}
+                    </p>
                   )}
                   {entry.note && <p className="mt-1 text-[11px] text-chalk">{entry.note}</p>}
                   <p className="mono mt-1 text-[9.5px] uppercase tracking-widest text-fog">

@@ -30,7 +30,10 @@ export type QueuedPunch = {
   altitudeM: number | null;
   heading: number | null;
   address: string | null;
+  /** The run it was taken on, delivery side. */
   routeId: string | null;
+  /** The job it was taken on, field side. A punch carries one of the two or neither. */
+  projectId: string | null;
   deviceModel: string | null;
   platform: string | null;
   note: string | null;
@@ -83,6 +86,7 @@ export async function drainPunches(): Promise<{ sent: number; left: number }> {
         heading: item.heading,
         address: item.address,
         routeId: item.routeId,
+        projectId: item.projectId ?? null,
         deviceModel: item.deviceModel,
         platform: item.platform,
         note: item.note,

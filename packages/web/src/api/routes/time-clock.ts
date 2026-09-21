@@ -132,8 +132,10 @@ async function withNames(rows: TimeClockRow[]) {
     .select({ userId: schema.members.userId, role: schema.members.role })
     .from(schema.members)
     .where(inArray(schema.members.userId, ids));
-  // The run he was holding, by name. A punch stamp shows the run where a photo stamp shows the
-  // project, so the day panel reads the same way the picture used to.
+  // What he was working on, by name — the run on the delivery side, the job on the field side.
+  // Both are resolved here rather than branching on the workspace's product, because the punch
+  // itself already says which one it carried and a workspace that switched products still has
+  // to read its old punches.
   const runIds = [...new Set(rows.map((r) => r.routeId).filter((v): v is string => !!v))];
   const runs = runIds.length
     ? await db
@@ -141,9 +143,17 @@ async function withNames(rows: TimeClockRow[]) {
         .from(schema.routes)
         .where(inArray(schema.routes.id, runIds))
     : [];
+  const jobIds = [...new Set(rows.map((r) => r.projectId).filter((v): v is string => !!v))];
+  const jobs = jobIds.length
+    ? await db
+        .select({ id: schema.projects.id, name: schema.projects.name })
+        .from(schema.projects)
+        .where(inArray(schema.projects.id, jobIds))
+    : [];
   const byId = new Map(people.map((p) => [p.id, p]));
   const roleById = new Map(roles.map((r) => [r.userId, r.role]));
   const runById = new Map(runs.map((r) => [r.id, r.name]));
+  const jobById = new Map(jobs.map((r) => [r.id, r.name]));
   return rows.map((row) => {
     const person = byId.get(row.userId);
     return {
@@ -151,6 +161,7 @@ async function withNames(rows: TimeClockRow[]) {
       userName: person?.name?.trim() || person?.email?.split("@")[0] || "Crew",
       userRole: roleById.get(row.userId) ?? null,
       routeName: row.routeId ? (runById.get(row.routeId) ?? null) : null,
+      projectName: row.projectId ? (jobById.get(row.projectId) ?? null) : null,
     };
   });
 }
@@ -232,6 +243,7 @@ export async function recordPunch(entry: {
   address?: string | null;
   photoId?: string | null;
   routeId?: string | null;
+  projectId?: string | null;
   source?: "capture" | "manual";
   note?: string | null;
   deviceModel?: string | null;
@@ -271,6 +283,7 @@ export async function recordPunch(entry: {
       address: entry.address ?? null,
       photoId: entry.photoId ?? null,
       routeId: entry.routeId ?? null,
+      projectId: entry.projectId ?? null,
       source: entry.source ?? "capture",
       note: entry.note ?? null,
       deviceModel: entry.deviceModel ?? null,
@@ -384,7 +397,10 @@ export const timeClock = {
         altitudeM: z.number().nullish(),
         heading: z.number().nullish(),
         address: z.string().max(240).nullish(),
+        /** The run he was holding, on the delivery side. */
         routeId: z.string().nullish(),
+        /** The job he was on, on the field side. Same question, that side's noun. */
+        projectId: z.string().nullish(),
         deviceModel: z.string().max(120).nullish(),
         platform: z.string().max(40).nullish(),
         note: z.string().max(500).nullish(),
@@ -409,6 +425,7 @@ export const timeClock = {
         heading: input.heading ?? null,
         address: input.address ?? null,
         routeId: input.routeId ?? null,
+        projectId: input.projectId ?? null,
         source: "capture",
         note: input.note ?? null,
         deviceModel: input.deviceModel ?? null,
@@ -444,6 +461,7 @@ export const timeClock = {
         accuracyM: z.number().nullish(),
         address: z.string().max(240).nullish(),
         routeId: z.string().nullish(),
+        projectId: z.string().nullish(),
         note: z.string().max(500).nullish(),
       }),
     )
@@ -478,6 +496,7 @@ export const timeClock = {
         accuracyM: input.accuracyM ?? null,
         address: input.address ?? null,
         routeId: input.routeId ?? null,
+        projectId: input.projectId ?? null,
         source: "manual",
         note: input.note ?? null,
       });
@@ -486,11 +505,15 @@ export const timeClock = {
     }),
 
   /**
-   * One driver's timesheet as a PDF, for the office to file, email or hand to payroll.
+   * One person's timesheet as a PDF, for the office to file, email or hand to payroll.
    *
    * Office only, and per person by design. A payroll document covering the whole workspace is
-   * not a timesheet anyone can sign — the driver signs his own hours, the manager approves
-   * them, and that is one sheet per driver per period.
+   * not a timesheet anyone can sign — the person signs his own hours, the manager approves
+   * them, and that is one sheet per person per period.
+   *
+   * Works the same on both products, in each one's own words: the workspace's product decides
+   * whether the sheet is a driver's or a field crew member's, and the log line under each punch
+   * names the run or the job accordingly.
    *
    * `timeZone` comes from the browser that asked, because the days on the sheet have to be the
    * days on the calendar the reader was just looking at.
@@ -541,11 +564,15 @@ export const timeClock = {
         .orderBy(asc(schema.timeClockEntries.at));
 
       const named = await withNames(rows);
-      const driverName = person.name?.trim() || person.email?.split("@")[0] || "Crew";
+      const workerName = person.name?.trim() || person.email?.split("@")[0] || "Crew";
       const bytes = await buildTimesheetPdf({
         orgName: context.org.name,
-        driverName,
-        driverRole: person.role,
+        workerName,
+        workerRole: person.role,
+        // A field workspace's sheet says crew and job where a delivery one says driver and run.
+        // Read off the workspace, not the person's role: a dispatcher's own hours on a field
+        // workspace are still field hours.
+        product: context.org.product === "field" ? "field" : "delivery",
         from: new Date(input.from),
         to: new Date(input.to),
         timeZone: input.timeZone,
@@ -555,7 +582,7 @@ export const timeClock = {
       });
 
       const filename = timesheetFilename(
-        driverName,
+        workerName,
         new Date(input.from),
         new Date(input.to),
         input.timeZone,
@@ -568,7 +595,7 @@ export const timeClock = {
         url: await presignGet(key, 60 * 60 * 24, filename),
         filename,
         bytes: bytes.byteLength,
-        driverName,
+        workerName,
         shifts: pairShifts(rows).length,
       };
     }),

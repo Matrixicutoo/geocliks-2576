@@ -2,7 +2,8 @@ import { PDFDocument, StandardFonts } from "pdf-lib";
 import { AMBER, FOG, GREEN, INK, WHITE, wa } from "./exports";
 
 /**
- * One driver's timesheet as a PDF.
+ * One person's timesheet as a PDF — a driver's on the delivery side, a field crew member's on
+ * the other, which is the same document in each side's own words.
  *
  * This is payroll paperwork, not a photo package, so it is built from punches rather than
  * pictures — and deliberately embeds no images at all. The punches it documents were made with
@@ -34,7 +35,10 @@ export interface TimesheetPunch {
   integrity?: string | null;
   source?: string | null;
   note?: string | null;
+  /** The run it was taken on, delivery side. */
   routeName?: string | null;
+  /** The job it was taken on, field side. Both are printed; a punch carries one or neither. */
+  projectName?: string | null;
 }
 
 export interface TimesheetShift {
@@ -48,8 +52,15 @@ export interface TimesheetShift {
 
 export interface TimesheetContext {
   orgName: string;
-  driverName: string;
-  driverRole: string | null;
+  /** Whose hours these are. Not `driverName`: half the workspaces on this have no drivers. */
+  workerName: string;
+  workerRole: string | null;
+  /**
+   * Which product the workspace runs, which is the only thing the wording branches on. A field
+   * crew member handed a sheet headed DRIVER TIMESHEET would rightly not sign it, and a run
+   * named where he worked a job reads as someone else's paperwork.
+   */
+  product: "delivery" | "field";
   /** Inclusive window, as the caller's own clock drew it. */
   from: Date;
   to: Date;
@@ -149,6 +160,18 @@ function deviceLine(punch: TimesheetPunch): string {
   return [bits.join(" · ") || "Unknown device", ...extras].join(" · ");
 }
 
+/**
+ * What the punch was taken against, if anything — " · run Monday AM", " · job Elm St fiber".
+ *
+ * The punch names a route or a project, never both, so the noun is the caller's word for the
+ * product it came from and the empty string is a punch taken with nothing picked.
+ */
+function workedOn(punch: TimesheetPunch, job: string): string {
+  if (punch.projectName) return ` · ${job} ${punch.projectName}`;
+  if (punch.routeName) return ` · run ${punch.routeName}`;
+  return "";
+}
+
 /** Hard-wrap on width rather than word count, so an address fills the line it is given. */
 function fit(text: string, max: number): string {
   const safe = wa(text);
@@ -161,7 +184,19 @@ interface Sheet {
   index: number;
 }
 
+/**
+ * The nouns the sheet is written in.
+ *
+ * One table rather than a branch at every drawText: the document is identical on both products
+ * and only ever differs in what it calls the person and the thing he worked on.
+ */
+const WORDS = {
+  delivery: { title: "DRIVER TIMESHEET", worker: "driver", sign: "Driver signature", job: "run" },
+  field: { title: "FIELD TIMESHEET", worker: "crew member", sign: "Crew signature", job: "job" },
+} as const;
+
 export async function buildTimesheetPdf(ctx: TimesheetContext): Promise<Uint8Array> {
+  const words = WORDS[ctx.product];
   const pdf = await PDFDocument.create();
   const bold = await pdf.embedFont(StandardFonts.HelveticaBold);
   const font = await pdf.embedFont(StandardFonts.Helvetica);
@@ -177,8 +212,8 @@ export async function buildTimesheetPdf(ctx: TimesheetContext): Promise<Uint8Arr
   cover.drawRectangle({ x: 0, y: 0, width: W, height: H, color: INK });
   cover.drawRectangle({ x: 0, y: H - 8, width: W, height: 8, color: AMBER });
   cover.drawText("GEOCLIKS", { x: 48, y: H - 92, size: 12, font: mono, color: AMBER });
-  cover.drawText("DRIVER TIMESHEET", { x: 48, y: H - 110, size: 9, font: mono, color: FOG });
-  cover.drawText(fit(ctx.driverName, 24), {
+  cover.drawText(words.title, { x: 48, y: H - 110, size: 9, font: mono, color: FOG });
+  cover.drawText(fit(ctx.workerName, 24), {
     x: 48,
     y: H - 180,
     size: 30,
@@ -189,7 +224,7 @@ export async function buildTimesheetPdf(ctx: TimesheetContext): Promise<Uint8Arr
   const window = `${dayLabel(ctx.from, tz)} – ${dayLabel(ctx.to, tz)}`;
   const rows: Array<[string, string]> = [
     ["Organization", ctx.orgName],
-    ["Role", ctx.driverRole ?? "—"],
+    ["Role", ctx.workerRole ?? "—"],
     ["Period", window],
     ["Timezone", tz],
     ["Shifts", String(ctx.shifts.length)],
@@ -219,14 +254,14 @@ export async function buildTimesheetPdf(ctx: TimesheetContext): Promise<Uint8Arr
     });
   }
 
-  // Says what the log actually is. Claiming every row came off the driver's handset would be a
+  // Says what the log actually is. Claiming every row came off the crew's own handset would be a
   // lie on any sheet the office had to patch by hand, and the count is the first thing a clerk
   // looking for a padded timesheet wants.
   const typed = ctx.punches.filter((punch) => punch.source === "manual").length;
   const intro =
     typed === 0
-      ? "Every punch below was recorded by the driver's own handset with no photo taken:"
-      : `${ctx.punches.length - typed} of ${ctx.punches.length} punches below came off the driver's handset, no photo taken:`;
+      ? `Every punch below was recorded by the ${words.worker}'s own handset with no photo taken:`
+      : `${ctx.punches.length - typed} of ${ctx.punches.length} punches below came off the ${words.worker}'s handset, no photo taken:`;
   cover.drawText(fit(intro, 92), { x: 48, y: 112, size: 9, font, color: FOG });
   cover.drawText(
     typed === 0
@@ -253,7 +288,7 @@ export async function buildTimesheetPdf(ctx: TimesheetContext): Promise<Uint8Arr
     const page = pdf.addPage([W, H]);
     page.drawRectangle({ x: 0, y: 0, width: W, height: H, color: WHITE });
     page.drawRectangle({ x: 0, y: H - 46, width: W, height: 46, color: INK });
-    page.drawText(fit(`${ctx.driverName} · TIMESHEET`, 52).toUpperCase(), {
+    page.drawText(fit(`${ctx.workerName} · TIMESHEET`, 52).toUpperCase(), {
       x: 40,
       y: H - 29,
       size: 10,
@@ -358,7 +393,9 @@ export async function buildTimesheetPdf(ctx: TimesheetContext): Promise<Uint8Arr
         const lines: string[] = [
           `${coords(punch)}${punch.address ? ` · ${punch.address}` : ""}`,
           `${clockLine(punch)} · server ${stampLabel(punch.verifiedAt, tz)}`,
-          `${deviceLine(punch)}${punch.routeName ? ` · run ${punch.routeName}` : ""}${
+          // Whatever he was working on, in the noun his side uses: a run on the delivery
+          // product, a job on the field one. A punch carries one of the two or neither.
+          `${deviceLine(punch)}${workedOn(punch, words.job)}${
             punch.source === "manual" ? " · entered by the office" : ""
           }`,
         ];
@@ -381,7 +418,7 @@ export async function buildTimesheetPdf(ctx: TimesheetContext): Promise<Uint8Arr
   const summary = `TOTAL ${hoursLabel(worked)}  ·  ${decimalHours(worked)} HOURS  ·  ${ctx.shifts.length} SHIFTS`;
   sheet.page.drawText(summary, { x: 40, y: sheet.y, size: 11, font: bold, color: INK });
   sheet.y -= 40;
-  for (const label of ["Driver signature", "Approved by"]) {
+  for (const label of [words.sign, "Approved by"]) {
     sheet.page.drawRectangle({ x: 40, y: sheet.y, width: 220, height: 1, color: INK });
     sheet.page.drawText(label.toUpperCase(), {
       x: 40,
@@ -397,9 +434,9 @@ export async function buildTimesheetPdf(ctx: TimesheetContext): Promise<Uint8Arr
 }
 
 /** What the timesheet is called once it lands in someone's downloads folder. */
-export function timesheetFilename(driverName: string, from: Date, to: Date, timeZone: string) {
-  const safe = driverName.replace(/[^a-z0-9]+/gi, "-").replace(/^-|-$/g, "").toLowerCase();
+export function timesheetFilename(workerName: string, from: Date, to: Date, timeZone: string) {
+  const safe = workerName.replace(/[^a-z0-9]+/gi, "-").replace(/^-|-$/g, "").toLowerCase();
   const a = dayKey(from, timeZone);
   const b = dayKey(to, timeZone);
-  return `timesheet-${safe || "driver"}-${a}${a === b ? "" : `-to-${b}`}.pdf`;
+  return `timesheet-${safe || "crew"}-${a}${a === b ? "" : `-to-${b}`}.pdf`;
 }
