@@ -451,6 +451,76 @@ function emptyStop(): ParsedStop {
   };
 }
 
+/** A cell that is plainly a piece of an address: a postal code, a region, a street line. */
+function looksLikeAddressPart(value: string): boolean {
+  const text = value.trim();
+  if (CA_POSTAL.test(text) || US_ZIP.test(text)) return true;
+  const words = text.toLowerCase().split(/\s+/);
+  return words.some((w) => REGION_WORDS.has(w) || STREET_WORDS.has(w));
+}
+
+/**
+ * How well a row's cells suit the columns they landed in: +1 when a cell has the shape its column
+ * wants, -1 when it plainly does not, 0 when the cell proves nothing either way.
+ *
+ * Email, phone and signature columns are decisive in both directions — an email column holding
+ * "Jane Doe" says the row is out of step. The recipient column only votes when it is sure: a real
+ * recipient can be "Café 1840" or "Unit 7 Reception", so failing looksLikeName is no evidence,
+ * but "Moncton NB" or "E1A 4H2" sitting in it is.
+ */
+function alignmentScore(cells: string[], mapping: (StopField | null)[]): number {
+  let score = 0;
+  mapping.forEach((field, i) => {
+    const value = (cells[i] ?? "").trim();
+    if (!value || !field) return;
+    if (field === "recipientEmail") score += looksLikeEmail(value) ? 1 : -1;
+    else if (field === "recipientPhone") score += looksLikePhone(value) ? 1 : -1;
+    else if (field === "requireSignature") score += readFlag(value) === null ? -1 : 1;
+    else if (field === "recipientName") {
+      if (looksLikeName(value)) score += 1;
+      else if (looksLikeAddressPart(value)) score -= 1;
+    }
+  });
+  return score;
+}
+
+/**
+ * Give the address back the commas it was split on.
+ *
+ * A header row says how many columns there are; a comma-separated address says nothing of the
+ * kind. "Address, Recipient Name, Email Address, Phone Number" over
+ * "12 Main St, Moncton NB, Jane Doe, jane@example.com, 506-555-0101" is five cells against four
+ * columns, and read straight across every field shifts by one: the city becomes the recipient,
+ * the recipient becomes the email, the email becomes the phone, and the phone falls off the end
+ * entirely. The paste box tells dispatchers to use exactly that order, so this was the common
+ * case, not an exotic one.
+ *
+ * The surplus can only have come from a field that legitimately contains commas, and the address
+ * is that field, so it absorbs them. Two guards keep the repair honest: it needs a single address
+ * column, because street/city/postal columns give no way to tell which one the commas came out
+ * of, and the re-aligned row has to read strictly better than the raw one did. Where the evidence
+ * ties — a trailing notes column that itself holds a comma, say — the row is left exactly as the
+ * header describes it, because a guess is only worth making when the row says it is wrong.
+ */
+function absorbSurplus(cells: string[], mapping: (StopField | null)[]): string[] {
+  const surplus = cells.length - mapping.length;
+  if (surplus <= 0) return cells;
+  if (mapping.filter((f) => f === "addressRaw").length !== 1) return cells;
+  const at = mapping.indexOf("addressRaw");
+  if (at === -1) return cells;
+
+  const merged = [
+    ...cells.slice(0, at),
+    cells
+      .slice(at, at + surplus + 1)
+      .map((c) => c.trim())
+      .filter(Boolean)
+      .join(", "),
+    ...cells.slice(at + surplus + 1),
+  ];
+  return alignmentScore(merged, mapping) > alignmentScore(cells, mapping) ? merged : cells;
+}
+
 /** Build a stop from a mapped header row. */
 function fromHeader(cells: string[], mapping: (StopField | null)[]): ParsedStop {
   const stop = emptyStop();
@@ -546,8 +616,11 @@ export function parseStops(text: string): ParseResult {
 
   for (const line of lines) {
     const cells = splitLine(line, char);
+    // Only a comma row can have more cells than columns for an innocent reason. A tab or
+    // semicolon sheet means every cell really is its own column, and a surplus there is a
+    // genuinely extra column rather than an address that got split.
     const stop = mapping
-      ? fromHeader(cells, mapping)
+      ? fromHeader(name === "comma" ? absorbSurplus(cells, mapping) : cells, mapping)
       : fromHeuristics(cells, name === "comma");
 
     const addressRaw = clean(stop.addressRaw, 300);
