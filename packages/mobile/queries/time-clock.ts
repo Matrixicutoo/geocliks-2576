@@ -29,12 +29,12 @@ export function useOnClock(userId?: string | null) {
 }
 
 /**
- * A stamp with no photo — kind, the moment, and wherever the phone says it is standing.
+ * A punch typed in by hand. Office only — the server refuses crew outright.
  *
- * Separate from the CLOCK-mode camera buttons on the capture screen: those shoot an
- * arrival/departure photo and the server punches the clock off the back of it, which is what
- * keeps a shot taken in a dead zone punching for the moment it was taken. This is the same
- * punch without the picture, for crew who only need the stamp.
+ * Crew punch from the CLOCK capture instead (`useClockStamp`), which reads the fix and the
+ * device's clock drift and posts a stamp with no photograph behind it. This one exists for the
+ * office entering the shift of a driver whose phone died, and every row it writes stays
+ * labelled `manual` wherever it is shown.
  */
 export function usePunch() {
   const queryClient = useQueryClient();

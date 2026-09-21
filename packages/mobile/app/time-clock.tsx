@@ -2,6 +2,7 @@ import { useCallback, useMemo, useState } from "react";
 import { ActivityIndicator, Pressable, ScrollView, StyleSheet, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Ionicons } from "@expo/vector-icons";
+import { router } from "expo-router";
 import * as Location from "expo-location";
 import { Text } from "@/components/app-text";
 import { useColors } from "@/hooks/use-colors";
@@ -48,6 +49,23 @@ function timeLabel(at: Date | string) {
     minute: "2-digit",
     hour12: false,
   });
+}
+
+function secondsLabel(at: Date | string) {
+  return new Date(at).toLocaleTimeString("en-US", {
+    hour: "2-digit",
+    minute: "2-digit",
+    second: "2-digit",
+    hour12: false,
+  });
+}
+
+/** Device drift, in the units a person reads: under a second is "on time", not "+412 ms". */
+function skewLabel(ms: number | null | undefined) {
+  if (ms == null) return null;
+  const seconds = Math.round(Math.abs(ms) / 1000);
+  if (seconds < 1) return "±0s";
+  return `${ms < 0 ? "−" : "+"}${seconds}s`;
 }
 
 const WEEKDAYS = ["S", "M", "T", "W", "T", "F", "S"];
@@ -219,6 +237,7 @@ export default function TimeClockScreen() {
             ) : null}
           </View>
 
+          {office ? (
           <View style={styles.punchRow}>
             {(["in", "out"] as const).map((kind) => {
               const primary = kind === "in" ? !onClock : onClock;
@@ -259,13 +278,35 @@ export default function TimeClockScreen() {
               );
             })}
           </View>
-
-          <Text style={[styles.hint, { color: colors.mutedForeground }]}>
-            {locating ? t("tc.locating") : t("tc.punchNowHint")}
-          </Text>
-          {failed ? (
-            <Text style={[styles.hint, { color: colors.destructive }]}>{t("tc.punchFailed")}</Text>
           ) : null}
+
+          {office ? (
+            <>
+              <Text style={[styles.hint, { color: colors.mutedForeground }]}>
+                {locating ? t("tc.locating") : t("tc.punchNowHint")}
+              </Text>
+              {failed ? (
+                <Text style={[styles.hint, { color: colors.destructive }]}>
+                  {t("tc.punchFailed")}
+                </Text>
+              ) : null}
+            </>
+          ) : (
+            // Crew have no manual punch, here or on the server. Their hours are worth something
+            // because a device recorded them; a button that types a start time would not be.
+            <>
+              <Text style={[styles.hint, { color: colors.mutedForeground }]}>
+                {t("tc.crewNote")}
+              </Text>
+              <Pressable
+                onPress={() => router.replace("/(tabs)" as never)}
+                style={[styles.goBtn, { borderColor: colors.amber }]}
+              >
+                <Ionicons name="camera-outline" size={15} color={colors.amber} />
+                <Text style={[styles.goText, { color: colors.amber }]}>{t("tc.goCapture")}</Text>
+              </Pressable>
+            </>
+          )}
         </View>
 
         {office ? (
@@ -440,6 +481,11 @@ export default function TimeClockScreen() {
           </View>
         ) : null}
 
+        {/*
+          The one place a punch is readable, and the reason it needs every field a photograph's
+          stamp carried: there is no picture behind it to go back to. Code, fix, drift, device —
+          all of it on the card, so a disputed shift is settled here.
+        */}
         {dayEntries.map((entry) => (
           <View
             key={entry.id}
@@ -452,16 +498,77 @@ export default function TimeClockScreen() {
             />
             <View style={styles.punchBody}>
               <Text style={[styles.punchTime, { color: colors.foreground, fontFamily: Fonts?.mono }]}>
-                {timeLabel(entry.at)} · {t(entry.kind === "in" ? "tc.in" : "tc.out").toUpperCase()}
-              </Text>
-              <Text
-                style={[styles.meta, { color: colors.mutedForeground, fontFamily: Fonts?.mono }]}
-              >
-                {entry.address ?? formatCoords(entry.lat, entry.lng)}
+                {secondsLabel(entry.at)} ·{" "}
+                {t(entry.kind === "in" ? "tc.in" : "tc.out").toUpperCase()}
               </Text>
               <Text style={[styles.meta, { color: colors.mutedForeground }]}>
                 {entry.userName} ·{" "}
                 {t(entry.source === "manual" ? "tc.sourceManual" : "tc.sourceCapture")}
+                {entry.routeName ? ` · ${entry.routeName}` : ""}
+              </Text>
+
+              {entry.code ? (
+                <Text style={[styles.code, { color: colors.amber, fontFamily: Fonts?.mono }]}>
+                  {entry.code}
+                </Text>
+              ) : null}
+
+              {/* An office entry has no fix to report, so it says nothing rather than
+                  "GPS acquiring…" about a phone that was never involved. */}
+              {entry.lat != null && entry.lng != null ? (
+                <Text
+                  style={[styles.meta, { color: colors.mutedForeground, fontFamily: Fonts?.mono }]}
+                >
+                  {formatCoords(entry.lat, entry.lng)}
+                  {entry.accuracyM == null ? "" : ` ±${Math.round(entry.accuracyM)}m`}
+                </Text>
+              ) : null}
+              {entry.address ? (
+                <Text style={[styles.meta, { color: colors.mutedForeground }]}>
+                  {entry.address}
+                </Text>
+              ) : null}
+              {entry.altitudeM != null || entry.heading != null ? (
+                <Text
+                  style={[styles.meta, { color: colors.mutedForeground, fontFamily: Fonts?.mono }]}
+                >
+                  {[
+                    entry.altitudeM == null
+                      ? null
+                      : t("tc.altitude", { m: Math.round(entry.altitudeM) }),
+                    entry.heading == null
+                      ? null
+                      : t("tc.heading", { deg: Math.round(entry.heading) }),
+                  ]
+                    .filter(Boolean)
+                    .join(" · ")}
+                </Text>
+              ) : null}
+
+              {/* Only a punch the phone made can claim a verified clock. What the office typed
+                  is already labelled a manual punch above; adding a skew against the server
+                  would read as proof it does not have. */}
+              {entry.verifiedAt && entry.source !== "manual" ? (
+                <Text
+                  style={[styles.meta, { color: colors.verified, fontFamily: Fonts?.mono }]}
+                >
+                  {t("tc.verifiedAt", { time: secondsLabel(entry.verifiedAt) })}
+                  {skewLabel(entry.clockSkewMs)
+                    ? ` · ${t("tc.skew", { skew: skewLabel(entry.clockSkewMs) ?? "" })}`
+                    : ""}
+                </Text>
+              ) : null}
+              {entry.deviceModel || entry.platform ? (
+                <Text style={[styles.meta, { color: colors.mutedForeground }]}>
+                  {[entry.deviceModel, entry.platform].filter(Boolean).join(" · ")}
+                </Text>
+              ) : null}
+              {entry.note ? (
+                <Text style={[styles.meta, { color: colors.foreground }]}>{entry.note}</Text>
+              ) : null}
+
+              <Text style={[styles.noPhoto, { color: colors.mutedForeground }]}>
+                {t("tc.noPhoto")}
               </Text>
             </View>
           </View>
@@ -501,6 +608,16 @@ const styles = StyleSheet.create({
   },
   punchText: { fontSize: 12, fontWeight: "700" },
   hint: { fontSize: 10, lineHeight: 15 },
+  goBtn: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
+    gap: 6,
+    borderWidth: 1,
+    borderRadius: 10,
+    paddingVertical: 11,
+  },
+  goText: { fontSize: 12, fontWeight: "700" },
   toggle: { flexDirection: "row", borderWidth: 1, borderRadius: 10, padding: 3, gap: 3 },
   toggleItem: { flex: 1, alignItems: "center", paddingVertical: 8, borderRadius: 8 },
   toggleText: { fontSize: 11, fontWeight: "700", letterSpacing: 0.4 },
@@ -539,7 +656,7 @@ const styles = StyleSheet.create({
   },
   punchCard: {
     flexDirection: "row",
-    alignItems: "center",
+    alignItems: "flex-start",
     gap: 10,
     borderWidth: 1,
     borderRadius: 12,
@@ -548,4 +665,6 @@ const styles = StyleSheet.create({
   punchBody: { flex: 1, gap: 2 },
   punchTime: { fontSize: 12 },
   meta: { fontSize: 10, letterSpacing: 0.4 },
+  code: { fontSize: 10, letterSpacing: 1.2, fontWeight: "700" },
+  noPhoto: { fontSize: 9, letterSpacing: 0.4, fontStyle: "italic", paddingTop: 2 },
 });

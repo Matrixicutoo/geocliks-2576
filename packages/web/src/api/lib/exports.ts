@@ -142,7 +142,13 @@ function waChar(ch: string): boolean {
   return WIN_EXTRA.includes(ch);
 }
 
-function wa(input: string): string {
+/**
+ * Folds a string down to what the PDF's standard fonts can actually draw.
+ *
+ * Exported because the timesheet builder in lib/timesheet-pdf.ts writes the same crew names and
+ * addresses into the same fonts, and a second copy of this table would drift from this one.
+ */
+export function wa(input: string): string {
   let out = "";
   for (const ch of input.normalize("NFC")) {
     if (waChar(ch)) {
@@ -161,11 +167,13 @@ function wa(input: string): string {
   return out;
 }
 
-const INK = rgb(0.043, 0.055, 0.075);
-const AMBER = rgb(1, 0.69, 0.13);
-const FOG = rgb(0.55, 0.6, 0.68);
-const WHITE = rgb(1, 1, 1);
-const GREEN = rgb(0.12, 0.76, 0.42);
+// The brand palette every built package is drawn in. Exported so the timesheet PDF is the same
+// black-and-amber document as a closeout package rather than a lookalike.
+export const INK = rgb(0.043, 0.055, 0.075);
+export const AMBER = rgb(1, 0.69, 0.13);
+export const FOG = rgb(0.55, 0.6, 0.68);
+export const WHITE = rgb(1, 1, 1);
+export const GREEN = rgb(0.12, 0.76, 0.42);
 
 interface BuildContext {
   title: string;

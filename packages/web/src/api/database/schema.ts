@@ -730,8 +730,9 @@ export const timeClockEntries = sqliteTable(
     accuracyM: real("accuracy_m"),
     address: text("address"),
     /**
-     * The arrival/departure capture this punch came out of, when it came out of one. Unique, so
-     * a photo re-sealed or re-sent by the offline queue cannot punch the same clock twice.
+     * A legacy arrival/departure photo this punch came out of, from app builds that still shoot
+     * one. Unique, so a photo re-sealed or re-sent by the offline queue cannot punch the same
+     * clock twice. Current builds punch with no camera at all and leave this null.
      */
     photoId: text("photo_id"),
     /** The run he was holding at the time, for a delivery workspace. */
@@ -739,6 +740,36 @@ export const timeClockEntries = sqliteTable(
     /** capture | manual */
     source: text("source").notNull().default("capture"),
     note: text("note"),
+
+    /*
+     * Everything below is what a photo's stamp carries, on a record with no photo.
+     *
+     * A punch replaced a picture, so it has to stand up to the same question a picture does —
+     * was this person really there, then? A row holding only a time and two coordinates is a
+     * claim; these columns are what make it evidence. They are the photo table's own stamp
+     * fields, named identically, so the calendar, the PDF and the verifier can read a punch
+     * with the code they already use for a capture.
+     */
+
+    /** The GC-XXXX-XXXX-XXXX stamp code, quotable back to us exactly like a photo code. */
+    code: text("code"),
+    altitudeM: real("altitude_m"),
+    heading: real("heading"),
+    deviceModel: text("device_model"),
+    platform: text("platform"),
+    /** Server clock when the punch reached us — `at` is the device's own, clock-corrected. */
+    verifiedAt: integer("verified_at", { mode: "timestamp_ms" }),
+    /** deviceTime - serverTime at the punch: how wrong the phone's clock was. */
+    clockSkewMs: integer("clock_skew_ms"),
+    /** How long the punch sat in the offline queue. Normal in a dead zone, not a problem. */
+    uploadDelayMs: integer("upload_delay_ms"),
+    /** network | device */
+    timeSource: text("time_source"),
+    /** verified | unverified */
+    integrity: text("integrity"),
+    /** HMAC over the punch's canonical payload. Any later edit to it breaks this. */
+    signature: text("signature"),
+
     createdAt: integer("created_at", { mode: "timestamp_ms" }).notNull().$defaultFn(now),
   },
   (t) => [

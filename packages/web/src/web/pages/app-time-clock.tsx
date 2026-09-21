@@ -4,9 +4,12 @@ import {
   ChevronLeft,
   ChevronRight,
   Clock,
+  FileDown,
   LogIn,
   LogOut,
   MapPin,
+  ShieldCheck,
+  Smartphone,
   Trash2,
   Users,
 } from "lucide-react";
@@ -17,6 +20,7 @@ import { StatTile } from "../components/stat-tile";
 import { formatCoords } from "../components/evidence-card";
 import {
   useAmendPunch,
+  useExportTimesheet,
   useOnClock,
   usePunch,
   useRemovePunch,
@@ -70,6 +74,24 @@ function timeLabel(at: Date | string) {
   });
 }
 
+/** With seconds, for the punch detail — a disputed minute is argued in seconds. */
+function secondsLabel(at: Date | string) {
+  return new Date(at).toLocaleTimeString("en-US", {
+    hour: "2-digit",
+    minute: "2-digit",
+    second: "2-digit",
+    hour12: false,
+  });
+}
+
+/** Device drift in the units a person reads: under a second is "±0s", not "+412 ms". */
+function skewLabel(ms: number | null | undefined) {
+  if (ms == null) return null;
+  const seconds = Math.round(Math.abs(ms) / 1000);
+  if (seconds < 1) return "±0s";
+  return `${ms < 0 ? "−" : "+"}${seconds}s`;
+}
+
 /** `<input type="time">` wants HH:MM in local time, which is also how a correction is typed. */
 function timeInputValue(at: Date | string) {
   const d = new Date(at);
@@ -118,6 +140,7 @@ export default function TimeClockPage() {
   const punch = usePunch();
   const amend = useAmendPunch();
   const remove = useRemovePunch();
+  const exportPdf = useExportTimesheet();
 
   // Memoized on the query result rather than read inline, so the per-day totals below are not
   // recomputed on every keystroke in the correction field.
@@ -212,29 +235,42 @@ export default function TimeClockPage() {
           accent={openNow > 0 ? "verified" : "chalk"}
           loading={clock.isLoading}
         />
+        {/* Punching by hand is the office's, and only the office's. Crew time comes off a device
+            that recorded where and when it happened; a text field a driver can type his own
+            start time into is a claim, and mixing the two would make the honest rows worthless.
+            The server refuses crew here too — this just stops offering them a dead button. */}
         <div className="rounded-[12px] border border-line bg-ink-2 p-4">
-          <span className="label">{t("tc.punchNow")}</span>
-          <div className="mt-3 flex flex-wrap gap-2">
-            <button
-              type="button"
-              onClick={() => stampPunch("in")}
-              disabled={punch.isPending}
-              className="inline-flex items-center gap-1.5 rounded-[6px] border border-verified/60 bg-verified/10 px-2.5 py-1.5 text-[11px] uppercase tracking-widest text-verified disabled:opacity-50"
-            >
-              <LogIn className="size-3.5" />
-              {t("tc.clockIn")}
-            </button>
-            <button
-              type="button"
-              onClick={() => stampPunch("out")}
-              disabled={punch.isPending}
-              className="inline-flex items-center gap-1.5 rounded-[6px] border border-amber/60 bg-amber/10 px-2.5 py-1.5 text-[11px] uppercase tracking-widest text-amber disabled:opacity-50"
-            >
-              <LogOut className="size-3.5" />
-              {t("tc.clockOut")}
-            </button>
-          </div>
-          <p className="mt-2 text-[11px] text-fog">{t("tc.punchNowHint")}</p>
+          <span className="label">{office ? t("tc.punchNow") : t("tc.crewNoManual")}</span>
+          {office ? (
+            <>
+              <div className="mt-3 flex flex-wrap gap-2">
+                <button
+                  type="button"
+                  onClick={() => stampPunch("in")}
+                  disabled={punch.isPending}
+                  className="inline-flex items-center gap-1.5 rounded-[6px] border border-verified/60 bg-verified/10 px-2.5 py-1.5 text-[11px] uppercase tracking-widest text-verified disabled:opacity-50"
+                >
+                  <LogIn className="size-3.5" />
+                  {t("tc.clockIn")}
+                </button>
+                <button
+                  type="button"
+                  onClick={() => stampPunch("out")}
+                  disabled={punch.isPending}
+                  className="inline-flex items-center gap-1.5 rounded-[6px] border border-amber/60 bg-amber/10 px-2.5 py-1.5 text-[11px] uppercase tracking-widest text-amber disabled:opacity-50"
+                >
+                  <LogOut className="size-3.5" />
+                  {t("tc.clockOut")}
+                </button>
+              </div>
+              <p className="mt-2 text-[11px] text-fog">{t("tc.punchNowHint")}</p>
+            </>
+          ) : (
+            <p className="mt-3 flex items-start gap-1.5 text-[11px] text-fog">
+              <Smartphone className="mt-0.5 size-3.5 shrink-0" />
+              <span>{t("tc.crewNoManualHint")}</span>
+            </p>
+          )}
         </div>
       </div>
 
@@ -261,7 +297,35 @@ export default function TimeClockPage() {
               {current.data?.since ? ` · ${timeLabel(current.data.since)}` : ""}
             </span>
           )}
+
+          {/* One sheet per driver per period, which is the only timesheet anybody can sign. So
+              the button waits for a person to be picked rather than exporting "everyone" into a
+              document nobody could put their name at the bottom of. */}
+          <div className="ml-auto flex flex-wrap items-center gap-2">
+            <button
+              type="button"
+              disabled={!who || exportPdf.isPending}
+              onClick={() =>
+                exportPdf.mutate({
+                  userId: who,
+                  from,
+                  to,
+                  timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone || "UTC",
+                })
+              }
+              className="inline-flex items-center gap-1.5 rounded-[6px] border border-amber/60 bg-amber/10 px-2.5 py-1.5 text-[11px] uppercase tracking-widest text-amber disabled:cursor-not-allowed disabled:opacity-40"
+            >
+              <FileDown className="size-3.5" />
+              {exportPdf.isPending ? t("tc.exporting") : t("tc.exportPdf")}
+            </button>
+            <span className="text-[10.5px] text-fog">
+              {who ? t("tc.exportHint", { month: monthLabel }) : t("tc.exportPickOne")}
+            </span>
+          </div>
         </div>
+      )}
+      {exportPdf.isError && (
+        <p className="mt-2 text-[11px] text-alert">{t("tc.exportFailed")}</p>
       )}
 
       <div className="mt-4 grid gap-4 lg:grid-cols-[1fr_340px]">
@@ -375,19 +439,77 @@ export default function TimeClockPage() {
                       )}
                       {t(entry.kind === "in" ? "tc.in" : "tc.out")}
                     </span>
-                    <span className="mono text-[12px] text-chalk">{timeLabel(entry.at)}</span>
+                    <span className="mono text-[12px] text-chalk">{secondsLabel(entry.at)}</span>
                   </div>
                   {clock.data?.scope === "workspace" && (
                     <p className="mt-1.5 text-[11px] text-chalk">{entry.userName}</p>
                   )}
+
+                  {/* Everything a photograph's stamp used to carry, because there is no
+                      photograph behind a punch to go back to. This panel is the whole record. */}
+                  {entry.code && (
+                    <p className="mono mt-1 text-[10.5px] tracking-widest text-amber">
+                      {entry.code}
+                    </p>
+                  )}
+                  {/* Skipped whole for an office entry: there is no fix to report about a phone
+                      that was never involved, and "NO GPS FIX" would read as one that failed. */}
+                  {(entry.lat != null && entry.lng != null) || entry.address ? (
                   <p className="mt-1 flex items-start gap-1.5 text-[11px] text-fog">
                     <MapPin className="mt-0.5 size-3 shrink-0" />
-                    <span className="line-clamp-2">
-                      {entry.address ?? formatCoords(entry.lat, entry.lng)}
+                    <span>
+                      {entry.lat != null && entry.lng != null ? (
+                      <span className="mono">
+                        {formatCoords(entry.lat, entry.lng)}
+                        {entry.accuracyM == null ? "" : ` ±${Math.round(entry.accuracyM)}m`}
+                      </span>
+                      ) : null}
+                      {entry.address ? (
+                        <span className="block line-clamp-2">{entry.address}</span>
+                      ) : null}
+                      {entry.altitudeM != null || entry.heading != null ? (
+                        <span className="mono block">
+                          {[
+                            entry.altitudeM == null
+                              ? null
+                              : t("tc.altitude", { m: Math.round(entry.altitudeM) }),
+                            entry.heading == null
+                              ? null
+                              : t("tc.heading", { deg: Math.round(entry.heading) }),
+                          ]
+                            .filter(Boolean)
+                            .join(" · ")}
+                        </span>
+                      ) : null}
                     </span>
                   </p>
+                  ) : null}
+                  {/* Only a punch a phone made can claim a verified clock; the line below is
+                      omitted for an office entry rather than lending it that proof. */}
+                  {entry.verifiedAt && entry.source !== "manual" && (
+                    <p className="mono mt-1 flex items-start gap-1.5 text-[10.5px] text-verified">
+                      <ShieldCheck className="mt-0.5 size-3 shrink-0" />
+                      <span>
+                        {t("tc.verifiedAt", { time: secondsLabel(entry.verifiedAt) })}
+                        {skewLabel(entry.clockSkewMs)
+                          ? ` · ${t("tc.skew", { skew: skewLabel(entry.clockSkewMs) ?? "" })}`
+                          : ""}
+                      </span>
+                    </p>
+                  )}
+                  {(entry.deviceModel || entry.platform) && (
+                    <p className="mt-1 text-[10.5px] text-fog">
+                      {[entry.deviceModel, entry.platform].filter(Boolean).join(" · ")}
+                    </p>
+                  )}
+                  {entry.routeName && (
+                    <p className="mt-1 text-[10.5px] text-fog">{entry.routeName}</p>
+                  )}
+                  {entry.note && <p className="mt-1 text-[11px] text-chalk">{entry.note}</p>}
                   <p className="mono mt-1 text-[9.5px] uppercase tracking-widest text-fog">
                     {t(entry.source === "manual" ? "tc.sourceManual" : "tc.sourceCapture")}
+                    {" · "}
+                    {t("tc.noPhoto")}
                   </p>
 
                   {/* Corrections are the office's, not the crew's — a timesheet its subject can

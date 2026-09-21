@@ -13,7 +13,6 @@ import { burnStamp, hasFfmpeg, posterFrame } from "../lib/video";
 import { repairPosters, repairPostersInBackground } from "../lib/poster-repair";
 import { buildEvidencePdf, buildStampedDocument, buildStampedImage } from "../lib/evidence";
 import { siteUrl } from "../services/email";
-import { recordPunch } from "./time-clock";
 
 const tagEnum = z.enum([
   "general",
@@ -478,25 +477,10 @@ export const photos = {
         },
       ]);
 
-      // An arrival or departure shot is a punch on the time clock as well as a capture. Written
-      // here rather than by the phone so that one tap produces one punch: the phone fires a
-      // single create, and a capture that sat in the offline queue for an hour still punches for
-      // the moment it was taken. `recordPunch` swallows the duplicate if the queue re-sends it.
-      if (input.tag === "arrival" || input.tag === "departure") {
-        await recordPunch({
-          orgId: context.org.id,
-          userId: context.user.id,
-          kind: input.tag === "arrival" ? "in" : "out",
-          at: new Date(input.capturedAt),
-          lat: input.lat ?? null,
-          lng: input.lng ?? null,
-          accuracyM: input.accuracyM ?? null,
-          address: input.address ?? null,
-          photoId: photo!.id,
-          source: "capture",
-          note: input.note ?? null,
-        });
-      }
+      // No punch is written here, deliberately. A photograph tagged arrival is evidence of a
+      // place; the time clock is a separate record, created only by the CLOCK capture, which
+      // takes no picture at all. One punch, from one path — a shot that also punched would put
+      // a face in a timesheet and a timesheet in the gallery.
 
       if (input.kind === "video") {
         await db.insert(schema.photoEvents).values({

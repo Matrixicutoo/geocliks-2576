@@ -3,7 +3,10 @@ import { and, asc, desc, eq, gte, inArray, lte } from "drizzle-orm";
 import { z } from "zod";
 import { db } from "../database";
 import * as schema from "../database/schema";
-import { id } from "../lib/ids";
+import { id, photoCode } from "../lib/ids";
+import { presignGet, putObject } from "../lib/s3";
+import { buildTimesheetPdf, timesheetFilename } from "../lib/timesheet-pdf";
+import { resolveClock, sign } from "../lib/verify";
 import { orgProc, type Role } from "../middleware/auth";
 
 /**
@@ -129,16 +132,83 @@ async function withNames(rows: TimeClockRow[]) {
     .select({ userId: schema.members.userId, role: schema.members.role })
     .from(schema.members)
     .where(inArray(schema.members.userId, ids));
+  // The run he was holding, by name. A punch stamp shows the run where a photo stamp shows the
+  // project, so the day panel reads the same way the picture used to.
+  const runIds = [...new Set(rows.map((r) => r.routeId).filter((v): v is string => !!v))];
+  const runs = runIds.length
+    ? await db
+        .select({ id: schema.routes.id, name: schema.routes.name })
+        .from(schema.routes)
+        .where(inArray(schema.routes.id, runIds))
+    : [];
   const byId = new Map(people.map((p) => [p.id, p]));
   const roleById = new Map(roles.map((r) => [r.userId, r.role]));
+  const runById = new Map(runs.map((r) => [r.id, r.name]));
   return rows.map((row) => {
     const person = byId.get(row.userId);
     return {
       ...row,
       userName: person?.name?.trim() || person?.email?.split("@")[0] || "Crew",
       userRole: roleById.get(row.userId) ?? null,
+      routeName: row.routeId ? (runById.get(row.routeId) ?? null) : null,
     };
   });
+}
+
+export type TimeClockEntry = Awaited<ReturnType<typeof withNames>>[number];
+
+/**
+ * The stamp fields a punch carries in place of a picture.
+ *
+ * A punch that replaced a photo has to answer the same question the photo did, so it is sealed
+ * the same way: a quotable code, the server's own clock beside the device's, the skew between
+ * them, and an HMAC over the lot. `storageKey` in the signed payload names the punch rather than
+ * a file — there are no bytes to hash — which keeps one signing function for both kinds of
+ * evidence and still makes any later edit to the punch detectable.
+ */
+async function sealPunch(entry: {
+  orgId: string;
+  userId: string;
+  kind: "in" | "out";
+  at: Date;
+  lat?: number | null;
+  lng?: number | null;
+  clockOffsetMs?: number | null;
+  clockSyncedAt?: number | null;
+  source?: "capture" | "manual";
+}) {
+  const verifiedAt = Date.now();
+  const code = photoCode();
+  const clock = resolveClock({
+    capturedAt: entry.at.getTime(),
+    verifiedAt,
+    clockOffsetMs: entry.clockOffsetMs,
+    clockSyncedAt: entry.clockSyncedAt,
+  });
+  const signature = await sign({
+    photoCode: code,
+    orgId: entry.orgId,
+    userId: entry.userId,
+    storageKey: `time-clock:${entry.kind}`,
+    capturedAt: entry.at.getTime(),
+    verifiedAt,
+    lat: entry.lat ?? null,
+    lng: entry.lng ?? null,
+    contentHash: null,
+  });
+  // A punch the office typed in proves nothing about any device's clock, even when it is typed
+  // at the very moment it happened and the skew maths therefore comes out at zero. Say so
+  // instead of dressing an office entry up as a network-verified one.
+  const office = entry.source === "manual";
+  return {
+    code,
+    verifiedAt: new Date(verifiedAt),
+    clockSkewMs: clock.skewMs,
+    uploadDelayMs: clock.uploadDelayMs,
+    timeSource: office ? "device" : clock.timeSource,
+    integrity: office ? "unverified" : clock.integrity,
+    signature,
+  };
 }
 
 /**
@@ -157,11 +227,17 @@ export async function recordPunch(entry: {
   lat?: number | null;
   lng?: number | null;
   accuracyM?: number | null;
+  altitudeM?: number | null;
+  heading?: number | null;
   address?: string | null;
   photoId?: string | null;
   routeId?: string | null;
   source?: "capture" | "manual";
   note?: string | null;
+  deviceModel?: string | null;
+  platform?: string | null;
+  clockOffsetMs?: number | null;
+  clockSyncedAt?: number | null;
 }): Promise<TimeClockRow | null> {
   const window = 2 * 60 * 1000;
   const near = await db
@@ -178,6 +254,7 @@ export async function recordPunch(entry: {
     .limit(1);
   if (near.length > 0) return near[0]!;
 
+  const seal = await sealPunch(entry);
   const [row] = await db
     .insert(schema.timeClockEntries)
     .values({
@@ -189,11 +266,16 @@ export async function recordPunch(entry: {
       lat: entry.lat ?? null,
       lng: entry.lng ?? null,
       accuracyM: entry.accuracyM ?? null,
+      altitudeM: entry.altitudeM ?? null,
+      heading: entry.heading ?? null,
       address: entry.address ?? null,
       photoId: entry.photoId ?? null,
       routeId: entry.routeId ?? null,
       source: entry.source ?? "capture",
       note: entry.note ?? null,
+      deviceModel: entry.deviceModel ?? null,
+      platform: entry.platform ?? null,
+      ...seal,
     })
     // The unique index on photo_id is the second line of defence: a capture re-sent by the
     // offline queue cannot punch the same clock twice even outside the window above.
@@ -275,25 +357,36 @@ export const timeClock = {
   ),
 
   /**
-   * A punch with no picture — location and time only.
+   * The capture that takes no picture.
    *
-   * The CLOCK buttons on the phone call this, and it is also what a workspace that does not
-   * want a photo on every arrival uses. A punch that came out of an arrival/departure capture
-   * is written by the capture pipeline instead (see `photos.create`), which is what keeps an
-   * offline shot punching the clock for the moment it was taken rather than the moment it
-   * finally uploaded.
+   * This is how crew time is created, and the only way: the driver holds CLOCK on the capture
+   * screen and taps in or out, the phone reads its fix and its clock drift exactly as it would
+   * for a photo, and sends that here. No shutter, no bytes, no upload — a punch is not a
+   * picture, so it was wrong to make one. Nothing about the evidence is weaker for it: every
+   * field a photo's stamp carries is on the row (see `sealPunch`), signed the same way.
+   *
+   * It writes no `photos` row on purpose. That is what keeps a clock-in out of the capture
+   * feed, out of the galleries and out of every report that draws from them — a punch is
+   * readable in one place, the day panel on the time clock, and nowhere else.
    */
-  punch: orgProc
+  stamp: orgProc
     .input(
       z.object({
         kind: kindEnum,
         /** Device time of the punch. Clamped below — a phone cannot backdate its own shift. */
         at: z.number().nullish(),
+        /** The drift the phone measured against the server, same pair a photo sends. */
+        clockOffsetMs: z.number().nullish(),
+        clockSyncedAt: z.number().nullish(),
         lat: z.number().nullish(),
         lng: z.number().nullish(),
         accuracyM: z.number().nullish(),
+        altitudeM: z.number().nullish(),
+        heading: z.number().nullish(),
         address: z.string().max(240).nullish(),
         routeId: z.string().nullish(),
+        deviceModel: z.string().max(120).nullish(),
+        platform: z.string().max(40).nullish(),
         note: z.string().max(500).nullish(),
       }),
     )
@@ -312,6 +405,77 @@ export const timeClock = {
         lat: input.lat ?? null,
         lng: input.lng ?? null,
         accuracyM: input.accuracyM ?? null,
+        altitudeM: input.altitudeM ?? null,
+        heading: input.heading ?? null,
+        address: input.address ?? null,
+        routeId: input.routeId ?? null,
+        source: "capture",
+        note: input.note ?? null,
+        deviceModel: input.deviceModel ?? null,
+        platform: input.platform ?? null,
+        clockOffsetMs: input.clockOffsetMs ?? null,
+        clockSyncedAt: input.clockSyncedAt ?? null,
+      });
+      if (!row) throw new ORPCError("INTERNAL_SERVER_ERROR", { message: "Punch not recorded" });
+      return row;
+    }),
+
+  /**
+   * A punch typed in by hand. Office only — and for anyone in the workspace, including crew.
+   *
+   * Crew cannot reach this. A driver's hours are worth something because a device recorded
+   * them where and when they happened; a text field a driver can type his own start time into
+   * is a claim, and putting the two in the same column would make the honest ones worthless.
+   * So the phone gives crew no manual punch at all, and this refuses them if they ask anyway.
+   *
+   * The office keeps it because someone has to be able to enter the shift of a driver whose
+   * phone died at six in the morning. That entry is stamped `manual` and stays labelled
+   * `manual` everywhere it is shown, which is the whole point of the distinction.
+   */
+  punch: orgProc
+    .input(
+      z.object({
+        kind: kindEnum,
+        /** Who worked it. Defaults to the caller, which is the office punching itself in. */
+        userId: z.string().nullish(),
+        at: z.number().nullish(),
+        lat: z.number().nullish(),
+        lng: z.number().nullish(),
+        accuracyM: z.number().nullish(),
+        address: z.string().max(240).nullish(),
+        routeId: z.string().nullish(),
+        note: z.string().max(500).nullish(),
+      }),
+    )
+    .handler(async ({ input, context }) => {
+      if (!readsEveryone(context.role)) {
+        throw new ORPCError("FORBIDDEN", {
+          message: "Crew clock in and out from the CLOCK capture, not by hand",
+        });
+      }
+      const now = Date.now();
+      const asked = input.at ?? now;
+      // The office may backdate a missed shift, but not into next week.
+      const at = new Date(Math.min(now, Math.max(asked, now - 90 * 24 * 60 * 60 * 1000)));
+      const who = input.userId ?? context.user.id;
+      if (who !== context.user.id) {
+        const [member] = await db
+          .select({ userId: schema.members.userId })
+          .from(schema.members)
+          .where(
+            and(eq(schema.members.orgId, context.org.id), eq(schema.members.userId, who)),
+          )
+          .limit(1);
+        if (!member) throw new ORPCError("NOT_FOUND", { message: "Not a member of this workspace" });
+      }
+      const row = await recordPunch({
+        orgId: context.org.id,
+        userId: who,
+        kind: input.kind,
+        at,
+        lat: input.lat ?? null,
+        lng: input.lng ?? null,
+        accuracyM: input.accuracyM ?? null,
         address: input.address ?? null,
         routeId: input.routeId ?? null,
         source: "manual",
@@ -319,6 +483,94 @@ export const timeClock = {
       });
       if (!row) throw new ORPCError("INTERNAL_SERVER_ERROR", { message: "Punch not recorded" });
       return row;
+    }),
+
+  /**
+   * One driver's timesheet as a PDF, for the office to file, email or hand to payroll.
+   *
+   * Office only, and per person by design. A payroll document covering the whole workspace is
+   * not a timesheet anyone can sign — the driver signs his own hours, the manager approves
+   * them, and that is one sheet per driver per period.
+   *
+   * `timeZone` comes from the browser that asked, because the days on the sheet have to be the
+   * days on the calendar the reader was just looking at.
+   */
+  exportPdf: orgProc
+    .input(
+      z.object({
+        userId: z.string(),
+        from: z.number(),
+        to: z.number(),
+        timeZone: z.string().max(64).default("UTC"),
+      }),
+    )
+    .handler(async ({ input, context }) => {
+      if (!readsEveryone(context.role)) {
+        throw new ORPCError("FORBIDDEN", { message: "Only the office can export a timesheet" });
+      }
+      const [person] = await db
+        .select({
+          id: schema.user.id,
+          name: schema.user.name,
+          email: schema.user.email,
+          role: schema.members.role,
+        })
+        .from(schema.user)
+        .leftJoin(
+          schema.members,
+          and(
+            eq(schema.members.userId, schema.user.id),
+            eq(schema.members.orgId, context.org.id),
+          ),
+        )
+        .where(eq(schema.user.id, input.userId))
+        .limit(1);
+      if (!person?.role) throw new ORPCError("NOT_FOUND", { message: "Not a member of this workspace" });
+
+      const rows = await db
+        .select()
+        .from(schema.timeClockEntries)
+        .where(
+          and(
+            eq(schema.timeClockEntries.orgId, context.org.id),
+            eq(schema.timeClockEntries.userId, input.userId),
+            gte(schema.timeClockEntries.at, new Date(input.from)),
+            lte(schema.timeClockEntries.at, new Date(input.to)),
+          ),
+        )
+        .orderBy(asc(schema.timeClockEntries.at));
+
+      const named = await withNames(rows);
+      const driverName = person.name?.trim() || person.email?.split("@")[0] || "Crew";
+      const bytes = await buildTimesheetPdf({
+        orgName: context.org.name,
+        driverName,
+        driverRole: person.role,
+        from: new Date(input.from),
+        to: new Date(input.to),
+        timeZone: input.timeZone,
+        punches: named,
+        shifts: pairShifts(rows),
+        preparedBy: context.user.name?.trim() || context.user.email || "Office",
+      });
+
+      const filename = timesheetFilename(
+        driverName,
+        new Date(input.from),
+        new Date(input.to),
+        input.timeZone,
+      );
+      // Written under the org like any other export, keyed by the window so re-exporting the
+      // same period replaces the file rather than littering the bucket with near-duplicates.
+      const key = `orgs/${context.org.id}/timesheets/${input.userId}/${filename}`;
+      await putObject(key, bytes, "application/pdf");
+      return {
+        url: await presignGet(key, 60 * 60 * 24, filename),
+        filename,
+        bytes: bytes.byteLength,
+        driverName,
+        shifts: pairShifts(rows).length,
+      };
     }),
 
   /**

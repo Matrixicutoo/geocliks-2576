@@ -34,6 +34,7 @@ import { useTeamspaceNudge } from "@/hooks/use-teamspace-nudge";
 import { TeamspaceSheet } from "@/components/teamspace-sheet";
 import { drainQueue, enqueue, readQueue, subscribeQueue, type QueuedPhoto } from "@/lib/queue";
 import { clockStampForCapture, ensureClockSync } from "@/lib/clock";
+import { useClockStamp } from "@/hooks/use-clock-stamp";
 import { SignaturePad } from "@/components/signature-pad";
 import { ScanReview } from "@/components/scan-review";
 import {
@@ -265,6 +266,8 @@ export default function Capture() {
   const templates = useTemplates();
   const invalidate = useInvalidatePhotos();
   const policy = useVideoPolicy();
+  // CLOCK mode's punch, which takes no picture at all — see hooks/use-clock-stamp.ts.
+  const clockStamp = useClockStamp();
   const tr = useT();
   const { hasSession, pending: sessionPending } = useHasSession();
   // Photos work signed out; video does not, because the plan that governs clip length lives
@@ -574,7 +577,10 @@ export default function Capture() {
   // Offline this is a no-op that keeps the last good offset.
   useEffect(() => {
     void ensureClockSync();
-  }, []);
+    // And push any punch that was tapped in a dead zone. Cheap, and the screen the driver
+    // clocks in from is the right place to notice that yesterday's clock-out never landed.
+    void clockStamp.flush();
+  }, [clockStamp]);
 
   useEffect(() => {
     if (isNative && permission && !permission.granted && permission.canAskAgain) {
@@ -715,6 +721,32 @@ export default function Capture() {
   );
 
   const isPod = tag === "pickup" || tag === "delivery";
+
+  /**
+   * CLOCK IN / CLOCK OUT. No shutter, no photo, no queue upload — a punch is not a picture.
+   *
+   * It reads the same live fix and the same measured clock drift the shutter would have sealed
+   * into a photo, and sends them on their own. The punch shows up in one place, the day panel on
+   * the time clock, and deliberately nowhere else: nothing is written to `photos`, so there is
+   * nothing for the capture feed, a gallery or a report to pick up.
+   */
+  const punchClock = async (kind: "in" | "out") => {
+    if (busy || clockStamp.pending) return;
+    setBusy(true);
+    try {
+      const result = await clockStamp.stamp(kind, fixRef.current, stopRouteId ?? pickedRouteId);
+      setStatus(
+        result.queued
+          ? tr("capture.clockQueued")
+          : tr(kind === "in" ? "capture.clockedIn" : "capture.clockedOut"),
+      );
+    } catch (err) {
+      setStatus(err instanceof Error ? err.message : tr("capture.failed"));
+    } finally {
+      setBusy(false);
+      setTimeout(() => setStatus(null), 4000);
+    }
+  };
 
   const shoot = async (forcedTag?: QueuedPhoto["tag"]) => {
     if (busy) return;
@@ -927,9 +959,9 @@ export default function Capture() {
   const pickMode = (next: Mode) => {
     if (recording) return;
     setMode(next);
-    // Clock in/out keeps its own override; photo and video come back to the remembered tag.
-    if (next === "clock") setTag("arrival");
-    else setTag(deliverySide ? "delivery" : photoTag);
+    // CLOCK no longer touches the tag: it takes no photo, so there is nothing to tag. Photo and
+    // video keep the remembered one.
+    if (next !== "clock") setTag(deliverySide ? "delivery" : photoTag);
     /*
       Real edge detection lives in the OS scanner, which opens as its own full-screen
       activity and cannot be embedded in our preview. So picking SCAN opens it straight
@@ -1580,8 +1612,12 @@ export default function Capture() {
         {mode === "clock" ? (
           <View style={styles.clockRow}>
             <Pressable
-              onPress={() => void shoot("arrival")}
-              style={[styles.clockBtn, { borderColor: colors.verified }]}
+              disabled={busy || clockStamp.pending}
+              onPress={() => void punchClock("in")}
+              style={[
+                styles.clockBtn,
+                { borderColor: colors.verified, opacity: busy || clockStamp.pending ? 0.5 : 1 },
+              ]}
             >
               <Ionicons name="enter-outline" size={16} color={colors.verified} />
               <Text style={[styles.clockBtnText, { color: colors.verified }]}>
@@ -1589,8 +1625,12 @@ export default function Capture() {
               </Text>
             </Pressable>
             <Pressable
-              onPress={() => void shoot("departure")}
-              style={[styles.clockBtn, { borderColor: colors.amber }]}
+              disabled={busy || clockStamp.pending}
+              onPress={() => void punchClock("out")}
+              style={[
+                styles.clockBtn,
+                { borderColor: colors.amber, opacity: busy || clockStamp.pending ? 0.5 : 1 },
+              ]}
             >
               <Ionicons name="exit-outline" size={16} color={colors.amber} />
               <Text style={[styles.clockBtnText, { color: colors.amber }]}>
@@ -1598,6 +1638,13 @@ export default function Capture() {
               </Text>
             </Pressable>
           </View>
+        ) : null}
+        {mode === "clock" ? (
+          <Text style={[styles.clockHint, { color: colors.mutedForeground }]}>
+            {clockStamp.waiting > 0
+              ? tr("capture.clockWaiting", { n: clockStamp.waiting })
+              : tr("capture.clockHint")}
+          </Text>
         ) : null}
         {/*
           The two lists used to render inline under the selector bar, which grew the panel and
@@ -2491,4 +2538,5 @@ const styles = StyleSheet.create({
     borderRadius: 8,
   },
   clockBtnText: { fontSize: 13, fontWeight: "600" },
+  clockHint: { fontSize: 11, marginTop: 6, textAlign: "center" },
 });

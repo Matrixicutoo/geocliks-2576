@@ -51,3 +51,22 @@ export function useRemovePunch() {
   const invalidate = useTimeClockInvalidate();
   return useMutation(orpc.timeClock.remove.mutationOptions({ onSuccess: invalidate }));
 }
+
+/**
+ * One driver's timesheet as a PDF — the document payroll files and the driver signs.
+ *
+ * Per person on purpose: a sheet covering the whole workspace is nobody's to sign. The browser's
+ * own zone goes with the request so the days on the paper are the days the office was just
+ * reading on the calendar, not UTC's.
+ */
+export function useExportTimesheet() {
+  return useMutation(
+    orpc.timeClock.exportPdf.mutationOptions({
+      onSuccess: (result) => {
+        // Opened rather than navigated to: the presigned URL is a download, and replacing the
+        // page with it would lose the calendar the office is working through.
+        window.open(result.url, "_blank", "noopener,noreferrer");
+      },
+    }),
+  );
+}
