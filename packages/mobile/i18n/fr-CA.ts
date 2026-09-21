@@ -499,6 +499,11 @@ export const frCA: Catalog = {
   "routes.liveHint":
     "Elle s'insère parmi les arrêts que le chauffeur n'a pas encore atteints. Rien de déjà livré ne bouge.",
   "routes.liveAdded": "Ajoutée comme arrêt {n} sur {total}",
+  "routes.liveDriver": "Chauffeur",
+  "routes.liveDriverThis": "Cette tournée",
+  "routes.liveDriverHint": "Laissez sur cette tournée, ou envoyez la commande à un autre chauffeur - elle rejoint la tournée qu'il a déjà aujourd'hui, ou en ouvre une depuis la même adresse de départ.",
+  "routes.liveOtherRun": "Ajoutée à la tournée de {driver} comme arrêt {n} sur {total}",
+  "routes.liveNewRun": "Nouvelle tournée ouverte pour {driver} - ajoutée comme arrêt {n}",
   "routes.liveNotLocated": "Ajoutée à la fin - cette adresse n'a pas pu être placée sur la carte.",
   "routes.deleteRoute": "Supprimer la tournée",
   "run.start": "Démarrer la tournée",

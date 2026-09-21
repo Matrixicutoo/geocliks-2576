@@ -494,6 +494,11 @@ export const es: Catalog = {
   "routes.liveHint":
     "Se inserta entre las paradas que el conductor aún no ha alcanzado. Nada ya entregado se mueve.",
   "routes.liveAdded": "Agregado como parada {n} de {total}",
+  "routes.liveDriver": "Conductor",
+  "routes.liveDriverThis": "Esta ruta",
+  "routes.liveDriverHint": "Déjalo en esta ruta o envía el pedido a otro conductor: se suma a la ruta que ya tiene hoy, o abre una desde la misma dirección de salida.",
+  "routes.liveOtherRun": "Agregado a la ruta de {driver} como parada {n} de {total}",
+  "routes.liveNewRun": "Nueva ruta abierta para {driver}: agregado como parada {n}",
   "routes.liveNotLocated": "Agregado al final - esa dirección no se pudo ubicar en el mapa.",
   "routes.deleteRoute": "Eliminar ruta",
   "run.start": "Iniciar ruta",

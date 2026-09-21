@@ -490,6 +490,11 @@ export const vi: Catalog = {
   "routes.liveHint":
     "Đơn được chèn vào những điểm dừng tài xế chưa tới. Những điểm đã giao không bị thay đổi.",
   "routes.liveAdded": "Đã thêm làm điểm dừng {n} trên {total}",
+  "routes.liveDriver": "Tài xế",
+  "routes.liveDriverThis": "Chuyến này",
+  "routes.liveDriverHint": "Giữ ở chuyến này, hoặc chuyển đơn cho tài xế khác - đơn sẽ vào chuyến họ đã có hôm nay, hoặc mở chuyến mới từ cùng địa chỉ khởi hành.",
+  "routes.liveOtherRun": "Đã thêm vào chuyến của {driver} làm điểm dừng {n} trên {total}",
+  "routes.liveNewRun": "Đã mở chuyến mới cho {driver} - thêm làm điểm dừng {n}",
   "routes.liveNotLocated": "Đã thêm vào cuối - không thể định vị địa chỉ đó trên bản đồ.",
   "routes.deleteRoute": "Xóa tuyến",
   "run.start": "Bắt đầu tuyến",

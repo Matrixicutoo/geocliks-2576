@@ -495,6 +495,11 @@ export const it: Catalog = {
   "routes.liveHint":
     "Si inserisce tra le fermate che l'autista non ha ancora raggiunto. Nulla di già consegnato viene spostato.",
   "routes.liveAdded": "Aggiunto come fermata {n} di {total}",
+  "routes.liveDriver": "Autista",
+  "routes.liveDriverThis": "Questo giro",
+  "routes.liveDriverHint": "Lascia su questo giro oppure manda l'ordine a un altro autista: entra nel giro che ha già oggi, o ne apre uno dallo stesso indirizzo di partenza.",
+  "routes.liveOtherRun": "Aggiunto al giro di {driver} come fermata {n} di {total}",
+  "routes.liveNewRun": "Nuovo giro aperto per {driver} - aggiunto come fermata {n}",
   "routes.liveNotLocated":
     "Aggiunto in fondo - non è stato possibile posizionare quell'indirizzo sulla mappa.",
   "routes.deleteRoute": "Elimina percorso",

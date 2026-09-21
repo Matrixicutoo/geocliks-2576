@@ -22,6 +22,7 @@ import { formatDistance, useArrival } from "@/hooks/use-arrival";
 import { AssignDriverSheet } from "@/components/assign-driver-sheet";
 import { useOrg } from "@/queries/orgs";
 import { AddressInput } from "@/components/address-input";
+import { useTeam } from "@/queries/team";
 import { canRunDeliveries } from "../../lib/roles";
 
 const REASONS: { key: FailedReason; label: TKey }[] = [
@@ -73,6 +74,9 @@ export default function RouteRun() {
   // number the driver taps on arrival could only be attached from a desk.
   const [liveEmail, setLiveEmail] = useState("");
   const [livePhone, setLivePhone] = useState("");
+  // Blank means the run on screen, which is how this sheet has always worked. A user id means
+  // the order is for somebody else and the server has to go and find his run.
+  const [liveDriver, setLiveDriver] = useState<string | null>(null);
   const [liveNote, setLiveNote] = useState<string | null>(null);
   const [liveError, setLiveError] = useState<string | null>(null);
   const org = useOrg();
@@ -230,6 +234,13 @@ export default function RouteRun() {
   // Dispatcher and above can hand this run to a driver, in the same popup the runs list opens.
   const canAssign = canRunDeliveries(org.data?.role);
   const [assignOpen, setAssignOpen] = useState(false);
+  // Handing the order to somebody else is a dispatch question: orders arrive through the day on
+  // a dispatch run, whereas a planned round was built up front and its stops belong where they
+  // were put. The roster is fetched only for the role and the run that can use it, so a driver's
+  // phone never spends a request on a list it will not draw.
+  const canPickDriver = canAssign && route?.mode === "dispatch";
+  const team = useTeam(canPickDriver);
+  const drivers = canPickDriver ? (team.data ?? []) : [];
 
   const submitLiveStop = async () => {
     if (!routeId || !liveAddress.trim()) return;
@@ -237,18 +248,29 @@ export default function RouteRun() {
     try {
       const added = await addLiveStop.mutateAsync({
         routeId,
+        driverId: liveDriver,
         addressRaw: liveAddress.trim(),
         recipientName: liveRecipient.trim() || null,
         recipientEmail: liveEmail.trim() || null,
         recipientPhone: livePhone.trim() || null,
       });
-      const placed = t("routes.liveAdded", { n: added.position, total: added.total });
+      // Named from the roster on screen: the dispatcher wants back the person he just tapped.
+      const picked = drivers.find((m) => m.userId === liveDriver);
+      const driver = picked?.user?.name ?? picked?.user?.email ?? t("team.unknownUser");
+      // Which run took it. When the order went to somebody else that matters more than the
+      // position does, because the stop will not appear anywhere on this screen.
+      const placed = added.createdRoute
+        ? t("routes.liveNewRun", { driver, n: added.position })
+        : added.rerouted
+          ? t("routes.liveOtherRun", { driver, n: added.position, total: added.total })
+          : t("routes.liveAdded", { n: added.position, total: added.total });
       // The server slots the stop by distance, but only if it could place the address on the map.
       setLiveNote(added.located ? placed : `${placed} ${t("routes.liveNotLocated")}`);
       setLiveAddress("");
       setLiveRecipient("");
       setLiveEmail("");
       setLivePhone("");
+      setLiveDriver(null);
       setLiveOpen(false);
     } catch (e) {
       // Shown as-is. "Start the route before adding a stop" is the one a driver will actually hit.
@@ -661,6 +683,62 @@ export default function RouteRun() {
                     keyboardType="phone-pad"
                     style={[styles.input, { borderColor: colors.border, color: colors.foreground }]}
                   />
+                  {/* Whose run takes it. Chips rather than a dropdown: on a phone this is one
+                      tap, and the crew is short enough to read at a glance. Dispatchers only -
+                      a driver may squeeze an order into his own run and no further. */}
+                  {drivers.length > 0 ? (
+                    <View style={{ gap: 6 }}>
+                      <Text
+                        style={[
+                          styles.section,
+                          { color: colors.mutedForeground, fontFamily: Fonts?.mono, paddingTop: 0 },
+                        ]}
+                      >
+                        {t("routes.liveDriver").toUpperCase()}
+                      </Text>
+                      <View style={styles.chips}>
+                        {[null, ...drivers.map((m) => m.userId)].map((userId) => {
+                          const member = drivers.find((m) => m.userId === userId);
+                          const label =
+                            userId === null
+                              ? t("routes.liveDriverThis")
+                              : (member?.user?.name ??
+                                member?.user?.email ??
+                                t("team.unknownUser"));
+                          const on = liveDriver === userId;
+                          return (
+                            <Pressable
+                              key={userId ?? "self"}
+                              accessibilityLabel={label}
+                              onPress={() => {
+                                setLiveDriver(userId);
+                                setLiveError(null);
+                              }}
+                              style={[
+                                styles.chip,
+                                {
+                                  borderColor: on ? colors.amber : colors.border,
+                                  backgroundColor: on ? colors.amber : "transparent",
+                                },
+                              ]}
+                            >
+                              <Text
+                                style={[
+                                  styles.chipText,
+                                  { color: on ? colors.primaryForeground : colors.foreground },
+                                ]}
+                              >
+                                {label}
+                              </Text>
+                            </Pressable>
+                          );
+                        })}
+                      </View>
+                      <Text style={[styles.emptyText, { color: colors.mutedForeground }]}>
+                        {t("routes.liveDriverHint")}
+                      </Text>
+                    </View>
+                  ) : null}
                   {liveError ? (
                     <Text style={[styles.meta, { color: colors.destructive }]}>{liveError}</Text>
                   ) : null}
@@ -688,6 +766,7 @@ export default function RouteRun() {
                     onPress={() => {
                       setLiveOpen(false);
                       setLiveError(null);
+                      setLiveDriver(null);
                     }}
                     accessibilityLabel={t("common.cancel")}
                     style={[styles.outline, { borderColor: colors.border }]}

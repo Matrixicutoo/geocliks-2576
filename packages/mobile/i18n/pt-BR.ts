@@ -493,6 +493,11 @@ export const ptBR: Catalog = {
   "routes.liveHint":
     "Ele entra entre as paradas que o motorista ainda não alcançou. Nada já entregue é movido.",
   "routes.liveAdded": "Adicionado como parada {n} de {total}",
+  "routes.liveDriver": "Motorista",
+  "routes.liveDriverThis": "Esta rota",
+  "routes.liveDriverHint": "Deixe nesta rota ou envie o pedido a outro motorista: ele entra na rota que ele já tem hoje, ou abre uma nova a partir do mesmo endereço de partida.",
+  "routes.liveOtherRun": "Adicionado à rota de {driver} como parada {n} de {total}",
+  "routes.liveNewRun": "Nova rota aberta para {driver} - adicionado como parada {n}",
   "routes.liveNotLocated": "Adicionado no fim - esse endereço não pôde ser localizado no mapa.",
   "routes.deleteRoute": "Excluir rota",
   "run.start": "Iniciar rota",

@@ -499,6 +499,11 @@ export const tl: Catalog = {
   "routes.liveHint":
     "Isinisingit ito sa mga hinto na hindi pa narating ng driver. Walang naihatid na nagbabago.",
   "routes.liveAdded": "Naidagdag bilang hinto {n} ng {total}",
+  "routes.liveDriver": "Driver",
+  "routes.liveDriverThis": "Ang run na ito",
+  "routes.liveDriverHint": "Iwan sa run na ito, o ipadala ang order sa ibang driver - sasama ito sa run na meron na siya ngayon, o magbubukas ng bago mula sa parehong panimulang address.",
+  "routes.liveOtherRun": "Naidagdag sa run ni {driver} bilang hinto {n} ng {total}",
+  "routes.liveNewRun": "Nagbukas ng bagong run para kay {driver} - naidagdag bilang hinto {n}",
   "routes.liveNotLocated": "Naidagdag sa dulo - hindi mailagay sa mapa ang address na iyon.",
   "routes.deleteRoute": "Burahin ang ruta",
   "run.start": "Simulan ang ruta",

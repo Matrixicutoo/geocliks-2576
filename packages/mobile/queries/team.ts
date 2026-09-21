@@ -28,9 +28,13 @@ export function useAcceptInvite() {
 /**
  * The workspace roster. The server already narrows this for field crews to the people on their
  * own projects, so the phone never has to filter it a second time.
+ *
+ * `enabled` is for screens that only need the roster in one role — the run screen shows a driver
+ * picker to dispatchers and nobody else, and a driver's phone should not spend a request on a
+ * list it will never draw.
  */
-export function useTeam() {
-  return useQuery(orpc.team.list.queryOptions({ staleTime: 20_000 }));
+export function useTeam(enabled = true) {
+  return useQuery(orpc.team.list.queryOptions({ staleTime: 20_000, enabled }));
 }
 
 /** Pending invites. The server returns an empty list for field members by design. */

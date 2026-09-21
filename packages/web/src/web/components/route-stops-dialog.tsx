@@ -12,6 +12,7 @@ import {
   X,
 } from "lucide-react";
 import {
+  useAddLiveStop,
   useAddStops,
   useAddressSuggestions,
   useAssignRoute,
@@ -72,6 +73,9 @@ export function RouteStopsDialog({
   const team = useTeam();
 
   const addStops = useAddStops();
+  // Only ever used when a driver is named on the single stop below: that is the one path that
+  // has to think about whose run the order belongs on.
+  const liveStop = useAddLiveStop();
   const geocode = useGeocodeStops();
   const optimize = useOptimizeRoute();
   const reorder = useReorderStops();
@@ -84,7 +88,7 @@ export function RouteStopsDialog({
   // restaurant order has the contact details in front of them, and the paste box has always
   // accepted both columns. Without these two the only way to add a phone number one stop at a
   // time was to type the stop, then edit the row.
-  const [one, setOne] = useState({ address: "", name: "", email: "", phone: "" });
+  const [one, setOne] = useState({ address: "", name: "", email: "", phone: "", driver: "" });
   const [error, setError] = useState<string | null>(null);
   const [notice, setNotice] = useState<string | null>(null);
 
@@ -192,25 +196,47 @@ export function RouteStopsDialog({
     }
   }
 
-  /** One stop, typed or picked from the suggestion list. */
+  /**
+   * One stop, typed or picked from the suggestion list.
+   *
+   * Two ways in, because naming a driver asks a different question of the server. Left on this
+   * run it is a plain append, exactly as this form has always worked: the address waits for the
+   * Resolve button and lands at the end of the list. Sent to somebody else it goes through the
+   * live-order path instead, which is the only one that knows how to find the run that driver
+   * already has today, reopen it if he had closed it, or open him one from this run's kitchen.
+   */
   async function addOne() {
     const address = one.address.trim();
     if (!address) return;
+    const driverId = one.driver || null;
+    const picked = members.find((m) => m.userId === driverId);
+    const driver = picked?.user?.name ?? picked?.user?.email ?? t("team.unknownUser");
+    const stop = {
+      addressRaw: address,
+      recipientName: one.name.trim() || null,
+      recipientEmail: one.email.trim() || null,
+      recipientPhone: one.phone.trim() || null,
+    };
     await run(async () => {
-      await addStops.mutateAsync({
-        routeId,
-        stops: [
-          {
-            addressRaw: address,
-            recipientName: one.name.trim() || null,
-            recipientEmail: one.email.trim() || null,
-            recipientPhone: one.phone.trim() || null,
-          },
-        ],
-      });
-      setOne({ address: "", name: "", email: "", phone: "" });
+      let message = t("routes.added", { n: 1 });
+      if (driverId) {
+        const res = await liveStop.mutateAsync({ routeId, driverId, ...stop });
+        message = res.createdRoute
+          ? t("routes.liveNewRun", { driver, n: res.position })
+          : res.rerouted
+            ? t("routes.liveOtherRun", { driver, n: res.position, total: res.total })
+            : // Named the driver this run already belongs to, so nothing moved anywhere: it is
+              // the same plain append the blank picker would have done.
+              t("routes.liveAdded", { n: res.position, total: res.total });
+        // Placed by distance on the other run, so an address the map could not find sits at the
+        // end of it. Said here rather than left for him to notice on the road.
+        if (!res.located) message = `${message} · ${t("routes.liveNotLocated")}`;
+      } else {
+        await addStops.mutateAsync({ routeId, stops: [stop] });
+      }
+      setOne({ address: "", name: "", email: "", phone: "", driver: "" });
       setSuggestOpen(false);
-      return t("routes.added", { n: 1 });
+      return message;
     });
   }
 
@@ -566,13 +592,39 @@ export function RouteStopsDialog({
                 className={FIELD}
               />
             </div>
+            {/* Whose run it goes on. Hidden until there is somebody to send it to, so a
+                one-man shop never sees a dropdown with only itself in it, and only on a
+                dispatch run - a planned round is built in advance, and handing one of its
+                stops to a driver already out for the day is not a question it can answer. */}
+            {members.length > 0 && route?.mode === "dispatch" && (
+              <div className="mt-2 grid gap-2 sm:grid-cols-[2fr_1fr] sm:items-center">
+                <p className="text-[11.5px] leading-relaxed text-fog">
+                  {t("routes.liveDriverHint")}
+                </p>
+                <select
+                  aria-label={t("routes.liveDriver")}
+                  value={one.driver}
+                  onChange={(e) => setOne({ ...one, driver: e.target.value })}
+                  className={FIELD}
+                >
+                  <option value="">{t("routes.liveDriverThis")}</option>
+                  {members.map((member) => (
+                    <option key={member.id} value={member.userId}>
+                      {member.user?.name ?? member.user?.email ?? t("team.unknownUser")}
+                    </option>
+                  ))}
+                </select>
+              </div>
+            )}
             <div className="mt-2 flex sm:justify-end">
               <button
                 type="submit"
-                disabled={addStops.isPending || one.address.trim().length === 0}
+                disabled={
+                  addStops.isPending || liveStop.isPending || one.address.trim().length === 0
+                }
                 className="inline-flex w-full items-center justify-center gap-2 rounded-[8px] bg-amber px-3 py-2 text-[13px] font-semibold text-on-amber hover:bg-amber-deep disabled:opacity-50 sm:w-auto"
               >
-                {addStops.isPending ? (
+                {addStops.isPending || liveStop.isPending ? (
                   <Loader2 className="size-4 animate-spin" />
                 ) : (
                   <Plus className="size-4" />
