@@ -12,7 +12,7 @@ import { DeliveryChecklist } from "@/components/delivery-checklist";
 import { useT, type TKey } from "@/lib/i18n";
 import { useOrg } from "@/queries/orgs";
 import { useRemoveRoute, useRoutes } from "@/queries/routes";
-import { canManageWorkspace, canRunDeliveries } from "../../lib/roles";
+import { canRunDeliveries } from "../../lib/roles";
 
 const STATUS_LABEL: Record<string, TKey> = {
   draft: "routes.status.draft",
@@ -30,9 +30,11 @@ export default function RoutesList() {
   const org = useOrg();
   const removeRoute = useRemoveRoute();
   const rows = query.data ?? [];
-  // Owner, admin and manager can delete a run; field crew cannot. The server enforces the same
-  // rule, so hiding the button is presentation, not the guard.
-  const canDelete = canManageWorkspace(org.data?.role);
+  // Whoever may build a run may also throw one away - a dispatcher clears their own duplicates
+  // rather than waiting on a manager. Same set as `canCreate` today, kept as its own name
+  // because the two answer different questions. The server enforces the rule, so hiding the
+  // button is presentation, not the guard.
+  const canDelete = canRunDeliveries(org.data?.role);
   // Dispatcher and above build runs. Field crew only run the ones handed to them, so they never
   // see this button - and the server refuses them anyway.
   const canCreate = canRunDeliveries(org.data?.role);

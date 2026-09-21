@@ -25,7 +25,7 @@ import { useRemoveRoute, useRoutes } from "../queries/routes";
 import { matchesSearch } from "../lib/search";
 import { cn } from "../lib/utils";
 import { type TKey, useT } from "../lib/i18n";
-import { canManageWorkspace, canRunDeliveries, canUseNotes } from "../lib/roles";
+import { canRunDeliveries, canUseNotes } from "../lib/roles";
 import { useInfiniteScroll } from "../lib/use-infinite-scroll";
 
 /** Runs revealed per scroll batch. */
@@ -62,9 +62,11 @@ export default function AppRoutes({ openNew = false }: { openNew?: boolean }) {
   const routes = useRoutes();
   const removeRoute = useRemoveRoute();
   const canManage = canRunDeliveries(org.data?.role);
-  // Owner, admin and manager can delete a run; field crew cannot. The server enforces the same
-  // rule - this only decides whether the button is drawn.
-  const canDelete = canManageWorkspace(org.data?.role);
+  // Whoever may build a run may also throw one away - a dispatcher clears their own duplicates
+  // rather than waiting on a manager. Same set as `canManage` today, kept as its own name
+  // because the two answer different questions and one may move without the other. The server
+  // enforces the rule; this only decides whether the button is drawn.
+  const canDelete = canRunDeliveries(org.data?.role);
   // A driver gets no notes column at all, so the row must not hold half a page of air.
   const showNotes = canUseNotes(org.data?.role);
 

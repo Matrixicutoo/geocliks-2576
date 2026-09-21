@@ -18,8 +18,14 @@ export function canManageWorkspace(role: string | undefined | null): boolean {
 }
 
 /**
- * Dispatcher and above: the tier that builds and runs delivery routes. Deleting a whole run is
- * deliberately NOT part of this — that stays at `canManageWorkspace`, matching the server.
+ * Dispatcher and above: the tier that builds and runs delivery routes.
+ *
+ * Deleting a whole run IS part of this, as of the change that let dispatchers clear their own
+ * mistakes. It used to sit at `canManageWorkspace` on the theory that throwing away a run is a
+ * manager's call, but the person who typed the duplicate run is the dispatcher, and making them
+ * wait on a manager to remove it just leaves the board wrong all morning. A delete only removes
+ * the plan — the evidence photos are kept — so there is nothing here worth a second signature.
+ * Matches `requireRole(role, "dispatcher")` on `routes.remove`, which is what enforces it.
  */
 export function canRunDeliveries(role: string | undefined | null): boolean {
   return canManageWorkspace(role) || role === "dispatcher";

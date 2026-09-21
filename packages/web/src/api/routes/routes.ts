@@ -1313,9 +1313,12 @@ export const routes = {
   }),
 
   remove: orgProc.input(z.object({ id: z.string() })).handler(async ({ input, context }) => {
-    // Owner, admin and manager can delete a run; field crew cannot. Hiding the button alone would
-    // still leave the endpoint open, so the rule lives here.
-    requireRole(context.role, "manager");
+    // Dispatcher and above, the same tier that builds a run in the first place. A dispatcher
+    // plans a dozen runs a morning and mistypes some of them, and having to wait on a manager to
+    // clear a duplicate is worse than the mistake; nothing here is destructive beyond the plan
+    // itself, since the evidence photos below survive. Drivers and field crew still cannot.
+    // Hiding the button alone would leave the endpoint open, so the rule lives here.
+    requireRole(context.role, "dispatcher");
     const route = await loadRoute(context.org.id, input.id);
     if (route.status === "active") {
       throw new ORPCError("BAD_REQUEST", { message: "Stop the route before deleting it" });
