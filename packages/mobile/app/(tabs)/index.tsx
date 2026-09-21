@@ -2,6 +2,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import {
   ActivityIndicator,
   Image,
+  KeyboardAvoidingView,
   Modal,
   Platform,
   Pressable,
@@ -1831,96 +1832,109 @@ export default function Capture() {
           animationType="slide"
           onRequestClose={() => setNoteOpen(false)}
         >
-          <Pressable style={styles.sheetBackdrop} onPress={() => setNoteOpen(false)} />
-          <View
-            style={[
-              styles.sheet,
-              { backgroundColor: colors.background, borderColor: colors.border },
-            ]}
-          >
-            <View style={[styles.sheetHead, { borderColor: colors.border }]}>
-              <Text
-                style={[styles.sheetTitle, { color: colors.foreground, fontFamily: Fonts?.mono }]}
-              >
-                {tr("capture.note").toUpperCase()}
-              </Text>
-              <Pressable
-                onPress={() => setNoteOpen(false)}
-                accessibilityLabel={tr("common.close")}
-                hitSlop={10}
-              >
-                <Ionicons name="close" size={20} color={colors.mutedForeground} />
-              </Pressable>
-            </View>
-            <ScrollView
-              contentContainerStyle={styles.sheetBody}
-              showsVerticalScrollIndicator={false}
-              keyboardShouldPersistTaps="handled"
+          {/*
+            Under edge-to-edge the window does NOT resize for the keyboard — the keyboard is
+            drawn on top of the app — so a sheet has to be lifted out from under it by hand,
+            with a behavior on both platforms. Same reasoning as the message composer; see the
+            long note in app/messages/[id].tsx.
+
+            It is also why this one is a flex-end child instead of the absolutely positioned
+            `styles.sheet` the two list sheets above use: padding cannot move a child that has
+            pinned itself to the bottom of the screen, and this is the only sheet here that
+            anyone types into.
+          */}
+          <KeyboardAvoidingView style={styles.noteStage} behavior="padding">
+            <Pressable style={styles.noteBackdrop} onPress={() => setNoteOpen(false)} />
+            <View
+              style={[
+                styles.noteSheet,
+                { backgroundColor: colors.background, borderColor: colors.border },
+              ]}
             >
-              <TextInput
-                value={noteDraft}
-                onChangeText={(v) => setNoteDraft(v.slice(0, 1000))}
-                placeholder={tr("capture.notePlaceholder")}
-                placeholderTextColor={colors.mutedForeground}
-                accessibilityLabel={tr("capture.note")}
-                multiline
-                autoFocus
-                style={[
-                  styles.noteInput,
-                  {
-                    borderColor: colors.border,
-                    color: colors.foreground,
-                    backgroundColor: colors.card,
-                  },
-                ]}
-              />
-              <View style={styles.noteActions}>
+              <View style={[styles.sheetHead, { borderColor: colors.border }]}>
                 <Text
-                  style={[
-                    styles.noteCount,
-                    { color: colors.mutedForeground, fontFamily: Fonts?.mono },
-                  ]}
+                  style={[styles.sheetTitle, { color: colors.foreground, fontFamily: Fonts?.mono }]}
                 >
-                  {noteDraft.trim().length}/1000
+                  {tr("capture.note").toUpperCase()}
                 </Text>
                 <Pressable
-                  onPress={() => setNoteDraft("")}
-                  accessibilityLabel={tr("capture.clearSign")}
-                  style={[styles.noteBtn, { borderColor: colors.border }]}
+                  onPress={() => setNoteOpen(false)}
+                  accessibilityLabel={tr("common.close")}
+                  hitSlop={10}
                 >
-                  <Text style={[styles.noteBtnText, { color: colors.mutedForeground }]}>
-                    {tr("capture.clearSign")}
-                  </Text>
-                </Pressable>
-                <Pressable
-                  onPress={() => {
-                    const next = noteDraft.trim();
-                    noteRef.current = next;
-                    setNote(next);
-                    setNoteDraft(next);
-                    setNoteOpen(false);
-                  }}
-                  accessibilityLabel={tr("capture.noteSave")}
-                  style={({ pressed }) => [
-                    styles.noteBtn,
-                    {
-                      borderColor: pressed ? colors.amberDeep : colors.amber,
-                      backgroundColor: pressed ? colors.amberDeep : colors.amber,
-                    },
-                  ]}
-                >
-                  <Text
-                    style={[
-                      styles.noteBtnText,
-                      { color: colors.primaryForeground, fontFamily: Fonts?.display },
-                    ]}
-                  >
-                    {tr("capture.noteSave")}
-                  </Text>
+                  <Ionicons name="close" size={20} color={colors.mutedForeground} />
                 </Pressable>
               </View>
-            </ScrollView>
-          </View>
+              <ScrollView
+                contentContainerStyle={styles.noteBody}
+                showsVerticalScrollIndicator={false}
+                keyboardShouldPersistTaps="handled"
+              >
+                <TextInput
+                  value={noteDraft}
+                  onChangeText={(v) => setNoteDraft(v.slice(0, 1000))}
+                  placeholder={tr("capture.notePlaceholder")}
+                  placeholderTextColor={colors.mutedForeground}
+                  accessibilityLabel={tr("capture.note")}
+                  multiline
+                  autoFocus
+                  style={[
+                    styles.noteInput,
+                    {
+                      borderColor: colors.border,
+                      color: colors.foreground,
+                      backgroundColor: colors.card,
+                    },
+                  ]}
+                />
+                <View style={styles.noteActions}>
+                  <Text
+                    style={[
+                      styles.noteCount,
+                      { color: colors.mutedForeground, fontFamily: Fonts?.mono },
+                    ]}
+                  >
+                    {noteDraft.trim().length}/1000
+                  </Text>
+                  <Pressable
+                    onPress={() => setNoteDraft("")}
+                    accessibilityLabel={tr("capture.clearSign")}
+                    style={[styles.noteBtn, { borderColor: colors.border }]}
+                  >
+                    <Text style={[styles.noteBtnText, { color: colors.mutedForeground }]}>
+                      {tr("capture.clearSign")}
+                    </Text>
+                  </Pressable>
+                  <Pressable
+                    onPress={() => {
+                      const next = noteDraft.trim();
+                      noteRef.current = next;
+                      setNote(next);
+                      setNoteDraft(next);
+                      setNoteOpen(false);
+                    }}
+                    accessibilityLabel={tr("capture.noteSave")}
+                    style={({ pressed }) => [
+                      styles.noteBtn,
+                      {
+                        borderColor: pressed ? colors.amberDeep : colors.amber,
+                        backgroundColor: pressed ? colors.amberDeep : colors.amber,
+                      },
+                    ]}
+                  >
+                    <Text
+                      style={[
+                        styles.noteBtnText,
+                        { color: colors.primaryForeground, fontFamily: Fonts?.display },
+                      ]}
+                    >
+                      {tr("capture.noteSave")}
+                    </Text>
+                  </Pressable>
+                </View>
+              </ScrollView>
+            </View>
+          </KeyboardAvoidingView>
         </Modal>
 
         {isPod ? (
@@ -2209,6 +2223,31 @@ const styles = StyleSheet.create({
   },
   sheetTitle: { fontSize: 12, letterSpacing: 1 },
   sheetBody: { padding: 14, paddingBottom: 26 },
+  /**
+   * The note sheet's own stage. The two list sheets pin themselves to the bottom of the screen
+   * and can do so because nobody types into them; this one has to be able to ride up, so it is
+   * a flex child of a KeyboardAvoidingView instead.
+   */
+  noteStage: { flex: 1, justifyContent: "flex-end" },
+  noteBackdrop: {
+    position: "absolute",
+    top: 0,
+    right: 0,
+    bottom: 0,
+    left: 0,
+    backgroundColor: "rgba(0,0,0,0.55)",
+  },
+  noteSheet: {
+    // Hugs its content up to a cap, rather than the list sheets' fixed half-screen: with the
+    // keyboard up there is no half screen left to fill, and the save button has to stay on it.
+    maxHeight: "80%",
+    borderTopWidth: 1,
+    borderTopLeftRadius: 16,
+    borderTopRightRadius: 16,
+  },
+  // Same as sheetBody, with the bottom padding dropped to what still clears the home indicator
+  // once the keyboard has taken the space under the sheet.
+  noteBody: { padding: 14, paddingBottom: 18 },
   noteInput: {
     borderWidth: 1,
     borderRadius: 8,
