@@ -48,6 +48,15 @@ const ROLE_HINT: Record<string, string> = {
   field: "Captures photos, sees assigned projects only.",
 };
 
+/**
+ * Why this person is on a driver's list. The server only sets it for a driver, so the label
+ * never appears on an office roster, where everyone is visible anyway.
+ */
+const RELATION_LABEL: Record<string, string> = {
+  inviter: "INVITED YOU",
+  dispatcher: "ASSIGNS YOUR ROUTES",
+};
+
 function initials(name?: string | null, email?: string | null) {
   const source = (name ?? email ?? "?").trim();
   return source.slice(0, 2).toUpperCase();
@@ -82,6 +91,9 @@ export default function Team() {
   const myRole = org.data?.role;
   const isAdmin = myRole === "owner" || myRole === "admin";
   const isField = !canManageWorkspace(myRole);
+  // A driver's list is not a project crew — it is the office: whoever invited him and whoever
+  // assigns his routes. The copy has to say that, or an empty list reads like a broken screen.
+  const isDriver = myRole === "driver";
   const myId = org.data?.user.id;
   const seats = org.data?.plan.limits.seats ?? 0;
   const members = (team.data ?? []).length;
@@ -197,9 +209,11 @@ export default function Team() {
 
       <ScrollView contentContainerStyle={styles.content} showsVerticalScrollIndicator={false}>
         <Text style={[styles.lede, { color: colors.mutedForeground }]}>
-          {isField
-            ? "The crew on the projects you are assigned to. Message anyone here."
-            : "Roles decide who captures, who exports, and who sees what."}
+          {isDriver
+            ? "Your dispatch office — whoever invited you and whoever assigns your routes. Message any of them."
+            : isField
+              ? "The crew on the projects you are assigned to. Message anyone here."
+              : "Roles decide who captures, who exports, and who sees what."}
         </Text>
 
         {isField ? null : (
@@ -273,6 +287,17 @@ export default function Team() {
                     >
                       {member.user?.email ?? "—"}
                     </Text>
+                    {member.relation ? (
+                      <Text
+                        numberOfLines={1}
+                        style={[
+                          styles.memberMeta,
+                          { color: colors.amber, fontFamily: Fonts?.mono },
+                        ]}
+                      >
+                        {RELATION_LABEL[member.relation]}
+                      </Text>
+                    ) : null}
                     <Text
                       numberOfLines={1}
                       style={[
@@ -280,7 +305,8 @@ export default function Team() {
                         { color: colors.mutedForeground, fontFamily: Fonts?.mono },
                       ]}
                     >
-                      {member.photoCount} PHOTOS · JOINED{" "}
+                      {/* A driver has no job photos to count, so the tally would only ever read 0. */}
+                      {isDriver ? "" : `${member.photoCount} PHOTOS · `}JOINED{" "}
                       {formatStamp(new Date(member.createdAt)).slice(0, 10)}
                     </Text>
                   </View>
@@ -444,8 +470,9 @@ export default function Team() {
 
         {isField && members <= 1 ? (
           <Text style={[styles.hint, { color: colors.mutedForeground }]}>
-            Nobody else is assigned to your projects yet. Ask your supervisor to add you to a
-            project crew.
+            {isDriver
+              ? "No dispatcher has invited you or put you on a route yet. Whoever assigns your first run shows up here."
+              : "Nobody else is assigned to your projects yet. Ask your supervisor to add you to a project crew."}
           </Text>
         ) : null}
 

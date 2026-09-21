@@ -1004,11 +1004,16 @@ export const en = {
   "team.title": "Team",
   "team.subtitle": "Roles decide who captures, who exports, and who sees what.",
   "team.subtitleField": "The crew on the projects you are assigned to. Message anyone here.",
+  "team.subtitleDriver":
+    "Your dispatch office — whoever invited you and whoever assigns your routes. Message any of them.",
   "team.seats": "{used} / {seats} seats",
   "team.pending": "{count} pending",
   "team.members": "Members",
   "team.unknownUser": "Unknown user",
   "team.memberMeta": "{photos} photos · joined {date}",
+  "team.memberJoined": "joined {date}",
+  "team.relationInviter": "invited you",
+  "team.relationDispatcher": "assigns your routes",
   "team.message": "Message",
   "team.roleAria": "Role",
   "team.projectsForAria": "Projects for {email}",
@@ -1020,6 +1025,8 @@ export const en = {
     "This role already sees every project — assignments only change what field members can capture into.",
   "team.fieldNobodyElse":
     "Nobody else is assigned to your projects yet. Ask your supervisor to add you to a project crew.",
+  "team.driverNobodyElse":
+    "No dispatcher has invited you or put you on a route yet. Whoever assigns your first run shows up here.",
   "team.pendingInvites": "Pending invites",
   "team.noInvites": "No invites waiting. Everyone you invited has joined.",
   "team.inviteCode": "code {code}",

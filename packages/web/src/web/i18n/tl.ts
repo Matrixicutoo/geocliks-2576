@@ -1006,11 +1006,16 @@ export const tl: Catalog = {
     "Ang role ang nagdedesisyon kung sino ang kumukuha ng litrato, sino ang nag-e-export, at sino ang nakakakita ng ano.",
   "team.subtitleField":
     "Ang mga kasama sa mga proyektong nakaassign sa iyo. Puwede kang magmensahe kahit kanino dito.",
+  "team.subtitleDriver":
+    "Ang dispatch office mo — ang nag-imbita sa iyo at ang mga nag-aassign ng ruta mo. Puwede kang magmensahe kahit kanino sa kanila.",
   "team.seats": "{used} / {seats} na puwesto",
   "team.pending": "{count} na naghihintay",
   "team.members": "Mga miyembro",
   "team.unknownUser": "Hindi kilalang user",
   "team.memberMeta": "{photos} na litrato · sumali {date}",
+  "team.memberJoined": "sumali {date}",
+  "team.relationInviter": "nag-imbita sa iyo",
+  "team.relationDispatcher": "nag-aassign ng ruta mo",
   "team.message": "Mensahe",
   "team.roleAria": "Role",
   "team.projectsForAria": "Mga proyekto ni {email}",
@@ -1022,6 +1027,8 @@ export const tl: Catalog = {
     "Nakikita na ng role na ito ang lahat ng proyekto — ang pag-assign ay nagbabago lang kung saan puwedeng kumuha ng litrato ang mga miyembrong Field.",
   "team.fieldNobodyElse":
     "Wala pa pong iba na naka-assign sa mga proyekto mo. Pakiusapan ang superbisor mo na isama ka sa isang crew ng proyekto.",
+  "team.driverNobodyElse":
+    "Wala pa pong dispatcher na nag-imbita sa iyo o naglagay sa iyo sa ruta. Lalabas dito ang mag-aassign ng unang takbo mo.",
   "team.pendingInvites": "Mga imbitasyong naghihintay",
   "team.noInvites": "Walang imbitasyong naghihintay. Sumali na ang lahat ng inimbita mo.",
   "team.inviteCode": "code {code}",

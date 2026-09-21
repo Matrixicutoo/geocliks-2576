@@ -82,6 +82,13 @@ export const invites = sqliteTable(
     projectIds: text("project_ids"),
     invitedBy: text("invited_by").notNull(),
     /**
+     * Who redeemed it, stamped when the invite is accepted. `email` cannot answer this: an open
+     * QR invite carries no address, and that is exactly the invite a driver arrives on. Without
+     * this column a driver's Team screen has no way back to the dispatcher who let him in.
+     * Null on rows accepted before this column existed, and on anything still pending.
+     */
+    acceptedBy: text("accepted_by"),
+    /**
      * Invites die on their own. An invite email sits in an inbox forever, and a link that can
      * put someone inside a workspace must not stay live that long. Null on rows that predate
      * this column, which are treated as never expiring rather than retroactively killed.

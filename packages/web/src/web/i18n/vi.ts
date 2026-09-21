@@ -987,11 +987,16 @@ export const vi: Catalog = {
   "team.subtitle": "Vai trò quyết định ai chụp ảnh, ai xuất dữ liệu và ai thấy gì.",
   "team.subtitleField":
     "Những người cùng làm các dự án bạn được phân công. Bạn có thể nhắn cho bất kỳ ai ở đây.",
+  "team.subtitleDriver":
+    "Phòng điều phối của bạn — người đã mời bạn và những người phân tuyến cho bạn. Bạn có thể nhắn cho bất kỳ ai trong số họ.",
   "team.seats": "{used} / {seats} chỗ",
   "team.pending": "{count} đang chờ",
   "team.members": "Thành viên",
   "team.unknownUser": "Người dùng không rõ",
   "team.memberMeta": "{photos} ảnh · tham gia ngày {date}",
+  "team.memberJoined": "tham gia ngày {date}",
+  "team.relationInviter": "đã mời bạn",
+  "team.relationDispatcher": "phân tuyến cho bạn",
   "team.message": "Nhắn tin",
   "team.roleAria": "Vai trò",
   "team.projectsForAria": "Dự án của {email}",
@@ -1003,6 +1008,8 @@ export const vi: Catalog = {
     "Vai trò này vốn đã thấy mọi dự án — việc phân công chỉ thay đổi nơi thành viên Hiện trường được chụp ảnh vào.",
   "team.fieldNobodyElse":
     "Chưa có ai khác được phân công vào dự án của bạn. Hãy nhờ người quản lý thêm bạn vào một tổ dự án.",
+  "team.driverNobodyElse":
+    "Chưa có điều phối viên nào mời bạn hay xếp bạn vào tuyến. Người giao tuyến đầu tiên cho bạn sẽ hiện ở đây.",
   "team.pendingInvites": "Lời mời đang chờ",
   "team.noInvites": "Không có lời mời nào đang chờ. Tất cả những người bạn mời đã tham gia.",
   "team.inviteCode": "mã {code}",

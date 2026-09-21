@@ -995,11 +995,16 @@ export const pl: Catalog = {
   "team.subtitle": "Role decydują, kto robi zdjęcia, kto eksportuje i kto co widzi.",
   "team.subtitleField":
     "Ekipa na projektach, do których jesteś przypisany. Możesz tu napisać do każdego.",
+  "team.subtitleDriver":
+    "Twoja dyspozytornia — osoba, która Cię zaprosiła, i te, które przydzielają Ci trasy. Możesz napisać do każdej z nich.",
   "team.seats": "{used} / {seats} stanowisk",
   "team.pending": "{count} oczekujących",
   "team.members": "Członkowie",
   "team.unknownUser": "Nieznany użytkownik",
   "team.memberMeta": "{photos} zdjęć · dołączył {date}",
+  "team.memberJoined": "dołączył {date}",
+  "team.relationInviter": "zaprosił Cię",
+  "team.relationDispatcher": "przydziela Ci trasy",
   "team.message": "Wiadomość",
   "team.roleAria": "Rola",
   "team.projectsForAria": "Projekty użytkownika {email}",
@@ -1011,6 +1016,8 @@ export const pl: Catalog = {
     "Ta rola i tak widzi każdy projekt — przypisania zmieniają tylko to, gdzie mogą robić zdjęcia członkowie z roli Teren.",
   "team.fieldNobodyElse":
     "Do Twoich projektów nie jest jeszcze przypisany nikt inny. Poproś przełożonego, aby dodał Cię do ekipy projektu.",
+  "team.driverNobodyElse":
+    "Żaden dyspozytor jeszcze Cię nie zaprosił ani nie przydzielił Ci trasy. Kto da Ci pierwszą trasę, pojawi się tutaj.",
   "team.pendingInvites": "Oczekujące zaproszenia",
   "team.noInvites": "Brak oczekujących zaproszeń. Wszyscy zaproszeni już dołączyli.",
   "team.inviteCode": "kod {code}",

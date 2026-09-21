@@ -1005,11 +1005,16 @@ export const de: Catalog = {
   "team.subtitle": "Rollen entscheiden, wer aufnimmt, wer exportiert und wer was sieht.",
   "team.subtitleField":
     "Das Team auf den Projekten, denen Sie zugewiesen sind. Sie können hier jedem schreiben.",
+  "team.subtitleDriver":
+    "Ihre Disposition — wer Sie eingeladen hat und wer Ihnen Touren zuweist. Sie können hier jedem von ihnen schreiben.",
   "team.seats": "{used} / {seats} Plätze",
   "team.pending": "{count} offen",
   "team.members": "Mitglieder",
   "team.unknownUser": "Unbekannter Nutzer",
   "team.memberMeta": "{photos} Fotos · beigetreten {date}",
+  "team.memberJoined": "beigetreten {date}",
+  "team.relationInviter": "hat Sie eingeladen",
+  "team.relationDispatcher": "weist Ihnen Touren zu",
   "team.message": "Nachricht",
   "team.roleAria": "Rolle",
   "team.projectsForAria": "Projekte von {email}",
@@ -1021,6 +1026,8 @@ export const de: Catalog = {
     "Diese Rolle sieht ohnehin jedes Projekt — Zuweisungen ändern nur, wohin Feld-Mitglieder aufnehmen können.",
   "team.fieldNobodyElse":
     "Ihren Projekten ist noch niemand sonst zugewiesen. Bitten Sie Ihre Leitung, Sie zu einem Projektteam hinzuzufügen.",
+  "team.driverNobodyElse":
+    "Noch hat Sie niemand aus der Disposition eingeladen oder auf eine Tour gesetzt. Wer Ihnen die erste Tour zuweist, erscheint hier.",
   "team.pendingInvites": "Offene Einladungen",
   "team.noInvites": "Keine offenen Einladungen. Alle Eingeladenen sind beigetreten.",
   "team.inviteCode": "Code {code}",

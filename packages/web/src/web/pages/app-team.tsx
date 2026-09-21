@@ -78,6 +78,9 @@ export default function AppTeam() {
   const isAdmin = role_ === "owner" || role_ === "admin";
   // Field crews use this page as a contact sheet, not as workspace settings.
   const isField = !canManageWorkspace(role_);
+  // A driver has no projects, so his contact sheet is the office instead of a project crew:
+  // whoever invited him and whoever assigns his routes. Different copy, same page.
+  const isDriver = role_ === "driver";
   // Inviting sits one rung lower than managing: a dispatcher brings drivers onto the crew, so
   // they get the invite form (driver only), the pending list and the seat count — but none of
   // the member controls above, which stay on `isField`.
@@ -119,7 +122,9 @@ export default function AppTeam() {
   return (
     <DashboardShell
       title={lang.t("team.title")}
-      subtitle={lang.t(canInvite ? "team.subtitle" : "team.subtitleField")}
+      subtitle={lang.t(
+        canInvite ? "team.subtitle" : isDriver ? "team.subtitleDriver" : "team.subtitleField",
+      )}
       actions={
         !canInvite ? null : (
           <span className="mono rounded-[8px] border border-line px-2.5 py-1.5 text-[10.5px] uppercase tracking-widest text-fog">
@@ -165,10 +170,21 @@ export default function AppTeam() {
                       </p>
                       <p className="mono truncate text-[10.5px] text-fog">
                         {member.user?.email} ·{" "}
-                        {lang.t("team.memberMeta", {
-                          photos: String(member.photoCount),
-                          date: formatStamp(member.createdAt),
-                        })}
+                        {/* A driver counts no job photos, so that tally would only ever read 0 on
+                            this page — including on his own row. What he needs from the office
+                            people instead is why each of them is on his list at all. */}
+                        {member.relation
+                          ? lang.t(
+                              member.relation === "inviter"
+                                ? "team.relationInviter"
+                                : "team.relationDispatcher",
+                            )
+                          : isDriver
+                            ? lang.t("team.memberJoined", { date: formatStamp(member.createdAt) })
+                            : lang.t("team.memberMeta", {
+                                photos: String(member.photoCount),
+                                date: formatStamp(member.createdAt),
+                              })}
                       </p>
                     </div>
                     <RoleBadge role={member.role} />
@@ -326,7 +342,7 @@ export default function AppTeam() {
             )}
             {!canInvite && (team.data ?? []).length <= 1 ? (
               <p className="border-t border-line px-4 py-3 text-[11.5px] text-fog">
-                {lang.t("team.fieldNobodyElse")}
+                {lang.t(isDriver ? "team.driverNobodyElse" : "team.fieldNobodyElse")}
               </p>
             ) : null}
           </div>

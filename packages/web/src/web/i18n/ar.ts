@@ -967,11 +967,16 @@ export const ar: Catalog = {
   "team.title": "الفريق",
   "team.subtitle": "الأدوار تحدّد من يصوّر، ومن يصدّر الملفات، ومن يرى ماذا.",
   "team.subtitleField": "الطاقم العامل على المشاريع المُوكلة إليك. يمكنك مراسلة أي شخص من هنا.",
+  "team.subtitleDriver":
+    "مكتب التوزيع الخاص بك — من دعاك ومن يُسند إليك المسارات. يمكنك مراسلة أي منهم.",
   "team.seats": "{used} / {seats} مقعدًا",
   "team.pending": "{count} قيد الانتظار",
   "team.members": "الأعضاء",
   "team.unknownUser": "مستخدم غير معروف",
   "team.memberMeta": "{photos} صورة · انضم في {date}",
+  "team.memberJoined": "انضم في {date}",
+  "team.relationInviter": "دعاك للانضمام",
+  "team.relationDispatcher": "يُسند إليك المسارات",
   "team.message": "مراسلة",
   "team.roleAria": "الدور",
   "team.projectsForAria": "مشاريع {email}",
@@ -983,6 +988,8 @@ export const ar: Catalog = {
     "هذا الدور يرى كل المشاريع أصلًا — الإسناد يحدّد فقط أين يمكن لأعضاء الميدان أن يصوّروا.",
   "team.fieldNobodyElse":
     "لم يُسنَد أي شخص آخر إلى مشاريعك بعد. اطلب من المشرف إضافتك إلى طاقم مشروع.",
+  "team.driverNobodyElse":
+    "لم يدعُك أي منسّق ولم يُسند إليك مسارًا بعد. سيظهر هنا من يُسند إليك أول رحلة.",
   "team.pendingInvites": "الدعوات المعلّقة",
   "team.noInvites": "لا توجد دعوات معلّقة. كل من دعوتَهم انضموا.",
   "team.inviteCode": "الرمز {code}",

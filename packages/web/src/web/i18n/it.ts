@@ -1003,11 +1003,16 @@ export const it: Catalog = {
   "team.subtitle": "I ruoli decidono chi scatta, chi esporta e chi vede cosa.",
   "team.subtitleField":
     "La squadra sui progetti a cui sei assegnato. Da qui puoi scrivere a chiunque.",
+  "team.subtitleDriver":
+    "Il tuo ufficio smistamento: chi ti ha invitato e chi ti assegna i percorsi. Da qui puoi scrivere a chiunque di loro.",
   "team.seats": "{used} / {seats} postazioni",
   "team.pending": "{count} in attesa",
   "team.members": "Membri",
   "team.unknownUser": "Utente sconosciuto",
   "team.memberMeta": "{photos} foto · iscritto il {date}",
+  "team.memberJoined": "iscritto il {date}",
+  "team.relationInviter": "ti ha invitato",
+  "team.relationDispatcher": "ti assegna i percorsi",
   "team.message": "Messaggio",
   "team.roleAria": "Ruolo",
   "team.projectsForAria": "Progetti di {email}",
@@ -1019,6 +1024,8 @@ export const it: Catalog = {
     "Questo ruolo vede già ogni progetto — le assegnazioni cambiano solo dove i membri Campo possono scattare.",
   "team.fieldNobodyElse":
     "Ai tuoi progetti non è ancora assegnato nessun altro. Chiedi al tuo responsabile di aggiungerti alla squadra di un progetto.",
+  "team.driverNobodyElse":
+    "Nessun dispatcher ti ha ancora invitato né messo su un percorso. Chi ti assegnerà il primo giro comparirà qui.",
   "team.pendingInvites": "Inviti in attesa",
   "team.noInvites": "Nessun invito in attesa. Tutte le persone che hai invitato sono entrate.",
   "team.inviteCode": "codice {code}",

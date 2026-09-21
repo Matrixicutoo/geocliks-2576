@@ -1009,11 +1009,16 @@ export const frCA: Catalog = {
   "team.subtitle": "Les rôles décident qui prend les photos, qui exporte et qui voit quoi.",
   "team.subtitleField":
     "L'équipe sur les projets qui vous sont assignés. Vous pouvez écrire à n'importe qui ici.",
+  "team.subtitleDriver":
+    "Votre répartition — la personne qui vous a invité et celles qui vous assignent des routes. Vous pouvez écrire à n'importe laquelle d'entre elles.",
   "team.seats": "{used} / {seats} places",
   "team.pending": "{count} en attente",
   "team.members": "Membres",
   "team.unknownUser": "Utilisateur inconnu",
   "team.memberMeta": "{photos} photos · arrivé le {date}",
+  "team.memberJoined": "arrivé le {date}",
+  "team.relationInviter": "vous a invité",
+  "team.relationDispatcher": "vous assigne des routes",
   "team.message": "Message",
   "team.roleAria": "Rôle",
   "team.projectsForAria": "Projets de {email}",
@@ -1025,6 +1030,8 @@ export const frCA: Catalog = {
     "Ce rôle voit déjà tous les projets — les assignations changent seulement ce dans quoi les membres Terrain peuvent verser leurs photos.",
   "team.fieldNobodyElse":
     "Personne d'autre n'est assigné à vos projets pour le moment. Demandez à votre superviseur de vous ajouter à une équipe de projet.",
+  "team.driverNobodyElse":
+    "Aucun répartiteur ne vous a encore invité ni mis sur une route. La personne qui vous assignera votre première tournée apparaîtra ici.",
   "team.pendingInvites": "Invitations en attente",
   "team.noInvites": "Aucune invitation en attente. Toutes les personnes invitées ont rejoint.",
   "team.inviteCode": "code {code}",

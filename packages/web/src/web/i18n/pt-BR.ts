@@ -996,11 +996,16 @@ export const ptBR: Catalog = {
   "team.subtitle": "Os papéis decidem quem captura, quem exporta e quem vê o quê.",
   "team.subtitleField":
     "A equipe dos projetos aos quais você está atribuído. Você pode falar com qualquer pessoa aqui.",
+  "team.subtitleDriver":
+    "Sua central de despacho: quem te convidou e quem atribui suas rotas. Você pode falar com qualquer um deles.",
   "team.seats": "{used} / {seats} assentos",
   "team.pending": "{count} pendentes",
   "team.members": "Membros",
   "team.unknownUser": "Usuário desconhecido",
   "team.memberMeta": "{photos} fotos · entrou em {date}",
+  "team.memberJoined": "entrou em {date}",
+  "team.relationInviter": "te convidou",
+  "team.relationDispatcher": "atribui suas rotas",
   "team.message": "Mensagem",
   "team.roleAria": "Papel",
   "team.projectsForAria": "Projetos de {email}",
@@ -1012,6 +1017,8 @@ export const ptBR: Catalog = {
     "Esse papel já vê todos os projetos — as atribuições mudam apenas onde os membros de Campo podem capturar.",
   "team.fieldNobodyElse":
     "Ainda não há mais ninguém atribuído aos seus projetos. Peça ao seu supervisor para te incluir na equipe de um projeto.",
+  "team.driverNobodyElse":
+    "Nenhum despachante te convidou nem te colocou em uma rota ainda. Quem atribuir sua primeira viagem aparece aqui.",
   "team.pendingInvites": "Convites pendentes",
   "team.noInvites": "Nenhum convite pendente. Todas as pessoas que você convidou já entraram.",
   "team.inviteCode": "código {code}",

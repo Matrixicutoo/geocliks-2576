@@ -1002,11 +1002,16 @@ export const es: Catalog = {
   "team.subtitle": "Los roles deciden quién captura, quién exporta y quién ve qué.",
   "team.subtitleField":
     "El equipo de los proyectos que tienes asignados. Puedes escribir a cualquiera desde aquí.",
+  "team.subtitleDriver":
+    "Tu oficina de reparto: quien te invitó y quien te asigna las rutas. Puedes escribir a cualquiera de ellos.",
   "team.seats": "{used} / {seats} plazas",
   "team.pending": "{count} pendientes",
   "team.members": "Miembros",
   "team.unknownUser": "Usuario desconocido",
   "team.memberMeta": "{photos} fotos · se unió el {date}",
+  "team.memberJoined": "se unió el {date}",
+  "team.relationInviter": "te invitó",
+  "team.relationDispatcher": "te asigna las rutas",
   "team.message": "Mensaje",
   "team.roleAria": "Rol",
   "team.projectsForAria": "Proyectos de {email}",
@@ -1018,6 +1023,8 @@ export const es: Catalog = {
     "Este rol ya ve todos los proyectos: las asignaciones solo cambian dónde pueden capturar los miembros de Campo.",
   "team.fieldNobodyElse":
     "Todavía no hay nadie más asignado a tus proyectos. Pide a tu supervisor que te añada al equipo de un proyecto.",
+  "team.driverNobodyElse":
+    "Todavía ningún despachador te ha invitado ni te ha puesto en una ruta. Quien te asigne el primer reparto aparecerá aquí.",
   "team.pendingInvites": "Invitaciones pendientes",
   "team.noInvites":
     "No hay invitaciones pendientes. Todas las personas que invitaste ya se han unido.",

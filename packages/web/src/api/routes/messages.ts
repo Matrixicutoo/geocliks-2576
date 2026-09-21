@@ -162,6 +162,8 @@ export const messages = {
     const people = await orgContacts(context.org.id, context.user.id);
     // Same rule as the Team page: a field member can only chat with people assigned to the same
     // projects. Supervisors included, but only when they are on one of those projects too.
+    // A driver has no projects, so the same call hands back his office instead — the dispatcher
+    // who invited him and whoever assigns his routes — which is exactly who he needs to reach.
     const teammates = await visibleTeammates(context.org.id, context.user.id, context.role);
     const visible = teammates
       ? people.filter((person) => teammates.userIds.has(person.userId))

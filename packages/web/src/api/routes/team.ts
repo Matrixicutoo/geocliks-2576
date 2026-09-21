@@ -184,7 +184,12 @@ async function attachToWorkspace(
     }
   }
 
-  await db.update(schema.invites).set({ status: "accepted" }).where(eq(schema.invites.id, invite.id));
+  // `acceptedBy` is what later lets the joiner find the person who invited them — a driver's
+  // Team screen reads it to show his dispatcher. Open QR invites have no email to match on.
+  await db
+    .update(schema.invites)
+    .set({ status: "accepted", acceptedBy: userId })
+    .where(eq(schema.invites.id, invite.id));
 
   // Someone who only signed up to accept a crew invite should land in the workspace that invited
   // them - not in the empty personal one that sign-up auto-provisions.
@@ -204,6 +209,10 @@ export const team = {
     // Field crews are not workspace managers. They see the people they actually work with - the
     // crew on their own projects - plus the owner/admins/managers who dispatch them, so the
     // "Message" button still reaches a supervisor. Never the whole roster.
+    //
+    // A driver has no projects, so his list is the office people responsible for him: the
+    // dispatcher who invited him and whoever assigned the routes he is holding. `relation` says
+    // which, so the screen can label them instead of showing bare names.
     const teammates = await visibleTeammates(context.org.id, context.user.id, context.role);
     const rows = await db
       .select({
@@ -250,6 +259,7 @@ export const team = {
         ...row.member,
         user: row.user ? { ...row.user, image: await avatarUrl(row.user.image) } : row.user,
         photoCount: byUser.get(row.member.userId) ?? 0,
+        relation: teammates?.reasons?.get(row.member.userId) ?? null,
       })),
     );
   }),

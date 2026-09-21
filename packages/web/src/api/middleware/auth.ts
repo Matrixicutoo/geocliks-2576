@@ -1,5 +1,5 @@
 import { ORPCError } from "@orpc/server";
-import { and, asc, eq, inArray } from "drizzle-orm";
+import { and, asc, eq, inArray, or } from "drizzle-orm";
 import { base } from "../__core/app";
 import { auth } from "../auth";
 import { db } from "../database";
@@ -411,20 +411,115 @@ export function requireRole(role: Role, min: Role) {
   }
 }
 
+/**
+ * Why a crew member can see someone: the office person who let them in, or the one who hands
+ * them work. Only ever set for a driver, whose visible list is built from these two facts
+ * rather than from a shared project.
+ */
+export type ContactReason = "inviter" | "dispatcher";
+
+export type VisibleTeammates = {
+  userIds: Set<string>;
+  projectIds: string[];
+  /** Populated for a driver, null for a field member whose visibility comes from projects. */
+  reasons: Map<string, ContactReason> | null;
+};
+
+/**
+ * The office people a driver is entitled to see and message.
+ *
+ * A driver has no projects, so the project-assignment rule that scopes a field member leaves him
+ * with nobody at all — he could not reach the dispatcher who put him on the road. His list is
+ * built from the two relationships that actually exist in the delivery product instead:
+ *
+ *  - the dispatcher whose invite he joined the workspace on, and
+ *  - whoever put him on a route he is currently holding: the person who built it, plus every
+ *    actor on an `assigned` event for it, because handing a run over is not always done by the
+ *    person who created it.
+ *
+ * Nothing here widens what he can DO. It only names people, and `team.list` still filters the
+ * result against the live membership rows, so somebody who has since left the workspace drops
+ * off by itself.
+ */
+async function driverContacts(orgId: string, userId: string): Promise<Map<string, ContactReason>> {
+  const reasons = new Map<string, ContactReason>();
+
+  // The invite he came in on. `acceptedBy` is the reliable side; the email match is the
+  // fallback for invites accepted before that column existed. An open QR invite has no email,
+  // which is why the column had to exist at all.
+  const [me] = await db
+    .select({ email: schema.user.email })
+    .from(schema.user)
+    .where(eq(schema.user.id, userId));
+  const invited = await db
+    .select({ invitedBy: schema.invites.invitedBy })
+    .from(schema.invites)
+    .where(
+      and(
+        eq(schema.invites.orgId, orgId),
+        or(
+          eq(schema.invites.acceptedBy, userId),
+          me?.email
+            ? and(eq(schema.invites.status, "accepted"), eq(schema.invites.email, me.email))
+            : undefined,
+        ),
+      ),
+    );
+  for (const row of invited) reasons.set(row.invitedBy, "inviter");
+
+  // Routes in his hands right now. Deliberately after the invite pass: when the same person did
+  // both, "dispatcher" is the label that matters to a driver looking at today's run.
+  const routes = await db
+    .select({ id: schema.routes.id, createdBy: schema.routes.createdBy })
+    .from(schema.routes)
+    .where(and(eq(schema.routes.orgId, orgId), eq(schema.routes.driverId, userId)));
+  for (const route of routes) reasons.set(route.createdBy, "dispatcher");
+  if (routes.length > 0) {
+    const handovers = await db
+      .select({ actorId: schema.routeEvents.actorId })
+      .from(schema.routeEvents)
+      .where(
+        and(
+          eq(schema.routeEvents.orgId, orgId),
+          eq(schema.routeEvents.event, "assigned"),
+          inArray(
+            schema.routeEvents.routeId,
+            routes.map((route) => route.id),
+          ),
+        ),
+      );
+    for (const row of handovers) {
+      if (row.actorId) reasons.set(row.actorId, "dispatcher");
+    }
+  }
+
+  // He is not his own contact, whatever the audit trail says.
+  reasons.delete(userId);
+  return reasons;
+}
+
 /** Field members only see projects they are assigned to. */
 /**
- * Who a field member is allowed to see in their workspace: strictly the people assigned to the
- * same projects, plus themselves. There is no automatic exception for managers, admins or the
- * owner — they appear only when they are on one of those projects too.
- * Returns null for owner/admin/manager, who legitimately see the whole roster.
+ * Who a crew member is allowed to see in their workspace: for a field member, strictly the
+ * people assigned to the same projects, plus themselves. There is no automatic exception for
+ * managers, admins or the owner — they appear only when they are on one of those projects too.
+ * A driver has no projects and is scoped by `driverContacts` instead.
+ * Returns null for owner/admin/manager/dispatcher, who legitimately see the whole roster.
  */
 export async function visibleTeammates(
   orgId: string,
   userId: string,
   role: Role,
-): Promise<{ userIds: Set<string>; projectIds: string[] } | null> {
+): Promise<VisibleTeammates | null> {
   const projectIds = await visibleProjectIds(orgId, userId, role);
   if (!projectIds) return null;
+  if (role === "driver") {
+    const reasons = await driverContacts(orgId, userId);
+    const userIds = new Set(reasons.keys());
+    userIds.add(userId);
+    // Still an empty project list: naming his dispatcher must not hand him anyone's job photos.
+    return { userIds, projectIds, reasons };
+  }
   const rows =
     projectIds.length === 0
       ? []
@@ -439,7 +534,7 @@ export async function visibleTeammates(
           );
   const userIds = new Set(rows.map((r) => r.userId));
   userIds.add(userId);
-  return { userIds, projectIds };
+  return { userIds, projectIds, reasons: null };
 }
 
 export async function visibleProjectIds(
