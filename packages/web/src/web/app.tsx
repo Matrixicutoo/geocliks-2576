@@ -18,6 +18,7 @@ const TrackPage = lazy(() => import("./pages/track"));
 const JoinPage = lazy(() => import("./pages/join"));
 const AppTeamspace = lazy(() => import("./pages/app-teamspace"));
 const AppCaptures = lazy(() => import("./pages/app-captures"));
+const AppTimeClock = lazy(() => import("./pages/app-time-clock"));
 const AppProjects = lazy(() => import("./pages/app-projects"));
 const AppProject = lazy(() => import("./pages/app-project"));
 const AppRoutes = lazy(() => import("./pages/app-routes"));
@@ -126,6 +127,16 @@ function App() {
               <Route path="/app/captures">
                 <ProtectedRoute>
                   <AppCaptures />
+                </ProtectedRoute>
+              </Route>
+              {/*
+                No ProductRoute either: a shift is a shift on both sides of the app. A field
+                crew's hours and a driver's hours are the same record, and the server decides
+                whose punches come back — the workspace's for the office, your own for crew.
+              */}
+              <Route path="/app/time-clock">
+                <ProtectedRoute>
+                  <AppTimeClock />
                 </ProtectedRoute>
               </Route>
               <Route path="/app/profile">

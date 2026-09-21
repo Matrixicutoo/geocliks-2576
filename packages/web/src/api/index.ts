@@ -8,6 +8,7 @@ import { team } from "./routes/team";
 import { projects } from "./routes/projects";
 import { routes } from "./routes/routes";
 import { photos } from "./routes/photos";
+import { timeClock } from "./routes/time-clock";
 import { notes } from "./routes/notes";
 import { messages } from "./routes/messages";
 import { notifications } from "./routes/notifications";
@@ -42,6 +43,7 @@ export const router = {
   projects,
   routes,
   photos,
+  timeClock,
   notes,
   messages,
   notifications,

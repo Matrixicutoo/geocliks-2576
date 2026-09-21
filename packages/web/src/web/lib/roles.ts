@@ -102,3 +102,16 @@ export function canManageWatermarks(role: string | undefined | null): boolean {
 export function canSetUpWorkspace(role: string | undefined | null): boolean {
   return role === "owner" || role === "admin";
 }
+
+/**
+ * Reads the whole workspace's time clock, as opposed to one's own timesheet.
+ *
+ * The office tier — owner, admin, manager, dispatcher — plus nobody else. A dispatcher needs it
+ * to know who is actually out this morning and a manager needs it for payroll; the two crew
+ * roles see their own punches and no one else's. Mirrors `readsEveryone` on the server, which
+ * is the check that enforces it, and also gates the correction controls: amending a punch is
+ * the office's job because a timesheet its subject can rewrite proves nothing.
+ */
+export function canReadAllTimeClock(role: string | undefined | null): boolean {
+  return canManageWorkspace(role) || role === "dispatcher";
+}

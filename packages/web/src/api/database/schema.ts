@@ -691,3 +691,60 @@ export const notes = sqliteTable(
     index("notes_org_board_idx").on(t.orgId, t.board, t.status),
   ],
 );
+
+/**
+ * Time clock — when a crew member started and stopped, with the place it happened.
+ *
+ * One row per punch, not per shift: a day is read as an ordered list of `in` / `out` rows and
+ * paired into shifts when it is displayed. That is deliberate. A shift row would have to be
+ * opened by one request and closed by another, and the phone that opens it is the one most
+ * likely to be in a dead zone when it closes — a half-written shift is unrecoverable, a
+ * missing `out` punch is obvious and fixable. Pairing at read time also means punches that
+ * drain out of the offline queue in the wrong order still land on the right day.
+ *
+ * `at` is the punch moment as the capture itself recorded it — the trusted, clock-corrected
+ * time, never the moment the upload reached us. A driver who clocks in underground and syncs
+ * an hour later is on the clock from when he arrived.
+ *
+ * Nothing here holds a photo. The arrival/departure capture that produced a punch is named in
+ * `photoId` so the two can be shown together, but the time clock is readable, exportable and
+ * complete with the picture missing, which is what a workspace on a plan without evidence
+ * photos — or a punch entered by hand — needs.
+ *
+ * Note the naming: this is NOT `api/routes/clock.ts` or `mobile/lib/clock.ts`. Those are the
+ * device time-trust module (measuring a phone's clock drift against ours). This is
+ * attendance. They share a word and nothing else.
+ */
+export const timeClockEntries = sqliteTable(
+  "time_clock_entries",
+  {
+    id: text("id").primaryKey(),
+    orgId: text("org_id").notNull(),
+    /** Whose punch it is — the crew member, never the office person reading it. */
+    userId: text("user_id").notNull(),
+    /** in | out */
+    kind: text("kind").notNull(),
+    at: integer("at", { mode: "timestamp_ms" }).notNull(),
+    lat: real("lat"),
+    lng: real("lng"),
+    accuracyM: real("accuracy_m"),
+    address: text("address"),
+    /**
+     * The arrival/departure capture this punch came out of, when it came out of one. Unique, so
+     * a photo re-sealed or re-sent by the offline queue cannot punch the same clock twice.
+     */
+    photoId: text("photo_id"),
+    /** The run he was holding at the time, for a delivery workspace. */
+    routeId: text("route_id"),
+    /** capture | manual */
+    source: text("source").notNull().default("capture"),
+    note: text("note"),
+    createdAt: integer("created_at", { mode: "timestamp_ms" }).notNull().$defaultFn(now),
+  },
+  (t) => [
+    // The two shapes the calendar asks for: a whole workspace over a month, and one person's.
+    index("time_clock_org_at_idx").on(t.orgId, t.at),
+    index("time_clock_user_at_idx").on(t.userId, t.at),
+    uniqueIndex("time_clock_photo_idx").on(t.photoId),
+  ],
+);

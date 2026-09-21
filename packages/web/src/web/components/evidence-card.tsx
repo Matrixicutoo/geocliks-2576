@@ -209,7 +209,17 @@ export function EvidenceCard({
         <p className="flex items-center gap-1.5 text-[11px] text-fog">
           {/* Project line, not a time field — the icon has to say "job", not "clock". */}
           <FolderOpen className="size-3 shrink-0" />
-          <span className="truncate">{photo.projectName || t("queue.unassigned")}</span>
+          {/* A clock-in or clock-out shot belongs to nobody's project and never will — filing it
+              under a job would put a driver's shift inside a customer's folder. It reads as the
+              time clock instead of the blank "Unassigned" it used to show. */}
+          <span className="truncate">
+            {photo.projectName ||
+              t(
+                photo.tag === "arrival" || photo.tag === "departure"
+                  ? "queue.timeClock"
+                  : "queue.unassigned",
+              )}
+          </span>
         </p>
       </div>
     </button>

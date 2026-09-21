@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link } from "wouter";
 import {
+  CalendarClock,
   Camera,
   FolderKanban,
   Images,
@@ -67,6 +68,10 @@ const NAV: { href: string; label: TKey; icon: typeof Camera }[] = [
   // purpose: a driver has no field access but their own unfiled delivery shots are still
   // theirs, which is how the phone app's drawer treats it too.
   { href: "/app/captures", label: "nav.mine", icon: Images },
+  // Time clock. In neither product set for the same reason as captures: hours are the
+  // member's, not the product's, and a driver's shift is the one page on this list they will
+  // open every single day.
+  { href: "/app/time-clock", label: "nav.timeClock", icon: CalendarClock },
   { href: "/app/routes", label: "nav.routes", icon: RouteIcon },
   { href: "/app/map", label: "nav.map", icon: Map },
   { href: "/app/share", label: "nav.share", icon: Link2 },

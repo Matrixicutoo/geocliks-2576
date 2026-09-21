@@ -138,7 +138,15 @@ export default function Queue() {
                 {formatCoords(item.lat, item.lng)}
               </Text>
               <Text style={[styles.meta, { color: colors.amber }]}>
-                {(item.projectName ?? t("queue.unassigned")).toUpperCase()} · {item.tag.toUpperCase()}
+                {(
+                  item.projectName ??
+                  t(
+                    item.tag === "arrival" || item.tag === "departure"
+                      ? "queue.timeClock"
+                      : "queue.unassigned",
+                  )
+                ).toUpperCase()}{" "}
+                · {item.tag.toUpperCase()}
               </Text>
               {item.error ? (
                 <Text style={[styles.err, { color: colors.destructive }]}>{item.error}</Text>

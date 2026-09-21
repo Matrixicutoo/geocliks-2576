@@ -79,3 +79,15 @@ export function canUseField(role: string | undefined | null): boolean {
 export function canManageWatermarks(role: string | undefined | null): boolean {
   return role === "owner" || role === "admin";
 }
+
+/**
+ * Whose time clock this role reads: the whole workspace, or only their own punches.
+ *
+ * The office — owner, admin, manager, dispatcher — reads everyone, because a dispatcher needs
+ * to know who is actually on the clock this morning and payroll is a manager's paperwork. Crew
+ * read their own timesheet, the same rule their captures already follow. Mirrors
+ * `readsEveryone()` in `packages/web/src/api/routes/time-clock.ts`, which is what enforces it.
+ */
+export function canReadAllTimeClock(role: string | undefined | null): boolean {
+  return canManageWorkspace(role) || role === "dispatcher";
+}

@@ -67,6 +67,9 @@ const TILES: {
   // Captures that are not filed under any project — including everything shot before the
   // crew signed in. Open to every role: a field member's own unfiled shots are their own.
   { href: "/my-captures", label: "nav.mine", icon: "images-outline" },
+  // The time clock. Open to every role on both products: a driver reads their own shifts, the
+  // office reads the workspace's, and the server decides which without this list having to.
+  { href: "/time-clock", label: "nav.timeClock", icon: "time-outline" },
   { href: "/map", label: "nav.map", icon: "map-outline", fieldOnly: true },
   // Delivery runs. It is a bottom tab as well, but the drawer is where the other destinations
   // live, so dispatchers and drivers were left hunting for the one that was only on the bar.
