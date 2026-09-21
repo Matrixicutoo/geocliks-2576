@@ -1051,6 +1051,8 @@ export const de: Catalog = {
   "team.workEmail": "Arbeits-E-Mail",
   "team.role": "Rolle",
   "team.pickRole": "Wählen Sie zuerst eine Rolle für diese Einladung.",
+  "team.dispatcherRoleLocked":
+    "Disponenten können Fahrer einladen. Für jede andere Rolle wenden Sie sich an einen Admin.",
   "team.inviteEmailed":
     "Einladung an {email} verschickt — Code {code}. Weisen Sie die Projekte im Teamspace zu, sobald die Person beitritt.",
   "team.inviteCreated":

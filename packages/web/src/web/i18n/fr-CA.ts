@@ -1055,6 +1055,8 @@ export const frCA: Catalog = {
   "team.workEmail": "Courriel professionnel",
   "team.role": "Rôle",
   "team.pickRole": "Choisissez d'abord un rôle pour cette invitation.",
+  "team.dispatcherRoleLocked":
+    "Les répartiteurs peuvent inviter des chauffeurs. Demandez tout autre rôle à un admin.",
   "team.inviteEmailed":
     "Invitation envoyée à {email} — code {code}. Assignez ses projets depuis le Teamspace dès qu'elle rejoint.",
   "team.inviteCreated":

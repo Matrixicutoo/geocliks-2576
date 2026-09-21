@@ -31,7 +31,7 @@ import { useLocale } from "../lib/i18n";
 import { LOCALES, asLocale } from "../../api/lib/locales";
 import { RoleBadge } from "../components/role-badge";
 import { cn } from "../lib/utils";
-import { canManageWorkspace } from "../lib/roles";
+import { canInviteCrew, canManageWorkspace } from "../lib/roles";
 import { InviteForm, useGrantableRoles } from "../components/invite-form";
 import { InviteQrPanel } from "../components/invite-qr";
 
@@ -78,6 +78,10 @@ export default function AppTeam() {
   const isAdmin = role_ === "owner" || role_ === "admin";
   // Field crews use this page as a contact sheet, not as workspace settings.
   const isField = !canManageWorkspace(role_);
+  // Inviting sits one rung lower than managing: a dispatcher brings drivers onto the crew, so
+  // they get the invite form (driver only), the pending list and the seat count — but none of
+  // the member controls above, which stay on `isField`.
+  const canInvite = canInviteCrew(role_);
   const myId = org.data?.user.id;
   const seats = org.data?.org.seats ?? 0;
   // A pending invite holds a seat on the server (team.invite refuses once members + pending fills
@@ -115,9 +119,9 @@ export default function AppTeam() {
   return (
     <DashboardShell
       title={lang.t("team.title")}
-      subtitle={lang.t(isField ? "team.subtitleField" : "team.subtitle")}
+      subtitle={lang.t(canInvite ? "team.subtitle" : "team.subtitleField")}
       actions={
-        isField ? null : (
+        !canInvite ? null : (
           <span className="mono rounded-[8px] border border-line px-2.5 py-1.5 text-[10.5px] uppercase tracking-widest text-fog">
             {lang.t("team.seats", { used: String(used), seats: String(seats) })}
             {pending > 0 ? ` · ${lang.t("team.pending", { count: String(pending) })}` : ""}
@@ -320,14 +324,14 @@ export default function AppTeam() {
                 {notice}
               </p>
             )}
-            {isField && (team.data ?? []).length <= 1 ? (
+            {!canInvite && (team.data ?? []).length <= 1 ? (
               <p className="border-t border-line px-4 py-3 text-[11.5px] text-fog">
                 {lang.t("team.fieldNobodyElse")}
               </p>
             ) : null}
           </div>
 
-          {isField ? null : (
+          {!canInvite ? null : (
             <div className="rounded-[12px] border border-line bg-ink-2">
               <div className="border-b border-line px-4 py-3">
                 <p className="label text-fog">{lang.t("team.pendingInvites")}</p>
@@ -419,7 +423,7 @@ export default function AppTeam() {
         </div>
 
         <div className="space-y-4">
-          {isField ? null : (
+          {!canInvite ? null : (
             <div className="rounded-[12px] border border-line bg-ink-2">
               <div className="border-b border-line px-4 py-3">
                 <p className="font-display text-[15px] font-semibold">

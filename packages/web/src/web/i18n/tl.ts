@@ -1052,6 +1052,8 @@ export const tl: Catalog = {
   "team.workEmail": "Work email",
   "team.role": "Role",
   "team.pickRole": "Pumili muna ng role para sa imbitasyong ito.",
+  "team.dispatcherRoleLocked":
+    "Puwedeng mag-imbita ng driver ang dispatcher. Kausapin ang admin para sa iba pang role.",
   "team.inviteEmailed":
     "Na-email ang imbitasyon kay {email} — code {code}. I-assign ang mga proyekto niya mula sa Teamspace pagsali niya.",
   "team.inviteCreated":

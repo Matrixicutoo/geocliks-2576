@@ -11,7 +11,7 @@ import {
 } from "lucide-react";
 import { authClient } from "../lib/auth";
 import { useOrg } from "../queries/orgs";
-import { canManageWorkspace } from "../lib/roles";
+import { canInviteCrew } from "../lib/roles";
 import { homeFor } from "../lib/product";
 import { useAdminMe } from "../queries/admin";
 import { useUnreadMessages } from "../queries/messages";
@@ -186,7 +186,7 @@ export function SidebarBody({
           {/* Invite sits with the destinations rather than buried in Team, because adding a
               crew member is the one workspace action people go looking for from any page. It
               is a sheet, not a route, so it opens over whatever they were doing. */}
-          {onInvite && canManageWorkspace(org.data?.role) && (
+          {onInvite && canInviteCrew(org.data?.role) && (
             <button
               type="button"
               onClick={() => {

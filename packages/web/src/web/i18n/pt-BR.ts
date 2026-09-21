@@ -1042,6 +1042,8 @@ export const ptBR: Catalog = {
   "team.workEmail": "E-mail de trabalho",
   "team.role": "Papel",
   "team.pickRole": "Escolha primeiro um papel para este convite.",
+  "team.dispatcherRoleLocked":
+    "Despachantes podem convidar motoristas. Peça qualquer outro papel a um admin.",
   "team.inviteEmailed":
     "Convite enviado para {email} — código {code}. Atribua os projetos dessa pessoa no Teamspace assim que ela entrar.",
   "team.inviteCreated":

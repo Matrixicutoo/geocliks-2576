@@ -1013,6 +1013,7 @@ export const ar: Catalog = {
   "team.workEmail": "بريد العمل",
   "team.role": "الدور",
   "team.pickRole": "اختر أولًا دورًا لهذه الدعوة.",
+  "team.dispatcherRoleLocked": "يمكن للمنسّقين دعوة السائقين فقط. اطلب من مسؤول أي دور آخر.",
   "team.inviteEmailed":
     "أُرسلت الدعوة إلى {email} — الرمز {code}. أسنِد مشاريعه من Teamspace بمجرد انضمامه.",
   "team.inviteCreated":

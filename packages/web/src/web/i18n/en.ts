@@ -1050,6 +1050,7 @@ export const en = {
   "team.workEmail": "Work email",
   "team.role": "Role",
   "team.pickRole": "Pick a role for this invite first.",
+  "team.dispatcherRoleLocked": "Dispatchers can invite drivers. Ask an admin for any other role.",
   "team.inviteEmailed":
     "Invite emailed to {email} — code {code}. Assign their projects from Teamspace once they join.",
   "team.inviteCreated":

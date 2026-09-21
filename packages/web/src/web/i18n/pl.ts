@@ -1041,6 +1041,8 @@ export const pl: Catalog = {
   "team.workEmail": "Służbowy e-mail",
   "team.role": "Rola",
   "team.pickRole": "Najpierw wybierz rolę dla tego zaproszenia.",
+  "team.dispatcherRoleLocked":
+    "Dyspozytorzy mogą zapraszać kierowców. O każdą inną rolę poproś administratora.",
   "team.inviteEmailed":
     "Zaproszenie wysłane na {email} — kod {code}. Przypisz projekty tej osoby w Teamspace, gdy dołączy.",
   "team.inviteCreated":

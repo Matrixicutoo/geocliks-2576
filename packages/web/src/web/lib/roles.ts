@@ -38,6 +38,18 @@ export function canUseNotes(role: string | undefined | null): boolean {
 }
 
 /**
+ * May send an invite: the manage tier, plus dispatchers.
+ *
+ * Deliberately NOT the same question as "may manage members". A dispatcher can bring a new
+ * driver onto the crew but cannot change anybody's role or remove them, and the role they may
+ * hand out is limited to `driver` — that part lives in `useGrantableRoles()` on the invite form
+ * and in `assertMayInviteRole` on the server, which is the check that actually enforces it.
+ */
+export function canInviteCrew(role: string | undefined | null): boolean {
+  return canManageWorkspace(role) || role === "dispatcher";
+}
+
+/**
  * Which PRODUCT the role belongs to, as opposed to how senior it is.
  *
  * `driver` and `field` are peers — neither outranks the other, they just work on different

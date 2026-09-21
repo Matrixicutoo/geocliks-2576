@@ -1033,6 +1033,8 @@ export const vi: Catalog = {
   "team.workEmail": "E-mail công việc",
   "team.role": "Vai trò",
   "team.pickRole": "Hãy chọn vai trò cho lời mời này trước.",
+  "team.dispatcherRoleLocked":
+    "Điều phối viên có thể mời tài xế. Hãy hỏi quản trị viên cho bất kỳ vai trò khác.",
   "team.inviteEmailed":
     "Đã gửi lời mời tới {email} — mã {code}. Hãy phân công dự án cho người đó trong không gian nhóm ngay khi họ tham gia.",
   "team.inviteCreated":

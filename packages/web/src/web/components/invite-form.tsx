@@ -3,6 +3,7 @@ import { Loader2, Mail, QrCode, UserPlus, X } from "lucide-react";
 import { useInviteMember } from "../queries/team";
 import { InviteQrPanel } from "./invite-qr";
 import { useAdminMe } from "../queries/admin";
+import { useOrg } from "../queries/orgs";
 import { useLocale } from "../lib/i18n";
 import { cn } from "../lib/utils";
 
@@ -17,12 +18,21 @@ export type Role = (typeof ROLES)[number];
 export const CREW_ROLES = ["manager", "dispatcher", "driver", "field"] as const;
 
 /**
+ * All a dispatcher may hand out. They invite the crew they run and nobody else — no office
+ * roles, no field crew — matching `assertMayInviteRole` in `api/routes/team.ts`.
+ */
+const DISPATCHER_ROLES = ["driver"] as const;
+
+/**
  * What the picker may offer the signed-in operator. A GeoCliks superadmin — and only a
- * superadmin — also gets `admin`, which is how support seats are created. Hiding is
- * presentation; `assertMayGrant` on the server is the guard.
+ * superadmin — also gets `admin`, which is how support seats are created. A dispatcher gets
+ * `driver` and nothing else. Hiding is presentation; `assertMayGrant` and
+ * `assertMayInviteRole` on the server are the guards.
  */
 export function useGrantableRoles(): readonly Role[] {
   const me = useAdminMe();
+  const org = useOrg();
+  if (org.data?.role === "dispatcher") return DISPATCHER_ROLES;
   return me.data?.staffRole === "superadmin"
     ? (["admin", ...CREW_ROLES] as const)
     : CREW_ROLES;
@@ -62,6 +72,10 @@ export function InviteForm({ onSent }: { onSent?: (mode: Mode) => void }) {
   const lang = useLocale();
   const invite = useInviteMember();
   const roles = useGrantableRoles();
+  const org = useOrg();
+  // A dispatcher sees one role in the picker, which on its own looks like a form still loading.
+  // The line under it says why there is only one.
+  const roleLocked = org.data?.role === "dispatcher";
   const [mode, setMode] = useState<Mode>("email");
   const [email, setEmail] = useState("");
   // No default on purpose: the inviter has to state the role before the invite can go out.
@@ -181,6 +195,11 @@ export function InviteForm({ onSent }: { onSent?: (mode: Mode) => void }) {
             </button>
           ))}
         </div>
+        {roleLocked && (
+          <p className="mt-1.5 text-[11.5px] leading-relaxed text-fog">
+            {lang.t("team.dispatcherRoleLocked")}
+          </p>
+        )}
       </div>
 
       {error && (

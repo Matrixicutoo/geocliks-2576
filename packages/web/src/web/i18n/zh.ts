@@ -984,6 +984,7 @@ export const zh: Catalog = {
   "team.workEmail": "工作邮箱",
   "team.role": "角色",
   "team.pickRole": "请先为这个邀请选择一个角色。",
+  "team.dispatcherRoleLocked": "调度员可以邀请司机。其他角色请联系管理员。",
   "team.inviteEmailed":
     "邀请已发送至 {email}——代码 {code}。对方加入后，在 Teamspace 里为其分配项目。",
   "team.inviteCreated": "邀请已创建——代码 {code}。没有发送邮件{reason}。请自行分享链接或二维码。",

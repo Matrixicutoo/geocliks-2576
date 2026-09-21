@@ -3,6 +3,7 @@ import QRCode from "qrcode";
 import { ORPCError } from "@orpc/server";
 import { and, count, eq, gt, inArray, isNull, or, sql } from "drizzle-orm";
 import { base } from "../__core/app";
+import type { Role } from "../middleware/auth";
 import { authed, orgProc, requireRole, staffRoleOf, visibleTeammates } from "../middleware/auth";
 import { db } from "../database";
 import * as schema from "../database/schema";
@@ -43,6 +44,32 @@ async function assertMayGrant(role: string, actorId: string) {
   if (staffRole !== "superadmin") {
     throw new ORPCError("FORBIDDEN", {
       message: "Only GeoCliks can grant admin access. Contact support to have an admin added.",
+    });
+  }
+}
+
+/**
+ * Who may hand out an invite at all.
+ *
+ * The admin tier, plus dispatchers — a dispatcher is the one standing next to a new driver on
+ * their first morning, and making them wait for an admin to send the invite is how a truck sits
+ * in the yard. What a dispatcher may GRANT is far narrower than what they may SEND: see
+ * `assertMayInviteRole` below.
+ */
+function requireInviter(role: Role) {
+  if (role === "dispatcher") return;
+  requireRole(role, "admin");
+}
+
+/**
+ * Which role the inviter may put on the invite. A dispatcher grows their own crew and nothing
+ * else: `driver`, never the office (manager, dispatcher) and never field crew. This runs on the
+ * server because the picker only hiding the other roles is presentation, not a guard.
+ */
+function assertMayInviteRole(actorRole: Role, role: string) {
+  if (actorRole === "dispatcher" && role !== "driver") {
+    throw new ORPCError("FORBIDDEN", {
+      message: "Dispatchers can only invite drivers. Ask an admin for any other role.",
     });
   }
 }
@@ -258,7 +285,8 @@ export const team = {
       }),
     )
     .handler(async ({ input, context }) => {
-      requireRole(context.role, "admin");
+      requireInviter(context.role);
+      assertMayInviteRole(context.role, input.role);
       await assertMayGrant(input.role, context.actor.id);
       const plan = planOf(context.org.plan);
       if (!plan.limits.teamspace) {
@@ -506,7 +534,9 @@ export const team = {
    * the truck) instead of dictating a ten character code.
    */
   inviteQr: orgProc.input(z.object({ id: z.string() })).handler(async ({ input, context }) => {
-    requireRole(context.role, "admin");
+    // Whoever may send an invite has to be able to show it: a dispatcher's QR invite exists
+    // only as this square until somebody scans it.
+    requireInviter(context.role);
     const [invite] = await db
       .select()
       .from(schema.invites)
