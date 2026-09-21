@@ -890,6 +890,11 @@ export const en = {
   "routes.liveHint":
     "It slots into the stops the driver has not reached yet. Nothing already delivered moves.",
   "routes.liveAdded": "Added as stop {n} of {total}",
+  "routes.liveDriver": "Driver",
+  "routes.liveDriverThis": "This run",
+  "routes.liveDriverHint": "Leave it on this run, or send the order to another driver - it joins the run they already have today, or opens one from the same start address.",
+  "routes.liveOtherRun": "Added to {driver}'s run as stop {n} of {total}",
+  "routes.liveNewRun": "Started a new run for {driver} - added as stop {n}",
   "routes.liveNotLocated": "Added at the end - that address could not be placed on the map.",
   "routes.mapEmpty": "No stops on the map yet - resolve the addresses first.",
   "routes.mapNoKey": "The map is not set up yet, so stops cannot be shown here.",

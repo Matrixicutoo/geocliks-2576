@@ -16,6 +16,7 @@ import {
 import { DashboardShell } from "../components/dashboard-shell";
 import { AssignDriverDialog } from "../components/assign-driver-dialog";
 import { useOrg } from "../queries/orgs";
+import { useTeam } from "../queries/team";
 import {
   useAddLiveStop,
   useAddStops,
@@ -120,6 +121,8 @@ export default function AppRoutePage() {
   const org = useOrg();
   const detail = useRoute(routeId);
   const canManage = canRunDeliveries(org.data?.role);
+  // The crew, for the per-order driver picker below. Same list the assign popup reads.
+  const team = useTeam();
 
   const addStops = useAddStops();
   const liveStop = useAddLiveStop();
@@ -133,7 +136,18 @@ export default function AppRoutePage() {
   // A late order typed straight into a run that is already moving. The contact details belong
   // here for the same reason they belong on the popup's one-stop form: the phone number is what
   // the driver taps on arrival, and the dispatcher has it in front of them while they type.
-  const [live, setLive] = useState({ address: "", name: "", email: "", phone: "" });
+  //
+  // `driver` is per ORDER, not per run: on a restaurant night the order goes to whoever is free,
+  // which is rarely the driver whose run happens to be open on screen. Blank keeps the old
+  // behaviour of filing it here, and it resets to blank after every add so a one-off hand-off
+  // does not silently keep sending the rest of the night's orders to the same person.
+  const [live, setLive] = useState({
+    address: "",
+    name: "",
+    email: "",
+    phone: "",
+    driver: "",
+  });
   const [paste, setPaste] = useState("");
   // The driver popup, opened from the run header.
   const [assignOpen, setAssignOpen] = useState(false);
@@ -166,6 +180,9 @@ export default function AppRoutePage() {
   const unlocated = stops.filter(
     (s) => typeof s.lat !== "number" || typeof s.lng !== "number",
   ).length;
+  // Everyone in the workspace, as the assign popup and the stops dialog both list them: the
+  // server only checks membership, so filtering by role here would hide people it accepts.
+  const members = team.data ?? [];
 
   async function move(stopId: string, delta: number) {
     const order = stops.map((s) => s.id);
@@ -194,21 +211,39 @@ export default function AppRoutePage() {
     await reorder.mutateAsync({ routeId, order });
   }
 
-  /** Slot a late order into the stops the driver has not reached yet. */
+  /**
+   * Slot a late order into the stops the driver has not reached yet.
+   *
+   * With a driver named on the order it may land on a different run altogether, so the answer
+   * says where it went: a dispatcher who hands an order to Ralph and sees nothing change on the
+   * screen in front of him assumes the click was lost and types it again.
+   */
   async function addLive() {
     const address = live.address.trim();
     if (!address) return;
+    const driverId = live.driver || null;
+    // Named from the list on screen: the dispatcher wants back the name he just picked, and the
+    // server has no reason to look one up for a one-line notice.
+    const picked = members.find((m) => m.userId === driverId);
+    const driver = picked?.user?.name ?? picked?.user?.email ?? t("team.unknownUser");
     await run(async () => {
       const res = await liveStop.mutateAsync({
         routeId,
+        driverId,
         addressRaw: address,
         recipientName: live.name.trim() || null,
         recipientEmail: live.email.trim() || null,
         recipientPhone: live.phone.trim() || null,
       });
-      setLive({ address: "", name: "", email: "", phone: "" });
-      if (!res.located) return t("routes.liveNotLocated");
-      return t("routes.liveAdded", { n: res.position, total: res.total });
+      setLive({ address: "", name: "", email: "", phone: "", driver: "" });
+      const where = res.createdRoute
+        ? t("routes.liveNewRun", { driver, n: res.position })
+        : res.rerouted
+          ? t("routes.liveOtherRun", { driver, n: res.position, total: res.total })
+          : t("routes.liveAdded", { n: res.position, total: res.total });
+      // An address we could not place still landed somewhere - at the end - so both halves of
+      // the story are told rather than only the failure.
+      return res.located ? where : `${where} · ${t("routes.liveNotLocated")}`;
     });
   }
 
@@ -449,6 +484,29 @@ export default function AppRoutePage() {
                     className={FIELD}
                   />
                 </div>
+                {/* Who takes this one. Sits under the phone column so the row rhythm holds, with
+                    the consequence spelled out beside it: picking a name here can create a whole
+                    second run, which is not something to discover afterwards. */}
+                {members.length > 0 && (
+                  <div className="mt-2 grid gap-2 sm:grid-cols-[2fr_1fr]">
+                    <p className="text-[12px] leading-snug text-fog sm:self-center">
+                      {t("routes.liveDriverHint")}
+                    </p>
+                    <select
+                      aria-label={t("routes.liveDriver")}
+                      value={live.driver}
+                      onChange={(e) => setLive({ ...live, driver: e.target.value })}
+                      className={FIELD}
+                    >
+                      <option value="">{t("routes.liveDriverThis")}</option>
+                      {members.map((member) => (
+                        <option key={member.id} value={member.userId}>
+                          {member.user?.name ?? member.user?.email ?? t("team.unknownUser")}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+                )}
                 <div className="mt-2 flex sm:justify-end">
                   <button
                     type="button"

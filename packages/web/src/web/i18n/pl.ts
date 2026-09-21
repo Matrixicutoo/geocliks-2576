@@ -880,6 +880,11 @@ export const pl: Catalog = {
   "routes.liveHint":
     "Trafia między przystanki, do których kierowca jeszcze nie dojechał. Nic już dostarczonego się nie zmienia.",
   "routes.liveAdded": "Dodano jako przystanek {n} z {total}",
+  "routes.liveDriver": "Kierowca",
+  "routes.liveDriverThis": "Ta trasa",
+  "routes.liveDriverHint": "Zostaw na tej trasie albo wyślij zlecenie do innego kierowcy - dołączy do trasy, którą już dziś ma, albo otworzy nową z tego samego adresu startowego.",
+  "routes.liveOtherRun": "Dodano do trasy {driver} jako przystanek {n} z {total}",
+  "routes.liveNewRun": "Otwarto nową trasę dla {driver} - dodano jako przystanek {n}",
   "routes.liveNotLocated": "Dodano na końcu - tego adresu nie udało się umieścić na mapie.",
   "routes.mapEmpty": "Brak przystanków na mapie - najpierw rozwiąż adresy.",
   "routes.mapNoKey": "Mapa nie jest jeszcze skonfigurowana, więc nie można tu pokazać przystanków.",

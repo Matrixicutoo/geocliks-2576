@@ -886,6 +886,11 @@ export const de: Catalog = {
   "routes.liveHint":
     "Er wird zwischen die Stopps eingefügt, die der Fahrer noch nicht erreicht hat. Bereits Zugestelltes bleibt unverändert.",
   "routes.liveAdded": "Als Stopp {n} von {total} hinzugefügt",
+  "routes.liveDriver": "Fahrer",
+  "routes.liveDriverThis": "Diese Tour",
+  "routes.liveDriverHint": "Auf dieser Tour lassen oder den Auftrag an einen anderen Fahrer geben - er kommt auf dessen heutige Tour oder eröffnet eine neue von derselben Startadresse.",
+  "routes.liveOtherRun": "Zur Tour von {driver} als Stopp {n} von {total} hinzugefügt",
+  "routes.liveNewRun": "Neue Tour für {driver} eröffnet - als Stopp {n} hinzugefügt",
   "routes.liveNotLocated":
     "Am Ende hinzugefügt - diese Adresse konnte nicht auf der Karte platziert werden.",
   "routes.mapEmpty": "Noch keine Stopps auf der Karte - lösen Sie zuerst die Adressen auf.",

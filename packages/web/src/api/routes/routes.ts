@@ -289,6 +289,151 @@ function assertCanAddLiveStop(
   }
 }
 
+type RouteRow = typeof schema.routes.$inferSelect;
+
+/**
+ * The run a late order actually belongs on.
+ *
+ * A dispatcher works one run at a time on screen, but the order that just came in is not
+ * necessarily for the driver whose run is open — on a busy restaurant night it goes to whoever
+ * is free. Naming a driver on the order therefore re-routes it, and naming nobody keeps the old
+ * behaviour of filing it on the run in front of them.
+ *
+ * Only ever ONE run per driver per day comes out of this. If the named driver already has a run
+ * today the order joins it, because splitting one driver's night across two half-empty runs is
+ * exactly the mistake this is meant to prevent. That holds even once he has finished it: a run
+ * he closed an hour ago is reopened and takes the order, rather than a second run appearing
+ * beside it for the same night. Only when he has no run at all today does the order open one
+ * for him, carrying the name and the start address of the run it was added from: a restaurant's
+ * drivers all leave from the same kitchen, and re-typing that address per driver is the step
+ * that gets skipped.
+ *
+ * The driver is not told here. The push says "you have a run with N stops on it", so it fires
+ * from the caller once the stop is actually on the route.
+ */
+async function resolveLiveTarget(
+  origin: RouteRow,
+  driverId: string | null,
+  context: { role: Role; user: { id: string }; org: { plan: string | null } },
+): Promise<{ route: RouteRow; createdRoute: boolean; reopened: boolean }> {
+  if (!driverId || driverId === origin.driverId) {
+    return { route: origin, createdRoute: false, reopened: false };
+  }
+
+  // Handing work to somebody else is a dispatcher's call. A driver may squeeze an order into
+  // his own moving run, which is what `assertCanAddLiveStop` allows, but not push it onto a
+  // colleague's night.
+  requireRole(context.role, "dispatcher");
+
+  const [member] = await db
+    .select({ id: schema.members.id })
+    .from(schema.members)
+    .where(and(eq(schema.members.orgId, origin.orgId), eq(schema.members.userId, driverId)))
+    .limit(1);
+  if (!member) {
+    throw new ORPCError("BAD_REQUEST", { message: "That person is not in this workspace" });
+  }
+
+  // Same day, same mode: a dispatch order belongs on a dispatch run, never buried in the
+  // courier list somebody planned for him this morning.
+  const sameDay = await db
+    .select()
+    .from(schema.routes)
+    .where(
+      and(
+        eq(schema.routes.orgId, origin.orgId),
+        eq(schema.routes.driverId, driverId),
+        eq(schema.routes.date, origin.date),
+        eq(schema.routes.mode, origin.mode),
+      ),
+    )
+    // The run he is actually driving wins over one sitting unstarted, then the newest.
+    .orderBy(desc(schema.routes.startedAt), desc(schema.routes.createdAt));
+
+  // A run still carrying work wins over one he has closed, and a run he finished wins over one
+  // that was called off — the order should land somewhere he is still looking, and only fall
+  // back to reviving a dead run when that is the only run he has.
+  const rank = (status: string) => (status === "completed" ? 1 : status === "cancelled" ? 2 : 0);
+  const [existing] = [...sameDay].sort((a, b) => rank(a.status) - rank(b.status));
+  if (existing) {
+    // Reopened when it had been closed out: a finished run holding an undelivered order reads
+    // as done on every board and in the driver's app, and nobody would go out for it.
+    if (existing.status === "completed" || existing.status === "cancelled") {
+      const status = existing.startedAt ? "active" : "assigned";
+      await db
+        .update(schema.routes)
+        .set({ status, completedAt: null })
+        .where(eq(schema.routes.id, existing.id));
+      await logEvent({
+        routeId: existing.id,
+        orgId: origin.orgId,
+        event: "reopened",
+        detail: origin.name,
+        actorId: context.user.id,
+      });
+      return {
+        route: await loadRoute(origin.orgId, existing.id),
+        createdRoute: false,
+        reopened: true,
+      };
+    }
+    return { route: existing, createdRoute: false, reopened: false };
+  }
+
+  const plan = planOf(context.org.plan);
+  if (origin.mode === "dispatch" && !plan.limits.deliveryDispatch) {
+    throw new ORPCError("PAYMENT_REQUIRED", {
+      status: 402,
+      message: `Live dispatch routes need Delivery Pro or higher. ${plan.name} covers planned routes.`,
+    });
+  }
+
+  const routeId = id("rte");
+  await db.insert(schema.routes).values({
+    id: routeId,
+    orgId: origin.orgId,
+    projectId: origin.projectId,
+    name: origin.name,
+    date: origin.date,
+    mode: origin.mode,
+    // It has a driver from the first second, so it reads as waiting to be started rather than
+    // as a draft nobody has picked up.
+    status: "assigned",
+    driverId,
+    // Copied rather than geocoded again: it is the same kitchen, already placed on the map.
+    startAddress: origin.startAddress,
+    startLat: origin.startLat,
+    startLng: origin.startLng,
+    returnToStart: origin.returnToStart,
+    startMinutes: origin.startMinutes,
+    serviceMinutes: origin.serviceMinutes,
+    requireSignature: origin.requireSignature,
+    notifyOnStart: origin.notifyOnStart,
+    notifyWhenNext: origin.notifyWhenNext,
+    notifyOnDelivery: origin.notifyOnDelivery,
+    notifyLeadStops: origin.notifyLeadStops,
+    createdBy: context.user.id,
+  });
+  await logEvent({
+    routeId,
+    orgId: origin.orgId,
+    event: "created",
+    detail: origin.name,
+    actorId: context.user.id,
+  });
+  await logEvent({
+    routeId,
+    orgId: origin.orgId,
+    event: "assigned",
+    actorId: context.user.id,
+  });
+
+  // Read back rather than assembled from the values above: the insertion logic downstream
+  // reads defaults this function never set, and a hand-built row would drift from the table.
+  const route = await loadRoute(origin.orgId, routeId);
+  return { route, createdRoute: true, reopened: false };
+}
+
 /** A field member may only ever touch the route they were assigned. */
 /**
  * Crew roles only ever reach the runs assigned to them.
@@ -577,11 +722,16 @@ export const routes = {
    * is currently driving to, never move - a tool that reshuffles the plan under a moving
    * driver gets abandoned. Cheapest insertion is also free, where Google's optimizer bills
    * per stop, so a busy restaurant night does not turn into a bill.
+   *
+   * `driverId` sends the order to somebody other than the driver whose run is open — see
+   * `resolveLiveTarget` for where it lands. Everything below then works on the run that
+   * actually took the order, which is why the answer names it.
    */
   addLiveStop: orgProc
     .input(
       z.object({
         routeId: z.string(),
+        driverId: z.string().nullish(),
         addressRaw: z.string().trim().min(1).max(300),
         recipientName: z.string().trim().max(120).nullish(),
         recipientEmail: z.string().trim().max(200).nullish(),
@@ -593,12 +743,20 @@ export const routes = {
       }),
     )
     .handler(async ({ input, context }) => {
-      const route = await loadRoute(context.org.id, input.routeId);
-      assertCanAddLiveStop(route, context);
-      if (route.status === "completed" || route.status === "cancelled") {
+      const origin = await loadRoute(context.org.id, input.routeId);
+      assertCanAddLiveStop(origin, context);
+      if (origin.status === "completed" || origin.status === "cancelled") {
         throw new ORPCError("BAD_REQUEST", { message: "This route is finished" });
       }
       await assertStopBudget(planOf(context.org.plan), context.org.id, 1);
+
+      // Which run takes the order. Without a driver named on it that is the run on screen, so
+      // the rest of this handler is unchanged for every caller that does not use the picker.
+      const { route, createdRoute, reopened } = await resolveLiveTarget(
+        origin,
+        input.driverId ?? null,
+        context,
+      );
 
       const stops = await loadStops(route.id);
 
@@ -687,12 +845,25 @@ export const routes = {
         actorId: context.user.id,
       });
 
+      // Now that the run has work on it, tell the driver it exists. Only for a run this call
+      // opened: a driver already holding a run is not buzzed again for every order added to it.
+      // Pushed only when the run is news to him: a brand new run, or one he had already
+      // closed out for the night and would otherwise never look at again. A driver mid-run
+      // gets the stop on his list without a second buzz per order.
+      if (createdRoute || reopened) await notifyDriverAssigned(route);
+
       return {
         stopId,
         position: at + 1,
         total: finalOrder.length,
         located,
         geocodingAvailable: geocodingAvailable(),
+        // Where it went. The dispatcher asked for another driver, so the answer has to say
+        // whether that joined a run he was already on or started him a new one.
+        routeId: route.id,
+        routeName: route.name,
+        rerouted: route.id !== origin.id,
+        createdRoute,
       };
     }),
 
