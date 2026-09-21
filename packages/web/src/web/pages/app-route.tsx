@@ -55,6 +55,17 @@ const PIN_STYLE: Record<string, string> = {
 };
 
 /**
+ * Planned duration, readable at both ends of the scale. A town run is minutes and reads as
+ * minutes; a run across the province is hours and used to read "1179 min", which nobody can
+ * picture as a working day.
+ */
+function planClock(seconds: number): string {
+  const minutes = Math.round(seconds / 60);
+  if (minutes < 60) return `${minutes} min`;
+  return `${Math.floor(minutes / 60)} h ${minutes % 60} min`;
+}
+
+/**
  * How the stop actually ended — which is not the same question as whether it was geocoded.
  *
  * The list used to badge `geocodeStatus` alone, so a delivered stop read "Located" and nothing
@@ -267,8 +278,7 @@ export default function AppRoutePage() {
 
             {typeof route.planMetres === "number" && route.planMetres > 0 && (
               <p className="text-[13px] text-fog">
-                {Math.round(route.planMetres / 100) / 10} km ·{" "}
-                {Math.round((route.planSeconds ?? 0) / 60)} min
+                {Math.round(route.planMetres / 100) / 10} km · {planClock(route.planSeconds ?? 0)}
               </p>
             )}
 

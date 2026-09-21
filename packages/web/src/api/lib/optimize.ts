@@ -20,8 +20,19 @@
 
 /** Roads are longer than the crow flies. 1.3 is the usual urban rule of thumb. */
 const DETOUR_FACTOR = 1.3;
-/** Average door-to-door speed in metres per second (~35 km/h with traffic and parking). */
-const AVERAGE_SPEED_MS = 9.7;
+/**
+ * Planned driving time, split by how far a leg goes.
+ *
+ * A single average speed only works for a single kind of run. At 35 km/h flat, a
+ * town-to-town route across a province came out at forty-one hours, which is not
+ * a plan a dispatcher can do anything with. So each leg is charged the town
+ * speed for its first couple of kilometres — getting out, getting in, parking —
+ * and the open-road speed for the rest. A dense city route is unchanged; a
+ * long-distance one stops being nonsense.
+ */
+const TOWN_SPEED_MS = 9.7; // ~35 km/h, traffic and parking
+const ROAD_SPEED_MS = 22.2; // ~80 km/h, highway between towns
+const TOWN_METRES_PER_LEG = 2_500;
 const EARTH_RADIUS_M = 6_371_000;
 
 export type OptimizeStop = {
@@ -79,6 +90,23 @@ function totalMetres(points: OptimizePoint[]): number {
   return sum;
 }
 
+/** Driving seconds for one leg: town speed to get clear of it, road speed for the rest. */
+function legSeconds(metres: number): number {
+  const town = Math.min(metres, TOWN_METRES_PER_LEG);
+  return town / TOWN_SPEED_MS + Math.max(0, metres - town) / ROAD_SPEED_MS;
+}
+
+/** Driving seconds along a framed path, leg by leg. */
+function drivingSeconds(points: OptimizePoint[]): number {
+  let sum = 0;
+  for (let i = 1; i < points.length; i++) {
+    const from = points[i - 1];
+    const to = points[i];
+    if (from && to) sum += legSeconds(leg(from, to));
+  }
+  return sum;
+}
+
 /** Greedy nearest-neighbour ordering from a fixed anchor. */
 function nearestNeighbour(stops: OptimizeStop[], anchor: OptimizePoint): OptimizeStop[] {
   const remaining = [...stops];
@@ -106,11 +134,30 @@ function nearestNeighbour(stops: OptimizeStop[], anchor: OptimizePoint): Optimiz
   return out;
 }
 
+/** Length of a candidate order, measured with the depot on the front and, on a loop, the back. */
+function framedMetres(
+  path: OptimizeStop[],
+  anchor: OptimizePoint,
+  end: OptimizePoint | null,
+): number {
+  const points: OptimizePoint[] = [anchor, ...path];
+  if (end) points.push(end);
+  return totalMetres(points);
+}
+
 /**
- * 2-opt improvement: repeatedly reverse a segment when doing so shortens the
- * tour. Capped so a pathological route cannot pin the server.
+ * Local search over the seeded order: 2-opt reversals plus or-opt relocations,
+ * run together until neither finds anything. Capped so a pathological route
+ * cannot pin the server.
+ *
+ * 2-opt alone untangles crossings but cannot move a stop out of the middle of a
+ * leg, which is exactly what a province-wide run needs: one town sitting on the
+ * way past gets picked up early by the nearest-neighbour seed and then stays
+ * there, because lifting it out and dropping it in further along is a
+ * relocation, not a reversal. Or-opt moves runs of one to three stops to any
+ * other position, in either direction, which is what closes that gap.
  */
-function twoOpt(
+function improve(
   stops: OptimizeStop[],
   anchor: OptimizePoint,
   end: OptimizePoint | null,
@@ -118,36 +165,71 @@ function twoOpt(
   if (stops.length < 4) return stops;
 
   const path = [...stops];
-  const framed = (): OptimizePoint[] => {
-    const points: OptimizePoint[] = [anchor, ...path];
-    if (end) points.push(end);
-    return points;
-  };
-
-  let best = totalMetres(framed());
+  let best = framedMetres(path, anchor, end);
   let improved = true;
   let passes = 0;
   const maxPasses = 40;
+  const maxSegment = 3;
+
+  const take = (trial: OptimizeStop[]): boolean => {
+    const candidate = framedMetres(trial, anchor, end);
+    if (candidate >= best - 1) return false;
+    path.splice(0, path.length, ...trial);
+    best = candidate;
+    return true;
+  };
 
   while (improved && passes < maxPasses) {
     improved = false;
     passes++;
+
+    // Reversals.
     for (let i = 0; i < path.length - 1; i++) {
       for (let k = i + 1; k < path.length; k++) {
         const trial = [...path.slice(0, i), ...path.slice(i, k + 1).reverse(), ...path.slice(k + 1)];
-        const points: OptimizePoint[] = [anchor, ...trial];
-        if (end) points.push(end);
-        const candidate = totalMetres(points);
-        if (candidate < best - 1) {
-          path.splice(0, path.length, ...trial);
-          best = candidate;
-          improved = true;
+        if (take(trial)) improved = true;
+      }
+    }
+
+    // Relocations, forwards and backwards.
+    for (let size = 1; size <= maxSegment; size++) {
+      for (let i = 0; i + size <= path.length; i++) {
+        const segment = path.slice(i, i + size);
+        const rest = [...path.slice(0, i), ...path.slice(i + size)];
+        for (let j = 0; j <= rest.length; j++) {
+          if (j === i) continue;
+          for (const piece of size > 1 ? [segment, [...segment].reverse()] : [segment]) {
+            const trial = [...rest.slice(0, j), ...piece, ...rest.slice(j)];
+            if (take(trial)) improved = true;
+          }
         }
       }
     }
   }
 
   return path;
+}
+
+/**
+ * Which way round to drive a loop. A closed tour is the same length in either
+ * direction, so the solver is free to hand back either one — and it handed back
+ * the one that drove past the depot's own neighbourhood on the way out and
+ * served it fourteen hours later on the way home.
+ *
+ * Nobody dispatches a run that way. The drops nearest the depot go first: they
+ * get the earliest ETAs, they are the ones a dispatcher can promise a morning
+ * window on, and if the day runs out it is the far end that gets rolled over,
+ * not the customers round the corner. So of the two identical-length
+ * directions, take the one that leaves the depot for the closer end.
+ *
+ * Only applies to loops. An open run is anchored at the depot at one end only,
+ * and reversing it is a different, longer route rather than the same one.
+ */
+function nearEndFirst(path: OptimizeStop[], anchor: OptimizePoint): OptimizeStop[] {
+  const head = path[0];
+  const tail = path[path.length - 1];
+  if (!head || !tail || path.length < 2) return path;
+  return haversine(anchor, tail) < haversine(anchor, head) ? [...path].reverse() : path;
 }
 
 function serviceSeconds(stops: OptimizeStop[]): number {
@@ -166,7 +248,8 @@ function optimizeLocal(input: OptimizeInput): OptimizeResult {
   const end: OptimizePoint | null = input.returnToStart ? anchor : null;
 
   const seeded = nearestNeighbour(stops, anchor);
-  const path = twoOpt(seeded, anchor, end);
+  const searched = improve(seeded, anchor, end);
+  const path = end ? nearEndFirst(searched, anchor) : searched;
 
   const points: OptimizePoint[] = [anchor, ...path];
   if (end) points.push(end);
@@ -175,7 +258,7 @@ function optimizeLocal(input: OptimizeInput): OptimizeResult {
   return {
     order: path.map((s) => s.id),
     metres,
-    seconds: Math.round(metres / AVERAGE_SPEED_MS) + serviceSeconds(path),
+    seconds: Math.round(drivingSeconds(points)) + serviceSeconds(path),
     optimizer: "local",
   };
 }
@@ -244,12 +327,19 @@ async function optimizeGoogle(input: OptimizeInput): Promise<OptimizeResult> {
     const parsed = (await res.json()) as GoogleOptimizeResponse;
     const route = parsed.routes?.[0];
     const visits = route?.visits ?? [];
-    const order: string[] = [];
+    const visited: OptimizeStop[] = [];
     for (const visit of visits) {
       const stop = typeof visit.shipmentIndex === "number" ? stops[visit.shipmentIndex] : stops[0];
-      if (stop && !order.includes(stop.id)) order.push(stop.id);
+      if (stop && !visited.some((s) => s.id === stop.id)) visited.push(stop);
     }
-    if (order.length !== stops.length) return optimizeLocal(input);
+    if (visited.length !== stops.length) return optimizeLocal(input);
+
+    // Google has the same free choice of direction round a loop that the local
+    // solver does, so the same rule applies: out to the near end first. The
+    // distance it reported still stands — the two directions differ only by
+    // which way each road is driven.
+    const ordered = input.returnToStart ? nearEndFirst(visited, anchor) : visited;
+    const order = ordered.map((s) => s.id);
 
     const metres = Math.round(route?.metrics?.travelDistanceMeters ?? 0);
     return {
