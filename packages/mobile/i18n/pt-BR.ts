@@ -522,6 +522,7 @@ export const ptBR: Catalog = {
     "Escolha um motivo. Ainda é preciso uma foto da porta ou do endereço como prova.",
   "run.reasonPhoto": "Continuar para a foto",
   "run.notes": "Observações",
+  "run.officeNote": "Da central",
   "run.ref": "Referência",
   "run.noStops": "Esta rota ainda não tem paradas.",
   "run.stopBannerBack": "Voltar para a rota",

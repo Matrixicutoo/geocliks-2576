@@ -29,6 +29,7 @@ import { cn } from "../lib/utils";
 import { useT } from "../lib/i18n";
 import { sigChoice, sigRouteLabel, sigValue } from "../lib/signature";
 import { StopAddress } from "./stop-address";
+import { StopNote } from "./stop-note";
 
 const FIELD =
   "w-full rounded-[8px] border border-line bg-ink px-3 py-2 text-[13.5px] text-chalk outline-none focus:border-amber";
@@ -441,6 +442,16 @@ export function RouteStopsDialog({
                           {stop.reference && <span>{stop.reference}</span>}
                         </p>
                       )}
+                      {/* The note for the driver, writable from here as well: the popup is where
+                          the list is loaded, so the buzzer code usually turns up in the same
+                          sitting as the address it belongs to. */}
+                      <StopNote
+                        stopId={stop.id}
+                        notes={stop.notes}
+                        canEdit
+                        compact
+                        onError={setError}
+                      />
                     </div>
 
                     {/* This address's own signature rule, or the run's when it has none. */}

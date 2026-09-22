@@ -514,6 +514,7 @@ export const ar: Catalog = {
   "run.reasonHint": "اختر سببًا. ما زلت بحاجة إلى صورة للباب أو العنوان كدليل.",
   "run.reasonPhoto": "المتابعة إلى الصورة",
   "run.notes": "ملاحظات",
+  "run.officeNote": "من غرفة التوزيع",
   "run.ref": "المرجع",
   "run.noStops": "لا توجد محطات في هذا المسار بعد.",
   "run.stopBannerBack": "العودة إلى المسار",

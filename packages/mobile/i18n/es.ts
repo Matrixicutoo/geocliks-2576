@@ -523,6 +523,7 @@ export const es: Catalog = {
     "Elige un motivo. Aún necesitas una foto de la puerta o la dirección como prueba.",
   "run.reasonPhoto": "Continuar a la foto",
   "run.notes": "Notas",
+  "run.officeNote": "De la central",
   "run.ref": "Referencia",
   "run.noStops": "Esta ruta aún no tiene paradas.",
   "run.stopBannerBack": "Volver a la ruta",

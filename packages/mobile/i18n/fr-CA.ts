@@ -528,6 +528,7 @@ export const frCA: Catalog = {
     "Choisissez une raison. Une photo de la porte ou de l'adresse reste obligatoire comme preuve.",
   "run.reasonPhoto": "Continuer vers la photo",
   "run.notes": "Notes",
+  "run.officeNote": "De la répartition",
   "run.ref": "Référence",
   "run.noStops": "Cette tournée n'a pas encore d'arrêts.",
   "run.stopBannerBack": "Retour à la tournée",

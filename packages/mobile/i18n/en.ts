@@ -534,6 +534,7 @@ export const en = {
   "run.reasonHint": "Pick a reason. You still need a photo of the door or the address as proof.",
   "run.reasonPhoto": "Continue to photo",
   "run.notes": "Notes",
+  "run.officeNote": "From dispatch",
   "run.ref": "Reference",
   "run.noStops": "This route has no stops yet.",
   "run.stopBannerBack": "Back to route",

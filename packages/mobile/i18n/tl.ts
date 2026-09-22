@@ -528,6 +528,7 @@ export const tl: Catalog = {
     "Pumili ng dahilan. Kailangan pa rin ng larawan ng pinto o address bilang patunay.",
   "run.reasonPhoto": "Magpatuloy sa larawan",
   "run.notes": "Mga tala",
+  "run.officeNote": "Mula sa dispatch",
   "run.ref": "Reference",
   "run.noStops": "Wala pang hinto ang rutang ito.",
   "run.stopBannerBack": "Bumalik sa ruta",

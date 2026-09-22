@@ -525,6 +525,7 @@ export const it: Catalog = {
     "Scegli un motivo. Serve comunque una foto della porta o dell'indirizzo come prova.",
   "run.reasonPhoto": "Continua alla foto",
   "run.notes": "Note",
+  "run.officeNote": "Dalla centrale",
   "run.ref": "Riferimento",
   "run.noStops": "Questo giro non ha ancora fermate.",
   "run.stopBannerBack": "Torna al giro",

@@ -501,6 +501,7 @@ export const zh: Catalog = {
   "run.reasonHint": "请选择原因。仍需拍摄门口或地址的照片作为证据。",
   "run.reasonPhoto": "继续拍照",
   "run.notes": "备注",
+  "run.officeNote": "调度留言",
   "run.ref": "参考编号",
   "run.noStops": "此路线还没有站点。",
   "run.stopBannerBack": "返回路线",

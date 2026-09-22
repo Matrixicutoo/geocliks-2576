@@ -518,6 +518,7 @@ export const vi: Catalog = {
   "run.reasonHint": "Chọn một lý do. Vẫn cần ảnh cửa hoặc địa chỉ làm bằng chứng.",
   "run.reasonPhoto": "Tiếp tục chụp ảnh",
   "run.notes": "Ghi chú",
+  "run.officeNote": "Từ điều phối",
   "run.ref": "Mã tham chiếu",
   "run.noStops": "Tuyến này chưa có điểm dừng.",
   "run.stopBannerBack": "Quay lại tuyến",

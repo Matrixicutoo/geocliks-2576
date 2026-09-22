@@ -42,6 +42,7 @@ import { parseStops } from "../lib/parse-stops";
 import { RouteMap } from "../components/route-map";
 import { PhotoDrawer } from "../components/photo-drawer";
 import { StopAddress } from "../components/stop-address";
+import { StopNote } from "../components/stop-note";
 import { STATUS_LABEL, STATUS_STYLE } from "./app-routes";
 import { canRunDeliveries } from "../lib/roles";
 
@@ -655,6 +656,17 @@ export default function AppRoutePage() {
                           {stop.reference && <span>{stop.reference}</span>}
                         </p>
                       )}
+                      {/*
+                        What the office knows about this address and the driver does not: the
+                        buzzer code, the gate, the name to ask for. Written here after the run
+                        is built, read on the driver's phone when he arrives at this stop.
+                      */}
+                      <StopNote
+                        stopId={stop.id}
+                        notes={stop.notes}
+                        canEdit={canManage}
+                        onError={setError}
+                      />
                       {/* Why it did not land, in the row rather than buried in a drawer. */}
                       {stop.status === "failed" && (stop.failedReason || stop.failedNote) && (
                         <p className="text-[12.5px] text-alert">

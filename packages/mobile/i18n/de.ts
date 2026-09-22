@@ -526,6 +526,7 @@ export const de: Catalog = {
     "Wähle einen Grund. Ein Foto der Tür oder der Adresse ist trotzdem als Nachweis nötig.",
   "run.reasonPhoto": "Weiter zum Foto",
   "run.notes": "Notizen",
+  "run.officeNote": "Von der Zentrale",
   "run.ref": "Referenz",
   "run.noStops": "Diese Tour hat noch keine Stopps.",
   "run.stopBannerBack": "Zurück zur Tour",

@@ -387,9 +387,16 @@ export default function RouteRun() {
                   {t("run.ref").toUpperCase()} · {current.reference}
                 </Text>
               ) : null}
+              {/* What the office wrote for this address, called out as theirs: "Notes" alone read
+                  as the driver's own note field further down the card, and this one is an
+                  instruction he is meant to follow at the door. */}
               {current.notes ? (
-                <Text style={[styles.meta, { color: colors.mutedForeground }]}>
-                  {t("run.notes")}: {current.notes}
+                <Text style={[styles.meta, { color: colors.amber }]}>
+                  <Text style={{ fontFamily: Fonts?.mono }}>
+                    {t("run.officeNote").toUpperCase()}
+                  </Text>
+                  {" · "}
+                  {current.notes}
                 </Text>
               ) : null}
 

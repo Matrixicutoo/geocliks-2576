@@ -522,6 +522,7 @@ export const pl: Catalog = {
   "run.reasonHint": "Wybierz powód. Zdjęcie drzwi lub adresu nadal jest wymagane jako dowód.",
   "run.reasonPhoto": "Przejdź do zdjęcia",
   "run.notes": "Notatki",
+  "run.officeNote": "Od dyspozytora",
   "run.ref": "Numer referencyjny",
   "run.noStops": "Ta trasa nie ma jeszcze przystanków.",
   "run.stopBannerBack": "Wróć do trasy",
