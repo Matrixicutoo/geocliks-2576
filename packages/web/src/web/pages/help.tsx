@@ -76,14 +76,16 @@ export default function Help() {
         <p className="mt-4 text-[15px] leading-relaxed text-fog">{t("help.sub")}</p>
 
         <div className="relative mt-8">
-          <Search className="pointer-events-none absolute left-4 top-1/2 size-4 -translate-y-1/2 text-fog" />
+          {/* Logical start, not left: in Arabic the box reads right to left and the
+              magnifier belongs beside the caret, not stranded on the far side. */}
+          <Search className="pointer-events-none absolute start-4 top-1/2 size-4 -translate-y-1/2 text-fog" />
           <input
             type="search"
             value={query}
             onChange={(e) => setQuery(e.target.value)}
             placeholder={t("help.searchPlaceholder")}
             aria-label={t("help.searchPlaceholder")}
-            className="w-full rounded-[14px] border border-line bg-ink-2 py-3.5 pl-11 pr-4 text-[15px] text-chalk placeholder:text-fog focus:border-amber focus:outline-none"
+            className="w-full rounded-[14px] border border-line bg-ink-2 py-3.5 pe-4 ps-11 text-[15px] text-chalk placeholder:text-fog focus:border-amber focus:outline-none"
           />
         </div>
 

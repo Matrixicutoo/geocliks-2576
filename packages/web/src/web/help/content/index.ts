@@ -9,6 +9,7 @@
  */
 import type { LocaleCode } from "../../../api/lib/locales";
 import type { Category, LocaleLabels } from "../types";
+import { arCategories } from "./ar";
 import { deCategories } from "./de";
 import { enCategories } from "./en";
 import { esCategories } from "./es";
@@ -16,6 +17,7 @@ import { frCategories } from "./fr-CA";
 import { itCategories } from "./it";
 import { plCategories } from "./pl";
 import { ptBRCategories } from "./pt-BR";
+import { tlCategories } from "./tl";
 import { viCategories } from "./vi";
 import { zhCategories } from "./zh";
 
@@ -29,11 +31,14 @@ export const CATALOGS: Partial<Record<LocaleCode, Category[]>> = {
   pl: plCategories,
   zh: zhCategories,
   vi: viCategories,
+  tl: tlCategories,
+  ar: arCategories,
 };
 
 export const LABELS: Partial<Record<LocaleCode, LocaleLabels>> = {};
 
 export {
+  arCategories,
   deCategories,
   enCategories,
   esCategories,
@@ -41,6 +46,7 @@ export {
   itCategories,
   plCategories,
   ptBRCategories,
+  tlCategories,
   viCategories,
   zhCategories,
 };
