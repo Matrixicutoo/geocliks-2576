@@ -66,6 +66,29 @@ export default function DeleteAccount() {
         />
       </LegalSection>
 
+      <LegalSection title="Deleting some of your data, without deleting your account">
+        <p>
+          You do not have to close your account to remove data. Inside the app you can delete
+          individual items, and each deletion removes the stored file as well as the record:
+        </p>
+        <LegalList
+          items={[
+            "Photos, videos and scanned documents: open the capture, tap the menu, then Delete. The image or video file is removed from storage with it.",
+            "Projects: open the project, then Delete project. The project and its assignments go.",
+            "Messages: open the conversation, press and hold the message, then Delete.",
+            "Routes and time-clock entries: open the item and delete it from its detail screen.",
+            "Profile photo: Profile, then remove the photo. Your name and email can be edited there too.",
+          ]}
+        />
+        <p>
+          For anything you cannot reach yourself, email{" "}
+          <span className="text-chalk">{SUPPORT_EMAIL}</span> from the address on your account and
+          say which data you want removed. We confirm it is your address and delete it, normally
+          within 30 days. Encrypted backups and security logs rotate out within 90 days. Billing and
+          tax records we are legally required to keep are retained for as long as the law requires.
+        </p>
+      </LegalSection>
+
       <LegalSection title="If you cannot sign in">
         <p>
           Email <span className="text-chalk">{SUPPORT_EMAIL}</span> from the address on the account
