@@ -301,12 +301,27 @@ export default function Capture() {
    *    `projects.list` is `fieldProc`, so a driver cannot read one at all and that sheet was
    *    empty for him. His route is the thing his day is actually divided into.
    *
+   * It is deliberately NOT true for somebody who has both sides — see `bothSides` below. The
+   * two lock-downs above are kindnesses to a driver with one job to file; done to a member who
+   * runs both systems they are a cage, which is what a platform operator hit: his workspace
+   * answered "deliveries" at onboarding, so his own camera would only ever file drops.
+   *
    * `org.data` has to be in hand first. Read before it loads, the role is undefined and
    * `showsProduct` says no to both sides, which would lock a field member's evidence type to
    * DELIVERY for the first second of every launch.
+   *
+   * Read `org.data.product`, never `org.data.org.product`. The column is the raw onboarding
+   * answer; the top-level field is the answer the server has already resolved, and it is where
+   * "platform staff run both systems" is applied (`orgs.current`). This screen was reading the
+   * column, which is exactly why the tab bar showed a staff owner both sides of the app while
+   * his camera stayed a driver's.
    */
+  const bothSides = org.data
+    ? showsProduct(org.data.product, org.data.role, "field") &&
+      showsProduct(org.data.product, org.data.role, "delivery")
+    : false;
   const deliverySide = org.data
-    ? !showsProduct(org.data.org.product, org.data.role, "field")
+    ? !showsProduct(org.data.product, org.data.role, "field")
     : false;
   // Async work started before `deliverySide` settles reads the answer from here, so a
   // remembered tag landing late cannot unlock what the workspace fixed.
@@ -338,12 +353,23 @@ export default function Capture() {
    * stops, not a list with one row in it.
    */
   const waitingRoutes = useMemo(() => waitingRoutesFor(routeRows, myUserId), [routeRows, myUserId]);
-  const waitingRoute = deliverySide ? (waitingRoutes[0] ?? null) : null;
+  /*
+    Deliberately only on a delivery-only camera. On a camera that shows both sides the chip is
+    the only way to reach the jobs list, so it must stay a picker — turning it into a shortcut
+    into a waiting run would take the projects away from the member who has both.
+  */
+  const waitingRoute = deliverySide && !bothSides ? (waitingRoutes[0] ?? null) : null;
 
   const pickableRoutes = ownRoutes.length > 0 ? ownRoutes : routeRows;
   const pickedRoute = routeRows.find((r) => r.id === pickedRouteId) ?? null;
-  // The "nothing picked" pill in the chip's sheet answers for whichever list it is showing.
-  const noneSelected = deliverySide ? pickedRouteId === null : projectId === null;
+  // The "nothing picked" pill in the chip's sheet answers for whichever list it is showing —
+  // and for a camera showing both lists it takes both being empty, since either one filed
+  // against means the next shot has somewhere to go.
+  const noneSelected = bothSides
+    ? projectId === null && pickedRouteId === null
+    : deliverySide
+      ? pickedRouteId === null
+      : projectId === null;
 
   const maxSeconds = policy.data?.maxSeconds ?? 30;
   const videoLocked = policy.data ? !policy.data.enabled : false;
@@ -737,11 +763,13 @@ export default function Capture() {
       // What he was on when he punched, in whichever noun this workspace works in: the run on
       // the delivery side, the job on the field side. The other one goes null rather than being
       // left stale — a field punch has no run and a driver's has no job.
+      // Somebody who works both sides punches against whichever of the two he actually has
+      // picked — the sheet only ever leaves one of them set, so this stays one answer.
       const result = await clockStamp.stamp(
         kind,
         fixRef.current,
-        deliverySide ? (stopRouteId ?? pickedRouteId) : null,
-        deliverySide ? null : projectId,
+        deliverySide || bothSides ? (stopRouteId ?? pickedRouteId) : null,
+        deliverySide && !bothSides ? null : projectId,
       );
       setStatus(
         result.queued
@@ -1021,6 +1049,77 @@ export default function Capture() {
   const tightHeader = screenW < 380;
   const trialLeft = policy.data?.trialDaysLeft ?? 0;
 
+  /*
+    The two lists behind the chip beside the shutter, built once here because a member who runs
+    both systems is shown both of them in the same sheet and neither list wanted to be written
+    out twice.
+
+    A delivery member picks the run his drop belongs to — today's is already selected for him, so
+    this is only ever used to correct it or to shoot against yesterday's unfinished run. A field
+    member picks a project, which is the only thing that side of the app files against.
+  */
+  const routePills = pickableRoutes.map((r) => (
+    <Pressable
+      key={r.id}
+      onPress={() => {
+        routeApplied.current = true;
+        setPickedRouteId(r.id);
+        setProjectId(r.projectId ?? null);
+        setProjectOpen(false);
+        // And open it. Picking a run here used to only file the next photo against it and drop
+        // him back on the camera, which reads as the tap having done nothing — a driver tapping
+        // the name of his run means "take me to it". The pick is kept, so coming back to the
+        // camera still shoots against this run.
+        router.push({ pathname: "/route/[id]", params: { id: r.id } });
+      }}
+      style={[
+        styles.pill,
+        {
+          borderColor: pickedRouteId === r.id ? colors.amber : colors.border,
+          backgroundColor: pickedRouteId === r.id ? "rgba(255,176,33,0.12)" : colors.card,
+        },
+      ]}
+    >
+      <Text
+        style={[
+          styles.pillText,
+          {
+            color: pickedRouteId === r.id ? colors.amber : colors.foreground,
+          },
+        ]}
+      >
+        {r.date === todayLocal() ? `${r.name} — ${tr("common.today")}` : r.name}
+      </Text>
+    </Pressable>
+  ));
+  const projectPills = (projects.data ?? []).map((p) => (
+    <Pressable
+      key={p.id}
+      onPress={() => {
+        setProjectId(p.id);
+        rememberProject(p.id);
+        // Picking a job means this shot is filed against the job, not against a run that was
+        // selected a minute ago — the stamp carries one of the two, so the other has to go.
+        if (bothSides && pickedRouteId) {
+          routeApplied.current = true;
+          setPickedRouteId(null);
+        }
+        setProjectOpen(false);
+      }}
+      style={[
+        styles.pill,
+        {
+          borderColor: projectId === p.id ? colors.amber : colors.border,
+          backgroundColor: projectId === p.id ? "rgba(255,176,33,0.12)" : colors.card,
+        },
+      ]}
+    >
+      <Text style={[styles.pillText, { color: projectId === p.id ? colors.amber : colors.foreground }]}>
+        {p.name}
+      </Text>
+    </Pressable>
+  ));
+
   return (
     <SafeAreaView
       edges={["top", "left", "right"]}
@@ -1283,9 +1382,11 @@ export default function Capture() {
             accessibilityLabel={
               waitingRoute
                 ? tr("capture.routeWaiting")
-                : deliverySide
-                  ? tr("capture.route")
-                  : tr("common.project")
+                : bothSides
+                  ? `${tr("common.project")} / ${tr("capture.route")}`
+                  : deliverySide
+                    ? tr("capture.route")
+                    : tr("common.project")
             }
             style={({ pressed }) => [
               styles.shutterSideBtn,
@@ -1304,7 +1405,9 @@ export default function Capture() {
                     app this is: a folder holds projects, a delivery truck holds the day's run —
                     the same truck the DELIVERY evidence type wears, from Material Community
                     Icons, because Ionicons has no truck at all. */}
-                {deliverySide ? (
+                {/* A camera with both sides wears whichever noun the next shot is actually
+                    filed under: the truck once a run is picked, the folder otherwise. */}
+                {deliverySide || (bothSides && pickedRouteId) ? (
                   <MaterialCommunityIcons
                     // A box truck, not the speed-lined `truck-fast` the DELIVERY evidence type
                     // wears: the two chips sit side by side and have to stay tellable apart.
@@ -1677,7 +1780,12 @@ export default function Capture() {
               <Text
                 style={[styles.sheetTitle, { color: colors.foreground, fontFamily: Fonts?.mono }]}
               >
-                {(deliverySide ? tr("capture.route") : tr("common.project")).toUpperCase()}
+                {(bothSides
+                  ? `${tr("common.project")} / ${tr("capture.route")}`
+                  : deliverySide
+                    ? tr("capture.route")
+                    : tr("common.project")
+                ).toUpperCase()}
               </Text>
               <Pressable
                 onPress={() => setProjectOpen(false)}
@@ -1694,12 +1802,14 @@ export default function Capture() {
               <View style={styles.tagGrid}>
                 <Pressable
                   onPress={() => {
-                    if (deliverySide) {
-                      // Clearing the run is a deliberate pick too: it must not be silently
-                      // re-assigned by the date match a beat later.
+                    // Clearing the run is a deliberate pick too: it must not be silently
+                    // re-assigned by the date match a beat later. A camera showing both lists
+                    // clears both, because "nothing picked" there means neither.
+                    if (deliverySide || bothSides) {
                       routeApplied.current = true;
                       setPickedRouteId(null);
                       setProjectId(null);
+                      if (bothSides) rememberProject(null);
                       setProjectOpen(false);
                       return;
                     }
@@ -1721,79 +1831,52 @@ export default function Capture() {
                       { color: noneSelected ? colors.amber : colors.mutedForeground },
                     ]}
                   >
-                    {deliverySide ? tr("capture.routeNone") : tr("queue.unassigned")}
+                    {deliverySide && !bothSides ? tr("capture.routeNone") : tr("queue.unassigned")}
                   </Text>
                 </Pressable>
                 {/*
-                  Two different lists behind one chip. A delivery member picks the run his drop
-                  belongs to — today's is already selected for him, so this is only ever used to
-                  correct it or to shoot against yesterday's unfinished run. A field member picks
-                  a project, which is the only thing that side of the app files against.
+                  One chip, one sheet, and however many lists this member actually works in. A
+                  driver gets his runs, a field crew member gets the jobs — and somebody who runs
+                  both systems, a platform operator on his own workspace, gets both under their
+                  own headings rather than being handed whichever side his workspace answered at
+                  onboarding.
                 */}
-                {deliverySide
-                  ? pickableRoutes.map((r) => (
-                      <Pressable
-                        key={r.id}
-                        onPress={() => {
-                          routeApplied.current = true;
-                          setPickedRouteId(r.id);
-                          setProjectId(r.projectId ?? null);
-                          setProjectOpen(false);
-                          // And open it. Picking a run here used to only file the next photo
-                          // against it and drop him back on the camera, which reads as the tap
-                          // having done nothing — a driver tapping the name of his run means
-                          // "take me to it". The pick is kept, so coming back to the camera
-                          // still shoots against this run.
-                          router.push({ pathname: "/route/[id]", params: { id: r.id } });
-                        }}
-                        style={[
-                          styles.pill,
-                          {
-                            borderColor: pickedRouteId === r.id ? colors.amber : colors.border,
-                            backgroundColor:
-                              pickedRouteId === r.id ? "rgba(255,176,33,0.12)" : colors.card,
-                          },
-                        ]}
-                      >
+                {bothSides ? (
+                  <>
+                    {/* A heading only appears over a list that has something in it: an empty
+                        workspace side is silence, not a header with nothing under it. */}
+                    {projectPills.length > 0 ? (
+                      <>
                         <Text
                           style={[
-                            styles.pillText,
-                            {
-                              color: pickedRouteId === r.id ? colors.amber : colors.foreground,
-                            },
+                            styles.sheetGroup,
+                            { color: colors.mutedForeground, fontFamily: Fonts?.mono },
                           ]}
                         >
-                          {r.date === todayLocal() ? `${r.name} — ${tr("common.today")}` : r.name}
+                          {tr("nav.projects").toUpperCase()}
                         </Text>
-                      </Pressable>
-                    ))
-                  : projects.data?.map((p) => (
-                      <Pressable
-                        key={p.id}
-                        onPress={() => {
-                          setProjectId(p.id);
-                          rememberProject(p.id);
-                          setProjectOpen(false);
-                        }}
-                        style={[
-                          styles.pill,
-                          {
-                            borderColor: projectId === p.id ? colors.amber : colors.border,
-                            backgroundColor:
-                              projectId === p.id ? "rgba(255,176,33,0.12)" : colors.card,
-                          },
-                        ]}
-                      >
+                        {projectPills}
+                      </>
+                    ) : null}
+                    {routePills.length > 0 ? (
+                      <>
                         <Text
                           style={[
-                            styles.pillText,
-                            { color: projectId === p.id ? colors.amber : colors.foreground },
+                            styles.sheetGroup,
+                            { color: colors.mutedForeground, fontFamily: Fonts?.mono },
                           ]}
                         >
-                          {p.name}
+                          {tr("nav.routes").toUpperCase()}
                         </Text>
-                      </Pressable>
-                    ))}
+                        {routePills}
+                      </>
+                    ) : null}
+                  </>
+                ) : deliverySide ? (
+                  routePills
+                ) : (
+                  projectPills
+                )}
               </View>
             </ScrollView>
           </View>
@@ -2278,6 +2361,9 @@ const styles = StyleSheet.create({
   },
   sheetTitle: { fontSize: 12, letterSpacing: 1 },
   sheetBody: { padding: 14, paddingBottom: 26 },
+  // A heading inside the wrapping pill grid. Full width on purpose: that is what breaks the row
+  // and keeps the runs from wrapping up onto the end of the jobs.
+  sheetGroup: { width: "100%", fontSize: 10, letterSpacing: 1, marginTop: 6 },
   /**
    * The note sheet's own stage. The two list sheets pin themselves to the bottom of the screen
    * and can do so because nobody types into them; this one has to be able to ride up, so it is
