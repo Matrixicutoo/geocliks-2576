@@ -114,6 +114,29 @@ const TRUSTED_ORIGINS = [
 const captchaPlugins: ReturnType<typeof captcha>[] = [];
 
 /**
+ * A store reviewer cannot sign in to GeoCliks the way everyone else does.
+ *
+ * The only credential this app issues is a six-digit code mailed to the address being signed in
+ * with (see the `emailOTP` plugin below) — there is no password to hand Google, and a reviewer has
+ * no access to any mailbox of ours. Play requires working credentials in "Sign in details" or the
+ * submission is rejected, so one single address is pinned to a fixed code instead.
+ *
+ * Both halves come from the environment and the whole thing is inert unless BOTH are set, so a
+ * deployment that does not define them behaves exactly as before — no demo door exists at all.
+ * The address is a real account like any other (same tables, same session, same permissions); the
+ * only difference is that its code does not rotate and is never mailed.
+ *
+ * The code is not a secret worth protecting: it grants access to a seeded demo workspace holding
+ * nothing but sample data. It is rotated by changing the env var and restarting, and the door is
+ * closed for good by removing the vars once the app is live.
+ */
+const REVIEW_DEMO_EMAIL = process.env.REVIEW_DEMO_EMAIL?.trim().toLowerCase();
+const REVIEW_DEMO_OTP = process.env.REVIEW_DEMO_OTP?.trim();
+const reviewDemoReady = Boolean(REVIEW_DEMO_EMAIL && REVIEW_DEMO_OTP);
+const isReviewDemoEmail = (email: string) =>
+  reviewDemoReady && email.trim().toLowerCase() === REVIEW_DEMO_EMAIL;
+
+/**
  * "Continue with X" is a plain OAuth 2.0 provider, not part of Runable's managed broker (which
  * supports google/apple/microsoft only), so it needs this app's own X developer credentials.
  *
@@ -251,7 +274,16 @@ export const auth = betterAuth({
       expiresIn: 600,
       allowedAttempts: 3,
       storeOTP: "hashed",
+      /**
+       * Everyone gets the library's own random code; the single review address (if configured)
+       * gets the fixed one. Returning `undefined` is the documented way to defer to the default
+       * generator, so this is the only line that behaves differently for that one address.
+       */
+      generateOTP: ({ email }) => (isReviewDemoEmail(email) ? REVIEW_DEMO_OTP : undefined),
       sendVerificationOTP: async ({ email, otp, type }) => {
+        // The review address has no mailbox behind it and its code is already known — mailing it
+        // would only bounce off a dead address and hurt the sending domain's reputation.
+        if (isReviewDemoEmail(email)) return;
         await loginCodeEmail({ to: email, otp, type });
       },
     }),
@@ -277,8 +309,11 @@ export const auth = betterAuth({
           } catch (e) {
             console.error("[autumn] Failed to create customer on sign-up:", e);
           }
-          // Best effort: a failed welcome email must never block the sign-up.
-          await welcomeEmail({ to: user.email, name: user.name });
+          // Best effort: a failed welcome email must never block the sign-up. The review address
+          // is skipped for the same reason its code is not mailed — nothing is listening there.
+          if (!isReviewDemoEmail(user.email)) {
+            await welcomeEmail({ to: user.email, name: user.name });
+          }
         },
       },
     },
