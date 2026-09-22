@@ -39,6 +39,7 @@ const AdminPlans = lazy(() => import("./pages/admin-plans"));
 const AdminSettings = lazy(() => import("./pages/admin-settings"));
 const Terms = lazy(() => import("./pages/terms"));
 const Privacy = lazy(() => import("./pages/privacy"));
+const DeleteAccount = lazy(() => import("./pages/delete-account"));
 const Help = lazy(() => import("./pages/help"));
 const HelpCategory = lazy(() => import("./pages/help-category"));
 const HelpArticle = lazy(() => import("./pages/help-article"));
@@ -279,6 +280,9 @@ function App() {
               </Route>
               <Route path="/privacy">
                 <Privacy />
+              </Route>
+              <Route path="/delete-account">
+                <DeleteAccount />
               </Route>
 
               <Route>

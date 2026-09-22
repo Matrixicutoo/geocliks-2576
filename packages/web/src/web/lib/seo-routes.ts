@@ -94,6 +94,12 @@ export const PAGE_SEO = {
     description:
       "How GeoCliks collects, stores and protects your photos, GPS data and account information. Your workspace data stays yours.",
   },
+
+  "/delete-account": {
+    title: "Delete Your GeoCliks Account",
+    description:
+      "How to delete your GeoCliks account and its data from the app or the website, what is removed, and what is kept.",
+  },
 } satisfies Record<string, RouteSeoCopy>;
 
 /**
