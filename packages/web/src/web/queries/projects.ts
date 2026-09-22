@@ -42,6 +42,15 @@ export function useUpdateProject() {
   return useMutation(orpc.projects.update.mutationOptions({ onSuccess: invalidate }));
 }
 
+/**
+ * The job note alone. Separate from `useUpdateProject` because the server gates it at the
+ * dispatcher tier rather than at manager — see `projects.setNote`.
+ */
+export function useSetProjectNote() {
+  const invalidate = useProjectInvalidate();
+  return useMutation(orpc.projects.setNote.mutationOptions({ onSuccess: invalidate }));
+}
+
 export function useRemoveProject() {
   const invalidate = useProjectInvalidate();
   return useMutation(orpc.projects.remove.mutationOptions({ onSuccess: invalidate }));

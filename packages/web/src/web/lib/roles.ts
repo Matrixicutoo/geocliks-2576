@@ -88,6 +88,20 @@ export function canUseField(role: string | undefined | null): boolean {
 }
 
 /**
+ * Writes the note on a job that its crew reads on site.
+ *
+ * The office tier — owner, admin, manager, dispatcher. The same tier that writes a stop's note
+ * for a driver, for the same reason: the gate code and the blocked alley are known by whoever
+ * is running the board that morning, not only by a manager. Everything else about a project
+ * (its name, its address, closing it) stays at `canManageWorkspace`, so this is deliberately
+ * its own question. Mirrors `requireRole(role, "dispatcher")` on `projects.setNote`, which is
+ * what enforces it.
+ */
+export function canWriteJobNote(role: string | undefined | null): boolean {
+  return canManageWorkspace(role) || role === "dispatcher";
+}
+
+/**
  * Watermark stamp templates: owner and admin only.
  *
  * Deliberately NOT `canManageWorkspace` — a manager can run the workspace but may no longer

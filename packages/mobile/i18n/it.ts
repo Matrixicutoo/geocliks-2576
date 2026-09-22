@@ -264,6 +264,7 @@ export const it: Catalog = {
   "project.deleteHint":
     "Le foto restano nel teamspace: viene rimossa solo la cartella del progetto.",
   "projects.openPhotos": "Apri foto",
+  "projects.officeNote": "Dall'ufficio",
   "profile.menu": "Menu",
   "profile.upgrade": "Aggiorna piano",
   "profile.contact": "Contattaci",

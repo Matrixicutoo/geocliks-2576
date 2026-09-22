@@ -265,6 +265,7 @@ export const frCA: Catalog = {
   "project.deleteHint":
     "Les photos restent dans l'espace d'équipe — seul le dossier du projet est supprimé.",
   "projects.openPhotos": "Ouvrir les photos",
+  "projects.officeNote": "Du bureau",
   "profile.menu": "Menu",
   "profile.upgrade": "Mise à niveau",
   "profile.contact": "Nous joindre",

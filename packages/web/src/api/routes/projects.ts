@@ -172,6 +172,34 @@ export const projects = {
       return project;
     }),
 
+  /**
+   * Write the job's note on its own, without the rest of the project.
+   *
+   * `update` already carries `notes`, so this looks redundant until you look at who may call
+   * it: `update` renames a job, re-addresses it and closes it, so it is manager work and is
+   * gated there. The note is not — it is the office telling the crew something about the site
+   * they are standing on ("gate code 4412", "park on Elm, the alley is blocked", "shoot the
+   * riser before it is boxed in"), and the person who knows that is whoever is running the
+   * board that day. The delivery side settled this already: `routes.updateStop` lets a
+   * dispatcher write a stop's note without being a manager, and a dispatcher has field access
+   * too, so the same tier gets the same sentence here rather than having to find a manager to
+   * type it. Splitting it out is what keeps the rename and the close manager-only.
+   *
+   * Null clears it, which is what an emptied box sends.
+   */
+  setNote: fieldProc
+    .input(z.object({ id: z.string(), notes: z.string().trim().max(2000).nullish() }))
+    .handler(async ({ input, context }) => {
+      requireRole(context.role, "dispatcher");
+      const [project] = await db
+        .update(schema.projects)
+        .set({ notes: input.notes ?? null })
+        .where(and(eq(schema.projects.id, input.id), eq(schema.projects.orgId, context.org.id)))
+        .returning();
+      if (!project) throw new ORPCError("NOT_FOUND");
+      return project;
+    }),
+
   /** Soft delete: the project drops out of the active lists but keeps all of its evidence. */
   remove: fieldProc.input(z.object({ id: z.string() })).handler(async ({ input, context }) => {
     requireRole(context.role, "admin");

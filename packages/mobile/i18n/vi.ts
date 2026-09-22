@@ -260,6 +260,7 @@ export const vi: Catalog = {
   "project.deleteConfirm": "Xoá dự án này?",
   "project.deleteHint": "Ảnh vẫn ở trong không gian nhóm — chỉ thư mục dự án bị xoá.",
   "projects.openPhotos": "Mở ảnh",
+  "projects.officeNote": "Từ văn phòng",
   "profile.menu": "Menu",
   "profile.upgrade": "Nâng cấp",
   "profile.contact": "Liên hệ",

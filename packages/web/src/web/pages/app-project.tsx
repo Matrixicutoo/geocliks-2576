@@ -21,12 +21,13 @@ import { EmptyState } from "../components/empty-state";
 import { PhotoDrawer } from "../components/photo-drawer";
 import { EvidenceMap, type MapPin as EvidenceMapPin } from "../components/evidence-map";
 import { AssignCrewDialog } from "../components/assign-crew-dialog";
+import { ProjectNote } from "../components/project-note";
 import { useDestroyProject, useProject, useRemoveProject } from "../queries/projects";
 import { usePhotos } from "../queries/photos";
 import { useTeam, useAssignments, useAssignMember } from "../queries/team";
 import { useOrg } from "../queries/orgs";
 import { type TKey, useT } from "../lib/i18n";
-import { canManageWorkspace } from "../lib/roles";
+import { canManageWorkspace, canWriteJobNote } from "../lib/roles";
 
 const STATUS_LABEL: Record<string, TKey> = {
   active: "projects.status.active",
@@ -52,6 +53,9 @@ export default function ProjectPage() {
   const [assignOpen, setAssignOpen] = useState(false);
   // Field crews work inside projects; only manager and above archive or delete them.
   const canManage = canManageWorkspace(org.data?.role);
+  // Writing the crew's note is the office tier, one rung wider than archiving the job.
+  const canWriteNote = canWriteJobNote(org.data?.role);
+  const [noteError, setNoteError] = useState<string | null>(null);
 
   const assigned = new Set(assignments.data?.map((a) => a.userId) ?? []);
   const assignedRows = (team.data ?? []).filter((row) => assigned.has(row.userId));
@@ -161,11 +165,17 @@ export default function ProjectPage() {
         </div>
       )}
 
-      {project.data?.notes && (
-        <p className="mt-4 border-l-2 border-amber/60 bg-ink-2 px-4 py-3 text-[13.5px] leading-relaxed text-chalk">
-          {project.data.notes}
-        </p>
+      {/* The note the crew reads on site. It used to render here read-only, which meant the only
+          way to fix a gate code was the new-project form it was first typed into. */}
+      {!project.isLoading && (
+        <ProjectNote
+          projectId={id}
+          notes={project.data?.notes}
+          canEdit={canWriteNote}
+          onError={setNoteError}
+        />
       )}
+      {noteError && <p className="mono mt-2 text-[11.5px] text-alert">{noteError}</p>}
 
       <div className="mt-4 grid gap-4 lg:grid-cols-[1fr_280px]">
         <div>

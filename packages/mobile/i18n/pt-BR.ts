@@ -262,6 +262,7 @@ export const ptBR: Catalog = {
   "project.deleteConfirm": "Excluir este projeto?",
   "project.deleteHint": "As fotos ficam no espaço da equipe — só a pasta do projeto é removida.",
   "projects.openPhotos": "Abrir fotos",
+  "projects.officeNote": "Do escritório",
   "profile.menu": "Menu",
   "profile.upgrade": "Fazer upgrade",
   "profile.contact": "Fale conosco",

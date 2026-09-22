@@ -255,6 +255,7 @@ export const zh: Catalog = {
   "project.deleteConfirm": "删除此项目？",
   "project.deleteHint": "照片会保留在团队空间中，仅删除项目文件夹。",
   "projects.openPhotos": "打开照片",
+  "projects.officeNote": "办公室留言",
   "profile.menu": "菜单",
   "profile.upgrade": "升级",
   "profile.contact": "联系我们",

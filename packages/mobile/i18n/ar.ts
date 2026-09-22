@@ -259,6 +259,7 @@ export const ar: Catalog = {
   "project.deleteConfirm": "حذف هذا المشروع؟",
   "project.deleteHint": "تبقى الصور في مساحة الفريق — يُحذف مجلد المشروع فقط.",
   "projects.openPhotos": "افتح الصور",
+  "projects.officeNote": "من المكتب",
   "profile.menu": "القائمة",
   "profile.upgrade": "ترقية",
   "profile.contact": "اتصل بنا",

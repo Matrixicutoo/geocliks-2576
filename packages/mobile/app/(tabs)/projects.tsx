@@ -301,6 +301,27 @@ export default function Projects() {
                         LAST {formatStamp(new Date(item.lastPhotoAt))}
                       </Text>
                     ) : null}
+                    {/* What the office wrote for this job — the gate code, where to park, what to
+                        shoot before it gets covered up. It was being typed on the website and
+                        shown to nobody out here, which is the whole reason the crew still had to
+                        phone in to find a door. Called out as theirs so it is not read as a
+                        description of the work.
+
+                        Capped at a few lines because this is a list: the job's own photo feed
+                        shows the note in full, and a pasted scope-of-work must not push every
+                        other job off the screen. */}
+                    {item.notes ? (
+                      <Text
+                        numberOfLines={5}
+                        style={[styles.note, { color: colors.amber }]}
+                      >
+                        <Text style={{ fontFamily: Fonts?.mono }}>
+                          {t("projects.officeNote").toUpperCase()}
+                        </Text>
+                        {" · "}
+                        {item.notes}
+                      </Text>
+                    ) : null}
                     <View style={styles.openRow}>
                       <Text
                         style={[styles.openText, { color: colors.sky, fontFamily: Fonts?.mono }]}
@@ -444,6 +465,7 @@ const styles = StyleSheet.create({
   metaRow: { flexDirection: "row", gap: 12, marginTop: 2 },
   badge: { fontSize: 9, letterSpacing: 1 },
   last: { fontSize: 9, letterSpacing: 0.8 },
+  note: { fontSize: 11, lineHeight: 16, marginTop: 3 },
   trash: { paddingHorizontal: 4, paddingTop: 2 },
   crewBtn: {
     flexDirection: "row",

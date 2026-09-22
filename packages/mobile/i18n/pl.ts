@@ -263,6 +263,7 @@ export const pl: Catalog = {
   "project.deleteHint":
     "Zdjęcia zostają w przestrzeni zespołu — usuwany jest tylko folder projektu.",
   "projects.openPhotos": "Otwórz zdjęcia",
+  "projects.officeNote": "Z biura",
   "profile.menu": "Menu",
   "profile.upgrade": "Ulepsz plan",
   "profile.contact": "Kontakt",

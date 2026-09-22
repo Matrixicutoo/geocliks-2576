@@ -264,6 +264,7 @@ export const de: Catalog = {
   "project.deleteConfirm": "Dieses Projekt löschen?",
   "project.deleteHint": "Die Fotos bleiben im Teamspace — nur der Projektordner wird entfernt.",
   "projects.openPhotos": "Fotos öffnen",
+  "projects.officeNote": "Vom Büro",
   "profile.menu": "Menü",
   "profile.upgrade": "Upgrade",
   "profile.contact": "Kontakt",

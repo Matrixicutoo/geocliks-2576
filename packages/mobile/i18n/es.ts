@@ -263,6 +263,7 @@ export const es: Catalog = {
   "project.deleteHint":
     "Las fotos permanecen en el espacio de equipo; solo se elimina la carpeta del proyecto.",
   "projects.openPhotos": "Abrir fotos",
+  "projects.officeNote": "De la oficina",
   "profile.menu": "Menú",
   "profile.upgrade": "Mejorar plan",
   "profile.contact": "Contáctanos",

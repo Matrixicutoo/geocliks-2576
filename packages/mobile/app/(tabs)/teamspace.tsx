@@ -245,6 +245,22 @@ export default function Teamspace() {
         <Ionicons name="chevron-down" size={15} color={colors.mutedForeground} />
       </Pressable>
 
+      {/* The office's note on the job being looked at, in full — the projects list caps it at a
+          few lines, and this is the screen where a crew member is actually standing on the site
+          working through it. Same note the website writes on the project page. */}
+      {activeProject?.notes ? (
+        <View
+          style={[styles.noteCard, { borderColor: colors.amber, backgroundColor: colors.card }]}
+        >
+          <Text style={[styles.noteHead, { color: colors.amber, fontFamily: Fonts?.mono }]}>
+            {t("projects.officeNote").toUpperCase()}
+          </Text>
+          <Text style={[styles.noteBody, { color: colors.foreground }]}>
+            {activeProject.notes}
+          </Text>
+        </View>
+      ) : null}
+
       <Modal
         visible={pickerOpen}
         transparent
@@ -506,6 +522,17 @@ const styles = StyleSheet.create({
   },
   optionText: { flex: 1, fontSize: 14 },
   loading: { paddingTop: 40 },
+  noteCard: {
+    borderWidth: 1,
+    borderRadius: 12,
+    marginHorizontal: 16,
+    marginTop: 10,
+    paddingHorizontal: 12,
+    paddingVertical: 10,
+    gap: 5,
+  },
+  noteHead: { fontSize: 9.5, letterSpacing: 1.4 },
+  noteBody: { fontSize: 13, lineHeight: 19 },
   crewCard: {
     borderWidth: 1,
     borderRadius: 12,

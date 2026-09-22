@@ -274,6 +274,7 @@ export const en = {
   "project.deleteConfirm": "Delete this project?",
   "project.deleteHint": "Photos stay in the teamspace — only the project folder is removed.",
   "projects.openPhotos": "Open photos",
+  "projects.officeNote": "From the office",
   "profile.menu": "Menu",
   "profile.upgrade": "Upgrade",
   "profile.contact": "Contact us",

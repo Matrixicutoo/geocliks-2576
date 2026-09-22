@@ -264,6 +264,7 @@ export const tl: Catalog = {
   "project.deleteHint":
     "Mananatili sa teamspace ang mga larawan — ang folder lang ng proyekto ang aalisin.",
   "projects.openPhotos": "Buksan ang mga larawan",
+  "projects.officeNote": "Mula sa opisina",
   "profile.menu": "Menu",
   "profile.upgrade": "Mag-upgrade",
   "profile.contact": "Makipag-ugnayan",
