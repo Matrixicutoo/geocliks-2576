@@ -113,6 +113,7 @@ const RESOURCE_ITEMS: MenuItem[] = [
   { label: "home.nav.vsCompanycam", href: "/alternatives/companycam" },
   { label: "home.footer.terms", href: "/terms" },
   { label: "home.footer.privacy", href: "/privacy" },
+  { label: "home.footer.deleteAccount", href: "/delete-account" },
 ];
 
 const SUPPORT_ITEMS: MenuItem[] = [

@@ -229,6 +229,7 @@ export const vi: Catalog = {
   "home.footer.evidence": "Bằng chứng chống giả mạo",
   "home.footer.exports": "Báo cáo & xuất tệp",
   "home.footer.privacy": "Quyền riêng tư & chính sách",
+  "home.footer.deleteAccount": "Xóa tài khoản của bạn",
   "home.footer.sealed": "© {year} GeoCliks · Bằng chứng hiện trường, đã niêm phong",
   "projects.subtitle": "Công việc, địa điểm và lệnh công tác mà ảnh được nhóm theo",
   "projects.new": "Dự án mới",

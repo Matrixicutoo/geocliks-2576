@@ -218,6 +218,7 @@ export const zh: Catalog = {
   "home.footer.evidence": "防篡改证据",
   "home.footer.exports": "报告与导出",
   "home.footer.privacy": "隐私与政策",
+  "home.footer.deleteAccount": "删除您的账户",
   "home.footer.sealed": "© {year} GeoCliks · 现场证据，已封存",
   "projects.subtitle": "照片按工程、场地和工单进行分组",
   "projects.new": "新建项目",

@@ -232,6 +232,7 @@ export const pl: Catalog = {
   "home.footer.evidence": "Dowody zabezpieczone przed manipulacją",
   "home.footer.exports": "Raporty i eksporty",
   "home.footer.privacy": "Prywatność i regulamin",
+  "home.footer.deleteAccount": "Usuń swoje konto",
   "home.footer.sealed": "© {year} GeoCliks · Dowody z terenu, zapieczętowane",
   "projects.subtitle": "Zlecenia, lokalizacje i zamówienia robocze, w których grupowane są zdjęcia",
   "projects.new": "Nowy projekt",

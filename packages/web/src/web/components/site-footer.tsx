@@ -114,6 +114,9 @@ export function SiteFooter() {
               <Link to="/privacy" className="transition-colors hover:text-chalk">
                 {t("home.footer.privacy")}
               </Link>
+              <Link to="/delete-account" className="transition-colors hover:text-chalk">
+                {t("home.footer.deleteAccount")}
+              </Link>
               <Link to="/get-app" className="transition-colors hover:text-chalk">
                 {t("getapp.ctaPrimary")}
               </Link>

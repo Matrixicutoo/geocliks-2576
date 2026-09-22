@@ -225,6 +225,7 @@ export const ar: Catalog = {
   "home.footer.evidence": "أدلة غير قابلة للتلاعب",
   "home.footer.exports": "التقارير والتصدير",
   "home.footer.privacy": "الخصوصية والسياسات",
+  "home.footer.deleteAccount": "حذف حسابك",
   "home.footer.sealed": "© {year} GeoCliks · أدلة ميدانية مختومة",
   "projects.subtitle": "المشاريع والمواقع وأوامر العمل التي تُجمَّع الصور تحتها",
   "projects.new": "مشروع جديد",

@@ -235,6 +235,7 @@ export const ptBR: Catalog = {
   "home.footer.evidence": "Provas invioláveis",
   "home.footer.exports": "Relatórios e exportações",
   "home.footer.privacy": "Privacidade e políticas",
+  "home.footer.deleteAccount": "Excluir sua conta",
   "home.footer.sealed": "© {year} GeoCliks · Provas de campo, seladas",
   "projects.subtitle": "Obras, locais e ordens de serviço em que as fotos são agrupadas",
   "projects.new": "Novo projeto",

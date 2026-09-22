@@ -234,6 +234,7 @@ export const tl: Catalog = {
   "home.footer.evidence": "Ebidensyang hindi mapapalitan",
   "home.footer.exports": "Mga ulat at export",
   "home.footer.privacy": "Privacy at patakaran",
+  "home.footer.deleteAccount": "Burahin ang account mo",
   "home.footer.sealed": "© {year} GeoCliks · Ebidensya sa field, selyado",
   "projects.subtitle": "Mga trabaho, site at work order kung saan pinagsasama ang mga litrato",
   "projects.new": "Bagong proyekto",

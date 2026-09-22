@@ -234,6 +234,7 @@ export const de: Catalog = {
   "home.footer.evidence": "Manipulationssichere Beweise",
   "home.footer.exports": "Berichte & Exporte",
   "home.footer.privacy": "Datenschutz & Richtlinien",
+  "home.footer.deleteAccount": "Konto löschen",
   "home.footer.sealed": "© {year} GeoCliks · Feldbeweise, versiegelt",
   "projects.subtitle":
     "Aufträge, Standorte und Arbeitsaufträge, unter denen Fotos gruppiert werden",

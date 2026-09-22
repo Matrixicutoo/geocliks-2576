@@ -234,6 +234,7 @@ export const frCA: Catalog = {
   "home.footer.evidence": "Preuves inviolables",
   "home.footer.exports": "Rapports et exportations",
   "home.footer.privacy": "Confidentialité et politiques",
+  "home.footer.deleteAccount": "Supprimer votre compte",
   "home.footer.sealed": "© {year} GeoCliks · Preuves de terrain, scellées",
   "projects.subtitle":
     "Chantiers, sites et bons de travail sous lesquels les photos sont regroupées",

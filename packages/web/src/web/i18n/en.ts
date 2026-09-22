@@ -244,6 +244,7 @@ export const en = {
   "home.footer.evidence": "Tamper-proof evidence",
   "home.footer.exports": "Reports & exports",
   "home.footer.privacy": "Privacy & policy",
+  "home.footer.deleteAccount": "Delete your account",
   "home.footer.sealed": "© {year} GeoCliks · Field evidence, sealed",
   "projects.subtitle": "Jobs, sites and work orders photos are grouped under",
   "projects.new": "New project",

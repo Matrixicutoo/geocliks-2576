@@ -234,6 +234,7 @@ export const it: Catalog = {
   "home.footer.evidence": "Prove a prova di manomissione",
   "home.footer.exports": "Report ed esportazioni",
   "home.footer.privacy": "Privacy e policy",
+  "home.footer.deleteAccount": "Elimina il tuo account",
   "home.footer.sealed": "© {year} GeoCliks · Prove dal campo, sigillate",
   "projects.subtitle": "Cantieri, siti e ordini di lavoro sotto cui le foto vengono raggruppate",
   "projects.new": "Nuovo progetto",
