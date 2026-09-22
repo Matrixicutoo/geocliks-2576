@@ -41,6 +41,27 @@ const read = (): LocaleCode | null => {
 };
 
 /**
+ * A `?lang=` hint on the URL, honoured once on arrival.
+ *
+ * The mobile app's Help row opens the Help Center in the system browser, which has storage of its
+ * own and so cannot know the language the member reads the app in. The app appends its locale and
+ * we treat it exactly as picking the language here would: a device override, stored and then
+ * stripped from the address bar.
+ */
+const fromQuery = (): LocaleCode | null => {
+  try {
+    const value = new URLSearchParams(globalThis.location?.search ?? "").get("lang");
+    if (!value) return null;
+    const code = asLocale(value);
+    // `asLocale` answers English for anything it does not recognise, which would let a typo
+    // silently undo a stored choice. Only an explicit English tag may resolve to English.
+    return code === "en" && !/^en(-|$)/i.test(value) ? null : code;
+  } catch {
+    return null;
+  }
+};
+
+/**
  * The locale on screen right now, readable from outside React.
  *
  * The chat transport builds its request headers in a module-level callback, nowhere near a
@@ -48,7 +69,7 @@ const read = (): LocaleCode | null => {
  * default has no stored override. So the provider publishes the resolved locale here, and the
  * assistant can be told which Help Center language to read.
  */
-let active: LocaleCode = read() ?? "en";
+let active: LocaleCode = fromQuery() ?? read() ?? "en";
 
 export const activeLocale = (): LocaleCode => active;
 
@@ -78,11 +99,26 @@ type Ctx = {
 const I18nContext = createContext<Ctx | null>(null);
 
 export function I18nProvider({ children }: { children: React.ReactNode }) {
-  const [override, setOverride] = useState<LocaleCode | null>(() => read());
+  const [override, setOverride] = useState<LocaleCode | null>(() => fromQuery() ?? read());
   const [workspace, setWorkspace] = useState<LocaleCode>("en");
 
   const locale = override ?? workspace;
   const rtl = isRtl(locale);
+
+  useEffect(() => {
+    // A locale handed over from the app is remembered, so a later visit without the parameter —
+    // or a link the member shares from the browser — stays in their language.
+    const handed = fromQuery();
+    if (!handed) return;
+    try {
+      globalThis.localStorage?.setItem(KEY, handed);
+    } catch {
+      // Private mode: the choice still applies for this session.
+    }
+    const url = new URL(globalThis.location.href);
+    url.searchParams.delete("lang");
+    globalThis.history?.replaceState(null, "", `${url.pathname}${url.search}${url.hash}`);
+  }, []);
 
   useEffect(() => {
     active = locale;
