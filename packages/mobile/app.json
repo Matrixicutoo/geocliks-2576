@@ -25,6 +25,7 @@
     },
     "ios": {
       "bundleIdentifier": "com.geocliks.app",
+      "appleTeamId": "NUVT3F3322",
       "supportsTablet": true,
       "config": {
         "googleMapsApiKey": "AIzaSyDvyKD0U3EPBBAfep9y1ZFg4YLAJvOq0rc"
