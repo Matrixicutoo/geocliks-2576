@@ -42,6 +42,18 @@ function XIcon({ className }: { className?: string }) {
 }
 
 /**
+ * lucide-react ships no Apple mark either, so this one is drawn inline too. Single colour on
+ * purpose: Apple's own guidelines want the logo in the button's foreground colour, never tinted.
+ */
+function AppleIcon({ className }: { className?: string }) {
+  return (
+    <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" className={className}>
+      <path d="M16.37 12.78c.02 2.62 2.3 3.49 2.33 3.5-.02.06-.37 1.25-1.2 2.48-.73 1.06-1.48 2.11-2.67 2.13-1.16.02-1.54-.69-2.87-.69-1.33 0-1.75.67-2.85.71-1.14.04-2.01-1.14-2.75-2.2-1.6-2.32-2.83-6.56-1.18-9.42.82-1.42 2.28-2.32 3.87-2.35 1.12-.02 2.18.75 2.87.75.68 0 1.97-.93 3.32-.79.57.02 2.16.2 3.19 1.55-.08.05-1.9 1.11-1.88 3.32M14.3 3.9c.61-.74 1.02-1.77.91-2.79-.88.04-1.94.59-2.57 1.32-.56.65-1.05 1.7-.92 2.7.98.08 1.97-.5 2.58-1.23" />
+    </svg>
+  );
+}
+
+/**
  * The single authentication screen.
  *
  * There is no sign-up any more, and therefore no second page: a 6-digit code spent on
@@ -105,7 +117,7 @@ export function AuthForm() {
     invitedEmail ? "email" : "choose",
   );
   const [showMore, setShowMore] = useState(false);
-  const [busy, setBusy] = useState<"google" | "x" | "send" | "verify" | null>(null);
+  const [busy, setBusy] = useState<"google" | "apple" | "x" | "send" | "verify" | null>(null);
   const [cooldown, setCooldown] = useState(0);
   // Hides the X button unless the server actually holds X credentials.
   const providers = useAuthProviders();
@@ -154,6 +166,27 @@ export function AuthForm() {
     setBusy("google");
     try {
       await authClient.managedAuth.signIn({ provider: "google" });
+      navigate(next);
+    } catch (err) {
+      const message = err instanceof Error ? err.message : String(err);
+      if (!message.includes("POPUP_CLOSED")) setError(message);
+    } finally {
+      setBusy(null);
+    }
+  }
+
+  /**
+   * Apple sign-in, same managed broker as Google above.
+   *
+   * It exists for App Store Review Guideline 4.8 - the iOS build offers Google, so it has to offer
+   * an equivalent privacy-preserving login - and the website carries the same button because a
+   * reviewer following our own sign-in link should not find the pair inconsistent.
+   */
+  async function withApple() {
+    setError(null);
+    setBusy("apple");
+    try {
+      await authClient.managedAuth.signIn({ provider: "apple" });
       navigate(next);
     } catch (err) {
       const message = err instanceof Error ? err.message : String(err);
@@ -369,11 +402,30 @@ export function AuthForm() {
             </form>
           ) : (
             <>
+              {/*
+                Apple leads the stack and shares Google's styling: Guideline 4.8 asks for the
+                privacy-preserving option to be no less prominent than the third-party one, and
+                "first, identical treatment" is the reading no reviewer argues with.
+              */}
+              <button
+                type="button"
+                onClick={withApple}
+                disabled={busy !== null}
+                className={`mt-7 ${buttonClass}`}
+              >
+                {busy === "apple" ? (
+                  <Loader2 className="size-4 animate-spin" />
+                ) : (
+                  <AppleIcon className="size-4" />
+                )}
+                {t("signin.apple")}
+              </button>
+
               <button
                 type="button"
                 onClick={withGoogle}
                 disabled={busy !== null}
-                className={`mt-7 ${buttonClass}`}
+                className={`mt-3 ${buttonClass}`}
               >
                 {busy === "google" ? (
                   <Loader2 className="size-4 animate-spin" />

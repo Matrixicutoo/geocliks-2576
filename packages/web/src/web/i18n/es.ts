@@ -52,6 +52,7 @@ export const es: Catalog = {
   "seo.help.title": "Centro de ayuda — GeoCliks",
   "seo.getApp.title": "Obtén la app GeoCliks — La prueba de que tu trabajo se hizo",
   "signin.subtitle": "Documentación fotográfica inalterable para equipos de campo.",
+  "signin.apple": "Continuar con Apple",
   "signin.google": "Continuar con Google",
   "signin.x": "Continuar con X",
 

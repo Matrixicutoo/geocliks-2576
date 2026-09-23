@@ -46,6 +46,7 @@ export const en = {
   "language.note": "Evidence stamps stay in the original capture format in every language.",
 
   // Sign in
+  "signin.apple": "Continue with Apple",
   "signin.google": "Continue with Google",
   "signin.x": "Continue with X",
 

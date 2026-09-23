@@ -33,6 +33,7 @@ export const vi: Catalog = {
   "language.followWorkspace": "Theo không gian làm việc",
   "language.note": "Dấu xác thực trên ảnh giữ nguyên định dạng gốc trong mọi ngôn ngữ.",
 
+  "signin.apple": "Tiếp tục với Apple",
   "signin.google": "Tiếp tục với Google",
   "signin.x": "Tiếp tục với X",
 

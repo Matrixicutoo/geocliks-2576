@@ -52,6 +52,7 @@ export const frCA: Catalog = {
   "seo.help.title": "Centre d'aide — GeoCliks",
   "seo.getApp.title": "Obtenez l'application GeoCliks — La preuve que votre travail a été fait",
   "signin.subtitle": "Documentation photo infalsifiable pour les équipes de terrain.",
+  "signin.apple": "Continuer avec Apple",
   "signin.google": "Continuer avec Google",
   "signin.x": "Continuer avec X",
 

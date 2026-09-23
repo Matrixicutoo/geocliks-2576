@@ -34,6 +34,7 @@ export const es: Catalog = {
   "language.note":
     "Los sellos de evidencia conservan el formato original de captura en todos los idiomas.",
 
+  "signin.apple": "Continuar con Apple",
   "signin.google": "Continuar con Google",
   "signin.x": "Continuar con X",
 

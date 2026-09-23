@@ -51,6 +51,7 @@ export const zh: Catalog = {
   "seo.help.title": "帮助中心 — GeoCliks",
   "seo.getApp.title": "获取 GeoCliks 应用 — 证明你的工作已完成",
   "signin.subtitle": "为现场团队提供防篡改的照片记录。",
+  "signin.apple": "使用 Apple 继续",
   "signin.google": "使用 Google 继续",
   "signin.x": "使用 X 继续",
 

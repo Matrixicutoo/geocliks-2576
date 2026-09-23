@@ -60,6 +60,7 @@ export const en = {
   "seo.help.title": "GeoCliks Help — Guides for Solo Users, Teams & Drivers",
   "seo.getApp.title": "Download GeoCliks — GPS Timestamp Camera App",
   "signin.subtitle": "Tamper-proof photo documentation for field teams.",
+  "signin.apple": "Continue with Apple",
   "signin.google": "Continue with Google",
   "signin.x": "Continue with X",
 

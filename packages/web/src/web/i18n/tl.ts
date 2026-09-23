@@ -52,6 +52,7 @@ export const tl: Catalog = {
   "seo.help.title": "Help Center — GeoCliks",
   "seo.getApp.title": "Kunin ang GeoCliks app — Patunay na natapos ang trabaho",
   "signin.subtitle": "Hindi mapepekeng dokumentasyon ng larawan para sa mga field team.",
+  "signin.apple": "Magpatuloy sa Apple",
   "signin.google": "Magpatuloy sa Google",
   "signin.x": "Magpatuloy sa X",
 

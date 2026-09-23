@@ -51,6 +51,7 @@ export const vi: Catalog = {
   "seo.help.title": "Trung tâm trợ giúp — GeoCliks",
   "seo.getApp.title": "Tải ứng dụng GeoCliks — Bằng chứng công việc đã hoàn thành",
   "signin.subtitle": "Hồ sơ ảnh chống giả mạo cho đội ngũ hiện trường.",
+  "signin.apple": "Tiếp tục với Apple",
   "signin.google": "Tiếp tục với Google",
   "signin.x": "Tiếp tục với X",
 

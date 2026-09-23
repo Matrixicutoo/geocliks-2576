@@ -34,6 +34,7 @@ export const frCA: Catalog = {
   "language.note":
     "Les sceaux de preuve conservent le format de capture d'origine dans toutes les langues.",
 
+  "signin.apple": "Continuer avec Apple",
   "signin.google": "Continuer avec Google",
   "signin.x": "Continuer avec X",
 

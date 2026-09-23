@@ -33,6 +33,7 @@ export const de: Catalog = {
   "language.followWorkspace": "Workspace folgen",
   "language.note": "Nachweis-Stempel behalten in jeder Sprache das ursprüngliche Aufnahmeformat.",
 
+  "signin.apple": "Mit Apple fortfahren",
   "signin.google": "Mit Google fortfahren",
   "signin.x": "Mit X fortfahren",
 

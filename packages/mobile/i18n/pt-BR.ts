@@ -34,6 +34,7 @@ export const ptBR: Catalog = {
   "language.note":
     "Os selos de evidência mantêm o formato original de captura em todos os idiomas.",
 
+  "signin.apple": "Continuar com a Apple",
   "signin.google": "Continuar com o Google",
   "signin.x": "Continuar com X",
 

@@ -33,6 +33,7 @@ export const ar: Catalog = {
   "language.followWorkspace": "اتباع مساحة العمل",
   "language.note": "تبقى أختام الإثبات بتنسيق التصوير الأصلي في جميع اللغات.",
 
+  "signin.apple": "المتابعة باستخدام Apple",
   "signin.google": "المتابعة باستخدام Google",
   "signin.x": "المتابعة باستخدام X",
 

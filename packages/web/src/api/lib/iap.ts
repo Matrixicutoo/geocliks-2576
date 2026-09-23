@@ -33,7 +33,7 @@ export const APPLE_SKU_BY_PLAN: Record<string, string> = Object.fromEntries(
 );
 
 export function appleBundleId(): string {
-  return process.env.APPLE_BUNDLE_ID ?? "com.timemark_a7k2.runable";
+  return process.env.APPLE_BUNDLE_ID ?? "com.geocliks.app";
 }
 
 /** Subset of Apple's JWSTransactionDecodedPayload that we act on. */

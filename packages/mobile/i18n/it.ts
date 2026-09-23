@@ -34,6 +34,7 @@ export const it: Catalog = {
   "language.note":
     "I sigilli di prova mantengono il formato originale di acquisizione in ogni lingua.",
 
+  "signin.apple": "Continua con Apple",
   "signin.google": "Continua con Google",
   "signin.x": "Continua con X",
 

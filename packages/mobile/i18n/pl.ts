@@ -33,6 +33,7 @@ export const pl: Catalog = {
   "language.followWorkspace": "Zgodnie z przestrzenią",
   "language.note": "Pieczęcie dowodowe zachowują oryginalny format zapisu w każdym języku.",
 
+  "signin.apple": "Kontynuuj z Apple",
   "signin.google": "Kontynuuj z Google",
   "signin.x": "Kontynuuj z X",
 

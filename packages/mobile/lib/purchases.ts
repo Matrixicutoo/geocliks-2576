@@ -61,11 +61,20 @@ export function usesAppStoreBilling(): boolean {
  * the phone the moment it signs in — nothing about the app's capabilities depends on this. This is
  * the same posture Slack, Notion and Salesforce take on Android.
  *
- * iOS keeps StoreKit (guideline 3.1.1 makes the same demand, and Apple offers no equivalent way
- * out), and web/desktop keep Stripe.
+ * iOS is also false for now, but for a different and temporary reason: the StoreKit products
+ * (`com.geocliks.plus.monthly`, `com.geocliks.business.monthly`) do not exist in App Store Connect
+ * yet. Listing a subscription whose product id does not resolve is an App Store Review Guideline
+ * 2.1 rejection, so v1 ships the same read-only plan screen Android gets. Selling paid plans on
+ * iOS is a v1.1 change: create the two subscriptions, sign the Paid Apps Agreement, then drop
+ * `"ios"` from the list below — `usesAppStoreBilling()` is deliberately left returning true so
+ * the StoreKit path stays wired and that revert is one line.
+ *
+ * Web/desktop keep Stripe.
  */
+const NO_SALE_PLATFORMS = ["android", "ios"];
+
 export function sellsSubscriptions(): boolean {
-  return Platform.OS !== "android";
+  return !NO_SALE_PLATFORMS.includes(Platform.OS);
 }
 
 function loadIap(): IapModule | null {

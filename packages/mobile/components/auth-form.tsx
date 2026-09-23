@@ -81,7 +81,7 @@ export function AuthForm() {
   const codeInput = useRef<RNTextInput>(null);
   /** `email` collects the address, `code` spends the 6 digits mailed to it. */
   const [step, setStep] = useState<"email" | "code">("email");
-  const [busy, setBusy] = useState<null | "google" | "x" | "send" | "verify">(null);
+  const [busy, setBusy] = useState<null | "google" | "apple" | "x" | "send" | "verify">(null);
   const [error, setError] = useState<string | null>(null);
   const [cooldown, setCooldown] = useState(0);
 
@@ -104,6 +104,28 @@ export function AuthForm() {
     setBusy("google");
     try {
       await authClient.managedAuth.signIn({ provider: "google" });
+    } catch (err) {
+      const message = err instanceof Error ? err.message : String(err);
+      if (!message.includes("AUTH_SESSION_DISMISSED")) setError(message);
+    } finally {
+      setBusy(null);
+    }
+  };
+
+  /**
+   * Apple sign-in. Goes through the managed broker exactly like Google, so there is no Apple OAuth
+   * app, service id or signing key of our own to keep alive.
+   *
+   * App Store Review Guideline 4.8 is the reason this exists: an app offering a third-party login
+   * must offer an equivalent privacy-preserving one. The email-code path arguably satisfies it
+   * already, but reviewers flag the pattern on sight and each rejection costs a day, so Apple gets
+   * a first-class button rather than an argument.
+   */
+  const apple = async () => {
+    setError(null);
+    setBusy("apple");
+    try {
+      await authClient.managedAuth.signIn({ provider: "apple" });
     } catch (err) {
       const message = err instanceof Error ? err.message : String(err);
       if (!message.includes("AUTH_SESSION_DISMISSED")) setError(message);
@@ -328,6 +350,34 @@ export function AuthForm() {
             </View>
           ) : (
             <>
+              {/*
+                Apple sits above Google and shares the solid-fill treatment on purpose:
+                Guideline 4.8 wants the privacy-preserving option no less prominent than the
+                third-party one, and "above, identical styling" is the reading no reviewer argues
+                with.
+              */}
+              <Pressable
+                onPress={apple}
+                disabled={busy !== null}
+                accessibilityRole="button"
+                accessibilityLabel={t("signin.apple")}
+                style={[
+                  styles.google,
+                  { backgroundColor: colors.foreground, opacity: busy ? 0.7 : 1 },
+                ]}
+              >
+                {busy === "apple" ? (
+                  <ActivityIndicator color={colors.background} />
+                ) : (
+                  <>
+                    <Ionicons name="logo-apple" size={18} color={colors.background} />
+                    <Text style={[styles.googleText, { color: colors.background }]}>
+                      {t("signin.apple")}
+                    </Text>
+                  </>
+                )}
+              </Pressable>
+
               <Pressable
                 onPress={google}
                 disabled={busy !== null}
@@ -335,6 +385,7 @@ export function AuthForm() {
                 accessibilityLabel={t("signin.google")}
                 style={[
                   styles.google,
+                  styles.stacked,
                   { backgroundColor: colors.foreground, opacity: busy ? 0.7 : 1 },
                 ]}
               >
@@ -457,6 +508,8 @@ const styles = StyleSheet.create({
     borderRadius: 8,
   },
   googleText: { fontSize: 15, fontWeight: "600" },
+  /** Gap between two solid-fill buttons in the same stack (Apple above Google). */
+  stacked: { marginTop: 10 },
   /**
    * X is the secondary provider, so it reads as an outline button against Google's solid fill
    * rather than competing with it. Same height and radius so the pair still looks like one stack.

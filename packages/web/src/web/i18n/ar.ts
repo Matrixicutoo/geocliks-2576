@@ -51,6 +51,7 @@ export const ar: Catalog = {
   "seo.help.title": "مركز المساعدة — جيوكليكس",
   "seo.getApp.title": "احصل على تطبيق GeoCliks — إثبات أن عملك قد تم",
   "signin.subtitle": "توثيق صور غير قابل للتلاعب لفرق العمل الميدانية.",
+  "signin.apple": "المتابعة باستخدام Apple",
   "signin.google": "المتابعة باستخدام Google",
   "signin.x": "المتابعة باستخدام X",
 
