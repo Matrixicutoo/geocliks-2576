@@ -34,6 +34,7 @@ export const de: Catalog = {
   "language.note": "Nachweis-Stempel behalten in jeder Sprache das ursprüngliche Aufnahmeformat.",
 
   "signin.apple": "Mit Apple fortfahren",
+  "signin.appleNoToken": "Apple hat kein Anmeldetoken zurückgegeben. Versuchen Sie es erneut.",
   "signin.google": "Mit Google fortfahren",
   "signin.x": "Mit X fortfahren",
 

@@ -34,6 +34,7 @@ export const pl: Catalog = {
   "language.note": "Pieczęcie dowodowe zachowują oryginalny format zapisu w każdym języku.",
 
   "signin.apple": "Kontynuuj z Apple",
+  "signin.appleNoToken": "Apple nie zwróciło tokenu logowania. Spróbuj ponownie.",
   "signin.google": "Kontynuuj z Google",
   "signin.x": "Kontynuuj z X",
 

@@ -35,6 +35,7 @@ export const it: Catalog = {
     "I sigilli di prova mantengono il formato originale di acquisizione in ogni lingua.",
 
   "signin.apple": "Continua con Apple",
+  "signin.appleNoToken": "Apple non ha restituito un token di accesso. Riprova.",
   "signin.google": "Continua con Google",
   "signin.x": "Continua con X",
 

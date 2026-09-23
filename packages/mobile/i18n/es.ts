@@ -35,6 +35,7 @@ export const es: Catalog = {
     "Los sellos de evidencia conservan el formato original de captura en todos los idiomas.",
 
   "signin.apple": "Continuar con Apple",
+  "signin.appleNoToken": "Apple no devolvió un token de inicio de sesión. Inténtalo de nuevo.",
   "signin.google": "Continuar con Google",
   "signin.x": "Continuar con X",
 

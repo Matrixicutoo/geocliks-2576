@@ -34,6 +34,7 @@ export const ar: Catalog = {
   "language.note": "تبقى أختام الإثبات بتنسيق التصوير الأصلي في جميع اللغات.",
 
   "signin.apple": "المتابعة باستخدام Apple",
+  "signin.appleNoToken": "لم تُرجع Apple رمز تسجيل الدخول. حاول مرة أخرى.",
   "signin.google": "المتابعة باستخدام Google",
   "signin.x": "المتابعة باستخدام X",
 

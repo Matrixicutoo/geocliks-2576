@@ -34,6 +34,7 @@ export const zh: Catalog = {
   "language.note": "无论使用哪种语言，证据水印都保持原始拍摄格式。",
 
   "signin.apple": "使用 Apple 继续",
+  "signin.appleNoToken": "Apple 未返回登录令牌，请重试。",
   "signin.google": "使用 Google 继续",
   "signin.x": "使用 X 继续",
 

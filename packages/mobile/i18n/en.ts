@@ -47,6 +47,7 @@ export const en = {
 
   // Sign in
   "signin.apple": "Continue with Apple",
+  "signin.appleNoToken": "Apple did not return a sign-in token. Try again.",
   "signin.google": "Continue with Google",
   "signin.x": "Continue with X",
 

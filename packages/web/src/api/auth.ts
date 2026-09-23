@@ -155,6 +155,12 @@ const xLoginConfigured = Boolean(
   process.env.TWITTER_CLIENT_ID && process.env.TWITTER_CLIENT_SECRET,
 );
 
+/**
+ * The iOS bundle id, which is also the audience of every identity token the native Sign in with
+ * Apple sheet issues. Apple puts the *app* id in `aud` for a native sign-in, not a Service ID.
+ */
+const APPLE_BUNDLE_ID = "com.geocliks.app";
+
 export const auth = betterAuth({
   basePath: "/api/auth",
   baseURL: process.env.WEBSITE_URL,
@@ -171,14 +177,42 @@ export const auth = betterAuth({
    * a code to the same address and land in the same account, because the address is the key.
    */
   emailAndPassword: { enabled: false },
-  socialProviders: xLoginConfigured
-    ? {
-        twitter: {
-          clientId: process.env.TWITTER_CLIENT_ID as string,
-          clientSecret: process.env.TWITTER_CLIENT_SECRET as string,
-        },
-      }
-    : undefined,
+  /**
+   * `apple` here serves ONE caller: the native Sign in with Apple sheet in the iOS app, which
+   * posts `/sign-in/social` with an `idToken` instead of walking an OAuth redirect.
+   *
+   * The iOS app used to reach Apple through Runable's managed broker, the same way Google still
+   * does. That is broken on device: the broker hands Apple its own Service ID
+   * (`com.runable.runable.si`) with `response_mode=form_post` back to
+   * `api.runable.com/api/auth/callback/apple`, and the callback errors instead of redirecting
+   * home — Apple authenticates the person and the app never receives a session. Guideline 4.8
+   * makes that button mandatory on iOS, so the app now calls Apple itself and sends the signed
+   * identity token here.
+   *
+   * There is deliberately NO Service ID, signing key or client secret: better-auth only needs
+   * those to redeem an authorization code, and this path never has one. It verifies the token's
+   * signature against Apple's published keys and checks `aud` against `clientId`, which for a
+   * native sign-in is the bundle id. `clientSecret` is empty because nothing can reach the code
+   * exchange — the browser flow for Apple is not offered anywhere.
+   *
+   * `appBundleIdentifier` is set as well as `clientId`: better-auth accepts either as the expected
+   * audience, and stating both makes the intent unambiguous to the next reader.
+   */
+  socialProviders: {
+    apple: {
+      clientId: APPLE_BUNDLE_ID,
+      clientSecret: "",
+      appBundleIdentifier: APPLE_BUNDLE_ID,
+    },
+    ...(xLoginConfigured
+      ? {
+          twitter: {
+            clientId: process.env.TWITTER_CLIENT_ID as string,
+            clientSecret: process.env.TWITTER_CLIENT_SECRET as string,
+          },
+        }
+      : {}),
+  },
   /**
    * Without this, "Continue with X" fails with `account_not_linked` for anyone who already has a
    * GeoCliks account on the same address - which is most people, since the website is where
@@ -191,13 +225,21 @@ export const auth = betterAuth({
    * addresses). So an X login carrying `luc@example.com` is X asserting that person controls that
    * mailbox, which is the same assurance the password reset flow relies on.
    *
-   * Only `twitter` is listed. Google arrives through the managed broker and is unaffected, and no
-   * provider whose id could be chosen by a user is trusted - that is what launders trust.
+   * `apple` is trusted for a stronger reason than X. The iOS app sends an identity token that
+   * Apple signed, verified here against Apple's own published keys with our bundle id as the
+   * audience — an attacker cannot mint one. Apple releases an address only after the account
+   * holder has verified it, and a "Hide My Email" sign-in yields a `@privaterelay.appleid.com`
+   * address that only Apple can issue, so it lands in its own account rather than joining
+   * somebody else's. Without this, anyone who registered on the website with the address behind
+   * their Apple Account gets `account_not_linked` when they tap the button — which is most people.
+   *
+   * Google arrives through the managed broker and is unaffected, and no provider whose id could be
+   * chosen by a user is trusted - that is what launders trust.
    */
   account: {
     accountLinking: {
       enabled: true,
-      trustedProviders: ["twitter"],
+      trustedProviders: ["twitter", "apple"],
     },
   },
   secret: process.env.BETTER_AUTH_SECRET,

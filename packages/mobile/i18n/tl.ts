@@ -35,6 +35,7 @@ export const tl: Catalog = {
     "Nananatili sa orihinal na format ng pagkuha ang mga selyo ng ebidensya sa lahat ng wika.",
 
   "signin.apple": "Magpatuloy sa Apple",
+  "signin.appleNoToken": "Walang ibinalik na sign-in token ang Apple. Subukan muli.",
   "signin.google": "Magpatuloy sa Google",
   "signin.x": "Magpatuloy sa X",
 

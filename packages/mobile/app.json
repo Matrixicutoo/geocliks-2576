@@ -27,6 +27,7 @@
       "bundleIdentifier": "com.geocliks.app",
       "appleTeamId": "NUVT3F3322",
       "supportsTablet": true,
+      "usesAppleSignIn": true,
       "infoPlist": {
         "ITSAppUsesNonExemptEncryption": false
       },
@@ -91,6 +92,7 @@
         }
       ],
       "expo-iap",
+      "expo-apple-authentication",
       "react-native-document-scanner-plugin"
     ]
   }

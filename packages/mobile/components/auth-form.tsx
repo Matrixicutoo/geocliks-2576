@@ -13,6 +13,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { Ionicons } from "@expo/vector-icons";
 import Svg, { Path } from "react-native-svg";
 import { useLocalSearchParams } from "expo-router";
+import * as AppleAuthentication from "expo-apple-authentication";
 import { Text, TextInput } from "@/components/app-text";
 import { useColors } from "@/hooks/use-colors";
 import { Fonts } from "@/constants/theme";
@@ -84,6 +85,23 @@ export function AuthForm() {
   const [busy, setBusy] = useState<null | "google" | "apple" | "x" | "send" | "verify">(null);
   const [error, setError] = useState<string | null>(null);
   const [cooldown, setCooldown] = useState(0);
+  /**
+   * Whether to offer Apple at all. The button is now the native sheet (see `apple` below), which
+   * exists only on iOS 13+ — so Android and the browser preview, where `signInAsync` would throw
+   * on sight, are offered Google and the email code instead. Guideline 4.8 is an App Store rule
+   * about iOS, and iOS is exactly where the button still appears.
+   */
+  const [appleReady, setAppleReady] = useState(false);
+  useEffect(() => {
+    if (Platform.OS !== "ios") return;
+    let live = true;
+    AppleAuthentication.isAvailableAsync()
+      .then((ok) => live && setAppleReady(ok))
+      .catch(() => live && setAppleReady(false));
+    return () => {
+      live = false;
+    };
+  }, []);
 
   // Keyboard up as soon as the code step arrives, so the 6 digits can be typed straight in.
   useEffect(() => {
@@ -113,22 +131,57 @@ export function AuthForm() {
   };
 
   /**
-   * Apple sign-in. Goes through the managed broker exactly like Google, so there is no Apple OAuth
-   * app, service id or signing key of our own to keep alive.
+   * Apple sign-in, run NATIVELY rather than through the managed broker.
    *
-   * App Store Review Guideline 4.8 is the reason this exists: an app offering a third-party login
-   * must offer an equivalent privacy-preserving one. The email-code path arguably satisfies it
-   * already, but reviewers flag the pattern on sight and each rejection costs a day, so Apple gets
-   * a first-class button rather than an argument.
+   * App Store Review Guideline 4.8 is the reason the button exists: an app offering a third-party
+   * login must offer an equivalent privacy-preserving one. The email-code path arguably satisfies
+   * it already, but reviewers flag the pattern on sight and each rejection costs a day.
+   *
+   * It used to call `managedAuth.signIn({ provider: "apple" })` like Google does. That path is
+   * broken end-to-end on device: the broker starts the flow against Runable's own Service ID
+   * (`com.runable.runable.si`) with `response_mode=form_post` to
+   * `https://api.runable.com/api/auth/callback/apple`, Apple authenticates the person, and the
+   * callback then fails instead of redirecting back — the app sees a white sheet appear and close
+   * with no session. Google survives the same broker because it comes back on a plain redirect.
+   *
+   * So iOS does it itself. `expo-apple-authentication` shows the real system sheet (Face ID /
+   * passkey, no browser at all) and hands back an identity token that Apple signed. The server
+   * verifies it against Apple's public keys with our own bundle id as the audience — see the
+   * `apple` provider in api/auth.ts. No Service ID, no signing key, no redirect URL, nothing of
+   * Runable's in the path.
+   *
+   * A cancelled sheet is not an error worth showing: the person tapped "Cancel".
    */
   const apple = async () => {
     setError(null);
     setBusy("apple");
     try {
-      await authClient.managedAuth.signIn({ provider: "apple" });
+      const credential = await AppleAuthentication.signInAsync({
+        requestedScopes: [
+          AppleAuthentication.AppleAuthenticationScope.FULL_NAME,
+          AppleAuthentication.AppleAuthenticationScope.EMAIL,
+        ],
+      });
+      if (!credential.identityToken) {
+        throw new Error(t("signin.appleNoToken"));
+      }
+      /**
+       * No `nonce` is sent. Apple hashes a native nonce before putting it in the token while
+       * better-auth compares it verbatim, so the two disagree and a correct nonce reads as a
+       * forged one. It is optional precisely because the token is already bound to our bundle id
+       * and travels over TLS straight from the sheet to our API, never through a browser.
+       */
+      await authClient.signIn.social({
+        provider: "apple",
+        idToken: { token: credential.identityToken },
+      });
     } catch (err) {
+      const code = (err as { code?: string })?.code;
+      if (code === "ERR_REQUEST_CANCELED") return;
       const message = err instanceof Error ? err.message : String(err);
-      if (!message.includes("AUTH_SESSION_DISMISSED")) setError(message);
+      if (!message.includes("AUTH_SESSION_DISMISSED") && !/cancel/i.test(message)) {
+        setError(message);
+      }
     } finally {
       setBusy(null);
     }
@@ -356,27 +409,29 @@ export function AuthForm() {
                 third-party one, and "above, identical styling" is the reading no reviewer argues
                 with.
               */}
-              <Pressable
-                onPress={apple}
-                disabled={busy !== null}
-                accessibilityRole="button"
-                accessibilityLabel={t("signin.apple")}
-                style={[
-                  styles.google,
-                  { backgroundColor: colors.foreground, opacity: busy ? 0.7 : 1 },
-                ]}
-              >
-                {busy === "apple" ? (
-                  <ActivityIndicator color={colors.background} />
-                ) : (
-                  <>
-                    <Ionicons name="logo-apple" size={18} color={colors.background} />
-                    <Text style={[styles.googleText, { color: colors.background }]}>
-                      {t("signin.apple")}
-                    </Text>
-                  </>
-                )}
-              </Pressable>
+              {appleReady && (
+                <Pressable
+                  onPress={apple}
+                  disabled={busy !== null}
+                  accessibilityRole="button"
+                  accessibilityLabel={t("signin.apple")}
+                  style={[
+                    styles.google,
+                    { backgroundColor: colors.foreground, opacity: busy ? 0.7 : 1 },
+                  ]}
+                >
+                  {busy === "apple" ? (
+                    <ActivityIndicator color={colors.background} />
+                  ) : (
+                    <>
+                      <Ionicons name="logo-apple" size={18} color={colors.background} />
+                      <Text style={[styles.googleText, { color: colors.background }]}>
+                        {t("signin.apple")}
+                      </Text>
+                    </>
+                  )}
+                </Pressable>
+              )}
 
               <Pressable
                 onPress={google}
