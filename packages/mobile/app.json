@@ -27,6 +27,9 @@
       "bundleIdentifier": "com.geocliks.app",
       "appleTeamId": "NUVT3F3322",
       "supportsTablet": true,
+      "infoPlist": {
+        "ITSAppUsesNonExemptEncryption": false
+      },
       "config": {
         "googleMapsApiKey": "AIzaSyDvyKD0U3EPBBAfep9y1ZFg4YLAJvOq0rc"
       }

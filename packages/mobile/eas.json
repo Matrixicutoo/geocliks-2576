@@ -24,9 +24,7 @@
     "production": {
       "ios": {
         "ascAppId": "6815044346",
-        "ascApiKeyId": "2KX56A2735",
-        "ascApiKeyIssuerId": "b6ca63b3-22e7-4157-a5cd-711f32a832e2",
-        "ascApiKeyPath": "./keys/AuthKey.p8"
+        "appleTeamId": "NUVT3F3322"
       },
       "android": {
         "track": "internal"
