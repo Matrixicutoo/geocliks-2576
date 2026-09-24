@@ -188,7 +188,12 @@
   /* Hover fill for amber-filled controls: a deeper orange that still reads as a light fill,
      so `on-amber` ink text keeps its contrast where `amber-deep` would swallow it. */
   --c-amber-hover: #ff8f00;
-  --c-verified: #3fbf6f;
+  /* The Field Notes green, darkened for light surfaces only: `#3fbf6f` is a
+     mid-tone that reads well on navy but lands at 2.2:1 on paper, and this
+     token labels verified status in small text all through the app and admin
+     pages. Same hue, dropped to 28% lightness, which is 5.1:1 on paper. The
+     dark theme keeps `#3fbf6f` as specified. */
+  --c-verified: #177a45;
   --c-alert: #d93a28;
   --c-sky: #1b7fd4;
   --c-paper: #f7f8fa;
