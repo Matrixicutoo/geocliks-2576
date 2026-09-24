@@ -73,6 +73,22 @@ export function useMarkRead() {
   return useMutation(orpc.messages.markRead.mutationOptions({ onSuccess: invalidate }));
 }
 
+/** Flag a message or a thread as abusive — optionally blocking the other member as well. */
+export function useReportMessage() {
+  const invalidate = useMessagesInvalidate();
+  return useMutation(orpc.messages.report.mutationOptions({ onSuccess: invalidate }));
+}
+
+export function useBlockMember() {
+  const invalidate = useMessagesInvalidate();
+  return useMutation(orpc.messages.block.mutationOptions({ onSuccess: invalidate }));
+}
+
+export function useUnblockMember() {
+  const invalidate = useMessagesInvalidate();
+  return useMutation(orpc.messages.unblock.mutationOptions({ onSuccess: invalidate }));
+}
+
 export function useRegisterPushToken() {
   return useMutation(orpc.messages.registerPushToken.mutationOptions({}));
 }

@@ -438,6 +438,62 @@ export const messageReads = sqliteTable(
 );
 
 /**
+ * A member flagging a message — or a whole thread — as abusive.
+ *
+ * Kept as an append-only log rather than a status field on the message: the same message can be
+ * reported by more than one person, and a resolved report is still evidence. `messageId` is null
+ * when the whole conversation is reported rather than one line of it.
+ */
+export const messageReports = sqliteTable(
+  "message_reports",
+  {
+    id: text("id").primaryKey(),
+    orgId: text("org_id").notNull(),
+    conversationId: text("conversation_id").notNull(),
+    /** Null = the whole thread was reported, not a single message. */
+    messageId: text("message_id"),
+    reporterId: text("reporter_id").notNull(),
+    /** Who wrote the reported content — denormalised so a deleted message still names them. */
+    reportedUserId: text("reported_user_id").notNull(),
+    reason: text("reason").notNull(),
+    note: text("note").notNull().default(""),
+    /** Copy of the body at report time; the reporter may block and never see it again. */
+    excerpt: text("excerpt").notNull().default(""),
+    status: text("status").notNull().default("open"),
+    createdAt: integer("created_at", { mode: "timestamp_ms" }).notNull().$defaultFn(now),
+  },
+  (t) => [
+    index("message_reports_org_idx").on(t.orgId, t.createdAt),
+    index("message_reports_conv_idx").on(t.conversationId),
+    index("message_reports_reporter_idx").on(t.reporterId),
+  ],
+);
+
+/**
+ * One member muting another inside a workspace.
+ *
+ * Directional: blocking is one-sided, but enforcement runs both ways — neither side can send into
+ * a thread where a block exists in either direction, so a blocked sender cannot keep talking and
+ * the blocker is not left able to talk at someone who cannot answer. History stays readable;
+ * this stops new messages and push, it does not erase the past.
+ */
+export const memberBlocks = sqliteTable(
+  "member_blocks",
+  {
+    id: text("id").primaryKey(),
+    orgId: text("org_id").notNull(),
+    blockerId: text("blocker_id").notNull(),
+    blockedId: text("blocked_id").notNull(),
+    createdAt: integer("created_at", { mode: "timestamp_ms" }).notNull().$defaultFn(now),
+  },
+  (t) => [
+    uniqueIndex("member_blocks_pair_idx").on(t.orgId, t.blockerId, t.blockedId),
+    index("member_blocks_blocker_idx").on(t.blockerId),
+    index("member_blocks_blocked_idx").on(t.blockedId),
+  ],
+);
+
+/**
  * When this person last opened the notification bell, per workspace.
  *
  * One cursor for the whole bell rather than one row per notification: the feed is derived on

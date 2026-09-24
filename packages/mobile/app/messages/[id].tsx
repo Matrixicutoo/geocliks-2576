@@ -18,6 +18,7 @@ import * as ImagePicker from "expo-image-picker";
 import Constants from "expo-constants";
 import { useVideoPlayer, VideoView } from "expo-video";
 import { Text, TextInput } from "@/components/app-text";
+import { type ReportTarget, ThreadModeration } from "@/components/thread-moderation";
 import { useColors } from "@/hooks/use-colors";
 import { Fonts } from "@/constants/theme";
 import { useT } from "@/lib/i18n";
@@ -86,7 +87,15 @@ export default function Thread() {
   const [viewer, setViewer] = useState<{ url: string; video: boolean; caption: string } | null>(
     null,
   );
+  const [menu, setMenu] = useState(false);
+  const [reportTarget, setReportTarget] = useState<ReportTarget | null>(null);
+  const [notice, setNotice] = useState<string | null>(null);
   const listRef = useRef<FlatList<never> | null>(null);
+
+  // A block in either direction closes the composer; only a block the reader placed themselves
+  // is named as such, so nobody learns they have been blocked by the other side.
+  const blockedByMe = thread.data?.blockedByMe ?? false;
+  const canSend = thread.data?.canSend ?? true;
 
   // Reading the thread clears its unread badge. Keyed on the message count so a
   // new inbound message while the screen is open marks itself read too.
@@ -172,8 +181,29 @@ export default function Thread() {
         >
           {thread.data?.other.name ?? t("msg.title")}
         </Text>
-        <View style={{ width: 24 }} />
+        <Pressable
+          accessibilityLabel={t("msg.more")}
+          onPress={() => setMenu(true)}
+          disabled={!thread.data}
+          hitSlop={8}
+        >
+          <Ionicons
+            name="ellipsis-horizontal"
+            size={24}
+            color={thread.data ? colors.foreground : colors.mutedForeground}
+          />
+        </Pressable>
       </View>
+
+      {notice ? (
+        <Pressable onPress={() => setNotice(null)} accessibilityLabel={t("common.close")}>
+          <Text
+            style={[styles.notice, { color: colors.background, backgroundColor: colors.amber }]}
+          >
+            {notice}
+          </Text>
+        </Pressable>
+      ) : null}
 
       {/*
         `padding` on Android too, not just iOS. Android used to get away with no behavior at
@@ -198,7 +228,12 @@ export default function Thread() {
               <Text style={[styles.hint, { color: colors.mutedForeground }]}>{t("msg.empty")}</Text>
             }
             renderItem={({ item }) => (
-              <View
+              // Long press reports that one message. Only somebody else's: reporting your own
+              // is meaningless, and the server rejects it anyway.
+              <Pressable
+                accessibilityLabel={item.mine ? undefined : t("msg.reportMessage")}
+                onLongPress={item.mine ? undefined : () => setReportTarget({ messageId: item.id })}
+                delayLongPress={400}
                 style={[
                   styles.bubble,
                   {
@@ -296,7 +331,7 @@ export default function Thread() {
                 >
                   {clock(item.createdAt)}
                 </Text>
-              </View>
+              </Pressable>
             )}
           />
         )}
@@ -340,68 +375,90 @@ export default function Thread() {
           </View>
         ) : null}
 
-        <View style={[styles.composer, { borderTopColor: colors.border, backgroundColor: colors.background }]}>
-          <Pressable
-            accessibilityLabel={t("msg.attachImage")}
-            onPress={() => void attachImage()}
-            disabled={uploading}
-            hitSlop={8}
-            style={styles.composerIcon}
-          >
-            {uploading ? (
-              <ActivityIndicator size="small" color={colors.mutedForeground} />
-            ) : (
-              <Ionicons name="image-outline" size={22} color={colors.mutedForeground} />
-            )}
-          </Pressable>
-          <Pressable
-            accessibilityLabel={t("msg.attachCapture")}
-            onPress={() => setCapturePicker(true)}
-            hitSlop={8}
-            style={styles.composerIcon}
-          >
-            <Ionicons name="camera-outline" size={22} color={colors.mutedForeground} />
-          </Pressable>
-          <Pressable
-            accessibilityLabel={t("msg.emoji")}
-            onPress={() => setEmoji((open) => !open)}
-            hitSlop={8}
-            style={styles.composerIcon}
-          >
-            <Ionicons
-              name="happy-outline"
-              size={22}
-              color={emoji ? colors.amber : colors.mutedForeground}
+        {!canSend ? (
+          <View style={[styles.blockedBar, { borderTopColor: colors.border }]}>
+            <Ionicons name="hand-left-outline" size={18} color={colors.mutedForeground} />
+            <Text style={[styles.blockedText, { color: colors.mutedForeground }]}>
+              {t("msg.blocked")}
+            </Text>
+          </View>
+        ) : (
+          <View style={[styles.composer, { borderTopColor: colors.border, backgroundColor: colors.background }]}>
+            <Pressable
+              accessibilityLabel={t("msg.attachImage")}
+              onPress={() => void attachImage()}
+              disabled={uploading}
+              hitSlop={8}
+              style={styles.composerIcon}
+            >
+              {uploading ? (
+                <ActivityIndicator size="small" color={colors.mutedForeground} />
+              ) : (
+                <Ionicons name="image-outline" size={22} color={colors.mutedForeground} />
+              )}
+            </Pressable>
+            <Pressable
+              accessibilityLabel={t("msg.attachCapture")}
+              onPress={() => setCapturePicker(true)}
+              hitSlop={8}
+              style={styles.composerIcon}
+            >
+              <Ionicons name="camera-outline" size={22} color={colors.mutedForeground} />
+            </Pressable>
+            <Pressable
+              accessibilityLabel={t("msg.emoji")}
+              onPress={() => setEmoji((open) => !open)}
+              hitSlop={8}
+              style={styles.composerIcon}
+            >
+              <Ionicons
+                name="happy-outline"
+                size={22}
+                color={emoji ? colors.amber : colors.mutedForeground}
+              />
+            </Pressable>
+            <TextInput
+              accessibilityLabel={t("msg.placeholder")}
+              value={text}
+              onChangeText={setText}
+              placeholder={t("msg.placeholder")}
+              placeholderTextColor={colors.mutedForeground}
+              multiline
+              style={[
+                styles.input,
+                { color: colors.foreground, borderColor: colors.border, backgroundColor: colors.card },
+              ]}
             />
-          </Pressable>
-          <TextInput
-            accessibilityLabel={t("msg.placeholder")}
-            value={text}
-            onChangeText={setText}
-            placeholder={t("msg.placeholder")}
-            placeholderTextColor={colors.mutedForeground}
-            multiline
-            style={[
-              styles.input,
-              { color: colors.foreground, borderColor: colors.border, backgroundColor: colors.card },
-            ]}
-          />
-          <Pressable
-            accessibilityLabel={t("msg.send")}
-            onPress={() => void submit()}
-            disabled={send.isPending || (!text.trim() && !imageKey && !photoId)}
-            style={[
-              styles.sendBtn,
-              {
-                backgroundColor: colors.amber,
-                opacity: send.isPending || (!text.trim() && !imageKey && !photoId) ? 0.45 : 1,
-              },
-            ]}
-          >
-            <Ionicons name="send" size={18} color={colors.background} />
-          </Pressable>
-        </View>
+            <Pressable
+              accessibilityLabel={t("msg.send")}
+              onPress={() => void submit()}
+              disabled={send.isPending || (!text.trim() && !imageKey && !photoId)}
+              style={[
+                styles.sendBtn,
+                {
+                  backgroundColor: colors.amber,
+                  opacity: send.isPending || (!text.trim() && !imageKey && !photoId) ? 0.45 : 1,
+                },
+              ]}
+            >
+              <Ionicons name="send" size={18} color={colors.background} />
+            </Pressable>
+          </View>
+        )}
       </KeyboardAvoidingView>
+
+      {conversationId && thread.data ? (
+        <ThreadModeration
+          conversationId={conversationId}
+          other={{ id: thread.data.other.id, name: thread.data.other.name }}
+          blockedByMe={blockedByMe}
+          menuVisible={menu}
+          onCloseMenu={() => setMenu(false)}
+          reportTarget={reportTarget}
+          onReportTarget={setReportTarget}
+          onNotice={setNotice}
+        />
+      ) : null}
 
       <Modal
         visible={capturePicker}
@@ -500,6 +557,17 @@ const styles = StyleSheet.create({
   title: { fontSize: 16, flex: 1, textAlign: "center" },
   center: { flex: 1, alignItems: "center", justifyContent: "center" },
   hint: { fontSize: 12, textAlign: "center", padding: 12 },
+  notice: { fontSize: 12, textAlign: "center", paddingHorizontal: 16, paddingVertical: 8 },
+  blockedBar: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
+    gap: 8,
+    paddingHorizontal: 20,
+    paddingVertical: 16,
+    borderTopWidth: StyleSheet.hairlineWidth,
+  },
+  blockedText: { fontSize: 12, flexShrink: 1 },
   bubble: { maxWidth: "82%", borderRadius: 12, borderWidth: 1, padding: 10, gap: 6 },
   body: { fontSize: 14, lineHeight: 20 },
   stamp: { fontSize: 10, alignSelf: "flex-end" },

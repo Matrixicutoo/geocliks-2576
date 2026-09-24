@@ -7,6 +7,7 @@ import * as schema from "../database/schema";
 import { id } from "../lib/ids";
 import { photoUrl } from "../lib/media";
 import { sendPush } from "../lib/push";
+import { reportEmail } from "../services/email-templates";
 import { avatarUrl } from "./account";
 
 /**
@@ -143,6 +144,63 @@ async function unreadPerConversation(conversationIds: string[], userId: string) 
   return counts;
 }
 
+/**
+ * Is there a block in either direction between these two members?
+ *
+ * Enforcement is symmetric on purpose (see `memberBlocks` in the schema): whoever pressed the
+ * button, the thread goes quiet for both of them rather than leaving one side shouting into it.
+ */
+async function blockBetween(orgId: string, me: string, other: string) {
+  const rows = await db
+    .select({ blockerId: schema.memberBlocks.blockerId })
+    .from(schema.memberBlocks)
+    .where(
+      and(
+        eq(schema.memberBlocks.orgId, orgId),
+        or(
+          and(
+            eq(schema.memberBlocks.blockerId, me),
+            eq(schema.memberBlocks.blockedId, other),
+          ),
+          and(
+            eq(schema.memberBlocks.blockerId, other),
+            eq(schema.memberBlocks.blockedId, me),
+          ),
+        ),
+      ),
+    );
+  return {
+    /** The caller blocked them — undoable from the same menu. */
+    byMe: rows.some((r) => r.blockerId === me),
+    /** They blocked the caller. Not disclosed as such to the client, only as "cannot send". */
+    byThem: rows.some((r) => r.blockerId === other),
+    any: rows.length > 0,
+  };
+}
+
+/** Record a block, idempotently — pressing it twice is not an error. */
+async function blockMember(orgId: string, blockerId: string, blockedId: string) {
+  const [member] = await db
+    .select({ id: schema.members.id })
+    .from(schema.members)
+    .where(and(eq(schema.members.orgId, orgId), eq(schema.members.userId, blockedId)))
+    .limit(1);
+  if (!member) throw new ORPCError("NOT_FOUND", { message: "Not a member of this workspace" });
+  await db
+    .insert(schema.memberBlocks)
+    .values({ id: id("blk"), orgId, blockerId, blockedId })
+    .onConflictDoNothing();
+}
+
+/** The reasons a report can carry. Kept short and mutually exclusive, like Apple's own sheet. */
+const REPORT_REASONS = [
+  "harassment",
+  "spam",
+  "inappropriate",
+  "threat",
+  "other",
+] as const;
+
 /** Push to every device of the recipients, best effort — never blocks the send. */
 async function notify(userIds: string[], title: string, body: string, conversationId: string) {
   if (userIds.length === 0) return;
@@ -165,9 +223,31 @@ export const messages = {
     // A driver has no projects, so the same call hands back his office instead — the dispatcher
     // who invited him and whoever assigns his routes — which is exactly who he needs to reach.
     const teammates = await visibleTeammates(context.org.id, context.user.id, context.role);
-    const visible = teammates
+    const allowed = teammates
       ? people.filter((person) => teammates.userIds.has(person.userId))
       : people;
+    // Anyone on either side of a block drops out of the "new message" picker — starting a
+    // thread you cannot send into is a dead end. The existing thread stays in the list, which
+    // is where Unblock lives.
+    const muted = await db
+      .select({
+        blockerId: schema.memberBlocks.blockerId,
+        blockedId: schema.memberBlocks.blockedId,
+      })
+      .from(schema.memberBlocks)
+      .where(
+        and(
+          eq(schema.memberBlocks.orgId, context.org.id),
+          or(
+            eq(schema.memberBlocks.blockerId, context.user.id),
+            eq(schema.memberBlocks.blockedId, context.user.id),
+          ),
+        ),
+      );
+    const mutedIds = new Set(
+      muted.map((row) => (row.blockerId === context.user.id ? row.blockedId : row.blockerId)),
+    );
+    const visible = allowed.filter((person) => !mutedIds.has(person.userId));
     // `user.image` is a bare storage key. Sign it here, like every other read of an avatar, so
     // the address book can show faces instead of a broken-image glyph.
     return Promise.all(
@@ -379,6 +459,11 @@ export const messages = {
         })),
       );
 
+      // The composer needs to know the thread is muted before you type into it, and the menu
+      // needs to know whether to offer Block or Unblock. `byMe` is the only side disclosed as
+      // such; a block the other person placed simply reads as "cannot send".
+      const block = await blockBetween(context.org.id, context.user.id, otherId);
+
       return {
         id: conversation.id,
         other: {
@@ -387,6 +472,8 @@ export const messages = {
           email: other?.email ?? null,
           image: await avatarUrl(other?.image ?? null),
         },
+        blockedByMe: block.byMe,
+        canSend: !block.any,
         items,
       };
     }),
@@ -414,6 +501,16 @@ export const messages = {
           ? await ensureConversation(context.org.id, context.user.id, input.toUserId)
           : null;
       if (!conversation) throw new ORPCError("BAD_REQUEST", { message: "No recipient" });
+
+      // A blocked thread is read-only for both sides. The message is deliberately the same
+      // whichever way the block runs: it must not tell you that someone blocked you.
+      const recipientId =
+        conversation.userAId === context.user.id ? conversation.userBId : conversation.userAId;
+      const block = await blockBetween(context.org.id, context.user.id, recipientId);
+      if (block.any)
+        throw new ORPCError("FORBIDDEN", {
+          message: "This conversation is blocked. Unblock to send messages.",
+        });
 
       // References are re-validated against the workspace — a client id is never trusted.
       let projectId: string | null = null;
@@ -485,7 +582,28 @@ export const messages = {
     .input(z.object({ body: z.string().min(1).max(4000), projectId: z.string().nullish() }))
     .handler(async ({ input, context }) => {
       requireRole(context.role, "manager");
-      const contacts = await orgContacts(context.org.id, context.user.id);
+      const all = await orgContacts(context.org.id, context.user.id);
+      // A crew-wide announcement still respects a block in either direction: whoever muted
+      // whom, that pair's thread stays quiet. One query rather than one per contact.
+      const muted = await db
+        .select({
+          blockerId: schema.memberBlocks.blockerId,
+          blockedId: schema.memberBlocks.blockedId,
+        })
+        .from(schema.memberBlocks)
+        .where(
+          and(
+            eq(schema.memberBlocks.orgId, context.org.id),
+            or(
+              eq(schema.memberBlocks.blockerId, context.user.id),
+              eq(schema.memberBlocks.blockedId, context.user.id),
+            ),
+          ),
+        );
+      const mutedIds = new Set(
+        muted.map((row) => (row.blockerId === context.user.id ? row.blockedId : row.blockerId)),
+      );
+      const contacts = all.filter((contact) => !mutedIds.has(contact.userId));
       if (contacts.length === 0) return { sent: 0 };
 
       let projectId: string | null = null;
@@ -534,6 +652,145 @@ export const messages = {
       );
 
       return { sent: contacts.length };
+    }),
+
+  /**
+   * Flag a message, or a whole thread, as abusive.
+   *
+   * Every 1:1 thread in here is between two members of the same workspace, so a report is
+   * routed to the people who can actually act on it — the owner, admins and managers get it on
+   * the bell and on their devices. The excerpt is copied in at report time so the record still
+   * reads later, and reporting never depends on blocking: you can do either, or both.
+   */
+  report: orgProc
+    .input(
+      z.object({
+        conversationId: z.string(),
+        /** Omit to report the conversation rather than one message in it. */
+        messageId: z.string().nullish(),
+        reason: z.enum(REPORT_REASONS),
+        note: z.string().max(1000).default(""),
+        /** Block the other member at the same time — the usual pairing. */
+        block: z.boolean().default(false),
+      }),
+    )
+    .handler(async ({ input, context }) => {
+      const conversation = await participantConversation(
+        input.conversationId,
+        context.org.id,
+        context.user.id,
+      );
+      const otherId =
+        conversation.userAId === context.user.id ? conversation.userBId : conversation.userAId;
+
+      // A message id is only accepted when it really belongs to this thread, and only when
+      // somebody else wrote it — there is nothing to moderate about your own line.
+      let excerpt = "";
+      let reportedUserId = otherId;
+      if (input.messageId) {
+        const [message] = await db
+          .select()
+          .from(schema.messages)
+          .where(
+            and(
+              eq(schema.messages.id, input.messageId),
+              eq(schema.messages.conversationId, conversation.id),
+            ),
+          )
+          .limit(1);
+        if (!message) throw new ORPCError("NOT_FOUND", { message: "Message not found" });
+        if (message.senderId === context.user.id)
+          throw new ORPCError("BAD_REQUEST", { message: "Cannot report your own message" });
+        reportedUserId = message.senderId;
+        excerpt = preview(message.body, !!message.imageKey, !!message.photoId);
+      }
+
+      await db.insert(schema.messageReports).values({
+        id: id("rpt"),
+        orgId: context.org.id,
+        conversationId: conversation.id,
+        messageId: input.messageId ?? null,
+        reporterId: context.user.id,
+        reportedUserId,
+        reason: input.reason,
+        note: input.note.trim(),
+        excerpt,
+      });
+
+      if (input.block) await blockMember(context.org.id, context.user.id, otherId);
+
+      // Tell the people who can act, on the devices and in the inbox. Best effort throughout:
+      // a dead push token or a mail failure must not lose a report that is already recorded.
+      const admins = await db
+        .select({ userId: schema.members.userId })
+        .from(schema.members)
+        .where(
+          and(
+            eq(schema.members.orgId, context.org.id),
+            inArray(schema.members.role, ["owner", "admin", "manager"]),
+          ),
+        );
+      const recipients = admins
+        .map((a) => a.userId)
+        .filter((userId) => userId !== context.user.id && userId !== reportedUserId);
+      await notify(
+        recipients,
+        "Message reported",
+        `${context.user.name || "A member"} reported a message (${input.reason}).`,
+        conversation.id,
+      );
+
+      if (recipients.length > 0) {
+        const people = await db
+          .select({ id: schema.user.id, name: schema.user.name, email: schema.user.email })
+          .from(schema.user)
+          .where(inArray(schema.user.id, [...recipients, reportedUserId]));
+        const reportedName =
+          people.find((p) => p.id === reportedUserId)?.name ?? "A workspace member";
+        await Promise.all(
+          people
+            .filter((p) => recipients.includes(p.id) && p.email)
+            .map((p) =>
+              reportEmail({
+                to: p.email,
+                workspace: context.org.name,
+                reporter: context.user.name || context.user.email,
+                reported: reportedName,
+                reason: input.reason,
+                note: input.note.trim(),
+                excerpt,
+              }).catch(() => undefined),
+            ),
+        );
+      }
+
+      return { ok: true, blocked: input.block };
+    }),
+
+  /** Mute another member: no new messages either way, and no push. History stays readable. */
+  block: orgProc
+    .input(z.object({ userId: z.string() }))
+    .handler(async ({ input, context }) => {
+      if (input.userId === context.user.id)
+        throw new ORPCError("BAD_REQUEST", { message: "Cannot block yourself" });
+      await blockMember(context.org.id, context.user.id, input.userId);
+      return { blocked: true };
+    }),
+
+  /** Undo the caller's own block. Cannot lift a block the other person put in place. */
+  unblock: orgProc
+    .input(z.object({ userId: z.string() }))
+    .handler(async ({ input, context }) => {
+      await db
+        .delete(schema.memberBlocks)
+        .where(
+          and(
+            eq(schema.memberBlocks.orgId, context.org.id),
+            eq(schema.memberBlocks.blockerId, context.user.id),
+            eq(schema.memberBlocks.blockedId, input.userId),
+          ),
+        );
+      return { blocked: false };
     }),
 
   /** Move the caller's read cursor to now, clearing the unread badge for that thread. */

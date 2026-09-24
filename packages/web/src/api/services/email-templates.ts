@@ -236,6 +236,64 @@ The link expires in one hour. If you didn't ask for this, ignore this email.`;
   return sendEmail({ to: params.to, subject: "Reset your GeoCliks password", html, text });
 }
 
+/**
+ * A reported message, mailed to the people who can act on it.
+ *
+ * Push alone was not enough: a workspace whose owner never installed the app, or turned
+ * notifications off, would swallow reports silently — and "we told you in a notification you
+ * never received" is not a moderation process. The mail carries the whole report so the
+ * decision can be made from the inbox, and links to the thread for the rest of the context.
+ */
+export function reportEmail(params: {
+  to: string;
+  workspace: string;
+  reporter: string;
+  reported: string;
+  reason: string;
+  note: string;
+  excerpt: string;
+}): Promise<SendResult> {
+  const link = `${siteUrl()}/app/messages`;
+  const row = (label: string, value: string) =>
+    `<p style="margin:0 0 8px;font-size:14px;line-height:1.6">
+       <span style="color:#6b7280">${label}:</span> ${escapeHtml(value)}
+     </p>`;
+  const html = shell(
+    "A message was reported in your workspace",
+    `${row("Reported by", params.reporter)}
+     ${row("Member reported", params.reported)}
+     ${row("Reason", params.reason)}
+     ${params.note ? row("Detail", params.note) : ""}
+     ${
+       params.excerpt
+         ? `<p style="margin:14px 0 0;padding:12px 14px;background:#f9fafb;border-left:3px solid ${BRAND};border-radius:6px;font-size:14px;line-height:1.6;color:#374151">
+              ${escapeHtml(params.excerpt)}
+            </p>`
+         : ""
+     }
+     <p style="margin:16px 0 0;font-size:13px;line-height:1.65;color:#6b7280">
+       The person who reported this may also have blocked the member, which stops messages
+       between the two of them either way. You can remove a member from the workspace on the
+       Team screen.
+     </p>
+     ${button(link, "Open messages")}`,
+    `Sent to the owner, admins and managers of the ${params.workspace} workspace.`,
+  );
+  const text = `A message was reported in ${params.workspace}.
+
+Reported by: ${params.reporter}
+Member reported: ${params.reported}
+Reason: ${params.reason}
+${params.note ? `Detail: ${params.note}\n` : ""}${params.excerpt ? `Message: ${params.excerpt}\n` : ""}
+Review: ${link}`;
+  return sendEmail({
+    to: params.to,
+    subject: `GeoCliks — message reported in ${params.workspace}`,
+    html,
+    text,
+  });
+}
+
 export function receiptEmail(params: {
   to: string;
   planName: string;
