@@ -602,6 +602,7 @@ export const en = {
   // English-only landing pages: every other locale falls back to this string,
   // which is correct — the pages themselves are English.
   "home.nav.constructionDocs": "Construction photo documentation",
+  "home.nav.fieldNotes": "Field Notes",
   "home.nav.vsCompanycam": "GeoCliks vs CompanyCam",
   "home.nav.emailSupport": "Email support",
   "home.nav.contactSales": "Contact sales",

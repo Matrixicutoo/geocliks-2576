@@ -564,6 +564,7 @@ export const zh: Catalog = {
   "home.nav.website": "官网",
   "home.nav.help": "帮助中心",
   "home.nav.constructionDocs": "施工照片记录",
+  "home.nav.fieldNotes": "现场笔记",
   "home.nav.vsCompanycam": "GeoCliks 与 CompanyCam 对比",
   "home.nav.emailSupport": "邮件支持",
   "home.nav.contactSales": "联系销售",

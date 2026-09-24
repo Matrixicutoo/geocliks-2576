@@ -599,6 +599,7 @@ export const frCA: Catalog = {
   "home.nav.website": "Site web",
   "home.nav.help": "Centre d'aide",
   "home.nav.constructionDocs": "Documentation photo de chantier",
+  "home.nav.fieldNotes": "Notes de terrain",
   "home.nav.vsCompanycam": "GeoCliks vs CompanyCam",
   "home.nav.emailSupport": "Soutien par courriel",
   "home.nav.contactSales": "Parler aux ventes",

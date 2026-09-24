@@ -595,6 +595,7 @@ export const tl: Catalog = {
   "home.nav.website": "Website",
   "home.nav.help": "Sentro ng tulong",
   "home.nav.constructionDocs": "Dokumentasyon ng larawan sa konstruksiyon",
+  "home.nav.fieldNotes": "Mga tala sa field",
   "home.nav.vsCompanycam": "GeoCliks vs CompanyCam",
   "home.nav.emailSupport": "Suporta sa email",
   "home.nav.contactSales": "Makipag-ugnayan sa sales",

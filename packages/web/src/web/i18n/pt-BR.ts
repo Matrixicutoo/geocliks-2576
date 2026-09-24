@@ -592,6 +592,7 @@ export const ptBR: Catalog = {
   "home.nav.website": "Site",
   "home.nav.help": "Central de ajuda",
   "home.nav.constructionDocs": "Documentação fotográfica de obra",
+  "home.nav.fieldNotes": "Notas de campo",
   "home.nav.vsCompanycam": "GeoCliks vs. CompanyCam",
   "home.nav.emailSupport": "Suporte por e-mail",
   "home.nav.contactSales": "Falar com vendas",

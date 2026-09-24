@@ -597,6 +597,7 @@ export const de: Catalog = {
   "home.nav.website": "Website",
   "home.nav.help": "Hilfecenter",
   "home.nav.constructionDocs": "Baustellen-Fotodokumentation",
+  "home.nav.fieldNotes": "Feldnotizen",
   "home.nav.vsCompanycam": "GeoCliks vs. CompanyCam",
   "home.nav.emailSupport": "E-Mail-Support",
   "home.nav.contactSales": "Vertrieb kontaktieren",

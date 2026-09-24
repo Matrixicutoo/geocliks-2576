@@ -595,6 +595,7 @@ export const es: Catalog = {
   "home.nav.website": "Sitio web",
   "home.nav.help": "Centro de ayuda",
   "home.nav.constructionDocs": "Documentación fotográfica de obra",
+  "home.nav.fieldNotes": "Notas de campo",
   "home.nav.vsCompanycam": "GeoCliks frente a CompanyCam",
   "home.nav.emailSupport": "Soporte por correo",
   "home.nav.contactSales": "Hablar con ventas",

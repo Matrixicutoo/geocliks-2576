@@ -593,6 +593,7 @@ export const it: Catalog = {
   "home.nav.website": "Sito web",
   "home.nav.help": "Centro assistenza",
   "home.nav.constructionDocs": "Documentazione fotografica di cantiere",
+  "home.nav.fieldNotes": "Note dal campo",
   "home.nav.vsCompanycam": "GeoCliks vs CompanyCam",
   "home.nav.emailSupport": "Supporto via e-mail",
   "home.nav.contactSales": "Contatta le vendite",

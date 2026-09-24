@@ -576,6 +576,7 @@ export const ar: Catalog = {
   "home.nav.website": "الموقع الإلكتروني",
   "home.nav.help": "مركز المساعدة",
   "home.nav.constructionDocs": "توثيق صور البناء",
+  "home.nav.fieldNotes": "ملاحظات ميدانية",
   "home.nav.vsCompanycam": "GeoCliks مقابل CompanyCam",
   "home.nav.emailSupport": "الدعم عبر البريد",
   "home.nav.contactSales": "تواصل مع المبيعات",

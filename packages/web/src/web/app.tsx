@@ -48,6 +48,11 @@ const ConstructionPhotoDocumentation = lazy(
 );
 const AlternativesCompanyCam = lazy(() => import("./pages/alternatives-companycam"));
 const PricingPage = lazy(() => import("./pages/pricing"));
+// Field Notes. The blog lives inside the app at /blog rather than on its own
+// subdomain, so it shares this site's nav, footer, SEO table and sitemap.
+const BlogIndex = lazy(() => import("./pages/blog"));
+const BlogMethod = lazy(() => import("./pages/blog-method"));
+const BlogPost = lazy(() => import("./pages/blog-post"));
 
 import { ProtectedRoute } from "./components/protected-route";
 import { ProductRoute } from "./components/product-route";
@@ -266,6 +271,17 @@ function App() {
               </Route>
               <Route path="/help/:category">
                 <HelpCategory />
+              </Route>
+
+              {/* Literal paths first: /blog/method must win over /blog/:slug. */}
+              <Route path="/blog">
+                <BlogIndex />
+              </Route>
+              <Route path="/blog/method">
+                <BlogMethod />
+              </Route>
+              <Route path="/blog/:slug">
+                <BlogPost />
               </Route>
 
               <Route path="/construction-photo-documentation">

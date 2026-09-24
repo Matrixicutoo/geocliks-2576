@@ -587,6 +587,7 @@ export const vi: Catalog = {
   "home.nav.website": "Trang web",
   "home.nav.help": "Trung tâm trợ giúp",
   "home.nav.constructionDocs": "Tài liệu ảnh công trình",
+  "home.nav.fieldNotes": "Ghi chú hiện trường",
   "home.nav.vsCompanycam": "GeoCliks so với CompanyCam",
   "home.nav.emailSupport": "Hỗ trợ qua email",
   "home.nav.contactSales": "Liên hệ kinh doanh",

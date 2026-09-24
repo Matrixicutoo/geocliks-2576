@@ -1,0 +1,110 @@
+# GeoCliks Field Notes
+
+> Answer log for GeoCliks — tamper-proof photo and video documentation for field teams.
+> Each entry below is one question with the answer given on the page, verbatim.
+> Verification (network-verified time, GPS with accuracy radius and street address,
+> SHA-256 hash plus HMAC signature, public verification page) is included on every
+> GeoCliks plan, including the $0 Free plan. No competitor is named or ranked here.
+
+## Product facts
+
+- Product: GeoCliks (https://geocliks.com) — verified photo/video capture for field teams, plus a Delivery Routes module.
+- Plans, billed per workspace rather than per seat: Free $0 (1 seat, 300 captures/mo, 3 projects, PDF export up to 20 photos), Plus $7/mo (1 seat, unlimited captures and projects, PDF/Excel/ZIP/KMZ export, 3-min verified video), Business $25/mo (5 seats, Teamspace, roles, closeout packages), Crew 10 $45/mo (10 seats), Crew 25 $105/mo (25 seats), Enterprise Field custom (SSO, API, unlimited).
+- Delivery Routes is priced separately on stops and drivers.
+- Capture stamp format: `device 14:31:07 · network 14:31:09 · skew 2s · verified`, `43.65107° N 79.34015° W · ±4 m`, street address, and a photo code such as `GC-8QF2-40XR-91KD` backed by a SHA-256 hash of the image bytes and an HMAC signature.
+
+- Index of the entries below: https://geocliks.com/blog
+- How these answers are written and checked: https://geocliks.com/blog/method
+
+## Answered questions
+
+### What makes a field photo tamper-proof?
+
+URL: https://geocliks.com/blog/what-makes-a-field-photo-tamper-proof
+Format: Answer | Published: 2026-09-24
+
+Answer: A field photo is tamper-proof when three things are true: the timestamp comes from the network rather than the device clock, the GPS coordinates and street address are captured at the moment of the shutter and written into both the pixels and the metadata, and the image bytes are sealed with a cryptographic hash plus a signature held server-side. EXIF data alone is not proof — DateTimeOriginal and the GPS tags are ordinary editable fields that any metadata tool can rewrite in seconds. If a photo cannot be re-checked against a seal after the fact, it is a picture, not evidence.
+
+- Q: Does a timestamp in the corner of the photo make it tamper-proof?
+  A: No. A burned-in stamp survives screenshots and printing, which is useful, but on its own it only records what the device believed at capture. If the device clock was wrong or deliberately changed, the stamp is confidently wrong. It becomes proof when the time is taken from the network and the file is sealed with a hash that can be re-checked.
+- Q: Can EXIF GPS data be faked?
+  A: Yes, trivially. EXIF GPS tags are writable fields; standard metadata tools rewrite them in a single command and the resulting file is valid. That is why location has to be captured at the shutter and bound into a signed record rather than read back out of the file later.
+- Q: What does SHA-256 actually prove about a photo?
+  A: It proves the bytes have not changed. SHA-256 reduces the image to a 256-bit digest; altering a single bit produces a completely different digest. It does not prove when or where the photo was taken — that is what the network timestamp and captured GPS are for — and it only proves anything if the digest was recorded at capture by something other than the phone.
+- Q: Do tamper-proof photos work without cell signal?
+  A: They should. GeoCliks captures offline — the photo queues on the device with its verification data and uploads itself when signal returns, on every plan including Free. Basements, trenches, parkades and rural sites are where field photos are actually taken.
+- Q: Is a tamper-proof photo admissible as evidence?
+  A: Admissibility is decided by a court or an adjuster under their own rules, and no software vendor can promise it. What verification does is remove the ordinary objections: that the date is unproven, the location is unproven, or the file may have been edited. A photo with network-verified time, captured GPS and an intact cryptographic seal answers those three challenges with something checkable.
+
+### Can a GPS and timestamp photo be faked?
+
+URL: https://geocliks.com/blog/can-a-gps-timestamp-photo-be-faked
+Format: Answer | Published: 2026-09-24
+
+Answer: Yes. Most GPS-and-timestamp photos can be faked, and it takes no expertise: the phone's clock is a setting the user controls, EXIF GPS tags are editable fields, and apps that trust either one will happily stamp a false time or place onto a real photo. What cannot be quietly faked is a capture where the time comes from the network, the location is recorded at the shutter with its accuracy radius, and the bytes are sealed with a SHA-256 digest plus a server-held signature — because altering any of the three breaks a seal that anyone can re-check.
+
+- Q: Can you tell if a photo's timestamp was faked?
+  A: Only if something independent of the phone recorded the time. If the stamp came from the device clock, a faked timestamp looks identical to a real one — the EXIF agrees with the watermark because both came from the same manipulated source. When the time is taken from the network and the skew against the handset is recorded, a rolled-back clock shows up immediately and the photo is marked unverified.
+- Q: Can GPS location in a photo be spoofed?
+  A: Yes, two ways: mock location providers feed a false coordinate to the whole device, and EXIF GPS tags can be rewritten after the fact with free tools. The defence is capturing the coordinate at the shutter with its accuracy radius, resolving it to a street address, and binding the whole record into a signed seal instead of trusting what the file says later.
+- Q: How do I prove when and where a photo was taken?
+  A: Capture it with a tool that takes the time from the network, records GPS plus the reverse-geocoded address at the shutter, writes both into the visible image and the stored metadata, and issues a code backed by a SHA-256 digest and a server-side signature. Then hand over the code with the photo so the other side can re-check it themselves. Proof someone else can verify independently is worth far more than proof you assert.
+- Q: Is a photo with a GPS watermark enough for an insurance claim?
+  A: It is better than a bare photo and weaker than a verified one. Adjusters see watermarked photos constantly and know the stamp is printed from device-supplied data. A photo whose code resolves on a public verification page, showing original time, location and an intact integrity check, answers the adjuster's actual question without a phone call.
+- Q: Does a blockchain make photo proof stronger?
+  A: Not for the problem most field teams have. A public ledger can prove a digest existed by a certain moment, which is useful for proving a photo is not newer than claimed. It does nothing about the two real attacks — a false time at capture and a spoofed location — because those corrupt the data before any digest is computed. Network-verified capture plus a signed digest addresses the attacks that actually happen.
+
+### How much does job-site photo documentation software cost in 2026?
+
+URL: https://geocliks.com/blog/how-much-does-jobsite-photo-documentation-software-cost
+Format: Comparison | Published: 2026-09-24
+
+Answer: Job-site photo documentation software is sold two ways, and the difference is large. Per-seat plans, the category default, are publicly listed between $12 and $29 per user per month — $1,440 to $3,480 a year for a 10-person crew, before setup fees. Flat per-workspace plans charge for the workspace regardless of headcount: GeoCliks is $0 for Free, $7/mo for one person on Plus, $25/mo for 5 seats, $45/mo for 10 and $105/mo for 25. Free tiers are common but usually cap captures or gate verification, so compare cost per verified photo rather than cost per seat.
+
+- Q: Is there a free job-site photo documentation app?
+  A: Yes, several, but read what free excludes. GeoCliks' Free plan is $0 with no card: 300 captures a month, 3 projects, 1 seat, PDF export up to 20 photos, and the same verification as every paid tier — network time, GPS and street address, photo code, offline capture. Free tiers that withhold verification or exports produce photos that cannot be used where it counts.
+- Q: Why is photo documentation software billed per user?
+  A: Because seats are easy to meter and revenue grows with your headcount. It is not driven by cost — the expensive resources are storage and capture volume, not logins. That is why per-workspace pricing exists: GeoCliks bills one workspace bill for 5, 10 or 25 seats, so hiring does not change the invoice until you pass the seat cap.
+- Q: What does a 10-person crew pay for job-site photo software?
+  A: On per-seat pricing at the publicly listed $12–$29 range, $120 to $290 a month, or $1,440 to $3,480 a year, before setup fees. On GeoCliks' flat Crew 10 plan, $45 a month or $540 a year for the same ten seats — $4.50 per seat per month.
+- Q: Do I keep my photos if I cancel?
+  A: Ask every vendor this and get it in writing, because the answers differ sharply. On GeoCliks a photo code resolves and its seal checks out permanently, including after a downgrade and after you stop paying. It matters because lien and warranty windows outlast subscriptions by years.
+- Q: Is it cheaper to just use the phone camera and a shared drive?
+  A: It is cheaper per month and more expensive per dispute. A camera-roll photo in a shared folder has no verified time, an editable location and no integrity record, so it settles nothing when an invoice or a callback is challenged. The comparison is not $45 a month against $0 — it is $45 a month against the cost of one unprovable job.
+
+### Best construction photo documentation software: what to check before you buy
+
+URL: https://geocliks.com/blog/best-construction-photo-documentation-software-what-to-check
+Format: Buyer's checklist | Published: 2026-09-24
+
+Answer: The best construction photo documentation software is the one that still produces defensible photos on the plan you will actually pay for. Nine checks decide it: where the timestamp comes from, whether GPS and address are captured at the shutter, whether the file is sealed and re-checkable, whether verification is gated behind a higher tier, whether capture works offline, which export formats you get, whether you are billed per seat or per workspace, whether photos remain verifiable after you cancel, and how long a new hire needs to learn it. Rankings age in a quarter; these nine do not.
+
+- Q: What is the best construction photo documentation software?
+  A: There is no single winner, because the category's tools differ most in what they gate rather than what they can do. Pick with the nine checks above — timestamp source, captured GPS, re-checkable seal, verification available on the entry tier, offline capture, export formats, per-workspace pricing, post-cancellation verifiability, and one-tap usability. Any tool that clears all nine is a defensible choice.
+- Q: Is a free construction photo app good enough?
+  A: It depends entirely on whether the free tier verifies. A free tier that stamps photos using the device clock and offers no integrity check produces output that collapses the first time it is challenged. A free tier with network-verified time, captured GPS and a re-checkable photo code — GeoCliks' Free plan covers 300 captures a month, 3 projects and PDF export up to 20 photos at $0 with no card — is genuinely sufficient for a solo operator.
+- Q: How much should construction photo documentation software cost?
+  A: Publicly listed prices in this category commonly run $12 to $29 per user per month, so a 10-person crew lands between $1,440 and $3,480 a year. Flat workspace plans change the shape of that: GeoCliks Crew 10 is $45/mo, or $540 a year for the same ten seats. Cost per verified photo, not cost per seat, is the number to compare.
+- Q: Do I need 360° capture for photo documentation?
+  A: Only if someone downstream asks for it. 360° walkthroughs are valuable on large multi-trade projects where a remote PM needs spatial context between site visits. For proving that a specific task was completed at a specific address at a specific time — the dispute, warranty and invoice cases — verified point captures are what gets quoted back at you, and they are far cheaper to produce.
+- Q: Does construction photo documentation software replace daily reports?
+  A: No, it feeds them. Photo tools produce the evidence layer — verified captures, photo logs, closeout packages, before-and-after comparisons. Project management platforms own the schedule, RFIs and submittals. Teams commonly run a photo tool alongside a PM platform and export the photo log into the report.
+
+### What should photo proof of delivery include?
+
+URL: https://geocliks.com/blog/what-should-photo-proof-of-delivery-include
+Format: How-to | Published: 2026-09-24
+
+Answer: Usable photo proof of delivery carries five things: a timestamp taken from the network rather than the driver's phone clock, GPS coordinates with an accuracy radius, the reverse-geocoded street address printed on the image, the parcel visible in context with the door or entryway, and a unique code backed by a hash of the image bytes so the photo can be re-checked months later. A bare camera-roll photo of a box has none of those and loses every chargeback it is submitted against, because nothing in it fixes when or where it was taken.
+
+- Q: Is a photo enough proof of delivery on its own?
+  A: Only if the photo carries its own verification. An unverified image proves a box existed near a door at an unknown time; that fails against a customer claim. A photo with network-verified time, GPS with an accuracy radius, printed street address and a re-checkable integrity code is proof, because each of those can be tested independently of whoever submitted it.
+- Q: Can a delivery driver fake a proof-of-delivery photo?
+  A: With an ordinary camera app, yes, and easily — turn off automatic time, set the clock, or rewrite the GPS tags afterwards with a free metadata tool. That is why network time and a server-side seal exist. When the timestamp comes from the network and the image bytes are hashed at capture, both of those attacks show up: the clock skew is printed on the photo, and any later edit breaks the hash.
+- Q: How long should proof-of-delivery photos be kept?
+  A: Longer than your chargeback and claim windows, which commonly run 60 to 120 days and can stretch further for freight and B2B terms. Practically: keep the photo and keep the code resolvable for at least a year, and confirm in writing that the vendor will still resolve codes after you downgrade or cancel.
+- Q: What does proof-of-delivery software cost?
+  A: Routing and proof are usually billed differently. GeoCliks lists Delivery Routes as its own plan family priced on stops and drivers, while verified capture starts at $0 on Free — 300 captures a month, 1 seat — and $7 a month on Plus for unlimited captures and full PDF, Excel, ZIP and KMZ export. Compare per verified delivery rather than per seat; seat pricing hides the volume cost.
+- Q: Does proof of delivery work without cell signal?
+  A: It has to, because loading docks, basements and rural routes have none. The requirement is that the capture happens offline with the network time and location already resolved and sealed locally, then syncs when signal returns. An app that silently falls back to the device clock when offline is worse than no stamp at all, because the photo looks verified and is not.
+

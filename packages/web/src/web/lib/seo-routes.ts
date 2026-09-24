@@ -83,6 +83,21 @@ export const PAGE_SEO = {
       "See how GeoCliks compares to CompanyCam on tamper-proof timestamps, GPS verification, pricing and team features, with what each one does not do.",
   },
 
+  // Field Notes. The index and the method page are static, so they key here;
+  // the posts themselves are resolved from the catalog in `seoForPath` below,
+  // because a per-slug row here would be a second place to forget to update.
+  "/blog": {
+    title: "GeoCliks Field Notes — Verified Field Photo Answers",
+    description:
+      "Straight answers on verified field photos: what makes one tamper-proof, whether GPS timestamps can be faked, what documentation software costs, and what proof of delivery needs.",
+  },
+
+  "/blog/method": {
+    title: "Field Notes Method — How These Answers Are Written",
+    description:
+      "The six rules behind every Field Notes post: topics chosen from demand data, the answer in the first three lines, published numbers only, and no competitor named or ranked.",
+  },
+
   "/terms": {
     title: "Terms of Service — GeoCliks",
     description:
@@ -167,8 +182,7 @@ export const HELP_SEO = {
   },
   "getting-started/install-the-app": {
     title: "Install the GeoCliks App",
-    description:
-      "Download and install GeoCliks on iOS or Android and sign in for the first time.",
+    description: "Download and install GeoCliks on iOS or Android and sign in for the first time.",
   },
   "getting-started/for-solo-user": {
     title: "GeoCliks for Solo Users",
@@ -209,8 +223,7 @@ export const HELP_SEO = {
   },
   "mobile-app/assign-capture-to-project": {
     title: "Assigning a Capture to a Project",
-    description:
-      "How to file a GeoCliks photo or video under the right project as you shoot it.",
+    description: "How to file a GeoCliks photo or video under the right project as you shoot it.",
   },
   "mobile-app/watermark-templates": {
     title: "GeoCliks Watermark Templates",
@@ -223,8 +236,7 @@ export const HELP_SEO = {
   },
   "mobile-app/photo-quality-and-storage": {
     title: "Photo Quality & Storage in GeoCliks",
-    description:
-      "How GeoCliks balances photo quality against device storage and upload size.",
+    description: "How GeoCliks balances photo quality against device storage and upload size.",
   },
   "mobile-app/notifications": {
     title: "Managing GeoCliks Notifications",
@@ -244,8 +256,7 @@ export const HELP_SEO = {
   },
   "teamspace/create-a-project": {
     title: "Creating a Project in GeoCliks",
-    description:
-      "Set up a new project in your Teamspace to organize captures by job site.",
+    description: "Set up a new project in your Teamspace to organize captures by job site.",
   },
   "teamspace/browse-and-filter-photos": {
     title: "Browsing & Filtering Photos in GeoCliks",
@@ -254,8 +265,7 @@ export const HELP_SEO = {
   },
   "teamspace/map-view": {
     title: "GeoCliks Map View",
-    description:
-      "See every captured photo plotted by its verified GPS location across a project.",
+    description: "See every captured photo plotted by its verified GPS location across a project.",
   },
   "teamspace/before-after-compare": {
     title: "Before/After Photo Comparison in GeoCliks",
@@ -274,23 +284,19 @@ export const HELP_SEO = {
   },
   "teamspace/invite-your-crew": {
     title: "Inviting Your Crew to GeoCliks",
-    description:
-      "Add crew members to your Teamspace and control what they can capture and see.",
+    description: "Add crew members to your Teamspace and control what they can capture and see.",
   },
   "teamspace/roles-and-permissions": {
     title: "GeoCliks Roles & Permissions",
-    description:
-      "What team owners, admins and crew members can each do inside a Teamspace.",
+    description: "What team owners, admins and crew members can each do inside a Teamspace.",
   },
   "teamspace/messages-and-broadcasts": {
     title: "Messages & Broadcasts in GeoCliks",
-    description:
-      "Send updates to your whole crew or a single project team from inside GeoCliks.",
+    description: "Send updates to your whole crew or a single project team from inside GeoCliks.",
   },
   "teamspace/watermark-template-library": {
     title: "GeoCliks Watermark Template Library",
-    description:
-      "Browse, create and manage the watermark templates available to your Teamspace.",
+    description: "Browse, create and manage the watermark templates available to your Teamspace.",
   },
 
   // ── Delivery routes ──────────────────────────────────────────────────────
@@ -305,8 +311,7 @@ export const HELP_SEO = {
   },
   "delivery-routes/add-stops-by-pasting-a-list": {
     title: "Adding Stops by Pasting a List",
-    description:
-      "Paste a list of addresses straight into GeoCliks to build a route in seconds.",
+    description: "Paste a list of addresses straight into GeoCliks to build a route in seconds.",
   },
   "delivery-routes/geocoding-and-fixing-addresses": {
     title: "Geocoding & Fixing Addresses in GeoCliks",
@@ -323,8 +328,7 @@ export const HELP_SEO = {
   },
   "delivery-routes/live-dispatch": {
     title: "Live Dispatch in GeoCliks",
-    description:
-      "Track a driver's run in real time and manage a route as it happens.",
+    description: "Track a driver's run in real time and manage a route as it happens.",
   },
   "delivery-routes/driver-run-and-proof-of-delivery": {
     title: "Proof of Delivery in GeoCliks",
@@ -333,13 +337,11 @@ export const HELP_SEO = {
   },
   "delivery-routes/failed-and-skipped-stops": {
     title: "Handling Failed & Skipped Stops",
-    description:
-      "What happens in GeoCliks when a driver can't complete a stop.",
+    description: "What happens in GeoCliks when a driver can't complete a stop.",
   },
   "delivery-routes/tracking-links-and-notifications": {
     title: "Tracking Links & Delivery Notifications",
-    description:
-      "Share a live tracking link and manage delivery notifications with GeoCliks.",
+    description: "Share a live tracking link and manage delivery notifications with GeoCliks.",
   },
 
   // ── Verify ───────────────────────────────────────────────────────────────
@@ -350,8 +352,7 @@ export const HELP_SEO = {
   },
   "verify/verify-a-photo": {
     title: "How to Verify a GeoCliks Photo",
-    description:
-      "Enter a photo code to confirm a GeoCliks image is the network-verified original.",
+    description: "Enter a photo code to confirm a GeoCliks image is the network-verified original.",
   },
   "verify/verify-results-explained": {
     title: "Understanding GeoCliks Verify Results",
@@ -371,8 +372,7 @@ export const HELP_SEO = {
   },
   "plans-billing/delivery-plans": {
     title: "GeoCliks Delivery Plans",
-    description:
-      "Pricing and features for GeoCliks' delivery-route and proof-of-delivery plans.",
+    description: "Pricing and features for GeoCliks' delivery-route and proof-of-delivery plans.",
   },
   "plans-billing/upgrade-or-change-plan": {
     title: "Upgrading or Changing Your GeoCliks Plan",
@@ -380,13 +380,11 @@ export const HELP_SEO = {
   },
   "plans-billing/seats-and-billing": {
     title: "Managing Seats & Billing in GeoCliks",
-    description:
-      "Add, remove or reassign seats and understand how GeoCliks bills your team.",
+    description: "Add, remove or reassign seats and understand how GeoCliks bills your team.",
   },
   "plans-billing/payment-and-invoices": {
     title: "Payments & Invoices — GeoCliks",
-    description:
-      "Where to find GeoCliks invoices and update your payment method.",
+    description: "Where to find GeoCliks invoices and update your payment method.",
   },
   "plans-billing/cancel-or-downgrade": {
     title: "Canceling or Downgrading GeoCliks",
@@ -397,38 +395,31 @@ export const HELP_SEO = {
   // ── Troubleshoot ─────────────────────────────────────────────────────────
   "troubleshoot/photos-not-uploading": {
     title: "Fix: Photos Not Uploading in GeoCliks",
-    description:
-      "Troubleshooting steps when captures are stuck in the GeoCliks upload queue.",
+    description: "Troubleshooting steps when captures are stuck in the GeoCliks upload queue.",
   },
   "troubleshoot/gps-or-address-wrong": {
     title: "Fix: Wrong GPS or Address on a Photo",
-    description:
-      "What to do when GeoCliks captures the wrong location or street address.",
+    description: "What to do when GeoCliks captures the wrong location or street address.",
   },
   "troubleshoot/cant-sign-in": {
     title: "Fix: Can't Sign In to GeoCliks",
-    description:
-      "Steps to resolve sign-in problems on the GeoCliks app or website.",
+    description: "Steps to resolve sign-in problems on the GeoCliks app or website.",
   },
   "troubleshoot/two-factor-issues": {
     title: "Fix: Two-Factor Login Issues in GeoCliks",
-    description:
-      "Resolving two-factor authentication problems when signing in to GeoCliks.",
+    description: "Resolving two-factor authentication problems when signing in to GeoCliks.",
   },
   "troubleshoot/invite-not-working": {
     title: "Fix: Teamspace Invite Not Working",
-    description:
-      "Why a GeoCliks Teamspace invite might fail and how to resend it.",
+    description: "Why a GeoCliks Teamspace invite might fail and how to resend it.",
   },
   "troubleshoot/route-optimize-failed": {
     title: "Fix: Route Optimization Failed",
-    description:
-      "What to do when GeoCliks can't optimize a delivery route's stop order.",
+    description: "What to do when GeoCliks can't optimize a delivery route's stop order.",
   },
   "troubleshoot/export-or-report-failed": {
     title: "Fix: Export or Report Failed in GeoCliks",
-    description:
-      "Troubleshooting a failed closeout report or photo export in GeoCliks.",
+    description: "Troubleshooting a failed closeout report or photo export in GeoCliks.",
   },
   "troubleshoot/notifications-not-arriving": {
     title: "Fix: GeoCliks Notifications Not Arriving",
@@ -438,13 +429,11 @@ export const HELP_SEO = {
   // ── Legal ────────────────────────────────────────────────────────────────
   "legal/data-ownership": {
     title: "Who Owns Your GeoCliks Data?",
-    description:
-      "A plain-language summary of who owns the photos and data captured in GeoCliks.",
+    description: "A plain-language summary of who owns the photos and data captured in GeoCliks.",
   },
   "legal/data-retention": {
     title: "GeoCliks Data Retention Policy",
-    description:
-      "How long GeoCliks keeps your photos and account data, summarized.",
+    description: "How long GeoCliks keeps your photos and account data, summarized.",
   },
   "legal/privacy-summary": {
     title: "GeoCliks Privacy Policy — Summary",
@@ -452,14 +441,61 @@ export const HELP_SEO = {
   },
   "legal/terms-summary": {
     title: "GeoCliks Terms of Service — Summary",
-    description:
-      "The short version of what you're agreeing to when you use GeoCliks.",
+    description: "The short version of what you're agreeing to when you use GeoCliks.",
   },
 } satisfies Record<string, RouteSeoCopy>;
 
 /** Copy for a help category or "category/slug" article, if it has any. */
 export const helpSeo = (ref: string): RouteSeoCopy | undefined =>
   (HELP_SEO as Record<string, RouteSeoCopy>)[ref];
+
+/**
+ * Field Notes post copy, keyed by slug.
+ *
+ * Here rather than on the `Post` objects in `../lib/posts` for the same reason
+ * the help copy is here: this module is in the eager bundle — `useSeo` and the
+ * server-side injection both need it — while the post bodies are a lazy chunk
+ * loaded only when someone opens the blog. Reading a title off a `Post` would
+ * drag every post's prose into the landing page's bundle.
+ *
+ * A post's `title` is the question verbatim, which is the H1 and routinely runs
+ * past 60 characters. These are the SERP-length rewrites of the same question,
+ * so the two are not duplicates of each other.
+ *
+ * `assertPostSeo()` in `../lib/posts` fails in development when a post ships
+ * without a row here.
+ */
+export const BLOG_SEO = {
+  "what-makes-a-field-photo-tamper-proof": {
+    title: "What Makes a Field Photo Tamper-Proof? | GeoCliks",
+    description:
+      "A field photo is tamper-proof when the time comes from the network, the location is stamped at the shutter, and a hash and signature break if a pixel changes.",
+  },
+  "can-a-gps-timestamp-photo-be-faked": {
+    title: "Can a GPS & Timestamp Photo Be Faked? | GeoCliks",
+    description:
+      "Yes — EXIF time and GPS tags are editable fields, and mock-location apps fake coordinates. What stops it is a server-side seal you can re-check afterwards.",
+  },
+  "how-much-does-jobsite-photo-documentation-software-cost": {
+    title: "Job-Site Photo Documentation Cost | GeoCliks",
+    description:
+      "What job-site photo documentation software costs in 2026, how per-seat and per-workspace pricing differ, and which verification features sit behind a paywall.",
+  },
+  "best-construction-photo-documentation-software-what-to-check": {
+    title: "Construction Photo Software: What to Check | GeoCliks",
+    description:
+      "The checks that decide whether construction photo documentation holds up in a dispute: time source, location accuracy, the integrity seal, and export format.",
+  },
+  "what-should-photo-proof-of-delivery-include": {
+    title: "What Should Photo Proof of Delivery Include? | GeoCliks",
+    description:
+      "Proof of delivery needs a verified capture time, the stop's coordinates and address, the parcel and placement in frame, and a seal the recipient can check.",
+  },
+} satisfies Record<string, RouteSeoCopy>;
+
+/** Copy for a Field Notes post slug, if it has any. */
+export const blogSeo = (slug: string): RouteSeoCopy | undefined =>
+  (BLOG_SEO as Record<string, RouteSeoCopy>)[slug];
 
 /**
  * The paths that must never appear in a search result.
@@ -507,7 +543,8 @@ export interface ResolvedRouteSeo extends Partial<RouteSeoCopy> {
 
 /**
  * The copy for a pathname, resolved the way the router resolves it: the
- * marketing table first, then `/help/:category/:slug`, then `/help/:category`.
+ * marketing table first, then `/help/:category/:slug` and `/help/:category`,
+ * then `/blog/:slug`.
  *
  * An unknown path comes back with no copy at all rather than a guess, which
  * leaves the sitewide defaults in `index.html` in place. Private paths come
@@ -526,6 +563,11 @@ export function seoForPath(pathname: string): ResolvedRouteSeo {
     const ref = path.slice("/help/".length);
     const help = helpSeo(ref);
     if (help) return { ...help, noindex: false };
+  }
+
+  if (path.startsWith("/blog/")) {
+    const post = blogSeo(path.slice("/blog/".length));
+    if (post) return { ...post, noindex: false };
   }
 
   return { noindex: false };

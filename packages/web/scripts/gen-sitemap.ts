@@ -7,20 +7,26 @@
  *
  *   cd packages/web && bun scripts/gen-sitemap.ts
  *
+ * Field Notes (/blog) is generated the same way, from the post catalog in
+ * src/web/lib/posts — the blog is a folder of this site, not a subdomain, so it
+ * belongs in this one sitemap rather than a second one.
+ *
  * Deliberately omitted:
  *  - `changefreq` and `priority`: Google has said for years that it ignores
  *    both. They are noise that has to be kept plausible for no benefit.
- *  - `lastmod`: only worth sending when it is truthful. Stamping every URL with
- *    today's date on each run is the thing Google learned to distrust, and the
- *    real per-page modification date is not knowable from here.
+ *  - `lastmod` on the marketing and Help URLs: only worth sending when it is
+ *    truthful. Stamping every URL with today's date on each run is the thing
+ *    Google learned to distrust, and the real per-page modification date is not
+ *    knowable from here. Blog posts are the exception: each one carries its own
+ *    `publishedAt`/`updatedAt` in the catalog, so that date is real and is sent.
  *  - `hreflang`: the site serves all 11 locales from one URL with a client-side
  *    switch, so there is no per-locale URL to point at.
  */
 import { promises as fs } from "node:fs";
 import path from "node:path";
 import { allArticles, articleHref, helpCategories } from "../src/web/help/resolve";
-
-const SITE_URL = "https://geocliks.com";
+import { posts, assertPostSeo } from "../src/web/lib/posts";
+import { SITE_URL } from "../src/web/lib/seo-routes";
 
 /** Public, indexable, static paths. Anything behind auth or a token is excluded. */
 const STATIC_PATHS = [
@@ -30,6 +36,8 @@ const STATIC_PATHS = [
   "/pricing",
   "/construction-photo-documentation",
   "/alternatives/companycam",
+  "/blog",
+  "/blog/method",
   "/terms",
   "/privacy",
 ];
@@ -44,19 +52,35 @@ function xmlEscape(value: string): string {
 }
 
 function build(): string {
+  // Fails the build rather than the crawl: a post with no SEO row would be
+  // listed here and then serve the sitewide default title.
+  assertPostSeo();
+
   // The sitemap describes the English URL space, which is the whole URL space.
   const categories = helpCategories("en").map((category) => `/help/${category.slug}`);
   const articles = allArticles("en").map(({ category, article }) =>
     articleHref(category.slug, article.slug),
   );
 
-  const paths = [...STATIC_PATHS, ...categories, ...articles];
+  const entries: { path: string; lastmod?: string }[] = [
+    ...STATIC_PATHS.map((p) => ({ path: p })),
+    ...categories.map((p) => ({ path: p })),
+    ...articles.map((p) => ({ path: p })),
+    ...posts.map((post) => ({
+      path: `/blog/${post.slug}`,
+      lastmod: post.updatedAt ?? post.publishedAt,
+    })),
+  ];
 
   const seen = new Set<string>();
-  const unique = paths.filter((p) => !seen.has(p) && seen.add(p));
+  const unique = entries.filter((e) => !seen.has(e.path) && seen.add(e.path));
 
   const urls = unique
-    .map((p) => `  <url>\n    <loc>${xmlEscape(`${SITE_URL}${p}`)}</loc>\n  </url>`)
+    .map((e) => {
+      const loc = `    <loc>${xmlEscape(`${SITE_URL}${e.path}`)}</loc>`;
+      const mod = e.lastmod ? `\n    <lastmod>${xmlEscape(e.lastmod)}</lastmod>` : "";
+      return `  <url>\n${loc}${mod}\n  </url>`;
+    })
     .join("\n");
 
   return `<?xml version="1.0" encoding="UTF-8"?>

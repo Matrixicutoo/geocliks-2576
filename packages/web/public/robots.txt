@@ -35,4 +35,40 @@ Disallow: /sign-up
 # all live there, and "/#pricing" forwards to it. Crawlable on purpose: it is a URL
 # people type, link to and search for.
 
+# Answer engines and AI crawlers, named explicitly.
+#
+# They are already covered by the `User-agent: *` group above; these groups exist
+# to say so on purpose rather than by default, because /blog is written to be
+# quoted by them. A named group replaces the wildcard for that crawler entirely,
+# so each one repeats the private-URL rules — otherwise naming GPTBot here would
+# hand it /app and every share token.
+#
+# Google-Extended is not a crawler and takes no Disallow of its own: it is the
+# switch that says Gemini and the AI features in Search may use what Googlebot
+# already fetched. Allow is the answer we want.
+
+User-agent: GPTBot
+User-agent: OAI-SearchBot
+User-agent: ChatGPT-User
+User-agent: PerplexityBot
+User-agent: Perplexity-User
+User-agent: ClaudeBot
+User-agent: Claude-User
+User-agent: Applebot-Extended
+User-agent: CCBot
+Allow: /
+Disallow: /app
+Disallow: /admin
+Disallow: /share/
+Disallow: /t/
+Disallow: /v/
+Disallow: /join/
+Disallow: /verify
+Disallow: /reset-password
+Disallow: /sign-in
+Disallow: /sign-up
+
+User-agent: Google-Extended
+Allow: /
+
 Sitemap: https://geocliks.com/sitemap.xml

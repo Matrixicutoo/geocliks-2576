@@ -126,6 +126,9 @@ export function SiteFooter() {
               <Link to="/help" className="transition-colors hover:text-chalk">
                 {t("home.nav.help")}
               </Link>
+              <Link to="/blog" className="transition-colors hover:text-chalk">
+                {t("home.nav.fieldNotes")}
+              </Link>
               <a href={`mailto:${SUPPORT_EMAIL}`} className="transition-colors hover:text-chalk">
                 {SUPPORT_EMAIL}
               </a>

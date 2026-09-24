@@ -6,7 +6,7 @@
     ".": "./src/api/index.ts"
   },
   "scripts": {
-    "build": "tsc --noEmit && bun scripts/gen-sitemap.ts && vite build",
+    "build": "tsc --noEmit && bun scripts/gen-sitemap.ts && bun scripts/gen-llms.ts && vite build",
     "dev": "vite",
     "start": "bun src/server.ts",
     "typecheck": "tsc -p tsconfig.app.json --noEmit && tsc -p tsconfig.node.json --noEmit",

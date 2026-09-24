@@ -592,6 +592,7 @@ export const pl: Catalog = {
   "home.nav.website": "Strona www",
   "home.nav.help": "Centrum pomocy",
   "home.nav.constructionDocs": "Dokumentacja zdjęciowa budowy",
+  "home.nav.fieldNotes": "Notatki z terenu",
   "home.nav.vsCompanycam": "GeoCliks a CompanyCam",
   "home.nav.emailSupport": "Wsparcie e-mail",
   "home.nav.contactSales": "Kontakt ze sprzedażą",

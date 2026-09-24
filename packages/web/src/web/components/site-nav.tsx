@@ -111,6 +111,7 @@ const RESOURCE_ITEMS: MenuItem[] = [
   { label: "home.nav.help", href: "/help" },
   { label: "home.nav.constructionDocs", href: "/construction-photo-documentation" },
   { label: "home.nav.vsCompanycam", href: "/alternatives/companycam" },
+  { label: "home.nav.fieldNotes", href: "/blog" },
   { label: "home.footer.terms", href: "/terms" },
   { label: "home.footer.privacy", href: "/privacy" },
   { label: "home.footer.deleteAccount", href: "/delete-account" },
