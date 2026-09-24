@@ -14,18 +14,32 @@ import { scrollSiteToTop } from "../lib/site-scroll";
  * landing page, these pages force the light theme and restore the visitor's
  * choice on the way out.
  *
- * The body copy of both pages is intentionally English-only: machine-translating
- * legal text can change what it means.
+ * The body copy of /terms and /privacy is intentionally English-only:
+ * machine-translating legal text can change what it means. /delete-account uses the
+ * same chrome but is translated, because it is instructions for using the app rather
+ * than binding text — hence the `seoTitle` and `meta` overrides.
  */
 export function LegalPage({
   title,
   path,
+  seoTitle,
+  meta,
   children,
 }: {
   /** Visible `<h1>`, e.g. "Terms of Service". */
   title: string;
   /** Canonical path, e.g. "/terms". */
   path: string;
+  /**
+   * `<title>` for the tab, when the page has a translated one. Omitted, the English
+   * copy from `seo-routes.ts` is used — which is what a crawler reads either way.
+   */
+  seoTitle?: string;
+  /**
+   * Replaces the "Effective <date>" line under the heading. `null` leaves it off, for
+   * a page that is not a dated document.
+   */
+  meta?: string | null;
   children: React.ReactNode;
 }) {
   // The head lives here rather than in terms.tsx and privacy.tsx so a third
@@ -33,7 +47,11 @@ export function LegalPage({
   // `seo-routes.ts` rather than passed in, so the tag a crawler gets from the
   // HTML response and the tag React writes after mounting are the same string.
   const seo = seoForPath(path);
-  useSeo({ title: seo.title ?? `${title} — GeoCliks`, description: seo.description, path });
+  useSeo({
+    title: seoTitle ?? seo.title ?? `${title} — GeoCliks`,
+    description: seo.description,
+    path,
+  });
 
   useEffect(() => {
     const root = document.documentElement;
@@ -66,9 +84,11 @@ export function LegalPage({
         <h1 className="font-display text-[34px] font-bold leading-tight tracking-tight text-chalk sm:text-[42px]">
           {title}
         </h1>
-        <p className="mono mt-3 text-[10.5px] uppercase tracking-widest text-fog">
-          Effective {LEGAL_EFFECTIVE_DATE}
-        </p>
+        {meta !== null && (
+          <p className="mono mt-3 text-[10.5px] uppercase tracking-widest text-fog">
+            {meta ?? `Effective ${LEGAL_EFFECTIVE_DATE}`}
+          </p>
+        )}
         <div className="mt-10 space-y-8">{children}</div>
       </main>
 
@@ -87,13 +107,51 @@ export function LegalSection({ title, children }: { title: string; children: Rea
   );
 }
 
+/**
+ * Inline emphasis inside a translated string: `**Profile**` renders as the bright
+ * span the hand-written English JSX used to spell out with `<strong>`. Same marker
+ * as the chat widget's renderer, so there is one convention to translate against —
+ * and a translator can move the emphasis onto whatever word their language puts the
+ * UI label on, which a fixed `<strong>` in JSX cannot do.
+ */
+export function LegalCopy({ text }: { text: string }) {
+  return (
+    <>
+      {text.split(/(\*\*[^*]+\*\*)/g).map((part, i) =>
+        part.startsWith("**") && part.endsWith("**") && part.length > 4 ? (
+          <strong key={i} className="text-chalk">
+            {part.slice(2, -2)}
+          </strong>
+        ) : (
+          part
+        ),
+      )}
+    </>
+  );
+}
+
 /** Bulleted list styled to match the legal body copy. */
 export function LegalList({ items }: { items: string[] }) {
   return (
     <ul className="ml-4 list-disc space-y-2">
       {items.map((item) => (
-        <li key={item}>{item}</li>
+        <li key={item}>
+          <LegalCopy text={item} />
+        </li>
       ))}
     </ul>
+  );
+}
+
+/** Numbered steps, for a page that walks through something in the app. */
+export function LegalSteps({ items }: { items: string[] }) {
+  return (
+    <ol className="ml-4 list-decimal space-y-2">
+      {items.map((item) => (
+        <li key={item}>
+          <LegalCopy text={item} />
+        </li>
+      ))}
+    </ol>
   );
 }

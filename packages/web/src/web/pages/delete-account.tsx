@@ -1,99 +1,71 @@
-import { LegalList, LegalPage, LegalSection } from "../components/legal-page";
+import { LegalCopy, LegalList, LegalPage, LegalSection, LegalSteps } from "../components/legal-page";
+import { useT } from "../lib/i18n";
 import { SUPPORT_EMAIL } from "../lib/support";
 
 /**
  * Public account-deletion page. Required by Google Play's Data safety form (the
  * "Delete account URL"), which has to be reachable without signing in and has to
- * spell out the steps in the app itself. English only, like /terms and /privacy.
+ * spell out the steps in the app itself.
+ *
+ * Translated into all eleven locales, unlike /terms and /privacy: this is a how-to
+ * for the app's own screens, reached from the footer link that is already localized,
+ * so the person following the steps should read them in the language the app is in.
+ * The confirmation word "DELETE" stays English in every locale, because the app's
+ * delete flow only accepts that literal string.
  */
 export default function DeleteAccount() {
+  const t = useT();
+  const email = { email: SUPPORT_EMAIL };
+
   return (
-    <LegalPage title="Delete your GeoCliks account" path="/delete-account">
-      <p className="text-[14.5px] leading-relaxed text-fog">
-        You can delete your GeoCliks account and its data yourself, from inside the app or from the
-        website. Nothing has to go through us. This page explains exactly how, and what is removed.
-      </p>
+    <LegalPage
+      title={t("del.h1")}
+      path="/delete-account"
+      seoTitle={t("seo.delete.title")}
+      meta={null}
+    >
+      <p className="text-[14.5px] leading-relaxed text-fog">{t("del.intro")}</p>
 
-      <LegalSection title="In the GeoCliks mobile app">
-        <ol className="ml-4 list-decimal space-y-2">
-          <li>Open the GeoCliks app and sign in.</li>
-          <li>Tap your profile photo or initials in the top corner to open Profile.</li>
-          <li>Scroll to the bottom, to the section titled "Delete account".</li>
-          <li>
-            Tap <strong className="text-chalk">Delete account</strong>, type{" "}
-            <strong className="text-chalk">DELETE</strong> in the confirmation box, and confirm.
-          </li>
-        </ol>
-        <p>
-          The deletion runs immediately and signs you out. It cannot be undone, so export anything
-          you want to keep first.
-        </p>
+      <LegalSection title={t("del.app.h2")}>
+        <LegalSteps
+          items={[t("del.app.s1"), t("del.app.s2"), t("del.app.s3"), t("del.app.s4")]}
+        />
+        <p>{t("del.app.after")}</p>
       </LegalSection>
 
-      <LegalSection title="On the website">
-        <ol className="ml-4 list-decimal space-y-2">
-          <li>
-            Sign in at <span className="text-chalk">geocliks.com</span>.
-          </li>
-          <li>
-            Open <strong className="text-chalk">Profile</strong> from the sidebar.
-          </li>
-          <li>
-            Scroll to <strong className="text-chalk">Delete account</strong>, type{" "}
-            <strong className="text-chalk">DELETE</strong> to confirm, and delete.
-          </li>
-        </ol>
+      <LegalSection title={t("del.web.h2")}>
+        <LegalSteps items={[t("del.web.s1"), t("del.web.s2"), t("del.web.s3")]} />
       </LegalSection>
 
-      <LegalSection title="What is deleted">
+      <LegalSection title={t("del.removed.h2")}>
+        <LegalList items={[t("del.removed.b1"), t("del.removed.b2"), t("del.removed.b3")]} />
+      </LegalSection>
+
+      <LegalSection title={t("del.kept.h2")}>
         <LegalList
-          items={[
-            "Your identity: name, email address, profile photo, sign-in sessions and push notification tokens.",
-            "If you own the workspace: the workspace itself, and every photo, video, document, project, route, time-clock entry, message, report, share link and watermark template in it — including the stored image and video files.",
-            "Share links and verification codes issued from that workspace stop resolving.",
-          ]}
+          items={[t("del.kept.b1"), t("del.kept.b2"), t("del.kept.b3"), t("del.kept.b4")]}
         />
       </LegalSection>
 
-      <LegalSection title="What is kept, and for how long">
+      <LegalSection title={t("del.partial.h2")}>
+        <p>{t("del.partial.intro")}</p>
         <LegalList
           items={[
-            "If you were invited into someone else's workspace, captures you took stay with that workspace: they are the workspace owner's evidence record, not yours. Your identity is still deleted.",
-            "Invited members cannot delete themselves out of a workspace's record; the workspace owner removes the member, and their captures stay.",
-            "Billing and tax records we are legally required to keep are retained for as long as the law requires, and are never used for anything else.",
-            "Encrypted backups and security logs rotate out within 90 days, so a deletion can take up to 90 days to work through every copy.",
-          ]}
-        />
-      </LegalSection>
-
-      <LegalSection title="Deleting some of your data, without deleting your account">
-        <p>
-          You do not have to close your account to remove data. Inside the app you can delete
-          individual items, and each deletion removes the stored file as well as the record:
-        </p>
-        <LegalList
-          items={[
-            "Photos, videos and scanned documents: open the capture, tap the menu, then Delete. The image or video file is removed from storage with it.",
-            "Projects: open the project, then Delete project. The project and its assignments go.",
-            "Messages: open the conversation, press and hold the message, then Delete.",
-            "Routes and time-clock entries: open the item and delete it from its detail screen.",
-            "Profile photo: Profile, then remove the photo. Your name and email can be edited there too.",
+            t("del.partial.b1"),
+            t("del.partial.b2"),
+            t("del.partial.b3"),
+            t("del.partial.b4"),
+            t("del.partial.b5"),
           ]}
         />
         <p>
-          For anything you cannot reach yourself, email{" "}
-          <span className="text-chalk">{SUPPORT_EMAIL}</span> from the address on your account and
-          say which data you want removed. We confirm it is your address and delete it, normally
-          within 30 days. Encrypted backups and security logs rotate out within 90 days. Billing and
-          tax records we are legally required to keep are retained for as long as the law requires.
+          <LegalCopy text={t("del.partial.support", email)} />
         </p>
       </LegalSection>
 
-      <LegalSection title="If you cannot sign in">
+      <LegalSection title={t("del.locked.h2")}>
         <p>
-          Email <span className="text-chalk">{SUPPORT_EMAIL}</span> from the address on the account
-          and ask us to delete it. We confirm it is your address and then delete the account for
-          you, normally within 30 days.
+          <LegalCopy text={t("del.locked.body", email)} />
         </p>
       </LegalSection>
     </LegalPage>

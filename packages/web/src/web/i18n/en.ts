@@ -1361,6 +1361,43 @@ export const en = {
   "feed.scrollBack": "Scroll photos back",
   "feed.scrollOn": "Scroll photos on",
   "projects.viewAll": "View all {n}",
+
+  // Delete-account page (/delete-account). Instructional, not legal copy, so unlike
+  // /terms and /privacy it is translated. **bold** marks the words the page renders as
+  // UI labels; the confirmation word DELETE is typed in English in every language,
+  // exactly as the app's own delete flow requires it.
+  "seo.delete.title": "Delete Your GeoCliks Account",
+  "del.h1": "Delete your GeoCliks account",
+  "del.intro": "You can delete your GeoCliks account and its data yourself, from inside the app or from the website. Nothing has to go through us. This page explains exactly how, and what is removed.",
+  "del.app.h2": "In the GeoCliks mobile app",
+  "del.app.s1": "Open the GeoCliks app and sign in.",
+  "del.app.s2": "Tap your profile photo or initials in the top corner to open **Profile**.",
+  "del.app.s3": "Scroll to the bottom, to the section titled **Delete account**.",
+  "del.app.s4": "Tap **Delete account**, type **DELETE** in the confirmation box, and confirm.",
+  "del.app.after": "The deletion runs immediately and signs you out. It cannot be undone, so export anything you want to keep first.",
+  "del.web.h2": "On the website",
+  "del.web.s1": "Sign in at **geocliks.com**.",
+  "del.web.s2": "Open **Profile** from the sidebar.",
+  "del.web.s3": "Scroll to **Delete account**, type **DELETE** to confirm, and delete.",
+  "del.removed.h2": "What is deleted",
+  "del.removed.b1": "Your identity: name, email address, profile photo, sign-in sessions and push notification tokens.",
+  "del.removed.b2": "If you own the Teamspace: the Teamspace itself, and every photo, video, document, project, route, time-clock entry, message, report, share link and watermark template in it — including the stored image and video files.",
+  "del.removed.b3": "Share links and verification codes issued from that Teamspace stop resolving.",
+  "del.kept.h2": "What is kept, and for how long",
+  "del.kept.b1": "If you were invited into someone else's Teamspace, captures you took stay with that Teamspace: they are the owner's evidence record, not yours. Your identity is still deleted.",
+  "del.kept.b2": "Invited members cannot delete themselves out of a Teamspace's record; the owner removes the member, and their captures stay.",
+  "del.kept.b3": "Billing and tax records we are legally required to keep are retained for as long as the law requires, and are never used for anything else.",
+  "del.kept.b4": "Encrypted backups and security logs rotate out within 90 days, so a deletion can take up to 90 days to work through every copy.",
+  "del.partial.h2": "Deleting some of your data, without deleting your account",
+  "del.partial.intro": "You do not have to close your account to remove data. Inside the app you can delete individual items, and each deletion removes the stored file as well as the record:",
+  "del.partial.b1": "Photos, videos and scanned documents: open the capture, tap the menu, then Delete. The image or video file is removed from storage with it.",
+  "del.partial.b2": "Projects: open the project, then Delete project. The project and its assignments go.",
+  "del.partial.b3": "Messages: open the conversation, press and hold the message, then Delete.",
+  "del.partial.b4": "Routes and time-clock entries: open the item and delete it from its detail screen.",
+  "del.partial.b5": "Profile photo: Profile, then remove the photo. Your name and email can be edited there too.",
+  "del.partial.support": "For anything you cannot reach yourself, email **{email}** from the address on your account and say which data you want removed. We confirm it is your address and delete it, normally within 30 days. Encrypted backups and security logs rotate out within 90 days. Billing and tax records we are legally required to keep are retained for as long as the law requires.",
+  "del.locked.h2": "If you cannot sign in",
+  "del.locked.body": "Email **{email}** from the address on the account and ask us to delete it. We confirm it is your address and then delete the account for you, normally within 30 days.",
 } as const;
 
 export type Catalog = Record<keyof typeof en, string>;
