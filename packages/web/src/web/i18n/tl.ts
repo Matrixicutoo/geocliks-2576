@@ -596,6 +596,8 @@ export const tl: Catalog = {
   "home.nav.help": "Sentro ng tulong",
   "home.nav.constructionDocs": "Dokumentasyon ng larawan sa konstruksiyon",
   "home.nav.fieldNotes": "Mga tala sa field",
+  "home.nav.blog": "Blog",
+  "home.footer.fieldNotesTag": "Mga gabay sa verified na photo documentation",
   "home.nav.vsCompanycam": "GeoCliks vs CompanyCam",
   "home.nav.emailSupport": "Suporta sa email",
   "home.nav.contactSales": "Makipag-ugnayan sa sales",
@@ -875,7 +877,8 @@ export const tl: Catalog = {
   "routes.stop.skipped": "Nilaktawan",
   "routes.stop.viewProof": "Tingnan ang litrato ng paghahatid",
   "routes.stop.editAddress": "I-edit ang address na ito",
-  "routes.stop.addressLocked": "Sarado na ang hintong ito - bahagi ng rekord ng paghahatid ang address nito",
+  "routes.stop.addressLocked":
+    "Sarado na ang hintong ito - bahagi ng rekord ng paghahatid ang address nito",
   "routes.stop.noteLabel": "Tala",
   "routes.stop.notePlaceholder": "Ang kailangang malaman ng driver sa address na ito",
   "routes.stop.noteEdit": "I-edit ang talang ito",
@@ -900,7 +903,8 @@ export const tl: Catalog = {
   "routes.liveAdded": "Naidagdag bilang hinto {n} ng {total}",
   "routes.liveDriver": "Driver",
   "routes.liveDriverThis": "Ang run na ito",
-  "routes.liveDriverHint": "Iwan sa run na ito, o ipadala ang order sa ibang driver - sasama ito sa run na meron na siya ngayon, o magbubukas ng bago mula sa parehong panimulang address.",
+  "routes.liveDriverHint":
+    "Iwan sa run na ito, o ipadala ang order sa ibang driver - sasama ito sa run na meron na siya ngayon, o magbubukas ng bago mula sa parehong panimulang address.",
   "routes.liveOtherRun": "Naidagdag sa run ni {driver} bilang hinto {n} ng {total}",
   "routes.liveNewRun": "Nagbukas ng bagong run para kay {driver} - naidagdag bilang hinto {n}",
   "routes.liveNotLocated": "Naidagdag sa dulo - hindi mailagay sa mapa ang address na iyon.",
@@ -1057,9 +1061,11 @@ export const tl: Catalog = {
   "team.modeEmail": "Email",
   "team.modeQr": "QR code",
   "team.modeEmailHint": "Ipapadala namin ang link sa email. Mainam para sa hindi kaharap.",
-  "team.modeQrHint": "Hindi kailangan ng address. Ipakita ang QR — ang unang mag-scan ang sasali sa role na ito.",
+  "team.modeQrHint":
+    "Hindi kailangan ng address. Ipakita ang QR — ang unang mag-scan ang sasali sa role na ito.",
   "team.createQrInvite": "Gumawa ng QR invite",
-  "team.openInviteCreated": "Handa na ang open invite — code {code}. Ang unang mag-scan ang sasali.",
+  "team.openInviteCreated":
+    "Handa na ang open invite — code {code}. Ang unang mag-scan ang sasali.",
   "team.openInvite": "Open invite · kahit sino na may code na ito",
   "team.revokeAriaOpen": "Bawiin ang open invite {code}",
   "team.revokedOpen": "Binawi ang open invite {code}. Hindi na gumagana ang code.",
@@ -1120,7 +1126,8 @@ export const tl: Catalog = {
   "assistant.send": "Ipadala",
   "assistant.stop": "Itigil",
   "assistant.error": "May nagkamali. Subukan pong ipadala muli.",
-  "assistant.disclaimer": "Maaaring magkamali ang assistant. Tingnan ang mahahalagang bagay sa mga larawan at report mo.",
+  "assistant.disclaimer":
+    "Maaaring magkamali ang assistant. Tingnan ang mahahalagang bagay sa mga larawan at report mo.",
   // Assistant stat cards, charts and exports
   "assistant.metric.captures": "Mga kuha",
   "assistant.metric.places": "Mga lugar",
@@ -1134,7 +1141,8 @@ export const tl: Catalog = {
   "assistant.download": "I-download",
   "assistant.copyLink": "Kopyahin ang link",
   "assistant.copied": "Nakopya ang link",
-  "assistant.linkExpires": "Gumagana ang link na ito sa loob ng 24 oras. Nananatili rin ang report sa Reports.",
+  "assistant.linkExpires":
+    "Gumagana ang link na ito sa loob ng 24 oras. Nananatili rin ang report sa Reports.",
   "assistant.linkExpired": "Expired na ang download link na ito. Nasa Reports pa rin ang report.",
   "assistant.reportMeta": "{count} larawan · {size}",
 
@@ -1152,7 +1160,8 @@ export const tl: Catalog = {
   "tc.punchNow": "Mag-time ngayon",
   "tc.punchNowHint": "Itatala ang oras at, kung ibibigay ng device, ang lokasyon.",
   "tc.crewNoManual": "Ang oras mo",
-  "tc.crewNoManualHint": "Galing sa CLOCK capture sa telepono ang mga punch — time stamp na walang larawan. Sa opisina ang manual entry.",
+  "tc.crewNoManualHint":
+    "Galing sa CLOCK capture sa telepono ang mga punch — time stamp na walang larawan. Sa opisina ang manual entry.",
   "tc.exportPdf": "I-export na PDF",
   "tc.exporting": "Ginagawa…",
   "tc.exportHint": "Timesheet para sa {month}",
@@ -1189,7 +1198,8 @@ export const tl: Catalog = {
   "mine.photos": "Mga larawan",
   "mine.videos": "Mga video",
   "mine.docs": "Mga dokumento",
-  "mine.emptyBody": "Dito napupunta ang mga capture na kinuha nang hindi pumipili ng proyekto, pati na ang lahat ng kinunan bago ka nag-log in.",
+  "mine.emptyBody":
+    "Dito napupunta ang mga capture na kinuha nang hindi pumipili ng proyekto, pati na ang lahat ng kinunan bago ka nag-log in.",
 
   // Passwordless sign-in: email code, invite claim, profile sign-in card
   "signin.codeTitle": "Tingnan ang email mo",
@@ -1200,19 +1210,22 @@ export const tl: Catalog = {
   "signin.resendIn": "Walang natanggap na code? ({seconds}s)",
   "signin.changeEmail": "Gumamit ng ibang email",
   "signin.sendCode": "Padalhan ako ng code",
-  "signin.codeHelp": "Ipapadala namin sa email mo ang 6-digit na code. Walang password na tatandaan.",
+  "signin.codeHelp":
+    "Ipapadala namin sa email mo ang 6-digit na code. Walang password na tatandaan.",
   "signin.codeSendError": "Hindi naipadala ang code. Suriin ang address at subukan muli.",
   "signin.codeError": "Hindi gumana ang code. Humiling ng bago at subukan muli.",
   "signin.more": "Iba pang paraan para mag-sign in",
   "signin.continueEmail": "Magpatuloy sa Email",
   "profile.signInSection": "Paano ka nag-sign in",
   "profile.signInPasswordless": "Walang password — code sa email, Google o X",
-  "profile.signInPasswordlessHint": "Walang password ang GeoCliks. Nag-sign in ka sa isang beses na code na ipinapadala sa email mo, o sa Google o X. Walang tatandaan, walang malalabas.",
+  "profile.signInPasswordlessHint":
+    "Walang password ang GeoCliks. Nag-sign in ka sa isang beses na code na ipinapadala sa email mo, o sa Google o X. Walang tatandaan, walang malalabas.",
   "join.yourName": "Pangalan mo",
   "join.yourNamePlaceholder": "Alex Rivera",
   "join.emailHint": "Ginagamit namin ito para sa account mo at wala nang iba.",
   "join.claim": "Sumali sa {workspace}",
-  "join.claimHintOpen": "Walang password, walang code. Pangalan at email mo lang ang kailangan namin.",
+  "join.claimHintOpen":
+    "Walang password, walang code. Pangalan at email mo lang ang kailangan namin.",
   "join.claimHint": "Walang password, walang code — sapat nang patunay ang imbitasyon sa {email}.",
 
   // First-run onboarding: your name, the Teamspace name, and which system you run
@@ -1227,14 +1240,18 @@ export const tl: Catalog = {
   "setup.next": "Magpatuloy",
   "setup.back": "Bumalik",
   "setup.systemTitle": "Anong sistema ang ginagamit mo?",
-  "setup.systemBody": "Dito nakasalalay kung saan papasok ang tropa at ano ang bukas sa libreng linggo. Mapapalitan mamaya.",
+  "setup.systemBody":
+    "Dito nakasalalay kung saan papasok ang tropa at ano ang bukas sa libreng linggo. Mapapalitan mamaya.",
   "setup.fieldTitle": "Litrato ng trabaho",
-  "setup.fieldBody": "Kinukunan ng tropa ang trabaho. Selyado ang bawat shot sa oras, lugar at trabahong kinabibilangan.",
+  "setup.fieldBody":
+    "Kinukunan ng tropa ang trabaho. Selyado ang bawat shot sa oras, lugar at trabahong kinabibilangan.",
   "setup.fieldTrial": "7 araw na Business, libre",
   "setup.deliveryTitle": "Ruta ng delivery",
-  "setup.deliveryBody": "Planuhin ang mga hinto, takbuhin ang ruta, patunayan ang bawat drop sa litrato at pirma.",
+  "setup.deliveryBody":
+    "Planuhin ang mga hinto, takbuhin ang ruta, patunayan ang bawat drop sa litrato at pirma.",
   "setup.deliveryTrial": "7 araw na Delivery Pro, libre",
-  "setup.trialNote": "Walang card, walang bayad. Pagkatapos ng 7 araw, babagsak ka sa libreng plano ng sistemang iyon at mananatili lahat ng nakuha mo.",
+  "setup.trialNote":
+    "Walang card, walang bayad. Pagkatapos ng 7 araw, babagsak ka sa libreng plano ng sistemang iyon at mananatili lahat ng nakuha mo.",
   "setup.error": "Hindi natapos ang setup. Subukan muli.",
 
   // The 7-day product trial: countdown strip, sidebar chip, plan-page label
@@ -1247,7 +1264,8 @@ export const tl: Catalog = {
   "trial.cta": "Tingnan ang mga plan",
   "trial.dismiss": "Isara",
   "trial.endedTitle": "Tapos na ang libreng linggo mo",
-  "trial.endedBody": "Nandiyan pa ang lahat ng larawan, proyekto at ruta na nakuha mo. Mag-upgrade kahit kailan kung kailangan mo na ang mga bayad na feature.",
+  "trial.endedBody":
+    "Nandiyan pa ang lahat ng larawan, proyekto at ruta na nakuha mo. Mag-upgrade kahit kailan kung kailangan mo na ang mga bayad na feature.",
   "trial.endedCta": "Tingnan ang mga plan",
   "trial.planLabel": "May trial pa",
   "trial.planLine": "Kasama ang {plan} hanggang {date}",
@@ -1271,7 +1289,8 @@ export const tl: Catalog = {
   // The popups behind each checklist step
   "checklist.close": "Isara",
   "checklist.mobileTitle": "I-install ang app sa telepono",
-  "checklist.mobileBody": "I-scan ito sa camera ng telepono. Bubuksan nito ang install page para sa iPhone at Android — mag-sign in sa parehong email at nandiyan na ang Teamspace mo.",
+  "checklist.mobileBody":
+    "I-scan ito sa camera ng telepono. Bubuksan nito ang install page para sa iPhone at Android — mag-sign in sa parehong email at nandiyan na ang Teamspace mo.",
   "checklist.mobileScan": "I-scan sa telepono",
   "checklist.mobileCopied": "Nakopya ang link",
   "checklist.mobileDone": "Ayos — naka-install na",
@@ -1282,22 +1301,26 @@ export const tl: Catalog = {
   "checklist.capture3": "Darating ito dito sa loob ng segundo — o pagbalik ng signal.",
   "checklist.captureDone": "Ayos — nakakuha na ako",
   "checklist.shareTitle": "Ipadala ang ebidensya sa kliyente",
-  "checklist.shareBody": "Gawin ang una dito. Pinagsasama nito ang mga larawan ng trabaho — bawat isa selyado sa oras, lugar at address — sa isang file na maipapadala.",
+  "checklist.shareBody":
+    "Gawin ang una dito. Pinagsasama nito ang mga larawan ng trabaho — bawat isa selyado sa oras, lugar at address — sa isang file na maipapadala.",
 
   "assign.title": "Mag-assign ng crew",
-  "assign.body": "Piliin kung sino ang magtatrabaho sa proyektong ito. Ang field crew ay nakakakita lang ng mga proyektong naka-assign sa kanila.",
+  "assign.body":
+    "Piliin kung sino ang magtatrabaho sa proyektong ito. Ang field crew ay nakakakita lang ng mga proyektong naka-assign sa kanila.",
   "assign.empty": "Wala pang kasamahan — mag-invite ng crew sa Team page.",
   "assign.add": "I-assign",
   "assign.assigned": "Naka-assign",
   "assign.done": "Tapos",
   "driver.title": "Magtalaga ng driver",
-  "driver.body": "Piliin kung sino ang magmamaneho ng run na ito. Nakikita lang ng driver ang mga rutang nakatalaga sa kanya.",
+  "driver.body":
+    "Piliin kung sino ang magmamaneho ng run na ito. Nakikita lang ng driver ang mga rutang nakatalaga sa kanya.",
   "driver.empty": "Wala pang kasamahan — imbitahin muna ang mga driver mo sa Team page.",
   "driver.add": "Italaga",
   "driver.assigned": "Nagmamaneho",
   "driver.done": "Tapos",
   "runhelp.title": "Ipadala ang unang run mo sa kalsada",
-  "runhelp.subtitle": "Anim na hakbang at may proof na ang bawat delivery. Bawat isa ay bubukas dito mismo.",
+  "runhelp.subtitle":
+    "Anim na hakbang at may proof na ang bawat delivery. Bawat isa ay bubukas dito mismo.",
   "runhelp.run": "Gumawa ng unang run",
   "runhelp.runSub": "Pangalan at petsa lang ang kailangan.",
   "runhelp.stops": "Idagdag ang mga hinto ngayong araw",
@@ -1311,13 +1334,15 @@ export const tl: Catalog = {
   "runhelp.drop": "Isara ang unang drop na may proof",
   "runhelp.dropSub": "Litratong may oras at GPS, mismo sa pintuan.",
   "runhelp.runTitle": "Gumawa ng unang run",
-  "runhelp.runBody": "Ang run ay isang araw ng isang driver. Pangalanan, petsahan, saka idagdag ang mga hinto.",
+  "runhelp.runBody":
+    "Ang run ay isang araw ng isang driver. Pangalanan, petsahan, saka idagdag ang mga hinto.",
   "runhelp.runCreate": "Gawin ang run",
   "runhelp.runCreated": "Gawa na ang run. Idagdag na ang mga hinto ngayong araw.",
   "runhelp.runAddStops": "Magdagdag ng hinto",
   "runhelp.later": "Mamaya",
   "runhelp.stopsTitle": "Idagdag ang mga hinto ngayong araw",
-  "runhelp.stopsBody": "Sa page ng run inilalagay ang mga hinto. I-paste nang sabay-sabay, kami na sa iba.",
+  "runhelp.stopsBody":
+    "Sa page ng run inilalagay ang mga hinto. I-paste nang sabay-sabay, kami na sa iba.",
   "runhelp.stops1": "Buksan ang run at hanapin ang paste box.",
   "runhelp.stops2": "Isang address kada linya — pangalan o order number pagkatapos ng kuwit.",
   "runhelp.stops3": "Pindutin ang Order stops at maiplano ang run ayon sa distansya.",
@@ -1342,7 +1367,7 @@ export const tl: Catalog = {
   "notes.emptyArchived": "Wala pang naka-archive.",
   "search.projects": "Hanapin ang trabaho, kliyente, address",
   "search.notes": "Hanapin ang pangalan, address, telepono, email",
-  "search.noMatch": "Walang tugma sa \"{query}\".",
+  "search.noMatch": 'Walang tugma sa "{query}".',
   "routes.panelTitle": "Lahat ng ruta",
   "search.routes": "Hanapin ang ruta, driver, petsa, address",
   "search.clear": "I-clear ang hanap",
@@ -1374,34 +1399,54 @@ export const tl: Catalog = {
   // exactly as the app's own delete flow requires it.
   "seo.delete.title": "Burahin ang account mo sa GeoCliks",
   "del.h1": "Burahin ang account mo sa GeoCliks",
-  "del.intro": "Kaya mong burahin ang GeoCliks account mo at ang data nito nang mag-isa, mula sa loob ng app o sa website. Hindi kailangang dumaan sa amin. Ipinapaliwanag ng pahinang ito kung paano, at kung ano ang natatanggal.",
+  "del.intro":
+    "Kaya mong burahin ang GeoCliks account mo at ang data nito nang mag-isa, mula sa loob ng app o sa website. Hindi kailangang dumaan sa amin. Ipinapaliwanag ng pahinang ito kung paano, at kung ano ang natatanggal.",
   "del.app.h2": "Sa GeoCliks mobile app",
   "del.app.s1": "Buksan ang GeoCliks app at mag-sign in.",
-  "del.app.s2": "I-tap ang larawan sa profile o ang initials mo sa itaas na sulok para buksan ang **Profile**.",
+  "del.app.s2":
+    "I-tap ang larawan sa profile o ang initials mo sa itaas na sulok para buksan ang **Profile**.",
   "del.app.s3": "Mag-scroll sa pinakababa, sa seksyong **Burahin ang account**.",
-  "del.app.s4": "I-tap ang **Burahin ang account**, i-type ang **DELETE** sa kahon ng kumpirmasyon, at kumpirmahin.",
-  "del.app.after": "Agad tatakbo ang pagbura at ilalabas ka sa account. Hindi na ito maibabalik, kaya i-export muna ang lahat ng gusto mong itago.",
+  "del.app.s4":
+    "I-tap ang **Burahin ang account**, i-type ang **DELETE** sa kahon ng kumpirmasyon, at kumpirmahin.",
+  "del.app.after":
+    "Agad tatakbo ang pagbura at ilalabas ka sa account. Hindi na ito maibabalik, kaya i-export muna ang lahat ng gusto mong itago.",
   "del.web.h2": "Sa website",
   "del.web.s1": "Mag-sign in sa **geocliks.com**.",
   "del.web.s2": "Buksan ang **Profile** mula sa sidebar.",
-  "del.web.s3": "Mag-scroll sa **Burahin ang account**, i-type ang **DELETE** para kumpirmahin, at burahin.",
+  "del.web.s3":
+    "Mag-scroll sa **Burahin ang account**, i-type ang **DELETE** para kumpirmahin, at burahin.",
   "del.removed.h2": "Ano ang binubura",
-  "del.removed.b1": "Ang pagkakakilanlan mo: pangalan, email address, larawan sa profile, mga sign-in session at mga push notification token.",
-  "del.removed.b2": "Kung ikaw ang may-ari ng Teamspace: ang Teamspace mismo, at lahat ng larawan, video, dokumento, proyekto, ruta, time clock entry, mensahe, report, share link at watermark template dito — kasama ang mga naka-imbak na image at video file.",
-  "del.removed.b3": "Ang mga share link at verification code na galing sa Teamspace na iyon ay hindi na gagana.",
+  "del.removed.b1":
+    "Ang pagkakakilanlan mo: pangalan, email address, larawan sa profile, mga sign-in session at mga push notification token.",
+  "del.removed.b2":
+    "Kung ikaw ang may-ari ng Teamspace: ang Teamspace mismo, at lahat ng larawan, video, dokumento, proyekto, ruta, time clock entry, mensahe, report, share link at watermark template dito — kasama ang mga naka-imbak na image at video file.",
+  "del.removed.b3":
+    "Ang mga share link at verification code na galing sa Teamspace na iyon ay hindi na gagana.",
   "del.kept.h2": "Ano ang nananatili, at gaano katagal",
-  "del.kept.b1": "Kung ini-imbita ka sa Teamspace ng iba, ang mga capture na ginawa mo ay nananatili sa Teamspace na iyon: ebidensya sila ng may-ari, hindi mo. Buburahin pa rin ang pagkakakilanlan mo.",
-  "del.kept.b2": "Hindi kayang burahin ng mga inimbitang miyembro ang sarili nila sa record ng isang Teamspace; ang may-ari ang nag-aalis ng miyembro, at nananatili ang mga capture nito.",
-  "del.kept.b3": "Ang mga rekord ng billing at buwis na kailangan naming itago ayon sa batas ay pinapanatili hangga't hinihingi ng batas, at hindi ginagamit sa kahit anong iba.",
-  "del.kept.b4": "Ang mga naka-encrypt na backup at security log ay napapalitan sa loob ng 90 araw, kaya maaaring umabot ng 90 araw bago maabot ng pagbura ang lahat ng kopya.",
+  "del.kept.b1":
+    "Kung ini-imbita ka sa Teamspace ng iba, ang mga capture na ginawa mo ay nananatili sa Teamspace na iyon: ebidensya sila ng may-ari, hindi mo. Buburahin pa rin ang pagkakakilanlan mo.",
+  "del.kept.b2":
+    "Hindi kayang burahin ng mga inimbitang miyembro ang sarili nila sa record ng isang Teamspace; ang may-ari ang nag-aalis ng miyembro, at nananatili ang mga capture nito.",
+  "del.kept.b3":
+    "Ang mga rekord ng billing at buwis na kailangan naming itago ayon sa batas ay pinapanatili hangga't hinihingi ng batas, at hindi ginagamit sa kahit anong iba.",
+  "del.kept.b4":
+    "Ang mga naka-encrypt na backup at security log ay napapalitan sa loob ng 90 araw, kaya maaaring umabot ng 90 araw bago maabot ng pagbura ang lahat ng kopya.",
   "del.partial.h2": "Pagbura ng bahagi ng data mo, nang hindi binubura ang account",
-  "del.partial.intro": "Hindi kailangang isara ang account mo para mag-alis ng data. Sa loob ng app puwede kang magbura ng isa-isang item, at bawat pagbura ay nag-aalis ng naka-imbak na file at ng record:",
-  "del.partial.b1": "Mga larawan, video at na-scan na dokumento: buksan ang capture, i-tap ang menu, tapos Tanggalin. Kasamang aalisin sa storage ang image o video file.",
-  "del.partial.b2": "Mga proyekto: buksan ang proyekto, tapos Burahin ang proyekto. Mawawala ang proyekto at ang mga assignment nito.",
-  "del.partial.b3": "Mga mensahe: buksan ang usapan, pindutin at i-hold ang mensahe, tapos Tanggalin.",
-  "del.partial.b4": "Mga ruta at time clock entry: buksan ang item at burahin ito sa detail screen nito.",
-  "del.partial.b5": "Larawan sa profile: Profile, tapos alisin ang larawan. Nababago rin doon ang pangalan at email mo.",
-  "del.partial.support": "Para sa anumang hindi mo kayang abutin mismo, mag-email sa **{email}** mula sa address na nasa account mo at sabihin kung anong data ang gusto mong alisin. Kinukumpirma namin na address mo ito at buburahin namin — karaniwan sa loob ng 30 araw. Ang mga naka-encrypt na backup at security log ay napapalitan sa loob ng 90 araw. Ang mga rekord ng billing at buwis na kailangan naming itago ayon sa batas ay pinapanatili hangga't hinihingi ng batas.",
+  "del.partial.intro":
+    "Hindi kailangang isara ang account mo para mag-alis ng data. Sa loob ng app puwede kang magbura ng isa-isang item, at bawat pagbura ay nag-aalis ng naka-imbak na file at ng record:",
+  "del.partial.b1":
+    "Mga larawan, video at na-scan na dokumento: buksan ang capture, i-tap ang menu, tapos Tanggalin. Kasamang aalisin sa storage ang image o video file.",
+  "del.partial.b2":
+    "Mga proyekto: buksan ang proyekto, tapos Burahin ang proyekto. Mawawala ang proyekto at ang mga assignment nito.",
+  "del.partial.b3":
+    "Mga mensahe: buksan ang usapan, pindutin at i-hold ang mensahe, tapos Tanggalin.",
+  "del.partial.b4":
+    "Mga ruta at time clock entry: buksan ang item at burahin ito sa detail screen nito.",
+  "del.partial.b5":
+    "Larawan sa profile: Profile, tapos alisin ang larawan. Nababago rin doon ang pangalan at email mo.",
+  "del.partial.support":
+    "Para sa anumang hindi mo kayang abutin mismo, mag-email sa **{email}** mula sa address na nasa account mo at sabihin kung anong data ang gusto mong alisin. Kinukumpirma namin na address mo ito at buburahin namin — karaniwan sa loob ng 30 araw. Ang mga naka-encrypt na backup at security log ay napapalitan sa loob ng 90 araw. Ang mga rekord ng billing at buwis na kailangan naming itago ayon sa batas ay pinapanatili hangga't hinihingi ng batas.",
   "del.locked.h2": "Kung hindi ka makapag-sign in",
-  "del.locked.body": "Mag-email sa **{email}** mula sa address na nasa account at hilingin sa aming burahin ito. Kinukumpirma namin na address mo ito at buburahin namin ang account para sa iyo — karaniwan sa loob ng 30 araw.",
+  "del.locked.body":
+    "Mag-email sa **{email}** mula sa address na nasa account at hilingin sa aming burahin ito. Kinukumpirma namin na address mo ito at buburahin namin ang account para sa iyo — karaniwan sa loob ng 30 araw.",
 };

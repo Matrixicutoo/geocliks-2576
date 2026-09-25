@@ -111,7 +111,6 @@ const RESOURCE_ITEMS: MenuItem[] = [
   { label: "home.nav.help", href: "/help" },
   { label: "home.nav.constructionDocs", href: "/construction-photo-documentation" },
   { label: "home.nav.vsCompanycam", href: "/alternatives/companycam" },
-  { label: "home.nav.fieldNotes", href: "/blog" },
   { label: "home.footer.terms", href: "/terms" },
   { label: "home.footer.privacy", href: "/privacy" },
   { label: "home.footer.deleteAccount", href: "/delete-account" },
@@ -191,7 +190,10 @@ export function SiteNav() {
           <Logo />
         </Link>
 
-        <nav className="hidden items-center gap-6 lg:flex">
+        {/* gap-5 up to xl, not gap-6 everywhere: at the lg breakpoint the row fit its
+            1024px container with nothing to spare, so a seventh item overflowed it. The
+            4px taken off each of six gaps buys back more than the item costs. */}
+        <nav className="hidden items-center gap-5 lg:flex xl:gap-6">
           <a
             href="/#top"
             className="py-2 text-[14px] font-semibold text-white transition-colors hover:text-amber"
@@ -212,6 +214,16 @@ export function SiteNav() {
             className="py-2 text-[14px] font-semibold text-white transition-colors hover:text-amber"
           >
             {t("home.nav.pricing")}
+          </Link>
+          {/* "Blog", not "Field Notes". A first-time visitor scanning the header does
+              not know what Field Notes is, and nobody clicks a nav item to be charmed.
+              The brand name earns its keep in the footer, where a reader who is already
+              interested will read the label properly. */}
+          <Link
+            to="/blog"
+            className="py-2 text-[14px] font-semibold text-white transition-colors hover:text-amber"
+          >
+            {t("home.nav.blog")}
           </Link>
           <NavMenu label="home.nav.resources" items={RESOURCE_ITEMS} />
           <NavMenu label="home.nav.support" items={SUPPORT_ITEMS} />
@@ -256,6 +268,9 @@ export function SiteNav() {
             </a>
             <Link to="/pricing" onClick={close} className={mobileLink}>
               {t("home.nav.pricing")}
+            </Link>
+            <Link to="/blog" onClick={close} className={mobileLink}>
+              {t("home.nav.blog")}
             </Link>
             <MobileGroup label="home.nav.resources" items={RESOURCE_ITEMS} onNavigate={close} />
             <MobileGroup label="home.nav.support" items={SUPPORT_ITEMS} onNavigate={close} />

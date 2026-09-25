@@ -565,6 +565,8 @@ export const zh: Catalog = {
   "home.nav.help": "帮助中心",
   "home.nav.constructionDocs": "施工照片记录",
   "home.nav.fieldNotes": "现场笔记",
+  "home.nav.blog": "博客",
+  "home.footer.fieldNotesTag": "已验证照片记录指南",
   "home.nav.vsCompanycam": "GeoCliks 与 CompanyCam 对比",
   "home.nav.emailSupport": "邮件支持",
   "home.nav.contactSales": "联系销售",
@@ -790,8 +792,7 @@ export const zh: Catalog = {
   "routes.newTitle": "新建路线",
   "routes.newSubtitle": "为当天的行程命名，然后添加站点。",
   "routes.step2Title": "添加站点和司机",
-  "routes.step2Hint":
-    "此处的更改会即时保存。完成后关闭即可，行程会出现在“所有行程”中。",
+  "routes.step2Hint": "此处的更改会即时保存。完成后关闭即可，行程会出现在“所有行程”中。",
   "routes.oneTitle": "添加单个站点",
   "routes.oneAdd": "添加站点",
   "routes.oneEmail": "电子邮箱",
@@ -852,7 +853,8 @@ export const zh: Catalog = {
   "routes.liveAdded": "已添加为第 {n} 站，共 {total} 站",
   "routes.liveDriver": "司机",
   "routes.liveDriverThis": "当前路线",
-  "routes.liveDriverHint": "可留在当前路线，或把订单交给其他司机：会并入他今天已有的路线，否则从同一起点新建一条。",
+  "routes.liveDriverHint":
+    "可留在当前路线，或把订单交给其他司机：会并入他今天已有的路线，否则从同一起点新建一条。",
   "routes.liveOtherRun": "已加入 {driver} 的路线，第 {n} 站，共 {total} 站",
   "routes.liveNewRun": "已为 {driver} 新建路线 - 加为第 {n} 站",
   "routes.liveNotLocated": "已添加到末尾 - 该地址无法在地图上定位。",
@@ -861,7 +863,8 @@ export const zh: Catalog = {
   "routes.mapUnlocated": "{n} 个停靠点尚未显示在地图上",
   "routes.dragHint": "拖动停靠点即可重新排序，或使用箭头。",
   "routes.addTitle": "添加站点",
-  "routes.addHint": "每行一个。可直接从表格粘贴 - 制表符、逗号或分号分隔，有无表头均可。顺序为：地址、收件人姓名、电子邮箱、电话号码。",
+  "routes.addHint":
+    "每行一个。可直接从表格粘贴 - 制表符、逗号或分号分隔，有无表头均可。顺序为：地址、收件人姓名、电子邮箱、电话号码。",
   "routes.addStops": "添加站点",
   "routes.added": "已添加 {n} 个站点",
   "routes.previewTitle": "将添加的内容",
@@ -1133,7 +1136,8 @@ export const zh: Catalog = {
   "signin.continueEmail": "使用邮箱继续",
   "profile.signInSection": "你的登录方式",
   "profile.signInPasswordless": "免密码——邮箱验证码、Google 或 X",
-  "profile.signInPasswordlessHint": "GeoCliks 没有密码。你可以用发送到邮箱的一次性验证码登录，也可以用 Google 或 X。无需记住，也不会泄露。",
+  "profile.signInPasswordlessHint":
+    "GeoCliks 没有密码。你可以用发送到邮箱的一次性验证码登录，也可以用 Google 或 X。无需记住，也不会泄露。",
   "join.yourName": "你的姓名",
   "join.yourNamePlaceholder": "张明",
   "join.emailHint": "我们只将其用于你的账户，不作他用。",
@@ -1197,7 +1201,8 @@ export const zh: Catalog = {
   // The popups behind each checklist step
   "checklist.close": "关闭",
   "checklist.mobileTitle": "在手机上安装应用",
-  "checklist.mobileBody": "用手机相机扫描此码，会打开 iPhone 和 Android 的安装页面 —— 用同一个邮箱登录，你的团队空间已经在那里。",
+  "checklist.mobileBody":
+    "用手机相机扫描此码，会打开 iPhone 和 Android 的安装页面 —— 用同一个邮箱登录，你的团队空间已经在那里。",
   "checklist.mobileScan": "用手机扫描",
   "checklist.mobileCopied": "链接已复制",
   "checklist.mobileDone": "完成 —— 已安装",
@@ -1208,7 +1213,8 @@ export const zh: Catalog = {
   "checklist.capture3": "几秒内就会出现在这里 —— 或在恢复信号后立即上传。",
   "checklist.captureDone": "完成 —— 我拍了一张",
   "checklist.shareTitle": "把凭证发给客户",
-  "checklist.shareBody": "在这里生成第一份。它会把一个工地的照片（每张都封存了时间、位置和地址）汇成一个可发送的文件。",
+  "checklist.shareBody":
+    "在这里生成第一份。它会把一个工地的照片（每张都封存了时间、位置和地址）汇成一个可发送的文件。",
 
   "assign.title": "分配班组",
   "assign.body": "选择谁负责这个项目。现场人员只能看到分配给他们的项目。",
@@ -1300,7 +1306,8 @@ export const zh: Catalog = {
   // exactly as the app's own delete flow requires it.
   "seo.delete.title": "删除你的 GeoCliks 账户",
   "del.h1": "删除你的 GeoCliks 账户",
-  "del.intro": "你可以自己在应用内或网站上删除 GeoCliks 账户及其数据，无需联系我们。本页说明具体步骤，以及哪些内容会被删除。",
+  "del.intro":
+    "你可以自己在应用内或网站上删除 GeoCliks 账户及其数据，无需联系我们。本页说明具体步骤，以及哪些内容会被删除。",
   "del.app.h2": "在 GeoCliks 手机应用中",
   "del.app.s1": "打开 GeoCliks 应用并登录。",
   "del.app.s2": "点按顶部角落的头像或姓名首字母，打开**个人资料**。",
@@ -1313,21 +1320,29 @@ export const zh: Catalog = {
   "del.web.s3": "滚动到**删除账户**，输入 **DELETE** 以确认，然后删除。",
   "del.removed.h2": "会删除哪些内容",
   "del.removed.b1": "你的身份信息：姓名、电子邮件地址、头像、登录会话和推送通知令牌。",
-  "del.removed.b2": "如果你是团队空间的所有者：团队空间本身，以及其中的每一张照片、视频、文档、项目、路线、打卡记录、消息、报告、分享链接和水印模板——包括已存储的图片和视频文件。",
+  "del.removed.b2":
+    "如果你是团队空间的所有者：团队空间本身，以及其中的每一张照片、视频、文档、项目、路线、打卡记录、消息、报告、分享链接和水印模板——包括已存储的图片和视频文件。",
   "del.removed.b3": "该团队空间签发的分享链接和验证码将不再有效。",
   "del.kept.h2": "会保留哪些内容，保留多久",
-  "del.kept.b1": "如果你是受邀加入他人的团队空间，你拍摄的内容会留在该团队空间：它们是所有者的取证记录，而不是你的。你的身份信息仍会被删除。",
-  "del.kept.b2": "受邀成员无法把自己从团队空间的记录中删除；由所有者移除该成员，其拍摄内容仍会保留。",
+  "del.kept.b1":
+    "如果你是受邀加入他人的团队空间，你拍摄的内容会留在该团队空间：它们是所有者的取证记录，而不是你的。你的身份信息仍会被删除。",
+  "del.kept.b2":
+    "受邀成员无法把自己从团队空间的记录中删除；由所有者移除该成员，其拍摄内容仍会保留。",
   "del.kept.b3": "法律要求我们保存的账单和税务记录会按法律规定的期限保留，且绝不用于其他用途。",
-  "del.kept.b4": "加密备份和安全日志会在 90 天内轮替，因此一次删除最多可能需要 90 天才能覆盖所有副本。",
+  "del.kept.b4":
+    "加密备份和安全日志会在 90 天内轮替，因此一次删除最多可能需要 90 天才能覆盖所有副本。",
   "del.partial.h2": "只删除部分数据，不删除账户",
-  "del.partial.intro": "你不必注销账户就能删除数据。在应用内你可以逐条删除，每次删除都会同时移除已存储的文件和记录：",
-  "del.partial.b1": "照片、视频和扫描的文档：打开该拍摄，点按菜单，然后选择删除。图片或视频文件会随之从存储中移除。",
+  "del.partial.intro":
+    "你不必注销账户就能删除数据。在应用内你可以逐条删除，每次删除都会同时移除已存储的文件和记录：",
+  "del.partial.b1":
+    "照片、视频和扫描的文档：打开该拍摄，点按菜单，然后选择删除。图片或视频文件会随之从存储中移除。",
   "del.partial.b2": "项目：打开项目，然后选择删除项目。项目及其人员分配都会删除。",
   "del.partial.b3": "消息：打开会话，长按该消息，然后选择删除。",
   "del.partial.b4": "路线和打卡记录：打开条目，在其详情页中删除。",
   "del.partial.b5": "头像：进入个人资料，然后移除头像。你的姓名和邮箱也可以在那里修改。",
-  "del.partial.support": "对于你无法自行处理的内容，请用账户所用的邮箱发送邮件至 **{email}**，说明希望删除哪些数据。我们会核实邮箱属于你，然后删除，通常在 30 天内完成。加密备份和安全日志会在 90 天内轮替。法律要求我们保存的账单和税务记录会按法律规定的期限保留。",
+  "del.partial.support":
+    "对于你无法自行处理的内容，请用账户所用的邮箱发送邮件至 **{email}**，说明希望删除哪些数据。我们会核实邮箱属于你，然后删除，通常在 30 天内完成。加密备份和安全日志会在 90 天内轮替。法律要求我们保存的账单和税务记录会按法律规定的期限保留。",
   "del.locked.h2": "如果你无法登录",
-  "del.locked.body": "请用账户所用的邮箱发送邮件至 **{email}**，要求我们删除该账户。我们会核实邮箱属于你，然后为你删除账户，通常在 30 天内完成。",
+  "del.locked.body":
+    "请用账户所用的邮箱发送邮件至 **{email}**，要求我们删除该账户。我们会核实邮箱属于你，然后为你删除账户，通常在 30 天内完成。",
 };

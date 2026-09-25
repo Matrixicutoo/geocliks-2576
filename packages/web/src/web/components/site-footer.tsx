@@ -126,8 +126,22 @@ export function SiteFooter() {
               <Link to="/help" className="transition-colors hover:text-chalk">
                 {t("home.nav.help")}
               </Link>
-              <Link to="/blog" className="transition-colors hover:text-chalk">
+              {/* The blog is "Blog" in the header and "Field Notes" here on purpose: the
+                  two labels do different jobs. A footer reader is already interested and
+                  will read a name properly, so the brand earns its keep — and it agrees
+                  with what the blog calls itself in its own masthead.
+
+                  The keyword line sits inside the same anchor rather than in a second
+                  link to /blog. Anchor text is a ranking signal and "Field Notes" tells a
+                  crawler nothing, but two links to one URL from one page get consolidated
+                  and the second anchor is the one likely discarded. One link reading
+                  "Field Notes — verified photo documentation guides" spends the signal
+                  once, on both the brand and the phrase. */}
+              <Link to="/blog" className="group transition-colors hover:text-chalk">
                 {t("home.nav.fieldNotes")}
+                <span className="mt-0.5 block text-[11.5px] leading-snug text-fog/70 transition-colors group-hover:text-fog">
+                  {t("home.footer.fieldNotesTag")}
+                </span>
               </Link>
               <a href={`mailto:${SUPPORT_EMAIL}`} className="transition-colors hover:text-chalk">
                 {SUPPORT_EMAIL}

@@ -603,6 +603,8 @@ export const en = {
   // which is correct — the pages themselves are English.
   "home.nav.constructionDocs": "Construction photo documentation",
   "home.nav.fieldNotes": "Field Notes",
+  "home.nav.blog": "Blog",
+  "home.footer.fieldNotesTag": "Verified photo documentation guides",
   "home.nav.vsCompanycam": "GeoCliks vs CompanyCam",
   "home.nav.emailSupport": "Email support",
   "home.nav.contactSales": "Contact sales",
@@ -903,7 +905,8 @@ export const en = {
   "routes.liveAdded": "Added as stop {n} of {total}",
   "routes.liveDriver": "Driver",
   "routes.liveDriverThis": "This run",
-  "routes.liveDriverHint": "Leave it on this run, or send the order to another driver - it joins the run they already have today, or opens one from the same start address.",
+  "routes.liveDriverHint":
+    "Leave it on this run, or send the order to another driver - it joins the run they already have today, or opens one from the same start address.",
   "routes.liveOtherRun": "Added to {driver}'s run as stop {n} of {total}",
   "routes.liveNewRun": "Started a new run for {driver} - added as stop {n}",
   "routes.liveNotLocated": "Added at the end - that address could not be placed on the map.",
@@ -1054,8 +1057,10 @@ export const en = {
   "team.howToSend": "How to send it",
   "team.modeEmail": "Email",
   "team.modeQr": "QR code",
-  "team.modeEmailHint": "We email them a join link. Best for someone who is not standing in front of you.",
-  "team.modeQrHint": "No address needed. Show the QR — the first person to scan it joins with this role.",
+  "team.modeEmailHint":
+    "We email them a join link. Best for someone who is not standing in front of you.",
+  "team.modeQrHint":
+    "No address needed. Show the QR — the first person to scan it joins with this role.",
   "team.createQrInvite": "Create QR invite",
   "team.openInviteCreated": "Open invite ready — code {code}. The first person to scan it joins.",
   "team.openInvite": "Open invite · anyone with this code",
@@ -1115,7 +1120,8 @@ export const en = {
   "assistant.send": "Send",
   "assistant.stop": "Stop",
   "assistant.error": "Something went wrong. Try sending that again.",
-  "assistant.disclaimer": "The assistant can be wrong. Check anything important against your photos and reports.",
+  "assistant.disclaimer":
+    "The assistant can be wrong. Check anything important against your photos and reports.",
   // Assistant stat cards, charts and exports
   "assistant.metric.captures": "Captures",
   "assistant.metric.places": "Places",
@@ -1129,8 +1135,10 @@ export const en = {
   "assistant.download": "Download",
   "assistant.copyLink": "Copy link",
   "assistant.copied": "Link copied",
-  "assistant.linkExpires": "This link works for 24 hours. The report also stays on the Reports screen.",
-  "assistant.linkExpired": "This download link has expired. The report is still on the Reports screen.",
+  "assistant.linkExpires":
+    "This link works for 24 hours. The report also stays on the Reports screen.",
+  "assistant.linkExpired":
+    "This download link has expired. The report is still on the Reports screen.",
   "assistant.reportMeta": "{count} photos · {size}",
 
   /* My captures — the personal page: anything not filed under a project yet. Mirrors the phone app. */
@@ -1147,7 +1155,8 @@ export const en = {
   "tc.punchNow": "Punch now",
   "tc.punchNowHint": "Records the time and, if this device shares it, the location.",
   "tc.crewNoManual": "Your hours",
-  "tc.crewNoManualHint": "Punches come from the CLOCK capture on the phone — a time stamp with no photo. Manual entry is the office's.",
+  "tc.crewNoManualHint":
+    "Punches come from the CLOCK capture on the phone — a time stamp with no photo. Manual entry is the office's.",
   "tc.exportPdf": "Export PDF",
   "tc.exporting": "Building…",
   "tc.exportHint": "Timesheet for {month}",
@@ -1184,7 +1193,8 @@ export const en = {
   "mine.photos": "Pictures",
   "mine.videos": "Videos",
   "mine.docs": "Documents",
-  "mine.emptyBody": "Captures you take without choosing a project land here, including everything shot before you signed in.",
+  "mine.emptyBody":
+    "Captures you take without choosing a project land here, including everything shot before you signed in.",
 
   // Passwordless sign-in: email code, invite claim, profile sign-in card
   "signin.codeTitle": "Check your email",
@@ -1202,7 +1212,8 @@ export const en = {
   "signin.continueEmail": "Continue with Email",
   "profile.signInSection": "How you sign in",
   "profile.signInPasswordless": "Passwordless — email code, Google or X",
-  "profile.signInPasswordlessHint": "GeoCliks has no passwords. You sign in with a one-time code sent to your email, or with Google or X. Nothing to remember, nothing to leak.",
+  "profile.signInPasswordlessHint":
+    "GeoCliks has no passwords. You sign in with a one-time code sent to your email, or with Google or X. Nothing to remember, nothing to leak.",
   "join.yourName": "Your name",
   "join.yourNamePlaceholder": "Alex Rivera",
   "join.emailHint": "We use this for your account and nothing else.",
@@ -1222,14 +1233,18 @@ export const en = {
   "setup.next": "Continue",
   "setup.back": "Back",
   "setup.systemTitle": "Which system do you run?",
-  "setup.systemBody": "It decides where your crew lands and what your free week unlocks. You can switch later.",
+  "setup.systemBody":
+    "It decides where your crew lands and what your free week unlocks. You can switch later.",
   "setup.fieldTitle": "Field job photos",
-  "setup.fieldBody": "Crews photograph the work. Every shot is sealed with the time, the place and the job it belongs to.",
+  "setup.fieldBody":
+    "Crews photograph the work. Every shot is sealed with the time, the place and the job it belongs to.",
   "setup.fieldTrial": "7 days of Business, free",
   "setup.deliveryTitle": "Delivery routes",
-  "setup.deliveryBody": "Plan the stops, run the route, prove each drop with a photo and a signature.",
+  "setup.deliveryBody":
+    "Plan the stops, run the route, prove each drop with a photo and a signature.",
   "setup.deliveryTrial": "7 days of Delivery Pro, free",
-  "setup.trialNote": "No card, no charge. After 7 days you drop to that system's free plan and keep everything you captured.",
+  "setup.trialNote":
+    "No card, no charge. After 7 days you drop to that system's free plan and keep everything you captured.",
   "setup.error": "Could not finish setup. Try again.",
 
   // The 7-day product trial: countdown strip, sidebar chip, plan-page label
@@ -1242,7 +1257,8 @@ export const en = {
   "trial.cta": "See plans",
   "trial.dismiss": "Dismiss",
   "trial.endedTitle": "Your free week has ended",
-  "trial.endedBody": "Every photo, project and route you captured is still here. Upgrade whenever you need the paid features back.",
+  "trial.endedBody":
+    "Every photo, project and route you captured is still here. Upgrade whenever you need the paid features back.",
   "trial.endedCta": "View plans",
   "trial.planLabel": "Trial in progress",
   "trial.planLine": "{plan} included until {date}",
@@ -1266,7 +1282,8 @@ export const en = {
   // The popups behind each checklist step
   "checklist.close": "Close",
   "checklist.mobileTitle": "Install the app on your phone",
-  "checklist.mobileBody": "Scan this with your phone camera. It opens the install page for iPhone and Android — sign in with the same email and your workspace is already there.",
+  "checklist.mobileBody":
+    "Scan this with your phone camera. It opens the install page for iPhone and Android — sign in with the same email and your workspace is already there.",
   "checklist.mobileScan": "Scan with your phone",
   "checklist.mobileCopied": "Link copied",
   "checklist.mobileDone": "Done — it's installed",
@@ -1277,7 +1294,8 @@ export const en = {
   "checklist.capture3": "It lands here within seconds — or as soon as you have signal again.",
   "checklist.captureDone": "Done — I took one",
   "checklist.shareTitle": "Send proof to a client",
-  "checklist.shareBody": "Build your first one here. It gathers a job's photos — each with its time, place and address sealed in — into one file you can send.",
+  "checklist.shareBody":
+    "Build your first one here. It gathers a job's photos — each with its time, place and address sealed in — into one file you can send.",
 
   "assign.title": "Assign crew",
   "assign.body": "Pick who works this job. Field crews only see the projects they are assigned to.",
@@ -1292,7 +1310,8 @@ export const en = {
   "driver.assigned": "Driving",
   "driver.done": "Done",
   "runhelp.title": "Get your first run on the road",
-  "runhelp.subtitle": "Six steps and your drivers are delivering with proof. Each one opens right here.",
+  "runhelp.subtitle":
+    "Six steps and your drivers are delivering with proof. Each one opens right here.",
   "runhelp.run": "Build your first run",
   "runhelp.runSub": "A name and a date is all it takes.",
   "runhelp.stops": "Add the day's stops",
@@ -1337,7 +1356,7 @@ export const en = {
   "notes.emptyArchived": "Nothing archived yet.",
   "search.projects": "Search job, client, address",
   "search.notes": "Search name, address, phone, email",
-  "search.noMatch": "Nothing matches \"{query}\".",
+  "search.noMatch": 'Nothing matches "{query}".',
   "routes.panelTitle": "All routes",
   "search.routes": "Search route, driver, date, address",
   "search.clear": "Clear search",
@@ -1369,36 +1388,51 @@ export const en = {
   // exactly as the app's own delete flow requires it.
   "seo.delete.title": "Delete Your GeoCliks Account",
   "del.h1": "Delete your GeoCliks account",
-  "del.intro": "You can delete your GeoCliks account and its data yourself, from inside the app or from the website. Nothing has to go through us. This page explains exactly how, and what is removed.",
+  "del.intro":
+    "You can delete your GeoCliks account and its data yourself, from inside the app or from the website. Nothing has to go through us. This page explains exactly how, and what is removed.",
   "del.app.h2": "In the GeoCliks mobile app",
   "del.app.s1": "Open the GeoCliks app and sign in.",
   "del.app.s2": "Tap your profile photo or initials in the top corner to open **Profile**.",
   "del.app.s3": "Scroll to the bottom, to the section titled **Delete account**.",
   "del.app.s4": "Tap **Delete account**, type **DELETE** in the confirmation box, and confirm.",
-  "del.app.after": "The deletion runs immediately and signs you out. It cannot be undone, so export anything you want to keep first.",
+  "del.app.after":
+    "The deletion runs immediately and signs you out. It cannot be undone, so export anything you want to keep first.",
   "del.web.h2": "On the website",
   "del.web.s1": "Sign in at **geocliks.com**.",
   "del.web.s2": "Open **Profile** from the sidebar.",
   "del.web.s3": "Scroll to **Delete account**, type **DELETE** to confirm, and delete.",
   "del.removed.h2": "What is deleted",
-  "del.removed.b1": "Your identity: name, email address, profile photo, sign-in sessions and push notification tokens.",
-  "del.removed.b2": "If you own the Teamspace: the Teamspace itself, and every photo, video, document, project, route, time-clock entry, message, report, share link and watermark template in it — including the stored image and video files.",
+  "del.removed.b1":
+    "Your identity: name, email address, profile photo, sign-in sessions and push notification tokens.",
+  "del.removed.b2":
+    "If you own the Teamspace: the Teamspace itself, and every photo, video, document, project, route, time-clock entry, message, report, share link and watermark template in it — including the stored image and video files.",
   "del.removed.b3": "Share links and verification codes issued from that Teamspace stop resolving.",
   "del.kept.h2": "What is kept, and for how long",
-  "del.kept.b1": "If you were invited into someone else's Teamspace, captures you took stay with that Teamspace: they are the owner's evidence record, not yours. Your identity is still deleted.",
-  "del.kept.b2": "Invited members cannot delete themselves out of a Teamspace's record; the owner removes the member, and their captures stay.",
-  "del.kept.b3": "Billing and tax records we are legally required to keep are retained for as long as the law requires, and are never used for anything else.",
-  "del.kept.b4": "Encrypted backups and security logs rotate out within 90 days, so a deletion can take up to 90 days to work through every copy.",
+  "del.kept.b1":
+    "If you were invited into someone else's Teamspace, captures you took stay with that Teamspace: they are the owner's evidence record, not yours. Your identity is still deleted.",
+  "del.kept.b2":
+    "Invited members cannot delete themselves out of a Teamspace's record; the owner removes the member, and their captures stay.",
+  "del.kept.b3":
+    "Billing and tax records we are legally required to keep are retained for as long as the law requires, and are never used for anything else.",
+  "del.kept.b4":
+    "Encrypted backups and security logs rotate out within 90 days, so a deletion can take up to 90 days to work through every copy.",
   "del.partial.h2": "Deleting some of your data, without deleting your account",
-  "del.partial.intro": "You do not have to close your account to remove data. Inside the app you can delete individual items, and each deletion removes the stored file as well as the record:",
-  "del.partial.b1": "Photos, videos and scanned documents: open the capture, tap the menu, then Delete. The image or video file is removed from storage with it.",
-  "del.partial.b2": "Projects: open the project, then Delete project. The project and its assignments go.",
+  "del.partial.intro":
+    "You do not have to close your account to remove data. Inside the app you can delete individual items, and each deletion removes the stored file as well as the record:",
+  "del.partial.b1":
+    "Photos, videos and scanned documents: open the capture, tap the menu, then Delete. The image or video file is removed from storage with it.",
+  "del.partial.b2":
+    "Projects: open the project, then Delete project. The project and its assignments go.",
   "del.partial.b3": "Messages: open the conversation, press and hold the message, then Delete.",
-  "del.partial.b4": "Routes and time-clock entries: open the item and delete it from its detail screen.",
-  "del.partial.b5": "Profile photo: Profile, then remove the photo. Your name and email can be edited there too.",
-  "del.partial.support": "For anything you cannot reach yourself, email **{email}** from the address on your account and say which data you want removed. We confirm it is your address and delete it, normally within 30 days. Encrypted backups and security logs rotate out within 90 days. Billing and tax records we are legally required to keep are retained for as long as the law requires.",
+  "del.partial.b4":
+    "Routes and time-clock entries: open the item and delete it from its detail screen.",
+  "del.partial.b5":
+    "Profile photo: Profile, then remove the photo. Your name and email can be edited there too.",
+  "del.partial.support":
+    "For anything you cannot reach yourself, email **{email}** from the address on your account and say which data you want removed. We confirm it is your address and delete it, normally within 30 days. Encrypted backups and security logs rotate out within 90 days. Billing and tax records we are legally required to keep are retained for as long as the law requires.",
   "del.locked.h2": "If you cannot sign in",
-  "del.locked.body": "Email **{email}** from the address on the account and ask us to delete it. We confirm it is your address and then delete the account for you, normally within 30 days.",
+  "del.locked.body":
+    "Email **{email}** from the address on the account and ask us to delete it. We confirm it is your address and then delete the account for you, normally within 30 days.",
 } as const;
 
 export type Catalog = Record<keyof typeof en, string>;

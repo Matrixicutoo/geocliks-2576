@@ -593,6 +593,8 @@ export const ptBR: Catalog = {
   "home.nav.help": "Central de ajuda",
   "home.nav.constructionDocs": "Documentação fotográfica de obra",
   "home.nav.fieldNotes": "Notas de campo",
+  "home.nav.blog": "Blog",
+  "home.footer.fieldNotesTag": "Guias de documentação fotográfica verificada",
   "home.nav.vsCompanycam": "GeoCliks vs. CompanyCam",
   "home.nav.emailSupport": "Suporte por e-mail",
   "home.nav.contactSales": "Falar com vendas",
@@ -868,7 +870,8 @@ export const ptBR: Catalog = {
   "routes.stop.skipped": "Ignorada",
   "routes.stop.viewProof": "Ver a foto da entrega",
   "routes.stop.editAddress": "Editar este endereço",
-  "routes.stop.addressLocked": "Esta parada está encerrada - o endereço faz parte do registro da entrega",
+  "routes.stop.addressLocked":
+    "Esta parada está encerrada - o endereço faz parte do registro da entrega",
   "routes.stop.noteLabel": "Observação",
   "routes.stop.notePlaceholder": "O que o motorista precisa saber neste endereço",
   "routes.stop.noteEdit": "Editar esta observação",
@@ -893,7 +896,8 @@ export const ptBR: Catalog = {
   "routes.liveAdded": "Adicionado como parada {n} de {total}",
   "routes.liveDriver": "Motorista",
   "routes.liveDriverThis": "Esta rota",
-  "routes.liveDriverHint": "Deixe nesta rota ou envie o pedido a outro motorista: ele entra na rota que ele já tem hoje, ou abre uma nova a partir do mesmo endereço de partida.",
+  "routes.liveDriverHint":
+    "Deixe nesta rota ou envie o pedido a outro motorista: ele entra na rota que ele já tem hoje, ou abre uma nova a partir do mesmo endereço de partida.",
   "routes.liveOtherRun": "Adicionado à rota de {driver} como parada {n} de {total}",
   "routes.liveNewRun": "Nova rota aberta para {driver} - adicionado como parada {n}",
   "routes.liveNotLocated": "Adicionado no fim - esse endereço não pôde ser localizado no mapa.",
@@ -1047,9 +1051,11 @@ export const ptBR: Catalog = {
   "team.modeEmail": "E-mail",
   "team.modeQr": "Código QR",
   "team.modeEmailHint": "Enviamos um link por e-mail. Melhor para quem não está com você.",
-  "team.modeQrHint": "Sem endereço. Mostre o QR: a primeira pessoa que escanear entra com esta função.",
+  "team.modeQrHint":
+    "Sem endereço. Mostre o QR: a primeira pessoa que escanear entra com esta função.",
   "team.createQrInvite": "Criar convite QR",
-  "team.openInviteCreated": "Convite aberto pronto — código {code}. Entra a primeira pessoa que escanear.",
+  "team.openInviteCreated":
+    "Convite aberto pronto — código {code}. Entra a primeira pessoa que escanear.",
   "team.openInvite": "Convite aberto · qualquer pessoa com este código",
   "team.revokeAriaOpen": "Revogar o convite aberto {code}",
   "team.revokedOpen": "Convite aberto {code} revogado. O código não funciona mais.",
@@ -1110,7 +1116,8 @@ export const ptBR: Catalog = {
   "assistant.send": "Enviar",
   "assistant.stop": "Parar",
   "assistant.error": "Algo deu errado. Tente enviar de novo.",
-  "assistant.disclaimer": "O assistente pode errar. Confira o que é importante nas suas fotos e relatórios.",
+  "assistant.disclaimer":
+    "O assistente pode errar. Confira o que é importante nas suas fotos e relatórios.",
   // Assistant stat cards, charts and exports
   "assistant.metric.captures": "Capturas",
   "assistant.metric.places": "Locais",
@@ -1124,8 +1131,10 @@ export const ptBR: Catalog = {
   "assistant.download": "Baixar",
   "assistant.copyLink": "Copiar link",
   "assistant.copied": "Link copiado",
-  "assistant.linkExpires": "Este link funciona por 24 horas. O relatório também fica na tela Relatórios.",
-  "assistant.linkExpired": "Este link de download expirou. O relatório continua na tela Relatórios.",
+  "assistant.linkExpires":
+    "Este link funciona por 24 horas. O relatório também fica na tela Relatórios.",
+  "assistant.linkExpired":
+    "Este link de download expirou. O relatório continua na tela Relatórios.",
   "assistant.reportMeta": "{count} fotos · {size}",
 
   /* My captures — the personal page: anything not filed under a project yet. Mirrors the phone app. */
@@ -1142,7 +1151,8 @@ export const ptBR: Catalog = {
   "tc.punchNow": "Bater ponto",
   "tc.punchNowHint": "Registra a hora e, se o aparelho informar, o local.",
   "tc.crewNoManual": "Suas horas",
-  "tc.crewNoManualHint": "Os registros vêm da captura CLOCK no telefone — uma marcação de hora sem foto. A entrada manual é do escritório.",
+  "tc.crewNoManualHint":
+    "Os registros vêm da captura CLOCK no telefone — uma marcação de hora sem foto. A entrada manual é do escritório.",
   "tc.exportPdf": "Exportar PDF",
   "tc.exporting": "Gerando…",
   "tc.exportHint": "Folha de ponto de {month}",
@@ -1179,7 +1189,8 @@ export const ptBR: Catalog = {
   "mine.photos": "Fotos",
   "mine.videos": "Vídeos",
   "mine.docs": "Documentos",
-  "mine.emptyBody": "As capturas feitas sem escolher um projeto chegam aqui, incluindo tudo o que foi gravado antes de você entrar.",
+  "mine.emptyBody":
+    "As capturas feitas sem escolher um projeto chegam aqui, incluindo tudo o que foi gravado antes de você entrar.",
 
   // Passwordless sign-in: email code, invite claim, profile sign-in card
   "signin.codeTitle": "Confira seu e-mail",
@@ -1197,7 +1208,8 @@ export const ptBR: Catalog = {
   "signin.continueEmail": "Continuar com e-mail",
   "profile.signInSection": "Como você entra",
   "profile.signInPasswordless": "Sem senha: código por e-mail, Google ou X",
-  "profile.signInPasswordlessHint": "O GeoCliks não tem senhas. Você entra com um código de uso único enviado para seu e-mail, ou com Google ou X. Nada para lembrar, nada para vazar.",
+  "profile.signInPasswordlessHint":
+    "O GeoCliks não tem senhas. Você entra com um código de uso único enviado para seu e-mail, ou com Google ou X. Nada para lembrar, nada para vazar.",
   "join.yourName": "Seu nome",
   "join.yourNamePlaceholder": "Alex Rivera",
   "join.emailHint": "Usamos isso apenas para sua conta, nada mais.",
@@ -1217,14 +1229,17 @@ export const ptBR: Catalog = {
   "setup.next": "Continuar",
   "setup.back": "Voltar",
   "setup.systemTitle": "Qual sistema você usa?",
-  "setup.systemBody": "Define onde sua equipe entra e o que a semana grátis libera. Pode trocar depois.",
+  "setup.systemBody":
+    "Define onde sua equipe entra e o que a semana grátis libera. Pode trocar depois.",
   "setup.fieldTitle": "Fotos de obra",
   "setup.fieldBody": "As equipes fotografam o serviço. Cada foto é selada com hora, local e obra.",
   "setup.fieldTrial": "7 dias de Business, grátis",
   "setup.deliveryTitle": "Rotas de entrega",
-  "setup.deliveryBody": "Planeje as paradas, rode a rota e comprove cada entrega com foto e assinatura.",
+  "setup.deliveryBody":
+    "Planeje as paradas, rode a rota e comprove cada entrega com foto e assinatura.",
   "setup.deliveryTrial": "7 dias de Delivery Pro, grátis",
-  "setup.trialNote": "Sem cartão, sem cobrança. Depois de 7 dias você cai no plano grátis desse sistema e mantém tudo que capturou.",
+  "setup.trialNote":
+    "Sem cartão, sem cobrança. Depois de 7 dias você cai no plano grátis desse sistema e mantém tudo que capturou.",
   "setup.error": "Não foi possível concluir a configuração. Tente de novo.",
 
   // The 7-day product trial: countdown strip, sidebar chip, plan-page label
@@ -1237,7 +1252,8 @@ export const ptBR: Catalog = {
   "trial.cta": "Ver planos",
   "trial.dismiss": "Dispensar",
   "trial.endedTitle": "Sua semana gratuita terminou",
-  "trial.endedBody": "Todas as fotos, projetos e rotas que você registrou continuam aqui. Faça upgrade quando precisar dos recursos pagos.",
+  "trial.endedBody":
+    "Todas as fotos, projetos e rotas que você registrou continuam aqui. Faça upgrade quando precisar dos recursos pagos.",
   "trial.endedCta": "Ver planos",
   "trial.planLabel": "Teste em andamento",
   "trial.planLine": "{plan} incluído até {date}",
@@ -1261,7 +1277,8 @@ export const ptBR: Catalog = {
   // The popups behind each checklist step
   "checklist.close": "Fechar",
   "checklist.mobileTitle": "Instale o aplicativo no seu celular",
-  "checklist.mobileBody": "Escaneie isto com a câmera do celular. Abre a página de instalação para iPhone e Android — entre com o mesmo e-mail e seu espaço já estará lá.",
+  "checklist.mobileBody":
+    "Escaneie isto com a câmera do celular. Abre a página de instalação para iPhone e Android — entre com o mesmo e-mail e seu espaço já estará lá.",
   "checklist.mobileScan": "Escaneie com o celular",
   "checklist.mobileCopied": "Link copiado",
   "checklist.mobileDone": "Pronto — está instalado",
@@ -1272,10 +1289,12 @@ export const ptBR: Catalog = {
   "checklist.capture3": "Chega aqui em segundos — ou assim que você tiver sinal de novo.",
   "checklist.captureDone": "Pronto — já tirei uma",
   "checklist.shareTitle": "Envie provas a um cliente",
-  "checklist.shareBody": "Crie o primeiro aqui. Ele reúne as fotos de uma obra — cada uma selada com hora, lugar e endereço — em um único arquivo para enviar.",
+  "checklist.shareBody":
+    "Crie o primeiro aqui. Ele reúne as fotos de uma obra — cada uma selada com hora, lugar e endereço — em um único arquivo para enviar.",
 
   "assign.title": "Atribuir equipe",
-  "assign.body": "Escolha quem trabalha nesta obra. As equipes de campo só veem os projetos atribuídos a elas.",
+  "assign.body":
+    "Escolha quem trabalha nesta obra. As equipes de campo só veem os projetos atribuídos a elas.",
   "assign.empty": "Ainda não há colegas — convide sua equipe na página Equipe.",
   "assign.add": "Atribuir",
   "assign.assigned": "Atribuído",
@@ -1301,13 +1320,15 @@ export const ptBR: Catalog = {
   "runhelp.drop": "Feche a primeira entrega com prova",
   "runhelp.dropSub": "Uma foto com hora e GPS selados, na porta.",
   "runhelp.runTitle": "Crie sua primeira rota",
-  "runhelp.runBody": "Uma rota é o dia de um motorista. Dê nome e data, e depois adicione as paradas.",
+  "runhelp.runBody":
+    "Uma rota é o dia de um motorista. Dê nome e data, e depois adicione as paradas.",
   "runhelp.runCreate": "Criar a rota",
   "runhelp.runCreated": "Rota criada. Agora adicione as paradas do dia.",
   "runhelp.runAddStops": "Adicionar paradas",
   "runhelp.later": "Depois",
   "runhelp.stopsTitle": "Adicione as paradas do dia",
-  "runhelp.stopsBody": "As paradas entram na página da rota. Cole tudo de uma vez e fazemos o resto.",
+  "runhelp.stopsBody":
+    "As paradas entram na página da rota. Cole tudo de uma vez e fazemos o resto.",
   "runhelp.stops1": "Abra a rota e ache a caixa de colar.",
   "runhelp.stops2": "Cole um endereço por linha — nome ou número do pedido depois de uma vírgula.",
   "runhelp.stops3": "Toque em Ordenar paradas e a rota é planejada por distância.",
@@ -1332,7 +1353,7 @@ export const ptBR: Catalog = {
   "notes.emptyArchived": "Nada arquivado ainda.",
   "search.projects": "Buscar obra, cliente, endereço",
   "search.notes": "Buscar nome, endereço, telefone, e-mail",
-  "search.noMatch": "Nada corresponde a \"{query}\".",
+  "search.noMatch": 'Nada corresponde a "{query}".',
   "routes.panelTitle": "Todas as rotas",
   "search.routes": "Buscar rota, motorista, data, endereço",
   "search.clear": "Limpar busca",
@@ -1364,34 +1385,50 @@ export const ptBR: Catalog = {
   // exactly as the app's own delete flow requires it.
   "seo.delete.title": "Excluir sua conta GeoCliks",
   "del.h1": "Excluir sua conta GeoCliks",
-  "del.intro": "Você pode excluir sua conta GeoCliks e os dados dela por conta própria, pelo app ou pelo site. Nada precisa passar por nós. Esta página explica exatamente como fazer isso e o que é removido.",
+  "del.intro":
+    "Você pode excluir sua conta GeoCliks e os dados dela por conta própria, pelo app ou pelo site. Nada precisa passar por nós. Esta página explica exatamente como fazer isso e o que é removido.",
   "del.app.h2": "No app GeoCliks",
   "del.app.s1": "Abra o app GeoCliks e entre na sua conta.",
-  "del.app.s2": "Toque na sua foto de perfil ou nas suas iniciais no canto superior para abrir o **Perfil**.",
+  "del.app.s2":
+    "Toque na sua foto de perfil ou nas suas iniciais no canto superior para abrir o **Perfil**.",
   "del.app.s3": "Role até o fim, até a seção **Excluir conta**.",
   "del.app.s4": "Toque em **Excluir conta**, digite **DELETE** na caixa de confirmação e confirme.",
-  "del.app.after": "A exclusão acontece na hora e encerra sua sessão. Não há como desfazer, então exporte antes tudo o que quiser guardar.",
+  "del.app.after":
+    "A exclusão acontece na hora e encerra sua sessão. Não há como desfazer, então exporte antes tudo o que quiser guardar.",
   "del.web.h2": "No site",
   "del.web.s1": "Entre em **geocliks.com**.",
   "del.web.s2": "Abra o **Perfil** na barra lateral.",
   "del.web.s3": "Role até **Excluir conta**, digite **DELETE** para confirmar e exclua.",
   "del.removed.h2": "O que é excluído",
-  "del.removed.b1": "Sua identidade: nome, e-mail, foto de perfil, sessões de login e tokens de notificação push.",
-  "del.removed.b2": "Se você for o proprietário do espaço da equipe: o próprio espaço e cada foto, vídeo, documento, projeto, rota, registro de ponto, mensagem, relatório, link de compartilhamento e modelo de marca d'água nele — incluindo os arquivos de imagem e vídeo armazenados.",
-  "del.removed.b3": "Links de compartilhamento e códigos de verificação emitidos por esse espaço param de funcionar.",
+  "del.removed.b1":
+    "Sua identidade: nome, e-mail, foto de perfil, sessões de login e tokens de notificação push.",
+  "del.removed.b2":
+    "Se você for o proprietário do espaço da equipe: o próprio espaço e cada foto, vídeo, documento, projeto, rota, registro de ponto, mensagem, relatório, link de compartilhamento e modelo de marca d'água nele — incluindo os arquivos de imagem e vídeo armazenados.",
+  "del.removed.b3":
+    "Links de compartilhamento e códigos de verificação emitidos por esse espaço param de funcionar.",
   "del.kept.h2": "O que é mantido, e por quanto tempo",
-  "del.kept.b1": "Se você foi convidado para o espaço da equipe de outra pessoa, as capturas que você fez ficam com aquele espaço: elas são o registro de evidência do proprietário, não seu. Sua identidade é excluída de todo modo.",
-  "del.kept.b2": "Membros convidados não podem se apagar do registro de um espaço da equipe; o proprietário remove o membro, e as capturas dele ficam.",
-  "del.kept.b3": "Registros fiscais e de cobrança que somos legalmente obrigados a guardar são mantidos pelo tempo que a lei exigir, e nunca são usados para outra finalidade.",
-  "del.kept.b4": "Backups criptografados e logs de segurança são rotacionados em até 90 dias, então uma exclusão pode levar até 90 dias para alcançar todas as cópias.",
+  "del.kept.b1":
+    "Se você foi convidado para o espaço da equipe de outra pessoa, as capturas que você fez ficam com aquele espaço: elas são o registro de evidência do proprietário, não seu. Sua identidade é excluída de todo modo.",
+  "del.kept.b2":
+    "Membros convidados não podem se apagar do registro de um espaço da equipe; o proprietário remove o membro, e as capturas dele ficam.",
+  "del.kept.b3":
+    "Registros fiscais e de cobrança que somos legalmente obrigados a guardar são mantidos pelo tempo que a lei exigir, e nunca são usados para outra finalidade.",
+  "del.kept.b4":
+    "Backups criptografados e logs de segurança são rotacionados em até 90 dias, então uma exclusão pode levar até 90 dias para alcançar todas as cópias.",
   "del.partial.h2": "Excluir parte dos seus dados sem excluir a conta",
-  "del.partial.intro": "Você não precisa encerrar a conta para remover dados. Dentro do app é possível excluir itens individuais, e cada exclusão remove o arquivo armazenado além do registro:",
-  "del.partial.b1": "Fotos, vídeos e documentos digitalizados: abra a captura, toque no menu e em Excluir. O arquivo de imagem ou vídeo sai do armazenamento junto.",
-  "del.partial.b2": "Projetos: abra o projeto e toque em Excluir projeto. O projeto e suas atribuições vão embora.",
+  "del.partial.intro":
+    "Você não precisa encerrar a conta para remover dados. Dentro do app é possível excluir itens individuais, e cada exclusão remove o arquivo armazenado além do registro:",
+  "del.partial.b1":
+    "Fotos, vídeos e documentos digitalizados: abra a captura, toque no menu e em Excluir. O arquivo de imagem ou vídeo sai do armazenamento junto.",
+  "del.partial.b2":
+    "Projetos: abra o projeto e toque em Excluir projeto. O projeto e suas atribuições vão embora.",
   "del.partial.b3": "Mensagens: abra a conversa, pressione e segure a mensagem e toque em Excluir.",
   "del.partial.b4": "Rotas e registros de ponto: abra o item e exclua na tela de detalhes dele.",
-  "del.partial.b5": "Foto de perfil: vá em Perfil e remova a foto. Seu nome e e-mail também são editados ali.",
-  "del.partial.support": "Para qualquer coisa que você não consiga fazer sozinho, escreva para **{email}** usando o endereço da sua conta e diga quais dados quer remover. Confirmamos que o endereço é seu e excluímos, normalmente em até 30 dias. Backups criptografados e logs de segurança são rotacionados em até 90 dias. Registros fiscais e de cobrança que somos legalmente obrigados a guardar são mantidos pelo tempo que a lei exigir.",
+  "del.partial.b5":
+    "Foto de perfil: vá em Perfil e remova a foto. Seu nome e e-mail também são editados ali.",
+  "del.partial.support":
+    "Para qualquer coisa que você não consiga fazer sozinho, escreva para **{email}** usando o endereço da sua conta e diga quais dados quer remover. Confirmamos que o endereço é seu e excluímos, normalmente em até 30 dias. Backups criptografados e logs de segurança são rotacionados em até 90 dias. Registros fiscais e de cobrança que somos legalmente obrigados a guardar são mantidos pelo tempo que a lei exigir.",
   "del.locked.h2": "Se você não conseguir entrar na conta",
-  "del.locked.body": "Escreva para **{email}** usando o endereço da conta e peça a exclusão. Confirmamos que o endereço é seu e então excluímos a conta para você, normalmente em até 30 dias.",
+  "del.locked.body":
+    "Escreva para **{email}** usando o endereço da conta e peça a exclusão. Confirmamos que o endereço é seu e então excluímos a conta para você, normalmente em até 30 dias.",
 };

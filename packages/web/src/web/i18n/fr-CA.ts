@@ -600,6 +600,8 @@ export const frCA: Catalog = {
   "home.nav.help": "Centre d'aide",
   "home.nav.constructionDocs": "Documentation photo de chantier",
   "home.nav.fieldNotes": "Notes de terrain",
+  "home.nav.blog": "Blogue",
+  "home.footer.fieldNotesTag": "Guides de documentation photo vérifiée",
   "home.nav.vsCompanycam": "GeoCliks vs CompanyCam",
   "home.nav.emailSupport": "Soutien par courriel",
   "home.nav.contactSales": "Parler aux ventes",
@@ -774,7 +776,8 @@ export const frCA: Catalog = {
   "notif.title": "Notifications",
   "notif.newCount": "{n} nouvelles",
   "notif.loading": "Chargement…",
-  "notif.empty": "Rien de neuf. Les messages et les nouvelles captures de votre équipe s'affichent ici.",
+  "notif.empty":
+    "Rien de neuf. Les messages et les nouvelles captures de votre équipe s'affichent ici.",
   "notif.sentImage": "vous a envoyé une image",
   "notif.newCapture": "a publié une nouvelle capture",
   "notify.on": "Activer les alertes du bureau",
@@ -879,7 +882,8 @@ export const frCA: Catalog = {
   "routes.stop.skipped": "Ignorée",
   "routes.stop.viewProof": "Voir la photo de livraison",
   "routes.stop.editAddress": "Modifier cette adresse",
-  "routes.stop.addressLocked": "Cet arrêt est clos - son adresse fait partie du dossier de livraison",
+  "routes.stop.addressLocked":
+    "Cet arrêt est clos - son adresse fait partie du dossier de livraison",
   "routes.stop.noteLabel": "Note",
   "routes.stop.notePlaceholder": "Ce que le chauffeur doit savoir à cette adresse",
   "routes.stop.noteEdit": "Modifier cette note",
@@ -904,7 +908,8 @@ export const frCA: Catalog = {
   "routes.liveAdded": "Ajoutée comme arrêt {n} sur {total}",
   "routes.liveDriver": "Chauffeur",
   "routes.liveDriverThis": "Cette tournée",
-  "routes.liveDriverHint": "Laissez sur cette tournée, ou envoyez la commande à un autre chauffeur - elle rejoint la tournée qu'il a déjà aujourd'hui, ou en ouvre une depuis la même adresse de départ.",
+  "routes.liveDriverHint":
+    "Laissez sur cette tournée, ou envoyez la commande à un autre chauffeur - elle rejoint la tournée qu'il a déjà aujourd'hui, ou en ouvre une depuis la même adresse de départ.",
   "routes.liveOtherRun": "Ajoutée à la tournée de {driver} comme arrêt {n} sur {total}",
   "routes.liveNewRun": "Nouvelle tournée ouverte pour {driver} - ajoutée comme arrêt {n}",
   "routes.liveNotLocated": "Ajoutée à la fin - cette adresse n'a pas pu être placée sur la carte.",
@@ -1059,10 +1064,13 @@ export const frCA: Catalog = {
   "team.howToSend": "Comment l'envoyer",
   "team.modeEmail": "Courriel",
   "team.modeQr": "Code QR",
-  "team.modeEmailHint": "On lui envoie un lien par courriel. Idéal pour quelqu'un qui n'est pas devant vous.",
-  "team.modeQrHint": "Aucune adresse requise. Montrez le code QR : la première personne qui le scanne se joint avec ce rôle.",
+  "team.modeEmailHint":
+    "On lui envoie un lien par courriel. Idéal pour quelqu'un qui n'est pas devant vous.",
+  "team.modeQrHint":
+    "Aucune adresse requise. Montrez le code QR : la première personne qui le scanne se joint avec ce rôle.",
   "team.createQrInvite": "Créer une invitation QR",
-  "team.openInviteCreated": "Invitation ouverte prête — code {code}. La première personne qui la scanne se joint.",
+  "team.openInviteCreated":
+    "Invitation ouverte prête — code {code}. La première personne qui la scanne se joint.",
   "team.openInvite": "Invitation ouverte · toute personne ayant ce code",
   "team.revokeAriaOpen": "Révoquer l'invitation ouverte {code}",
   "team.revokedOpen": "Invitation ouverte {code} révoquée. Le code ne fonctionne plus.",
@@ -1123,7 +1131,8 @@ export const frCA: Catalog = {
   "assistant.send": "Envoyer",
   "assistant.stop": "Arrêter",
   "assistant.error": "Une erreur est survenue. Essayez d'envoyer de nouveau.",
-  "assistant.disclaimer": "L'assistant peut se tromper. Vérifie ce qui compte dans tes photos et tes rapports.",
+  "assistant.disclaimer":
+    "L'assistant peut se tromper. Vérifie ce qui compte dans tes photos et tes rapports.",
   // Assistant stat cards, charts and exports
   "assistant.metric.captures": "Prises",
   "assistant.metric.places": "Lieux",
@@ -1137,8 +1146,10 @@ export const frCA: Catalog = {
   "assistant.download": "Télécharger",
   "assistant.copyLink": "Copier le lien",
   "assistant.copied": "Lien copié",
-  "assistant.linkExpires": "Ce lien est valide 24 heures. Le rapport reste aussi dans l'écran Rapports.",
-  "assistant.linkExpired": "Ce lien de téléchargement est expiré. Le rapport est toujours dans l'écran Rapports.",
+  "assistant.linkExpires":
+    "Ce lien est valide 24 heures. Le rapport reste aussi dans l'écran Rapports.",
+  "assistant.linkExpired":
+    "Ce lien de téléchargement est expiré. Le rapport est toujours dans l'écran Rapports.",
   "assistant.reportMeta": "{count} photos · {size}",
 
   /* My captures — the personal page: anything not filed under a project yet. Mirrors the phone app. */
@@ -1155,7 +1166,8 @@ export const frCA: Catalog = {
   "tc.punchNow": "Pointer maintenant",
   "tc.punchNowHint": "Enregistre l'heure et, si l'appareil le partage, l'endroit.",
   "tc.crewNoManual": "Tes heures",
-  "tc.crewNoManualHint": "Les pointages viennent de la capture CLOCK sur le téléphone — un horodatage sans photo. La saisie manuelle appartient au bureau.",
+  "tc.crewNoManualHint":
+    "Les pointages viennent de la capture CLOCK sur le téléphone — un horodatage sans photo. La saisie manuelle appartient au bureau.",
   "tc.exportPdf": "Exporter en PDF",
   "tc.exporting": "Génération…",
   "tc.exportHint": "Feuille de temps de {month}",
@@ -1192,7 +1204,8 @@ export const frCA: Catalog = {
   "mine.photos": "Photos",
   "mine.videos": "Vidéos",
   "mine.docs": "Documents",
-  "mine.emptyBody": "Les captures prises sans choisir de projet arrivent ici, y compris tout ce qui a été pris avant votre connexion.",
+  "mine.emptyBody":
+    "Les captures prises sans choisir de projet arrivent ici, y compris tout ce qui a été pris avant votre connexion.",
 
   // Passwordless sign-in: email code, invite claim, profile sign-in card
   "signin.codeTitle": "Vérifiez votre courriel",
@@ -1203,20 +1216,23 @@ export const frCA: Catalog = {
   "signin.resendIn": "Pas reçu le code? ({seconds} s)",
   "signin.changeEmail": "Utiliser un autre courriel",
   "signin.sendCode": "M'envoyer un code",
-  "signin.codeHelp": "Nous vous enverrons un code à 6 chiffres par courriel. Aucun mot de passe à retenir.",
+  "signin.codeHelp":
+    "Nous vous enverrons un code à 6 chiffres par courriel. Aucun mot de passe à retenir.",
   "signin.codeSendError": "Impossible d'envoyer le code. Vérifiez l'adresse et réessayez.",
   "signin.codeError": "Ce code n'a pas fonctionné. Demandez-en un nouveau et réessayez.",
   "signin.more": "Autres façons de se connecter",
   "signin.continueEmail": "Continuer avec le courriel",
   "profile.signInSection": "Comment vous vous connectez",
   "profile.signInPasswordless": "Sans mot de passe — code par courriel, Google ou X",
-  "profile.signInPasswordlessHint": "GeoCliks n'utilise aucun mot de passe. Vous vous connectez avec un code à usage unique envoyé par courriel, ou avec Google ou X. Rien à retenir, rien à faire fuiter.",
+  "profile.signInPasswordlessHint":
+    "GeoCliks n'utilise aucun mot de passe. Vous vous connectez avec un code à usage unique envoyé par courriel, ou avec Google ou X. Rien à retenir, rien à faire fuiter.",
   "join.yourName": "Votre nom",
   "join.yourNamePlaceholder": "Alex Rivera",
   "join.emailHint": "Nous l'utilisons pour votre compte, et rien d'autre.",
   "join.claim": "Rejoindre {workspace}",
   "join.claimHintOpen": "Aucun mot de passe, aucun code. Votre nom et votre courriel suffisent.",
-  "join.claimHint": "Aucun mot de passe, aucun code — l'invitation à {email} est une preuve suffisante.",
+  "join.claimHint":
+    "Aucun mot de passe, aucun code — l'invitation à {email} est une preuve suffisante.",
 
   // First-run onboarding: your name, the Teamspace name, and which system you run
   "setup.stepOf": "Étape {n} sur 2",
@@ -1230,14 +1246,18 @@ export const frCA: Catalog = {
   "setup.next": "Continuer",
   "setup.back": "Retour",
   "setup.systemTitle": "Quel système utilisez-vous?",
-  "setup.systemBody": "Ça détermine où votre équipe arrive et ce que votre semaine gratuite débloque. Modifiable plus tard.",
+  "setup.systemBody":
+    "Ça détermine où votre équipe arrive et ce que votre semaine gratuite débloque. Modifiable plus tard.",
   "setup.fieldTitle": "Photos de chantier",
-  "setup.fieldBody": "Les équipes photographient le travail. Chaque photo est scellée avec l'heure, le lieu et le chantier.",
+  "setup.fieldBody":
+    "Les équipes photographient le travail. Chaque photo est scellée avec l'heure, le lieu et le chantier.",
   "setup.fieldTrial": "7 jours de Business, gratuit",
   "setup.deliveryTitle": "Tournées de livraison",
-  "setup.deliveryBody": "Planifiez les arrêts, faites la tournée, prouvez chaque livraison par une photo et une signature.",
+  "setup.deliveryBody":
+    "Planifiez les arrêts, faites la tournée, prouvez chaque livraison par une photo et une signature.",
   "setup.deliveryTrial": "7 jours de Delivery Pro, gratuit",
-  "setup.trialNote": "Aucune carte, aucuns frais. Après 7 jours, vous passez au forfait gratuit de ce système et gardez toutes vos captures.",
+  "setup.trialNote":
+    "Aucune carte, aucuns frais. Après 7 jours, vous passez au forfait gratuit de ce système et gardez toutes vos captures.",
   "setup.error": "Impossible de terminer la configuration. Réessayez.",
 
   // The 7-day product trial: countdown strip, sidebar chip, plan-page label
@@ -1250,7 +1270,8 @@ export const frCA: Catalog = {
   "trial.cta": "Voir les forfaits",
   "trial.dismiss": "Masquer",
   "trial.endedTitle": "Votre semaine gratuite est terminée",
-  "trial.endedBody": "Toutes vos photos, vos projets et vos routes sont toujours là. Passez à un forfait payant quand vous en aurez besoin.",
+  "trial.endedBody":
+    "Toutes vos photos, vos projets et vos routes sont toujours là. Passez à un forfait payant quand vous en aurez besoin.",
   "trial.endedCta": "Voir les forfaits",
   "trial.planLabel": "Essai en cours",
   "trial.planLine": "{plan} inclus jusqu'au {date}",
@@ -1274,28 +1295,35 @@ export const frCA: Catalog = {
   // The popups behind each checklist step
   "checklist.close": "Fermer",
   "checklist.mobileTitle": "Installez l'application sur votre téléphone",
-  "checklist.mobileBody": "Scannez ceci avec l'appareil photo de votre téléphone. La page d'installation s'ouvre pour iPhone et Android — connectez-vous avec le même courriel et votre Teamspace est déjà là.",
+  "checklist.mobileBody":
+    "Scannez ceci avec l'appareil photo de votre téléphone. La page d'installation s'ouvre pour iPhone et Android — connectez-vous avec le même courriel et votre Teamspace est déjà là.",
   "checklist.mobileScan": "Scannez avec votre téléphone",
   "checklist.mobileCopied": "Lien copié",
   "checklist.mobileDone": "C'est fait — installée",
   "checklist.captureTitle": "Prenez votre première photo scellée",
   "checklist.captureBody": "Sur le téléphone, l'application ouverte :",
   "checklist.capture1": "Choisissez le chantier auquel le travail appartient.",
-  "checklist.capture2": "Photographiez. L'heure, les coordonnées et l'adresse sont scellées au passage.",
-  "checklist.capture3": "La photo arrive ici en quelques secondes — ou dès que vous avez du signal.",
+  "checklist.capture2":
+    "Photographiez. L'heure, les coordonnées et l'adresse sont scellées au passage.",
+  "checklist.capture3":
+    "La photo arrive ici en quelques secondes — ou dès que vous avez du signal.",
   "checklist.captureDone": "C'est fait — j'en ai pris une",
   "checklist.shareTitle": "Envoyez une preuve à un client",
-  "checklist.shareBody": "Créez le premier ici. Il réunit les photos d'un chantier — chacune scellée avec son heure, son lieu et son adresse — en un seul fichier à envoyer.",
+  "checklist.shareBody":
+    "Créez le premier ici. Il réunit les photos d'un chantier — chacune scellée avec son heure, son lieu et son adresse — en un seul fichier à envoyer.",
 
   "assign.title": "Assigner une équipe",
-  "assign.body": "Choisissez qui travaille sur ce chantier. Les équipes terrain ne voient que les projets qui leur sont assignés.",
+  "assign.body":
+    "Choisissez qui travaille sur ce chantier. Les équipes terrain ne voient que les projets qui leur sont assignés.",
   "assign.empty": "Aucun coéquipier pour l'instant — invitez votre équipe depuis la page Équipe.",
   "assign.add": "Assigner",
   "assign.assigned": "Assigné",
   "assign.done": "Terminé",
   "driver.title": "Assigner un chauffeur",
-  "driver.body": "Choisissez qui conduit cette tournée. Les chauffeurs ne voient que les tournées qui leur sont assignées.",
-  "driver.empty": "Aucun coéquipier pour l'instant — invitez d'abord vos chauffeurs depuis la page Équipe.",
+  "driver.body":
+    "Choisissez qui conduit cette tournée. Les chauffeurs ne voient que les tournées qui leur sont assignées.",
+  "driver.empty":
+    "Aucun coéquipier pour l'instant — invitez d'abord vos chauffeurs depuis la page Équipe.",
   "driver.add": "Assigner",
   "driver.assigned": "Au volant",
   "driver.done": "Terminé",
@@ -1314,15 +1342,18 @@ export const frCA: Catalog = {
   "runhelp.drop": "Fermez la première livraison avec preuve",
   "runhelp.dropSub": "Une photo horodatée et géolocalisée à la porte.",
   "runhelp.runTitle": "Créez votre première tournée",
-  "runhelp.runBody": "Une tournée, c'est la journée d'un chauffeur. Nommez-la, datez-la, puis ajoutez les arrêts.",
+  "runhelp.runBody":
+    "Une tournée, c'est la journée d'un chauffeur. Nommez-la, datez-la, puis ajoutez les arrêts.",
   "runhelp.runCreate": "Créer la tournée",
   "runhelp.runCreated": "Tournée créée. Ajoutez maintenant les arrêts du jour.",
   "runhelp.runAddStops": "Ajouter les arrêts",
   "runhelp.later": "Plus tard",
   "runhelp.stopsTitle": "Ajoutez les arrêts du jour",
-  "runhelp.stopsBody": "Les arrêts s'ajoutent sur la page de la tournée. Collez-les en bloc, on fait le reste.",
+  "runhelp.stopsBody":
+    "Les arrêts s'ajoutent sur la page de la tournée. Collez-les en bloc, on fait le reste.",
   "runhelp.stops1": "Ouvrez la tournée et trouvez la zone de collage.",
-  "runhelp.stops2": "Collez une adresse par ligne — un nom ou un numéro de commande après une virgule.",
+  "runhelp.stops2":
+    "Collez une adresse par ligne — un nom ou un numéro de commande après une virgule.",
   "runhelp.stops3": "Cliquez sur Ordonner les arrêts et la tournée est planifiée par distance.",
   "runhelp.openRun": "Ouvrir la tournée",
   "runhelp.noRun": "Créez d'abord une tournée — étape un ci-dessus.",
@@ -1377,34 +1408,54 @@ export const frCA: Catalog = {
   // exactly as the app's own delete flow requires it.
   "seo.delete.title": "Supprimer votre compte GeoCliks",
   "del.h1": "Supprimer votre compte GeoCliks",
-  "del.intro": "Vous pouvez supprimer vous-même votre compte GeoCliks et ses données, depuis l'application ou depuis le site web. Rien n'a besoin de passer par nous. Cette page explique exactement comment faire et ce qui est supprimé.",
+  "del.intro":
+    "Vous pouvez supprimer vous-même votre compte GeoCliks et ses données, depuis l'application ou depuis le site web. Rien n'a besoin de passer par nous. Cette page explique exactement comment faire et ce qui est supprimé.",
   "del.app.h2": "Dans l'application GeoCliks",
   "del.app.s1": "Ouvrez l'application GeoCliks et connectez-vous.",
-  "del.app.s2": "Touchez votre photo de profil ou vos initiales dans le coin supérieur pour ouvrir **Profil**.",
+  "del.app.s2":
+    "Touchez votre photo de profil ou vos initiales dans le coin supérieur pour ouvrir **Profil**.",
   "del.app.s3": "Faites défiler jusqu'en bas, à la section **Supprimer le compte**.",
-  "del.app.s4": "Touchez **Supprimer le compte**, tapez **DELETE** dans la case de confirmation, puis confirmez.",
-  "del.app.after": "La suppression est immédiate et vous déconnecte. Elle est irréversible : exportez d'abord tout ce que vous voulez garder.",
+  "del.app.s4":
+    "Touchez **Supprimer le compte**, tapez **DELETE** dans la case de confirmation, puis confirmez.",
+  "del.app.after":
+    "La suppression est immédiate et vous déconnecte. Elle est irréversible : exportez d'abord tout ce que vous voulez garder.",
   "del.web.h2": "Sur le site web",
   "del.web.s1": "Connectez-vous à **geocliks.com**.",
   "del.web.s2": "Ouvrez **Profil** dans la barre latérale.",
-  "del.web.s3": "Faites défiler jusqu'à **Supprimer le compte**, tapez **DELETE** pour confirmer, puis supprimez.",
+  "del.web.s3":
+    "Faites défiler jusqu'à **Supprimer le compte**, tapez **DELETE** pour confirmer, puis supprimez.",
   "del.removed.h2": "Ce qui est supprimé",
-  "del.removed.b1": "Votre identité : nom, adresse courriel, photo de profil, sessions de connexion et jetons de notification push.",
-  "del.removed.b2": "Si vous êtes le propriétaire de l'espace d'équipe : l'espace lui-même, ainsi que chaque photo, vidéo, document, projet, tournée, entrée de pointage, message, rapport, lien de partage et modèle de filigrane qu'il contient — y compris les fichiers image et vidéo stockés.",
-  "del.removed.b3": "Les liens de partage et les codes de vérification émis depuis cet espace cessent de fonctionner.",
+  "del.removed.b1":
+    "Votre identité : nom, adresse courriel, photo de profil, sessions de connexion et jetons de notification push.",
+  "del.removed.b2":
+    "Si vous êtes le propriétaire de l'espace d'équipe : l'espace lui-même, ainsi que chaque photo, vidéo, document, projet, tournée, entrée de pointage, message, rapport, lien de partage et modèle de filigrane qu'il contient — y compris les fichiers image et vidéo stockés.",
+  "del.removed.b3":
+    "Les liens de partage et les codes de vérification émis depuis cet espace cessent de fonctionner.",
   "del.kept.h2": "Ce qui est conservé, et pour combien de temps",
-  "del.kept.b1": "Si vous avez été invité dans l'espace d'équipe de quelqu'un d'autre, les prises que vous avez faites restent dans cet espace : elles constituent le dossier de preuve du propriétaire, pas le vôtre. Votre identité est tout de même supprimée.",
-  "del.kept.b2": "Un membre invité ne peut pas s'effacer du dossier d'un espace d'équipe ; le propriétaire retire le membre, et ses prises restent.",
-  "del.kept.b3": "Les documents de facturation et fiscaux que la loi nous oblige à conserver le sont aussi longtemps que la loi l'exige, et ne servent à rien d'autre.",
-  "del.kept.b4": "Les sauvegardes chiffrées et les journaux de sécurité sont renouvelés en 90 jours : une suppression peut donc prendre jusqu'à 90 jours pour atteindre chaque copie.",
+  "del.kept.b1":
+    "Si vous avez été invité dans l'espace d'équipe de quelqu'un d'autre, les prises que vous avez faites restent dans cet espace : elles constituent le dossier de preuve du propriétaire, pas le vôtre. Votre identité est tout de même supprimée.",
+  "del.kept.b2":
+    "Un membre invité ne peut pas s'effacer du dossier d'un espace d'équipe ; le propriétaire retire le membre, et ses prises restent.",
+  "del.kept.b3":
+    "Les documents de facturation et fiscaux que la loi nous oblige à conserver le sont aussi longtemps que la loi l'exige, et ne servent à rien d'autre.",
+  "del.kept.b4":
+    "Les sauvegardes chiffrées et les journaux de sécurité sont renouvelés en 90 jours : une suppression peut donc prendre jusqu'à 90 jours pour atteindre chaque copie.",
   "del.partial.h2": "Supprimer une partie de vos données sans supprimer votre compte",
-  "del.partial.intro": "Vous n'avez pas à fermer votre compte pour retirer des données. Dans l'application, vous pouvez supprimer des éléments un par un, et chaque suppression retire le fichier stocké en plus de l'enregistrement :",
-  "del.partial.b1": "Photos, vidéos et documents numérisés : ouvrez la prise, touchez le menu, puis Supprimer. Le fichier image ou vidéo est retiré du stockage avec elle.",
-  "del.partial.b2": "Projets : ouvrez le projet, puis Supprimer le projet. Le projet et ses affectations disparaissent.",
-  "del.partial.b3": "Messages : ouvrez la conversation, maintenez le message enfoncé, puis Supprimer.",
-  "del.partial.b4": "Tournées et entrées de pointage : ouvrez l'élément et supprimez-le depuis sa fiche.",
-  "del.partial.b5": "Photo de profil : allez dans Profil, puis retirez la photo. Votre nom et votre courriel se modifient au même endroit.",
-  "del.partial.support": "Pour tout ce que vous ne pouvez pas faire vous-même, écrivez à **{email}** depuis l'adresse de votre compte en précisant les données à retirer. Nous vérifions qu'il s'agit bien de votre adresse et nous les supprimons, normalement en moins de 30 jours. Les sauvegardes chiffrées et les journaux de sécurité sont renouvelés en 90 jours. Les documents de facturation et fiscaux que la loi nous oblige à conserver le sont aussi longtemps que la loi l'exige.",
+  "del.partial.intro":
+    "Vous n'avez pas à fermer votre compte pour retirer des données. Dans l'application, vous pouvez supprimer des éléments un par un, et chaque suppression retire le fichier stocké en plus de l'enregistrement :",
+  "del.partial.b1":
+    "Photos, vidéos et documents numérisés : ouvrez la prise, touchez le menu, puis Supprimer. Le fichier image ou vidéo est retiré du stockage avec elle.",
+  "del.partial.b2":
+    "Projets : ouvrez le projet, puis Supprimer le projet. Le projet et ses affectations disparaissent.",
+  "del.partial.b3":
+    "Messages : ouvrez la conversation, maintenez le message enfoncé, puis Supprimer.",
+  "del.partial.b4":
+    "Tournées et entrées de pointage : ouvrez l'élément et supprimez-le depuis sa fiche.",
+  "del.partial.b5":
+    "Photo de profil : allez dans Profil, puis retirez la photo. Votre nom et votre courriel se modifient au même endroit.",
+  "del.partial.support":
+    "Pour tout ce que vous ne pouvez pas faire vous-même, écrivez à **{email}** depuis l'adresse de votre compte en précisant les données à retirer. Nous vérifions qu'il s'agit bien de votre adresse et nous les supprimons, normalement en moins de 30 jours. Les sauvegardes chiffrées et les journaux de sécurité sont renouvelés en 90 jours. Les documents de facturation et fiscaux que la loi nous oblige à conserver le sont aussi longtemps que la loi l'exige.",
   "del.locked.h2": "Si vous ne pouvez pas vous connecter",
-  "del.locked.body": "Écrivez à **{email}** depuis l'adresse du compte et demandez-nous de le supprimer. Nous vérifions qu'il s'agit bien de votre adresse, puis nous supprimons le compte pour vous, normalement en moins de 30 jours.",
+  "del.locked.body":
+    "Écrivez à **{email}** depuis l'adresse du compte et demandez-nous de le supprimer. Nous vérifions qu'il s'agit bien de votre adresse, puis nous supprimons le compte pour vous, normalement en moins de 30 jours.",
 };

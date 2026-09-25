@@ -594,6 +594,8 @@ export const it: Catalog = {
   "home.nav.help": "Centro assistenza",
   "home.nav.constructionDocs": "Documentazione fotografica di cantiere",
   "home.nav.fieldNotes": "Note dal campo",
+  "home.nav.blog": "Blog",
+  "home.footer.fieldNotesTag": "Guide alla documentazione fotografica verificata",
   "home.nav.vsCompanycam": "GeoCliks vs CompanyCam",
   "home.nav.emailSupport": "Supporto via e-mail",
   "home.nav.contactSales": "Contatta le vendite",
@@ -871,7 +873,8 @@ export const it: Catalog = {
   "routes.stop.skipped": "Saltata",
   "routes.stop.viewProof": "Vedi la foto di consegna",
   "routes.stop.editAddress": "Modifica questo indirizzo",
-  "routes.stop.addressLocked": "Questa fermata è chiusa: il suo indirizzo fa parte del registro di consegna",
+  "routes.stop.addressLocked":
+    "Questa fermata è chiusa: il suo indirizzo fa parte del registro di consegna",
   "routes.stop.noteLabel": "Nota",
   "routes.stop.notePlaceholder": "Cosa deve sapere l'autista a questo indirizzo",
   "routes.stop.noteEdit": "Modifica questa nota",
@@ -896,7 +899,8 @@ export const it: Catalog = {
   "routes.liveAdded": "Aggiunto come fermata {n} di {total}",
   "routes.liveDriver": "Autista",
   "routes.liveDriverThis": "Questo giro",
-  "routes.liveDriverHint": "Lascia su questo giro oppure manda l'ordine a un altro autista: entra nel giro che ha già oggi, o ne apre uno dallo stesso indirizzo di partenza.",
+  "routes.liveDriverHint":
+    "Lascia su questo giro oppure manda l'ordine a un altro autista: entra nel giro che ha già oggi, o ne apre uno dallo stesso indirizzo di partenza.",
   "routes.liveOtherRun": "Aggiunto al giro di {driver} come fermata {n} di {total}",
   "routes.liveNewRun": "Nuovo giro aperto per {driver} - aggiunto come fermata {n}",
   "routes.liveNotLocated":
@@ -1054,9 +1058,11 @@ export const it: Catalog = {
   "team.modeEmail": "Email",
   "team.modeQr": "Codice QR",
   "team.modeEmailHint": "Inviamo un link via email. Ideale per chi non è con te.",
-  "team.modeQrHint": "Nessun indirizzo necessario. Mostra il QR: la prima persona che lo scansiona entra con questo ruolo.",
+  "team.modeQrHint":
+    "Nessun indirizzo necessario. Mostra il QR: la prima persona che lo scansiona entra con questo ruolo.",
   "team.createQrInvite": "Crea invito QR",
-  "team.openInviteCreated": "Invito aperto pronto — codice {code}. Entra la prima persona che lo scansiona.",
+  "team.openInviteCreated":
+    "Invito aperto pronto — codice {code}. Entra la prima persona che lo scansiona.",
   "team.openInvite": "Invito aperto · chiunque abbia questo codice",
   "team.revokeAriaOpen": "Revoca l'invito aperto {code}",
   "team.revokedOpen": "Invito aperto {code} revocato. Il codice non funziona più.",
@@ -1117,7 +1123,8 @@ export const it: Catalog = {
   "assistant.send": "Invia",
   "assistant.stop": "Ferma",
   "assistant.error": "Qualcosa è andato storto. Prova a inviare di nuovo.",
-  "assistant.disclaimer": "L'assistente può sbagliare. Verifica le cose importanti nelle tue foto e nei report.",
+  "assistant.disclaimer":
+    "L'assistente può sbagliare. Verifica le cose importanti nelle tue foto e nei report.",
   // Assistant stat cards, charts and exports
   "assistant.metric.captures": "Scatti",
   "assistant.metric.places": "Luoghi",
@@ -1131,8 +1138,10 @@ export const it: Catalog = {
   "assistant.download": "Scarica",
   "assistant.copyLink": "Copia link",
   "assistant.copied": "Link copiato",
-  "assistant.linkExpires": "Questo link è valido 24 ore. Il report resta anche nella schermata Report.",
-  "assistant.linkExpired": "Questo link di download è scaduto. Il report è ancora nella schermata Report.",
+  "assistant.linkExpires":
+    "Questo link è valido 24 ore. Il report resta anche nella schermata Report.",
+  "assistant.linkExpired":
+    "Questo link di download è scaduto. Il report è ancora nella schermata Report.",
   "assistant.reportMeta": "{count} foto · {size}",
 
   /* My captures — the personal page: anything not filed under a project yet. Mirrors the phone app. */
@@ -1149,7 +1158,8 @@ export const it: Catalog = {
   "tc.punchNow": "Timbra ora",
   "tc.punchNowHint": "Registra l'ora e, se il dispositivo lo consente, il luogo.",
   "tc.crewNoManual": "Le tue ore",
-  "tc.crewNoManualHint": "Le timbrature arrivano dalla cattura CLOCK sul telefono — una marca temporale senza foto. L'inserimento manuale è dell'ufficio.",
+  "tc.crewNoManualHint":
+    "Le timbrature arrivano dalla cattura CLOCK sul telefono — una marca temporale senza foto. L'inserimento manuale è dell'ufficio.",
   "tc.exportPdf": "Esporta PDF",
   "tc.exporting": "Creazione…",
   "tc.exportHint": "Foglio ore di {month}",
@@ -1186,7 +1196,8 @@ export const it: Catalog = {
   "mine.photos": "Foto",
   "mine.videos": "Video",
   "mine.docs": "Documenti",
-  "mine.emptyBody": "Le acquisizioni fatte senza scegliere un progetto finiscono qui, compreso tutto ciò che è stato ripreso prima dell'accesso.",
+  "mine.emptyBody":
+    "Le acquisizioni fatte senza scegliere un progetto finiscono qui, compreso tutto ciò che è stato ripreso prima dell'accesso.",
 
   // Passwordless sign-in: email code, invite claim, profile sign-in card
   "signin.codeTitle": "Controlla la tua email",
@@ -1204,7 +1215,8 @@ export const it: Catalog = {
   "signin.continueEmail": "Continua con l'email",
   "profile.signInSection": "Come accedi",
   "profile.signInPasswordless": "Senza password: codice via email, Google o X",
-  "profile.signInPasswordlessHint": "GeoCliks non usa password. Accedi con un codice monouso inviato alla tua email, oppure con Google o X. Niente da ricordare, niente da farsi rubare.",
+  "profile.signInPasswordlessHint":
+    "GeoCliks non usa password. Accedi con un codice monouso inviato alla tua email, oppure con Google o X. Niente da ricordare, niente da farsi rubare.",
   "join.yourName": "Il tuo nome",
   "join.yourNamePlaceholder": "Alex Rivera",
   "join.emailHint": "La usiamo per il tuo account e per nient'altro.",
@@ -1224,14 +1236,18 @@ export const it: Catalog = {
   "setup.next": "Continua",
   "setup.back": "Indietro",
   "setup.systemTitle": "Quale sistema usi?",
-  "setup.systemBody": "Decide dove entra la squadra e cosa sblocca la settimana gratuita. Puoi cambiarlo dopo.",
+  "setup.systemBody":
+    "Decide dove entra la squadra e cosa sblocca la settimana gratuita. Puoi cambiarlo dopo.",
   "setup.fieldTitle": "Foto di cantiere",
-  "setup.fieldBody": "Le squadre fotografano il lavoro. Ogni scatto è sigillato con ora, luogo e cantiere.",
+  "setup.fieldBody":
+    "Le squadre fotografano il lavoro. Ogni scatto è sigillato con ora, luogo e cantiere.",
   "setup.fieldTrial": "7 giorni di Business, gratis",
   "setup.deliveryTitle": "Giri di consegna",
-  "setup.deliveryBody": "Pianifica le fermate, percorri il giro, dimostra ogni consegna con foto e firma.",
+  "setup.deliveryBody":
+    "Pianifica le fermate, percorri il giro, dimostra ogni consegna con foto e firma.",
   "setup.deliveryTrial": "7 giorni di Delivery Pro, gratis",
-  "setup.trialNote": "Nessuna carta, nessun addebito. Dopo 7 giorni passi al piano gratuito di quel sistema e conservi tutto.",
+  "setup.trialNote":
+    "Nessuna carta, nessun addebito. Dopo 7 giorni passi al piano gratuito di quel sistema e conservi tutto.",
   "setup.error": "Configurazione non completata. Riprova.",
 
   // The 7-day product trial: countdown strip, sidebar chip, plan-page label
@@ -1244,7 +1260,8 @@ export const it: Catalog = {
   "trial.cta": "Vedi i piani",
   "trial.dismiss": "Chiudi",
   "trial.endedTitle": "La tua settimana gratuita è finita",
-  "trial.endedBody": "Tutte le foto, i progetti e i percorsi che hai registrato sono ancora qui. Passa a un piano a pagamento quando ti servono le funzioni bloccate.",
+  "trial.endedBody":
+    "Tutte le foto, i progetti e i percorsi che hai registrato sono ancora qui. Passa a un piano a pagamento quando ti servono le funzioni bloccate.",
   "trial.endedCta": "Vedi i piani",
   "trial.planLabel": "Prova in corso",
   "trial.planLine": "{plan} incluso fino al {date}",
@@ -1268,7 +1285,8 @@ export const it: Catalog = {
   // The popups behind each checklist step
   "checklist.close": "Chiudi",
   "checklist.mobileTitle": "Installa l'app sul telefono",
-  "checklist.mobileBody": "Inquadra questo con la fotocamera del telefono. Apre la pagina di installazione per iPhone e Android — accedi con la stessa email e il tuo spazio è già lì.",
+  "checklist.mobileBody":
+    "Inquadra questo con la fotocamera del telefono. Apre la pagina di installazione per iPhone e Android — accedi con la stessa email e il tuo spazio è già lì.",
   "checklist.mobileScan": "Inquadra col telefono",
   "checklist.mobileCopied": "Link copiato",
   "checklist.mobileDone": "Fatto — è installata",
@@ -1279,10 +1297,12 @@ export const it: Catalog = {
   "checklist.capture3": "Arriva qui in pochi secondi — o appena torna il segnale.",
   "checklist.captureDone": "Fatto — ne ho scattata una",
   "checklist.shareTitle": "Invia le prove a un cliente",
-  "checklist.shareBody": "Crea il primo qui. Raccoglie le foto di un cantiere — ognuna sigillata con ora, luogo e indirizzo — in un unico file da inviare.",
+  "checklist.shareBody":
+    "Crea il primo qui. Raccoglie le foto di un cantiere — ognuna sigillata con ora, luogo e indirizzo — in un unico file da inviare.",
 
   "assign.title": "Assegna squadra",
-  "assign.body": "Scegli chi lavora su questo cantiere. Le squadre in campo vedono solo i progetti a cui sono assegnate.",
+  "assign.body":
+    "Scegli chi lavora su questo cantiere. Le squadre in campo vedono solo i progetti a cui sono assegnate.",
   "assign.empty": "Nessun collega ancora — invita la tua squadra dalla pagina Team.",
   "assign.add": "Assegna",
   "assign.assigned": "Assegnato",
@@ -1308,13 +1328,15 @@ export const it: Catalog = {
   "runhelp.drop": "Chiudi la prima consegna con prova",
   "runhelp.dropSub": "Una foto con ora e GPS sigillati, sulla porta.",
   "runhelp.runTitle": "Crea il primo giro",
-  "runhelp.runBody": "Un giro è la giornata di un autista. Dagli un nome e una data, poi aggiungi le fermate.",
+  "runhelp.runBody":
+    "Un giro è la giornata di un autista. Dagli un nome e una data, poi aggiungi le fermate.",
   "runhelp.runCreate": "Crea il giro",
   "runhelp.runCreated": "Giro creato. Ora aggiungici le fermate del giorno.",
   "runhelp.runAddStops": "Aggiungi fermate",
   "runhelp.later": "Più tardi",
   "runhelp.stopsTitle": "Aggiungi le fermate del giorno",
-  "runhelp.stopsBody": "Le fermate si aggiungono nella pagina del giro. Incollale in blocco, al resto pensiamo noi.",
+  "runhelp.stopsBody":
+    "Le fermate si aggiungono nella pagina del giro. Incollale in blocco, al resto pensiamo noi.",
   "runhelp.stops1": "Apri il giro e trova il riquadro per incollare.",
   "runhelp.stops2": "Incolla un indirizzo per riga — nome o numero d'ordine dopo una virgola.",
   "runhelp.stops3": "Tocca Ordina fermate e il giro è pianificato per distanza.",
@@ -1339,7 +1361,7 @@ export const it: Catalog = {
   "notes.emptyArchived": "Niente archiviato per ora.",
   "search.projects": "Cerca lavoro, cliente, indirizzo",
   "search.notes": "Cerca nome, indirizzo, telefono, email",
-  "search.noMatch": "Nessun risultato per \"{query}\".",
+  "search.noMatch": 'Nessun risultato per "{query}".',
   "routes.panelTitle": "Tutti i percorsi",
   "search.routes": "Cerca percorso, autista, data, indirizzo",
   "search.clear": "Cancella ricerca",
@@ -1371,34 +1393,52 @@ export const it: Catalog = {
   // exactly as the app's own delete flow requires it.
   "seo.delete.title": "Elimina il tuo account GeoCliks",
   "del.h1": "Elimina il tuo account GeoCliks",
-  "del.intro": "Puoi eliminare da solo il tuo account GeoCliks e i suoi dati, dall'app o dal sito web. Non serve passare da noi. Questa pagina spiega esattamente come fare e cosa viene rimosso.",
+  "del.intro":
+    "Puoi eliminare da solo il tuo account GeoCliks e i suoi dati, dall'app o dal sito web. Non serve passare da noi. Questa pagina spiega esattamente come fare e cosa viene rimosso.",
   "del.app.h2": "Nell'app GeoCliks",
   "del.app.s1": "Apri l'app GeoCliks e accedi.",
-  "del.app.s2": "Tocca la tua foto profilo o le tue iniziali nell'angolo in alto per aprire **Profilo**.",
+  "del.app.s2":
+    "Tocca la tua foto profilo o le tue iniziali nell'angolo in alto per aprire **Profilo**.",
   "del.app.s3": "Scorri fino in fondo, alla sezione **Elimina account**.",
-  "del.app.s4": "Tocca **Elimina account**, scrivi **DELETE** nella casella di conferma e conferma.",
-  "del.app.after": "L'eliminazione parte subito e ti disconnette. Non si può annullare, quindi esporta prima tutto ciò che vuoi conservare.",
+  "del.app.s4":
+    "Tocca **Elimina account**, scrivi **DELETE** nella casella di conferma e conferma.",
+  "del.app.after":
+    "L'eliminazione parte subito e ti disconnette. Non si può annullare, quindi esporta prima tutto ciò che vuoi conservare.",
   "del.web.h2": "Sul sito web",
   "del.web.s1": "Accedi su **geocliks.com**.",
   "del.web.s2": "Apri **Profilo** dalla barra laterale.",
   "del.web.s3": "Scorri fino a **Elimina account**, scrivi **DELETE** per confermare ed elimina.",
   "del.removed.h2": "Cosa viene eliminato",
-  "del.removed.b1": "La tua identità: nome, indirizzo email, foto profilo, sessioni di accesso e token per le notifiche push.",
-  "del.removed.b2": "Se sei il proprietario dello spazio del team: lo spazio stesso e ogni foto, video, documento, progetto, percorso, timbratura, messaggio, report, link di condivisione e modello di filigrana al suo interno — compresi i file immagine e video archiviati.",
-  "del.removed.b3": "I link di condivisione e i codici di verifica emessi da quello spazio smettono di funzionare.",
+  "del.removed.b1":
+    "La tua identità: nome, indirizzo email, foto profilo, sessioni di accesso e token per le notifiche push.",
+  "del.removed.b2":
+    "Se sei il proprietario dello spazio del team: lo spazio stesso e ogni foto, video, documento, progetto, percorso, timbratura, messaggio, report, link di condivisione e modello di filigrana al suo interno — compresi i file immagine e video archiviati.",
+  "del.removed.b3":
+    "I link di condivisione e i codici di verifica emessi da quello spazio smettono di funzionare.",
   "del.kept.h2": "Cosa viene conservato, e per quanto",
-  "del.kept.b1": "Se sei stato invitato nello spazio del team di qualcun altro, gli scatti che hai fatto restano in quello spazio: sono la documentazione probatoria del proprietario, non tua. La tua identità viene comunque eliminata.",
-  "del.kept.b2": "I membri invitati non possono cancellarsi dalla documentazione di uno spazio del team; il proprietario rimuove il membro, e i suoi scatti restano.",
-  "del.kept.b3": "I documenti fiscali e di fatturazione che siamo tenuti per legge a conservare vengono mantenuti per tutto il tempo richiesto dalla legge, e non sono mai usati per altro.",
-  "del.kept.b4": "I backup cifrati e i log di sicurezza vengono ruotati entro 90 giorni, quindi un'eliminazione può richiedere fino a 90 giorni per raggiungere ogni copia.",
+  "del.kept.b1":
+    "Se sei stato invitato nello spazio del team di qualcun altro, gli scatti che hai fatto restano in quello spazio: sono la documentazione probatoria del proprietario, non tua. La tua identità viene comunque eliminata.",
+  "del.kept.b2":
+    "I membri invitati non possono cancellarsi dalla documentazione di uno spazio del team; il proprietario rimuove il membro, e i suoi scatti restano.",
+  "del.kept.b3":
+    "I documenti fiscali e di fatturazione che siamo tenuti per legge a conservare vengono mantenuti per tutto il tempo richiesto dalla legge, e non sono mai usati per altro.",
+  "del.kept.b4":
+    "I backup cifrati e i log di sicurezza vengono ruotati entro 90 giorni, quindi un'eliminazione può richiedere fino a 90 giorni per raggiungere ogni copia.",
   "del.partial.h2": "Eliminare parte dei tuoi dati senza eliminare l'account",
-  "del.partial.intro": "Non devi chiudere l'account per rimuovere dei dati. Dentro l'app puoi eliminare singoli elementi, e ogni eliminazione rimuove il file archiviato oltre al record:",
-  "del.partial.b1": "Foto, video e documenti scansionati: apri lo scatto, tocca il menu, poi Elimina. Il file immagine o video viene rimosso dall'archivio insieme a esso.",
-  "del.partial.b2": "Progetti: apri il progetto, poi Elimina progetto. Il progetto e le sue assegnazioni spariscono.",
+  "del.partial.intro":
+    "Non devi chiudere l'account per rimuovere dei dati. Dentro l'app puoi eliminare singoli elementi, e ogni eliminazione rimuove il file archiviato oltre al record:",
+  "del.partial.b1":
+    "Foto, video e documenti scansionati: apri lo scatto, tocca il menu, poi Elimina. Il file immagine o video viene rimosso dall'archivio insieme a esso.",
+  "del.partial.b2":
+    "Progetti: apri il progetto, poi Elimina progetto. Il progetto e le sue assegnazioni spariscono.",
   "del.partial.b3": "Messaggi: apri la conversazione, tieni premuto il messaggio, poi Elimina.",
-  "del.partial.b4": "Percorsi e timbrature: apri l'elemento ed eliminalo dalla sua schermata di dettaglio.",
-  "del.partial.b5": "Foto profilo: vai su Profilo, poi rimuovi la foto. Anche nome ed email si modificano lì.",
-  "del.partial.support": "Per tutto ciò che non puoi fare da solo, scrivi a **{email}** dall'indirizzo del tuo account indicando quali dati vuoi rimuovere. Verifichiamo che l'indirizzo sia il tuo e li eliminiamo, normalmente entro 30 giorni. I backup cifrati e i log di sicurezza vengono ruotati entro 90 giorni. I documenti fiscali e di fatturazione che siamo tenuti per legge a conservare vengono mantenuti per tutto il tempo richiesto dalla legge.",
+  "del.partial.b4":
+    "Percorsi e timbrature: apri l'elemento ed eliminalo dalla sua schermata di dettaglio.",
+  "del.partial.b5":
+    "Foto profilo: vai su Profilo, poi rimuovi la foto. Anche nome ed email si modificano lì.",
+  "del.partial.support":
+    "Per tutto ciò che non puoi fare da solo, scrivi a **{email}** dall'indirizzo del tuo account indicando quali dati vuoi rimuovere. Verifichiamo che l'indirizzo sia il tuo e li eliminiamo, normalmente entro 30 giorni. I backup cifrati e i log di sicurezza vengono ruotati entro 90 giorni. I documenti fiscali e di fatturazione che siamo tenuti per legge a conservare vengono mantenuti per tutto il tempo richiesto dalla legge.",
   "del.locked.h2": "Se non riesci ad accedere",
-  "del.locked.body": "Scrivi a **{email}** dall'indirizzo dell'account e chiedici di eliminarlo. Verifichiamo che l'indirizzo sia il tuo e poi eliminiamo l'account per te, normalmente entro 30 giorni.",
+  "del.locked.body":
+    "Scrivi a **{email}** dall'indirizzo dell'account e chiedici di eliminarlo. Verifichiamo che l'indirizzo sia il tuo e poi eliminiamo l'account per te, normalmente entro 30 giorni.",
 };

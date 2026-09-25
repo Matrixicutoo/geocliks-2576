@@ -598,6 +598,8 @@ export const de: Catalog = {
   "home.nav.help": "Hilfecenter",
   "home.nav.constructionDocs": "Baustellen-Fotodokumentation",
   "home.nav.fieldNotes": "Feldnotizen",
+  "home.nav.blog": "Blog",
+  "home.footer.fieldNotesTag": "Leitfäden zur verifizierten Fotodokumentation",
   "home.nav.vsCompanycam": "GeoCliks vs. CompanyCam",
   "home.nav.emailSupport": "E-Mail-Support",
   "home.nav.contactSales": "Vertrieb kontaktieren",
@@ -874,7 +876,8 @@ export const de: Catalog = {
   "routes.stop.skipped": "Übersprungen",
   "routes.stop.viewProof": "Lieferfoto ansehen",
   "routes.stop.editAddress": "Diese Adresse bearbeiten",
-  "routes.stop.addressLocked": "Dieser Stopp ist abgeschlossen - die Adresse gehört zum Liefernachweis",
+  "routes.stop.addressLocked":
+    "Dieser Stopp ist abgeschlossen - die Adresse gehört zum Liefernachweis",
   "routes.stop.noteLabel": "Notiz",
   "routes.stop.notePlaceholder": "Was der Fahrer an dieser Adresse wissen muss",
   "routes.stop.noteEdit": "Diese Notiz bearbeiten",
@@ -899,7 +902,8 @@ export const de: Catalog = {
   "routes.liveAdded": "Als Stopp {n} von {total} hinzugefügt",
   "routes.liveDriver": "Fahrer",
   "routes.liveDriverThis": "Diese Tour",
-  "routes.liveDriverHint": "Auf dieser Tour lassen oder den Auftrag an einen anderen Fahrer geben - er kommt auf dessen heutige Tour oder eröffnet eine neue von derselben Startadresse.",
+  "routes.liveDriverHint":
+    "Auf dieser Tour lassen oder den Auftrag an einen anderen Fahrer geben - er kommt auf dessen heutige Tour oder eröffnet eine neue von derselben Startadresse.",
   "routes.liveOtherRun": "Zur Tour von {driver} als Stopp {n} von {total} hinzugefügt",
   "routes.liveNewRun": "Neue Tour für {driver} eröffnet - als Stopp {n} hinzugefügt",
   "routes.liveNotLocated":
@@ -1055,10 +1059,13 @@ export const de: Catalog = {
   "team.howToSend": "Wie soll sie ankommen?",
   "team.modeEmail": "E-Mail",
   "team.modeQr": "QR-Code",
-  "team.modeEmailHint": "Wir schicken einen Einladungslink per E-Mail. Gut für jemanden, der nicht vor Ort ist.",
-  "team.modeQrHint": "Keine Adresse nötig. Zeig den QR-Code – wer ihn zuerst scannt, tritt mit dieser Rolle bei.",
+  "team.modeEmailHint":
+    "Wir schicken einen Einladungslink per E-Mail. Gut für jemanden, der nicht vor Ort ist.",
+  "team.modeQrHint":
+    "Keine Adresse nötig. Zeig den QR-Code – wer ihn zuerst scannt, tritt mit dieser Rolle bei.",
   "team.createQrInvite": "QR-Einladung erstellen",
-  "team.openInviteCreated": "Offene Einladung fertig – Code {code}. Wer sie zuerst scannt, tritt bei.",
+  "team.openInviteCreated":
+    "Offene Einladung fertig – Code {code}. Wer sie zuerst scannt, tritt bei.",
   "team.openInvite": "Offene Einladung · jeder mit diesem Code",
   "team.revokeAriaOpen": "Offene Einladung {code} widerrufen",
   "team.revokedOpen": "Offene Einladung {code} widerrufen. Der Code funktioniert nicht mehr.",
@@ -1119,7 +1126,8 @@ export const de: Catalog = {
   "assistant.send": "Senden",
   "assistant.stop": "Stopp",
   "assistant.error": "Da ist etwas schiefgegangen. Sende es noch einmal.",
-  "assistant.disclaimer": "Der Assistent kann sich irren. Prüfe Wichtiges in deinen Fotos und Berichten nach.",
+  "assistant.disclaimer":
+    "Der Assistent kann sich irren. Prüfe Wichtiges in deinen Fotos und Berichten nach.",
   // Assistant stat cards, charts and exports
   "assistant.metric.captures": "Aufnahmen",
   "assistant.metric.places": "Orte",
@@ -1133,8 +1141,10 @@ export const de: Catalog = {
   "assistant.download": "Herunterladen",
   "assistant.copyLink": "Link kopieren",
   "assistant.copied": "Link kopiert",
-  "assistant.linkExpires": "Dieser Link gilt 24 Stunden. Der Bericht bleibt außerdem im Bereich Berichte.",
-  "assistant.linkExpired": "Dieser Download-Link ist abgelaufen. Der Bericht liegt weiterhin im Bereich Berichte.",
+  "assistant.linkExpires":
+    "Dieser Link gilt 24 Stunden. Der Bericht bleibt außerdem im Bereich Berichte.",
+  "assistant.linkExpired":
+    "Dieser Download-Link ist abgelaufen. Der Bericht liegt weiterhin im Bereich Berichte.",
   "assistant.reportMeta": "{count} Fotos · {size}",
 
   /* My captures — the personal page: anything not filed under a project yet. Mirrors the phone app. */
@@ -1151,7 +1161,8 @@ export const de: Catalog = {
   "tc.punchNow": "Jetzt stempeln",
   "tc.punchNowHint": "Erfasst die Zeit und, wenn das Gerät sie freigibt, den Ort.",
   "tc.crewNoManual": "Deine Stunden",
-  "tc.crewNoManualHint": "Stempel kommen aus der CLOCK-Erfassung am Telefon — ein Zeitstempel ohne Foto. Manuelle Eingaben macht das Büro.",
+  "tc.crewNoManualHint":
+    "Stempel kommen aus der CLOCK-Erfassung am Telefon — ein Zeitstempel ohne Foto. Manuelle Eingaben macht das Büro.",
   "tc.exportPdf": "PDF exportieren",
   "tc.exporting": "Wird erstellt…",
   "tc.exportHint": "Stundenzettel für {month}",
@@ -1188,25 +1199,31 @@ export const de: Catalog = {
   "mine.photos": "Bilder",
   "mine.videos": "Videos",
   "mine.docs": "Dokumente",
-  "mine.emptyBody": "Aufnahmen ohne ausgewähltes Projekt landen hier, einschließlich allem, was vor Ihrer Anmeldung aufgenommen wurde.",
+  "mine.emptyBody":
+    "Aufnahmen ohne ausgewähltes Projekt landen hier, einschließlich allem, was vor Ihrer Anmeldung aufgenommen wurde.",
 
   // Passwordless sign-in: email code, invite claim, profile sign-in card
   "signin.codeTitle": "Prüfen Sie Ihre E-Mails",
-  "signin.codeBody": "Wir haben einen 6-stelligen Code an {email} geschickt. Er läuft in 5 Minuten ab.",
+  "signin.codeBody":
+    "Wir haben einen 6-stelligen Code an {email} geschickt. Er läuft in 5 Minuten ab.",
   "signin.codeLabel": "6-stelliger Code",
   "signin.continue": "Weiter",
   "signin.resend": "Keinen Code erhalten? Erneut senden",
   "signin.resendIn": "Keinen Code erhalten? ({seconds} s)",
   "signin.changeEmail": "Andere E-Mail verwenden",
   "signin.sendCode": "Code senden",
-  "signin.codeHelp": "Wir schicken Ihnen einen 6-stelligen Code per E-Mail. Kein Passwort zu merken.",
-  "signin.codeSendError": "Der Code konnte nicht gesendet werden. Prüfen Sie die Adresse und versuchen Sie es erneut.",
-  "signin.codeError": "Dieser Code hat nicht funktioniert. Fordern Sie einen neuen an und versuchen Sie es erneut.",
+  "signin.codeHelp":
+    "Wir schicken Ihnen einen 6-stelligen Code per E-Mail. Kein Passwort zu merken.",
+  "signin.codeSendError":
+    "Der Code konnte nicht gesendet werden. Prüfen Sie die Adresse und versuchen Sie es erneut.",
+  "signin.codeError":
+    "Dieser Code hat nicht funktioniert. Fordern Sie einen neuen an und versuchen Sie es erneut.",
   "signin.more": "Weitere Anmeldewege",
   "signin.continueEmail": "Mit E-Mail fortfahren",
   "profile.signInSection": "So melden Sie sich an",
   "profile.signInPasswordless": "Passwortlos – Code per E-Mail, Google oder X",
-  "profile.signInPasswordlessHint": "GeoCliks hat keine Passwörter. Sie melden sich mit einem Einmalcode per E-Mail oder mit Google oder X an. Nichts zu merken, nichts, was geleakt werden kann.",
+  "profile.signInPasswordlessHint":
+    "GeoCliks hat keine Passwörter. Sie melden sich mit einem Einmalcode per E-Mail oder mit Google oder X an. Nichts zu merken, nichts, was geleakt werden kann.",
   "join.yourName": "Ihr Name",
   "join.yourNamePlaceholder": "Alex Rivera",
   "join.emailHint": "Wir nutzen sie nur für Ihr Konto, für nichts anderes.",
@@ -1222,18 +1239,23 @@ export const de: Catalog = {
   "setup.yourNamePlaceholder": "Alex Rivera",
   "setup.orgName": "Name des Teamspace",
   "setup.orgNamePlaceholder": "Northwind Bedachungen",
-  "setup.orgNameHint": "Dein Team sieht ihn in jeder Einladung, jedem Bericht und jedem Freigabelink.",
+  "setup.orgNameHint":
+    "Dein Team sieht ihn in jeder Einladung, jedem Bericht und jedem Freigabelink.",
   "setup.next": "Weiter",
   "setup.back": "Zurück",
   "setup.systemTitle": "Welches System nutzt du?",
-  "setup.systemBody": "Es entscheidet, wo dein Team landet und was die Gratiswoche freischaltet. Später änderbar.",
+  "setup.systemBody":
+    "Es entscheidet, wo dein Team landet und was die Gratiswoche freischaltet. Später änderbar.",
   "setup.fieldTitle": "Baustellenfotos",
-  "setup.fieldBody": "Die Crew fotografiert die Arbeit. Jede Aufnahme wird mit Zeit, Ort und Auftrag versiegelt.",
+  "setup.fieldBody":
+    "Die Crew fotografiert die Arbeit. Jede Aufnahme wird mit Zeit, Ort und Auftrag versiegelt.",
   "setup.fieldTrial": "7 Tage Business, gratis",
   "setup.deliveryTitle": "Lieferrouten",
-  "setup.deliveryBody": "Stopps planen, Route fahren, jede Zustellung mit Foto und Unterschrift belegen.",
+  "setup.deliveryBody":
+    "Stopps planen, Route fahren, jede Zustellung mit Foto und Unterschrift belegen.",
   "setup.deliveryTrial": "7 Tage Delivery Pro, gratis",
-  "setup.trialNote": "Keine Karte, keine Kosten. Nach 7 Tagen geht es im Gratis-Tarif dieses Systems weiter — alle Aufnahmen bleiben.",
+  "setup.trialNote":
+    "Keine Karte, keine Kosten. Nach 7 Tagen geht es im Gratis-Tarif dieses Systems weiter — alle Aufnahmen bleiben.",
   "setup.error": "Einrichtung fehlgeschlagen. Bitte erneut versuchen.",
 
   // The 7-day product trial: countdown strip, sidebar chip, plan-page label
@@ -1246,7 +1268,8 @@ export const de: Catalog = {
   "trial.cta": "Tarife ansehen",
   "trial.dismiss": "Ausblenden",
   "trial.endedTitle": "Deine Gratiswoche ist vorbei",
-  "trial.endedBody": "Alle Fotos, Projekte und Routen sind weiterhin da. Du kannst jederzeit upgraden, wenn du die kostenpflichtigen Funktionen brauchst.",
+  "trial.endedBody":
+    "Alle Fotos, Projekte und Routen sind weiterhin da. Du kannst jederzeit upgraden, wenn du die kostenpflichtigen Funktionen brauchst.",
   "trial.endedCta": "Tarife ansehen",
   "trial.planLabel": "Testphase läuft",
   "trial.planLine": "{plan} inklusive bis {date}",
@@ -1270,7 +1293,8 @@ export const de: Catalog = {
   // The popups behind each checklist step
   "checklist.close": "Schließen",
   "checklist.mobileTitle": "Installieren Sie die App auf Ihrem Telefon",
-  "checklist.mobileBody": "Scannen Sie das mit der Handykamera. Es öffnet die Installationsseite für iPhone und Android — melden Sie sich mit derselben E-Mail an, und Ihr Teamspace ist schon da.",
+  "checklist.mobileBody":
+    "Scannen Sie das mit der Handykamera. Es öffnet die Installationsseite für iPhone und Android — melden Sie sich mit derselben E-Mail an, und Ihr Teamspace ist schon da.",
   "checklist.mobileScan": "Mit dem Telefon scannen",
   "checklist.mobileCopied": "Link kopiert",
   "checklist.mobileDone": "Fertig — installiert",
@@ -1281,22 +1305,27 @@ export const de: Catalog = {
   "checklist.capture3": "Es landet in Sekunden hier — oder sobald Sie wieder Empfang haben.",
   "checklist.captureDone": "Fertig — eines gemacht",
   "checklist.shareTitle": "Senden Sie einem Kunden den Nachweis",
-  "checklist.shareBody": "Erstellen Sie den ersten hier. Er bündelt die Fotos einer Baustelle — jedes mit Zeit, Ort und Adresse eingesiegelt — in einer Datei zum Versenden.",
+  "checklist.shareBody":
+    "Erstellen Sie den ersten hier. Er bündelt die Fotos einer Baustelle — jedes mit Zeit, Ort und Adresse eingesiegelt — in einer Datei zum Versenden.",
 
   "assign.title": "Team zuweisen",
-  "assign.body": "Wählen Sie, wer auf dieser Baustelle arbeitet. Feldteams sehen nur die ihnen zugewiesenen Projekte.",
+  "assign.body":
+    "Wählen Sie, wer auf dieser Baustelle arbeitet. Feldteams sehen nur die ihnen zugewiesenen Projekte.",
   "assign.empty": "Noch keine Teammitglieder — laden Sie Ihr Team auf der Team-Seite ein.",
   "assign.add": "Zuweisen",
   "assign.assigned": "Zugewiesen",
   "assign.done": "Fertig",
   "driver.title": "Fahrer zuweisen",
-  "driver.body": "Wählen Sie, wer diese Tour fährt. Fahrer sehen nur die ihnen zugewiesenen Touren.",
-  "driver.empty": "Noch keine Teammitglieder – laden Sie Ihre Fahrer zuerst über die Team-Seite ein.",
+  "driver.body":
+    "Wählen Sie, wer diese Tour fährt. Fahrer sehen nur die ihnen zugewiesenen Touren.",
+  "driver.empty":
+    "Noch keine Teammitglieder – laden Sie Ihre Fahrer zuerst über die Team-Seite ein.",
   "driver.add": "Zuweisen",
   "driver.assigned": "Fährt",
   "driver.done": "Fertig",
   "runhelp.title": "Bringen Sie Ihre erste Tour auf die Straße",
-  "runhelp.subtitle": "Sechs Schritte, und Ihre Fahrer liefern mit Nachweis. Jeder öffnet sich direkt hier.",
+  "runhelp.subtitle":
+    "Sechs Schritte, und Ihre Fahrer liefern mit Nachweis. Jeder öffnet sich direkt hier.",
   "runhelp.run": "Erste Tour anlegen",
   "runhelp.runSub": "Ein Name und ein Datum genügen.",
   "runhelp.stops": "Stopps des Tages hinzufügen",
@@ -1373,34 +1402,52 @@ export const de: Catalog = {
   // exactly as the app's own delete flow requires it.
   "seo.delete.title": "GeoCliks-Konto löschen",
   "del.h1": "Ihr GeoCliks-Konto löschen",
-  "del.intro": "Sie können Ihr GeoCliks-Konto und seine Daten selbst löschen — in der App oder auf der Website. Dazu ist kein Kontakt mit uns nötig. Diese Seite erklärt genau, wie es geht und was dabei entfernt wird.",
+  "del.intro":
+    "Sie können Ihr GeoCliks-Konto und seine Daten selbst löschen — in der App oder auf der Website. Dazu ist kein Kontakt mit uns nötig. Diese Seite erklärt genau, wie es geht und was dabei entfernt wird.",
   "del.app.h2": "In der GeoCliks-App",
   "del.app.s1": "Öffnen Sie die GeoCliks-App und melden Sie sich an.",
-  "del.app.s2": "Tippen Sie oben in der Ecke auf Ihr Profilbild oder Ihre Initialen, um **Profil** zu öffnen.",
+  "del.app.s2":
+    "Tippen Sie oben in der Ecke auf Ihr Profilbild oder Ihre Initialen, um **Profil** zu öffnen.",
   "del.app.s3": "Scrollen Sie nach ganz unten zum Abschnitt **Konto löschen**.",
-  "del.app.s4": "Tippen Sie auf **Konto löschen**, geben Sie **DELETE** in das Bestätigungsfeld ein und bestätigen Sie.",
-  "del.app.after": "Die Löschung läuft sofort und meldet Sie ab. Sie kann nicht rückgängig gemacht werden — exportieren Sie also vorher alles, was Sie behalten möchten.",
+  "del.app.s4":
+    "Tippen Sie auf **Konto löschen**, geben Sie **DELETE** in das Bestätigungsfeld ein und bestätigen Sie.",
+  "del.app.after":
+    "Die Löschung läuft sofort und meldet Sie ab. Sie kann nicht rückgängig gemacht werden — exportieren Sie also vorher alles, was Sie behalten möchten.",
   "del.web.h2": "Auf der Website",
   "del.web.s1": "Melden Sie sich auf **geocliks.com** an.",
   "del.web.s2": "Öffnen Sie **Profil** in der Seitenleiste.",
-  "del.web.s3": "Scrollen Sie zu **Konto löschen**, geben Sie **DELETE** zur Bestätigung ein und löschen Sie.",
+  "del.web.s3":
+    "Scrollen Sie zu **Konto löschen**, geben Sie **DELETE** zur Bestätigung ein und löschen Sie.",
   "del.removed.h2": "Was gelöscht wird",
-  "del.removed.b1": "Ihre Identität: Name, E-Mail-Adresse, Profilbild, Anmeldesitzungen und Push-Token.",
-  "del.removed.b2": "Wenn Sie den Teambereich besitzen: der Teambereich selbst und darin jedes Foto, jedes Video, jedes Dokument, jedes Projekt, jede Tour, jeder Zeiterfassungseintrag, jede Nachricht, jeder Bericht, jeder Freigabe-Link und jede Wasserzeichen-Vorlage — einschließlich der gespeicherten Bild- und Videodateien.",
+  "del.removed.b1":
+    "Ihre Identität: Name, E-Mail-Adresse, Profilbild, Anmeldesitzungen und Push-Token.",
+  "del.removed.b2":
+    "Wenn Sie den Teambereich besitzen: der Teambereich selbst und darin jedes Foto, jedes Video, jedes Dokument, jedes Projekt, jede Tour, jeder Zeiterfassungseintrag, jede Nachricht, jeder Bericht, jeder Freigabe-Link und jede Wasserzeichen-Vorlage — einschließlich der gespeicherten Bild- und Videodateien.",
   "del.removed.b3": "Freigabe-Links und Prüfcodes aus diesem Teambereich funktionieren nicht mehr.",
   "del.kept.h2": "Was aufbewahrt wird und wie lange",
-  "del.kept.b1": "Wenn Sie in den Teambereich einer anderen Person eingeladen wurden, bleiben Ihre Aufnahmen in diesem Teambereich: Sie sind der Nachweis des Eigentümers, nicht Ihrer. Ihre Identität wird dennoch gelöscht.",
-  "del.kept.b2": "Eingeladene Mitglieder können sich nicht selbst aus dem Nachweis eines Teambereichs herauslöschen; der Eigentümer entfernt das Mitglied, und dessen Aufnahmen bleiben erhalten.",
-  "del.kept.b3": "Abrechnungs- und Steuerunterlagen, zu deren Aufbewahrung wir gesetzlich verpflichtet sind, bewahren wir so lange auf, wie das Gesetz es verlangt, und verwenden sie für nichts anderes.",
-  "del.kept.b4": "Verschlüsselte Backups und Sicherheitsprotokolle werden innerhalb von 90 Tagen überschrieben, eine Löschung kann also bis zu 90 Tage brauchen, um jede Kopie zu erreichen.",
+  "del.kept.b1":
+    "Wenn Sie in den Teambereich einer anderen Person eingeladen wurden, bleiben Ihre Aufnahmen in diesem Teambereich: Sie sind der Nachweis des Eigentümers, nicht Ihrer. Ihre Identität wird dennoch gelöscht.",
+  "del.kept.b2":
+    "Eingeladene Mitglieder können sich nicht selbst aus dem Nachweis eines Teambereichs herauslöschen; der Eigentümer entfernt das Mitglied, und dessen Aufnahmen bleiben erhalten.",
+  "del.kept.b3":
+    "Abrechnungs- und Steuerunterlagen, zu deren Aufbewahrung wir gesetzlich verpflichtet sind, bewahren wir so lange auf, wie das Gesetz es verlangt, und verwenden sie für nichts anderes.",
+  "del.kept.b4":
+    "Verschlüsselte Backups und Sicherheitsprotokolle werden innerhalb von 90 Tagen überschrieben, eine Löschung kann also bis zu 90 Tage brauchen, um jede Kopie zu erreichen.",
   "del.partial.h2": "Einzelne Daten löschen, ohne das Konto zu löschen",
-  "del.partial.intro": "Sie müssen Ihr Konto nicht schließen, um Daten zu entfernen. In der App können Sie einzelne Einträge löschen, und jede Löschung entfernt die gespeicherte Datei ebenso wie den Datensatz:",
-  "del.partial.b1": "Fotos, Videos und gescannte Dokumente: Aufnahme öffnen, Menü antippen, dann Löschen. Die Bild- oder Videodatei wird mit entfernt.",
-  "del.partial.b2": "Projekte: Projekt öffnen, dann Projekt löschen. Das Projekt und seine Zuweisungen verschwinden.",
+  "del.partial.intro":
+    "Sie müssen Ihr Konto nicht schließen, um Daten zu entfernen. In der App können Sie einzelne Einträge löschen, und jede Löschung entfernt die gespeicherte Datei ebenso wie den Datensatz:",
+  "del.partial.b1":
+    "Fotos, Videos und gescannte Dokumente: Aufnahme öffnen, Menü antippen, dann Löschen. Die Bild- oder Videodatei wird mit entfernt.",
+  "del.partial.b2":
+    "Projekte: Projekt öffnen, dann Projekt löschen. Das Projekt und seine Zuweisungen verschwinden.",
   "del.partial.b3": "Nachrichten: Unterhaltung öffnen, Nachricht gedrückt halten, dann Löschen.",
-  "del.partial.b4": "Touren und Zeiterfassungseinträge: Eintrag öffnen und in seiner Detailansicht löschen.",
-  "del.partial.b5": "Profilbild: Profil öffnen, dann Bild entfernen. Name und E-Mail-Adresse können Sie dort ebenfalls ändern.",
-  "del.partial.support": "Für alles, was Sie nicht selbst erreichen können, schreiben Sie von der Adresse Ihres Kontos an **{email}** und nennen Sie die Daten, die entfernt werden sollen. Wir prüfen, dass es Ihre Adresse ist, und löschen sie — in der Regel innerhalb von 30 Tagen. Verschlüsselte Backups und Sicherheitsprotokolle werden innerhalb von 90 Tagen überschrieben. Abrechnungs- und Steuerunterlagen, zu deren Aufbewahrung wir gesetzlich verpflichtet sind, bewahren wir so lange auf, wie das Gesetz es verlangt.",
+  "del.partial.b4":
+    "Touren und Zeiterfassungseinträge: Eintrag öffnen und in seiner Detailansicht löschen.",
+  "del.partial.b5":
+    "Profilbild: Profil öffnen, dann Bild entfernen. Name und E-Mail-Adresse können Sie dort ebenfalls ändern.",
+  "del.partial.support":
+    "Für alles, was Sie nicht selbst erreichen können, schreiben Sie von der Adresse Ihres Kontos an **{email}** und nennen Sie die Daten, die entfernt werden sollen. Wir prüfen, dass es Ihre Adresse ist, und löschen sie — in der Regel innerhalb von 30 Tagen. Verschlüsselte Backups und Sicherheitsprotokolle werden innerhalb von 90 Tagen überschrieben. Abrechnungs- und Steuerunterlagen, zu deren Aufbewahrung wir gesetzlich verpflichtet sind, bewahren wir so lange auf, wie das Gesetz es verlangt.",
   "del.locked.h2": "Wenn Sie sich nicht anmelden können",
-  "del.locked.body": "Schreiben Sie von der Adresse des Kontos an **{email}** und bitten Sie uns, es zu löschen. Wir prüfen, dass es Ihre Adresse ist, und löschen das Konto dann für Sie — in der Regel innerhalb von 30 Tagen.",
+  "del.locked.body":
+    "Schreiben Sie von der Adresse des Kontos an **{email}** und bitten Sie uns, es zu löschen. Wir prüfen, dass es Ihre Adresse ist, und löschen das Konto dann für Sie — in der Regel innerhalb von 30 Tagen.",
 };

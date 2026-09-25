@@ -588,6 +588,8 @@ export const vi: Catalog = {
   "home.nav.help": "Trung tâm trợ giúp",
   "home.nav.constructionDocs": "Tài liệu ảnh công trình",
   "home.nav.fieldNotes": "Ghi chú hiện trường",
+  "home.nav.blog": "Blog",
+  "home.footer.fieldNotesTag": "Hướng dẫn tài liệu ảnh đã xác minh",
   "home.nav.vsCompanycam": "GeoCliks so với CompanyCam",
   "home.nav.emailSupport": "Hỗ trợ qua email",
   "home.nav.contactSales": "Liên hệ kinh doanh",
@@ -887,7 +889,8 @@ export const vi: Catalog = {
   "routes.liveAdded": "Đã thêm làm điểm dừng {n} trên {total}",
   "routes.liveDriver": "Tài xế",
   "routes.liveDriverThis": "Chuyến này",
-  "routes.liveDriverHint": "Giữ ở chuyến này, hoặc chuyển đơn cho tài xế khác - đơn sẽ vào chuyến họ đã có hôm nay, hoặc mở chuyến mới từ cùng địa chỉ khởi hành.",
+  "routes.liveDriverHint":
+    "Giữ ở chuyến này, hoặc chuyển đơn cho tài xế khác - đơn sẽ vào chuyến họ đã có hôm nay, hoặc mở chuyến mới từ cùng địa chỉ khởi hành.",
   "routes.liveOtherRun": "Đã thêm vào chuyến của {driver} làm điểm dừng {n} trên {total}",
   "routes.liveNewRun": "Đã mở chuyến mới cho {driver} - thêm làm điểm dừng {n}",
   "routes.liveNotLocated": "Đã thêm vào cuối - không thể định vị địa chỉ đó trên bản đồ.",
@@ -1038,7 +1041,8 @@ export const vi: Catalog = {
   "team.modeEmail": "Email",
   "team.modeQr": "Mã QR",
   "team.modeEmailHint": "Chúng tôi gửi liên kết qua email. Phù hợp với người không có mặt ở đây.",
-  "team.modeQrHint": "Không cần địa chỉ. Cho xem mã QR — người quét đầu tiên sẽ tham gia với vai trò này.",
+  "team.modeQrHint":
+    "Không cần địa chỉ. Cho xem mã QR — người quét đầu tiên sẽ tham gia với vai trò này.",
   "team.createQrInvite": "Tạo lời mời QR",
   "team.openInviteCreated": "Lời mời mở đã sẵn sàng — mã {code}. Người quét đầu tiên sẽ tham gia.",
   "team.openInvite": "Lời mời mở · bất kỳ ai có mã này",
@@ -1100,7 +1104,8 @@ export const vi: Catalog = {
   "assistant.send": "Gửi",
   "assistant.stop": "Dừng",
   "assistant.error": "Đã có lỗi xảy ra. Hãy thử gửi lại.",
-  "assistant.disclaimer": "Trợ lý có thể sai. Hãy kiểm tra lại những điều quan trọng trong ảnh và báo cáo của bạn.",
+  "assistant.disclaimer":
+    "Trợ lý có thể sai. Hãy kiểm tra lại những điều quan trọng trong ảnh và báo cáo của bạn.",
   // Assistant stat cards, charts and exports
   "assistant.metric.captures": "Ảnh chụp",
   "assistant.metric.places": "Địa điểm",
@@ -1114,7 +1119,8 @@ export const vi: Catalog = {
   "assistant.download": "Tải xuống",
   "assistant.copyLink": "Sao chép liên kết",
   "assistant.copied": "Đã sao chép liên kết",
-  "assistant.linkExpires": "Liên kết này có hiệu lực trong 24 giờ. Báo cáo cũng được lưu ở mục Báo cáo.",
+  "assistant.linkExpires":
+    "Liên kết này có hiệu lực trong 24 giờ. Báo cáo cũng được lưu ở mục Báo cáo.",
   "assistant.linkExpired": "Liên kết tải xuống này đã hết hiệu lực. Báo cáo vẫn nằm ở mục Báo cáo.",
   "assistant.reportMeta": "{count} ảnh · {size}",
 
@@ -1132,7 +1138,8 @@ export const vi: Catalog = {
   "tc.punchNow": "Chấm ngay",
   "tc.punchNowHint": "Ghi lại thời gian và vị trí nếu thiết bị cho phép.",
   "tc.crewNoManual": "Giờ của bạn",
-  "tc.crewNoManualHint": "Lần chấm công đến từ chế độ CLOCK trên điện thoại — dấu thời gian, không ảnh. Nhập tay thuộc về văn phòng.",
+  "tc.crewNoManualHint":
+    "Lần chấm công đến từ chế độ CLOCK trên điện thoại — dấu thời gian, không ảnh. Nhập tay thuộc về văn phòng.",
   "tc.exportPdf": "Xuất PDF",
   "tc.exporting": "Đang tạo…",
   "tc.exportHint": "Bảng công {month}",
@@ -1169,7 +1176,8 @@ export const vi: Catalog = {
   "mine.photos": "Ảnh",
   "mine.videos": "Video",
   "mine.docs": "Tài liệu",
-  "mine.emptyBody": "Những gì bạn chụp mà chưa chọn dự án sẽ nằm ở đây, kể cả mọi thứ đã quay trước khi bạn đăng nhập.",
+  "mine.emptyBody":
+    "Những gì bạn chụp mà chưa chọn dự án sẽ nằm ở đây, kể cả mọi thứ đã quay trước khi bạn đăng nhập.",
 
   // Passwordless sign-in: email code, invite claim, profile sign-in card
   "signin.codeTitle": "Kiểm tra email của bạn",
@@ -1187,7 +1195,8 @@ export const vi: Catalog = {
   "signin.continueEmail": "Tiếp tục bằng email",
   "profile.signInSection": "Cách bạn đăng nhập",
   "profile.signInPasswordless": "Không mật khẩu — mã qua email, Google hoặc X",
-  "profile.signInPasswordlessHint": "GeoCliks không dùng mật khẩu. Bạn đăng nhập bằng mã dùng một lần gửi tới email, hoặc bằng Google hay X. Không phải nhớ gì, không có gì để rò rỉ.",
+  "profile.signInPasswordlessHint":
+    "GeoCliks không dùng mật khẩu. Bạn đăng nhập bằng mã dùng một lần gửi tới email, hoặc bằng Google hay X. Không phải nhớ gì, không có gì để rò rỉ.",
   "join.yourName": "Tên của bạn",
   "join.yourNamePlaceholder": "Alex Rivera",
   "join.emailHint": "Chúng tôi chỉ dùng email này cho tài khoản của bạn.",
@@ -1207,14 +1216,17 @@ export const vi: Catalog = {
   "setup.next": "Tiếp tục",
   "setup.back": "Quay lại",
   "setup.systemTitle": "Bạn dùng hệ thống nào?",
-  "setup.systemBody": "Nó quyết định nơi tổ của bạn vào và tuần dùng thử mở khóa những gì. Đổi được sau.",
+  "setup.systemBody":
+    "Nó quyết định nơi tổ của bạn vào và tuần dùng thử mở khóa những gì. Đổi được sau.",
   "setup.fieldTitle": "Ảnh công trường",
-  "setup.fieldBody": "Tổ thi công chụp ảnh công việc. Mỗi ảnh được niêm phong kèm thời gian, vị trí và công trình.",
+  "setup.fieldBody":
+    "Tổ thi công chụp ảnh công việc. Mỗi ảnh được niêm phong kèm thời gian, vị trí và công trình.",
   "setup.fieldTrial": "7 ngày Business, miễn phí",
   "setup.deliveryTitle": "Lộ trình giao hàng",
   "setup.deliveryBody": "Lên điểm dừng, chạy lộ trình, chứng minh mỗi lần giao bằng ảnh và chữ ký.",
   "setup.deliveryTrial": "7 ngày Delivery Pro, miễn phí",
-  "setup.trialNote": "Không cần thẻ, không thu phí. Sau 7 ngày bạn về gói miễn phí của hệ thống đó và giữ lại mọi ảnh đã chụp.",
+  "setup.trialNote":
+    "Không cần thẻ, không thu phí. Sau 7 ngày bạn về gói miễn phí của hệ thống đó và giữ lại mọi ảnh đã chụp.",
   "setup.error": "Không hoàn tất thiết lập được. Hãy thử lại.",
 
   // The 7-day product trial: countdown strip, sidebar chip, plan-page label
@@ -1227,7 +1239,8 @@ export const vi: Catalog = {
   "trial.cta": "Xem các gói",
   "trial.dismiss": "Bỏ qua",
   "trial.endedTitle": "Tuần dùng thử miễn phí đã kết thúc",
-  "trial.endedBody": "Mọi ảnh, dự án và tuyến đường bạn đã ghi vẫn còn đây. Nâng cấp bất cứ khi nào bạn cần lại các tính năng trả phí.",
+  "trial.endedBody":
+    "Mọi ảnh, dự án và tuyến đường bạn đã ghi vẫn còn đây. Nâng cấp bất cứ khi nào bạn cần lại các tính năng trả phí.",
   "trial.endedCta": "Xem các gói",
   "trial.planLabel": "Đang dùng thử",
   "trial.planLine": "Gồm {plan} đến ngày {date}",
@@ -1251,7 +1264,8 @@ export const vi: Catalog = {
   // The popups behind each checklist step
   "checklist.close": "Đóng",
   "checklist.mobileTitle": "Cài ứng dụng trên điện thoại",
-  "checklist.mobileBody": "Quét mã này bằng camera điện thoại. Nó mở trang cài đặt cho iPhone và Android — đăng nhập bằng cùng email và không gian của bạn đã có ở đó.",
+  "checklist.mobileBody":
+    "Quét mã này bằng camera điện thoại. Nó mở trang cài đặt cho iPhone và Android — đăng nhập bằng cùng email và không gian của bạn đã có ở đó.",
   "checklist.mobileScan": "Quét bằng điện thoại",
   "checklist.mobileCopied": "Đã sao chép liên kết",
   "checklist.mobileDone": "Xong — đã cài",
@@ -1262,10 +1276,12 @@ export const vi: Catalog = {
   "checklist.capture3": "Ảnh về đây trong vài giây — hoặc ngay khi có lại tín hiệu.",
   "checklist.captureDone": "Xong — tôi đã chụp một bức",
   "checklist.shareTitle": "Gửi bằng chứng cho khách hàng",
-  "checklist.shareBody": "Tạo bản đầu tiên ngay đây. Nó gom ảnh của công trình — mỗi ảnh đã niêm phong thời gian, vị trí và địa chỉ — vào một tệp để gửi.",
+  "checklist.shareBody":
+    "Tạo bản đầu tiên ngay đây. Nó gom ảnh của công trình — mỗi ảnh đã niêm phong thời gian, vị trí và địa chỉ — vào một tệp để gửi.",
 
   "assign.title": "Phân công tổ",
-  "assign.body": "Chọn ai làm việc tại công trình này. Tổ hiện trường chỉ thấy các dự án được phân công.",
+  "assign.body":
+    "Chọn ai làm việc tại công trình này. Tổ hiện trường chỉ thấy các dự án được phân công.",
   "assign.empty": "Chưa có thành viên — hãy mời tổ của bạn ở trang Nhóm.",
   "assign.add": "Phân công",
   "assign.assigned": "Đã phân công",
@@ -1277,7 +1293,8 @@ export const vi: Catalog = {
   "driver.assigned": "Đang lái",
   "driver.done": "Xong",
   "runhelp.title": "Đưa chuyến đầu tiên ra đường",
-  "runhelp.subtitle": "Sáu bước là tài xế của bạn giao hàng kèm bằng chứng. Mỗi bước mở ngay tại đây.",
+  "runhelp.subtitle":
+    "Sáu bước là tài xế của bạn giao hàng kèm bằng chứng. Mỗi bước mở ngay tại đây.",
   "runhelp.run": "Tạo chuyến đầu tiên",
   "runhelp.runSub": "Chỉ cần một tên và một ngày.",
   "runhelp.stops": "Thêm các điểm dừng hôm nay",
@@ -1297,7 +1314,8 @@ export const vi: Catalog = {
   "runhelp.runAddStops": "Thêm điểm dừng",
   "runhelp.later": "Để sau",
   "runhelp.stopsTitle": "Thêm các điểm dừng hôm nay",
-  "runhelp.stopsBody": "Điểm dừng được thêm ở trang chuyến. Dán cả khối vào, phần còn lại chúng tôi làm.",
+  "runhelp.stopsBody":
+    "Điểm dừng được thêm ở trang chuyến. Dán cả khối vào, phần còn lại chúng tôi làm.",
   "runhelp.stops1": "Mở chuyến và tìm ô dán.",
   "runhelp.stops2": "Mỗi dòng một địa chỉ — tên hoặc số đơn sau dấu phẩy.",
   "runhelp.stops3": "Bấm Sắp thứ tự và chuyến được lên kế hoạch theo khoảng cách.",
@@ -1322,7 +1340,7 @@ export const vi: Catalog = {
   "notes.emptyArchived": "Chưa lưu trữ gì.",
   "search.projects": "Tìm công việc, khách hàng, địa chỉ",
   "search.notes": "Tìm tên, địa chỉ, điện thoại, email",
-  "search.noMatch": "Không có kết quả cho \"{query}\".",
+  "search.noMatch": 'Không có kết quả cho "{query}".',
   "routes.panelTitle": "Tất cả tuyến",
   "search.routes": "Tìm tuyến, tài xế, ngày, địa chỉ",
   "search.clear": "Xoá tìm kiếm",
@@ -1354,34 +1372,47 @@ export const vi: Catalog = {
   // exactly as the app's own delete flow requires it.
   "seo.delete.title": "Xóa tài khoản GeoCliks của bạn",
   "del.h1": "Xóa tài khoản GeoCliks của bạn",
-  "del.intro": "Bạn có thể tự xóa tài khoản GeoCliks và dữ liệu của nó, ngay trong ứng dụng hoặc trên website. Không cần thông qua chúng tôi. Trang này giải thích chính xác cách làm và những gì sẽ bị xóa.",
+  "del.intro":
+    "Bạn có thể tự xóa tài khoản GeoCliks và dữ liệu của nó, ngay trong ứng dụng hoặc trên website. Không cần thông qua chúng tôi. Trang này giải thích chính xác cách làm và những gì sẽ bị xóa.",
   "del.app.h2": "Trong ứng dụng GeoCliks",
   "del.app.s1": "Mở ứng dụng GeoCliks và đăng nhập.",
   "del.app.s2": "Nhấn vào ảnh hồ sơ hoặc chữ viết tắt ở góc trên để mở **Hồ sơ**.",
   "del.app.s3": "Cuộn xuống dưới cùng, đến phần **Xóa tài khoản**.",
   "del.app.s4": "Nhấn **Xóa tài khoản**, nhập **DELETE** vào ô xác nhận rồi xác nhận.",
-  "del.app.after": "Việc xóa diễn ra ngay lập tức và bạn sẽ bị đăng xuất. Không thể hoàn tác, vì vậy hãy xuất trước mọi thứ bạn muốn giữ lại.",
+  "del.app.after":
+    "Việc xóa diễn ra ngay lập tức và bạn sẽ bị đăng xuất. Không thể hoàn tác, vì vậy hãy xuất trước mọi thứ bạn muốn giữ lại.",
   "del.web.h2": "Trên website",
   "del.web.s1": "Đăng nhập tại **geocliks.com**.",
   "del.web.s2": "Mở **Hồ sơ** từ thanh bên.",
   "del.web.s3": "Cuộn đến **Xóa tài khoản**, nhập **DELETE** để xác nhận rồi xóa.",
   "del.removed.h2": "Những gì bị xóa",
-  "del.removed.b1": "Danh tính của bạn: tên, địa chỉ email, ảnh hồ sơ, các phiên đăng nhập và token thông báo đẩy.",
-  "del.removed.b2": "Nếu bạn là chủ Không gian nhóm: chính không gian đó, cùng mọi ảnh, video, tài liệu, dự án, tuyến đường, bản ghi chấm công, tin nhắn, báo cáo, liên kết chia sẻ và mẫu hình mờ trong đó — bao gồm cả tệp ảnh và video đã lưu.",
-  "del.removed.b3": "Các liên kết chia sẻ và mã xác minh phát hành từ Không gian nhóm đó sẽ không còn hoạt động.",
+  "del.removed.b1":
+    "Danh tính của bạn: tên, địa chỉ email, ảnh hồ sơ, các phiên đăng nhập và token thông báo đẩy.",
+  "del.removed.b2":
+    "Nếu bạn là chủ Không gian nhóm: chính không gian đó, cùng mọi ảnh, video, tài liệu, dự án, tuyến đường, bản ghi chấm công, tin nhắn, báo cáo, liên kết chia sẻ và mẫu hình mờ trong đó — bao gồm cả tệp ảnh và video đã lưu.",
+  "del.removed.b3":
+    "Các liên kết chia sẻ và mã xác minh phát hành từ Không gian nhóm đó sẽ không còn hoạt động.",
   "del.kept.h2": "Những gì được giữ lại, và trong bao lâu",
-  "del.kept.b1": "Nếu bạn được mời vào Không gian nhóm của người khác, những ảnh chụp bạn đã thực hiện vẫn thuộc không gian đó: chúng là hồ sơ bằng chứng của chủ không gian, không phải của bạn. Danh tính của bạn vẫn bị xóa.",
-  "del.kept.b2": "Thành viên được mời không thể tự xóa mình khỏi hồ sơ của một Không gian nhóm; chủ không gian sẽ xóa thành viên, còn ảnh chụp thì vẫn ở lại.",
-  "del.kept.b3": "Hồ sơ thanh toán và thuế mà pháp luật yêu cầu chúng tôi lưu giữ sẽ được giữ trong thời gian luật quy định và không bao giờ dùng cho việc gì khác.",
-  "del.kept.b4": "Bản sao lưu được mã hóa và nhật ký bảo mật được luân chuyển trong vòng 90 ngày, nên một lần xóa có thể cần đến 90 ngày để áp dụng cho mọi bản sao.",
+  "del.kept.b1":
+    "Nếu bạn được mời vào Không gian nhóm của người khác, những ảnh chụp bạn đã thực hiện vẫn thuộc không gian đó: chúng là hồ sơ bằng chứng của chủ không gian, không phải của bạn. Danh tính của bạn vẫn bị xóa.",
+  "del.kept.b2":
+    "Thành viên được mời không thể tự xóa mình khỏi hồ sơ của một Không gian nhóm; chủ không gian sẽ xóa thành viên, còn ảnh chụp thì vẫn ở lại.",
+  "del.kept.b3":
+    "Hồ sơ thanh toán và thuế mà pháp luật yêu cầu chúng tôi lưu giữ sẽ được giữ trong thời gian luật quy định và không bao giờ dùng cho việc gì khác.",
+  "del.kept.b4":
+    "Bản sao lưu được mã hóa và nhật ký bảo mật được luân chuyển trong vòng 90 ngày, nên một lần xóa có thể cần đến 90 ngày để áp dụng cho mọi bản sao.",
   "del.partial.h2": "Xóa một phần dữ liệu mà không xóa tài khoản",
-  "del.partial.intro": "Bạn không cần đóng tài khoản để xóa dữ liệu. Trong ứng dụng, bạn có thể xóa từng mục, và mỗi lần xóa sẽ loại bỏ cả tệp đã lưu lẫn bản ghi:",
-  "del.partial.b1": "Ảnh, video và tài liệu đã quét: mở ảnh chụp, nhấn menu, rồi chọn Xóa. Tệp ảnh hoặc video cũng bị xóa khỏi bộ lưu trữ.",
+  "del.partial.intro":
+    "Bạn không cần đóng tài khoản để xóa dữ liệu. Trong ứng dụng, bạn có thể xóa từng mục, và mỗi lần xóa sẽ loại bỏ cả tệp đã lưu lẫn bản ghi:",
+  "del.partial.b1":
+    "Ảnh, video và tài liệu đã quét: mở ảnh chụp, nhấn menu, rồi chọn Xóa. Tệp ảnh hoặc video cũng bị xóa khỏi bộ lưu trữ.",
   "del.partial.b2": "Dự án: mở dự án, rồi chọn Xóa dự án. Dự án và các phân công của nó sẽ mất.",
   "del.partial.b3": "Tin nhắn: mở cuộc trò chuyện, nhấn giữ tin nhắn, rồi chọn Xóa.",
   "del.partial.b4": "Tuyến đường và bản ghi chấm công: mở mục đó và xóa từ màn hình chi tiết.",
   "del.partial.b5": "Ảnh hồ sơ: vào Hồ sơ, rồi xóa ảnh. Bạn cũng có thể sửa tên và email ở đó.",
-  "del.partial.support": "Với những gì bạn không thể tự xử lý, hãy gửi email tới **{email}** từ địa chỉ trên tài khoản và cho biết bạn muốn xóa dữ liệu nào. Chúng tôi xác nhận đó là địa chỉ của bạn rồi xóa, thường trong vòng 30 ngày. Bản sao lưu được mã hóa và nhật ký bảo mật được luân chuyển trong vòng 90 ngày. Hồ sơ thanh toán và thuế mà pháp luật yêu cầu chúng tôi lưu giữ sẽ được giữ trong thời gian luật quy định.",
+  "del.partial.support":
+    "Với những gì bạn không thể tự xử lý, hãy gửi email tới **{email}** từ địa chỉ trên tài khoản và cho biết bạn muốn xóa dữ liệu nào. Chúng tôi xác nhận đó là địa chỉ của bạn rồi xóa, thường trong vòng 30 ngày. Bản sao lưu được mã hóa và nhật ký bảo mật được luân chuyển trong vòng 90 ngày. Hồ sơ thanh toán và thuế mà pháp luật yêu cầu chúng tôi lưu giữ sẽ được giữ trong thời gian luật quy định.",
   "del.locked.h2": "Nếu bạn không thể đăng nhập",
-  "del.locked.body": "Hãy gửi email tới **{email}** từ địa chỉ trên tài khoản và yêu cầu chúng tôi xóa tài khoản. Chúng tôi xác nhận đó là địa chỉ của bạn rồi xóa tài khoản giúp bạn, thường trong vòng 30 ngày.",
+  "del.locked.body":
+    "Hãy gửi email tới **{email}** từ địa chỉ trên tài khoản và yêu cầu chúng tôi xóa tài khoản. Chúng tôi xác nhận đó là địa chỉ của bạn rồi xóa tài khoản giúp bạn, thường trong vòng 30 ngày.",
 };
