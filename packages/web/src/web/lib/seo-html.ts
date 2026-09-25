@@ -9,10 +9,15 @@
  * Both halves now read the same table in `seo-routes.ts`, so the tags a crawler
  * gets and the tags a visitor ends up with cannot drift apart.
  *
+ * Field Notes structured data is written here too, from `blog-schema.ts`, and
+ * nowhere else: an Article and a FAQPage that only exist after React mounts are
+ * invisible to the answer engines they are for.
+ *
  * String rewriting rather than a DOM parse on purpose: this runs on every HTML
  * request, the shell is a fixed file we control, and pulling in a parser to
  * change four tags would cost more than it buys.
  */
+import { jsonLdForPath } from "./blog-schema";
 import { SITE_URL, seoForPath } from "./seo-routes";
 
 /** Escapes a value going into a double-quoted HTML attribute. */
@@ -39,6 +44,23 @@ function setMeta(html: string, kind: "name" | "property", key: string, value: st
 function appendToHead(html: string, tag: string): string {
   if (!html.includes("</head>")) return html;
   return html.replace("</head>", `\t\t${tag}\n\t</head>`);
+}
+
+/**
+ * One structured-data block as a script tag.
+ *
+ * `<` is escaped to its JSON unicode form rather than left as-is: the catalog is
+ * trusted copy, but a `</script>` inside any string would end the block early
+ * and spill the rest of the JSON into the page. `\u003c` parses back to the same
+ * string, so a validator sees no difference.
+ *
+ * `data-seo-path` records the URL the block describes. A client-side navigation
+ * changes the path without re-running this injector, so the blog shell uses the
+ * attribute to drop a block that is no longer about the page on screen.
+ */
+function jsonLdScript(block: object, pathname: string): string {
+  const json = JSON.stringify(block).replace(/</g, "\\u003c");
+  return `<script type="application/ld+json" data-seo-path="${attr(pathname)}">${json}</script>`;
 }
 
 /**
@@ -84,6 +106,14 @@ export function injectSeoIntoHtml(html: string, pathname: string): string {
     } else {
       out = appendToHead(out, `<link rel="canonical" href="${attr(url)}" />`);
     }
+  }
+
+  // Structured data, for the crawlers that read the response and never run the
+  // JavaScript that `useSeo({ jsonLd })` needs. Field Notes only, for now: the
+  // marketing and Help Center blocks are built inside their page components,
+  // where the server cannot reach them without moving them out first.
+  for (const block of jsonLdForPath(pathname)) {
+    out = appendToHead(out, jsonLdScript(block, pathname));
   }
 
   return out;

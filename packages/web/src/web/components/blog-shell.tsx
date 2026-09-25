@@ -1,4 +1,5 @@
 import { useEffect } from "react";
+import { useLocation } from "wouter";
 import { SiteFooter } from "./site-footer";
 import { SiteNav } from "./site-nav";
 import { scrollSiteToTop } from "../lib/site-scroll";
@@ -23,6 +24,21 @@ import { assertPostSeo } from "../lib/posts";
  * to a translated site everywhere else.
  */
 export function BlogShell({ children }: { children: React.ReactNode }) {
+  const [path] = useLocation();
+
+  // The Article/FAQPage blocks come baked into the HTML response, from
+  // `lib/blog-schema.ts` — nothing here writes structured data. But the response
+  // is only fetched once: click from the index to a post and the Blog block from
+  // `/blog` is still in the head, now describing a page the reader has left.
+  // Stale structured data is worse than none, so it is removed. A crawler never
+  // sees this path — it fetches the URL and gets that URL's blocks.
+  useEffect(() => {
+    const stale = document.head.querySelectorAll<HTMLScriptElement>("script[data-seo-path]");
+    for (const script of stale) {
+      if (script.dataset.seoPath !== window.location.pathname) script.remove();
+    }
+  }, [path]);
+
   // Field Notes is always light, whatever a signed-in member picked for the app
   // shell on this device. Restore their choice when they leave.
   useEffect(() => {

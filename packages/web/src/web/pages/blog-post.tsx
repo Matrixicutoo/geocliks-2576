@@ -4,7 +4,7 @@ import { BlogShell } from "../components/blog-shell";
 import { AnswerBlock } from "../components/answer-block";
 import { BlockList } from "../components/blocks";
 import { useSeo } from "../lib/seo";
-import { SITE_URL, seoForPath } from "../lib/seo-routes";
+import { seoForPath } from "../lib/seo-routes";
 import { getPost, posts, formatLabel } from "../lib/posts";
 
 /**
@@ -12,9 +12,10 @@ import { getPost, posts, formatLabel } from "../lib/posts";
  *
  * Head copy comes from `seoForPath`, the same resolver the Vite/Bun HTML
  * injection uses, so the tab title and the title a non-rendering crawler reads
- * in the response body cannot disagree. The structured data is built here
- * instead, from the post: Article plus FAQPage, which is what an answer engine
- * reads to decide the page answers a question rather than discusses one.
+ * in the response body cannot disagree. The structured data — Article plus
+ * FAQPage, which is what an answer engine reads to decide the page answers a
+ * question rather than discusses one — is written into the response by that
+ * same injector, from `lib/blog-schema.ts`, and not by this component.
  */
 function NotFound() {
   // noindex and no canonical: a typo'd slug is not a page, and pointing its
@@ -55,41 +56,15 @@ export default function BlogPost() {
  */
 function Post({ slug }: { slug: string }) {
   const post = getPost(slug)!;
-  const url = `${SITE_URL}/blog/${post.slug}`;
   const seo = seoForPath(`/blog/${post.slug}`);
 
+  // No `jsonLd` here: the Article and FAQPage blocks are baked into the
+  // response by `lib/seo-html.ts`, so the answer engines that do not run JS can
+  // read them. See `lib/blog-schema.ts`.
   useSeo({
     title: seo.title ?? post.title,
     description: seo.description ?? post.metaDescription,
     path: `/blog/${post.slug}`,
-    jsonLd: [
-      {
-        "@context": "https://schema.org",
-        "@type": "Article",
-        headline: post.title,
-        description: post.metaDescription,
-        datePublished: post.publishedAt,
-        dateModified: post.updatedAt ?? post.publishedAt,
-        inLanguage: "en",
-        keywords: post.keywords.join(", "),
-        mainEntityOfPage: { "@type": "WebPage", "@id": url },
-        author: { "@type": "Organization", name: "GeoCliks", url: SITE_URL },
-        publisher: { "@type": "Organization", name: "GeoCliks", url: SITE_URL },
-        about: post.targetQuestion,
-      },
-      {
-        "@context": "https://schema.org",
-        "@type": "FAQPage",
-        mainEntity: [
-          { q: post.targetQuestion, a: post.answer },
-          ...post.faq.map((f) => ({ q: f.q, a: f.a })),
-        ].map((f) => ({
-          "@type": "Question",
-          name: f.q,
-          acceptedAnswer: { "@type": "Answer", text: f.a },
-        })),
-      },
-    ],
   });
 
   const headings = post.blocks.filter((b) => b.kind === "h2") as {

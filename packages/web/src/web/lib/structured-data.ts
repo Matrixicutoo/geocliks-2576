@@ -13,7 +13,10 @@
  * query URL).
  */
 import { LEGAL_ENTITY } from "./company";
-import { SITE_URL, absoluteUrl } from "./seo";
+// From `seo-routes` rather than the `seo` hook module, which re-exports the same
+// two values: that keeps this file React-free, so the server-side HTML injector
+// can build blocks from it without pulling React into the server.
+import { SITE_URL, absoluteUrl } from "./seo-routes";
 
 /**
  * `COMPANY_ADDRESS` in company.ts as the parts schema.org wants. Edit both

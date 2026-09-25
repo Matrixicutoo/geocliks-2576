@@ -2,7 +2,7 @@ import { Link } from "wouter";
 import { ArrowRight } from "lucide-react";
 import { BlogShell } from "../components/blog-shell";
 import { useSeo } from "../lib/seo";
-import { PAGE_SEO, SITE_URL } from "../lib/seo-routes";
+import { PAGE_SEO } from "../lib/seo-routes";
 import { posts, formatLabel } from "../lib/posts";
 
 /**
@@ -28,26 +28,10 @@ function leadIn(answer: string): string {
 export default function BlogIndex() {
   const seo = PAGE_SEO["/blog"];
 
-  useSeo({
-    title: seo.title,
-    description: seo.description,
-    path: "/blog",
-    jsonLd: {
-      "@context": "https://schema.org",
-      "@type": "Blog",
-      name: "GeoCliks Field Notes",
-      description: seo.description,
-      url: `${SITE_URL}/blog`,
-      publisher: { "@type": "Organization", name: "GeoCliks", url: SITE_URL },
-      blogPost: posts.map((p) => ({
-        "@type": "BlogPosting",
-        headline: p.title,
-        url: `${SITE_URL}/blog/${p.slug}`,
-        datePublished: p.publishedAt,
-        description: p.metaDescription,
-      })),
-    },
-  });
+  // No `jsonLd` here: the Blog block is baked into the response by
+  // `lib/seo-html.ts`, so it is there for a crawler that does not run JS. See
+  // `lib/blog-schema.ts`.
+  useSeo({ title: seo.title, description: seo.description, path: "/blog" });
 
   return (
     <BlogShell>
