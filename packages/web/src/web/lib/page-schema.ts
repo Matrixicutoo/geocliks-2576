@@ -18,6 +18,8 @@
  *
  * React-free on purpose, like `seo-routes.ts` and `blog-schema.ts`.
  */
+import type { LocaleCode } from "../../api/lib/locales";
+import { type TKey, translate } from "./catalogs";
 import { articleHref, asLocale, findArticle, findCategory } from "../help/resolve";
 import { articlesOf } from "../help/types";
 import { SALES_EMAIL } from "./support";
@@ -37,12 +39,22 @@ export interface FaqEntry {
 }
 
 /**
+ * An FAQ entry whose copy lives in the translation catalogs rather than in this
+ * file, named by key so the eleven locales stay the single source.
+ */
+interface TranslatedFaqEntry {
+  keys: { question: TKey; answer: TKey };
+}
+
+type FaqSource = FaqEntry | TranslatedFaqEntry;
+
+/**
  * One marketing page's structured data inputs: its breadcrumb trail below the
  * home page, and the FAQ the page renders and asserts.
  */
 interface PageSchema {
   crumbs: readonly Crumb[];
-  faq: readonly FaqEntry[];
+  faq: readonly FaqSource[];
 }
 
 export const PAGE_SCHEMA = {
@@ -407,20 +419,46 @@ export const PAGE_SCHEMA = {
   },
 } as const satisfies Record<string, PageSchema>;
 
-/** The FAQ a marketing page renders. Typed so a wrong path fails the build. */
-export function pageFaq(path: keyof typeof PAGE_SCHEMA): readonly FaqEntry[] {
-  return PAGE_SCHEMA[path].faq;
+/**
+ * A page's FAQ, in one locale.
+ *
+ * Entries whose copy has been lifted into the translation catalogs carry `keys`
+ * instead of literal strings, and are resolved here. The rest return their
+ * English literals unchanged — a page keeps working the moment it is written and
+ * becomes translatable when someone extracts its copy, rather than needing both
+ * in the same change.
+ *
+ * Both the rendered FAQ and the `FAQPage` markup call this, which is the point:
+ * the copy a visitor reads and the copy the page claims in its structured data
+ * are the same strings in the same language. A Spanish page with English FAQ
+ * markup is a mismatch Google is entitled to distrust.
+ */
+export function pageFaq(
+  path: keyof typeof PAGE_SCHEMA,
+  locale: LocaleCode = "en",
+): readonly FaqEntry[] {
+  return PAGE_SCHEMA[path].faq.map((entry) =>
+    "keys" in entry
+      ? {
+          question: translate(locale, entry.keys.question),
+          answer: translate(locale, entry.keys.answer),
+        }
+      : { question: entry.question, answer: entry.answer },
+  );
 }
 
 /**
  * Structured data for a marketing or Help Center path, or none for a path that
  * gets none — the app shell, the auth pages and anything behind a token.
  *
- * The Help Center resolves in English here, deliberately. This runs on the
- * response, where the only thing reading it is a crawler, and every canonical on
- * the site points at the English URL space.
+ * `locale` is the language of the URL being served, so `/es/proof-of-delivery`
+ * emits a Spanish `FAQPage`. It defaults to English, which is what every
+ * unprefixed URL gets.
+ *
+ * The Help Center still resolves in English: its content catalog is English-only
+ * and it has no locale URLs, so there is nothing else to resolve to yet.
  */
-export function marketingJsonLd(pathname: string): object[] {
+export function marketingJsonLd(pathname: string, locale: LocaleCode = "en"): object[] {
   const path = pathname.replace(/\/+$/, "") || "/";
 
   if (path === "/") return homeSchema();
@@ -428,7 +466,7 @@ export function marketingJsonLd(pathname: string): object[] {
   if (path in PAGE_SCHEMA) {
     const page = PAGE_SCHEMA[path as keyof typeof PAGE_SCHEMA];
     const blocks = [
-      faqSchema(page.faq.map((entry) => ({ ...entry }))),
+      faqSchema(pageFaq(path as keyof typeof PAGE_SCHEMA, locale).map((entry) => ({ ...entry }))),
       breadcrumbSchema(page.crumbs.map((crumb) => ({ ...crumb }))),
     ];
     // The About page carries the entity blocks as well: it is the page whose

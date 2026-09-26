@@ -1,33 +1,13 @@
 import { createContext, useCallback, useContext, useEffect, useMemo, useState } from "react";
 import { type LocaleCode, asLocale, isRtl } from "../../api/lib/locales";
 import { splitLocalePath } from "./locale-url";
+import { type TKey, CATALOGS, fill } from "./catalogs";
 import { en } from "../i18n/en";
-import { frCA } from "../i18n/fr-CA";
-import { es } from "../i18n/es";
-import { ptBR } from "../i18n/pt-BR";
-import { de } from "../i18n/de";
-import { it } from "../i18n/it";
-import { zh } from "../i18n/zh";
-import { vi } from "../i18n/vi";
-import { tl } from "../i18n/tl";
-import { ar } from "../i18n/ar";
-import { pl } from "../i18n/pl";
 
-export type TKey = keyof typeof en;
-
-const CATALOGS: Record<LocaleCode, Record<string, string>> = {
-  en,
-  "fr-CA": frCA,
-  es,
-  "pt-BR": ptBR,
-  de,
-  it,
-  zh,
-  vi,
-  tl,
-  ar,
-  pl,
-};
+// The catalogs and the `{name}` substitution moved to `catalogs.ts`, which is
+// React-free: the structured-data builder and the server-side head injector read
+// the same strings this provider renders, and neither can call a hook.
+export type { TKey };
 
 /** Per-device member override. Absent = follow the workspace default. */
 const KEY = "geocliks.locale";
@@ -92,13 +72,6 @@ const fromPath = (): LocaleCode | null => {
 let active: LocaleCode = fromPath() ?? fromQuery() ?? read() ?? "en";
 
 export const activeLocale = (): LocaleCode => active;
-
-const fill = (template: string, vars?: Record<string, string | number>) =>
-  vars
-    ? template.replace(/\{(\w+)\}/g, (m, name: string) =>
-        name in vars ? String(vars[name]) : m,
-      )
-    : template;
 
 export type Translate = (key: TKey, vars?: Record<string, string | number>) => string;
 

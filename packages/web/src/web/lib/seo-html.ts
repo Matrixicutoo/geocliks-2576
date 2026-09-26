@@ -162,7 +162,13 @@ export function injectSeoIntoHtml(html: string, pathname: string): string {
   // have to read: Field Notes from the post files, everything else — the home
   // page, the landing pages, the Help Center — from `page-schema.ts`. The paths
   // they answer are disjoint, so no block is written twice.
-  for (const block of [...jsonLdForPath(path), ...marketingJsonLd(path)]) {
+  //
+  // The structured data is built in the language the page actually renders, so a
+  // Spanish page claims a Spanish FAQ. An untranslated path under a prefix still
+  // renders English — and canonicalizes to English above — so it gets English
+  // markup: the mismatch works in both directions.
+  const schemaLocale = prefixed && isLocalizedPath(path) ? locale : "en";
+  for (const block of [...jsonLdForPath(path), ...marketingJsonLd(path, schemaLocale)]) {
     out = appendToHead(out, jsonLdScript(block, pathname));
   }
 
