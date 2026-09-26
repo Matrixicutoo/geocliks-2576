@@ -1497,6 +1497,168 @@
   </url>
   <url>
     <loc>https://geocliks.com/about</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://geocliks.com/about" />
+    <xhtml:link rel="alternate" hreflang="fr-CA" href="https://geocliks.com/fr-ca/about" />
+    <xhtml:link rel="alternate" hreflang="es" href="https://geocliks.com/es/about" />
+    <xhtml:link rel="alternate" hreflang="pt-BR" href="https://geocliks.com/pt-br/about" />
+    <xhtml:link rel="alternate" hreflang="de" href="https://geocliks.com/de/about" />
+    <xhtml:link rel="alternate" hreflang="it" href="https://geocliks.com/it/about" />
+    <xhtml:link rel="alternate" hreflang="zh" href="https://geocliks.com/zh/about" />
+    <xhtml:link rel="alternate" hreflang="vi" href="https://geocliks.com/vi/about" />
+    <xhtml:link rel="alternate" hreflang="tl" href="https://geocliks.com/tl/about" />
+    <xhtml:link rel="alternate" hreflang="ar" href="https://geocliks.com/ar/about" />
+    <xhtml:link rel="alternate" hreflang="pl" href="https://geocliks.com/pl/about" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://geocliks.com/about" />
+  </url>
+  <url>
+    <loc>https://geocliks.com/fr-ca/about</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://geocliks.com/about" />
+    <xhtml:link rel="alternate" hreflang="fr-CA" href="https://geocliks.com/fr-ca/about" />
+    <xhtml:link rel="alternate" hreflang="es" href="https://geocliks.com/es/about" />
+    <xhtml:link rel="alternate" hreflang="pt-BR" href="https://geocliks.com/pt-br/about" />
+    <xhtml:link rel="alternate" hreflang="de" href="https://geocliks.com/de/about" />
+    <xhtml:link rel="alternate" hreflang="it" href="https://geocliks.com/it/about" />
+    <xhtml:link rel="alternate" hreflang="zh" href="https://geocliks.com/zh/about" />
+    <xhtml:link rel="alternate" hreflang="vi" href="https://geocliks.com/vi/about" />
+    <xhtml:link rel="alternate" hreflang="tl" href="https://geocliks.com/tl/about" />
+    <xhtml:link rel="alternate" hreflang="ar" href="https://geocliks.com/ar/about" />
+    <xhtml:link rel="alternate" hreflang="pl" href="https://geocliks.com/pl/about" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://geocliks.com/about" />
+  </url>
+  <url>
+    <loc>https://geocliks.com/es/about</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://geocliks.com/about" />
+    <xhtml:link rel="alternate" hreflang="fr-CA" href="https://geocliks.com/fr-ca/about" />
+    <xhtml:link rel="alternate" hreflang="es" href="https://geocliks.com/es/about" />
+    <xhtml:link rel="alternate" hreflang="pt-BR" href="https://geocliks.com/pt-br/about" />
+    <xhtml:link rel="alternate" hreflang="de" href="https://geocliks.com/de/about" />
+    <xhtml:link rel="alternate" hreflang="it" href="https://geocliks.com/it/about" />
+    <xhtml:link rel="alternate" hreflang="zh" href="https://geocliks.com/zh/about" />
+    <xhtml:link rel="alternate" hreflang="vi" href="https://geocliks.com/vi/about" />
+    <xhtml:link rel="alternate" hreflang="tl" href="https://geocliks.com/tl/about" />
+    <xhtml:link rel="alternate" hreflang="ar" href="https://geocliks.com/ar/about" />
+    <xhtml:link rel="alternate" hreflang="pl" href="https://geocliks.com/pl/about" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://geocliks.com/about" />
+  </url>
+  <url>
+    <loc>https://geocliks.com/pt-br/about</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://geocliks.com/about" />
+    <xhtml:link rel="alternate" hreflang="fr-CA" href="https://geocliks.com/fr-ca/about" />
+    <xhtml:link rel="alternate" hreflang="es" href="https://geocliks.com/es/about" />
+    <xhtml:link rel="alternate" hreflang="pt-BR" href="https://geocliks.com/pt-br/about" />
+    <xhtml:link rel="alternate" hreflang="de" href="https://geocliks.com/de/about" />
+    <xhtml:link rel="alternate" hreflang="it" href="https://geocliks.com/it/about" />
+    <xhtml:link rel="alternate" hreflang="zh" href="https://geocliks.com/zh/about" />
+    <xhtml:link rel="alternate" hreflang="vi" href="https://geocliks.com/vi/about" />
+    <xhtml:link rel="alternate" hreflang="tl" href="https://geocliks.com/tl/about" />
+    <xhtml:link rel="alternate" hreflang="ar" href="https://geocliks.com/ar/about" />
+    <xhtml:link rel="alternate" hreflang="pl" href="https://geocliks.com/pl/about" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://geocliks.com/about" />
+  </url>
+  <url>
+    <loc>https://geocliks.com/de/about</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://geocliks.com/about" />
+    <xhtml:link rel="alternate" hreflang="fr-CA" href="https://geocliks.com/fr-ca/about" />
+    <xhtml:link rel="alternate" hreflang="es" href="https://geocliks.com/es/about" />
+    <xhtml:link rel="alternate" hreflang="pt-BR" href="https://geocliks.com/pt-br/about" />
+    <xhtml:link rel="alternate" hreflang="de" href="https://geocliks.com/de/about" />
+    <xhtml:link rel="alternate" hreflang="it" href="https://geocliks.com/it/about" />
+    <xhtml:link rel="alternate" hreflang="zh" href="https://geocliks.com/zh/about" />
+    <xhtml:link rel="alternate" hreflang="vi" href="https://geocliks.com/vi/about" />
+    <xhtml:link rel="alternate" hreflang="tl" href="https://geocliks.com/tl/about" />
+    <xhtml:link rel="alternate" hreflang="ar" href="https://geocliks.com/ar/about" />
+    <xhtml:link rel="alternate" hreflang="pl" href="https://geocliks.com/pl/about" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://geocliks.com/about" />
+  </url>
+  <url>
+    <loc>https://geocliks.com/it/about</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://geocliks.com/about" />
+    <xhtml:link rel="alternate" hreflang="fr-CA" href="https://geocliks.com/fr-ca/about" />
+    <xhtml:link rel="alternate" hreflang="es" href="https://geocliks.com/es/about" />
+    <xhtml:link rel="alternate" hreflang="pt-BR" href="https://geocliks.com/pt-br/about" />
+    <xhtml:link rel="alternate" hreflang="de" href="https://geocliks.com/de/about" />
+    <xhtml:link rel="alternate" hreflang="it" href="https://geocliks.com/it/about" />
+    <xhtml:link rel="alternate" hreflang="zh" href="https://geocliks.com/zh/about" />
+    <xhtml:link rel="alternate" hreflang="vi" href="https://geocliks.com/vi/about" />
+    <xhtml:link rel="alternate" hreflang="tl" href="https://geocliks.com/tl/about" />
+    <xhtml:link rel="alternate" hreflang="ar" href="https://geocliks.com/ar/about" />
+    <xhtml:link rel="alternate" hreflang="pl" href="https://geocliks.com/pl/about" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://geocliks.com/about" />
+  </url>
+  <url>
+    <loc>https://geocliks.com/zh/about</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://geocliks.com/about" />
+    <xhtml:link rel="alternate" hreflang="fr-CA" href="https://geocliks.com/fr-ca/about" />
+    <xhtml:link rel="alternate" hreflang="es" href="https://geocliks.com/es/about" />
+    <xhtml:link rel="alternate" hreflang="pt-BR" href="https://geocliks.com/pt-br/about" />
+    <xhtml:link rel="alternate" hreflang="de" href="https://geocliks.com/de/about" />
+    <xhtml:link rel="alternate" hreflang="it" href="https://geocliks.com/it/about" />
+    <xhtml:link rel="alternate" hreflang="zh" href="https://geocliks.com/zh/about" />
+    <xhtml:link rel="alternate" hreflang="vi" href="https://geocliks.com/vi/about" />
+    <xhtml:link rel="alternate" hreflang="tl" href="https://geocliks.com/tl/about" />
+    <xhtml:link rel="alternate" hreflang="ar" href="https://geocliks.com/ar/about" />
+    <xhtml:link rel="alternate" hreflang="pl" href="https://geocliks.com/pl/about" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://geocliks.com/about" />
+  </url>
+  <url>
+    <loc>https://geocliks.com/vi/about</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://geocliks.com/about" />
+    <xhtml:link rel="alternate" hreflang="fr-CA" href="https://geocliks.com/fr-ca/about" />
+    <xhtml:link rel="alternate" hreflang="es" href="https://geocliks.com/es/about" />
+    <xhtml:link rel="alternate" hreflang="pt-BR" href="https://geocliks.com/pt-br/about" />
+    <xhtml:link rel="alternate" hreflang="de" href="https://geocliks.com/de/about" />
+    <xhtml:link rel="alternate" hreflang="it" href="https://geocliks.com/it/about" />
+    <xhtml:link rel="alternate" hreflang="zh" href="https://geocliks.com/zh/about" />
+    <xhtml:link rel="alternate" hreflang="vi" href="https://geocliks.com/vi/about" />
+    <xhtml:link rel="alternate" hreflang="tl" href="https://geocliks.com/tl/about" />
+    <xhtml:link rel="alternate" hreflang="ar" href="https://geocliks.com/ar/about" />
+    <xhtml:link rel="alternate" hreflang="pl" href="https://geocliks.com/pl/about" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://geocliks.com/about" />
+  </url>
+  <url>
+    <loc>https://geocliks.com/tl/about</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://geocliks.com/about" />
+    <xhtml:link rel="alternate" hreflang="fr-CA" href="https://geocliks.com/fr-ca/about" />
+    <xhtml:link rel="alternate" hreflang="es" href="https://geocliks.com/es/about" />
+    <xhtml:link rel="alternate" hreflang="pt-BR" href="https://geocliks.com/pt-br/about" />
+    <xhtml:link rel="alternate" hreflang="de" href="https://geocliks.com/de/about" />
+    <xhtml:link rel="alternate" hreflang="it" href="https://geocliks.com/it/about" />
+    <xhtml:link rel="alternate" hreflang="zh" href="https://geocliks.com/zh/about" />
+    <xhtml:link rel="alternate" hreflang="vi" href="https://geocliks.com/vi/about" />
+    <xhtml:link rel="alternate" hreflang="tl" href="https://geocliks.com/tl/about" />
+    <xhtml:link rel="alternate" hreflang="ar" href="https://geocliks.com/ar/about" />
+    <xhtml:link rel="alternate" hreflang="pl" href="https://geocliks.com/pl/about" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://geocliks.com/about" />
+  </url>
+  <url>
+    <loc>https://geocliks.com/ar/about</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://geocliks.com/about" />
+    <xhtml:link rel="alternate" hreflang="fr-CA" href="https://geocliks.com/fr-ca/about" />
+    <xhtml:link rel="alternate" hreflang="es" href="https://geocliks.com/es/about" />
+    <xhtml:link rel="alternate" hreflang="pt-BR" href="https://geocliks.com/pt-br/about" />
+    <xhtml:link rel="alternate" hreflang="de" href="https://geocliks.com/de/about" />
+    <xhtml:link rel="alternate" hreflang="it" href="https://geocliks.com/it/about" />
+    <xhtml:link rel="alternate" hreflang="zh" href="https://geocliks.com/zh/about" />
+    <xhtml:link rel="alternate" hreflang="vi" href="https://geocliks.com/vi/about" />
+    <xhtml:link rel="alternate" hreflang="tl" href="https://geocliks.com/tl/about" />
+    <xhtml:link rel="alternate" hreflang="ar" href="https://geocliks.com/ar/about" />
+    <xhtml:link rel="alternate" hreflang="pl" href="https://geocliks.com/pl/about" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://geocliks.com/about" />
+  </url>
+  <url>
+    <loc>https://geocliks.com/pl/about</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://geocliks.com/about" />
+    <xhtml:link rel="alternate" hreflang="fr-CA" href="https://geocliks.com/fr-ca/about" />
+    <xhtml:link rel="alternate" hreflang="es" href="https://geocliks.com/es/about" />
+    <xhtml:link rel="alternate" hreflang="pt-BR" href="https://geocliks.com/pt-br/about" />
+    <xhtml:link rel="alternate" hreflang="de" href="https://geocliks.com/de/about" />
+    <xhtml:link rel="alternate" hreflang="it" href="https://geocliks.com/it/about" />
+    <xhtml:link rel="alternate" hreflang="zh" href="https://geocliks.com/zh/about" />
+    <xhtml:link rel="alternate" hreflang="vi" href="https://geocliks.com/vi/about" />
+    <xhtml:link rel="alternate" hreflang="tl" href="https://geocliks.com/tl/about" />
+    <xhtml:link rel="alternate" hreflang="ar" href="https://geocliks.com/ar/about" />
+    <xhtml:link rel="alternate" hreflang="pl" href="https://geocliks.com/pl/about" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://geocliks.com/about" />
   </url>
   <url>
     <loc>https://geocliks.com/blog</loc>

@@ -75,6 +75,9 @@ export const pl: Catalog = {
   "seo.timemark.title": "GeoCliks a Timemark: weryfikacja i ceny",
   "seo.timemark.description":
     "Oba weryfikują czas zdjęcia wobec sieci. Porównaj, co obejmuje każda pieczęć, czy kod zdjęcia jest włączony domyślnie i czym różni się cena od stanowiska od ceny stałej.",
+  "seo.about.title": "O GeoCliks — firma stojąca za pieczęcią na zdjęciu",
+  "seo.about.description":
+    "Kim jest GeoCliks: firma z Moncton w Nowym Brunszwiku budująca zweryfikowaną dokumentację zdjęciową dla ekip w terenie. Jak działa pieczęć, czego nie twierdzimy i jak się z nami skontaktować.",
   "signin.subtitle": "Odporna na manipulacje dokumentacja zdjęciowa dla ekip w terenie.",
   "signin.apple": "Kontynuuj z Apple",
   "signin.google": "Kontynuuj z Google",
@@ -2118,4 +2121,113 @@ export const pl: Catalog = {
   "tm.faq.q5": "Dlaczego miałbym wybrać Timemark zamiast GeoCliks?",
   "tm.faq.a5":
     "Dwa uczciwe powody. Jeśli jesteś jedną osobą i chcesz najtańszej aplikacji do zweryfikowanych zdjęć, ich plan Plus bije nas o dwa dolary miesięcznie. A jeśli potrzebujesz szerokości bardziej niż głębi, dostarczają rzeczy, których ten produkt nie ma: cyfrowe listy kontrolne, rejestrację czasu pracy, warstwy map KML, kopie do OneDrive i SharePoint oraz interfejs w dziesięciu językach. To, z czego byś rezygnował, to kod włączony, zanim go potrzebujesz, pieczęć nad bajtami obrazu i stała cena w rozmiarze ekipy.",
+  "ab.eyebrow": "O nas",
+  "ab.h1": "Firma stojąca za pieczęcią na zdjęciu",
+  "ab.sub":
+    "GeoCliks tworzy odporną na manipulacje dokumentację fotograficzną dla ekip w terenie — zweryfikowany czas, lokalizacja GPS i adres na każdym zdjęciu, sprawdzalne przez każdego, kto ma kod.",
+  "ab.s1.label": "Co budujemy",
+  "ab.s1.h2": "Jedno zadanie: sprawić, by zdjęcie z terenu wytrzymało, gdy ktoś je podważy.",
+  "ab.s1.intro":
+    "Praca w terenie rozstrzyga się na zdjęciach, a zdjęcia są najsłabszym dowodem na każdej budowie — data z zegara, który kontroluje fotografujący, w pliku, który każdy edytor może przepisać, w galerii z dwoma tysiącami innych. Ta luka nie jest abstrakcyjnym problemem technologicznym; jest konkretnym, nudnym, kosztownym problemem i ujawnia się w dniu, w którym klient podważa datę zakończenia albo nadawca zgłasza zwrot obciążenia trzy tygodnie później. GeoCliks istnieje, żeby ją zamknąć — i żeby nie robić szczególnie dobrze niczego innego.",
+  "ab.s2.label": "Jak działa dowód",
+  "ab.s2.h2": "Cztery rzeczy dzieją się w chwili naciśnięcia migawki.",
+  "ab.s2.intro":
+    "Opublikowane w całości, a nie w streszczeniu, bo dowód, którego nie można sprawdzić, jest tylko obietnicą marki. To ten sam mechanizm, który opisujemy w Centrum pomocy i w naszych notatkach z terenu, i ten sam, który sprawdza strona weryfikacji.",
+  "ab.step1.title": "Czas jest sprawdzany, nie przepisywany",
+  "ab.step1.body":
+    "Każde zdjęcie pyta nasze serwery, która jest godzina, i zapisuje ich odpowiedź obok zegara samego telefonu oraz różnicy między nimi. Urządzenie przestawione o trzy tygodnie w przód nie wytworzy zdjęcia z datą trzy tygodnie w przyszłości — wytworzy zdjęcie, które raportuje rozbieżność.",
+  "ab.step2.title": "Miejsce zapisuje się razem z marginesem błędu",
+  "ab.step2.body":
+    "Współrzędne GPS są odczytywane w chwili naciśnięcia migawki, zapisywane z promieniem dokładności zgłoszonym przez urządzenie i zamieniane na adres przez geokodowanie odwrotne. Promień ma znaczenie: lokalizacja podana co do metra, gdy odczyt był dokładny do czterdziestu, to fałszywa precyzja, więc ta liczba podróżuje razem ze zdjęciem.",
+  "ab.step3.title": "Obraz jest zapieczętowany na własnych bajtach",
+  "ab.step3.body":
+    "Plik jest haszowany algorytmem SHA-256, a hasz podpisany. Nic ze zdjęcia nie jest przez to ukrywane — pieczęć nie jest szyfrowaniem — ale zmiana jednego piksela zmienia hasz, więc edycja dokonana później zgłasza się jako edycja, zamiast przechodzić za oryginał.",
+  "ab.step4.title": "Każdy może to sprawdzić bez pytania ciebie",
+  "ab.step4.body":
+    "Każde zdjęcie nosi krótki kod. Wpisany na publicznej stronie weryfikacji zwraca zweryfikowany czas, adres i informację, czy pieczęć jest nienaruszona — bez konta, bez aplikacji, bez pytania osoby, która zrobiła zdjęcie. Właśnie ten ostatni punkt czyni z tego dowód, a nie twierdzenie.",
+  "ab.s3.label": "Czego nie będziemy twierdzić",
+  "ab.s3.h2": "Ograniczenia, zapisane tam, gdzie są niewygodne.",
+  "ab.s3.intro":
+    "Największą wadą marketingu oprogramowania nie jest wymyślanie, lecz pomijanie — lista możliwości bez zdania mówiącego, gdzie się kończy. Oprogramowanie dowodowe ma na to mniej miejsca niż większość, bo klient, który zaufa zapisowi za bardzo, dowiaduje się o tym w najgorszym możliwym momencie. Oto więc skrajna granica tego, co ten produkt robi.",
+  "ab.limit1.title": "Nie obiecujemy ci wyniku",
+  "ab.limit1.body":
+    "GeoCliks nie jest kancelarią prawną, notariuszem ani biegłym, a to, czy sąd, ubezpieczyciel lub organizacja kartowa przyjmie zapis, jest ich decyzją, nie naszą. Możemy powiedzieć, co zapis zawiera i że druga strona może go sama sprawdzić. Kto sprzedaje ci wyrok, sprzedaje ci coś innego.",
+  "ab.limit2.title": "Żadnych ocen, których nie zebraliśmy",
+  "ab.limit2.body":
+    "W naszych wynikach wyszukiwania nie ma ocen w gwiazdkach, a na tej stronie nie ma ściany opinii, bo nie zebraliśmy jeszcze ocen wartych opublikowania. Dane strukturalne tych stron całkowicie pomijają pole ocen, zamiast wypełniać je liczbą, której nikt nam nie dał.",
+  "ab.limit3.title": "Weryfikacja nigdy nie jest płatnym dodatkiem",
+  "ab.limit3.body":
+    "Dane znaku wodnego, kod zdjęcia i pieczęć są identyczne w planie darmowym i w największym. Plany płatne kupują wolumen, stanowiska, długość wideo, eksporty, udostępnianie i kierowanie dostaw. Pobieranie opłaty za samą wiarygodność dowodu sprawiłoby, że dowód byłby mniej wart.",
+  "ab.limit4.title": "Nie próbujemy być całym twoim zapleczem biurowym",
+  "ab.limit4.body":
+    "Żadnych rejestrów najmu, żadnego fakturowania, żadnych kosztorysów, żadnego pomiaru dachów, żadnych formularzy list kontrolnych. GeoCliks to warstwa dokumentacji fotograficznej i jest zbudowany tak, by stać obok systemu, który już prowadzisz, bo ekipy, które tego potrzebują, mają już pięć subskrypcji, których nie znoszą.",
+  "ab.limit5.title": "Oprogramowanie nie naprawi nieuczciwego zdjęcia",
+  "ab.limit5.body":
+    "Możemy dowieść, kiedy i gdzie zrobiono zdjęcie i że od tamtej pory nie zostało zmienione. Nie możemy dowieść, że kurier zostawił paczkę, a nie tylko sfotografował drzwi, ani że zdjęcie pokazuje pomieszczenie, pod którym jest zapisane. Pieczątka kończy spory o metadane, nie te o intencje.",
+  "ab.limit6.title": "Gdzie brakuje tłumaczenia, mówimy o tym",
+  "ab.limit6.body":
+    "Aplikacja, Centrum pomocy i ta strona działają w jedenastu językach, a na każdym artykule pomocy, którego treść jest jeszcze po angielsku, wisi banner. Strona przetłumaczona w połowie, która się do tego nie przyznaje, jest gorszym doświadczeniem niż uczciwa angielska, więc nic tutaj nie jest po cichu tłumaczone maszynowo i zostawiane bez oznaczenia.",
+  "ab.s4.label": "Jak o tym piszemy",
+  "ab.s4.h2": "Trzy zasady, którym podlega reszta tej strony.",
+  "ab.s4.intro":
+    "Nasze notatki z terenu publikują własną metodę w całości. To są te części, które obowiązują na każdej stronie, nie tylko na blogu.",
+  "ab.pub1.title": "Mechanizmy, nie przymiotniki",
+  "ab.pub1.body":
+    "„Bezpieczny” i „odporny na manipulacje” same nic nie znaczą, więc nasze teksty mówią, co faktycznie się dzieje — któremu zegarowi się ufa, co obejmuje hasz, jaki był promień dokładności. Twierdzenie, które można sprawdzić, to jedyny rodzaj wart wypowiedzenia o dowodach.",
+  "ab.pub2.title": "Opublikowane liczby, za każdym razem",
+  "ab.pub2.body":
+    "Ceny planów, limity zdjęć, liczby stanowisk i formaty eksportu na tej stronie to wartości, które produkt egzekwuje, czytane z jednej tabeli. Gdy cena się zmienia, strony zmieniają się razem z nią, zamiast dryfować w roczną liczbę, której nikt nie przeczytał ponownie.",
+  "ab.pub3.title": "Żaden konkurent nie jest oceniany",
+  "ab.pub3.body":
+    "Nasze teksty porównawcze dotyczą modeli cenowych i kształtu funkcji — za stanowisko kontra za workspace, weryfikacja w cenie kontra weryfikacja za dopłatę — a nie tego, czyja marka jest lepsza. Lista kontrolna dla kupującego, która przypadkiem ustawia dostawców w rankingu, to dokument sprzedażowy w kitlu laboratoryjnym.",
+  "ab.s5.label": "Firma",
+  "ab.s5.h2": "Z kim właściwie masz do czynienia.",
+  "ab.s5.intro":
+    "Warto powiedzieć to wprost, bo wyszukanie naszej nazwy tego nie rozstrzyga: francuska firma o nazwie GeoCliks, obecnie rozwiązana, wciąż pojawia się nad nami i nie ma z tą nic wspólnego. To kanadyjska firma, która tworzy aplikację z tej strony.",
+  "ab.fact1.label": "Podmiot prawny",
+  "ab.fact2.label": "Adres rejestrowy",
+  "ab.fact3.label": "Prawo właściwe",
+  "ab.fact3.value": "prowincja Nowy Brunszwik, Kanada",
+  "ab.fact4.label": "Platformy",
+  "ab.fact4.value": "iOS, Android i web, z jednego konta",
+  "ab.contact.label": "Kontakt z człowiekiem",
+  "ab.contact.mid": "w każdej sprawie dotyczącej konta lub zdjęcia,",
+  "ab.contact.end": "w sprawach wolumenu, warunków i pytań enterprise.",
+  "ab.profiles.label": "Profile, które są nasze",
+  "ab.faqSection.label": "Pytania",
+  "ab.faqSection.h2": "Często zadawane",
+  "ab.cta.h2": "Oceń to na zdjęciu, nie na tej stronie",
+  "ab.cta.body":
+    "Darmowe na zawsze do 300 zweryfikowanych zdjęć miesięcznie, bez podawania karty. Zrób jedno zdjęcie, podaj kod komuś, kto ci nie wierzy, i zobacz, co dostanie w odpowiedzi.",
+  "ab.cta.primary": "Pobierz aplikację",
+  "ab.cta.secondary": "Zweryfikuj zdjęcie teraz",
+  "ab.related.lead": "Głębiej:",
+  "ab.related.sealing": "mechanizm pieczęci w szczegółach",
+  "ab.related.mid1": ",",
+  "ab.related.method": "zasady, według których pisane są nasze notatki z terenu",
+  "ab.related.mid2": ", ile produkt",
+  "ab.related.pricing": "naprawdę kosztuje",
+  "ab.related.mid3": ", albo",
+  "ab.related.terms": "regulamin",
+  "ab.related.mid4": "i",
+  "ab.related.privacy": "polityka prywatności",
+  "ab.related.end": "w całości.",
+  "ab.faq.q1": "Kto stoi za GeoCliks?",
+  "ab.faq.a1":
+    "GeoCliks to kanadyjska firma zarejestrowana pod adresem 34-18 Clearview Street, Moncton, NB, E1A 4H2, a jej warunki podlegają prawu prowincji Nowy Brunszwik. Buduje jedną rzecz: zweryfikowaną dokumentację zdjęciową i wideo dla ekip w terenie, na iOS, Androida i web z jednego konta.",
+  "ab.faq.q2": "Czy to ten sam GeoCliks co francuska firma?",
+  "ab.faq.a2":
+    "Nie, a pomyłka jest zrozumiała. Francuska spółka SAS o nazwie GeoCliks, od tego czasu rozwiązana, wciąż pojawia się w wynikach wyszukiwania tej nazwy i nie ma żadnego związku z tą firmą ani z tym produktem. GeoCliks, który publikuje tę stronę i aplikację, to wymieniona wyżej firma z Nowego Brunszwiku.",
+  "ab.faq.q3": "Do kogo należą zdjęcia i dane?",
+  "ab.faq.a3":
+    "Do workspace'u. GeoCliks przechowuje i przetwarza zdjęcia w imieniu workspace'u, a usunięcie członka nie usuwa zdjęć, które zrobił — z założenia zapis dowodowy należy do workspace'u. Usunięcie własnego konta usuwa profil i dane logowania; zdjęcia zrobione w workspace, którego nie jesteś właścicielem, zostają przy tym workspace.",
+  "ab.faq.q4": "Czy weryfikacja jest naprawdę taka sama w planie darmowym?",
+  "ab.faq.a4":
+    "Tak. Dane znaku wodnego, kod zdjęcia i pieczęć są identyczne w planie darmowym i w największym płatnym. Plany płatne kupują wolumen, stanowiska, długość wideo, eksporty, udostępnianie i kierowanie dostaw — nigdy mocniejszy dowód. Kod zdjęcia wydany w planie darmowym nadal działa po tym, jak przestaniesz płacić.",
+  "ab.faq.q5": "Czy GeoCliks może zagwarantować, że sąd lub ubezpieczyciel przyjmie zdjęcie?",
+  "ab.faq.a5":
+    "Nie, i uczciwie nikt nie może. GeoCliks nie jest kancelarią prawną, notariuszem ani biegłym, a to, czy sąd, ubezpieczyciel lub organizacja kartowa przyjmie zapis, jest ich decyzją. To, co może, to uczynić zapis konkretnym i niezależnie sprawdzalnym, żeby spór dotyczył dowodu, a nie tego, czy w ogóle jesteś w stanie jakiś przedstawić.",
+  "ab.faq.q6": "W jakich językach działa GeoCliks?",
+  "ab.faq.a6":
+    "W jedenastu — angielskim, francuskim (Kanada), hiszpańskim, portugalskim (Brazylia), niemieckim, włoskim, polskim, arabskim, wietnamskim, tagalskim i chińskim. Aplikacja, Centrum pomocy i strony tej witryny działają we wszystkich, a na każdym artykule pomocy, którego treść jest jeszcze po angielsku, wisi banner, zamiast zostawiać cię z odkrywaniem tego samemu.",
 };

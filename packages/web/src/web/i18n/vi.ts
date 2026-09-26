@@ -75,6 +75,9 @@ export const vi: Catalog = {
   "seo.timemark.title": "GeoCliks so với Timemark: xác thực và giá",
   "seo.timemark.description":
     "Cả hai xác thực thời gian ảnh với một mạng. So sánh mỗi con dấu bao phủ những gì, mã ảnh có bật theo mặc định hay không, và giá theo người khác giá cố định thế nào.",
+  "seo.about.title": "Về GeoCliks — công ty đứng sau con dấu trên ảnh",
+  "seo.about.description":
+    "GeoCliks là ai: một công ty ở Moncton, New Brunswick xây dựng tài liệu ảnh hiện trường đã xác minh. Con dấu hoạt động thế nào, chúng tôi không tuyên bố điều gì và cách liên hệ với chúng tôi.",
   "signin.subtitle": "Hồ sơ ảnh chống giả mạo cho đội ngũ hiện trường.",
   "signin.apple": "Tiếp tục với Apple",
   "signin.google": "Tiếp tục với Google",
@@ -2103,4 +2106,114 @@ export const vi: Catalog = {
   "tm.faq.q5": "Vì sao tôi lại chọn Timemark thay vì GeoCliks?",
   "tm.faq.a5":
     "Hai lý do trung thực. Nếu bạn làm một mình và muốn ứng dụng ảnh đã xác thực rẻ nhất, gói Plus của họ thấp hơn chúng tôi hai đô la một tháng. Và nếu bạn cần bề rộng hơn là chiều sâu, họ có những thứ sản phẩm này không có: danh sách kiểm tra số, theo dõi giờ làm, lớp bản đồ KML, sao lưu OneDrive và SharePoint, cùng giao diện mười ngôn ngữ. Điều bạn sẽ từ bỏ là một mã bật sẵn trước khi bạn cần, một con dấu trên các byte của ảnh, và giá cố định ở quy mô một tổ.",
+  "ab.eyebrow": "Về chúng tôi",
+  "ab.h1": "Công ty đứng sau con dấu trên ảnh",
+  "ab.sub":
+    "GeoCliks xây dựng tài liệu ảnh chống can thiệp cho các đội làm việc hiện trường — thời gian đã xác minh, vị trí GPS và địa chỉ đường phố trên mọi ảnh, ai có mã cũng kiểm tra được.",
+  "ab.s1.label": "Chúng tôi xây dựng gì",
+  "ab.s1.h2": "Một việc duy nhất: làm cho ảnh hiện trường đứng vững khi có người nghi ngờ nó.",
+  "ab.s1.intro":
+    "Công việc hiện trường được phân định bằng ảnh, mà ảnh lại là bằng chứng yếu nhất trên bất kỳ công trình nào — một ngày tháng lấy từ chiếc đồng hồ mà chính người chụp điều khiển, trong một tệp mà bất kỳ trình chỉnh sửa nào cũng ghi lại được, nằm trong thư viện cùng hai nghìn ảnh khác. Khoảng trống đó không phải là bài toán công nghệ trừu tượng; nó là một vấn đề cụ thể, nhàm chán và tốn kém, và nó lộ ra đúng ngày khách hàng tranh chấp ngày hoàn thành hoặc bên gửi hàng đòi hoàn tiền ba tuần sau đó. GeoCliks tồn tại để khép khoảng trống ấy, và không làm giỏi đặc biệt thứ gì khác.",
+  "ab.s2.label": "Bằng chứng hoạt động thế nào",
+  "ab.s2.h2": "Bốn điều xảy ra khi màn trập nhấp.",
+  "ab.s2.intro":
+    "Công bố đầy đủ chứ không tóm lược, vì một bằng chứng bạn không thể tự kiểm tra thì chỉ là lời hứa thương hiệu. Đây chính là cơ chế được mô tả trong Trung tâm trợ giúp và trong các ghi chép hiện trường của chúng tôi, và cũng chính là cơ chế mà trang xác minh kiểm tra.",
+  "ab.step1.title": "Thời gian được kiểm tra, không phải sao chép",
+  "ab.step1.body":
+    "Mỗi lần chụp đều hỏi máy chủ của chúng tôi bây giờ là mấy giờ và ghi lại câu trả lời đó, cùng với đồng hồ của chính thiết bị và độ lệch giữa hai bên. Một thiết bị bị đặt nhanh ba tuần không tạo ra ảnh ghi ngày ba tuần sau — nó tạo ra ảnh báo cáo chính độ lệch đó.",
+  "ab.step2.title": "Địa điểm được ghi kèm sai số của nó",
+  "ab.step2.body":
+    "Toạ độ GPS được đọc ngay lúc nhấp màn trập, lưu kèm bán kính độ chính xác mà thiết bị báo, rồi được chuyển thành địa chỉ đường phố qua geocoding đảo. Bán kính rất quan trọng: một vị trí được khẳng định chính xác đến mét trong khi tín hiệu chỉ tốt tới bốn mươi mét là độ chính xác giả, nên con số đó đi kèm với ảnh.",
+  "ab.step3.title": "Ảnh được niêm phong vào chính các byte của nó",
+  "ab.step3.body":
+    "Tệp được băm bằng SHA-256 và giá trị băm được ký. Việc này không che giấu bất cứ điều gì về ảnh — con dấu không phải là mã hoá — nhưng chỉ một điểm ảnh bị đổi là giá trị băm đổi theo, nên một lần chỉnh sửa về sau sẽ tự báo là chỉnh sửa thay vì lọt qua như ảnh gốc.",
+  "ab.step4.title": "Ai cũng kiểm tra được mà không cần hỏi bạn",
+  "ab.step4.body":
+    "Mỗi ảnh mang một mã ngắn. Nhập mã vào trang xác minh công khai, nó trả về thời gian đã xác minh, địa chỉ và cho biết con dấu còn nguyên hay không — không cần tài khoản, không cần ứng dụng, không cần hỏi người đã chụp ảnh. Chính điểm cuối này biến nó thành bằng chứng thay vì một lời khẳng định.",
+  "ab.s3.label": "Những gì chúng tôi sẽ không tuyên bố",
+  "ab.s3.h2": "Các giới hạn, viết ra ở chỗ bất tiện nhất.",
+  "ab.s3.intro":
+    "Điều tệ nhất ở marketing phần mềm không phải là bịa đặt, mà là bỏ sót — danh sách tính năng thiếu đi câu nói rõ nó dừng ở đâu. Phần mềm bằng chứng có ít chỗ cho chuyện đó hơn hầu hết, vì khách hàng tin quá mức vào bản ghi sẽ phát hiện ra ở thời điểm tệ nhất có thể. Vậy nên đây là ranh giới xa nhất của những gì sản phẩm này làm được.",
+  "ab.limit1.title": "Chúng tôi không hứa cho bạn một kết quả",
+  "ab.limit1.body":
+    "GeoCliks không phải hãng luật, công chứng viên hay nhân chứng chuyên gia, và việc toà án, công ty bảo hiểm hay mạng thẻ có chấp nhận một bản ghi hay không là quyết định của họ, không phải của chúng tôi. Điều chúng tôi có thể nói là bản ghi chứa những gì và rằng bên kia có thể tự kiểm tra. Ai bán cho bạn một bản án thì đang bán cho bạn thứ khác.",
+  "ab.limit2.title": "Không có điểm đánh giá nào chúng tôi chưa thu thập",
+  "ab.limit2.body":
+    "Không có xếp hạng sao trong kết quả tìm kiếm của chúng tôi và không có tường lời chứng thực trên trang này, vì chúng tôi chưa thu thập được đánh giá nào đáng công bố. Dữ liệu có cấu trúc trên các trang này bỏ hẳn trường đánh giá thay vì điền vào đó một con số không ai đưa cho chúng tôi.",
+  "ab.limit3.title": "Xác minh không bao giờ là bản nâng cấp trả phí",
+  "ab.limit3.body":
+    "Dữ liệu hình mờ, mã ảnh và con dấu ở gói miễn phí giống hệt gói lớn nhất. Các gói trả phí mua dung lượng, chỗ ngồi, độ dài video, xuất dữ liệu, chia sẻ và định tuyến giao hàng. Thu tiền cho chính độ đáng tin của bằng chứng sẽ làm bằng chứng mất giá trị.",
+  "ab.limit4.title": "Chúng tôi không cố làm toàn bộ bộ phận hành chính của bạn",
+  "ab.limit4.body":
+    "Không sổ hợp đồng thuê, không lập hoá đơn, không dự toán, không đo mái, không mẫu danh mục kiểm tra. GeoCliks là lớp tài liệu ảnh và được dựng để đứng cạnh hệ thống bạn đang dùng, vì những đội cần nó đã có năm gói thuê phần mềm mà họ chán ghét.",
+  "ab.limit5.title": "Phần mềm không sửa được một tấm ảnh không trung thực",
+  "ab.limit5.body":
+    "Chúng tôi chứng minh được ảnh chụp khi nào, ở đâu và chưa bị sửa từ lúc đó. Chúng tôi không chứng minh được rằng người giao hàng đã đặt kiện hàng xuống thay vì chỉ chụp cái cửa, hay rằng ảnh đúng là căn phòng mà nó được lưu dưới tên. Con dấu kết thúc tranh cãi về siêu dữ liệu, không kết thúc tranh cãi về ý định.",
+  "ab.limit6.title": "Chỗ nào thiếu bản dịch, chúng tôi nói rõ",
+  "ab.limit6.body":
+    "Ứng dụng, Trung tâm trợ giúp và trang này chạy bằng mười một ngôn ngữ, và một dải thông báo nằm trên mọi bài trợ giúp mà phần nội dung vẫn còn tiếng Anh. Một trang dịch nửa vời mà không thừa nhận điều đó là trải nghiệm tệ hơn một trang tiếng Anh trung thực, nên ở đây không có gì bị dịch máy âm thầm rồi để không ghi chú.",
+  "ab.s4.label": "Chúng tôi viết về nó thế nào",
+  "ab.s4.h2": "Ba quy tắc mà phần còn lại của trang này phải tuân theo.",
+  "ab.s4.intro":
+    "Các ghi chép hiện trường của chúng tôi công bố phương pháp của chính chúng một cách chi tiết. Đây là những phần chi phối mọi trang, không chỉ blog.",
+  "ab.pub1.title": "Cơ chế, không phải tính từ",
+  "ab.pub1.body":
+    "“An toàn” và “chống can thiệp” đứng một mình thì chẳng nghĩa gì, nên bài viết của chúng tôi nói rõ điều gì thực sự xảy ra — đồng hồ nào được tin, giá trị băm bao trùm những gì, bán kính độ chính xác là bao nhiêu. Một khẳng định kiểm tra được là loại duy nhất đáng nói về bằng chứng.",
+  "ab.pub2.title": "Luôn là những con số đã công bố",
+  "ab.pub2.body":
+    "Giá gói, giới hạn số ảnh, số chỗ ngồi và định dạng xuất trên trang này là các con số mà sản phẩm thực thi, đọc từ một bảng duy nhất. Khi giá đổi, các trang đổi theo, thay vì trôi dạt thành một con số cũ một năm mà không ai đọc lại.",
+  "ab.pub3.title": "Không xếp hạng đối thủ nào",
+  "ab.pub3.body":
+    "Các bài so sánh của chúng tôi bàn về mô hình giá và hình dạng tính năng — theo chỗ ngồi so với theo workspace, xác minh có sẵn so với xác minh bị khoá sau khoản trả phí — chứ không bàn thương hiệu nào tốt hơn. Một danh mục kiểm tra cho người mua mà lại tình cờ xếp hạng nhà cung cấp chỉ là tài liệu bán hàng khoác áo blouse.",
+  "ab.s5.label": "Công ty",
+  "ab.s5.h2": "Bạn đang thực sự làm việc với ai.",
+  "ab.s5.intro":
+    "Điều này đáng nói thẳng, vì tìm tên chúng tôi không giải quyết được nó: một công ty Pháp tên GeoCliks, nay đã giải thể, vẫn hiện lên trên chúng tôi và không liên quan gì đến công ty này. Đây là công ty Canada xây dựng ứng dụng trên trang này.",
+  "ab.fact1.label": "Pháp nhân",
+  "ab.fact2.label": "Địa chỉ đăng ký",
+  "ab.fact3.label": "Luật điều chỉnh",
+  "ab.fact3.value": "tỉnh New Brunswick, Canada",
+  "ab.fact4.label": "Nền tảng",
+  "ab.fact4.value": "iOS, Android và web, từ một tài khoản",
+  "ab.contact.label": "Liên hệ với một con người",
+  "ab.contact.mid": "cho mọi việc liên quan đến tài khoản hoặc một lần chụp,",
+  "ab.contact.end": "cho câu hỏi về dung lượng, điều khoản và doanh nghiệp.",
+  "ab.profiles.label": "Các trang hồ sơ thuộc về chúng tôi",
+  "ab.faqSection.label": "Câu hỏi",
+  "ab.faqSection.h2": "Thường gặp",
+  "ab.cta.h2": "Hãy đánh giá bằng một tấm ảnh, không phải bằng trang này",
+  "ab.cta.body":
+    "Miễn phí mãi mãi cho 300 ảnh đã xác minh mỗi tháng, không cần thẻ. Chụp một tấm, đưa mã cho người đang nghi ngờ bạn, rồi xem họ nhận được gì.",
+  "ab.cta.primary": "Tải ứng dụng",
+  "ab.cta.secondary": "Xác minh một tấm ảnh ngay",
+  "ab.related.lead": "Đi sâu hơn:",
+  "ab.related.sealing": "cơ chế niêm phong chi tiết",
+  "ab.related.mid1": ",",
+  "ab.related.method": "các quy tắc mà ghi chép hiện trường của chúng tôi tuân theo",
+  "ab.related.mid2": ", sản phẩm",
+  "ab.related.pricing": "thực sự tốn bao nhiêu",
+  "ab.related.mid3": ", hoặc",
+  "ab.related.terms": "điều khoản",
+  "ab.related.mid4": "và",
+  "ab.related.privacy": "chính sách bảo mật",
+  "ab.related.end": "đầy đủ.",
+  "ab.faq.q1": "Ai đứng sau GeoCliks?",
+  "ab.faq.a1":
+    "GeoCliks là một công ty Canada đăng ký tại 34-18 Clearview Street, Moncton, NB, E1A 4H2, và các điều khoản của công ty chịu sự điều chỉnh của luật tỉnh New Brunswick. Công ty làm một việc: tài liệu ảnh và video đã xác minh cho các đội hiện trường, trên iOS, Android và web từ một tài khoản duy nhất.",
+  "ab.faq.q2": "Đây có phải cùng một GeoCliks với công ty Pháp không?",
+  "ab.faq.a2":
+    "Không, và sự nhầm lẫn là dễ hiểu. Một công ty SAS của Pháp tên GeoCliks, nay đã giải thể, vẫn xuất hiện trong kết quả tìm kiếm cho cái tên này và không có liên hệ nào với công ty này hay sản phẩm này. GeoCliks xuất bản trang web và ứng dụng này là công ty New Brunswick nêu trên.",
+  "ab.faq.q3": "Ai sở hữu ảnh và dữ liệu?",
+  "ab.faq.a3":
+    "Workspace sở hữu. GeoCliks lưu trữ và xử lý ảnh thay cho workspace, và việc xoá một thành viên không xoá những ảnh người đó đã chụp — bản ghi bằng chứng thuộc về workspace, theo thiết kế. Xoá tài khoản của chính bạn sẽ xoá hồ sơ và thông tin đăng nhập; những ảnh bạn chụp trong một workspace mà bạn không sở hữu vẫn ở lại với workspace đó.",
+  "ab.faq.q4": "Xác minh ở gói miễn phí có thực sự giống không?",
+  "ab.faq.a4":
+    "Có. Dữ liệu hình mờ, mã ảnh và con dấu ở gói miễn phí giống hệt gói trả phí lớn nhất. Các gói trả phí mua dung lượng, chỗ ngồi, độ dài video, xuất dữ liệu, chia sẻ và định tuyến giao hàng — không bao giờ mua bằng chứng mạnh hơn. Mã ảnh cấp ở gói miễn phí vẫn tra được sau khi bạn ngừng trả tiền.",
+  "ab.faq.q5":
+    "GeoCliks có bảo đảm được rằng toà án hay công ty bảo hiểm sẽ chấp nhận một tấm ảnh không?",
+  "ab.faq.a5":
+    "Không, và thật lòng thì không ai bảo đảm được. GeoCliks không phải hãng luật, công chứng viên hay nhân chứng chuyên gia, và việc toà án, công ty bảo hiểm hay mạng thẻ có chấp nhận một bản ghi hay không là quyết định của họ. Điều nó làm được là làm cho bản ghi cụ thể và kiểm tra được một cách độc lập, để cuộc tranh luận xoay quanh bằng chứng chứ không phải quanh việc bạn có đưa ra được bằng chứng nào hay không.",
+  "ab.faq.q6": "GeoCliks hoạt động bằng những ngôn ngữ nào?",
+  "ab.faq.a6":
+    "Mười một — tiếng Anh, tiếng Pháp (Canada), tiếng Tây Ban Nha, tiếng Bồ Đào Nha (Brazil), tiếng Đức, tiếng Ý, tiếng Ba Lan, tiếng Ả Rập, tiếng Việt, tiếng Tagalog và tiếng Trung. Ứng dụng, Trung tâm trợ giúp và các trang trên website này đều chạy bằng tất cả những ngôn ngữ đó, và một dải thông báo nằm trên mọi bài trợ giúp mà nội dung vẫn còn tiếng Anh, thay vì để bạn tự phát hiện.",
 };

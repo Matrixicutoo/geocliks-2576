@@ -212,6 +212,10 @@ export const LOCALIZED_SEO: Record<string, { title: TKey; description: TKey }> =
     title: "seo.timemark.title",
     description: "seo.timemark.description",
   },
+  "/about": {
+    title: "seo.about.title",
+    description: "seo.about.description",
+  },
 };
 
 /**

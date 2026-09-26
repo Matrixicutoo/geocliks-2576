@@ -369,3 +369,31 @@ Verified on all eleven — localized `<title>`, prefixed canonical, one `FAQPage
 block each; post-hydration `canonical == og:url` and translated `<h1>` on
 en/es/ar/zh/pl across this page and the six earlier ones, 35/35, 0 failures.
 tsc clean, lint at the 9-error baseline.
+
+## `/about` — done
+
+83 page keys plus `seo.about.title`/`.description` per catalog under `ab.*` —
+the five section headers, the four proof steps, the six limits, the three
+publishing cards, the four company facts, the contact and profiles rows, six
+FAQ pairs, CTA, and the five-link closing sentence — all eleven locales, pure
+insertions, 0 deletions on every catalog after formatting.
+
+Two of the four company facts keep their values as constants (`LEGAL_ENTITY`,
+`COMPANY_ADDRESS`) and stay untranslated; the other two are prose, so `FACTS`
+carries an optional `key: TKey` that wins over `value` when present. That let
+`JURISDICTION` drop out of the `company.ts` import — the governing-law line now
+comes from `ab.fact3.value`, whose English text is the old constant verbatim.
+
+`PAGE_SCHEMA` FAQ converted to `{ keys: { question, answer } }` (six entries),
+path added to `LOCALIZED_PATHS`, `LOCALIZED_SEO` row pointing at
+`seo.about.*`. Sitemap 179 -> 189 URLs.
+
+Scratch JSON parsed clean on the first pass this time; only two content fixes
+(a Polish case ending, and German-style quote marks that had crept into the
+Vietnamese file). `ar.ts` `home.samples.altFiber` collapsed under `oxfmt`
+again and was restored by hand.
+
+Verified on all eleven — localized `<title>`, prefixed canonical, one `FAQPage`
+block each; post-hydration `canonical == og:url` and translated `<h1>` on
+en/es/ar/zh/pl across this page and the seven earlier ones, 40/40, 0 failures.
+tsc clean, lint at the 9-error baseline.

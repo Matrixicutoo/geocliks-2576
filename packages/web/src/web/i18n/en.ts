@@ -84,6 +84,9 @@ export const en = {
   "seo.timemark.title": "GeoCliks vs Timemark — Compare Verification & Pricing",
   "seo.timemark.description":
     "Both verify photo time against a network. Compare what each seal actually covers, whether the photo code is on by default, and how per-seat and flat pricing differ.",
+  "seo.about.title": "About GeoCliks — The Company Behind the Photo Seal",
+  "seo.about.description":
+    "Who GeoCliks is: a Moncton, New Brunswick company building verified field photo documentation. How the seal works, what we will not claim, and how to reach us.",
   "signin.subtitle": "Tamper-proof photo documentation for field teams.",
   "signin.apple": "Continue with Apple",
   "signin.google": "Continue with Google",
@@ -2115,6 +2118,115 @@ export const en = {
   "tm.faq.q5": "Why would I pick Timemark over GeoCliks?",
   "tm.faq.a5":
     "Two honest reasons. If you are one person and want the cheapest verified-photo app, their Plus plan undercuts us by two dollars a month. And if you need breadth more than depth, they ship things this product does not: digital checklists, time tracking, KML map overlays, OneDrive and SharePoint backup, and an interface in ten languages. What you would be giving up is a code that is on before you need it, a seal over the image bytes, and flat pricing at crew size.",
+  "ab.eyebrow": "About",
+  "ab.h1": "The Company Behind the Seal on the Photo",
+  "ab.sub":
+    "GeoCliks builds tamper-proof photo documentation for field teams — verified time, GPS location and street address on every capture, checkable by anyone holding the code.",
+  "ab.s1.label": "What we build",
+  "ab.s1.h2": "One job: make a field photo hold up after someone doubts it.",
+  "ab.s1.intro":
+    "Field work is settled by photographs, and photographs are the weakest evidence on any job — a date from a clock the photographer controls, in a file any editor can rewrite, sitting in a camera roll with two thousand others. That gap is not a technology problem in the abstract; it is a specific, boring, expensive one, and it surfaces the day a client disputes a completion date or a shipper raises a chargeback three weeks late. GeoCliks exists to close it, and to do nothing else particularly well.",
+  "ab.s2.label": "How the proof works",
+  "ab.s2.h2": "Four things happen when the shutter fires.",
+  "ab.s2.intro":
+    "Published in full rather than summarized, because a proof you cannot inspect is a brand promise. This is the same mechanism described in the Help Center and in our field notes, and the same one the verification page checks.",
+  "ab.step1.title": "The time is checked, not copied",
+  "ab.step1.body":
+    "Every capture asks our servers what time it is and records their answer, alongside the handset's own clock and the difference between the two. A device set forward three weeks does not produce a photo dated three weeks from now — it produces a photo that reports the skew.",
+  "ab.step2.title": "The place is written with its margin of error",
+  "ab.step2.body":
+    "GPS coordinates are read at the shutter, stored with the accuracy radius the device reported, and reverse-geocoded to a street address. The radius matters: a location claimed to the metre when the fix was good to forty is a false precision, so the number travels with the photo.",
+  "ab.step3.title": "The image is sealed to its own bytes",
+  "ab.step3.body":
+    "The file is hashed with SHA-256 and the hash is signed. Nothing about the photo is hidden by this — the seal is not encryption — but a single altered pixel changes the hash, so an edit made after the fact reports as an edit rather than passing as the original.",
+  "ab.step4.title": "Anyone can check it without asking you",
+  "ab.step4.body":
+    "Each capture carries a short code. Typed into the public verification page, it returns the verified time, the address and whether the seal is intact — no account, no app, no request to whoever took the photo. That last part is what makes it evidence rather than a claim.",
+  "ab.s3.label": "What we will not claim",
+  "ab.s3.h2": "The limits, written down where they are inconvenient.",
+  "ab.s3.intro":
+    "Most of what is wrong with software marketing is not invention, it is omission — the capability list without the sentence that says where it stops. Evidence software has less room for that than most, because a customer who over-trusts the record finds out at the worst possible moment. So here is the far edge of what this product does.",
+  "ab.limit1.title": "We do not promise you an outcome",
+  "ab.limit1.body":
+    "GeoCliks is not a law firm, a notary or an expert witness, and whether a court, an insurer or a card network accepts a record is their decision, not ours. What we can say is what the record contains and that the other side can check it themselves. Anyone selling you a verdict is selling you something else.",
+  "ab.limit2.title": "No review scores we did not collect",
+  "ab.limit2.body":
+    "There is no star rating in our search results and no testimonial wall on this site, because we have not collected ratings worth publishing yet. The structured data on these pages leaves the ratings field out entirely rather than filling it with a number nobody gave us.",
+  "ab.limit3.title": "Verification is never a paid upgrade",
+  "ab.limit3.body":
+    "The watermark data, the photo code and the seal are identical on the free plan and on the largest one. Paid plans buy volume, seats, video length, exports, sharing and delivery routing. Charging for the trustworthiness of the evidence itself would make the evidence worth less.",
+  "ab.limit4.title": "We are not trying to be your whole back office",
+  "ab.limit4.body":
+    "No lease ledgers, no invoicing, no estimating, no roof measurement, no inspection checklist forms. GeoCliks is the photo documentation layer and it is built to sit beside whatever system you already run, because the teams who need this already have five subscriptions they resent.",
+  "ab.limit5.title": "Software cannot fix a dishonest photograph",
+  "ab.limit5.body":
+    "We can prove when and where a picture was taken and that it has not been altered since. We cannot prove the driver left the parcel rather than photographing the door, or that the photo shows the room it is filed under. The stamp closes the arguments about metadata, not the ones about intent.",
+  "ab.limit6.title": "Where a translation is missing, we say so",
+  "ab.limit6.body":
+    "The app, the Help Center and this site run in eleven languages, and a banner sits on any help article whose body is still English. A half-translated page that does not admit it is a worse experience than an honest English one, so nothing here is machine-translated quietly and left unmarked.",
+  "ab.s4.label": "How we write about it",
+  "ab.s4.h2": "Three rules the rest of this site is held to.",
+  "ab.s4.intro":
+    "Our field notes publish their own method at length. These are the parts that govern every page, not only the blog.",
+  "ab.pub1.title": "Mechanisms, not adjectives",
+  "ab.pub1.body":
+    '"Secure" and "tamper-proof" mean nothing unaccompanied, so our writing says what actually happens — which clock is trusted, what the hash covers, what the accuracy radius was. A claim you can check is the only kind worth making about evidence.',
+  "ab.pub2.title": "The published numbers, every time",
+  "ab.pub2.body":
+    "Plan prices, capture limits, seat counts and export formats on this site are the figures the product enforces, read from one table. When a price changes, the pages change with it rather than drifting into a year-old number nobody re-read.",
+  "ab.pub3.title": "No competitor gets ranked",
+  "ab.pub3.body":
+    "Our comparison writing is about pricing models and capability shapes — per-seat against per-workspace, verification included against verification gated — not about whose brand is better. A buyer's checklist that happens to rank vendors is a sales document wearing a lab coat.",
+  "ab.s5.label": "Company",
+  "ab.s5.h2": "Who you are actually dealing with.",
+  "ab.s5.intro":
+    "Worth stating plainly, because searching our name does not settle it: a French company called GeoCliks, now dissolved, still surfaces above us and is unrelated to this one. This is the Canadian company that builds the app on this site.",
+  "ab.fact1.label": "Legal entity",
+  "ab.fact2.label": "Registered address",
+  "ab.fact3.label": "Governing law",
+  "ab.fact3.value": "the Province of New Brunswick, Canada",
+  "ab.fact4.label": "Platforms",
+  "ab.fact4.value": "iOS, Android and the web, from one account",
+  "ab.contact.label": "Reaching a person",
+  "ab.contact.mid": "for anything about an account or a capture,",
+  "ab.contact.end": "for volume, terms and enterprise questions.",
+  "ab.profiles.label": "Profiles that are ours",
+  "ab.faqSection.label": "Questions",
+  "ab.faqSection.h2": "Frequently asked",
+  "ab.cta.h2": "Judge it on a photo, not on this page",
+  "ab.cta.body":
+    "Free forever for 300 verified captures a month, no card asked for. Take one capture, hand the code to someone who doubts you, and see what they get back.",
+  "ab.cta.primary": "Get the app",
+  "ab.cta.secondary": "Verify a photo now",
+  "ab.related.lead": "Going deeper: the",
+  "ab.related.sealing": "sealing mechanism in detail",
+  "ab.related.mid1": ", the",
+  "ab.related.method": "rules our field notes are written under",
+  "ab.related.mid2": ", what the product",
+  "ab.related.pricing": "actually costs",
+  "ab.related.mid3": ", or the",
+  "ab.related.terms": "terms",
+  "ab.related.mid4": "and",
+  "ab.related.privacy": "privacy policy",
+  "ab.related.end": "in full.",
+  "ab.faq.q1": "Who is behind GeoCliks?",
+  "ab.faq.a1":
+    "GeoCliks is a Canadian company registered at 34-18 Clearview Street, Moncton, NB, E1A 4H2, and its terms are governed by the law of the Province of New Brunswick. It builds one thing: verified photo and video documentation for field teams, on iOS, Android and the web from a single account.",
+  "ab.faq.q2": "Is this the same GeoCliks as the French company?",
+  "ab.faq.a2":
+    "No, and the confusion is reasonable. A French SAS called GeoCliks, since dissolved, still appears in search results for the name and has no connection to this company or this product. The GeoCliks that publishes this site and the app is the New Brunswick company named above.",
+  "ab.faq.q3": "Who owns the photos and the data?",
+  "ab.faq.a3":
+    "The workspace does. GeoCliks stores and processes captures on the workspace's behalf, and removing a member does not delete the captures they made — the evidence record belongs to the workspace, by design. Deleting your own account removes your profile and credentials; captures you made inside a workspace you do not own stay with that workspace.",
+  "ab.faq.q4": "Is verification actually the same on the free plan?",
+  "ab.faq.a4":
+    "Yes. The watermark data, the photo code and the seal are identical on the free plan and on the largest paid one. Paid plans buy volume, seats, video length, exports, sharing and delivery routing — never a stronger proof. A photo code issued on the free plan still resolves after you stop paying.",
+  "ab.faq.q5": "Can GeoCliks guarantee that a court or an insurer accepts a photo?",
+  "ab.faq.a5":
+    "No, and nobody honestly can. GeoCliks is not a law firm, a notary or an expert witness, and whether a court, an insurer or a card network accepts a record is their decision. What it can do is make the record specific and independently checkable, so the argument is about the evidence rather than about whether you can produce any.",
+  "ab.faq.q6": "What languages does GeoCliks work in?",
+  "ab.faq.a6":
+    "Eleven — English, French (Canada), Spanish, Portuguese (Brazil), German, Italian, Polish, Arabic, Vietnamese, Tagalog and Chinese. The app, the Help Center and the pages on this site all run in them, and a banner sits on any help article whose body is still English rather than leaving you to discover it.",
 } as const;
 
 export type Catalog = Record<keyof typeof en, string>;

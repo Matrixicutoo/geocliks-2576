@@ -76,6 +76,9 @@ export const es: Catalog = {
   "seo.timemark.title": "GeoCliks frente a Timemark: verificación y precios",
   "seo.timemark.description":
     "Los dos verifican la hora de la foto contra una red. Compara qué cubre cada sello, si el código de foto está activo por defecto y cómo difieren el precio por usuario y el fijo.",
+  "seo.about.title": "Sobre GeoCliks: la empresa detrás del sello fotográfico",
+  "seo.about.description":
+    "Quién es GeoCliks: una empresa de Moncton, Nuevo Brunswick, que crea documentación fotográfica verificada para trabajo de campo. Cómo funciona el sello y cómo contactarnos.",
   "signin.subtitle": "Documentación fotográfica inalterable para equipos de campo.",
   "signin.apple": "Continuar con Apple",
   "signin.google": "Continuar con Google",
@@ -2145,4 +2148,113 @@ export const es: Catalog = {
   "tm.faq.q5": "¿Por qué elegiría Timemark en lugar de GeoCliks?",
   "tm.faq.a5":
     "Dos razones honestas. Si trabajas solo y quieres la app de fotos verificadas más barata, su plan Plus nos gana por dos dólares al mes. Y si necesitas amplitud más que profundidad, ofrecen cosas que este producto no tiene: listas de comprobación digitales, control de horas, capas de mapa KML, copias en OneDrive y SharePoint y una interfaz en diez idiomas. Lo que estarías dejando es un código que está activo antes de necesitarlo, un sello sobre los bytes de la imagen y un precio fijo a tamaño de equipo.",
+  "ab.eyebrow": "Quiénes somos",
+  "ab.h1": "La empresa detrás del sello de la foto",
+  "ab.sub":
+    "GeoCliks crea documentación fotográfica inalterable para equipos de campo: hora verificada, ubicación GPS y dirección en cada captura, comprobable por cualquiera que tenga el código.",
+  "ab.s1.label": "Qué construimos",
+  "ab.s1.h2": "Un solo trabajo: que una foto de campo se sostenga cuando alguien la pone en duda.",
+  "ab.s1.intro":
+    "El trabajo de campo se resuelve con fotografías, y las fotografías son la prueba más débil de cualquier obra: una fecha tomada de un reloj que controla quien fotografía, en un archivo que cualquier editor puede reescribir, perdido en un carrete con otras dos mil. Ese hueco no es un problema tecnológico abstracto; es uno concreto, aburrido y caro, y aparece el día en que un cliente discute una fecha de finalización o un remitente reclama un cargo tres semanas después. GeoCliks existe para cerrarlo, y para no hacer nada más especialmente bien.",
+  "ab.s2.label": "Cómo funciona la prueba",
+  "ab.s2.h2": "Cuatro cosas ocurren al pulsar el disparador.",
+  "ab.s2.intro":
+    "Publicado completo en lugar de resumido, porque una prueba que no puedes inspeccionar es una promesa de marca. Es el mismo mecanismo que describe el Centro de ayuda y nuestras notas de campo, y el mismo que comprueba la página de verificación.",
+  "ab.step1.title": "La hora se comprueba, no se copia",
+  "ab.step1.body":
+    "Cada captura pregunta a nuestros servidores qué hora es y guarda su respuesta, junto con el reloj del propio teléfono y la diferencia entre los dos. Un dispositivo adelantado tres semanas no produce una foto fechada tres semanas en el futuro: produce una foto que informa del desvío.",
+  "ab.step2.title": "El lugar se escribe con su margen de error",
+  "ab.step2.body":
+    "Las coordenadas GPS se leen en el disparo, se guardan con el radio de precisión que informó el dispositivo y se convierten en una dirección postal. El radio importa: una ubicación afirmada al metro cuando la señal solo daba para cuarenta es una precisión falsa, así que el número viaja con la foto.",
+  "ab.step3.title": "La imagen queda sellada a sus propios bytes",
+  "ab.step3.body":
+    "El archivo se resume con SHA-256 y ese resumen se firma. Esto no oculta nada de la foto —el sello no es cifrado—, pero un solo píxel alterado cambia el resumen, así que una edición posterior se declara como edición en vez de pasar por el original.",
+  "ab.step4.title": "Cualquiera puede comprobarla sin pedírtelo",
+  "ab.step4.body":
+    "Cada captura lleva un código corto. Escrito en la página pública de verificación, devuelve la hora verificada, la dirección y si el sello está intacto: sin cuenta, sin app y sin preguntar a quien tomó la foto. Esa última parte es lo que la convierte en prueba y no en una afirmación.",
+  "ab.s3.label": "Lo que no vamos a afirmar",
+  "ab.s3.h2": "Los límites, escritos donde incomodan.",
+  "ab.s3.intro":
+    "Casi todo lo que está mal en el marketing de software no es invención, es omisión: la lista de funciones sin la frase que dice dónde se detiene. El software de prueba tiene menos margen para eso que la mayoría, porque el cliente que confía demasiado en el registro lo descubre en el peor momento posible. Así que este es el borde exacto de lo que hace este producto.",
+  "ab.limit1.title": "No te prometemos un resultado",
+  "ab.limit1.body":
+    "GeoCliks no es un despacho de abogados, ni una notaría, ni un peritaje, y que un juzgado, una aseguradora o una red de tarjetas acepte un registro es su decisión, no la nuestra. Lo que sí podemos decir es qué contiene el registro y que la otra parte puede comprobarlo por su cuenta. Quien te venda un veredicto te está vendiendo otra cosa.",
+  "ab.limit2.title": "Ninguna puntuación que no hayamos recogido",
+  "ab.limit2.body":
+    "No hay estrellas en nuestros resultados de búsqueda ni un muro de testimonios en este sitio, porque todavía no hemos recogido valoraciones que merezca publicar. Los datos estructurados de estas páginas omiten el campo de valoración por completo antes que rellenarlo con un número que nadie nos dio.",
+  "ab.limit3.title": "La verificación nunca es una mejora de pago",
+  "ab.limit3.body":
+    "Los datos de la marca de agua, el código de la foto y el sello son idénticos en el plan gratuito y en el más grande. Los planes de pago compran volumen, asientos, duración de vídeo, exportaciones, compartición y rutas de entrega. Cobrar por la fiabilidad de la prueba en sí haría que la prueba valiera menos.",
+  "ab.limit4.title": "No pretendemos ser toda tu administración",
+  "ab.limit4.body":
+    "Sin libros de arrendamiento, sin facturación, sin presupuestos, sin medición de tejados, sin formularios de listas de inspección. GeoCliks es la capa de documentación fotográfica y está hecho para convivir con el sistema que ya usas, porque los equipos que lo necesitan ya cargan con cinco suscripciones que detestan.",
+  "ab.limit5.title": "El software no arregla una fotografía deshonesta",
+  "ab.limit5.body":
+    "Podemos probar cuándo y dónde se tomó una imagen y que no se ha alterado desde entonces. No podemos probar que el repartidor dejó el paquete en lugar de fotografiar la puerta, ni que la foto muestra la habitación bajo la que está archivada. El sello cierra las discusiones sobre metadatos, no las que van sobre la intención.",
+  "ab.limit6.title": "Donde falta una traducción, lo decimos",
+  "ab.limit6.body":
+    "La app, el Centro de ayuda y este sitio funcionan en once idiomas, y un aviso aparece en cualquier artículo de ayuda cuyo cuerpo siga en inglés. Una página medio traducida que no lo admite es peor experiencia que una página honesta en inglés, así que aquí nada se traduce a máquina en silencio y se deja sin marcar.",
+  "ab.s4.label": "Cómo escribimos sobre esto",
+  "ab.s4.h2": "Tres reglas a las que se somete el resto del sitio.",
+  "ab.s4.intro":
+    "Nuestras notas de campo publican su propio método con detalle. Estas son las partes que rigen todas las páginas, no solo el blog.",
+  "ab.pub1.title": "Mecanismos, no adjetivos",
+  "ab.pub1.body":
+    "«Seguro» e «inalterable» no significan nada por sí solos, así que nuestros textos dicen qué ocurre de verdad: en qué reloj se confía, qué cubre el resumen criptográfico, cuál era el radio de precisión. Una afirmación que puedes comprobar es la única que vale la pena hacer sobre una prueba.",
+  "ab.pub2.title": "Las cifras publicadas, siempre",
+  "ab.pub2.body":
+    "Los precios de los planes, los límites de captura, el número de asientos y los formatos de exportación de este sitio son las cifras que el producto aplica, leídas de una sola tabla. Cuando un precio cambia, las páginas cambian con él en lugar de quedarse en un número de hace un año que nadie volvió a leer.",
+  "ab.pub3.title": "Ningún competidor sale clasificado",
+  "ab.pub3.body":
+    "Nuestras comparativas tratan de modelos de precio y formas de capacidad —por asiento frente a por espacio de trabajo, verificación incluida frente a verificación restringida—, no de qué marca es mejor. Una lista de comprobación para el comprador que acaba clasificando proveedores es un documento comercial con bata de laboratorio.",
+  "ab.s5.label": "Empresa",
+  "ab.s5.h2": "Con quién estás tratando realmente.",
+  "ab.s5.intro":
+    "Vale decirlo con claridad, porque buscar nuestro nombre no lo resuelve: una empresa francesa llamada GeoCliks, hoy disuelta, sigue apareciendo por encima de nosotros y no tiene relación con esta. Esta es la empresa canadiense que construye la app de este sitio.",
+  "ab.fact1.label": "Entidad legal",
+  "ab.fact2.label": "Domicilio social",
+  "ab.fact3.label": "Ley aplicable",
+  "ab.fact3.value": "la provincia de Nuevo Brunswick, Canadá",
+  "ab.fact4.label": "Plataformas",
+  "ab.fact4.value": "iOS, Android y la web, desde una sola cuenta",
+  "ab.contact.label": "Hablar con una persona",
+  "ab.contact.mid": "para cualquier cosa sobre una cuenta o una captura,",
+  "ab.contact.end": "para volumen, condiciones y preguntas de empresa.",
+  "ab.profiles.label": "Perfiles que son nuestros",
+  "ab.faqSection.label": "Preguntas",
+  "ab.faqSection.h2": "Preguntas frecuentes",
+  "ab.cta.h2": "Júzgalo con una foto, no con esta página",
+  "ab.cta.body":
+    "Gratis para siempre con 300 capturas verificadas al mes y sin pedir tarjeta. Haz una captura, dale el código a alguien que dude de ti y mira qué le devuelve.",
+  "ab.cta.primary": "Descargar la app",
+  "ab.cta.secondary": "Verificar una foto ahora",
+  "ab.related.lead": "Para profundizar: el",
+  "ab.related.sealing": "mecanismo de sellado en detalle",
+  "ab.related.mid1": ", las",
+  "ab.related.method": "reglas con las que escribimos nuestras notas de campo",
+  "ab.related.mid2": ", lo que el producto",
+  "ab.related.pricing": "cuesta realmente",
+  "ab.related.mid3": ", o los",
+  "ab.related.terms": "términos",
+  "ab.related.mid4": "y la",
+  "ab.related.privacy": "política de privacidad",
+  "ab.related.end": "completos.",
+  "ab.faq.q1": "¿Quién está detrás de GeoCliks?",
+  "ab.faq.a1":
+    "GeoCliks es una empresa canadiense registrada en 34-18 Clearview Street, Moncton, NB, E1A 4H2, y sus condiciones se rigen por la ley de la provincia de Nuevo Brunswick. Construye una sola cosa: documentación verificada de fotos y vídeos para equipos de campo, en iOS, Android y la web desde una única cuenta.",
+  "ab.faq.q2": "¿Es la misma GeoCliks que la empresa francesa?",
+  "ab.faq.a2":
+    "No, y la confusión es razonable. Una SAS francesa llamada GeoCliks, ya disuelta, sigue apareciendo en los resultados de búsqueda del nombre y no tiene ninguna relación con esta empresa ni con este producto. La GeoCliks que publica este sitio y la app es la empresa de Nuevo Brunswick indicada arriba.",
+  "ab.faq.q3": "¿Quién es dueño de las fotos y de los datos?",
+  "ab.faq.a3":
+    "El espacio de trabajo. GeoCliks almacena y procesa las capturas en nombre del espacio de trabajo, y quitar a un miembro no borra las capturas que hizo: el registro de pruebas pertenece al espacio de trabajo, por diseño. Borrar tu propia cuenta elimina tu perfil y tus credenciales; las capturas que hiciste dentro de un espacio que no es tuyo se quedan con ese espacio.",
+  "ab.faq.q4": "¿La verificación es realmente igual en el plan gratuito?",
+  "ab.faq.a4":
+    "Sí. Los datos de la marca de agua, el código de la foto y el sello son idénticos en el plan gratuito y en el de pago más grande. Los planes de pago compran volumen, asientos, duración de vídeo, exportaciones, compartición y rutas de entrega, nunca una prueba más fuerte. Un código emitido en el plan gratuito sigue resolviéndose después de dejar de pagar.",
+  "ab.faq.q5": "¿Puede GeoCliks garantizar que un juzgado o una aseguradora acepte una foto?",
+  "ab.faq.a5":
+    "No, y nadie puede hacerlo con honestidad. GeoCliks no es un despacho de abogados, ni una notaría, ni un peritaje, y que un juzgado, una aseguradora o una red de tarjetas acepte un registro es su decisión. Lo que sí puede hacer es que el registro sea concreto y comprobable de forma independiente, para que la discusión sea sobre la prueba y no sobre si puedes aportar alguna.",
+  "ab.faq.q6": "¿En qué idiomas funciona GeoCliks?",
+  "ab.faq.a6":
+    "En once: inglés, francés (Canadá), español, portugués (Brasil), alemán, italiano, polaco, árabe, vietnamita, tagalo y chino. La app, el Centro de ayuda y las páginas de este sitio funcionan en todos ellos, y un aviso aparece en cualquier artículo de ayuda cuyo cuerpo siga en inglés, en vez de dejar que lo descubras tú.",
 };

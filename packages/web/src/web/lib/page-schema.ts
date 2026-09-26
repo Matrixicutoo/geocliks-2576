@@ -65,36 +65,12 @@ export const PAGE_SCHEMA = {
   "/about": {
     crumbs: [{ name: "About" }],
     faq: [
-    {
-      question: "Who is behind GeoCliks?",
-      answer:
-        "GeoCliks is a Canadian company registered at 34-18 Clearview Street, Moncton, NB, E1A 4H2, and its terms are governed by the law of the Province of New Brunswick. It builds one thing: verified photo and video documentation for field teams, on iOS, Android and the web from a single account.",
-    },
-    {
-      question: "Is this the same GeoCliks as the French company?",
-      answer:
-        "No, and the confusion is reasonable. A French SAS called GeoCliks, since dissolved, still appears in search results for the name and has no connection to this company or this product. The GeoCliks that publishes this site and the app is the New Brunswick company named above.",
-    },
-    {
-      question: "Who owns the photos and the data?",
-      answer:
-        "The workspace does. GeoCliks stores and processes captures on the workspace's behalf, and removing a member does not delete the captures they made — the evidence record belongs to the workspace, by design. Deleting your own account removes your profile and credentials; captures you made inside a workspace you do not own stay with that workspace.",
-    },
-    {
-      question: "Is verification actually the same on the free plan?",
-      answer:
-        "Yes. The watermark data, the photo code and the seal are identical on the free plan and on the largest paid one. Paid plans buy volume, seats, video length, exports, sharing and delivery routing — never a stronger proof. A photo code issued on the free plan still resolves after you stop paying.",
-    },
-    {
-      question: "Can GeoCliks guarantee that a court or an insurer accepts a photo?",
-      answer:
-        "No, and nobody honestly can. GeoCliks is not a law firm, a notary or an expert witness, and whether a court, an insurer or a card network accepts a record is their decision. What it can do is make the record specific and independently checkable, so the argument is about the evidence rather than about whether you can produce any.",
-    },
-    {
-      question: "What languages does GeoCliks work in?",
-      answer:
-        "The app and the Help Center run in eleven languages — English, French (Canada), Spanish, Portuguese (Brazil), German, Italian, Polish, Arabic, Vietnamese, Tagalog and Chinese — with a banner on any help article whose body is still English. The search landing pages on this site are English-only on purpose.",
-    },
+      { keys: { question: "ab.faq.q1", answer: "ab.faq.a1" } },
+      { keys: { question: "ab.faq.q2", answer: "ab.faq.a2" } },
+      { keys: { question: "ab.faq.q3", answer: "ab.faq.a3" } },
+      { keys: { question: "ab.faq.q4", answer: "ab.faq.a4" } },
+      { keys: { question: "ab.faq.q5", answer: "ab.faq.a5" } },
+      { keys: { question: "ab.faq.q6", answer: "ab.faq.a6" } },
     ],
   },
   "/pricing": {

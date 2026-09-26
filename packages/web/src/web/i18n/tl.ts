@@ -76,6 +76,9 @@ export const tl: Catalog = {
   "seo.timemark.title": "GeoCliks kontra Timemark: beripikasyon at presyo",
   "seo.timemark.description":
     "Pareho nilang tsinetsek ang oras ng litrato sa network. Ikumpara ang sakop ng bawat selyo, kung nakabukas ang photo code bilang default, at kung paano naiiba ang presyo kada upuan sa patag na presyo.",
+  "seo.about.title": "Tungkol sa GeoCliks — ang kompanya sa likod ng selyo sa larawan",
+  "seo.about.description":
+    "Sino ang GeoCliks: isang kompanya sa Moncton, New Brunswick na gumagawa ng beripikadong dokumentasyong larawan sa field. Paano gumagana ang selyo, ano ang hindi namin ipinapangalandakan, at paano kami maabot.",
   "signin.subtitle": "Hindi mapepekeng dokumentasyon ng larawan para sa mga field team.",
   "signin.apple": "Magpatuloy sa Apple",
   "signin.google": "Magpatuloy sa Google",
@@ -2152,4 +2155,114 @@ export const tl: Catalog = {
   "tm.faq.q5": "Bakit ko pipiliin ang Timemark kaysa GeoCliks?",
   "tm.faq.a5":
     "Dalawang tapat na dahilan. Kung nag-iisa ka at gusto mo ng pinakamurang app ng beripikadong litrato, mas mababa ang Plus plan nila sa amin ng dalawang dolyar kada buwan. At kung lawak ang kailangan mo higit sa lalim, may mga bagay silang wala sa produktong ito: digital na checklist, pagsubaybay ng oras, KML map overlay, backup sa OneDrive at SharePoint, at interface sa sampung wika. Ang isusuko mo ay isang code na nakabukas bago mo pa kailanganin, isang selyo sa mga byte ng larawan, at patag na presyo sa laki ng tropa.",
+  "ab.eyebrow": "Tungkol sa amin",
+  "ab.h1": "Ang Kompanyang Nasa Likod ng Selyo sa Larawan",
+  "ab.sub":
+    "Gumagawa ang GeoCliks ng dokumentasyong larawan na hindi mapapakialaman para sa mga field team — beripikadong oras, lokasyong GPS at address ng kalye sa bawat kuha, masusuri ng kahit sino na may hawak ng code.",
+  "ab.s1.label": "Ano ang ginagawa namin",
+  "ab.s1.h2": "Isang trabaho lang: gawing matibay ang larawan sa field kapag may nagduda dito.",
+  "ab.s1.intro":
+    "Ang trabaho sa field ay napagpapasyahan ng mga larawan, at ang larawan ang pinakamahinang ebidensya sa kahit anong proyekto — petsang galing sa relos na kontrolado mismo ng kumuha, sa file na kayang baguhin ng kahit anong editor, nakalagay sa camera roll kasama ng dalawang libong iba. Ang butas na ito ay hindi abstraktong problema sa teknolohiya; ito ay isang tiyak, nakakabagot at magastos na problema, at lumilitaw ito sa araw na kinuwestiyon ng kliyente ang petsa ng pagtatapos o naghain ng chargeback ang shipper makalipas ang tatlong linggo. Umiiral ang GeoCliks para isara ito, at para walang ibang gawing partikular na magaling.",
+  "ab.s2.label": "Paano gumagana ang patunay",
+  "ab.s2.h2": "Apat na bagay ang nangyayari sa sandaling pumitik ang shutter.",
+  "ab.s2.intro":
+    "Inilalahad nang buo at hindi binubuod, dahil ang patunay na hindi mo masusuri ay pangako lang ng tatak. Ito ang parehong mekanismong inilalarawan sa Help Center at sa aming mga tala sa field, at ito rin ang sinusuri ng pahina ng beripikasyon.",
+  "ab.step1.title": "Ang oras ay sinusuri, hindi kinokopya",
+  "ab.step1.body":
+    "Bawat kuha ay nagtatanong sa aming mga server kung anong oras na at itinatala ang sagot nila, kasama ang relos mismo ng handset at ang pagitan ng dalawa. Ang device na isinulong ng tatlong linggo ay hindi gumagawa ng larawang may petsang tatlong linggo sa hinaharap — gumagawa ito ng larawang nag-uulat ng pagkakaiba.",
+  "ab.step2.title": "Ang lugar ay isinusulat kasama ang margin of error nito",
+  "ab.step2.body":
+    "Binabasa ang mga koordinadang GPS sa sandali ng kuha, itinatago kasama ang accuracy radius na iniulat ng device, at ginagawang address ng kalye sa pamamagitan ng reverse geocoding. Mahalaga ang radius: ang lokasyong sinasabing tumpak hanggang metro kung ang fix ay tumpak lang hanggang apatnapu ay huwad na katumpakan, kaya kasama ng larawan ang numerong iyon.",
+  "ab.step3.title": "Ang imahe ay nakaselyo sa mga byte nito mismo",
+  "ab.step3.body":
+    "Hinahash ang file sa SHA-256 at pinipirmahan ang hash. Walang natatago sa larawan dahil dito — hindi encryption ang selyo — ngunit isang binagong pixel lang ay nagpapalit ng hash, kaya ang pag-edit na ginawa pagkatapos ay nag-uulat bilang pag-edit sa halip na makalusot bilang orihinal.",
+  "ab.step4.title": "Kahit sino ay makakasuri nito nang hindi ka tinatanong",
+  "ab.step4.body":
+    "Bawat kuha ay may maikling code. Kapag itinipa sa pampublikong pahina ng beripikasyon, ibinabalik nito ang beripikadong oras, ang address at kung buo pa ang selyo — walang account, walang app, walang kahilingan sa kumuha ng larawan. Ang huling bahaging ito ang dahilan kung bakit ito ebidensya at hindi basta pahayag.",
+  "ab.s3.label": "Ang hindi namin ipapangalandakan",
+  "ab.s3.h2": "Ang mga hangganan, nakasulat kung saan ito hindi kanais-nais.",
+  "ab.s3.intro":
+    "Ang pinakamasama sa marketing ng software ay hindi ang pag-imbento, kundi ang pagtanggal — ang listahan ng kakayahan na wala ang pangungusap na nagsasabi kung saan ito nagtatapos. Mas maliit ang espasyo para dito sa software ng ebidensya kaysa sa karamihan, dahil ang kliyenteng sobrang nagtiwala sa tala ay malalaman ito sa pinakamalalang sandali. Kaya narito ang pinakadulong hangganan ng ginagawa ng produktong ito.",
+  "ab.limit1.title": "Hindi namin ipinapangako sa iyo ang resulta",
+  "ab.limit1.body":
+    "Hindi law firm, notaryo o eksperto sa testigo ang GeoCliks, at kung tatanggapin ng korte, insurer o card network ang isang tala ay desisyon nila, hindi namin. Ang masasabi namin ay ano ang nilalaman ng tala at na kaya itong suriin mismo ng kabilang panig. Ang nagtitinda sa iyo ng hatol ay may ibang itinitinda.",
+  "ab.limit2.title": "Walang review score na hindi namin nakolekta",
+  "ab.limit2.body":
+    "Walang star rating sa mga resulta namin sa paghahanap at walang pader ng testimonya sa site na ito, dahil wala pa kaming nakolektang rating na karapat-dapat ilathala. Tinatanggal nang tuluyan ng structured data sa mga pahinang ito ang field para sa rating kaysa punan iyon ng numerong walang nagbigay sa amin.",
+  "ab.limit3.title": "Ang beripikasyon ay hindi kailanman bayad na upgrade",
+  "ab.limit3.body":
+    "Pareho lang ang datos ng watermark, ang photo code at ang selyo sa libreng plano at sa pinakamalaki. Ang binabayarang plano ay pambili ng dami, upuan, haba ng video, export, pagbabahagi at routing ng delivery. Ang pagpapabayad sa pagkakatiwalaan mismo ng ebidensya ay magpapababa ng halaga ng ebidensya.",
+  "ab.limit4.title": "Hindi namin sinusubukang maging buong back office mo",
+  "ab.limit4.body":
+    "Walang ledger ng pangungupahan, walang invoicing, walang estimating, walang pagmemedida ng bubong, walang form ng checklist sa inspeksyon. Ang GeoCliks ay ang layer ng dokumentasyong larawan at ginawa itong tumabi sa sistemang pinapatakbo mo na, dahil ang mga team na nangangailangan nito ay may lima nang subscription na kinaiinisan nila.",
+  "ab.limit5.title": "Hindi kayang itama ng software ang isang di-tapat na larawan",
+  "ab.limit5.body":
+    "Kaya naming patunayan kung kailan at saan kinuha ang larawan at na hindi ito binago mula noon. Hindi namin kayang patunayan na iniwan ng driver ang parcel at hindi lang kinuhanan ng larawan ang pinto, o na ang larawan ay ang kuwartong pinaglagyan nito. Tinatapos ng selyo ang pagtatalo tungkol sa metadata, hindi ang tungkol sa intensyon.",
+  "ab.limit6.title": "Kung may kulang na salin, sinasabi namin",
+  "ab.limit6.body":
+    "Ang app, ang Help Center at ang site na ito ay tumatakbo sa labing-isang wika, at may banner sa alinmang artikulo ng tulong na Ingles pa ang katawan. Ang pahinang kalahating salin na hindi umaamin nito ay mas masamang karanasan kaysa sa tapat na Ingles, kaya walang dito ang tahimik na isinalin ng makina at iniwang walang marka.",
+  "ab.s4.label": "Paano namin ito isinusulat",
+  "ab.s4.h2": "Tatlong tuntuning sinusunod ng buong site na ito.",
+  "ab.s4.intro":
+    "Inilalathala nang mahaba ng aming mga tala sa field ang sariling paraan nila. Ito ang mga bahaging namamahala sa bawat pahina, hindi lang sa blog.",
+  "ab.pub1.title": "Mekanismo, hindi pang-uri",
+  "ab.pub1.body":
+    "Walang kahulugan ang “secure” at “tamper-proof” kapag nag-iisa, kaya sinasabi ng aming mga teksto ang talagang nangyayari — aling relos ang pinagkakatiwalaan, ano ang sakop ng hash, gaano kalaki ang accuracy radius. Ang pahayag na kaya mong suriin ang tanging uri na sulit sabihin tungkol sa ebidensya.",
+  "ab.pub2.title": "Ang mga inilathalang numero, tuwina",
+  "ab.pub2.body":
+    "Ang presyo ng plano, limitasyon ng kuha, bilang ng upuan at format ng export sa site na ito ay ang mga bilang na ipinatutupad ng produkto, binabasa mula sa isang talahanayan. Kapag nagbago ang presyo, nagbabago ang mga pahina kasabay nito, at hindi naiiwan sa isang taong gulang na numerong walang muling nagbasa.",
+  "ab.pub3.title": "Walang kalaban na ineeranggo",
+  "ab.pub3.body":
+    "Ang aming mga paghahambing ay tungkol sa modelo ng presyo at hugis ng kakayahan — kada upuan kontra kada workspace, kasamang beripikasyon kontra beripikasyong nakakandado — hindi tungkol sa kung kaninong tatak ang mas mabuti. Ang checklist ng mamimili na nagkataong umeeranggo ng vendor ay dokumentong pangbenta na nakasuot ng lab coat.",
+  "ab.s5.label": "Kompanya",
+  "ab.s5.h2": "Kung sino talaga ang kausap mo.",
+  "ab.s5.intro":
+    "Sulit sabihin nang prangka, dahil hindi ito naliliwanagan ng paghahanap sa pangalan namin: isang kompanyang Pranses na tinatawag ding GeoCliks, natunaw na ngayon, ay lumilitaw pa rin sa ibabaw namin at walang kaugnayan dito. Ito ang kompanyang Canadian na gumagawa ng app sa site na ito.",
+  "ab.fact1.label": "Legal na entidad",
+  "ab.fact2.label": "Nakarehistrong address",
+  "ab.fact3.label": "Namamahalang batas",
+  "ab.fact3.value": "ang Lalawigan ng New Brunswick, Canada",
+  "ab.fact4.label": "Mga plataporma",
+  "ab.fact4.value": "iOS, Android at ang web, mula sa isang account",
+  "ab.contact.label": "Pag-abot sa isang tao",
+  "ab.contact.mid": "para sa kahit anong tungkol sa account o sa isang kuha,",
+  "ab.contact.end": "para sa dami, mga tuntunin at tanong na pang-enterprise.",
+  "ab.profiles.label": "Mga profile na amin",
+  "ab.faqSection.label": "Mga tanong",
+  "ab.faqSection.h2": "Mga madalas itanong",
+  "ab.cta.h2": "Husgahan ito sa isang larawan, hindi sa pahinang ito",
+  "ab.cta.body":
+    "Libre nang panghabang-buhay para sa 300 beripikadong kuha kada buwan, walang hinihinging card. Kumuha ng isang larawan, ibigay ang code sa isang nagdududa sa iyo, at tingnan ang ibabalik sa kanila.",
+  "ab.cta.primary": "Kunin ang app",
+  "ab.cta.secondary": "Mag-beripika ng larawan ngayon",
+  "ab.related.lead": "Palalim pa: ang",
+  "ab.related.sealing": "mekanismo ng selyo nang detalyado",
+  "ab.related.mid1": ", ang",
+  "ab.related.method": "mga tuntuning pinagbabatayan ng aming mga tala sa field",
+  "ab.related.mid2": ", kung magkano talaga ang",
+  "ab.related.pricing": "halaga ng produkto",
+  "ab.related.mid3": ", o ang",
+  "ab.related.terms": "mga tuntunin",
+  "ab.related.mid4": "at ang",
+  "ab.related.privacy": "patakaran sa privacy",
+  "ab.related.end": "nang buo.",
+  "ab.faq.q1": "Sino ang nasa likod ng GeoCliks?",
+  "ab.faq.a1":
+    "Ang GeoCliks ay isang kompanyang Canadian na nakarehistro sa 34-18 Clearview Street, Moncton, NB, E1A 4H2, at ang mga tuntunin nito ay pinamamahalaan ng batas ng Lalawigan ng New Brunswick. Isang bagay lang ang ginagawa nito: beripikadong dokumentasyong larawan at video para sa mga field team, sa iOS, Android at web mula sa isang account.",
+  "ab.faq.q2": "Ito ba ang parehong GeoCliks na kompanyang Pranses?",
+  "ab.faq.a2":
+    "Hindi, at makatuwiran ang pagkalito. Isang Pranses na SAS na tinatawag na GeoCliks, natunaw na mula noon, ay lumilitaw pa rin sa mga resulta ng paghahanap para sa pangalan at walang koneksyon sa kompanyang ito o sa produktong ito. Ang GeoCliks na naglalathala ng site na ito at ng app ay ang kompanyang New Brunswick na nabanggit sa itaas.",
+  "ab.faq.q3": "Sino ang may-ari ng mga larawan at ng datos?",
+  "ab.faq.a3":
+    "Ang workspace. Iniimbak at pinoproseso ng GeoCliks ang mga kuha sa ngalan ng workspace, at ang pag-alis ng isang miyembro ay hindi nagbubura sa mga kuha niya — ang talaan ng ebidensya ay pag-aari ng workspace, sa disenyo. Ang pagbura sa sarili mong account ay nag-aalis ng profile at kredensyal mo; ang mga kuhang ginawa mo sa loob ng workspace na hindi mo pag-aari ay nananatili sa workspace na iyon.",
+  "ab.faq.q4": "Talaga bang pareho ang beripikasyon sa libreng plano?",
+  "ab.faq.a4":
+    "Oo. Ang datos ng watermark, ang photo code at ang selyo ay pareho sa libreng plano at sa pinakamalaking bayad. Ang binabayarang plano ay pambili ng dami, upuan, haba ng video, export, pagbabahagi at routing ng delivery — hindi kailanman ng mas malakas na patunay. Ang photo code na inisyu sa libreng plano ay gumagana pa rin matapos kang tumigil sa pagbabayad.",
+  "ab.faq.q5":
+    "Kaya bang igarantiya ng GeoCliks na tatanggapin ng korte o insurer ang isang larawan?",
+  "ab.faq.a5":
+    "Hindi, at tapat na walang makakagarantiya. Hindi law firm, notaryo o eksperto sa testigo ang GeoCliks, at kung tatanggapin ng korte, insurer o card network ang isang tala ay desisyon nila. Ang kaya nitong gawin ay gawing tiyak at malayang masusuri ang tala, kaya ang pagtatalo ay tungkol sa ebidensya at hindi tungkol sa kung kaya mo bang maglabas ng kahit ano.",
+  "ab.faq.q6": "Anong mga wika ang gumagana sa GeoCliks?",
+  "ab.faq.a6":
+    "Labing-isa — Ingles, Pranses (Canada), Espanyol, Portuges (Brazil), Aleman, Italyano, Polako, Arabe, Vietnamese, Tagalog at Tsino. Ang app, ang Help Center at ang mga pahina sa site na ito ay tumatakbo sa lahat ng iyon, at may banner sa alinmang artikulo ng tulong na Ingles pa ang katawan, sa halip na hayaan kang makadiskubre nito mag-isa.",
 };
