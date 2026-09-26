@@ -1,9 +1,10 @@
 import { useEffect, useRef, useState } from "react";
 import { Check, ChevronDown, Globe } from "lucide-react";
-import { LOCALES } from "../../api/lib/locales";
+import { type LocaleCode, LOCALES } from "../../api/lib/locales";
 import { cn } from "../lib/utils";
 import { amberFill, amberRing, amberRow } from "../lib/chrome";
 import { useLocale } from "../lib/i18n";
+import { isLocalizedPath, localizedPath, splitLocalePath } from "../lib/locale-url";
 
 /**
  * Language picker for the app chrome. Lives in the fixed left sidebar on desktop
@@ -33,6 +34,26 @@ export function LanguageSelect({
 }) {
   const { locale, override, t, setLocale, useWorkspaceDefault } = useLocale();
   const [open, setOpen] = useState(false);
+  /**
+   * On a page that exists at one URL per language, picking a language is a
+   * navigation rather than a state change — otherwise the visitor reads Spanish
+   * at the English address, which is the ambiguity the locale URLs remove, and
+   * the page they would then share or bookmark is the wrong one.
+   *
+   * A full document load, not a client-side route change: the server has to
+   * re-inject the canonical, the hreflang set and `<html lang>` for the locale
+   * being switched to. Returns false on every other page, where swapping the
+   * strings in place is still the right behaviour.
+   */
+  const chooseLocale = (next: LocaleCode): boolean => {
+    const here = globalThis.location;
+    if (!here) return false;
+    const { path } = splitLocalePath(here.pathname);
+    if (!isLocalizedPath(path)) return false;
+    const target = localizedPath(path, next);
+    here.assign(`${target}${here.search}${here.hash}`);
+    return true;
+  };
   const wrap = useRef<HTMLDivElement>(null);
   const current = LOCALES.find((l) => l.code === locale) ?? LOCALES[0];
 
@@ -127,8 +148,9 @@ export function LanguageSelect({
               key={l.code}
               type="button"
               onClick={() => {
-                setLocale(l.code);
                 setOpen(false);
+                if (chooseLocale(l.code)) return;
+                setLocale(l.code);
               }}
               className={cn(
                 "flex w-full items-center justify-between gap-2 px-3 py-2 text-start text-[12px]",

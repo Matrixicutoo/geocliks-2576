@@ -1,5 +1,6 @@
 import { createContext, useCallback, useContext, useEffect, useMemo, useState } from "react";
 import { type LocaleCode, asLocale, isRtl } from "../../api/lib/locales";
+import { splitLocalePath } from "./locale-url";
 import { en } from "../i18n/en";
 import { frCA } from "../i18n/fr-CA";
 import { es } from "../i18n/es";
@@ -69,7 +70,26 @@ const fromQuery = (): LocaleCode | null => {
  * default has no stored override. So the provider publishes the resolved locale here, and the
  * assistant can be told which Help Center language to read.
  */
-let active: LocaleCode = fromQuery() ?? read() ?? "en";
+/**
+ * The locale named by the URL's own path — `/es/get-app` asks for Spanish.
+ *
+ * This outranks everything else, including a stored override, and it has to: the
+ * URL is the page's public identity now. A crawler fetching `/es/` must be
+ * served Spanish, and a visitor who sends that link to someone whose device is
+ * set to German must have them open the Spanish page they meant to share, not a
+ * German one. `null` on an unprefixed URL, which leaves the stored preference in
+ * charge exactly as before.
+ */
+const fromPath = (): LocaleCode | null => {
+  try {
+    const split = splitLocalePath(globalThis.location?.pathname ?? "/");
+    return split.prefixed ? split.locale : null;
+  } catch {
+    return null;
+  }
+};
+
+let active: LocaleCode = fromPath() ?? fromQuery() ?? read() ?? "en";
 
 export const activeLocale = (): LocaleCode => active;
 
@@ -102,8 +122,26 @@ export function I18nProvider({ children }: { children: React.ReactNode }) {
   const [override, setOverride] = useState<LocaleCode | null>(() => fromQuery() ?? read());
   const [workspace, setWorkspace] = useState<LocaleCode>("en");
 
-  const locale = override ?? workspace;
+  // Fixed for the life of the document: a locale change navigates, so this is
+  // re-read by the load that follows rather than changing underneath React.
+  const pathLocale = fromPath();
+
+  const locale = pathLocale ?? override ?? workspace;
   const rtl = isRtl(locale);
+
+  useEffect(() => {
+    // Arriving on a locale URL is itself a language choice — from a search
+    // result, a shared link, or the picker. Remember it, so the rest of the site
+    // (the Help Center, the workspace, every page with no locale URL of its own)
+    // follows the language the visitor arrived in.
+    if (pathLocale) {
+      try {
+        globalThis.localStorage?.setItem(KEY, pathLocale);
+      } catch {
+        // Private mode: the choice still applies for this session.
+      }
+    }
+  }, [pathLocale]);
 
   useEffect(() => {
     // A locale handed over from the app is remembered, so a later visit without the parameter —

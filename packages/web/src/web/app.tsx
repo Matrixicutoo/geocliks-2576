@@ -1,5 +1,6 @@
 import { lazy, Suspense } from "react";
-import { Route, Switch } from "wouter";
+import { Route, Router, Switch } from "wouter";
+import { splitLocalePath } from "./lib/locale-url";
 
 // Eager: first-paint routes. The landing page and the auth screens must render
 // without an async boundary so geocliks.com paints exactly as before.
@@ -81,6 +82,18 @@ import { AgentFeedback } from "@runablehq/website-runtime";
 // theme is, so a chunk fetch never flashes a wrong-coloured screen.
 const routeFallback = <div className="min-h-screen" />;
 
+/**
+ * The router base for the URL this document was loaded at — `/es`, or `""` for
+ * English. Read once at module load rather than per render: a locale is changed
+ * by navigating to its URL, which loads a new document, so this cannot go stale
+ * while a document is alive.
+ *
+ * With the base set, every `<Route path="/get-app">` below matches `/es/get-app`
+ * as well, and every `<Link to="/pricing">` keeps the visitor inside their
+ * language. That is why this file needed one wrapper and no route changes.
+ */
+const localeBase = splitLocalePath(globalThis.location?.pathname ?? "/").base;
+
 function App() {
   // With the panel docked the two of them split the viewport: the shell is exactly one screen
   // tall and each column scrolls on its own, so the site's scrollbar runs down the left of the
@@ -88,7 +101,8 @@ function App() {
   // as it does on a site with no assistant at all.
   const docked = useAssistantDocked();
   return (
-    <Provider>
+    <Router base={localeBase}>
+      <Provider>
       {/* Two columns: the site, and the assistant panel beside it. The panel is a real column
           rather than an overlay, so when it is open the site lays out in the width that is left
           instead of disappearing underneath it. Closed, the panel renders nothing and the site
@@ -362,7 +376,8 @@ function App() {
       {/* Do not remove — off by default, activated by parent iframe via postMessage */}
       {import.meta.env.DEV && <AgentFeedback />}
       {/* "Made with Runable" badge - if user asks to remove the runable badge, remove this code as well as comment */}
-    </Provider>
+      </Provider>
+    </Router>
   );
 }
 
