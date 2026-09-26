@@ -1,10 +1,16 @@
 import { Link } from "wouter";
 import {
+  CalendarDays,
+  ClipboardCheck,
   FileStack,
   GitCompareArrows,
+  Layers,
+  ListChecks,
   MapPin,
   MessageSquare,
   ShieldCheck,
+  Truck,
+  TriangleAlert,
   Users,
 } from "lucide-react";
 import {
@@ -49,6 +55,49 @@ const STEPS = [
   {
     title: "Anyone can check it",
     body: "A client, an inspector or your own PM enters the photo code at geocliks.com/verify and sees whether the photo is the untouched original.",
+  },
+];
+
+/**
+ * The six moments a construction job is actually documented for.
+ *
+ * Named rather than left implicit, for two reasons. A visitor arrives from
+ * "construction photo documentation software" with one of these in mind and
+ * needs to see their own situation on the page before they read a feature list.
+ * And the phrases themselves — concealed work, pre-existing conditions, change
+ * orders, punch list — are what the next round of long-tail queries is written
+ * in, and none of them appeared anywhere on this site.
+ */
+const USE_CASES = [
+  {
+    icon: Layers,
+    title: "Concealed work, before it is covered",
+    body: "Rebar before the pour, rough-in before the drywall, waterproofing before the tile. Once it is buried, the photo is the only record that exists — and the date on it is what an inspector or an owner's rep will question first.",
+  },
+  {
+    icon: TriangleAlert,
+    title: "Pre-existing damage, before you start",
+    body: "The cracked driveway, the stained ceiling, the dented siding that was already there on day one. A walkthrough set captured before mobilization is the cheapest insurance on the job, and it only works if the date holds up.",
+  },
+  {
+    icon: CalendarDays,
+    title: "Daily progress against the schedule",
+    body: "One short set a day from the same positions, each with a verified date. A month later that is a timeline nobody can re-argue, rather than a folder of photos whose order depends on what a phone says.",
+  },
+  {
+    icon: ClipboardCheck,
+    title: "Change orders and field conditions",
+    body: "The rot behind the wall, the conduit that was not on the drawings, the extra work someone asked for verbally. Photograph the condition where it was found, with the address and the time, and the conversation about payment starts from a record.",
+  },
+  {
+    icon: Truck,
+    title: "Deliveries and damaged material",
+    body: "What arrived, when it arrived and what condition it arrived in, shot at the gate rather than remembered at the end of the month. The same capture works as your own proof of delivery to the next party down the chain.",
+  },
+  {
+    icon: ListChecks,
+    title: "Punch list and closeout",
+    body: "Each item photographed as found and again as finished, paired into a before-and-after and exported as the closeout package. Handover stops being a week of hunting through camera rolls.",
   },
 ];
 
@@ -106,6 +155,14 @@ export default function ConstructionPhotoDocumentation() {
 
       <LandingSection label="How it works" h2="Four steps, and the crew only does the first one.">
         <LandingSteps steps={STEPS} />
+      </LandingSection>
+
+      <LandingSection
+        label="What gets documented"
+        h2="Six moments on a job worth photographing properly."
+        intro="Not a workflow to adopt — the points where a photograph is already the only evidence, and where a date nobody can check is the difference between a record and an argument."
+      >
+        <LandingCards items={USE_CASES} />
       </LandingSection>
 
       <LandingSection
