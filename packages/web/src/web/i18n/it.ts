@@ -1467,4 +1467,81 @@ export const it: Catalog = {
   "del.locked.h2": "Se non riesci ad accedere",
   "del.locked.body":
     "Scrivi a **{email}** dall'indirizzo dell'account e chiedici di eliminarlo. Verifichiamo che l'indirizzo sia il tuo e poi eliminiamo l'account per te, normalmente entro 30 giorni.",
+  "pod.eyebrow": "Prova di consegna",
+  "pod.h1": "Una prova di consegna che il mittente può verificare da solo",
+  "pod.sub":
+    "Ogni foto di consegna porta un'ora verificata dalla rete, la posizione GPS e l'indirizzo civico — sigillati davanti alla porta, con un codice che chiunque può controllare.",
+  "pod.why.label": "Perché i corrieri cercano questo",
+  "pod.why.h2": "Il pacco è stato consegnato. È dimostrarlo che ti costa.",
+  "pod.why.intro":
+    "Un cliente dice che non è arrivato nulla. Un mittente apre un contestazione di addebito tre settimane dopo. L'autista ricorda la consegna e ha anche una foto — scattata con un telefono, datata da quel telefono, finita in un rullino con altre duecento. Niente di tutto questo sopravvive a una controversia, perché l'unica data che porta viene da un orologio che l'autista controlla. GeoCliks è fatto per la versione in cui il documento risponde alla domanda prima che qualcuno debba discuterne.",
+  "pod.how.label": "Come funziona",
+  "pod.how.h2": "Quattro passaggi, e l'autista fa solo il primo.",
+  "pod.step1.title": "L'autista fotografa la consegna",
+  "pod.step1.body":
+    "Una foto davanti alla porta, nell'app GeoCliks. Senza bisogno di segnale — uno scatto in una tromba delle scale o in un garage interrato resta in coda sul telefono.",
+  "pod.step2.title": "GeoCliks la sigilla",
+  "pod.step2.body":
+    "Ora verificata dalla rete, coordinate GPS e indirizzo civico risolto vengono scritti nella foto, con un hash SHA-256 e un codice foto univoco.",
+  "pod.step3.title": "La fermata si chiude da sola",
+  "pod.step3.body":
+    "Lo scatto si allega alla fermata del giro, così il registro del giro si costruisce mentre l'autista lavora, invece che a fine turno.",
+  "pod.step4.title": "Il mittente controlla",
+  "pod.step4.body":
+    "Invia il codice foto con la fattura. Il mittente lo inserisce su geocliks.com/verify e vede l'originale, senza account e senza app.",
+  "pod.dispute.label": "Fatto per la controversia, non per la demo",
+  "pod.dispute.h2": "Tre cose che decidono se un documento di consegna tiene.",
+  "pod.dispute1.title": "Un'ora di consegna che nessuno può spostare",
+  "pod.dispute1.body":
+    "L'ora viene dai nostri server, non dal telefono. Un autista che sposta l'orologio del telefono per coprire una consegna in ritardo ottiene uno scatto marcato come ora del dispositivo, non verificata — e l'ufficio vede quale è quale.",
+  "pod.dispute2.title": "L'indirizzo, risolto e timbrato",
+  "pod.dispute2.body":
+    "Coordinate, raggio di precisione e indirizzo ottenuto per geocodifica inversa vengono impressi nell'immagine e conservati nei metadati. La foto della porta sbagliata si vede dal timbro.",
+  "pod.dispute3.title": "Un codice che il mittente verifica da sé",
+  "pod.dispute3.body":
+    "Una prova che l'altra parte deve prendere sulla fiducia non è una prova. Ogni scatto porta un codice che si apre su una pagina pubblica dove si vede se la foto è l'originale intatto.",
+  "pod.ops.label": "Per la centrale e i giri con più autisti",
+  "pod.ops.h2": "Un unico account per ogni autista e ogni giro.",
+  "pod.ops1.title": "Giri e fermate, a prezzo per fermata",
+  "pod.ops1.body":
+    "Pianifica un giro, assegna un autista e gli scatti di ogni fermata si archiviano sotto di essa. La consegna si paga a fermata e non a postazione, quindi un autista stagionale non cambia il piano.",
+  "pod.ops2.title": "Export che un mittente accetta",
+  "pod.ops2.body":
+    "Consegna un giro in PDF, Excel, ZIP o KMZ, con ora, coordinate, indirizzo e codice foto di ogni consegna stampati accanto all'immagine.",
+  "pod.ops3.title": "Ruoli per la centrale e per la strada",
+  "pod.ops3.body":
+    "Chi smista vede l'intero quadro, gli autisti vedono solo le proprie fermate. Nessuno deve ricevere l'accesso a tutta l'operatività per documentare un turno.",
+  "pod.faq.label": "Domande",
+  "pod.faq.h2": "Domande frequenti",
+  "pod.faq.q1": "Che cos'è la prova di consegna elettronica?",
+  "pod.faq.a1":
+    "È il documento che un vettore conserva per dimostrare che una spedizione è arrivata a destinazione — storicamente una firma su un palmare, oggi in genere una foto del pacco consegnato con un'ora e un luogo. Il punto debole sono quasi sempre l'ora e il luogo: la maggior parte delle app li legge dal telefono, e un telefono riporta quello che il suo proprietario gli ha impostato.",
+  "pod.faq.q2": "GeoCliks raccoglie le firme?",
+  "pod.faq.a2":
+    "No. Acquisisce foto, ora verificata, GPS e indirizzo, e non raccoglie la firma del destinatario. È una mancanza reale se il contratto del tuo mittente richiede espressamente una firma — meglio saperlo prima di cambiare che dopo. Nel caso molto più comune in cui quello che viene chiesto è una foto davanti alla porta, una foto verificata è una prova più solida di una firma tracciata col dito che nessuno può attribuire.",
+  "pod.faq.q3": "Un autista può falsificare una foto di consegna?",
+  "pod.faq.a3":
+    "Le strade ovvie sono chiuse. L'ora è verificata sui nostri server invece di essere letta dal telefono, quindi spostare l'orologio del dispositivo segnala lo scatto anziché cambiarne l'orario. La posizione viene dal posizionamento del dispositivo al momento dello scatto, timbrata con il suo raggio di precisione. E l'immagine è conservata con un hash del contenuto, quindi una foto modificata dopo risulta alterata. Quello che nessun software può impedire è che un autista fotografi la porta giusta senza lasciare il pacco — ecco perché il timbro dell'indirizzo e l'ora contano più dell'immagine.",
+  "pod.faq.q4": "Funziona in un seminterrato o in un garage senza segnale?",
+  "pod.faq.a4":
+    "Sì. Gli scatti restano in coda sul telefono e si caricano quando l'autista torna in copertura, e uno scatto in coda viene sigillato come verificato dalla rete nel momento in cui raggiunge i nostri server. Il GPS è letto al momento dello scatto, quindi la posizione è quella della consegna, non del punto in cui il telefono si è riconnesso.",
+  "pod.faq.q5": "Quanto costa per un'attività di consegne?",
+  "pod.faq.a5":
+    "L'acquisizione è gratuita per sempre fino a 300 foto verificate al mese, che bastano a un solo autista con volumi bassi. I giri di consegna si pagano a fermata e non a postazione, quindi la fattura segue il volume e non il numero di persone. I numeri completi sono nella pagina dei prezzi.",
+  "pod.faq.q6": "Regge in una contestazione di addebito?",
+  "pod.faq.a6":
+    "Ti dà un documento che l'altra parte può verificare in modo indipendente, che è di solito ciò che risolve il caso. GeoCliks non è un servizio legale e non può promettere alcun esito preciso — che un mittente, un circuito di carte o un tribunale accetti un documento è una loro decisione. Quello che fa è togliere l'obiezione che l'orario venisse dal telefono dell'autista.",
+  "pod.cta.h2": "Inizia a documentare il prossimo giro come si deve",
+  "pod.cta.body":
+    "Acquisire è gratis per sempre — 300 foto verificate al mese, senza carta. I giri di consegna si pagano a fermata, e ogni piano include la pagina di verifica pubblica.",
+  "pod.cta.primary": "Scarica l'app",
+  "pod.cta.secondary": "Vedi piani e prezzi",
+  "pod.related.lead": "Da leggere anche:",
+  "pod.related.link1": "cosa conta davvero come prova di consegna",
+  "pod.related.join": ", oppure guarda",
+  "pod.related.link2": "come funziona la fotocamera con data e GPS",
+  "pod.note.signature":
+    "GeoCliks acquisisce foto, ora, GPS e indirizzo. Non raccoglie le firme dei destinatari.",
+  "pod.note.legal":
+    "Non è un servizio legale né notarile. Che un mittente o un circuito di carte accetti un documento è una loro decisione.",
 };

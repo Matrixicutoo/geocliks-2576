@@ -1477,4 +1477,81 @@ export const de: Catalog = {
   "del.locked.h2": "Wenn Sie sich nicht anmelden können",
   "del.locked.body":
     "Schreiben Sie von der Adresse des Kontos an **{email}** und bitten Sie uns, es zu löschen. Wir prüfen, dass es Ihre Adresse ist, und löschen das Konto dann für Sie — in der Regel innerhalb von 30 Tagen.",
+  "pod.eyebrow": "Liefernachweis",
+  "pod.h1": "Ein Liefernachweis, den der Auftraggeber selbst prüfen kann",
+  "pod.sub":
+    "Jedes Ablagefoto trägt eine netzwerkgeprüfte Uhrzeit, den GPS-Standort und die Straßenadresse — an der Tür versiegelt, mit einem Code, den jeder nachschlagen kann.",
+  "pod.why.label": "Warum Kurierdienste danach suchen",
+  "pod.why.h2": "Das Paket wurde geliefert. Teuer wird der Nachweis.",
+  "pod.why.intro":
+    "Ein Kunde sagt, es sei nichts angekommen. Ein Auftraggeber zieht drei Wochen später das Geld zurück. Der Fahrer erinnert sich an die Ablieferung und hat sogar ein Foto davon — mit dem Handy aufgenommen, von diesem Handy datiert, irgendwo zwischen zweihundert anderen in der Galerie. Nichts davon übersteht einen Streitfall, denn das einzige Datum darauf kam von einer Uhr, die der Fahrer selbst stellt. GeoCliks ist für die Variante gebaut, in der der Nachweis die Frage beantwortet, bevor jemand darüber streiten muss.",
+  "pod.how.label": "So funktioniert es",
+  "pod.how.h2": "Vier Schritte, und der Fahrer macht nur den ersten.",
+  "pod.step1.title": "Der Fahrer fotografiert die Ablieferung",
+  "pod.step1.body":
+    "Ein Foto an der Tür, in der GeoCliks-App. Kein Netz nötig — eine Aufnahme im Treppenhaus oder in der Tiefgarage wird auf dem Handy in die Warteschlange gestellt.",
+  "pod.step2.title": "GeoCliks versiegelt es",
+  "pod.step2.body":
+    "Netzwerkgeprüfte Uhrzeit, GPS-Koordinaten und die aufgelöste Straßenadresse werden ins Foto geschrieben, mit einem SHA-256-Hash und einem eindeutigen Fotocode.",
+  "pod.step3.title": "Der Stopp schließt sich selbst",
+  "pod.step3.body":
+    "Die Aufnahme hängt sich an den Stopp auf der Tour, der Nachweis der Tour entsteht also während der Fahrt und nicht am Ende der Schicht.",
+  "pod.step4.title": "Der Auftraggeber prüft es",
+  "pod.step4.body":
+    "Schicken Sie den Fotocode mit der Rechnung. Der Auftraggeber gibt ihn auf geocliks.com/verify ein und sieht das Original — ohne Konto und ohne App.",
+  "pod.dispute.label": "Für den Streitfall gebaut, nicht für die Demo",
+  "pod.dispute.h2": "Drei Dinge entscheiden, ob ein Liefernachweis hält.",
+  "pod.dispute1.title": "Eine Lieferzeit, die niemand verschieben kann",
+  "pod.dispute1.body":
+    "Die Uhrzeit kommt von unseren Servern, nicht vom Gerät. Wer die Handyuhr verstellt, um eine verspätete Ablieferung zu verdecken, bekommt die Aufnahme als gerätedatiert markiert, nicht als geprüft — und das Büro sieht, welche welche ist.",
+  "pod.dispute2.title": "Die Adresse, aufgelöst und aufgestempelt",
+  "pod.dispute2.body":
+    "Koordinaten, Genauigkeitsradius und die per Reverse-Geocoding ermittelte Straßenadresse werden ins Bild gebrannt und als Metadaten gespeichert. Ein Foto der falschen Tür fällt am Stempel sofort auf.",
+  "pod.dispute3.title": "Ein Code, den der Auftraggeber selbst prüft",
+  "pod.dispute3.body":
+    "Ein Nachweis, den die andere Seite Ihnen glauben muss, ist kein Nachweis. Jede Aufnahme trägt einen Code, der auf einer öffentlichen Seite zeigt, ob das Foto das unveränderte Original ist.",
+  "pod.ops.label": "Für Disposition und Touren mit mehreren Fahrern",
+  "pod.ops.h2": "Ein Konto für jeden Fahrer und jede Tour.",
+  "pod.ops1.title": "Touren und Stopps, abgerechnet pro Stopp",
+  "pod.ops1.body":
+    "Tour planen, Fahrer zuweisen — und die Aufnahmen jedes Stopps werden dort abgelegt. Lieferung wird pro Stopp statt pro Nutzer abgerechnet, ein Saisonfahrer ändert also nichts am Tarif.",
+  "pod.ops2.title": "Exporte, die ein Auftraggeber akzeptiert",
+  "pod.ops2.body":
+    "Geben Sie eine Tour als PDF, Excel, ZIP oder KMZ heraus — mit Uhrzeit, Koordinaten, Adresse und Fotocode jeder Ablieferung neben dem Foto.",
+  "pod.ops3.title": "Rollen für Disposition und Straße",
+  "pod.ops3.body":
+    "Disponenten sehen das ganze Board, Fahrer nur ihre eigenen Stopps. Niemand braucht Zugriff auf den gesamten Betrieb, um eine Schicht zu dokumentieren.",
+  "pod.faq.label": "Fragen",
+  "pod.faq.h2": "Häufige Fragen",
+  "pod.faq.q1": "Was ist ein elektronischer Liefernachweis?",
+  "pod.faq.a1":
+    "Es ist der Nachweis, den ein Transporteur führt, um zu zeigen, dass eine Sendung ihr Ziel erreicht hat — früher eine Unterschrift auf dem Handscanner, heute meist ein Foto des abgestellten Pakets mit Uhrzeit und Ort. Die Schwachstelle sind fast immer Uhrzeit und Ort: Die meisten Apps lesen beides vom Handy, und ein Handy meldet genau das, was sein Besitzer eingestellt hat.",
+  "pod.faq.q2": "Erfasst GeoCliks Unterschriften?",
+  "pod.faq.a2":
+    "Nein. Es erfasst Foto, geprüfte Uhrzeit, GPS und Straßenadresse, aber keine Empfängerunterschrift. Das ist eine echte Lücke, wenn der Vertrag Ihres Auftraggebers ausdrücklich eine Unterschrift verlangt — besser vor dem Wechsel zu wissen als danach. Für den viel häufigeren Fall, in dem ein Foto an der Tür verlangt wird, ist ein geprüftes Foto der stärkere Beweis als eine mit dem Finger gemalte Unterschrift, die niemand zuordnen kann.",
+  "pod.faq.q3": "Kann ein Fahrer ein Lieferfoto fälschen?",
+  "pod.faq.a3":
+    "Die naheliegenden Wege sind zu. Die Uhrzeit wird gegen unsere Server geprüft statt vom Gerät gelesen; eine verstellte Geräteuhr markiert die Aufnahme, statt ihren Zeitstempel zu ändern. Der Standort kommt aus der Positionsbestimmung des Geräts im Moment der Aufnahme, gestempelt mit dem Genauigkeitsradius. Und das Bild wird mit einem Inhalts-Hash gespeichert, ein nachträglich bearbeitetes Foto meldet sich also als verändert. Was keine Software verhindern kann: dass ein Fahrer die richtige Tür fotografiert, ohne das Paket dort zu lassen — deshalb zählen Adressstempel und Uhrzeit mehr als das Bild.",
+  "pod.faq.q4": "Funktioniert es im Keller oder in einer Tiefgarage ohne Netz?",
+  "pod.faq.a4":
+    "Ja. Aufnahmen werden auf dem Handy in die Warteschlange gestellt und geladen, sobald der Fahrer wieder Netz hat; eine wartende Aufnahme wird in dem Moment als netzwerkgeprüft versiegelt, in dem sie unsere Server erreicht. GPS wird beim Auslösen gelesen, der Standort ist also die Ablieferung und nicht die Stelle, an der das Handy wieder Empfang hatte.",
+  "pod.faq.q5": "Was kostet das für einen Lieferbetrieb?",
+  "pod.faq.a5":
+    "Aufnehmen ist für immer kostenlos bis zu 300 geprüfte Fotos pro Monat, was für einen einzelnen Fahrer mit geringem Volumen reicht. Liefertouren werden pro Stopp statt pro Nutzer abgerechnet, die Rechnung folgt also dem Volumen und nicht der Personalstärke. Die vollständigen Zahlen stehen auf der Preisseite.",
+  "pod.faq.q6": "Hält das einer Rückbuchung stand?",
+  "pod.faq.a6":
+    "Es gibt Ihnen einen Nachweis, den die andere Seite unabhängig prüfen kann — und das ist meist, was einen Fall löst. GeoCliks ist kein Rechtsdienst und kann kein bestimmtes Ergebnis versprechen; ob ein Auftraggeber, ein Kartennetzwerk oder ein Gericht einen Nachweis akzeptiert, ist dessen Entscheidung. Was es leistet: Es räumt den Einwand aus, der Zeitstempel sei vom Handy des Fahrers gekommen.",
+  "pod.cta.h2": "Die nächste Tour richtig belegen",
+  "pod.cta.body":
+    "Aufnehmen ist für immer kostenlos — 300 geprüfte Fotos pro Monat, ohne Karte. Liefertouren werden pro Stopp abgerechnet, und jeder Tarif enthält die öffentliche Prüfseite.",
+  "pod.cta.primary": "App holen",
+  "pod.cta.secondary": "Tarife und Preise ansehen",
+  "pod.related.lead": "Weiterlesen:",
+  "pod.related.link1": "was tatsächlich als Liefernachweis zählt",
+  "pod.related.join": ", oder sehen Sie",
+  "pod.related.link2": "wie die GPS-Zeitstempel-Kamera funktioniert",
+  "pod.note.signature":
+    "GeoCliks erfasst Foto, Uhrzeit, GPS und Adresse. Empfängerunterschriften werden nicht erfasst.",
+  "pod.note.legal":
+    "Kein Rechts- oder Notardienst. Ob ein Auftraggeber oder ein Kartennetzwerk einen Nachweis akzeptiert, ist dessen Entscheidung.",
 };

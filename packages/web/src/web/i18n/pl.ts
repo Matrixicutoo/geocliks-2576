@@ -1452,4 +1452,81 @@ export const pl: Catalog = {
   "del.locked.h2": "Jeśli nie możesz się zalogować",
   "del.locked.body":
     "Napisz na **{email}** z adresu przypisanego do konta i poproś o jego usunięcie. Potwierdzamy, że to Twój adres, i usuwamy konto za Ciebie — zwykle w ciągu 30 dni.",
+  "pod.eyebrow": "Potwierdzenie dostawy",
+  "pod.h1": "Potwierdzenie dostawy, które zleceniodawca sprawdzi sam",
+  "pod.sub":
+    "Każde zdjęcie z dostawy ma godzinę potwierdzoną przez sieć, lokalizację GPS i adres — zaplombowane już pod drzwiami, z kodem, który każdy może sprawdzić.",
+  "pod.why.label": "Dlaczego kurierzy tego szukają",
+  "pod.why.h2": "Paczka została dostarczona. Kosztuje dopiero udowodnienie tego.",
+  "pod.why.intro":
+    "Klient twierdzi, że nic nie przyszło. Trzy tygodnie później zleceniodawca zgłasza obciążenie zwrotne. Kierowca pamięta tę dostawę i ma nawet zdjęcie — zrobione telefonem, opatrzone godziną z tego telefonu, zagubione w galerii wśród dwustu innych. Nic z tego nie przetrwa sporu, bo jedyna data na zdjęciu pochodzi z zegara, którym kierowca sam sterował. GeoCliks jest zbudowany pod wariant, w którym dokumentacja odpowiada na pytanie, zanim ktokolwiek musi się spierać.",
+  "pod.how.label": "Jak to działa",
+  "pod.how.h2": "Cztery kroki, a kierowca wykonuje tylko pierwszy.",
+  "pod.step1.title": "Kierowca robi zdjęcie dostawy",
+  "pod.step1.body":
+    "Jedno zdjęcie pod drzwiami, w aplikacji GeoCliks. Zasięg nie jest potrzebny — zdjęcie zrobione na klatce schodowej albo w podziemnym garażu czeka w kolejce w telefonie.",
+  "pod.step2.title": "GeoCliks je plombuje",
+  "pod.step2.body":
+    "Godzina potwierdzona przez sieć, współrzędne GPS i ustalony adres są wpisywane w zdjęcie, razem z sumą SHA-256 i unikalnym kodem zdjęcia.",
+  "pod.step3.title": "Przystanek zamyka się sam",
+  "pod.step3.body":
+    "Zdjęcie dowiązuje się do przystanku na trasie, więc dokumentacja całej trasy powstaje w czasie pracy kierowcy, a nie po zmianie.",
+  "pod.step4.title": "Zleceniodawca to sprawdza",
+  "pod.step4.body":
+    "Wyślij kod zdjęcia razem z fakturą. Zleceniodawca wpisuje go na geocliks.com/verify i widzi oryginał — bez konta i bez aplikacji.",
+  "pod.dispute.label": "Zrobione pod spór, nie pod prezentację",
+  "pod.dispute.h2": "Trzy rzeczy decydują o tym, czy dokumentacja dostawy się obroni.",
+  "pod.dispute1.title": "Godzina dostawy, której nikt nie przesunie",
+  "pod.dispute1.body":
+    "Godzina pochodzi z naszych serwerów, nie z telefonu. Kierowca, który przestawi zegar, żeby ukryć spóźnioną dostawę, dostaje zdjęcie oznaczone jako czas urządzenia, a nie potwierdzony — i biuro widzi, które jest które.",
+  "pod.dispute2.title": "Adres, ustalony i wypalony w zdjęciu",
+  "pod.dispute2.body":
+    "Współrzędne, promień dokładności i adres z geokodowania odwrotnego są wypalane w obrazie i zapisywane w metadanych. Zdjęcie spod złych drzwi widać po samej pieczątce.",
+  "pod.dispute3.title": "Kod, który zleceniodawca sprawdzi sam",
+  "pod.dispute3.body":
+    "Dowód, w który druga strona musi uwierzyć na słowo, nie jest dowodem. Każde zdjęcie ma kod otwierający publiczną stronę, na której widać, czy to nienaruszony oryginał.",
+  "pod.ops.label": "Dla dyspozytorni i tras z wieloma kierowcami",
+  "pod.ops.h2": "Jedno konto na wszystkich kierowców i wszystkie trasy.",
+  "pod.ops1.title": "Trasy i przystanki, rozliczane od przystanku",
+  "pod.ops1.body":
+    "Zaplanuj trasę, przypisz kierowcę, a zdjęcia z każdego przystanku trafią właśnie do niego. Dostawa rozliczana jest od przystanku, nie od użytkownika, więc sezonowy kierowca nie zmienia planu.",
+  "pod.ops2.title": "Eksporty, które zleceniodawca przyjmie",
+  "pod.ops2.body":
+    "Przekaż trasę jako PDF, Excel, ZIP lub KMZ — z godziną, współrzędnymi, adresem i kodem zdjęcia każdej dostawy wydrukowanymi obok zdjęcia.",
+  "pod.ops3.title": "Role dla dyspozytorni i dla trasy",
+  "pod.ops3.body":
+    "Dyspozytor widzi całą tablicę, kierowca tylko swoje przystanki. Nikt nie musi dostawać dostępu do całej firmy, żeby udokumentować jedną zmianę.",
+  "pod.faq.label": "Pytania",
+  "pod.faq.h2": "Często zadawane pytania",
+  "pod.faq.q1": "Czym jest elektroniczne potwierdzenie dostawy?",
+  "pod.faq.a1":
+    "To dokumentacja, którą przewoźnik zachowuje, by pokazać, że przesyłka dotarła na miejsce — kiedyś podpis na terminalu, dziś zwykle zdjęcie dostarczonej paczki z godziną i lokalizacją. Słabym punktem prawie zawsze są właśnie godzina i lokalizacja: większość aplikacji czyta jedno i drugie z telefonu, a telefon poda to, co ustawił jego właściciel.",
+  "pod.faq.q2": "Czy GeoCliks zbiera podpisy?",
+  "pod.faq.a2":
+    "Nie. Rejestruje zdjęcie, potwierdzoną godzinę, GPS i adres, ale nie zbiera podpisu odbiorcy. To realna luka, jeśli umowa z twoim zleceniodawcą wprost wymaga podpisu — lepiej wiedzieć o tym przed zmianą narzędzia niż po. W znacznie częstszym przypadku, gdy wymagane jest zdjęcie pod drzwiami, potwierdzone zdjęcie jest mocniejszym dowodem niż narysowany palcem podpis, którego nikomu nie da się przypisać.",
+  "pod.faq.q3": "Czy kierowca może sfałszować zdjęcie dostawy?",
+  "pod.faq.a3":
+    "Oczywiste drogi są zamknięte. Godzina jest weryfikowana z naszymi serwerami, a nie czytana z telefonu, więc przestawienie zegara oznacza zdjęcie flagą, a nie zmienia jego znacznika czasu. Lokalizacja pochodzi z pozycjonowania urządzenia w chwili zdjęcia i jest opisana promieniem dokładności. Obraz zapisujemy z sumą kontrolną treści, więc zdjęcie edytowane później zgłasza się jako zmienione. Czego żadne oprogramowanie nie zapobiegnie: kierowca może sfotografować właściwe drzwi i nie zostawić paczki — dlatego pieczątka adresu i godzina znaczą więcej niż sam kadr.",
+  "pod.faq.q4": "Czy działa w piwnicy albo w garażu bez zasięgu?",
+  "pod.faq.a4":
+    "Tak. Zdjęcia czekają w kolejce w telefonie i wysyłają się, gdy kierowca wróci w zasięg, a zdjęcie z kolejki jest plombowane jako potwierdzone przez sieć w chwili, gdy dotrze na nasze serwery. GPS czytany jest w momencie zdjęcia, więc lokalizacja to miejsce dostawy, a nie miejsce, w którym telefon odzyskał zasięg.",
+  "pod.faq.q5": "Ile to kosztuje przy działalności kurierskiej?",
+  "pod.faq.a5":
+    "Rejestrowanie jest darmowe na zawsze do 300 potwierdzonych zdjęć miesięcznie, co wystarcza jednemu kierowcy o niewielkim obłożeniu. Trasy dostawcze rozliczane są od przystanku, nie od użytkownika, więc faktura idzie za wolumenem, a nie za liczbą osób. Pełne kwoty są na stronie cennika.",
+  "pod.faq.q6": "Czy to obroni się przy obciążeniu zwrotnym?",
+  "pod.faq.a6":
+    "Daje ci dokumentację, którą druga strona może sprawdzić niezależnie, a to zwykle rozstrzyga sprawę. GeoCliks nie jest usługą prawną i nie może obiecać żadnego konkretnego wyniku — czy zleceniodawca, organizacja płatnicza albo sąd przyjmie dokumentację, jest ich decyzją. Usuwa natomiast zarzut, że znacznik czasu pochodził z telefonu kierowcy.",
+  "pod.cta.h2": "Udokumentuj następną trasę tak, jak należy",
+  "pod.cta.body":
+    "Rejestrowanie jest darmowe na zawsze — 300 potwierdzonych zdjęć miesięcznie, bez karty. Trasy dostawcze rozliczane są od przystanku, a publiczna strona weryfikacji jest w każdym planie.",
+  "pod.cta.primary": "Pobierz aplikację",
+  "pod.cta.secondary": "Zobacz plany i ceny",
+  "pod.related.lead": "Do poczytania:",
+  "pod.related.link1": "co naprawdę liczy się jako potwierdzenie dostawy",
+  "pod.related.join": ", albo sprawdź",
+  "pod.related.link2": "jak działa kamera ze znacznikiem czasu i GPS",
+  "pod.note.signature":
+    "GeoCliks rejestruje zdjęcie, godzinę, GPS i adres. Nie zbiera podpisów odbiorców.",
+  "pod.note.legal":
+    "To nie usługa prawna ani notarialna. Czy zleceniodawca albo organizacja płatnicza przyjmie dokumentację, jest ich decyzją.",
 };

@@ -104,3 +104,48 @@ React-free and feeds the server-injected JSON-LD. The rendered FAQ can be
 translated, but the JSON-LD stays English per URL unless that file learns
 locales. Decide whether to localize the schema too — a Spanish page whose
 FAQPage markup is English is a mismatch Google may flag.
+
+## Decided: the FAQ markup speaks the page's language (`64e13e9`)
+
+The open question above is closed — localize the schema, and do it from the same
+strings the visitor reads rather than a second translated copy that can drift.
+
+- `catalogs.ts` (new) holds the eleven catalogs and a React-free
+  `translate(locale, key)`. `i18n.tsx` now imports them from there, so the
+  server injector and `page-schema.ts` can read copy without dragging in React.
+- `page-schema.ts` takes a second FAQ shape, `{ keys: { question, answer } }`,
+  and `pageFaq(path, locale)` / `marketingJsonLd(path, locale)` resolve it.
+  Literal entries still pass through unchanged, so an untranslated page is
+  byte-identical to before.
+- `seo-html.ts` passes the locale only when the URL carries a prefix *and* the
+  path is translated. An untranslated path under a prefix renders English and
+  canonicalizes to English, so it gets English markup — the mismatch is closed
+  in both directions.
+
+## `/proof-of-delivery`, all 11 locales
+
+56 `pod.*` keys across the eleven catalogs, the page refactored to `t()`, its six
+FAQ entries converted to key form, and the path added to `LOCALIZED_PATHS` in the
+same commit. English copy was diffed against the old literals before it moved, so
+the English page is unchanged word for word.
+
+Verified against a running server:
+
+| URL | `<html>` | canonical | rendered h1 | FAQPage markup |
+|---|---|---|---|---|
+| `/proof-of-delivery` | `lang="en"` | `/proof-of-delivery` | "Proof of Delivery the Shipper Can Check Themselves" | English, 6 entries |
+| `/es/proof-of-delivery` | `lang="es"` | `/es/proof-of-delivery` | "Una prueba de entrega que el remitente puede comprobar por su cuenta" | Spanish, 6 entries |
+| `/de/proof-of-delivery` | `lang="de"` | `/de/proof-of-delivery` | "Ein Liefernachweis, den der Auftraggeber selbst prüfen kann" | German, 6 entries |
+| `/ar/proof-of-delivery` | `lang="ar" dir="rtl"` | `/ar/proof-of-delivery` | "إثبات تسليم يستطيع المُرسِل التحقق منه بنفسه" | Arabic, 6 entries |
+
+12 hreflang tags on each. tsc clean. Lint 9 errors = unchanged baseline. Sitemap
+109 -> 119 URLs, the ten new locale rows for this path.
+
+## Still open: the head copy is English on every locale URL
+
+`seo-routes.ts` is English-only by design, so `/es/proof-of-delivery` returns a
+Spanish page with an English `<title>` and `<meta description>`. Google builds
+the snippet from those, so a Spanish result would read in English — which undoes
+much of what the translation is for. Fixing it means title + description keys per
+page per locale (2 x 11 per page), and it should ride along with each page's
+translation commit rather than becoming a separate pass.

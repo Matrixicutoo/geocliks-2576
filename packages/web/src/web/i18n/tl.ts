@@ -1476,4 +1476,81 @@ export const tl: Catalog = {
   "del.locked.h2": "Kung hindi ka makapag-sign in",
   "del.locked.body":
     "Mag-email sa **{email}** mula sa address na nasa account at hilingin sa aming burahin ito. Kinukumpirma namin na address mo ito at buburahin namin ang account para sa iyo — karaniwan sa loob ng 30 araw.",
+  "pod.eyebrow": "Proof of delivery",
+  "pod.h1": "Proof of Delivery na Kayang I-tsek Mismo ng Shipper",
+  "pod.sub":
+    "Bawat litrato ng delivery ay may oras na beripikado ng network, lokasyong GPS at buong address — nakakandado na sa pintuan, at may code na kayang tingnan ninuman.",
+  "pod.why.label": "Bakit ito hinahanap ng mga courier",
+  "pod.why.h2": "Naihatid ang parcel. Ang pagpapatunay ang mahal.",
+  "pod.why.intro":
+    "Sabi ng customer, walang dumating. Makalipas ang tatlong linggo, nag-chargeback ang shipper. Naaalala ng driver ang hatid at may litrato pa nga siya — kuha sa telepono, ang oras ay galing sa teleponong iyon, nakalubog sa gallery kasama ng dalawandaang iba. Wala roon ang makakatagal sa isang disputa, dahil ang tanging petsang nakalagay ay galing sa relong kontrolado ng driver. Ginawa ang GeoCliks para sa bersyong ang record na mismo ang sumasagot sa tanong bago pa may makipagtalo.",
+  "pod.how.label": "Paano ito gumagana",
+  "pod.how.h2": "Apat na hakbang, at ang unang lang ang ginagawa ng driver.",
+  "pod.step1.title": "Kinukuhanan ng driver ang hatid",
+  "pod.step1.body":
+    "Isang litrato sa pintuan, sa GeoCliks app. Hindi kailangan ng signal — ang kuhang gawa sa hagdanan o sa underground parking ay pumipila sa telepono.",
+  "pod.step2.title": "Kinakandado ito ng GeoCliks",
+  "pod.step2.body":
+    "Ang oras na beripikado ng network, ang mga koordinadang GPS at ang naresolbang address ay isinusulat sa litrato, kasama ang SHA-256 hash at natatanging photo code.",
+  "pod.step3.title": "Kusang nagsasara ang stop",
+  "pod.step3.body":
+    "Nakakabit ang kuha sa stop na nasa ruta, kaya ang record ng buong takbo ay nabubuo habang nagtatrabaho ang driver, hindi na sa dulo ng shift.",
+  "pod.step4.title": "Tinitsek ito ng shipper",
+  "pod.step4.body":
+    "Ipadala ang photo code kasama ng invoice. Ilalagay ito ng shipper sa geocliks.com/verify at makikita ang orihinal, walang account at walang app.",
+  "pod.dispute.label": "Ginawa para sa disputa, hindi para sa demo",
+  "pod.dispute.h2": "Tatlong bagay na magpapasya kung tatagal ang isang record ng delivery.",
+  "pod.dispute1.title": "Oras ng hatid na walang makakagalaw",
+  "pod.dispute1.body":
+    "Galing sa aming mga server ang oras, hindi sa handset. Ang driver na binabago ang oras ng telepono para itago ang late na hatid ay makakakuha ng kuhang markadong device-timed, hindi verified — at nakikita ng opisina kung alin ang alin.",
+  "pod.dispute2.title": "Ang address, naresolba at nakatatak",
+  "pod.dispute2.body":
+    "Ang mga koordinada, ang accuracy radius at ang address mula sa reverse geocoding ay nakatatak sa imahe at nakaimbak bilang metadata. Halata agad sa tatak ang litrato ng maling pintuan.",
+  "pod.dispute3.title": "Code na kayang i-tsek mismo ng shipper",
+  "pod.dispute3.body":
+    "Hindi ebidensya ang ebidensyang kailangang pagkatiwalaan lang ng kabilang panig. Bawat kuha ay may code na bumubukas sa pampublikong pahina kung saan makikita kung ang litrato ay ang hindi ginalaw na orihinal.",
+  "pod.ops.label": "Para sa dispatch at rutang maraming driver",
+  "pod.ops.h2": "Isang account para sa lahat ng driver at lahat ng ruta.",
+  "pod.ops1.title": "Ruta at stop, bayad kada stop",
+  "pod.ops1.body":
+    "Iplano ang takbo, i-assign ang driver, at ang mga kuha sa bawat stop ay naka-file doon. Kada stop ang bayad sa delivery, hindi kada upuan, kaya hindi nagbabago ang plano kapag may seasonal na driver.",
+  "pod.ops2.title": "Mga export na tatanggapin ng shipper",
+  "pod.ops2.body":
+    "Ibigay ang isang takbo bilang PDF, Excel, ZIP o KMZ, kasama ang oras, koordinada, address at photo code ng bawat hatid na nakalimbag katabi ng litrato.",
+  "pod.ops3.title": "Mga role para sa dispatch at para sa kalsada",
+  "pod.ops3.body":
+    "Nakikita ng dispatcher ang buong board, ang driver ang sarili niyang stop lang. Walang kailangang bigyan ng buong operasyon para maidokumento ang isang shift.",
+  "pod.faq.label": "Mga tanong",
+  "pod.faq.h2": "Mga madalas itanong",
+  "pod.faq.q1": "Ano ang electronic proof of delivery?",
+  "pod.faq.a1":
+    "Ito ang record na iniingatan ng carrier para ipakitang nakarating sa destinasyon ang kargamento — noon ay pirma sa handheld, ngayon ay kadalasang litrato ng naihatid na parcel na may oras at lokasyon. Ang pinakamahinang bahagi ay halos palaging ang oras at lokasyon: sa telepono kinukuha ng karamihan sa mga app ang dalawang ito, at kung ano ang itinakda ng may-ari ng telepono, iyon ang iuulat nito.",
+  "pod.faq.q2": "Kumukuha ba ng pirma ang GeoCliks?",
+  "pod.faq.a2":
+    "Hindi. Kinukuha nito ang litrato, beripikadong oras, GPS at address, at hindi nito kinukuha ang pirma ng tumanggap. Tunay na kakulangan ito kung partikular na hinihingi ng kontrata ng shipper ang pirma — mas mabuting malaman bago maglipat kaysa pagkatapos. Sa mas karaniwang pagkakataon na litrato sa pintuan ang hinihingi, mas matibay na ebidensya ang beripikadong litrato kaysa pirmang iginuhit ng daliri na walang makapagpapatunay kung kanino.",
+  "pod.faq.q3": "Kaya bang mag-peke ng driver ng litrato ng hatid?",
+  "pod.faq.a3":
+    "Sarado na ang mga halatang daan. Binebalidahan ang oras sa aming mga server at hindi binabasa sa handset, kaya ang paggalaw sa relo ng device ay nagpapa-flag sa kuha, hindi nagpapalit ng timestamp nito. Galing sa positioning ng device ang lokasyon sa oras ng kuha, may tatak ng accuracy radius. At nakaimbak ang imahe kasama ang content hash, kaya ang litratong ini-edit pagkatapos ay lumilabas na binago. Ang hindi kayang pigilan ng anumang software ay ang driver na kinukuhanan ang tamang pintuan nang hindi iniiwan ang parcel — kaya ang tatak ng address at ang oras ang mas mahalaga kaysa sa litrato mismo.",
+  "pod.faq.q4": "Gumagana ba ito sa basement o parking na walang signal?",
+  "pod.faq.a4":
+    "Oo. Pumipila ang mga kuha sa telepono at umaakyat kapag nasa coverage na muli ang driver, at ang kuhang nakapila ay sinesilyuhan bilang network-verified sa sandaling makarating ito sa aming mga server. Sa oras ng kuha binabasa ang GPS, kaya ang lokasyon ay ang hatid, hindi ang lugar kung saan nagkasignal muli ang telepono.",
+  "pod.faq.q5": "Magkano ito para sa isang operasyon ng delivery?",
+  "pod.faq.a5":
+    "Libre nang panghabambuhay ang pagkuha hanggang 300 beripikadong litrato kada buwan, na sapat para sa isang driver na magaan ang volume. Kada stop ang bayad sa mga delivery route, hindi kada upuan, kaya volume ang sinusundan ng bill at hindi ang bilang ng tao. Nasa pricing page ang kumpletong numero.",
+  "pod.faq.q6": "Tatagal ba ito sa isang chargeback?",
+  "pod.faq.a6":
+    "Binibigyan ka nito ng record na kayang beripikahin ng kabilang panig nang sarili nila, at iyon ang kadalasang nagresolba nito. Hindi legal service ang GeoCliks at hindi makakapangako ng anumang partikular na resulta — desisyon ng shipper, ng card network o ng korte kung tatanggapin nila ang isang record. Ang ginagawa nito ay alisin ang argumentong galing sa sariling telepono ng driver ang timestamp.",
+  "pod.cta.h2": "Simulan nang patunayan nang maayos ang susunod na takbo",
+  "pod.cta.body":
+    "Libre nang panghabambuhay ang pagkuha — 300 beripikadong litrato kada buwan, walang card. Kada stop ang bayad sa mga delivery route, at kasama sa lahat ng plano ang pampublikong pahina ng beripikasyon.",
+  "pod.cta.primary": "Kunin ang app",
+  "pod.cta.secondary": "Tingnan ang plano at presyo",
+  "pod.related.lead": "Kaugnay na pagbabasa:",
+  "pod.related.link1": "ano ba talaga ang itinuturing na proof of delivery",
+  "pod.related.join": ", o tingnan",
+  "pod.related.link2": "kung paano gumagana ang GPS timestamp camera",
+  "pod.note.signature":
+    "Kinukuha ng GeoCliks ang litrato, oras, GPS at address. Hindi ito kumukuha ng pirma ng tumanggap.",
+  "pod.note.legal":
+    "Hindi ito legal o notaryo na serbisyo. Desisyon ng shipper o ng card network kung tatanggapin nila ang isang record.",
 };

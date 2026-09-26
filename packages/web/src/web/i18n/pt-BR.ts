@@ -1458,4 +1458,81 @@ export const ptBR: Catalog = {
   "del.locked.h2": "Se você não conseguir entrar na conta",
   "del.locked.body":
     "Escreva para **{email}** usando o endereço da conta e peça a exclusão. Confirmamos que o endereço é seu e então excluímos a conta para você, normalmente em até 30 dias.",
+  "pod.eyebrow": "Comprovante de entrega",
+  "pod.h1": "Um comprovante de entrega que o embarcador confere sozinho",
+  "pod.sub":
+    "Cada foto de entrega carrega hora verificada pela rede, localização GPS e endereço completo — lacrados na porta, com um código que qualquer pessoa pode consultar.",
+  "pod.why.label": "Por que os entregadores procuram isso",
+  "pod.why.h2": "A encomenda foi entregue. O que custa caro é provar.",
+  "pod.why.intro":
+    "O cliente diz que nada chegou. O embarcador abre um chargeback três semanas depois. O motorista lembra da entrega e até tem uma foto — tirada no celular, com data do próprio celular, perdida em uma galeria com outras duzentas. Nada disso sobrevive a uma disputa, porque a única data ali veio de um relógio que o motorista controla. O GeoCliks foi feito para a versão em que o registro responde à pergunta antes de alguém precisar discutir.",
+  "pod.how.label": "Como funciona",
+  "pod.how.h2": "Quatro etapas, e o motorista só faz a primeira.",
+  "pod.step1.title": "O motorista fotografa a entrega",
+  "pod.step1.body":
+    "Uma foto na porta, pelo aplicativo do GeoCliks. Sem precisar de sinal — uma captura na escada ou na garagem subterrânea fica na fila do celular.",
+  "pod.step2.title": "O GeoCliks lacra",
+  "pod.step2.body":
+    "Hora verificada pela rede, coordenadas GPS e o endereço resolvido são gravados na foto, com um hash SHA-256 e um código de foto único.",
+  "pod.step3.title": "A parada se fecha sozinha",
+  "pod.step3.body":
+    "A captura se anexa à parada da rota, então o registro do trajeto se monta enquanto o motorista trabalha, em vez de no fim do turno.",
+  "pod.step4.title": "O embarcador confere",
+  "pod.step4.body":
+    "Envie o código da foto junto com a nota. O embarcador digita em geocliks.com/verify e vê o original, sem conta e sem aplicativo.",
+  "pod.dispute.label": "Feito para a disputa, não para a demonstração",
+  "pod.dispute.h2": "Três coisas que decidem se um registro de entrega se sustenta.",
+  "pod.dispute1.title": "Uma hora de entrega que ninguém consegue mexer",
+  "pod.dispute1.body":
+    "A hora vem dos nossos servidores, não do aparelho. O motorista que muda o relógio do celular para encobrir um atraso recebe a captura marcada como hora do aparelho, não verificada — e o escritório vê qual é qual.",
+  "pod.dispute2.title": "O endereço, resolvido e estampado",
+  "pod.dispute2.body":
+    "Coordenadas, raio de precisão e o endereço obtido por geocodificação reversa ficam gravados na imagem e guardados como metadados. Uma foto da porta errada fica óbvia pelo selo.",
+  "pod.dispute3.title": "Um código que o embarcador confere sozinho",
+  "pod.dispute3.body":
+    "Prova que o outro lado precisa aceitar na sua palavra não é prova. Cada captura carrega um código que abre uma página pública mostrando se a foto é o original intacto.",
+  "pod.ops.label": "Para a central e rotas com vários motoristas",
+  "pod.ops.h2": "Uma conta para todos os motoristas e todas as rotas.",
+  "pod.ops1.title": "Rotas e paradas, cobradas por parada",
+  "pod.ops1.body":
+    "Planeje o trajeto, atribua um motorista e as capturas de cada parada ficam arquivadas nela. A entrega é cobrada por parada e não por usuário, então um motorista temporário não muda o plano.",
+  "pod.ops2.title": "Exportações que o embarcador aceita",
+  "pod.ops2.body":
+    "Entregue um trajeto em PDF, Excel, ZIP ou KMZ, com a hora, as coordenadas, o endereço e o código de foto de cada entrega impressos ao lado da imagem.",
+  "pod.ops3.title": "Papéis para a central e para a rua",
+  "pod.ops3.body":
+    "Os despachantes veem o quadro inteiro; os motoristas, só as paradas deles. Ninguém precisa de acesso à operação toda para documentar um turno.",
+  "pod.faq.label": "Perguntas",
+  "pod.faq.h2": "Perguntas frequentes",
+  "pod.faq.q1": "O que é comprovante eletrônico de entrega?",
+  "pod.faq.a1":
+    "É o registro que a transportadora guarda para mostrar que a carga chegou ao destino — antes uma assinatura no coletor, hoje normalmente uma foto da encomenda entregue com hora e local. O ponto fraco é quase sempre a hora e o local: a maioria dos aplicativos lê os dois do celular, e o celular informa aquilo que o dono configurou.",
+  "pod.faq.q2": "O GeoCliks coleta assinaturas?",
+  "pod.faq.a2":
+    "Não. Ele captura foto, hora verificada, GPS e endereço, e não coleta a assinatura do destinatário. É uma lacuna real se o contrato do seu embarcador exigir assinatura — melhor saber antes de trocar do que depois. No caso muito mais comum, em que o que se pede é uma foto na porta, uma foto verificada é prova mais forte do que uma assinatura feita com o dedo que ninguém consegue atribuir.",
+  "pod.faq.q3": "Um motorista consegue falsificar uma foto de entrega?",
+  "pod.faq.a3":
+    "Os caminhos óbvios estão fechados. A hora é verificada nos nossos servidores em vez de lida no aparelho, então mexer no relógio sinaliza a captura em vez de mudar o horário. A localização vem do posicionamento do aparelho no momento da captura, estampada com o raio de precisão. E a imagem é guardada com um hash de conteúdo, então uma foto editada depois aparece como alterada. O que nenhum software evita é o motorista fotografar a porta certa sem deixar a encomenda — por isso o selo de endereço e a hora importam mais do que a imagem.",
+  "pod.faq.q4": "Funciona em subsolo ou estacionamento sem sinal?",
+  "pod.faq.a4":
+    "Sim. As capturas ficam na fila do celular e sobem quando o motorista volta à área de cobertura, e uma captura na fila é lacrada como verificada pela rede no momento em que chega aos nossos servidores. O GPS é lido na hora da captura, então a localização é a da entrega, não a do lugar onde o celular reconectou.",
+  "pod.faq.q5": "Quanto custa para uma operação de entregas?",
+  "pod.faq.a5":
+    "A captura é gratuita para sempre em até 300 fotos verificadas por mês, o que cobre um motorista com volume baixo. As rotas de entrega são cobradas por parada e não por usuário, então a conta acompanha o volume e não o número de pessoas. Os números completos estão na página de preços.",
+  "pod.faq.q6": "Isso se sustenta em um chargeback?",
+  "pod.faq.a6":
+    "Dá a você um registro que o outro lado pode verificar de forma independente, e em geral é isso que resolve. O GeoCliks não é um serviço jurídico e não pode prometer nenhum resultado específico — se um embarcador, uma bandeira de cartão ou um tribunal aceita um registro é decisão deles. O que ele faz é derrubar a objeção de que o horário veio do próprio celular do motorista.",
+  "pod.cta.h2": "Comece a provar o próximo trajeto do jeito certo",
+  "pod.cta.body":
+    "Capturar é gratuito para sempre — 300 fotos verificadas por mês, sem cartão. As rotas de entrega são cobradas por parada, e todos os planos incluem a página pública de verificação.",
+  "pod.cta.primary": "Baixar o aplicativo",
+  "pod.cta.secondary": "Ver planos e preços",
+  "pod.related.lead": "Leitura relacionada:",
+  "pod.related.link1": "o que realmente conta como comprovante de entrega",
+  "pod.related.join": ", ou veja",
+  "pod.related.link2": "como funciona a câmera com data e GPS",
+  "pod.note.signature":
+    "O GeoCliks captura foto, hora, GPS e endereço. Ele não coleta assinatura de destinatários.",
+  "pod.note.legal":
+    "Não é um serviço jurídico nem notarial. Se um embarcador ou uma bandeira de cartão aceita um registro é decisão deles.",
 };

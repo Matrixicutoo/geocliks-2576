@@ -1440,4 +1440,81 @@ export const vi: Catalog = {
   "del.locked.h2": "Nếu bạn không thể đăng nhập",
   "del.locked.body":
     "Hãy gửi email tới **{email}** từ địa chỉ trên tài khoản và yêu cầu chúng tôi xóa tài khoản. Chúng tôi xác nhận đó là địa chỉ của bạn rồi xóa tài khoản giúp bạn, thường trong vòng 30 ngày.",
+  "pod.eyebrow": "Bằng chứng giao hàng",
+  "pod.h1": "Bằng chứng giao hàng mà bên gửi tự kiểm tra được",
+  "pod.sub":
+    "Mỗi ảnh giao hàng đều mang giờ đã xác thực qua mạng, vị trí GPS và địa chỉ đường phố — được niêm phong ngay tại cửa, kèm một mã mà ai cũng tra được.",
+  "pod.why.label": "Vì sao các đơn vị chuyển phát cần điều này",
+  "pod.why.h2": "Hàng đã được giao. Chứng minh điều đó mới là phần tốn tiền.",
+  "pod.why.intro":
+    "Khách nói không nhận được gì. Ba tuần sau, bên gửi mở tranh chấp đòi lại tiền. Tài xế vẫn nhớ chuyến giao đó, còn có cả ảnh — chụp bằng điện thoại, giờ do chính điện thoại đó gắn vào, nằm lẫn trong thư viện với hai trăm ảnh khác. Không có thứ nào trong đó trụ được trong một vụ tranh chấp, vì ngày duy nhất trên ảnh đến từ chiếc đồng hồ mà tài xế tự đặt. GeoCliks được làm cho phiên bản khác: hồ sơ trả lời câu hỏi trước khi có ai phải tranh luận.",
+  "pod.how.label": "Cách hoạt động",
+  "pod.how.h2": "Bốn bước, và tài xế chỉ làm bước đầu.",
+  "pod.step1.title": "Tài xế chụp lúc giao hàng",
+  "pod.step1.body":
+    "Một ảnh tại cửa, trong ứng dụng GeoCliks. Không cần tín hiệu — ảnh chụp trong cầu thang hay hầm để xe sẽ xếp hàng chờ trên điện thoại.",
+  "pod.step2.title": "GeoCliks niêm phong ảnh",
+  "pod.step2.body":
+    "Giờ đã xác thực qua mạng, toạ độ GPS và địa chỉ đường phố đã phân giải được ghi vào ảnh, kèm mã băm SHA-256 và một mã ảnh duy nhất.",
+  "pod.step3.title": "Điểm dừng tự đóng lại",
+  "pod.step3.body":
+    "Ảnh được gắn vào điểm dừng trên tuyến, nên hồ sơ của cả chuyến hình thành trong lúc tài xế làm việc, chứ không phải lúc hết ca.",
+  "pod.step4.title": "Bên gửi tự kiểm tra",
+  "pod.step4.body":
+    "Gửi mã ảnh kèm hoá đơn. Bên gửi nhập mã tại geocliks.com/verify và thấy ảnh gốc, không cần tài khoản, không cần ứng dụng.",
+  "pod.dispute.label": "Làm cho lúc tranh chấp, không phải cho lúc demo",
+  "pod.dispute.h2": "Ba điều quyết định một hồ sơ giao hàng có đứng vững hay không.",
+  "pod.dispute1.title": "Giờ giao hàng không ai dịch chuyển được",
+  "pod.dispute1.body":
+    "Giờ đến từ máy chủ của chúng tôi, không phải từ điện thoại. Tài xế đổi đồng hồ máy để che một chuyến giao muộn sẽ nhận được ảnh bị đánh dấu là giờ theo thiết bị, không phải đã xác thực — và văn phòng thấy rõ ảnh nào là ảnh nào.",
+  "pod.dispute2.title": "Địa chỉ, đã phân giải và đóng dấu",
+  "pod.dispute2.body":
+    "Toạ độ, bán kính độ chính xác và địa chỉ đường phố lấy từ giải mã địa lý nghịch được in thẳng vào ảnh và lưu làm dữ liệu kèm theo. Ảnh chụp sai cửa nhìn dấu là biết ngay.",
+  "pod.dispute3.title": "Một mã bên gửi tự kiểm tra được",
+  "pod.dispute3.body":
+    "Bằng chứng mà phía bên kia phải tin lời bạn thì không phải bằng chứng. Mỗi ảnh đều mang một mã mở ra trang công khai cho biết ảnh có đúng là bản gốc chưa chỉnh sửa hay không.",
+  "pod.ops.label": "Cho điều phối và tuyến nhiều tài xế",
+  "pod.ops.h2": "Một tài khoản cho mọi tài xế và mọi tuyến.",
+  "pod.ops1.title": "Tuyến và điểm dừng, tính tiền theo điểm dừng",
+  "pod.ops1.body":
+    "Lên kế hoạch một chuyến, giao cho một tài xế, và ảnh của từng điểm dừng được lưu đúng vào điểm đó. Giao hàng tính theo điểm dừng chứ không theo người dùng, nên thêm một tài xế theo mùa cũng không đổi gói.",
+  "pod.ops2.title": "Bản xuất mà bên gửi sẽ chấp nhận",
+  "pod.ops2.body":
+    "Giao cả chuyến dưới dạng PDF, Excel, ZIP hoặc KMZ, với giờ, toạ độ, địa chỉ và mã ảnh của từng lần giao in ngay cạnh ảnh.",
+  "pod.ops3.title": "Phân quyền cho điều phối và cho đường trường",
+  "pod.ops3.body":
+    "Người điều phối thấy toàn bộ bảng, tài xế chỉ thấy điểm dừng của mình. Không ai cần được trao cả hệ thống chỉ để ghi lại một ca làm.",
+  "pod.faq.label": "Câu hỏi",
+  "pod.faq.h2": "Câu hỏi thường gặp",
+  "pod.faq.q1": "Bằng chứng giao hàng điện tử là gì?",
+  "pod.faq.a1":
+    "Đó là hồ sơ đơn vị vận chuyển lưu lại để chứng minh lô hàng đã đến nơi — trước đây là chữ ký trên máy cầm tay, nay thường là ảnh gói hàng đã giao kèm giờ và vị trí. Điểm yếu gần như luôn là giờ và vị trí: phần lớn ứng dụng đọc cả hai từ điện thoại, mà điện thoại thì báo đúng những gì chủ máy đặt cho nó.",
+  "pod.faq.q2": "GeoCliks có lấy chữ ký không?",
+  "pod.faq.a2":
+    "Không. Nó ghi lại ảnh, giờ đã xác thực, GPS và địa chỉ, và không lấy chữ ký người nhận. Đây là một thiếu sót thật sự nếu hợp đồng với bên gửi yêu cầu rõ phải có chữ ký — nên biết trước khi chuyển đổi hơn là sau. Còn với trường hợp phổ biến hơn nhiều, khi thứ được yêu cầu chỉ là một ảnh tại cửa, thì một ảnh đã xác thực là bằng chứng mạnh hơn chữ ký vẽ bằng ngón tay mà không ai quy được cho ai.",
+  "pod.faq.q3": "Tài xế có làm giả ảnh giao hàng được không?",
+  "pod.faq.a3":
+    "Những đường dễ nhất đã bị bít. Giờ được xác thực với máy chủ của chúng tôi thay vì đọc từ máy, nên chỉnh đồng hồ thiết bị sẽ khiến ảnh bị gắn cờ chứ không đổi được dấu thời gian. Vị trí lấy từ định vị của thiết bị ngay lúc chụp, đóng dấu kèm bán kính độ chính xác. Ảnh còn được lưu cùng mã băm nội dung, nên ảnh bị sửa về sau sẽ báo là đã thay đổi. Điều không phần mềm nào ngăn được là tài xế chụp đúng cửa mà không để lại gói hàng — chính vì thế dấu địa chỉ và giờ còn quan trọng hơn bức ảnh.",
+  "pod.faq.q4": "Có dùng được ở tầng hầm hay bãi đỗ xe không có tín hiệu?",
+  "pod.faq.a4":
+    "Có. Ảnh xếp hàng chờ trên điện thoại và tải lên khi tài xế trở lại vùng phủ sóng, và ảnh đang chờ sẽ được niêm phong là đã xác thực qua mạng ngay khi đến máy chủ của chúng tôi. GPS được đọc lúc chụp, nên vị trí là nơi giao hàng, không phải nơi điện thoại bắt lại được mạng.",
+  "pod.faq.q5": "Chi phí cho một đơn vị giao hàng là bao nhiêu?",
+  "pod.faq.a5":
+    "Chụp miễn phí mãi mãi tới 300 ảnh đã xác thực mỗi tháng, đủ cho một tài xế với khối lượng nhẹ. Tuyến giao hàng tính theo điểm dừng chứ không theo người dùng, nên hoá đơn đi theo khối lượng thay vì số nhân sự. Con số đầy đủ có trên trang giá.",
+  "pod.faq.q6": "Hồ sơ này có trụ được trong tranh chấp hoàn tiền không?",
+  "pod.faq.a6":
+    "Nó cho bạn một hồ sơ mà phía bên kia có thể tự kiểm tra độc lập, và đó thường là điều giải quyết được vụ việc. GeoCliks không phải dịch vụ pháp lý và không thể hứa một kết quả cụ thể nào — bên gửi, tổ chức thẻ hay toà án có chấp nhận một hồ sơ hay không là quyết định của họ. Điều nó làm được là loại bỏ lập luận rằng dấu thời gian đến từ chính điện thoại của tài xế.",
+  "pod.cta.h2": "Bắt đầu chứng minh chuyến tiếp theo cho đúng cách",
+  "pod.cta.body":
+    "Chụp miễn phí mãi mãi — 300 ảnh đã xác thực mỗi tháng, không cần thẻ. Tuyến giao hàng tính theo điểm dừng, và mọi gói đều có trang kiểm tra công khai.",
+  "pod.cta.primary": "Tải ứng dụng",
+  "pod.cta.secondary": "Xem gói và giá",
+  "pod.related.lead": "Đọc thêm:",
+  "pod.related.link1": "thế nào mới thực sự là bằng chứng giao hàng",
+  "pod.related.join": ", hoặc xem",
+  "pod.related.link2": "camera đóng dấu giờ và GPS hoạt động ra sao",
+  "pod.note.signature":
+    "GeoCliks ghi lại ảnh, giờ, GPS và địa chỉ. Ứng dụng không lấy chữ ký người nhận.",
+  "pod.note.legal":
+    "Đây không phải dịch vụ pháp lý hay công chứng. Bên gửi hay tổ chức thẻ có chấp nhận một hồ sơ hay không là quyết định của họ.",
 };

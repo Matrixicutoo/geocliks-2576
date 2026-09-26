@@ -245,36 +245,12 @@ export const PAGE_SCHEMA = {
   "/proof-of-delivery": {
     crumbs: [{ name: "Proof of Delivery" }],
     faq: [
-    {
-      question: "What is electronic proof of delivery?",
-      answer:
-        "It is the record a carrier keeps to show a shipment reached its destination — historically a signature on a handheld, now usually a photo of the delivered parcel with a time and a location attached. The weak point is almost always the time and location: most apps read both from the phone, and a phone will report whatever its owner sets it to.",
-    },
-    {
-      question: "Does GeoCliks capture signatures?",
-      answer:
-        "No. It captures photo, verified time, GPS and street address, and it does not collect a recipient signature. That is a real gap if your shipper's contract specifically requires a signature — worth knowing before you switch rather than after. For the far more common case where a photo at the door is what gets asked for, a verified photo is stronger evidence than a finger-drawn signature nobody can attribute.",
-    },
-    {
-      question: "Can a driver fake a delivery photo?",
-      answer:
-        "The obvious routes are closed. The time is verified against our servers rather than read from the handset, so moving the device clock flags the capture instead of changing its timestamp. The location comes from the device's positioning at capture, stamped with its accuracy radius. And the image is stored with a content hash, so a photo edited after the fact reports as altered. What no software can prevent is a driver photographing the right door without leaving the parcel — which is why the address stamp and the time matter more than the picture.",
-    },
-    {
-      question: "Does it work in a basement or a parking garage with no signal?",
-      answer:
-        "Yes. Captures queue on the phone and upload when the driver is back in range, and a queued capture is sealed as network-verified at the moment it reaches our servers. GPS is read at capture time, so the location is the drop, not wherever the phone reconnected.",
-    },
-    {
-      question: "How much does it cost for a delivery operation?",
-      answer:
-        "Capture is free forever for up to 300 verified photos a month, which covers a single driver doing light volume. Delivery routes are priced by the stop rather than by the seat, so the bill follows volume instead of headcount. Full numbers are on the pricing page.",
-    },
-    {
-      question: "Will this hold up in a chargeback?",
-      answer:
-        "It gives you a record the other side can verify independently, which is usually what resolves one. GeoCliks is not a legal service and cannot promise any particular outcome — whether a shipper, a card network or a court accepts a record is their decision. What it does is remove the objection that the timestamp came from the driver's own phone.",
-    },
+    { keys: { question: "pod.faq.q1", answer: "pod.faq.a1" } },
+    { keys: { question: "pod.faq.q2", answer: "pod.faq.a2" } },
+    { keys: { question: "pod.faq.q3", answer: "pod.faq.a3" } },
+    { keys: { question: "pod.faq.q4", answer: "pod.faq.a4" } },
+    { keys: { question: "pod.faq.q5", answer: "pod.faq.a5" } },
+    { keys: { question: "pod.faq.q6", answer: "pod.faq.a6" } },
     ],
   },
   "/gps-timestamp-camera": {

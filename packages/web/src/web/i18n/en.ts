@@ -1458,6 +1458,83 @@ export const en = {
   "del.locked.h2": "If you cannot sign in",
   "del.locked.body":
     "Email **{email}** from the address on the account and ask us to delete it. We confirm it is your address and then delete the account for you, normally within 30 days.",
+  "pod.eyebrow": "Proof of delivery",
+  "pod.h1": "Proof of Delivery the Shipper Can Check Themselves",
+  "pod.sub":
+    "Every drop photo carries a network-verified time, GPS location and street address — locked at the door, with a code anyone can look up.",
+  "pod.why.label": "Why couriers look for this",
+  "pod.why.h2": "The parcel was delivered. Proving it is the part that costs you.",
+  "pod.why.intro":
+    "A customer says nothing arrived. A shipper raises a chargeback three weeks later. The driver remembers the drop and even has a photo of it — taken on a phone, timestamped by that phone, sitting in a camera roll with two hundred others. None of that survives a dispute, because the only date on it came from a clock the driver controls. GeoCliks is built for the version where the record answers the question before anyone has to argue about it.",
+  "pod.how.label": "How it works",
+  "pod.how.h2": "Four steps, and the driver only does the first one.",
+  "pod.step1.title": "The driver shoots the drop",
+  "pod.step1.body":
+    "One photo at the door, in the GeoCliks app. No signal needed — a capture in a stairwell or an underground garage queues on the phone.",
+  "pod.step2.title": "GeoCliks locks it",
+  "pod.step2.body":
+    "Network-verified time, GPS coordinates and the resolved street address are written into the photo, with a SHA-256 hash and a unique photo code.",
+  "pod.step3.title": "The stop closes itself",
+  "pod.step3.body":
+    "The capture attaches to the stop on the route, so the run's record builds as the driver works instead of at the end of the shift.",
+  "pod.step4.title": "The shipper checks it",
+  "pod.step4.body":
+    "Send the photo code with the invoice. The shipper enters it at geocliks.com/verify and sees the original, with no account and no app.",
+  "pod.dispute.label": "Built for the dispute, not the demo",
+  "pod.dispute.h2": "Three things that decide whether a delivery record holds.",
+  "pod.dispute1.title": "A delivery time nobody can move",
+  "pod.dispute1.body":
+    "The time comes from our servers, not the handset. A driver who changes the phone clock to cover a late drop gets the capture marked device-timed, not verified — and the office sees which one it is.",
+  "pod.dispute2.title": "The address, resolved and stamped",
+  "pod.dispute2.body":
+    "Coordinates, accuracy radius and the reverse-geocoded street address are burned into the image and stored as metadata. A photo of the wrong door is obvious from the stamp.",
+  "pod.dispute3.title": "A code the shipper can check themselves",
+  "pod.dispute3.body":
+    "Proof the other side has to take your word for is not proof. Every capture carries a code that resolves on a public page showing whether the photo is the untouched original.",
+  "pod.ops.label": "For dispatch and multi-driver runs",
+  "pod.ops.h2": "One account across every driver and every route.",
+  "pod.ops1.title": "Routes and stops, priced per stop",
+  "pod.ops1.body":
+    "Plan a run, assign a driver, and get each stop's captures filed against it. Delivery is billed by the stop rather than by the seat, so a seasonal driver does not change the plan.",
+  "pod.ops2.title": "Exports a shipper will accept",
+  "pod.ops2.body":
+    "Hand over a run as a PDF, Excel, ZIP or KMZ, with each drop's time, coordinates, address and photo code printed beside the photo.",
+  "pod.ops3.title": "Roles for dispatch and the road",
+  "pod.ops3.body":
+    "Dispatchers see the whole board, drivers see their own stops. Nobody has to be given the whole operation to document one shift.",
+  "pod.faq.label": "Questions",
+  "pod.faq.h2": "Frequently asked",
+  "pod.faq.q1": "What is electronic proof of delivery?",
+  "pod.faq.a1":
+    "It is the record a carrier keeps to show a shipment reached its destination — historically a signature on a handheld, now usually a photo of the delivered parcel with a time and a location attached. The weak point is almost always the time and location: most apps read both from the phone, and a phone will report whatever its owner sets it to.",
+  "pod.faq.q2": "Does GeoCliks capture signatures?",
+  "pod.faq.a2":
+    "No. It captures photo, verified time, GPS and street address, and it does not collect a recipient signature. That is a real gap if your shipper's contract specifically requires a signature — worth knowing before you switch rather than after. For the far more common case where a photo at the door is what gets asked for, a verified photo is stronger evidence than a finger-drawn signature nobody can attribute.",
+  "pod.faq.q3": "Can a driver fake a delivery photo?",
+  "pod.faq.a3":
+    "The obvious routes are closed. The time is verified against our servers rather than read from the handset, so moving the device clock flags the capture instead of changing its timestamp. The location comes from the device's positioning at capture, stamped with its accuracy radius. And the image is stored with a content hash, so a photo edited after the fact reports as altered. What no software can prevent is a driver photographing the right door without leaving the parcel — which is why the address stamp and the time matter more than the picture.",
+  "pod.faq.q4": "Does it work in a basement or a parking garage with no signal?",
+  "pod.faq.a4":
+    "Yes. Captures queue on the phone and upload when the driver is back in range, and a queued capture is sealed as network-verified at the moment it reaches our servers. GPS is read at capture time, so the location is the drop, not wherever the phone reconnected.",
+  "pod.faq.q5": "How much does it cost for a delivery operation?",
+  "pod.faq.a5":
+    "Capture is free forever for up to 300 verified photos a month, which covers a single driver doing light volume. Delivery routes are priced by the stop rather than by the seat, so the bill follows volume instead of headcount. Full numbers are on the pricing page.",
+  "pod.faq.q6": "Will this hold up in a chargeback?",
+  "pod.faq.a6":
+    "It gives you a record the other side can verify independently, which is usually what resolves one. GeoCliks is not a legal service and cannot promise any particular outcome — whether a shipper, a card network or a court accepts a record is their decision. What it does is remove the objection that the timestamp came from the driver's own phone.",
+  "pod.cta.h2": "Start proving the next run properly",
+  "pod.cta.body":
+    "Capturing is free forever — 300 verified photos a month, no card. Delivery routes are priced by the stop, and every plan includes the public verification page.",
+  "pod.cta.primary": "Get the app",
+  "pod.cta.secondary": "See plans and pricing",
+  "pod.related.lead": "Related reading:",
+  "pod.related.link1": "what actually counts as proof of delivery",
+  "pod.related.join": ", or see",
+  "pod.related.link2": "how the GPS timestamp camera works",
+  "pod.note.signature":
+    "GeoCliks captures photo, time, GPS and address. It does not collect recipient signatures.",
+  "pod.note.legal":
+    "Not a legal or notary service. Whether a shipper or card network accepts a record is their decision.",
 } as const;
 
 export type Catalog = Record<keyof typeof en, string>;

@@ -62,10 +62,11 @@ const BY_SEGMENT = new Map<string, LocaleCode>(
  * Google that the locale URLs are noise. So a page joins this list in the same
  * commit that translates it — never before.
  *
- * `/` and `/get-app` qualify today: both render their copy through `t()`.
- * `/pricing`, `/about` and the seven search landing pages do not yet.
+ * `/`, `/get-app` and `/proof-of-delivery` qualify today: all three render
+ * their copy — and their FAQ markup — through `t()`. `/pricing`, `/about` and
+ * the six remaining search landing pages do not yet.
  */
-export const LOCALIZED_PATHS: readonly string[] = ["/", "/get-app"];
+export const LOCALIZED_PATHS: readonly string[] = ["/", "/get-app", "/proof-of-delivery"];
 
 const LOCALIZED = new Set(LOCALIZED_PATHS);
 

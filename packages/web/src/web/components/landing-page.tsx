@@ -11,12 +11,13 @@ import { PAGE_SEO } from "../lib/seo-routes";
  * Chrome for the search landing pages — `/construction-photo-documentation` and
  * `/alternatives/companycam`.
  *
- * These exist to rank for specific commercial queries, so unlike the home page
- * they are English-only. The reasoning is the same as for the legal pages: a
- * visitor arrives from an English-language search, and the eleven translated
- * copies would be maintained for a set of queries nobody searches. The header,
- * footer and language picker are still the site's own, so a visitor who lands
- * here and switches language gets a translated site everywhere else.
+ * These exist to rank for specific commercial queries. They used to be
+ * English-only on the theory that the searcher is always searching in English;
+ * they are being translated page by page instead, because the same query is
+ * typed in Spanish, French and Vietnamese by people running the same business.
+ * A page's copy moves into `t()` keys and its path joins `LOCALIZED_PATHS` in
+ * one commit, which is what gives it eleven indexable URLs. This component
+ * takes plain strings either way — a translated page passes `t("…")` in.
  *
  * Head copy is read from `seo-routes.ts` by path, like every other page, so the
  * tags a crawler reads in the HTML response are the tags React settles on.

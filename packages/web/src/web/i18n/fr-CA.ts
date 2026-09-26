@@ -1485,4 +1485,82 @@ export const frCA: Catalog = {
   "del.locked.h2": "Si vous ne pouvez pas vous connecter",
   "del.locked.body":
     "Écrivez à **{email}** depuis l'adresse du compte et demandez-nous de le supprimer. Nous vérifions qu'il s'agit bien de votre adresse, puis nous supprimons le compte pour vous, normalement en moins de 30 jours.",
+  "pod.eyebrow": "Preuve de livraison",
+  "pod.h1": "Une preuve de livraison que l'expéditeur peut vérifier lui-même",
+  "pod.sub":
+    "Chaque photo de livraison porte une heure vérifiée par le réseau, une position GPS et l'adresse municipale — scellées devant la porte, avec un code que n'importe qui peut consulter.",
+  "pod.why.label": "Pourquoi les messagers cherchent ça",
+  "pod.why.h2": "Le colis a été livré. C'est de le prouver qui vous coûte cher.",
+  "pod.why.intro":
+    "Un client affirme que rien n'est arrivé. Un expéditeur lance une contestation de paiement trois semaines plus tard. Le chauffeur se souvient de la livraison et a même une photo — prise sur un téléphone, horodatée par ce téléphone, perdue dans une pellicule avec deux cents autres. Rien de tout cela ne survit à un litige, parce que la seule date inscrite vient d'une horloge que le chauffeur contrôle. GeoCliks est conçu pour la version où le dossier répond à la question avant que quiconque ait à en débattre.",
+  "pod.how.label": "Comment ça fonctionne",
+  "pod.how.h2": "Quatre étapes, et le chauffeur ne fait que la première.",
+  "pod.step1.title": "Le chauffeur photographie la livraison",
+  "pod.step1.body":
+    "Une photo devant la porte, dans l'application GeoCliks. Aucun signal requis — une saisie dans une cage d'escalier ou un stationnement souterrain se met en file d'attente sur le téléphone.",
+  "pod.step2.title": "GeoCliks la scelle",
+  "pod.step2.body":
+    "L'heure vérifiée par le réseau, les coordonnées GPS et l'adresse municipale résolue sont inscrites dans la photo, avec une empreinte SHA-256 et un code de photo unique.",
+  "pod.step3.title": "L'arrêt se ferme de lui-même",
+  "pod.step3.body":
+    "La saisie se rattache à l'arrêt sur la tournée, donc le dossier de la tournée se construit pendant que le chauffeur travaille plutôt qu'à la fin du quart.",
+  "pod.step4.title": "L'expéditeur vérifie",
+  "pod.step4.body":
+    "Envoyez le code de la photo avec la facture. L'expéditeur l'entre sur geocliks.com/verify et voit l'original, sans compte et sans application.",
+  "pod.dispute.label": "Conçu pour le litige, pas pour la démo",
+  "pod.dispute.h2": "Trois éléments qui déterminent si un dossier de livraison tient.",
+  "pod.dispute1.title": "Une heure de livraison que personne ne peut déplacer",
+  "pod.dispute1.body":
+    "L'heure vient de nos serveurs, pas de l'appareil. Un chauffeur qui change l'horloge du téléphone pour camoufler un retard obtient une saisie marquée « heure de l'appareil », pas « vérifiée » — et le bureau voit de laquelle il s'agit.",
+  "pod.dispute2.title": "L'adresse, résolue et estampée",
+  "pod.dispute2.body":
+    "Les coordonnées, le rayon de précision et l'adresse municipale issue du géocodage inverse sont gravés dans l'image et conservés en métadonnées. Une photo de la mauvaise porte se voit tout de suite à l'estampe.",
+  "pod.dispute3.title": "Un code que l'expéditeur peut vérifier lui-même",
+  "pod.dispute3.body":
+    "Une preuve que l'autre partie doit croire sur parole n'est pas une preuve. Chaque saisie porte un code qui s'ouvre sur une page publique indiquant si la photo est bien l'original intact.",
+  "pod.ops.label": "Pour la répartition et les tournées à plusieurs chauffeurs",
+  "pod.ops.h2": "Un seul compte pour tous les chauffeurs et toutes les tournées.",
+  "pod.ops1.title": "Tournées et arrêts, facturés à l'arrêt",
+  "pod.ops1.body":
+    "Planifiez une tournée, assignez un chauffeur, et chaque saisie se classe sous son arrêt. La livraison est facturée à l'arrêt plutôt qu'au siège, donc un chauffeur saisonnier ne change rien au forfait.",
+  "pod.ops2.title": "Des exports que l'expéditeur acceptera",
+  "pod.ops2.body":
+    "Remettez une tournée en PDF, Excel, ZIP ou KMZ, avec l'heure, les coordonnées, l'adresse et le code de photo de chaque livraison imprimés à côté de la photo.",
+  "pod.ops3.title": "Des rôles pour la répartition et pour la route",
+  "pod.ops3.body":
+    "Les répartiteurs voient tout le tableau, les chauffeurs voient leurs propres arrêts. Personne n'a besoin d'accéder à toute l'exploitation pour documenter un quart.",
+  "pod.faq.label": "Questions",
+  "pod.faq.h2": "Foire aux questions",
+  "pod.faq.q1": "Qu'est-ce qu'une preuve de livraison électronique?",
+  "pod.faq.a1":
+    "C'est le dossier qu'un transporteur conserve pour montrer qu'un envoi est arrivé à destination — autrefois une signature sur un terminal, aujourd'hui le plus souvent une photo du colis livré avec une heure et un lieu. Le point faible est presque toujours l'heure et le lieu : la plupart des applications lisent les deux dans le téléphone, et un téléphone rapporte ce que son propriétaire lui dit de rapporter.",
+  "pod.faq.q2": "GeoCliks recueille-t-il des signatures?",
+  "pod.faq.a2":
+    "Non. Il saisit la photo, l'heure vérifiée, le GPS et l'adresse municipale, et il ne recueille pas la signature du destinataire. C'est une véritable lacune si le contrat de votre expéditeur exige expressément une signature — mieux vaut le savoir avant de changer d'outil qu'après. Pour le cas bien plus courant où c'est une photo devant la porte qui est demandée, une photo vérifiée est une preuve plus solide qu'une signature tracée au doigt que personne ne peut attribuer.",
+  "pod.faq.q3": "Un chauffeur peut-il falsifier une photo de livraison?",
+  "pod.faq.a3":
+    "Les voies évidentes sont fermées. L'heure est vérifiée auprès de nos serveurs plutôt que lue sur l'appareil : déplacer l'horloge signale la saisie au lieu d'en changer l'horodatage. La position vient du positionnement de l'appareil au moment de la saisie, estampée avec son rayon de précision. Et l'image est conservée avec une empreinte de contenu, donc une photo modifiée après coup est déclarée altérée. Ce qu'aucun logiciel ne peut empêcher, c'est qu'un chauffeur photographie la bonne porte sans y laisser le colis — d'où l'importance de l'estampe d'adresse et de l'heure, plus que de l'image elle-même.",
+  "pod.faq.q4":
+    "Est-ce que ça fonctionne dans un sous-sol ou un stationnement souterrain sans signal?",
+  "pod.faq.a4":
+    "Oui. Les saisies se mettent en file d'attente sur le téléphone et se téléversent dès que le chauffeur retrouve le réseau, et une saisie en attente est scellée comme vérifiée par le réseau au moment où elle atteint nos serveurs. Le GPS est lu au moment de la saisie, donc la position est celle de la livraison, pas de l'endroit où le téléphone s'est reconnecté.",
+  "pod.faq.q5": "Combien ça coûte pour une exploitation de livraison?",
+  "pod.faq.a5":
+    "La saisie est gratuite pour toujours jusqu'à 300 photos vérifiées par mois, ce qui suffit à un seul chauffeur à faible volume. Les tournées de livraison sont facturées à l'arrêt plutôt qu'au siège, donc la facture suit le volume et non l'effectif. Tous les chiffres sont sur la page des prix.",
+  "pod.faq.q6": "Est-ce que ça tiendra lors d'une contestation de paiement?",
+  "pod.faq.a6":
+    "Ça vous donne un dossier que l'autre partie peut vérifier de façon indépendante, et c'est habituellement ce qui règle une contestation. GeoCliks n'est pas un service juridique et ne peut promettre aucun résultat précis — qu'un expéditeur, un réseau de cartes ou un tribunal accepte un dossier relève de sa décision. Ce que ça fait, c'est écarter l'objection selon laquelle l'horodatage venait du téléphone du chauffeur.",
+  "pod.cta.h2": "Commencez à prouver la prochaine tournée comme il faut",
+  "pod.cta.body":
+    "La saisie est gratuite pour toujours — 300 photos vérifiées par mois, sans carte. Les tournées de livraison sont facturées à l'arrêt, et chaque forfait comprend la page de vérification publique.",
+  "pod.cta.primary": "Obtenir l'application",
+  "pod.cta.secondary": "Voir les forfaits et les prix",
+  "pod.related.lead": "À lire aussi :",
+  "pod.related.link1": "ce qui compte vraiment comme preuve de livraison",
+  "pod.related.join": ", ou voyez",
+  "pod.related.link2": "comment fonctionne l'appareil photo à horodatage GPS",
+  "pod.note.signature":
+    "GeoCliks saisit la photo, l'heure, le GPS et l'adresse. Il ne recueille pas la signature des destinataires.",
+  "pod.note.legal":
+    "Ce n'est pas un service juridique ni notarial. Qu'un expéditeur ou un réseau de cartes accepte un dossier relève de sa décision.",
 };
