@@ -79,6 +79,9 @@ export const it: Catalog = {
   "seo.about.title": "Chi è GeoCliks — l'azienda dietro il sigillo fotografico",
   "seo.about.description":
     "Chi è GeoCliks: un'azienda di Moncton, New Brunswick, che costruisce documentazione fotografica verificata per il campo. Come funziona il sigillo, cosa non sosteniamo e come contattarci.",
+  "seo.roofing.title": "Documentazione fotografica del tetto per i sinistri",
+  "seo.roofing.description":
+    "Documenta danni e rifacimento del tetto con ora verificata, GPS e indirizzo su ogni foto, abbinate prima e dopo per periti e proprietari.",
   "signin.subtitle": "Documentazione fotografica a prova di manomissione per squadre sul campo.",
   "signin.apple": "Continua con Apple",
   "signin.google": "Continua con Google",
@@ -2252,4 +2255,82 @@ export const it: Catalog = {
   "ab.faq.q6": "In quali lingue funziona GeoCliks?",
   "ab.faq.a6":
     "Undici — inglese, francese (Canada), spagnolo, portoghese (Brasile), tedesco, italiano, polacco, arabo, vietnamita, tagalog e cinese. L'app, il Centro assistenza e le pagine di questo sito funzionano in tutte, e un banner compare su ogni articolo di assistenza il cui testo è ancora in inglese, invece di lasciartelo scoprire da solo.",
+  "rf.eyebrow": "Documentazione fotografica dei tetti",
+  "rf.h1": "Documentazione fotografica del tetto che regge in un sinistro",
+  "rf.sub":
+    "Foto del prima e del dopo dello stesso tetto, con ora verificata in rete, GPS e indirizzo su ogni scatto — e un codice che il perito può controllare.",
+  "rf.s1.label": "Perché i lattonieri cercano questo",
+  "rf.s1.h2": "Le foto andavano bene. Il problema erano le loro date.",
+  "rf.s1.intro":
+    "Un sinistro per grandine torna contestato. Un perito chiede come fai a sapere che il danno precede la rimozione. Tre mesi dopo un proprietario dice che l'infiltrazione c'era già prima che iniziassi. Ognuno di questi casi diventa una discussione su una data, e una foto del rullino risponde con l'ora del telefono che hai in tasca, che la controparte non è obbligata a credere. Questa pagina parla della versione in cui la data non la stabilisci tu.",
+  "rf.s2.label": "Come funziona",
+  "rf.s2.h2": "Quattro passaggi, costruiti attorno al prima e al dopo.",
+  "rf.s3.label": "Fatto per il sinistro",
+  "rf.s3.h2": "Tre cose a cui un dossier sul tetto deve resistere.",
+  "rf.s4.label": "Per squadre e subappaltatori",
+  "rf.s4.h2": "Un solo fascicolo di cantiere, per quante squadre ci passino.",
+  "rf.faqSection.label": "Domande",
+  "rf.faqSection.h2": "Domande frequenti",
+  "rf.step1.title": "Fotografa il tetto prima di toccarlo",
+  "rf.step1.body":
+    "Ogni falda, ogni passaggio, ogni punto cedevole — nell'app GeoCliks. Offline va bene: gli scatti restano in coda sul telefono.",
+  "rf.step2.title": "GeoCliks ci mette data e luogo",
+  "rf.step2.body":
+    "Ora verificata in rete, coordinate GPS e indirizzo risolto vengono scritti in ogni foto, insieme a un hash e a un codice foto univoco.",
+  "rf.step3.title": "Fotografa dopo le stesse falde",
+  "rf.step3.body":
+    "Abbina lo scatto post-lavoro alla sua foto del prima in un unico confronto, così ogni metà porta la propria data verificata in modo indipendente.",
+  "rf.step4.title": "Consegna al perito il fascicolo",
+  "rf.step4.body":
+    "Esporta il cantiere in PDF con ora, indirizzo e codice accanto a ogni foto. Il perito può controllarne una qualsiasi senza avere un account.",
+  "rf.claim1.title": "Prima e dopo, dimostrabilmente in quest'ordine",
+  "rf.claim1.body":
+    "L'abbinamento vale qualcosa solo se valgono le date. Entrambi gli scatti portano un'ora verificata contro i nostri server, quindi la sequenza non dipende da quale foto dici essere venuta prima.",
+  "rf.claim2.title": "Date della grandinata che tornano",
+  "rf.claim2.body":
+    "Un sinistro per grandine si gioca sul fatto che la foto del danno precede la riparazione e segue la grandinata. Un'ora di scatto verificata colloca la foto in un giorno preciso senza dipendere dal telefono che l'ha scattata.",
+  "rf.claim3.title": "La casa giusta, messa a verbale",
+  "rf.claim3.body":
+    "Coordinate e indirizzo risolto sono impressi su ogni scatto, il che chiude la domanda che a nessuno piace sentirsi fare: se quelle foto sono di questo immobile.",
+  "rf.crew1.title": "Un cantiere, le foto di tutte le squadre",
+  "rf.crew1.body":
+    "Gli scatti di rimozione, di impermeabilizzazione provvisoria e di finitura finiscono nello stesso progetto, archiviati per giorno, chiunque li abbia fatti.",
+  "rf.crew2.title": "I subappaltatori documentano il proprio ambito",
+  "rf.crew2.body":
+    "Invita una squadra in subappalto con un link o un QR stampato. Documentano il loro lavoro senza ricevere il resto del cantiere né l'elenco clienti.",
+  "rf.crew3.title": "Una chiusura che il proprietario tiene",
+  "rf.crew3.body":
+    "Lo stesso set verificato si esporta in PDF per il fascicolo, in ZIP per il perito o in KMZ se il lavoro copre più indirizzi.",
+  "rf.cta.h2": "Documenta bene il prossimo tetto",
+  "rf.cta.body":
+    "Gratis per sempre con 300 foto verificate al mese, senza carta. I piani a pagamento aggiungono scatti illimitati, abbinamento prima/dopo su larga scala e tutte le esportazioni.",
+  "rf.cta.primary": "Scarica l'app",
+  "rf.cta.secondary": "Vedi piani e prezzi",
+  "rf.related.lead": "Correlati:",
+  "rf.related.construction": "documentazione fotografica di cantiere",
+  "rf.related.mid1": ",",
+  "rf.related.gps": "come funziona la fotocamera con GPS e ora",
+  "rf.related.mid2": ", oppure",
+  "rf.related.companycam": "GeoCliks contro CompanyCam",
+  "rf.related.end": ".",
+  "rf.disclaimer":
+    "GeoCliks documenta e verifica. Non misura i tetti, non redige preventivi e non decide i sinistri.",
+  "rf.faq.q1": "Quali foto vuole di solito un perito assicurativo in un sinistro sul tetto?",
+  "rf.faq.a1":
+    "La prassi varia da compagnia a compagnia, ma lo schema ricorrente è: inquadrature d'insieme che identifichino l'immobile, dettagli del danno con qualcosa che dia la scala, le stesse falde fotografate dopo il lavoro e date che mettano i due insiemi in ordine. Quello su cui i lattonieri perdono non è quasi mai la fotografia: è che le date vengono da un telefono e la compagnia non ha modo di controllarle.",
+  "rf.faq.q2": "GeoCliks misura il tetto o produce un preventivo?",
+  "rf.faq.a2":
+    "No. Non misura le superfici, non genera uno schema e non produce un preventivo tipo Xactimate, e non sostituirà lo strumento di misura che già usi. Documenta e verifica cosa c'era e cosa hai fatto, che è la parte che quegli strumenti non fanno.",
+  "rf.faq.q3": "Posso dimostrare che il danno precede la mia riparazione?",
+  "rf.faq.a3":
+    "Puoi mostrare una foto la cui ora di scatto è stata verificata contro i nostri server invece di essere letta dal tuo telefono, sigillata con un hash del contenuto perché una modifica successiva sia rilevabile, con un codice che la compagnia può consultare in autonomia. È un documento decisamente più solido di una foto del rullino. Se una specifica compagnia lo accetti resta una sua decisione: GeoCliks non è un servizio assicurativo o legale e non può promettere l'esito di un sinistro.",
+  "rf.faq.q4": "Funziona su un tetto senza segnale?",
+  "rf.faq.a4":
+    "Sì. Gli scatti restano in coda sul telefono e si caricano quando torni in copertura, e l'ora registrata è quella dello scatto, non del caricamento. Il GPS viene letto sul tetto, quindi il timbro indica l'immobile su cui ti trovavi.",
+  "rf.faq.q5": "Il proprietario può vedere le foto?",
+  "rf.faq.a5":
+    "Decidi tu. Condividi un link a un set, o consegna un codice foto perché verifichi una singola immagine sulla pagina pubblica. Nessuna delle due cose lo obbliga a installare qualcosa o a creare un account.",
+  "rf.faq.q6": "In cosa è diverso dalla pagina sulla documentazione di cantiere?",
+  "rf.faq.a6":
+    "Stesso prodotto, argomento diverso. Un'impresa generale in genere documenta contro una contestazione del cliente su avanzamento e ambito; un lattoniere in genere documenta davanti a un perito che ha bisogno di un prima con data e un dopo con data della stessa falda. Qui contano più l'abbinamento prima/dopo e il formato di esportazione, ed è per questo che questa pagina esiste a parte.",
 };

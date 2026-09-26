@@ -87,6 +87,9 @@ export const en = {
   "seo.about.title": "About GeoCliks — The Company Behind the Photo Seal",
   "seo.about.description":
     "Who GeoCliks is: a Moncton, New Brunswick company building verified field photo documentation. How the seal works, what we will not claim, and how to reach us.",
+  "seo.roofing.title": "Roofing Photo Documentation for Claims & Closeouts",
+  "seo.roofing.description":
+    "Document roof damage and replacement with verified time, GPS and street address on every photo, paired before and after for adjusters and homeowners.",
   "signin.subtitle": "Tamper-proof photo documentation for field teams.",
   "signin.apple": "Continue with Apple",
   "signin.google": "Continue with Google",
@@ -2227,6 +2230,84 @@ export const en = {
   "ab.faq.q6": "What languages does GeoCliks work in?",
   "ab.faq.a6":
     "Eleven — English, French (Canada), Spanish, Portuguese (Brazil), German, Italian, Polish, Arabic, Vietnamese, Tagalog and Chinese. The app, the Help Center and the pages on this site all run in them, and a banner sits on any help article whose body is still English rather than leaving you to discover it.",
+  "rf.eyebrow": "Roofing photo documentation",
+  "rf.h1": "Roofing Photo Documentation That Holds Up on a Claim",
+  "rf.sub":
+    "Dated before and after shots of the same roof, with network-verified time, GPS and street address on every capture — and a code the adjuster can check.",
+  "rf.s1.label": "Why roofers look for this",
+  "rf.s1.h2": "The photos were fine. The dates on them were the problem.",
+  "rf.s1.intro":
+    "A hail claim comes back questioned. An adjuster asks how you know the damage predates the tear-off. A homeowner three months later says the leak was there before you started. Every one of those turns into an argument about a date, and a camera-roll photo answers it with a timestamp from the phone in your pocket — which the other side is under no obligation to believe. This page is about the version where the date is not yours to set.",
+  "rf.s2.label": "How it works",
+  "rf.s2.h2": "Four steps, built around the before and the after.",
+  "rf.s3.label": "Built for the claim",
+  "rf.s3.h2": "Three things a roof record has to survive.",
+  "rf.s4.label": "For crews and subs",
+  "rf.s4.h2": "One job file, however many crews touch it.",
+  "rf.faqSection.label": "Questions",
+  "rf.faqSection.h2": "Frequently asked",
+  "rf.step1.title": "Shoot the roof before you touch it",
+  "rf.step1.body":
+    "Every slope, every penetration, every soft spot — in the GeoCliks app. Offline is fine; captures queue on the phone.",
+  "rf.step2.title": "GeoCliks dates and places it",
+  "rf.step2.body":
+    "Network-verified time, GPS coordinates and the resolved street address are written into each photo, with a hash and a unique photo code.",
+  "rf.step3.title": "Shoot the same planes after",
+  "rf.step3.body":
+    "Pair the post-work capture with its before shot into one comparison, so both halves carry their own independently verified date.",
+  "rf.step4.title": "Hand the adjuster the bundle",
+  "rf.step4.body":
+    "Export the job as a PDF with every photo's time, address and code beside it. The adjuster can check any of them without an account.",
+  "rf.claim1.title": "Before and after, provably in that order",
+  "rf.claim1.body":
+    "The pairing is only worth something if the dates are. Both captures carry a time verified against our servers, so the sequence is not a matter of which photo you say came first.",
+  "rf.claim2.title": "Storm dates that line up",
+  "rf.claim2.body":
+    "A hail claim turns on whether the damage photo predates the repair and postdates the storm. A verified capture time puts the photo on a specific day without relying on the phone that took it.",
+  "rf.claim3.title": "The right house, on the record",
+  "rf.claim3.body":
+    "Coordinates and the resolved street address are stamped on every shot, which settles the question nobody enjoys being asked: whether those photos are of this property.",
+  "rf.crew1.title": "One job, every crew's photos",
+  "rf.crew1.body":
+    "Tear-off, dry-in and finish captures land in the same project, filed by day, whoever shot them.",
+  "rf.crew2.title": "Subs capture their own scope",
+  "rf.crew2.body":
+    "Invite a sub crew by link or printed QR. They document their work without being given the rest of the job or the customer list.",
+  "rf.crew3.title": "Closeout the homeowner keeps",
+  "rf.crew3.body":
+    "The same verified set exports as a PDF for the file, a ZIP for the adjuster, or a KMZ if the work spans multiple addresses.",
+  "rf.cta.h2": "Document the next roof properly",
+  "rf.cta.body":
+    "Free forever for 300 verified photos a month, no card. Paid plans add unlimited captures, before/after pairing at scale and the full set of exports.",
+  "rf.cta.primary": "Get the app",
+  "rf.cta.secondary": "See plans and pricing",
+  "rf.related.lead": "Related:",
+  "rf.related.construction": "construction photo documentation",
+  "rf.related.mid1": ",",
+  "rf.related.gps": "how the GPS timestamp camera works",
+  "rf.related.mid2": ", or",
+  "rf.related.companycam": "GeoCliks vs CompanyCam",
+  "rf.related.end": ".",
+  "rf.disclaimer":
+    "GeoCliks documents and verifies. It does not measure roofs, write estimates or decide claims.",
+  "rf.faq.q1": "What photos does an insurance adjuster usually want on a roof claim?",
+  "rf.faq.a1":
+    "Practice varies by carrier, but the recurring pattern is overview shots that identify the property, close-ups of the damage with something for scale, the same planes photographed after the work, and dates that put those two sets in order. The part roofers lose on is rarely the photography — it is that the dates come from a phone and the carrier has no way to check them.",
+  "rf.faq.q2": "Does GeoCliks measure the roof or produce an estimate?",
+  "rf.faq.a2":
+    "No. It does not measure squares, generate a diagram, or produce an Xactimate or similar estimate, and it will not replace the measurement tool you already use. It documents and verifies what was there and what you did, which is the part those tools do not do.",
+  "rf.faq.q3": "Can I prove the damage predates my repair?",
+  "rf.faq.a3":
+    "You can show a photo whose capture time was verified against our servers rather than read from your phone, sealed with a content hash so a later edit is detectable, with a code the carrier can look up independently. That is a substantially stronger record than a camera-roll photo. Whether a specific carrier accepts it is still their decision — GeoCliks is not an insurance or legal service and cannot promise a claim outcome.",
+  "rf.faq.q4": "Does it work up on a roof with no signal?",
+  "rf.faq.a4":
+    "Yes. Captures queue on the phone and upload when you are back in range, and the recorded time is the moment of capture, not of upload. GPS is read on the roof, so the stamp is the property you were standing on.",
+  "rf.faq.q5": "Can the homeowner see the photos?",
+  "rf.faq.a5":
+    "You choose. Share a link to a set, or hand over a photo code so they can verify a single image on the public page. Neither requires them to install anything or create an account.",
+  "rf.faq.q6": "How is this different from the construction documentation page?",
+  "rf.faq.a6":
+    "Same product, different argument. A general contractor is usually documenting against a client dispute over progress and scope; a roofer is usually documenting against an adjuster who needs a dated before and a dated after of the same plane. The before/after pairing and the export format matter more here, which is why this page exists separately.",
 } as const;
 
 export type Catalog = Record<keyof typeof en, string>;

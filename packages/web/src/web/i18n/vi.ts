@@ -78,6 +78,9 @@ export const vi: Catalog = {
   "seo.about.title": "Về GeoCliks — công ty đứng sau con dấu trên ảnh",
   "seo.about.description":
     "GeoCliks là ai: một công ty ở Moncton, New Brunswick xây dựng tài liệu ảnh hiện trường đã xác minh. Con dấu hoạt động thế nào, chúng tôi không tuyên bố điều gì và cách liên hệ với chúng tôi.",
+  "seo.roofing.title": "Hồ sơ ảnh mái nhà cho bồi thường bảo hiểm",
+  "seo.roofing.description":
+    "Ghi lại hư hại và việc thay mái với giờ đã xác minh, GPS và địa chỉ trên mỗi ảnh, ghép trước và sau cho người thẩm định và chủ nhà.",
   "signin.subtitle": "Hồ sơ ảnh chống giả mạo cho đội ngũ hiện trường.",
   "signin.apple": "Tiếp tục với Apple",
   "signin.google": "Tiếp tục với Google",
@@ -2216,4 +2219,82 @@ export const vi: Catalog = {
   "ab.faq.q6": "GeoCliks hoạt động bằng những ngôn ngữ nào?",
   "ab.faq.a6":
     "Mười một — tiếng Anh, tiếng Pháp (Canada), tiếng Tây Ban Nha, tiếng Bồ Đào Nha (Brazil), tiếng Đức, tiếng Ý, tiếng Ba Lan, tiếng Ả Rập, tiếng Việt, tiếng Tagalog và tiếng Trung. Ứng dụng, Trung tâm trợ giúp và các trang trên website này đều chạy bằng tất cả những ngôn ngữ đó, và một dải thông báo nằm trên mọi bài trợ giúp mà nội dung vẫn còn tiếng Anh, thay vì để bạn tự phát hiện.",
+  "rf.eyebrow": "Hồ sơ ảnh thi công mái",
+  "rf.h1": "Hồ sơ ảnh mái nhà đứng vững khi xét bồi thường",
+  "rf.sub":
+    "Ảnh trước và sau của cùng một mái, có ngày giờ được xác minh qua mạng, GPS và địa chỉ trên từng lần chụp — kèm mã số để người thẩm định tự kiểm tra.",
+  "rf.s1.label": "Vì sao thợ mái tìm đến điều này",
+  "rf.s1.h2": "Ảnh thì ổn. Vấn đề là ngày trên ảnh.",
+  "rf.s1.intro":
+    "Một hồ sơ bồi thường do mưa đá bị trả lại với dấu hỏi. Người thẩm định hỏi làm sao bạn biết hư hại có trước khi bóc mái. Ba tháng sau, chủ nhà nói chỗ dột đã có từ trước khi bạn bắt đầu. Mọi tình huống ấy đều biến thành tranh luận về một cái ngày, và ảnh trong thư viện máy chỉ trả lời bằng giờ của chiếc điện thoại trong túi bạn — thứ mà bên kia không có nghĩa vụ phải tin. Trang này nói về phiên bản mà ngày giờ không do bạn đặt.",
+  "rf.s2.label": "Cách hoạt động",
+  "rf.s2.h2": "Bốn bước, dựng quanh cái trước và cái sau.",
+  "rf.s3.label": "Làm cho hồ sơ bồi thường",
+  "rf.s3.h2": "Ba điều một bộ hồ sơ mái phải chịu được.",
+  "rf.s4.label": "Cho tổ thi công và thầu phụ",
+  "rf.s4.h2": "Một hồ sơ công trình, dù bao nhiêu tổ tham gia.",
+  "rf.faqSection.label": "Câu hỏi",
+  "rf.faqSection.h2": "Câu hỏi thường gặp",
+  "rf.step1.title": "Chụp mái trước khi động tay vào",
+  "rf.step1.body":
+    "Từng mặt mái, từng lỗ xuyên, từng điểm mềm yếu — trong ứng dụng GeoCliks. Không có mạng cũng được: ảnh xếp hàng chờ trong điện thoại.",
+  "rf.step2.title": "GeoCliks ghi ngày và ghi chỗ",
+  "rf.step2.body":
+    "Giờ được xác minh qua mạng, tọa độ GPS và địa chỉ đã phân giải được ghi vào từng ảnh, kèm một mã băm và một mã ảnh riêng.",
+  "rf.step3.title": "Sau khi làm, chụp lại đúng những mặt mái đó",
+  "rf.step3.body":
+    "Ghép ảnh sau khi thi công với ảnh trước thành một cặp so sánh, để mỗi nửa mang ngày giờ được xác minh độc lập của riêng nó.",
+  "rf.step4.title": "Giao trọn bộ cho người thẩm định",
+  "rf.step4.body":
+    "Xuất công trình thành PDF, mỗi ảnh có giờ, địa chỉ và mã số bên cạnh. Người thẩm định kiểm tra ảnh nào cũng được mà không cần tài khoản.",
+  "rf.claim1.title": "Trước và sau, chứng minh được đúng thứ tự đó",
+  "rf.claim1.body":
+    "Cặp ảnh chỉ có giá trị khi ngày giờ có giá trị. Cả hai lần chụp đều mang giờ đã đối chiếu với máy chủ của chúng tôi, nên thứ tự không phụ thuộc vào việc bạn nói ảnh nào chụp trước.",
+  "rf.claim2.title": "Ngày xảy ra bão khớp với nhau",
+  "rf.claim2.body":
+    "Một hồ sơ mưa đá quyết định ở chỗ ảnh hư hại có trước khi sửa và sau khi bão. Giờ chụp đã xác minh đặt ảnh vào một ngày cụ thể mà không cần tin vào chiếc điện thoại đã chụp nó.",
+  "rf.claim3.title": "Đúng căn nhà đó, có ghi nhận",
+  "rf.claim3.body":
+    "Tọa độ và địa chỉ đã phân giải được đóng lên từng ảnh, dẹp luôn câu hỏi chẳng ai muốn nghe: những ảnh này có phải của căn nhà này không.",
+  "rf.crew1.title": "Một công trình, ảnh của mọi tổ",
+  "rf.crew1.body":
+    "Ảnh lúc bóc mái, lúc lót chống nước và lúc hoàn thiện đều vào cùng một dự án, xếp theo ngày, ai chụp cũng vậy.",
+  "rf.crew2.title": "Thầu phụ tự ghi lại phần việc của mình",
+  "rf.crew2.body":
+    "Mời tổ thầu phụ bằng đường liên kết hoặc mã QR in ra. Họ ghi lại phần việc của mình mà không được xem phần còn lại của công trình hay danh sách khách hàng.",
+  "rf.crew3.title": "Bộ nghiệm thu chủ nhà giữ lại",
+  "rf.crew3.body":
+    "Cùng bộ ảnh đã xác minh đó xuất ra PDF để lưu hồ sơ, ZIP cho người thẩm định, hoặc KMZ nếu công việc trải trên nhiều địa chỉ.",
+  "rf.cta.h2": "Làm hồ sơ cho mái tiếp theo cho đúng cách",
+  "rf.cta.body":
+    "Miễn phí mãi mãi với 300 ảnh đã xác minh mỗi tháng, không cần thẻ. Gói trả phí thêm ảnh không giới hạn, ghép trước/sau ở quy mô lớn và toàn bộ định dạng xuất.",
+  "rf.cta.primary": "Tải ứng dụng",
+  "rf.cta.secondary": "Xem gói và giá",
+  "rf.related.lead": "Liên quan:",
+  "rf.related.construction": "hồ sơ ảnh công trường",
+  "rf.related.mid1": ",",
+  "rf.related.gps": "máy ảnh có GPS và dấu thời gian hoạt động thế nào",
+  "rf.related.mid2": ", hoặc",
+  "rf.related.companycam": "GeoCliks so với CompanyCam",
+  "rf.related.end": ".",
+  "rf.disclaimer":
+    "GeoCliks ghi nhận và xác minh. Nó không đo mái, không lập dự toán và không quyết định hồ sơ bồi thường.",
+  "rf.faq.q1": "Người thẩm định bảo hiểm thường muốn những ảnh nào cho hồ sơ mái?",
+  "rf.faq.a1":
+    "Mỗi công ty bảo hiểm một kiểu, nhưng khuôn mẫu lặp lại là: ảnh toàn cảnh nhận diện được căn nhà, ảnh cận chỗ hư hại có vật gì đó làm thước so, chính những mặt mái đó chụp lại sau khi làm, và ngày giờ đặt hai bộ ảnh vào đúng thứ tự. Chỗ thợ mái thua thường không phải chuyện chụp ảnh — mà là ngày giờ lấy từ điện thoại và công ty bảo hiểm không có cách nào kiểm tra.",
+  "rf.faq.q2": "GeoCliks có đo mái hay lập dự toán không?",
+  "rf.faq.a2":
+    "Không. Nó không đo diện tích, không vẽ sơ đồ, không lập dự toán kiểu Xactimate và sẽ không thay thế công cụ đo bạn đang dùng. Nó ghi nhận và xác minh cái gì đã ở đó và bạn đã làm gì — đúng phần mà những công cụ kia không làm.",
+  "rf.faq.q3": "Tôi có chứng minh được hư hại có trước khi tôi sửa không?",
+  "rf.faq.a3":
+    "Bạn có thể trình một ảnh mà giờ chụp được đối chiếu với máy chủ của chúng tôi thay vì đọc từ điện thoại của bạn, niêm bằng mã băm nội dung nên mọi chỉnh sửa về sau đều phát hiện được, kèm mã số để công ty bảo hiểm tự tra. Đó là bằng chứng mạnh hơn hẳn một ảnh trong thư viện máy. Còn một công ty cụ thể có chấp nhận hay không vẫn là quyết định của họ — GeoCliks không phải dịch vụ bảo hiểm hay pháp lý và không thể hứa kết quả của hồ sơ.",
+  "rf.faq.q4": "Trên mái không có tín hiệu thì có dùng được không?",
+  "rf.faq.a4":
+    "Được. Ảnh xếp hàng chờ trong điện thoại và tải lên khi bạn trở lại vùng phủ, và giờ được ghi là lúc chụp, không phải lúc tải lên. GPS được đọc ngay trên mái, nên dấu đóng đúng là căn nhà bạn đang đứng.",
+  "rf.faq.q5": "Chủ nhà có xem được ảnh không?",
+  "rf.faq.a5":
+    "Bạn chọn. Chia sẻ đường liên kết đến một bộ ảnh, hoặc đưa mã ảnh để họ tự xác minh một ảnh trên trang công khai. Cả hai cách đều không buộc họ cài gì hay lập tài khoản.",
+  "rf.faq.q6": "Trang này khác gì trang hồ sơ ảnh công trường?",
+  "rf.faq.a6":
+    "Cùng một sản phẩm, lập luận khác nhau. Nhà thầu chính thường ghi nhận để đối phó tranh chấp với khách về tiến độ và phạm vi; thợ mái thường ghi nhận để đối phó người thẩm định cần một ảnh trước có ngày và một ảnh sau có ngày của cùng mặt mái. Ở đây việc ghép trước/sau và định dạng xuất quan trọng hơn, nên trang này tồn tại riêng.",
 };

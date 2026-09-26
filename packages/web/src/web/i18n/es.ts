@@ -79,6 +79,9 @@ export const es: Catalog = {
   "seo.about.title": "Sobre GeoCliks: la empresa detrás del sello fotográfico",
   "seo.about.description":
     "Quién es GeoCliks: una empresa de Moncton, Nuevo Brunswick, que crea documentación fotográfica verificada para trabajo de campo. Cómo funciona el sello y cómo contactarnos.",
+  "seo.roofing.title": "Fotos de techos con fecha verificada para reclamos",
+  "seo.roofing.description":
+    "Documenta daños y reemplazo de techos con hora verificada, GPS y dirección en cada foto, emparejadas antes y después para ajustadores y propietarios.",
   "signin.subtitle": "Documentación fotográfica inalterable para equipos de campo.",
   "signin.apple": "Continuar con Apple",
   "signin.google": "Continuar con Google",
@@ -2257,4 +2260,82 @@ export const es: Catalog = {
   "ab.faq.q6": "¿En qué idiomas funciona GeoCliks?",
   "ab.faq.a6":
     "En once: inglés, francés (Canadá), español, portugués (Brasil), alemán, italiano, polaco, árabe, vietnamita, tagalo y chino. La app, el Centro de ayuda y las páginas de este sitio funcionan en todos ellos, y un aviso aparece en cualquier artículo de ayuda cuyo cuerpo siga en inglés, en vez de dejar que lo descubras tú.",
+  "rf.eyebrow": "Documentación fotográfica de techos",
+  "rf.h1": "Documentación fotográfica de techos que aguanta un reclamo",
+  "rf.sub":
+    "Fotos del antes y del después del mismo techo, con fecha, hora verificada en la red, GPS y dirección en cada captura — y un código que el ajustador puede comprobar.",
+  "rf.s1.label": "Por qué los techadores buscan esto",
+  "rf.s1.h2": "Las fotos estaban bien. El problema eran sus fechas.",
+  "rf.s1.intro":
+    "Un reclamo por granizo vuelve cuestionado. Un ajustador pregunta cómo sabes que el daño es anterior al desmontaje. Un propietario dice tres meses después que la filtración ya estaba antes de que empezaras. Todo eso termina en una discusión sobre una fecha, y una foto del carrete la responde con la hora del teléfono que llevas en el bolsillo, que la otra parte no está obligada a creer. Esta página trata de la versión en la que la fecha no la pones tú.",
+  "rf.s2.label": "Cómo funciona",
+  "rf.s2.h2": "Cuatro pasos, construidos alrededor del antes y el después.",
+  "rf.s3.label": "Hecho para el reclamo",
+  "rf.s3.h2": "Tres cosas que un registro de techo tiene que soportar.",
+  "rf.s4.label": "Para cuadrillas y subcontratistas",
+  "rf.s4.h2": "Un solo expediente de obra, por muchas cuadrillas que pasen.",
+  "rf.faqSection.label": "Preguntas",
+  "rf.faqSection.h2": "Preguntas frecuentes",
+  "rf.step1.title": "Fotografía el techo antes de tocarlo",
+  "rf.step1.body":
+    "Cada faldón, cada penetración, cada zona blanda — en la app de GeoCliks. Sin conexión no hay problema: las capturas quedan en cola en el teléfono.",
+  "rf.step2.title": "GeoCliks le pone fecha y lugar",
+  "rf.step2.body":
+    "La hora verificada en la red, las coordenadas GPS y la dirección resuelta se escriben en cada foto, junto con un hash y un código de foto único.",
+  "rf.step3.title": "Fotografía después los mismos faldones",
+  "rf.step3.body":
+    "Empareja la captura posterior al trabajo con su foto del antes en una sola comparación, para que cada mitad lleve su propia fecha verificada de forma independiente.",
+  "rf.step4.title": "Entrégale al ajustador el paquete",
+  "rf.step4.body":
+    "Exporta la obra como PDF con la hora, la dirección y el código al lado de cada foto. El ajustador puede comprobar cualquiera de ellas sin tener cuenta.",
+  "rf.claim1.title": "Antes y después, demostrablemente en ese orden",
+  "rf.claim1.body":
+    "El emparejamiento solo vale si las fechas valen. Ambas capturas llevan una hora verificada contra nuestros servidores, así que la secuencia no depende de qué foto digas que fue primero.",
+  "rf.claim2.title": "Fechas de tormenta que cuadran",
+  "rf.claim2.body":
+    "Un reclamo por granizo depende de que la foto del daño sea anterior a la reparación y posterior a la tormenta. Una hora de captura verificada sitúa la foto en un día concreto sin depender del teléfono que la tomó.",
+  "rf.claim3.title": "La casa correcta, por escrito",
+  "rf.claim3.body":
+    "Las coordenadas y la dirección resuelta van estampadas en cada foto, lo que zanja la pregunta que a nadie le gusta oír: si esas fotos son de esta propiedad.",
+  "rf.crew1.title": "Una obra, las fotos de todas las cuadrillas",
+  "rf.crew1.body":
+    "Las capturas del desmontaje, del impermeabilizado y del acabado caen en el mismo proyecto, archivadas por día, quienquiera que las haya tomado.",
+  "rf.crew2.title": "Los subcontratistas documentan su propio alcance",
+  "rf.crew2.body":
+    "Invita a una cuadrilla subcontratada por enlace o por QR impreso. Documentan su trabajo sin que les entregues el resto de la obra ni la lista de clientes.",
+  "rf.crew3.title": "Un cierre que el propietario se queda",
+  "rf.crew3.body":
+    "El mismo conjunto verificado se exporta como PDF para el expediente, como ZIP para el ajustador o como KMZ si el trabajo abarca varias direcciones.",
+  "rf.cta.h2": "Documenta bien el próximo techo",
+  "rf.cta.body":
+    "Gratis para siempre con 300 fotos verificadas al mes, sin tarjeta. Los planes de pago añaden capturas ilimitadas, emparejado antes/después a escala y todas las exportaciones.",
+  "rf.cta.primary": "Descargar la app",
+  "rf.cta.secondary": "Ver planes y precios",
+  "rf.related.lead": "Relacionado:",
+  "rf.related.construction": "documentación fotográfica de obra",
+  "rf.related.mid1": ",",
+  "rf.related.gps": "cómo funciona la cámara con GPS y fecha",
+  "rf.related.mid2": ", o",
+  "rf.related.companycam": "GeoCliks frente a CompanyCam",
+  "rf.related.end": ".",
+  "rf.disclaimer":
+    "GeoCliks documenta y verifica. No mide techos, no redacta presupuestos ni decide reclamos.",
+  "rf.faq.q1": "¿Qué fotos suele querer un ajustador de seguros en un reclamo de techo?",
+  "rf.faq.a1":
+    "La práctica varía según la aseguradora, pero el patrón que se repite son fotos generales que identifiquen la propiedad, primeros planos del daño con algo que dé escala, los mismos faldones fotografiados después del trabajo y fechas que pongan esos dos conjuntos en orden. Lo que hace perder a los techadores casi nunca es la fotografía: es que las fechas salen de un teléfono y la aseguradora no tiene forma de comprobarlas.",
+  "rf.faq.q2": "¿GeoCliks mide el techo o genera un presupuesto?",
+  "rf.faq.a2":
+    "No. No mide cuadros, no genera un diagrama ni produce un presupuesto tipo Xactimate, y no va a sustituir la herramienta de medición que ya usas. Documenta y verifica qué había y qué hiciste, que es la parte que esas herramientas no hacen.",
+  "rf.faq.q3": "¿Puedo demostrar que el daño es anterior a mi reparación?",
+  "rf.faq.a3":
+    "Puedes mostrar una foto cuya hora de captura se verificó contra nuestros servidores en lugar de leerse del teléfono, sellada con un hash de contenido para que una edición posterior sea detectable, y con un código que la aseguradora puede consultar de forma independiente. Es un registro bastante más fuerte que una foto del carrete. Que una aseguradora concreta lo acepte sigue siendo su decisión: GeoCliks no es un servicio de seguros ni legal y no puede prometer el resultado de un reclamo.",
+  "rf.faq.q4": "¿Funciona arriba en un techo sin señal?",
+  "rf.faq.a4":
+    "Sí. Las capturas quedan en cola en el teléfono y se suben cuando vuelves a tener cobertura, y la hora registrada es el momento de la captura, no el de la subida. El GPS se lee en el techo, así que el sello es la propiedad en la que estabas.",
+  "rf.faq.q5": "¿Puede ver las fotos el propietario?",
+  "rf.faq.a5":
+    "Tú decides. Comparte un enlace a un conjunto o entrega un código de foto para que verifique una imagen en la página pública. Ninguna de las dos cosas le obliga a instalar nada ni a crear una cuenta.",
+  "rf.faq.q6": "¿En qué se diferencia esto de la página de documentación de obra?",
+  "rf.faq.a6":
+    "Mismo producto, argumento distinto. Un contratista general suele documentar frente a una disputa con el cliente sobre avance y alcance; un techador suele documentar frente a un ajustador que necesita un antes con fecha y un después con fecha del mismo faldón. Aquí importan más el emparejado antes/después y el formato de exportación, y por eso esta página existe aparte.",
 };

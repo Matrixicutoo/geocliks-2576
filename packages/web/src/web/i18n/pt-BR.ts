@@ -79,6 +79,9 @@ export const ptBR: Catalog = {
   "seo.about.title": "Sobre a GeoCliks — a empresa por trás do selo na foto",
   "seo.about.description":
     "Quem é a GeoCliks: uma empresa de Moncton, Nova Brunswick, que cria documentação fotográfica verificada para campo. Como o selo funciona e como falar com a gente.",
+  "seo.roofing.title": "Documentação fotográfica de telhado para sinistros",
+  "seo.roofing.description":
+    "Documente danos e troca de telhado com hora verificada, GPS e endereço em cada foto, pareadas antes e depois para reguladores e proprietários.",
   "signin.subtitle": "Documentação fotográfica à prova de fraudes para equipes de campo.",
   "signin.apple": "Continuar com a Apple",
   "signin.google": "Continuar com o Google",
@@ -2238,4 +2241,82 @@ export const ptBR: Catalog = {
   "ab.faq.q6": "Em quais idiomas a GeoCliks funciona?",
   "ab.faq.a6":
     "Em onze — inglês, francês (Canadá), espanhol, português (Brasil), alemão, italiano, polonês, árabe, vietnamita, tagalo e chinês. O app, a Central de Ajuda e as páginas deste site funcionam em todos eles, e um aviso aparece em qualquer artigo de ajuda cujo corpo ainda esteja em inglês, em vez de deixar você descobrir sozinho.",
+  "rf.eyebrow": "Documentação fotográfica de telhados",
+  "rf.h1": "Documentação fotográfica de telhado que se sustenta num sinistro",
+  "rf.sub":
+    "Fotos do antes e do depois do mesmo telhado, com hora verificada na rede, GPS e endereço em cada captura — e um código que o regulador pode conferir.",
+  "rf.s1.label": "Por que telhadistas procuram isso",
+  "rf.s1.h2": "As fotos estavam boas. O problema eram as datas delas.",
+  "rf.s1.intro":
+    "Um sinistro de granizo volta questionado. Um regulador pergunta como você sabe que o dano é anterior à remoção. Três meses depois, um proprietário diz que a infiltração já existia antes de você começar. Cada um desses casos vira uma discussão sobre uma data, e uma foto da galeria responde com a hora do celular no seu bolso — que a outra parte não é obrigada a acreditar. Esta página é sobre a versão em que a data não é você quem define.",
+  "rf.s2.label": "Como funciona",
+  "rf.s2.h2": "Quatro passos, construídos em torno do antes e do depois.",
+  "rf.s3.label": "Feito para o sinistro",
+  "rf.s3.h2": "Três coisas que um registro de telhado tem que aguentar.",
+  "rf.s4.label": "Para equipes e terceirizados",
+  "rf.s4.h2": "Um único arquivo de obra, por quantas equipes passarem.",
+  "rf.faqSection.label": "Perguntas",
+  "rf.faqSection.h2": "Perguntas frequentes",
+  "rf.step1.title": "Fotografe o telhado antes de tocar nele",
+  "rf.step1.body":
+    "Cada água, cada penetração, cada ponto mole — no app da GeoCliks. Offline não é problema: as capturas ficam na fila no celular.",
+  "rf.step2.title": "A GeoCliks registra data e lugar",
+  "rf.step2.body":
+    "A hora verificada na rede, as coordenadas GPS e o endereço resolvido são gravados em cada foto, com um hash e um código de foto único.",
+  "rf.step3.title": "Fotografe as mesmas águas depois",
+  "rf.step3.body":
+    "Pareie a captura pós-serviço com a foto do antes em uma única comparação, para que cada metade carregue a própria data verificada de forma independente.",
+  "rf.step4.title": "Entregue o pacote ao regulador",
+  "rf.step4.body":
+    "Exporte a obra em PDF com a hora, o endereço e o código ao lado de cada foto. O regulador pode conferir qualquer uma delas sem ter conta.",
+  "rf.claim1.title": "Antes e depois, comprovadamente nessa ordem",
+  "rf.claim1.body":
+    "O pareamento só vale algo se as datas valerem. As duas capturas carregam uma hora verificada contra os nossos servidores, então a sequência não depende de qual foto você diz que veio primeiro.",
+  "rf.claim2.title": "Datas de tempestade que fecham",
+  "rf.claim2.body":
+    "Um sinistro de granizo depende de a foto do dano ser anterior ao reparo e posterior à tempestade. Uma hora de captura verificada coloca a foto em um dia específico sem depender do celular que a tirou.",
+  "rf.claim3.title": "A casa certa, registrada",
+  "rf.claim3.body":
+    "As coordenadas e o endereço resolvido ficam estampados em cada foto, o que encerra a pergunta que ninguém gosta de ouvir: se aquelas fotos são desta propriedade.",
+  "rf.crew1.title": "Uma obra, as fotos de todas as equipes",
+  "rf.crew1.body":
+    "As capturas de remoção, de manta e de acabamento caem no mesmo projeto, arquivadas por dia, seja quem for que as tirou.",
+  "rf.crew2.title": "Terceirizados documentam o próprio escopo",
+  "rf.crew2.body":
+    "Convide uma equipe terceirizada por link ou por QR impresso. Eles documentam o trabalho deles sem receber o resto da obra nem a lista de clientes.",
+  "rf.crew3.title": "Um encerramento que o proprietário guarda",
+  "rf.crew3.body":
+    "O mesmo conjunto verificado é exportado em PDF para o arquivo, em ZIP para o regulador ou em KMZ se o trabalho abranger vários endereços.",
+  "rf.cta.h2": "Documente o próximo telhado direito",
+  "rf.cta.body":
+    "Grátis para sempre com 300 fotos verificadas por mês, sem cartão. Os planos pagos acrescentam capturas ilimitadas, pareamento antes/depois em escala e todas as exportações.",
+  "rf.cta.primary": "Baixar o app",
+  "rf.cta.secondary": "Ver planos e preços",
+  "rf.related.lead": "Relacionado:",
+  "rf.related.construction": "documentação fotográfica de obra",
+  "rf.related.mid1": ",",
+  "rf.related.gps": "como funciona a câmera com GPS e data",
+  "rf.related.mid2": ", ou",
+  "rf.related.companycam": "GeoCliks x CompanyCam",
+  "rf.related.end": ".",
+  "rf.disclaimer":
+    "A GeoCliks documenta e verifica. Ela não mede telhados, não faz orçamentos nem decide sinistros.",
+  "rf.faq.q1": "Que fotos um regulador de seguros normalmente quer num sinistro de telhado?",
+  "rf.faq.a1":
+    "A prática varia por seguradora, mas o padrão recorrente é: fotos gerais que identifiquem o imóvel, close-ups do dano com algo para dar escala, as mesmas águas fotografadas depois do serviço e datas que coloquem esses dois conjuntos em ordem. O que faz o telhadista perder raramente é a fotografia — é que as datas vêm de um celular e a seguradora não tem como conferi-las.",
+  "rf.faq.q2": "A GeoCliks mede o telhado ou gera um orçamento?",
+  "rf.faq.a2":
+    "Não. Ela não mede áreas, não gera um diagrama nem produz um orçamento tipo Xactimate, e não vai substituir a ferramenta de medição que você já usa. Ela documenta e verifica o que havia e o que você fez, que é a parte que essas ferramentas não fazem.",
+  "rf.faq.q3": "Consigo provar que o dano é anterior ao meu reparo?",
+  "rf.faq.a3":
+    "Você pode mostrar uma foto cuja hora de captura foi verificada contra os nossos servidores em vez de lida do seu celular, selada com um hash de conteúdo para que uma edição posterior seja detectável, com um código que a seguradora pode consultar de forma independente. É um registro bem mais forte do que uma foto da galeria. Se uma seguradora específica vai aceitar, ainda é decisão dela — a GeoCliks não é um serviço de seguros nem jurídico e não pode prometer o resultado de um sinistro.",
+  "rf.faq.q4": "Funciona em cima de um telhado sem sinal?",
+  "rf.faq.a4":
+    "Sim. As capturas ficam na fila no celular e sobem quando você volta à área de cobertura, e a hora registrada é o momento da captura, não do envio. O GPS é lido no telhado, então o selo é o imóvel em que você estava.",
+  "rf.faq.q5": "O proprietário pode ver as fotos?",
+  "rf.faq.a5":
+    "Você decide. Compartilhe um link para um conjunto ou passe um código de foto para que ele verifique uma imagem na página pública. Nenhuma das duas coisas exige que ele instale algo ou crie uma conta.",
+  "rf.faq.q6": "Qual a diferença em relação à página de documentação de obra?",
+  "rf.faq.a6":
+    "Mesmo produto, argumento diferente. Um construtor em geral documenta contra uma disputa com o cliente sobre andamento e escopo; um telhadista documenta contra um regulador que precisa de um antes datado e um depois datado da mesma água. Aqui o pareamento antes/depois e o formato de exportação pesam mais, e é por isso que esta página existe separada.",
 };

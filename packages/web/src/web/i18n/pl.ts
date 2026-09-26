@@ -78,6 +78,9 @@ export const pl: Catalog = {
   "seo.about.title": "O GeoCliks — firma stojąca za pieczęcią na zdjęciu",
   "seo.about.description":
     "Kim jest GeoCliks: firma z Moncton w Nowym Brunszwiku budująca zweryfikowaną dokumentację zdjęciową dla ekip w terenie. Jak działa pieczęć, czego nie twierdzimy i jak się z nami skontaktować.",
+  "seo.roofing.title": "Dokumentacja zdjęciowa dachu na potrzeby szkód",
+  "seo.roofing.description":
+    "Dokumentuj uszkodzenia i wymianę dachu z weryfikowanym czasem, GPS i adresem na każdym zdjęciu, zestawione przed i po dla rzeczoznawców i właścicieli.",
   "signin.subtitle": "Odporna na manipulacje dokumentacja zdjęciowa dla ekip w terenie.",
   "signin.apple": "Kontynuuj z Apple",
   "signin.google": "Kontynuuj z Google",
@@ -2230,4 +2233,82 @@ export const pl: Catalog = {
   "ab.faq.q6": "W jakich językach działa GeoCliks?",
   "ab.faq.a6":
     "W jedenastu — angielskim, francuskim (Kanada), hiszpańskim, portugalskim (Brazylia), niemieckim, włoskim, polskim, arabskim, wietnamskim, tagalskim i chińskim. Aplikacja, Centrum pomocy i strony tej witryny działają we wszystkich, a na każdym artykule pomocy, którego treść jest jeszcze po angielsku, wisi banner, zamiast zostawiać cię z odkrywaniem tego samemu.",
+  "rf.eyebrow": "Dokumentacja zdjęciowa dachów",
+  "rf.h1": "Dokumentacja zdjęciowa dachu, która obroni się przy szkodzie",
+  "rf.sub":
+    "Datowane zdjęcia przed i po tego samego dachu, z czasem weryfikowanym w sieci, GPS i adresem na każdym ujęciu — oraz kodem, który rzeczoznawca może sprawdzić.",
+  "rf.s1.label": "Dlaczego dachiarze tego szukają",
+  "rf.s1.h2": "Zdjęcia były w porządku. Problemem były ich daty.",
+  "rf.s1.intro":
+    "Zgłoszenie szkody gradowej wraca zakwestionowane. Rzeczoznawca pyta, skąd wiesz, że uszkodzenie powstało przed zerwaniem pokrycia. Właściciel trzy miesiące później twierdzi, że przeciek był jeszcze przed twoim wejściem na budowę. Każda z tych sytuacji kończy się sporem o datę, a zdjęcie z galerii odpowiada na to godziną z telefonu w twojej kieszeni — w którą druga strona nie musi wierzyć. Ta strona jest o wersji, w której daty nie ustalasz ty.",
+  "rf.s2.label": "Jak to działa",
+  "rf.s2.h2": "Cztery kroki zbudowane wokół tego, co przed i co po.",
+  "rf.s3.label": "Zrobione pod szkodę",
+  "rf.s3.h2": "Trzy rzeczy, które dokumentacja dachu musi wytrzymać.",
+  "rf.s4.label": "Dla ekip i podwykonawców",
+  "rf.s4.h2": "Jedna teczka zlecenia, niezależnie od liczby ekip.",
+  "rf.faqSection.label": "Pytania",
+  "rf.faqSection.h2": "Często zadawane pytania",
+  "rf.step1.title": "Sfotografuj dach, zanim go tkniesz",
+  "rf.step1.body":
+    "Każda połać, każde przejście, każde miękkie miejsce — w aplikacji GeoCliks. Brak zasięgu nie przeszkadza: ujęcia czekają w kolejce w telefonie.",
+  "rf.step2.title": "GeoCliks nadaje datę i miejsce",
+  "rf.step2.body":
+    "Czas weryfikowany w sieci, współrzędne GPS i rozpoznany adres są zapisywane w każdym zdjęciu, razem ze skrótem i niepowtarzalnym kodem zdjęcia.",
+  "rf.step3.title": "Sfotografuj po pracy te same połacie",
+  "rf.step3.body":
+    "Powiąż ujęcie po pracach ze zdjęciem przed w jedno porównanie, tak by każda połowa miała własną, niezależnie zweryfikowaną datę.",
+  "rf.step4.title": "Przekaż rzeczoznawcy komplet",
+  "rf.step4.body":
+    "Wyeksportuj zlecenie jako PDF z godziną, adresem i kodem obok każdego zdjęcia. Rzeczoznawca sprawdzi dowolne z nich bez konta.",
+  "rf.claim1.title": "Przed i po, w dowiedzionej kolejności",
+  "rf.claim1.body":
+    "Zestawienie jest warte tyle, ile jego daty. Oba ujęcia mają czas zweryfikowany wobec naszych serwerów, więc kolejność nie zależy od tego, które zdjęcie nazwiesz pierwszym.",
+  "rf.claim2.title": "Daty burzy, które się zgadzają",
+  "rf.claim2.body":
+    "Szkoda gradowa rozstrzyga się na tym, czy zdjęcie uszkodzenia jest wcześniejsze niż naprawa i późniejsze niż burza. Zweryfikowany czas ujęcia umieszcza zdjęcie w konkretnym dniu bez polegania na telefonie, który je zrobił.",
+  "rf.claim3.title": "Właściwy dom, na piśmie",
+  "rf.claim3.body":
+    "Współrzędne i rozpoznany adres są odbite na każdym ujęciu, co zamyka pytanie, którego nikt nie lubi słyszeć: czy te zdjęcia są z tej nieruchomości.",
+  "rf.crew1.title": "Jedno zlecenie, zdjęcia każdej ekipy",
+  "rf.crew1.body":
+    "Ujęcia z zerwania pokrycia, z warstwy wstępnego krycia i z wykończenia trafiają do tego samego projektu, ułożone po dniach, kto by ich nie zrobił.",
+  "rf.crew2.title": "Podwykonawcy dokumentują swój zakres",
+  "rf.crew2.body":
+    "Zaproś ekipę podwykonawcy linkiem albo wydrukowanym kodem QR. Dokumentują swoją robotę bez dostępu do reszty zlecenia i do listy klientów.",
+  "rf.crew3.title": "Zamknięcie, które zostaje właścicielowi",
+  "rf.crew3.body":
+    "Ten sam zweryfikowany zestaw eksportuje się jako PDF do teczki, ZIP dla rzeczoznawcy albo KMZ, jeśli praca obejmuje kilka adresów.",
+  "rf.cta.h2": "Udokumentuj następny dach porządnie",
+  "rf.cta.body":
+    "Na zawsze bezpłatnie do 300 zweryfikowanych zdjęć miesięcznie, bez karty. Plany płatne dodają nielimitowane ujęcia, łączenie przed/po na dużą skalę i pełny zestaw eksportów.",
+  "rf.cta.primary": "Pobierz aplikację",
+  "rf.cta.secondary": "Zobacz plany i ceny",
+  "rf.related.lead": "Powiązane:",
+  "rf.related.construction": "dokumentacja zdjęciowa budowy",
+  "rf.related.mid1": ",",
+  "rf.related.gps": "jak działa aparat z GPS i datą",
+  "rf.related.mid2": " lub",
+  "rf.related.companycam": "GeoCliks a CompanyCam",
+  "rf.related.end": ".",
+  "rf.disclaimer":
+    "GeoCliks dokumentuje i weryfikuje. Nie mierzy dachów, nie sporządza kosztorysów i nie rozstrzyga szkód.",
+  "rf.faq.q1": "Jakich zdjęć rzeczoznawca ubezpieczyciela zwykle oczekuje przy szkodzie na dachu?",
+  "rf.faq.a1":
+    "Praktyka zależy od ubezpieczyciela, ale powtarzalny schemat to ujęcia ogólne, które identyfikują nieruchomość, zbliżenia uszkodzeń z czymś dla skali, te same połacie sfotografowane po pracach oraz daty, które ustawiają te dwa zestawy w kolejności. To, na czym dachiarze przegrywają, rzadko jest fotografią — chodzi o to, że daty pochodzą z telefonu, a ubezpieczyciel nie ma jak ich sprawdzić.",
+  "rf.faq.q2": "Czy GeoCliks mierzy dach albo tworzy kosztorys?",
+  "rf.faq.a2":
+    "Nie. Nie mierzy powierzchni, nie generuje rysunku ani nie tworzy kosztorysu w rodzaju Xactimate i nie zastąpi narzędzia do pomiarów, którego już używasz. Dokumentuje i weryfikuje, co tam było i co zrobiłeś — czyli dokładnie tę część, której te narzędzia nie robią.",
+  "rf.faq.q3": "Czy mogę dowieść, że uszkodzenie powstało przed moją naprawą?",
+  "rf.faq.a3":
+    "Możesz pokazać zdjęcie, którego czas wykonania został zweryfikowany wobec naszych serwerów, a nie odczytany z twojego telefonu, zaplombowane skrótem treści, dzięki czemu późniejsza edycja jest wykrywalna, z kodem, który ubezpieczyciel sprawdzi samodzielnie. To dowód wyraźnie mocniejszy niż zdjęcie z galerii. Czy konkretny ubezpieczyciel go uzna, pozostaje jego decyzją — GeoCliks nie jest usługą ubezpieczeniową ani prawną i nie może obiecać wyniku sprawy.",
+  "rf.faq.q4": "Czy działa na dachu bez zasięgu?",
+  "rf.faq.a4":
+    "Tak. Ujęcia czekają w kolejce w telefonie i wysyłają się, gdy wrócisz w zasięg, a zapisany czas to moment wykonania zdjęcia, nie wysyłki. GPS jest odczytywany na dachu, więc pieczęć wskazuje nieruchomość, na której stałeś.",
+  "rf.faq.q5": "Czy właściciel domu może zobaczyć zdjęcia?",
+  "rf.faq.a5":
+    "Ty decydujesz. Udostępnij link do zestawu albo przekaż kod zdjęcia, żeby sprawdził jeden obraz na stronie publicznej. Żadna z tych dróg nie wymaga od niego instalowania czegokolwiek ani zakładania konta.",
+  "rf.faq.q6": "Czym to się różni od strony o dokumentacji budowy?",
+  "rf.faq.a6":
+    "Ten sam produkt, inny argument. Generalny wykonawca zwykle dokumentuje pod spór z klientem o postęp i zakres; dachiarz zwykle dokumentuje pod rzeczoznawcę, który potrzebuje datowanego przed i datowanego po tej samej połaci. Tutaj bardziej liczą się łączenie przed/po i format eksportu, dlatego ta strona istnieje osobno.",
 };

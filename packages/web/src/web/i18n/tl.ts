@@ -79,6 +79,9 @@ export const tl: Catalog = {
   "seo.about.title": "Tungkol sa GeoCliks — ang kompanya sa likod ng selyo sa larawan",
   "seo.about.description":
     "Sino ang GeoCliks: isang kompanya sa Moncton, New Brunswick na gumagawa ng beripikadong dokumentasyong larawan sa field. Paano gumagana ang selyo, ano ang hindi namin ipinapangalandakan, at paano kami maabot.",
+  "seo.roofing.title": "Dokumentasyon ng Larawan sa Bubong para sa Claim",
+  "seo.roofing.description":
+    "Idokumento ang pinsala at pagpapalit ng bubong na may beripikadong oras, GPS at address sa bawat larawan, ipinares na bago at pagkatapos para sa adjuster.",
   "signin.subtitle": "Hindi mapepekeng dokumentasyon ng larawan para sa mga field team.",
   "signin.apple": "Magpatuloy sa Apple",
   "signin.google": "Magpatuloy sa Google",
@@ -2265,4 +2268,83 @@ export const tl: Catalog = {
   "ab.faq.q6": "Anong mga wika ang gumagana sa GeoCliks?",
   "ab.faq.a6":
     "Labing-isa — Ingles, Pranses (Canada), Espanyol, Portuges (Brazil), Aleman, Italyano, Polako, Arabe, Vietnamese, Tagalog at Tsino. Ang app, ang Help Center at ang mga pahina sa site na ito ay tumatakbo sa lahat ng iyon, at may banner sa alinmang artikulo ng tulong na Ingles pa ang katawan, sa halip na hayaan kang makadiskubre nito mag-isa.",
+  "rf.eyebrow": "Dokumentasyon ng larawan sa bubong",
+  "rf.h1": "Dokumentasyon ng Larawan sa Bubong na Tumitindig sa Claim",
+  "rf.sub":
+    "May petsang larawan ng bago at pagkatapos ng parehong bubong, may oras na beripikado sa network, GPS at street address sa bawat kuha — at isang code na maaaring tiyakin ng adjuster.",
+  "rf.s1.label": "Bakit ito hinahanap ng mga roofer",
+  "rf.s1.h2": "Maayos ang mga larawan. Ang petsa nila ang problema.",
+  "rf.s1.intro":
+    "Bumalik na kinukuwestiyon ang isang claim sa hail. Tinatanong ng adjuster kung paano mo nalaman na nauna ang pinsala sa tear-off. Makalipas ang tatlong buwan, sinasabi ng may-ari ng bahay na tumatagas na iyon bago ka pa magsimula. Bawat isa doon ay nagiging pagtatalo tungkol sa petsa, at ang larawang galing sa camera roll ay sumasagot gamit ang oras ng telepono sa bulsa mo — na hindi obligadong paniwalaan ng kabilang panig. Tungkol ito sa bersyong hindi ikaw ang nagtatakda ng petsa.",
+  "rf.s2.label": "Paano ito gumagana",
+  "rf.s2.h2": "Apat na hakbang, nakaukit sa bago at pagkatapos.",
+  "rf.s3.label": "Ginawa para sa claim",
+  "rf.s3.h2": "Tatlong bagay na kailangang malampasan ng rekord ng bubong.",
+  "rf.s4.label": "Para sa mga crew at subcontractor",
+  "rf.s4.h2": "Isang file ng trabaho, kahit ilang crew ang dumaan.",
+  "rf.faqSection.label": "Mga tanong",
+  "rf.faqSection.h2": "Mga madalas itanong",
+  "rf.step1.title": "Kunan ang bubong bago mo ito galawin",
+  "rf.step1.body":
+    "Bawat slope, bawat butas na dinaanan ng tubo, bawat malambot na bahagi — sa GeoCliks app. Ayos lang kung walang signal; pumipila ang mga kuha sa telepono.",
+  "rf.step2.title": "Nilalagyan ng GeoCliks ng petsa at lugar",
+  "rf.step2.body":
+    "Ang oras na beripikado sa network, ang GPS coordinates at ang naresolbang street address ay isinusulat sa bawat larawan, kasama ang hash at natatanging photo code.",
+  "rf.step3.title": "Kunan ang parehong slope pagkatapos",
+  "rf.step3.body":
+    "Ipares ang kuha pagkatapos ng trabaho sa larawan bago ito, para bawat kalahati ay may sariling petsang beripikado nang hiwalay.",
+  "rf.step4.title": "Iabot sa adjuster ang buong bundle",
+  "rf.step4.body":
+    "I-export ang trabaho bilang PDF na may oras, address at code sa tabi ng bawat larawan. Matitingnan ng adjuster kahit alin doon nang walang account.",
+  "rf.claim1.title": "Bago at pagkatapos, napapatunayang ganoon ang sunod",
+  "rf.claim1.body":
+    "May halaga lang ang pagpapares kung may halaga ang mga petsa. Ang dalawang kuha ay may oras na beripikado laban sa aming server, kaya hindi na usapin kung aling larawan ang sinasabi mong nauna.",
+  "rf.claim2.title": "Petsa ng bagyo na tumutugma",
+  "rf.claim2.body":
+    "Nakasalalay ang claim sa hail kung nauna ang larawan ng pinsala sa pagkukumpuni at kung sumunod ito sa bagyo. Inilalagay ng beripikadong oras ng kuha ang larawan sa isang partikular na araw nang hindi umaasa sa teleponong kumuha nito.",
+  "rf.claim3.title": "Ang tamang bahay, nakatala",
+  "rf.claim3.body":
+    "Nakatatak sa bawat kuha ang coordinates at ang naresolbang street address, na tumatapos sa tanong na walang gustong sagutin: kung sa propyedad na ito nga ang mga larawang iyon.",
+  "rf.crew1.title": "Isang trabaho, larawan ng lahat ng crew",
+  "rf.crew1.body":
+    "Ang mga kuha sa tear-off, dry-in at finish ay napupunta sa parehong proyekto, nakahanay ayon sa araw, kahit sino ang kumuha.",
+  "rf.crew2.title": "Dinodokumento ng subs ang sarili nilang scope",
+  "rf.crew2.body":
+    "Imbitahin ang sub crew sa pamamagitan ng link o nakaprint na QR. Dinodokumento nila ang trabaho nila nang hindi ibinibigay sa kanila ang buong trabaho o ang listahan ng kliyente.",
+  "rf.crew3.title": "Closeout na maiingatan ng may-ari",
+  "rf.crew3.body":
+    "Ang parehong beripikadong set ay nag-eeksport bilang PDF para sa file, ZIP para sa adjuster, o KMZ kung maraming address ang sakop ng trabaho.",
+  "rf.cta.h2": "Dokumentahin nang tama ang susunod na bubong",
+  "rf.cta.body":
+    "Libre nang panghabambuhay para sa 300 beripikadong larawan sa isang buwan, walang card. Ang bayad na plano ay nagdadagdag ng walang limitasyong kuha, pagpapares ng bago/pagkatapos sa mas malaking dami, at ang buong set ng export.",
+  "rf.cta.primary": "Kunin ang app",
+  "rf.cta.secondary": "Tingnan ang mga plano at presyo",
+  "rf.related.lead": "Kaugnay:",
+  "rf.related.construction": "dokumentasyon ng larawan sa konstruksiyon",
+  "rf.related.mid1": ",",
+  "rf.related.gps": "kung paano gumagana ang GPS timestamp camera",
+  "rf.related.mid2": ", o",
+  "rf.related.companycam": "GeoCliks kumpara sa CompanyCam",
+  "rf.related.end": ".",
+  "rf.disclaimer":
+    "Nagdodokumento at nagbeberipika ang GeoCliks. Hindi ito nagmemedida ng bubong, hindi gumagawa ng estimate at hindi nagpapasya sa claim.",
+  "rf.faq.q1":
+    "Anong mga larawan ang karaniwang hinahanap ng insurance adjuster sa claim sa bubong?",
+  "rf.faq.a1":
+    "Nagkakaiba-iba ang kaugalian sa bawat kompanya, pero ang paulit-ulit na pattern ay: malawak na kuha na nagpapakilala sa propyedad, malapitang kuha ng pinsala na may bagay na panukat, ang parehong slope na kinunan pagkatapos ng trabaho, at mga petsang naglalagay sa dalawang set na iyon sa tamang sunod. Bihirang photography ang dahilan ng pagkalugi ng roofer — ang dahilan ay galing sa telepono ang petsa at wala nang paraan ang kompanya para tiyakin ito.",
+  "rf.faq.q2": "Nagmemedida ba ang GeoCliks ng bubong o gumagawa ng estimate?",
+  "rf.faq.a2":
+    "Hindi. Hindi ito nagmemedida ng square, hindi gumagawa ng diagram, at hindi gumagawa ng Xactimate o katulad na estimate, at hindi nito papalitan ang panukat na kasangkapang gamit mo na. Dinodokumento at bineberipika nito ang nasa lugar at ang ginawa mo, na ang bahaging hindi ginagawa ng mga kasangkapang iyon.",
+  "rf.faq.q3": "Mapapatunayan ko bang nauna ang pinsala sa pagkukumpuni ko?",
+  "rf.faq.a3":
+    "Maipapakita mo ang isang larawan na ang oras ng kuha ay beripikado laban sa aming server at hindi binasa mula sa telepono mo, selyado ng content hash kaya matutukoy ang paglaon na pag-edit, may code na malayang matitingnan ng kompanya. Higit na matibay na rekord iyon kaysa sa larawan sa camera roll. Kung tatanggapin ito ng isang partikular na kompanya, desisyon pa rin nila — hindi insurance o legal na serbisyo ang GeoCliks at hindi makakapangako ng resulta ng claim.",
+  "rf.faq.q4": "Gumagana ba ito sa bubong na walang signal?",
+  "rf.faq.a4":
+    "Oo. Pumipila ang mga kuha sa telepono at nag-uupload pag nakabalik ka sa saklaw, at ang naitalang oras ay ang sandali ng kuha, hindi ng upload. Sa bubong binabasa ang GPS, kaya ang tatak ay ang propyedad na tinatayuan mo.",
+  "rf.faq.q5": "Makikita ba ng may-ari ng bahay ang mga larawan?",
+  "rf.faq.a5":
+    "Nasa iyo ang pasya. Magbahagi ng link sa isang set, o iabot ang photo code para maberipika nila ang isang larawan sa pampublikong pahina. Wala sa dalawa ang nangangailangan na mag-install sila ng kahit ano o gumawa ng account.",
+  "rf.faq.q6": "Paano ito naiiba sa pahina ng dokumentasyon sa konstruksiyon?",
+  "rf.faq.a6":
+    "Parehong produkto, ibang argumento. Karaniwang nagdodokumento ang general contractor laban sa alitan ng kliyente sa progreso at scope; karaniwang nagdodokumento ang roofer laban sa adjuster na kailangan ng may-petsang bago at may-petsang pagkatapos ng parehong slope. Mas mabigat dito ang pagpapares ng bago/pagkatapos at ang format ng export, kaya hiwalay na umiiral ang pahinang ito.",
 };

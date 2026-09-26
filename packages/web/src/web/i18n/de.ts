@@ -78,6 +78,9 @@ export const de: Catalog = {
   "seo.about.title": "Über GeoCliks — das Unternehmen hinter dem Fotosiegel",
   "seo.about.description":
     "Wer GeoCliks ist: ein Unternehmen aus Moncton, New Brunswick, das geprüfte Fotodokumentation für den Außendienst baut. Wie das Siegel funktioniert, was wir nicht behaupten und wie Sie uns erreichen.",
+  "seo.roofing.title": "Dach-Fotodokumentation für Schadenfälle",
+  "seo.roofing.description":
+    "Dokumentieren Sie Dachschäden und Neueindeckung mit geprüfter Zeit, GPS und Anschrift auf jedem Foto, als Vorher/Nachher-Paar für Gutachter und Eigentümer.",
   "signin.subtitle": "Fälschungssichere Fotodokumentation für Außendienstteams.",
   "signin.apple": "Mit Apple fortfahren",
   "signin.google": "Mit Google fortfahren",
@@ -2257,4 +2260,82 @@ export const de: Catalog = {
   "ab.faq.q6": "In welchen Sprachen arbeitet GeoCliks?",
   "ab.faq.a6":
     "In elf — Englisch, Französisch (Kanada), Spanisch, Portugiesisch (Brasilien), Deutsch, Italienisch, Polnisch, Arabisch, Vietnamesisch, Tagalog und Chinesisch. Die App, das Hilfe-Center und die Seiten dieser Website laufen in allen, und auf jedem Hilfeartikel, dessen Text noch Englisch ist, steht ein Hinweisbanner, statt Sie es selbst herausfinden zu lassen.",
+  "rf.eyebrow": "Fotodokumentation für Dachdecker",
+  "rf.h1": "Dach-Fotodokumentation, die einem Schadenfall standhält",
+  "rf.sub":
+    "Datierte Vorher- und Nachher-Aufnahmen desselben Dachs, mit netzwerkgeprüfter Zeit, GPS und Straßenanschrift auf jeder Aufnahme — und einem Code, den der Gutachter prüfen kann.",
+  "rf.s1.label": "Warum Dachdecker danach suchen",
+  "rf.s1.h2": "Die Fotos waren in Ordnung. Ihre Datumsangaben waren das Problem.",
+  "rf.s1.intro":
+    "Eine Hagelmeldung kommt in Zweifel gezogen zurück. Ein Gutachter fragt, woher Sie wissen, dass der Schaden vor dem Abriss entstand. Ein Eigentümer sagt drei Monate später, die undichte Stelle sei schon vor Ihrem Beginn da gewesen. Jeder dieser Fälle endet im Streit über ein Datum, und ein Foto aus der Galerie antwortet darauf mit der Uhrzeit des Handys in Ihrer Tasche — die die andere Seite nicht glauben muss. Diese Seite handelt von der Variante, in der nicht Sie das Datum setzen.",
+  "rf.s2.label": "So funktioniert es",
+  "rf.s2.h2": "Vier Schritte, gebaut um das Vorher und das Nachher.",
+  "rf.s3.label": "Für den Schadenfall gemacht",
+  "rf.s3.h2": "Drei Dinge, die ein Dach-Nachweis aushalten muss.",
+  "rf.s4.label": "Für Kolonnen und Nachunternehmer",
+  "rf.s4.h2": "Eine Auftragsakte, egal wie viele Kolonnen daran arbeiten.",
+  "rf.faqSection.label": "Fragen",
+  "rf.faqSection.h2": "Häufige Fragen",
+  "rf.step1.title": "Fotografieren Sie das Dach, bevor Sie es anfassen",
+  "rf.step1.body":
+    "Jede Dachfläche, jede Durchdringung, jede weiche Stelle — in der GeoCliks-App. Ohne Netz ist das kein Problem: Aufnahmen warten auf dem Handy in der Warteschlange.",
+  "rf.step2.title": "GeoCliks datiert und verortet sie",
+  "rf.step2.body":
+    "Netzwerkgeprüfte Zeit, GPS-Koordinaten und die aufgelöste Straßenanschrift werden in jedes Foto geschrieben, dazu ein Hash und ein eindeutiger Foto-Code.",
+  "rf.step3.title": "Fotografieren Sie danach dieselben Flächen",
+  "rf.step3.body":
+    "Verbinden Sie die Aufnahme nach der Arbeit mit ihrem Vorher-Foto zu einem Vergleich, sodass jede Hälfte ihr eigenes unabhängig geprüftes Datum trägt.",
+  "rf.step4.title": "Geben Sie dem Gutachter das Paket",
+  "rf.step4.body":
+    "Exportieren Sie den Auftrag als PDF, mit Zeit, Anschrift und Code neben jedem Foto. Der Gutachter kann jedes davon ohne Konto prüfen.",
+  "rf.claim1.title": "Vorher und nachher, nachweislich in dieser Reihenfolge",
+  "rf.claim1.body":
+    "Die Paarung ist nur so viel wert wie die Datumsangaben. Beide Aufnahmen tragen eine gegen unsere Server geprüfte Zeit, also hängt die Reihenfolge nicht davon ab, welches Foto Sie als erstes bezeichnen.",
+  "rf.claim2.title": "Sturmdaten, die zusammenpassen",
+  "rf.claim2.body":
+    "Bei einem Hagelschaden hängt alles daran, ob das Schadensfoto vor der Reparatur und nach dem Sturm entstand. Eine geprüfte Aufnahmezeit legt das Foto auf einen bestimmten Tag, ohne sich auf das Handy zu verlassen, das es gemacht hat.",
+  "rf.claim3.title": "Das richtige Haus, aktenkundig",
+  "rf.claim3.body":
+    "Koordinaten und die aufgelöste Straßenanschrift stehen auf jeder Aufnahme, was die Frage klärt, die niemand gern hört: ob diese Fotos von diesem Objekt sind.",
+  "rf.crew1.title": "Ein Auftrag, die Fotos aller Kolonnen",
+  "rf.crew1.body":
+    "Aufnahmen von Abriss, Notabdichtung und Fertigstellung landen im selben Projekt, nach Tag abgelegt, egal wer sie gemacht hat.",
+  "rf.crew2.title": "Nachunternehmer dokumentieren ihren eigenen Umfang",
+  "rf.crew2.body":
+    "Laden Sie eine Nachunternehmer-Kolonne per Link oder ausgedrucktem QR-Code ein. Sie dokumentieren ihre Arbeit, ohne den restlichen Auftrag oder die Kundenliste zu bekommen.",
+  "rf.crew3.title": "Eine Abschlussmappe, die der Eigentümer behält",
+  "rf.crew3.body":
+    "Derselbe geprüfte Satz exportiert als PDF für die Akte, als ZIP für den Gutachter oder als KMZ, wenn die Arbeit mehrere Anschriften umfasst.",
+  "rf.cta.h2": "Dokumentieren Sie das nächste Dach richtig",
+  "rf.cta.body":
+    "Dauerhaft kostenlos für 300 geprüfte Fotos im Monat, ohne Karte. Bezahlte Tarife ergänzen unbegrenzte Aufnahmen, Vorher/Nachher-Paarung im großen Stil und alle Exportformate.",
+  "rf.cta.primary": "App holen",
+  "rf.cta.secondary": "Tarife und Preise ansehen",
+  "rf.related.lead": "Verwandt:",
+  "rf.related.construction": "Fotodokumentation am Bau",
+  "rf.related.mid1": ",",
+  "rf.related.gps": "wie die GPS-Zeitstempel-Kamera funktioniert",
+  "rf.related.mid2": ", oder",
+  "rf.related.companycam": "GeoCliks gegen CompanyCam",
+  "rf.related.end": ".",
+  "rf.disclaimer":
+    "GeoCliks dokumentiert und verifiziert. Es vermisst keine Dächer, schreibt keine Kostenschätzungen und entscheidet keine Schadenfälle.",
+  "rf.faq.q1": "Welche Fotos will ein Versicherungsgutachter bei einem Dachschaden üblicherweise?",
+  "rf.faq.a1":
+    "Die Praxis unterscheidet sich je Versicherer, aber das wiederkehrende Muster sind Übersichtsaufnahmen, die das Objekt erkennbar machen, Nahaufnahmen des Schadens mit etwas als Maßstab, dieselben Flächen nach der Arbeit fotografiert und Datumsangaben, die diese beiden Sätze in eine Reihenfolge bringen. Woran Dachdecker scheitern, ist selten die Fotografie — es ist, dass die Datumsangaben von einem Handy kommen und der Versicherer sie nicht prüfen kann.",
+  "rf.faq.q2": "Vermisst GeoCliks das Dach oder erstellt es eine Kostenschätzung?",
+  "rf.faq.a2":
+    "Nein. Es misst keine Flächen, erzeugt keine Zeichnung und erstellt keine Xactimate-ähnliche Schätzung, und es ersetzt Ihr bestehendes Aufmaß-Werkzeug nicht. Es dokumentiert und verifiziert, was da war und was Sie getan haben — genau den Teil, den jene Werkzeuge nicht abdecken.",
+  "rf.faq.q3": "Kann ich beweisen, dass der Schaden vor meiner Reparatur bestand?",
+  "rf.faq.a3":
+    "Sie können ein Foto zeigen, dessen Aufnahmezeit gegen unsere Server geprüft und nicht von Ihrem Handy gelesen wurde, mit einem Inhalts-Hash versiegelt, sodass eine späte Bearbeitung erkennbar ist, und mit einem Code, den der Versicherer unabhängig nachschlagen kann. Das ist ein deutlich stärkerer Nachweis als ein Foto aus der Galerie. Ob ein bestimmter Versicherer ihn anerkennt, bleibt dessen Entscheidung — GeoCliks ist kein Versicherungs- oder Rechtsdienst und kann kein Schadenergebnis versprechen.",
+  "rf.faq.q4": "Funktioniert es oben auf einem Dach ohne Empfang?",
+  "rf.faq.a4":
+    "Ja. Aufnahmen warten auf dem Handy und werden hochgeladen, sobald Sie wieder Empfang haben; die erfasste Zeit ist der Moment der Aufnahme, nicht des Uploads. Das GPS wird auf dem Dach gelesen, der Stempel zeigt also das Objekt, auf dem Sie standen.",
+  "rf.faq.q5": "Kann der Eigentümer die Fotos sehen?",
+  "rf.faq.a5":
+    "Sie entscheiden. Teilen Sie einen Link auf einen Satz, oder geben Sie einen Foto-Code heraus, damit ein einzelnes Bild auf der öffentlichen Seite geprüft werden kann. Für beides muss niemand etwas installieren oder ein Konto anlegen.",
+  "rf.faq.q6": "Worin unterscheidet sich das von der Seite zur Baudokumentation?",
+  "rf.faq.a6":
+    "Gleiches Produkt, anderes Argument. Ein Generalunternehmer dokumentiert meist gegen einen Kundenstreit über Fortschritt und Umfang; ein Dachdecker dokumentiert meist gegen einen Gutachter, der ein datiertes Vorher und ein datiertes Nachher derselben Fläche braucht. Die Vorher/Nachher-Paarung und das Exportformat zählen hier mehr, und deshalb gibt es diese Seite getrennt.",
 };

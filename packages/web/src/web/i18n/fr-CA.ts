@@ -79,6 +79,9 @@ export const frCA: Catalog = {
   "seo.about.title": "À propos de GeoCliks — l'entreprise derrière le sceau photo",
   "seo.about.description":
     "Qui est GeoCliks : une entreprise de Moncton, au Nouveau-Brunswick, qui bâtit de la documentation photo vérifiée pour le terrain. Comment le sceau fonctionne et comment nous joindre.",
+  "seo.roofing.title": "Documentation photo de toiture pour les réclamations",
+  "seo.roofing.description":
+    "Documentez les dommages et le remplacement d'un toit avec l'heure vérifiée, le GPS et l'adresse sur chaque photo, jumelées avant et après pour les experts.",
   "signin.subtitle": "Documentation photo infalsifiable pour les équipes de terrain.",
   "signin.apple": "Continuer avec Apple",
   "signin.google": "Continuer avec Google",
@@ -2273,4 +2276,83 @@ export const frCA: Catalog = {
   "ab.faq.q6": "Dans quelles langues GeoCliks fonctionne-t-il?",
   "ab.faq.a6":
     "En onze : anglais, français (Canada), espagnol, portugais (Brésil), allemand, italien, polonais, arabe, vietnamien, tagalog et chinois. L'application, le Centre d'aide et les pages de ce site fonctionnent toutes dans ces langues, et une bannière apparaît sur tout article d'aide dont le corps est encore en anglais, plutôt que de vous laisser le découvrir.",
+  "rf.eyebrow": "Documentation photo de toiture",
+  "rf.h1": "Une documentation photo de toiture qui tient devant une réclamation",
+  "rf.sub":
+    "Des photos avant et après du même toit, avec l'heure vérifiée sur le réseau, le GPS et l'adresse civique sur chaque prise — et un code que l'expert en sinistres peut vérifier.",
+  "rf.s1.label": "Pourquoi les couvreurs cherchent ça",
+  "rf.s1.h2": "Les photos étaient correctes. C'est leur date qui posait problème.",
+  "rf.s1.intro":
+    "Une réclamation pour la grêle revient contestée. Un expert demande comment vous savez que les dommages sont antérieurs à l'arrachage. Trois mois plus tard, un propriétaire affirme que l'infiltration était déjà là avant votre arrivée. Chacun de ces cas se transforme en dispute sur une date, et une photo de la pellicule y répond avec l'heure du téléphone dans votre poche — que l'autre partie n'est pas tenue de croire. Cette page porte sur la version où ce n'est pas vous qui fixez la date.",
+  "rf.s2.label": "Comment ça marche",
+  "rf.s2.h2": "Quatre étapes, bâties autour de l'avant et de l'après.",
+  "rf.s3.label": "Conçu pour la réclamation",
+  "rf.s3.h2": "Trois choses qu'un dossier de toiture doit pouvoir encaisser.",
+  "rf.s4.label": "Pour les équipes et les sous-traitants",
+  "rf.s4.h2": "Un seul dossier de chantier, peu importe le nombre d'équipes.",
+  "rf.faqSection.label": "Questions",
+  "rf.faqSection.h2": "Foire aux questions",
+  "rf.step1.title": "Photographiez le toit avant d'y toucher",
+  "rf.step1.body":
+    "Chaque versant, chaque pénétration, chaque zone molle — dans l'appli GeoCliks. Hors ligne, aucun problème : les prises restent en file d'attente sur le téléphone.",
+  "rf.step2.title": "GeoCliks y inscrit la date et le lieu",
+  "rf.step2.body":
+    "L'heure vérifiée sur le réseau, les coordonnées GPS et l'adresse civique résolue sont inscrites dans chaque photo, avec une empreinte et un code de photo unique.",
+  "rf.step3.title": "Photographiez les mêmes versants après",
+  "rf.step3.body":
+    "Jumelez la prise d'après-travaux avec sa photo d'avant dans une seule comparaison, pour que les deux moitiés portent chacune sa date vérifiée de façon indépendante.",
+  "rf.step4.title": "Remettez le dossier à l'expert",
+  "rf.step4.body":
+    "Exportez le chantier en PDF avec l'heure, l'adresse et le code à côté de chaque photo. L'expert peut en vérifier n'importe laquelle sans compte.",
+  "rf.claim1.title": "Avant et après, démontrablement dans cet ordre",
+  "rf.claim1.body":
+    "Le jumelage ne vaut quelque chose que si les dates valent quelque chose. Les deux prises portent une heure vérifiée auprès de nos serveurs, si bien que la séquence ne dépend pas de la photo que vous dites être venue en premier.",
+  "rf.claim2.title": "Des dates de tempête qui concordent",
+  "rf.claim2.body":
+    "Une réclamation pour la grêle repose sur le fait que la photo des dommages précède la réparation et suive la tempête. Une heure de prise vérifiée place la photo à un jour précis sans dépendre du téléphone qui l'a prise.",
+  "rf.claim3.title": "La bonne maison, au dossier",
+  "rf.claim3.body":
+    "Les coordonnées et l'adresse civique résolue sont estampées sur chaque prise, ce qui règle la question que personne n'aime s'entendre poser : si ces photos sont bien celles de cette propriété.",
+  "rf.crew1.title": "Un chantier, les photos de toutes les équipes",
+  "rf.crew1.body":
+    "Les prises d'arrachage, de membrane de protection et de finition aboutissent dans le même projet, classées par jour, peu importe qui les a prises.",
+  "rf.crew2.title": "Les sous-traitants documentent leur propre portée",
+  "rf.crew2.body":
+    "Invitez une équipe de sous-traitants par lien ou par code QR imprimé. Ils documentent leur travail sans qu'on leur donne le reste du chantier ni la liste de clients.",
+  "rf.crew3.title": "Une clôture que le propriétaire garde",
+  "rf.crew3.body":
+    "Le même ensemble vérifié s'exporte en PDF pour le dossier, en ZIP pour l'expert, ou en KMZ si les travaux couvrent plusieurs adresses.",
+  "rf.cta.h2": "Documentez le prochain toit comme il faut",
+  "rf.cta.body":
+    "Gratuit à vie pour 300 photos vérifiées par mois, sans carte. Les forfaits payants ajoutent les prises illimitées, le jumelage avant/après à grande échelle et toutes les exportations.",
+  "rf.cta.primary": "Obtenir l'appli",
+  "rf.cta.secondary": "Voir les forfaits et les prix",
+  "rf.related.lead": "À lire aussi :",
+  "rf.related.construction": "documentation photo de chantier",
+  "rf.related.mid1": ",",
+  "rf.related.gps": "comment fonctionne l'appareil photo GPS horodaté",
+  "rf.related.mid2": ", ou",
+  "rf.related.companycam": "GeoCliks contre CompanyCam",
+  "rf.related.end": ".",
+  "rf.disclaimer":
+    "GeoCliks documente et vérifie. Il ne mesure pas les toits, ne rédige pas d'estimations et ne décide pas des réclamations.",
+  "rf.faq.q1":
+    "Quelles photos un expert en sinistres veut-il habituellement pour une réclamation de toiture ?",
+  "rf.faq.a1":
+    "La pratique varie d'un assureur à l'autre, mais le schéma récurrent est le suivant : des vues d'ensemble qui identifient la propriété, des plans rapprochés des dommages avec un objet pour l'échelle, les mêmes versants photographiés après les travaux, et des dates qui placent ces deux ensembles dans l'ordre. Ce qui fait perdre les couvreurs, c'est rarement la photographie — c'est que les dates viennent d'un téléphone et que l'assureur n'a aucun moyen de les vérifier.",
+  "rf.faq.q2": "GeoCliks mesure-t-il le toit ou produit-il une estimation ?",
+  "rf.faq.a2":
+    "Non. Il ne mesure pas les carrés, ne génère pas de schéma et ne produit pas d'estimation Xactimate ou semblable, et il ne remplacera pas l'outil de mesure que vous utilisez déjà. Il documente et vérifie ce qui était là et ce que vous avez fait, ce que ces outils ne font pas.",
+  "rf.faq.q3": "Puis-je prouver que les dommages précèdent ma réparation ?",
+  "rf.faq.a3":
+    "Vous pouvez montrer une photo dont l'heure de prise a été vérifiée auprès de nos serveurs plutôt que lue sur votre téléphone, scellée par une empreinte de contenu qui rend une modification ultérieure détectable, avec un code que l'assureur peut consulter de façon indépendante. C'est un dossier nettement plus solide qu'une photo de la pellicule. Qu'un assureur donné l'accepte demeure sa décision — GeoCliks n'est ni un service d'assurance ni un service juridique et ne peut promettre l'issue d'une réclamation.",
+  "rf.faq.q4": "Est-ce que ça fonctionne sur un toit sans signal ?",
+  "rf.faq.a4":
+    "Oui. Les prises restent en file d'attente sur le téléphone et se téléversent quand vous revenez à portée, et l'heure enregistrée est celle de la prise, pas du téléversement. Le GPS est lu sur le toit, donc l'estampe correspond à la propriété où vous vous trouviez.",
+  "rf.faq.q5": "Le propriétaire peut-il voir les photos ?",
+  "rf.faq.a5":
+    "À vous de choisir. Partagez un lien vers un ensemble, ou remettez un code de photo pour qu'il vérifie une image sur la page publique. Ni l'un ni l'autre ne l'oblige à installer quoi que ce soit ou à créer un compte.",
+  "rf.faq.q6": "En quoi est-ce différent de la page de documentation de chantier ?",
+  "rf.faq.a6":
+    "Même produit, argument différent. Un entrepreneur général documente généralement contre un litige avec le client sur l'avancement et la portée ; un couvreur documente généralement contre un expert qui a besoin d'un avant daté et d'un après daté du même versant. Le jumelage avant/après et le format d'exportation comptent davantage ici, et c'est pourquoi cette page existe à part.",
 };

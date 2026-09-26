@@ -76,56 +76,55 @@ export const PAGE_SCHEMA = {
   "/pricing": {
     crumbs: [{ name: "Pricing" }],
     faq: [
-    {
-      question: "Is the free plan really free?",
-      answer:
-        "Yes, and it does not expire. Free covers 300 captures a month, three projects, one seat, two watermark templates, 30-second video clips for the first three days, and a PDF export of up to 20 photos. No card is asked for.",
-    },
-    {
-      question: "What counts as a seat?",
-      answer:
-        "One person who can sign in to your workspace, whatever their role — the owner included. A pending invitation holds a seat until it is accepted or revoked, otherwise ten invites could be sent against two seats and everyone who accepted would be over the plan.",
-    },
-    {
-      question: "Do paid plans verify photos better than the free one?",
-      answer:
-        "No. The watermark data, the photo code and the seal are identical on every plan. What you pay for is volume, video length, teamspace, exports, sharing and delivery routing — never the proof itself.",
-    },
-    {
-      question: "Which plans include delivery routes?",
-      answer:
-        "Plus and above carry a monthly stop allowance, so you can run routes without leaving the evidence plans. If driving is most of the work, the Delivery plans cost far less per stop and add live dispatch, the smart optimizer and more drivers.",
-    },
-    {
-      question: "How are delivery stops counted?",
-      answer:
-        "Per calendar month, resetting on the 1st. A stop counts when it is added to a route, whether or not it ends up delivered. Going over the allowance stops new route building until the next month, so pick the plan that covers your busiest week rather than your average one.",
-    },
-    {
-      question: "Is there a trial on the Delivery plans?",
-      answer:
-        "Every Delivery plan starts with a free trial, which is why its button reads Free trial. The trial is once per workspace, not once per plan — moving from one Delivery plan to another bills straight away.",
-    },
-    {
-      question: "Can I change plan later?",
-      answer:
-        "Any time, from Billing in your workspace settings, and only the owner can do it. Moving up applies immediately and nothing already captured is touched. Moving down is refused while your workspace is bigger than the target plan — you are asked to remove members first instead of three people being cut off silently.",
-    },
-    {
-      question: "What happens to my photos if I cancel?",
-      answer:
-        "They are not deleted, and verification keeps working. The paid features stop: Excel, ZIP and KMZ exports, share links, teamspace and delivery routes. Export anything you need outside GeoCliks before you cancel — on Free you are back to a PDF of 20 photos.",
-    },
-    {
-      question: "How is payment handled, and where are the invoices?",
-      answer:
-        "Through our payment processor over a hosted checkout — your card number never reaches GeoCliks' servers. Every payment produces an invoice in the billing portal, where you can also add your company name and tax details.",
-    },
-    {
-      question: "What if we are bigger than Crew 25 or Fleet 500?",
-      answer:
-        `Then the plan is a conversation. Enterprise covers custom volumes, custom terms, and the governance a multi-site operation needs. Email ${SALES_EMAIL} with your team size, industry and regions and we will size it with you.`,
-    },
+      {
+        question: "Is the free plan really free?",
+        answer:
+          "Yes, and it does not expire. Free covers 300 captures a month, three projects, one seat, two watermark templates, 30-second video clips for the first three days, and a PDF export of up to 20 photos. No card is asked for.",
+      },
+      {
+        question: "What counts as a seat?",
+        answer:
+          "One person who can sign in to your workspace, whatever their role — the owner included. A pending invitation holds a seat until it is accepted or revoked, otherwise ten invites could be sent against two seats and everyone who accepted would be over the plan.",
+      },
+      {
+        question: "Do paid plans verify photos better than the free one?",
+        answer:
+          "No. The watermark data, the photo code and the seal are identical on every plan. What you pay for is volume, video length, teamspace, exports, sharing and delivery routing — never the proof itself.",
+      },
+      {
+        question: "Which plans include delivery routes?",
+        answer:
+          "Plus and above carry a monthly stop allowance, so you can run routes without leaving the evidence plans. If driving is most of the work, the Delivery plans cost far less per stop and add live dispatch, the smart optimizer and more drivers.",
+      },
+      {
+        question: "How are delivery stops counted?",
+        answer:
+          "Per calendar month, resetting on the 1st. A stop counts when it is added to a route, whether or not it ends up delivered. Going over the allowance stops new route building until the next month, so pick the plan that covers your busiest week rather than your average one.",
+      },
+      {
+        question: "Is there a trial on the Delivery plans?",
+        answer:
+          "Every Delivery plan starts with a free trial, which is why its button reads Free trial. The trial is once per workspace, not once per plan — moving from one Delivery plan to another bills straight away.",
+      },
+      {
+        question: "Can I change plan later?",
+        answer:
+          "Any time, from Billing in your workspace settings, and only the owner can do it. Moving up applies immediately and nothing already captured is touched. Moving down is refused while your workspace is bigger than the target plan — you are asked to remove members first instead of three people being cut off silently.",
+      },
+      {
+        question: "What happens to my photos if I cancel?",
+        answer:
+          "They are not deleted, and verification keeps working. The paid features stop: Excel, ZIP and KMZ exports, share links, teamspace and delivery routes. Export anything you need outside GeoCliks before you cancel — on Free you are back to a PDF of 20 photos.",
+      },
+      {
+        question: "How is payment handled, and where are the invoices?",
+        answer:
+          "Through our payment processor over a hosted checkout — your card number never reaches GeoCliks' servers. Every payment produces an invoice in the billing portal, where you can also add your company name and tax details.",
+      },
+      {
+        question: "What if we are bigger than Crew 25 or Fleet 500?",
+        answer: `Then the plan is a conversation. Enterprise covers custom volumes, custom terms, and the governance a multi-site operation needs. Email ${SALES_EMAIL} with your team size, industry and regions and we will size it with you.`,
+      },
     ],
   },
   "/alternatives/companycam": {
@@ -162,58 +161,34 @@ export const PAGE_SCHEMA = {
   "/proof-of-delivery": {
     crumbs: [{ name: "Proof of Delivery" }],
     faq: [
-    { keys: { question: "pod.faq.q1", answer: "pod.faq.a1" } },
-    { keys: { question: "pod.faq.q2", answer: "pod.faq.a2" } },
-    { keys: { question: "pod.faq.q3", answer: "pod.faq.a3" } },
-    { keys: { question: "pod.faq.q4", answer: "pod.faq.a4" } },
-    { keys: { question: "pod.faq.q5", answer: "pod.faq.a5" } },
-    { keys: { question: "pod.faq.q6", answer: "pod.faq.a6" } },
+      { keys: { question: "pod.faq.q1", answer: "pod.faq.a1" } },
+      { keys: { question: "pod.faq.q2", answer: "pod.faq.a2" } },
+      { keys: { question: "pod.faq.q3", answer: "pod.faq.a3" } },
+      { keys: { question: "pod.faq.q4", answer: "pod.faq.a4" } },
+      { keys: { question: "pod.faq.q5", answer: "pod.faq.a5" } },
+      { keys: { question: "pod.faq.q6", answer: "pod.faq.a6" } },
     ],
   },
   "/gps-timestamp-camera": {
     crumbs: [{ name: "GPS Timestamp Camera" }],
     faq: [
-    { keys: { question: "gps.faq.q1", answer: "gps.faq.a1" } },
-    { keys: { question: "gps.faq.q2", answer: "gps.faq.a2" } },
-    { keys: { question: "gps.faq.q3", answer: "gps.faq.a3" } },
-    { keys: { question: "gps.faq.q4", answer: "gps.faq.a4" } },
-    { keys: { question: "gps.faq.q5", answer: "gps.faq.a5" } },
-    { keys: { question: "gps.faq.q6", answer: "gps.faq.a6" } },
+      { keys: { question: "gps.faq.q1", answer: "gps.faq.a1" } },
+      { keys: { question: "gps.faq.q2", answer: "gps.faq.a2" } },
+      { keys: { question: "gps.faq.q3", answer: "gps.faq.a3" } },
+      { keys: { question: "gps.faq.q4", answer: "gps.faq.a4" } },
+      { keys: { question: "gps.faq.q5", answer: "gps.faq.a5" } },
+      { keys: { question: "gps.faq.q6", answer: "gps.faq.a6" } },
     ],
   },
   "/roofing-photo-documentation": {
     crumbs: [{ name: "Roofing Photo Documentation" }],
     faq: [
-    {
-      question: "What photos does an insurance adjuster usually want on a roof claim?",
-      answer:
-        "Practice varies by carrier, but the recurring pattern is overview shots that identify the property, close-ups of the damage with something for scale, the same planes photographed after the work, and dates that put those two sets in order. The part roofers lose on is rarely the photography — it is that the dates come from a phone and the carrier has no way to check them.",
-    },
-    {
-      question: "Does GeoCliks measure the roof or produce an estimate?",
-      answer:
-        "No. It does not measure squares, generate a diagram, or produce an Xactimate or similar estimate, and it will not replace the measurement tool you already use. It documents and verifies what was there and what you did, which is the part those tools do not do.",
-    },
-    {
-      question: "Can I prove the damage predates my repair?",
-      answer:
-        "You can show a photo whose capture time was verified against our servers rather than read from your phone, sealed with a content hash so a later edit is detectable, with a code the carrier can look up independently. That is a substantially stronger record than a camera-roll photo. Whether a specific carrier accepts it is still their decision — GeoCliks is not an insurance or legal service and cannot promise a claim outcome.",
-    },
-    {
-      question: "Does it work up on a roof with no signal?",
-      answer:
-        "Yes. Captures queue on the phone and upload when you are back in range, and the recorded time is the moment of capture, not of upload. GPS is read on the roof, so the stamp is the property you were standing on.",
-    },
-    {
-      question: "Can the homeowner see the photos?",
-      answer:
-        "You choose. Share a link to a set, or hand over a photo code so they can verify a single image on the public page. Neither requires them to install anything or create an account.",
-    },
-    {
-      question: "How is this different from the construction documentation page?",
-      answer:
-        "Same product, different argument. A general contractor is usually documenting against a client dispute over progress and scope; a roofer is usually documenting against an adjuster who needs a dated before and a dated after of the same plane. The before/after pairing and the export format matter more here, which is why this page exists separately.",
-    },
+      { keys: { question: "rf.faq.q1", answer: "rf.faq.a1" } },
+      { keys: { question: "rf.faq.q2", answer: "rf.faq.a2" } },
+      { keys: { question: "rf.faq.q3", answer: "rf.faq.a3" } },
+      { keys: { question: "rf.faq.q4", answer: "rf.faq.a4" } },
+      { keys: { question: "rf.faq.q5", answer: "rf.faq.a5" } },
+      { keys: { question: "rf.faq.q6", answer: "rf.faq.a6" } },
     ],
   },
   "/hvac-photo-documentation": {
@@ -319,9 +294,7 @@ function helpJsonLd(rest: string): object[] {
       // Each article's title is the problem and its summary is the one-line
       // answer, which is exactly a question/answer pair. Same mapping the page
       // itself uses.
-      faqSchema(
-        articles.map((article) => ({ question: article.title, answer: article.summary })),
-      ),
+      faqSchema(articles.map((article) => ({ question: article.title, answer: article.summary }))),
     ];
   }
 

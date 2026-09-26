@@ -397,3 +397,28 @@ Verified on all eleven — localized `<title>`, prefixed canonical, one `FAQPage
 block each; post-hydration `canonical == og:url` and translated `<h1>` on
 en/es/ar/zh/pl across this page and the seven earlier ones, 40/40, 0 failures.
 tsc clean, lint at the 9-error baseline.
+
+## `/roofing-photo-documentation` — done
+
+58 page keys plus `seo.roofing.title`/`.description` per catalog under `rf.*` —
+eyebrow, h1 and sub, the four section headers, the four steps, the three claim
+cards, the three crew cards, six FAQ pairs, CTA, the three-link closing
+sentence and the scope disclaimer — all eleven locales, pure insertions, 0
+deletions on every catalog after formatting.
+
+Same shape as the construction page, so it got the same treatment: `STEPS`,
+`CLAIM_CARDS` and `CREW_CARDS` became `TKey` arrays mapped through a small
+`card` helper, `pageFaq` moved inside the component so it takes `locale`, and
+the repeated link classes collapsed into `LINK_CLASS`.
+
+`PAGE_SCHEMA` FAQ converted to `{ keys: { question, answer } }` (six entries),
+path added to `LOCALIZED_PATHS`, `LOCALIZED_SEO` row pointing at
+`seo.roofing.*`. Sitemap 189 -> 199 URLs.
+
+Scratch JSON parsed clean on the first pass; `ar.ts` `home.samples.altFiber`
+collapsed under `oxfmt` again and was restored by hand.
+
+Verified on all eleven — localized `<title>`, prefixed canonical, one `FAQPage`
+block each; post-hydration `canonical == og:url` and translated `<h1>` on
+en/es/ar/zh/pl across this page and the eight earlier ones, 45/45, 0 failures.
+tsc clean, lint at the 9-error baseline.
