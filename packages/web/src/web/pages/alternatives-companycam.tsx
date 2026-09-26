@@ -253,6 +253,13 @@ export default function AlternativesCompanyCam() {
             >
               Read the construction photo documentation overview
             </Link>
+            . Comparing timestamp apps instead?{" "}
+            <Link
+              to="/alternatives/timemark"
+              className="font-semibold text-amber underline decoration-amber/40 underline-offset-4 hover:decoration-amber"
+            >
+              See GeoCliks vs Timemark
+            </Link>
             .
           </p>
         </div>

@@ -622,6 +622,7 @@ export const ptBR: Catalog = {
   "home.nav.blog": "Blog",
   "home.footer.fieldNotesTag": "Guias de documentação fotográfica verificada",
   "home.nav.vsCompanycam": "GeoCliks vs. CompanyCam",
+  "home.nav.vsTimemark": "GeoCliks vs. Timemark",
   "home.nav.emailSupport": "Suporte por e-mail",
   "home.nav.contactSales": "Falar com vendas",
   "join.checking": "Verificando o convite…",

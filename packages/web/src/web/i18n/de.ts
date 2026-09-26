@@ -627,6 +627,7 @@ export const de: Catalog = {
   "home.nav.blog": "Blog",
   "home.footer.fieldNotesTag": "Leitfäden zur verifizierten Fotodokumentation",
   "home.nav.vsCompanycam": "GeoCliks vs. CompanyCam",
+  "home.nav.vsTimemark": "GeoCliks vs. Timemark",
   "home.nav.emailSupport": "E-Mail-Support",
   "home.nav.contactSales": "Vertrieb kontaktieren",
   "join.checking": "Einladung wird geprüft…",

@@ -629,6 +629,7 @@ export const frCA: Catalog = {
   "home.nav.blog": "Blogue",
   "home.footer.fieldNotesTag": "Guides de documentation photo vérifiée",
   "home.nav.vsCompanycam": "GeoCliks vs CompanyCam",
+  "home.nav.vsTimemark": "GeoCliks vs Timemark",
   "home.nav.emailSupport": "Soutien par courriel",
   "home.nav.contactSales": "Parler aux ventes",
   "join.checking": "Vérification de l'invitation…",

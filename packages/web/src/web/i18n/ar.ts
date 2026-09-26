@@ -596,6 +596,7 @@ export const ar: Catalog = {
   "home.nav.blog": "المدونة",
   "home.footer.fieldNotesTag": "أدلة توثيق الصور الموثَّقة",
   "home.nav.vsCompanycam": "GeoCliks مقابل CompanyCam",
+  "home.nav.vsTimemark": "GeoCliks مقابل Timemark",
   "home.nav.emailSupport": "الدعم عبر البريد",
   "home.nav.contactSales": "تواصل مع المبيعات",
   "join.checking": "جارٍ التحقق من الدعوة…",

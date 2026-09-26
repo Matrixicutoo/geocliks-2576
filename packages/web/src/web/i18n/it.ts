@@ -622,6 +622,7 @@ export const it: Catalog = {
   "home.nav.blog": "Blog",
   "home.footer.fieldNotesTag": "Guide alla documentazione fotografica verificata",
   "home.nav.vsCompanycam": "GeoCliks vs CompanyCam",
+  "home.nav.vsTimemark": "GeoCliks vs Timemark",
   "home.nav.emailSupport": "Supporto via e-mail",
   "home.nav.contactSales": "Contatta le vendite",
   "join.checking": "Verifica dell'invito…",

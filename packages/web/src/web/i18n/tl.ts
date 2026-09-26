@@ -625,6 +625,7 @@ export const tl: Catalog = {
   "home.nav.blog": "Blog",
   "home.footer.fieldNotesTag": "Mga gabay sa verified na photo documentation",
   "home.nav.vsCompanycam": "GeoCliks vs CompanyCam",
+  "home.nav.vsTimemark": "GeoCliks vs Timemark",
   "home.nav.emailSupport": "Suporta sa email",
   "home.nav.contactSales": "Makipag-ugnayan sa sales",
   "join.checking": "Sinusuri ang imbitasyon…",

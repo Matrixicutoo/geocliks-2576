@@ -620,6 +620,7 @@ export const pl: Catalog = {
   "home.nav.blog": "Blog",
   "home.footer.fieldNotesTag": "Poradniki weryfikowanej dokumentacji zdjęciowej",
   "home.nav.vsCompanycam": "GeoCliks a CompanyCam",
+  "home.nav.vsTimemark": "GeoCliks a Timemark",
   "home.nav.emailSupport": "Wsparcie e-mail",
   "home.nav.contactSales": "Kontakt ze sprzedażą",
   "join.checking": "Sprawdzanie zaproszenia…",

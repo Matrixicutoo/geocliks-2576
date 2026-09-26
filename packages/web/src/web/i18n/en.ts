@@ -630,6 +630,7 @@ export const en = {
   "home.nav.blog": "Blog",
   "home.footer.fieldNotesTag": "Verified photo documentation guides",
   "home.nav.vsCompanycam": "GeoCliks vs CompanyCam",
+  "home.nav.vsTimemark": "GeoCliks vs Timemark",
   "home.nav.emailSupport": "Email support",
   "home.nav.contactSales": "Contact sales",
   "join.checking": "Checking the invite…",

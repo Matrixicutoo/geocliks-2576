@@ -615,6 +615,7 @@ export const vi: Catalog = {
   "home.nav.blog": "Blog",
   "home.footer.fieldNotesTag": "Hướng dẫn tài liệu ảnh đã xác minh",
   "home.nav.vsCompanycam": "GeoCliks so với CompanyCam",
+  "home.nav.vsTimemark": "GeoCliks so với Timemark",
   "home.nav.emailSupport": "Hỗ trợ qua email",
   "home.nav.contactSales": "Liên hệ kinh doanh",
   "join.checking": "Đang kiểm tra lời mời…",

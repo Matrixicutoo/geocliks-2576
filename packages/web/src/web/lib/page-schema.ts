@@ -170,6 +170,36 @@ export const PAGE_SCHEMA = {
     },
     ],
   },
+  "/alternatives/timemark": {
+    crumbs: [{ name: "Alternatives" }, { name: "Timemark" }],
+    faq: [
+    {
+      question: "What is the actual difference between GeoCliks and Timemark?",
+      answer:
+        "Less than most comparison pages would claim. Both take the capture time from a network rather than the phone, both issue a per-photo code, and both let anyone check that code on the web without the app. Three differences are real. A GeoCliks code is on every capture on every plan, while Timemark's Photo Code is a feature to enable — their own FAQ answers a failed verification by telling you to switch it on. A GeoCliks seal covers the image bytes with a SHA-256 hash and an HMAC-SHA256 signature over the metadata, while Timemark's help notes that editing a photo's watermark after capture leaves its Photo Code unchanged. And GeoCliks charges flat monthly bands with the seats included rather than per user.",
+    },
+    {
+      question: "Is GeoCliks cheaper than Timemark?",
+      answer:
+        "It depends entirely on how many people you are paying for. Timemark prices per user — $5 a month on Plus, $7 on Business — so one person is cheaper there than the $7 a GeoCliks solo plan costs. GeoCliks charges flat bands with the seats in them: $25 for Business, $45 for ten seats, $105 for twenty-five. Ten seats is therefore $70 a month on their Business plan against $45 here, and the gap widens with the crew. Both have a free plan: 300 verified photos a month here, 100 photos in Teamspace there.",
+    },
+    {
+      question: "Can I move my Timemark photos into GeoCliks?",
+      answer:
+        "Not as verified captures, and that is a property of how verification works rather than a missing feature. A photo is sealed at the moment it is taken, using the server's time and a hash of the bytes as they arrive, so nothing imported afterwards can be given that seal honestly. You can keep your Timemark archive and export from it as normal. Teams switching usually pick a date, capture new jobs in GeoCliks from then on, and leave the old projects where they are.",
+    },
+    {
+      question: "Is Timemark's photo code the same as a GeoCliks photo code?",
+      answer:
+        "They do the same job — a short string on the image that a third party can type into the vendor's site to see the recorded time and place — and Timemark's is 14 characters to our shorter one. The difference is what the code is bound to. Ours is signed together with a SHA-256 hash of the image bytes, so an altered file no longer matches the record the code points at. Theirs maps to the capture record, and their help centre states that editing the watermark after capture does not change the code, while their paid plans offer editing or removing that watermark.",
+    },
+    {
+      question: "Why would I pick Timemark over GeoCliks?",
+      answer:
+        "Two honest reasons. If you are one person and want the cheapest verified-photo app, their Plus plan undercuts us by two dollars a month. And if you need breadth more than depth, they ship things this product does not: digital checklists, time tracking, KML map overlays, OneDrive and SharePoint backup, and an interface in ten languages. What you would be giving up is a code that is on before you need it, a seal over the image bytes, and flat pricing at crew size.",
+    },
+    ],
+  },
   "/construction-photo-documentation": {
     crumbs: [{ name: "Construction Photo Documentation" }],
     faq: [

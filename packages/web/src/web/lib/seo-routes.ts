@@ -83,6 +83,14 @@ export const PAGE_SEO = {
       "See how GeoCliks compares to CompanyCam on tamper-proof timestamps, GPS verification, pricing and team features, with what each one does not do.",
   },
 
+  // The nearest competitor, so the description leads with the thing the query
+  // is really asking: both verify, so what is left to choose between.
+  "/alternatives/timemark": {
+    title: "GeoCliks vs Timemark — Compare Verification & Pricing",
+    description:
+      "Both verify photo time against a network. Compare what each seal actually covers, whether the photo code is on by default, and how per-seat and flat pricing differ.",
+  },
+
   // The five use-case pages. Each one owns a distinct query with its own intent,
   // which is the reason they are separate pages and not sections of the home
   // page: "gps timestamp camera" is someone looking for a tool, "proof of

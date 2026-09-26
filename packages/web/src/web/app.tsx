@@ -47,6 +47,7 @@ const ConstructionPhotoDocumentation = lazy(
   () => import("./pages/construction-photo-documentation"),
 );
 const AlternativesCompanyCam = lazy(() => import("./pages/alternatives-companycam"));
+const AlternativesTimemark = lazy(() => import("./pages/alternatives-timemark"));
 // Use-case landing pages. Each one answers a distinct search intent rather than
 // restating the home page: a trade, a document type, or the tool itself. They
 // are English-only by design — see the note in components/landing-page.tsx.
@@ -313,6 +314,9 @@ function App() {
               </Route>
               <Route path="/alternatives/companycam">
                 <AlternativesCompanyCam />
+              </Route>
+              <Route path="/alternatives/timemark">
+                <AlternativesTimemark />
               </Route>
 
               <Route path="/about">

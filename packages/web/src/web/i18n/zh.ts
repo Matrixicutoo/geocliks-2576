@@ -585,6 +585,7 @@ export const zh: Catalog = {
   "home.nav.blog": "博客",
   "home.footer.fieldNotesTag": "已验证照片记录指南",
   "home.nav.vsCompanycam": "GeoCliks 与 CompanyCam 对比",
+  "home.nav.vsTimemark": "GeoCliks 与 Timemark 对比",
   "home.nav.emailSupport": "邮件支持",
   "home.nav.contactSales": "联系销售",
   "join.checking": "正在检查邀请…",
