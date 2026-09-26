@@ -248,7 +248,7 @@ export default function ShareView() {
       <footer className="border-t border-line px-5 py-6 text-center">
         <p className="mono text-[10.5px] uppercase tracking-widest text-fog">
           {t("shareView.documented")} ·{" "}
-          <a href="https://www.geocliks.com/" className="text-amber hover:underline">
+          <a href="https://geocliks.com/" className="text-amber hover:underline">
             geocliks.com
           </a>
         </p>

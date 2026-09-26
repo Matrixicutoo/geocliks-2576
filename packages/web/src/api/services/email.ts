@@ -103,5 +103,7 @@ export async function sendEmail(options: SendEmailOptions): Promise<SendResult> 
 
 /** Public origin of the app, used to build links inside emails. */
 export function siteUrl(): string {
-  return (process.env.WEBSITE_URL ?? "https://www.geocliks.com").replace(/\/+$/, "");
+  // Apex, matching the canonical host and the `WEBSITE_URL` that is actually
+  // set in every deployed environment. Only reached when the variable is missing.
+  return (process.env.WEBSITE_URL ?? "https://geocliks.com").replace(/\/+$/, "");
 }

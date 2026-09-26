@@ -107,7 +107,8 @@ const FEATURE_ITEMS: MenuItem[] = [
 const RESOURCE_ITEMS: MenuItem[] = [
   { label: "getapp.ctaPrimary", href: "/get-app" },
   { label: "verify.navLink", href: "/verify" },
-  { label: "home.nav.website", href: "https://www.geocliks.com/", external: true },
+  // Apex host, to match every canonical on the site — see the note in site-footer.
+  { label: "home.nav.website", href: "https://geocliks.com/", external: true },
   { label: "home.nav.help", href: "/help" },
   { label: "home.nav.constructionDocs", href: "/construction-photo-documentation" },
   { label: "home.nav.vsCompanycam", href: "/alternatives/companycam" },

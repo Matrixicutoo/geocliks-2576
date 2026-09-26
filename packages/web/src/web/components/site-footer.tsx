@@ -100,13 +100,18 @@ export function SiteFooter() {
           <div>
             <p className="label">{t("home.footer.company")}</p>
             <div className="mt-3 flex flex-col gap-2 text-[13px] text-fog">
+              {/* The apex, not `www`: every canonical on the site is
+                  `https://geocliks.com/…`, and an internal link to the other
+                  host spends a redirect hop and muddies which host is the real
+                  one. `www` still 301s here, so the old link worked — it just
+                  disagreed with the canonical tag it pointed at. */}
               <a
-                href="https://www.geocliks.com/"
+                href="https://geocliks.com/"
                 className="transition-colors hover:text-chalk"
                 target="_blank"
                 rel="noreferrer"
               >
-                www.geocliks.com
+                geocliks.com
               </a>
               <Link to="/terms" className="transition-colors hover:text-chalk">
                 {t("home.footer.terms")}
