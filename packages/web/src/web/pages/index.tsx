@@ -136,6 +136,12 @@ function Hero() {
           decoding="async"
         />
       </picture>
+      {/* `preload="none"` rather than `auto`: the <picture> still above is this
+          section's LCP element and is already fetched with the document, so
+          pre-buffering the whole cut alongside it only competes for the same
+          first-paint bandwidth — and on a phone it spent megabytes of someone's
+          data on a decorative loop. `autoPlay` still fetches and starts the
+          video; the browser just gets the document and the still first. */}
       {footage ? (
         <video
           key={footage.src}
@@ -146,7 +152,7 @@ function Hero() {
           muted
           loop
           playsInline
-          preload="auto"
+          preload="none"
           aria-hidden="true"
           tabIndex={-1}
         >
@@ -178,13 +184,22 @@ function Hero() {
             <ShieldCheck className="size-3.5" /> {t("home.hero.eyebrow")}
           </motion.p>
 
+          {/* One H1, two readings of it. The visible line is the brand promise and stays
+              exactly as designed; the sr-only span in front of it is what a crawler and a
+              screen reader get, because "Proof your work happened." names no product, no
+              industry and no search anyone runs. Both live inside the single H1 rather than
+              as two competing headings, so the element's text content carries the keywords
+              without the page having a second H1. */}
           <motion.h1
             variants={riseIn}
             className="mt-6 font-display text-[46px] font-extrabold leading-[1.03] tracking-tight text-chalk sm:text-[64px]"
           >
-            {t("home.hero.title1")}
-            <br />
-            <span className="text-amber">{t("home.hero.title2")}</span>
+            <span className="sr-only">{t("home.hero.h1Seo")}</span>
+            <span aria-hidden="true">
+              {t("home.hero.title1")}
+              <br />
+              <span className="text-amber">{t("home.hero.title2")}</span>
+            </span>
           </motion.h1>
 
           <motion.p
@@ -316,22 +331,22 @@ function Teamspace() {
             {[
               {
                 file: "fiber-technician.jpg",
-                alt: "industry.fiber" as TKey,
+                alt: "home.samples.altFiber" as TKey,
                 code: "GC-7QM4-18RT-04KP",
               },
               {
                 file: "construction-framing.jpg",
-                alt: "industry.construction" as TKey,
+                alt: "home.samples.altConstruction" as TKey,
                 code: "GC-2XD9-73BV-51HN",
               },
               {
                 file: "property-walkthrough.jpg",
-                alt: "industry.property" as TKey,
+                alt: "home.samples.altProperty" as TKey,
                 code: "GC-9FA6-20LC-88YW",
               },
               {
                 file: "hvac-install.jpg",
-                alt: "industry.hvac" as TKey,
+                alt: "home.samples.altHvac" as TKey,
                 code: "GC-4RJ1-65NE-37TQ",
               },
             ].map((shot) => (
@@ -395,14 +410,27 @@ function Reports() {
 
           <div className="grid gap-3 sm:grid-cols-2">
             {[
-              { file: "roof-damage.jpg", tag: "BEFORE", label: "tag.before" as TKey },
-              { file: "roof-replaced.jpg", tag: "AFTER", label: "tag.after" as TKey },
-            ].map(({ file, tag, label }) => (
+              {
+                file: "roof-damage.jpg",
+                tag: "BEFORE",
+                label: "tag.before" as TKey,
+                alt: "home.compare.altBefore" as TKey,
+              },
+              {
+                file: "roof-replaced.jpg",
+                tag: "AFTER",
+                label: "tag.after" as TKey,
+                alt: "home.compare.altAfter" as TKey,
+              },
+              /* label is the badge burned over the corner of the image, alt is what a
+                 crawler and a screen reader get. They were the same string until the alt
+                 said only "Before", which describes nothing about the roof in the frame. */
+            ].map(({ file, tag, label, alt }) => (
               <div key={file} className="rounded-[12px] border border-line bg-ink-2 p-2">
                 <div className="relative overflow-hidden">
                   <img
                     src={`/images/samples/${file}`}
-                    alt={t(label)}
+                    alt={t(alt)}
                     className="aspect-[3/4] w-full object-cover"
                     loading="lazy"
                     decoding="async"
@@ -521,21 +549,27 @@ function Delivery() {
 
   /* Three types carry a photo; the remaining four stay text-only so the section
      reads in one screen instead of turning into a wall of stock imagery. */
+  /* `name` is the heading under the photo, `alt` describes the photo itself. Reusing the
+     name for both left three images announcing "Fleet and courier" — the category, not
+     what is in the frame — which is the alt text equivalent of saying nothing. */
   const tiles = [
     {
       file: "fleet-vans.jpg",
       name: "home.delivery.t1.name" as TKey,
       body: "home.delivery.t1.body" as TKey,
+      alt: "home.delivery.altT1" as TKey,
     },
     {
       file: "restaurant-pickup.jpg",
       name: "home.delivery.t2.name" as TKey,
       body: "home.delivery.t2.body" as TKey,
+      alt: "home.delivery.altT2" as TKey,
     },
     {
       file: "grocery-totes.jpg",
       name: "home.delivery.t3.name" as TKey,
       body: "home.delivery.t3.body" as TKey,
+      alt: "home.delivery.altT3" as TKey,
     },
   ];
 
@@ -596,7 +630,7 @@ function Delivery() {
               >
                 <img
                   src={`/images/delivery/${tile.file}`}
-                  alt={t(tile.name)}
+                  alt={t(tile.alt)}
                   className="aspect-[4/3] w-full object-cover"
                   loading="lazy"
                   decoding="async"

@@ -112,6 +112,22 @@ export const zh: Catalog = {
   "home.hero.eyebrow": "经网络验证的照片证据",
   "home.hero.title1": "证明你的工作",
   "home.hero.title2": "确实完成了。",
+
+  /* The hidden H1 and the home page's image alt text, grouped so all of it can be
+     read in one place. The alts used to reuse the visible industry labels
+     ("Construction", "HVAC", "Before"), which named the subject but said nothing
+     about what is happening in the frame or that the capture is verified. */
+  "home.hero.h1Seo": "防篡改施工照片记录：时间、GPS 坐标与街道地址均经网络核验",
+  "home.samples.altFiber": "光纤技术员拍摄接续盒，由 GeoCliks 打上经核验的时间与 GPS 水印",
+  "home.samples.altConstruction": "工地木结构框架，附带 GeoCliks 照片核验码的记录照片",
+  "home.samples.altProperty": "物业经理拍摄房屋巡检照片，带经核验的时间与地址",
+  "home.samples.altHvac": "暖通技术员用经核验的 GeoCliks 照片记录冷凝机组安装完工",
+  "home.compare.altBefore": "维修前拍摄的风暴受损屋顶，带经核验的时间与 GPS",
+  "home.compare.altAfter": "同一屋顶更换后的照片，用于经核验的前后对比索赔",
+  "home.delivery.altT1": "配送车辆在场站装货，准备开始 GeoCliks 规划的路线",
+  "home.delivery.altT2": "司机取餐厅订单，开始一趟经核验的配送",
+  "home.delivery.altT3": "生鲜袋在门口交付，并留下签收证明照片",
+
   "home.hero.body":
     "GeoCliks 为每张现场照片打上经网络验证的时间戳、GPS 坐标和街道地址，再用无人可改的唯一照片编码封存。工人拍照，办公室当天就能拿到竣工报告。",
   "home.hero.noSignal": "无信号也能用",

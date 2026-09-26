@@ -124,6 +124,29 @@ export const en = {
   "home.hero.eyebrow": "Network-verified photo evidence",
   "home.hero.title1": "Proof your work",
   "home.hero.title2": "happened.",
+
+  /* The hidden H1 and the home page's image alt text, grouped so all of it can be
+     read in one place. The alts used to reuse the visible industry labels
+     ("Construction", "HVAC", "Before"), which named the subject but said nothing
+     about what is happening in the frame or that the capture is verified. */
+  "home.hero.h1Seo":
+    "Tamper-proof construction photo documentation with network-verified GPS, time and street address",
+  "home.samples.altFiber":
+    "Fiber technician photographing a splice closure, stamped by GeoCliks with verified time and GPS",
+  "home.samples.altConstruction":
+    "Timber framing on a jobsite, documented with a GeoCliks photo and its verification code",
+  "home.samples.altProperty":
+    "Property manager photographing a unit walkthrough with verified time and street address",
+  "home.samples.altHvac":
+    "HVAC technician documenting a finished condenser install with a verified GeoCliks photo",
+  "home.compare.altBefore":
+    "Storm-damaged roof photographed before the repair, with verified time and GPS",
+  "home.compare.altAfter":
+    "The same roof photographed after replacement, verified for a before-and-after claim",
+  "home.delivery.altT1": "Delivery vans loading at the depot before a route planned in GeoCliks",
+  "home.delivery.altT2": "Driver collecting a restaurant order for a verified delivery run",
+  "home.delivery.altT3": "Grocery totes handed over at a doorstep with a proof-of-delivery photo",
+
   "home.hero.body":
     "GeoCliks stamps every field photo with a network-verified timestamp, GPS coordinates and the street address — then locks it with a unique photo code nobody can edit. Crews capture, the office gets a closeout report the same day.",
   "home.hero.noSignal": "Works with no signal",

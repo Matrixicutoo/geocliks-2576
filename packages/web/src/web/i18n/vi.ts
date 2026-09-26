@@ -113,6 +113,29 @@ export const vi: Catalog = {
   "home.hero.eyebrow": "Bằng chứng ảnh được mạng xác thực",
   "home.hero.title1": "Bằng chứng công việc của bạn",
   "home.hero.title2": "đã thực sự diễn ra.",
+
+  /* The hidden H1 and the home page's image alt text, grouped so all of it can be
+     read in one place. The alts used to reuse the visible industry labels
+     ("Construction", "HVAC", "Before"), which named the subject but said nothing
+     about what is happening in the frame or that the capture is verified. */
+  "home.hero.h1Seo":
+    "Tài liệu ảnh công trường chống giả mạo, có thời gian, GPS và địa chỉ được xác thực qua mạng",
+  "home.samples.altFiber":
+    "Kỹ thuật viên cáp quang chụp hộp nối, được GeoCliks đóng dấu thời gian và GPS đã xác thực",
+  "home.samples.altConstruction":
+    "Khung gỗ tại công trường, được ghi nhận bằng ảnh GeoCliks kèm mã xác thực",
+  "home.samples.altProperty":
+    "Quản lý toà nhà chụp ảnh nghiệm thu căn hộ với thời gian và địa chỉ đã xác thực",
+  "home.samples.altHvac":
+    "Kỹ thuật viên HVAC ghi nhận việc lắp dàn nóng bằng ảnh GeoCliks đã xác thực",
+  "home.compare.altBefore":
+    "Mái nhà bị bão làm hỏng, chụp trước khi sửa với thời gian và GPS đã xác thực",
+  "home.compare.altAfter": "Cùng mái nhà sau khi thay mới, đã xác thực cho hồ sơ trước - sau",
+  "home.delivery.altT1":
+    "Xe tải giao hàng đang xếp hàng tại kho trước chuyến đi do GeoCliks lập lộ trình",
+  "home.delivery.altT2": "Tài xế nhận đơn từ nhà hàng cho một chuyến giao đã xác thực",
+  "home.delivery.altT3": "Túi hàng tạp hoá được giao tại cửa kèm ảnh chứng minh đã giao",
+
   "home.hero.body":
     "GeoCliks đóng dấu mọi ảnh hiện trường bằng mốc thời gian được mạng xác thực, tọa độ GPS và địa chỉ đường phố — rồi khóa lại bằng mã ảnh duy nhất không ai sửa được. Đội thi công chụp ảnh, văn phòng nhận báo cáo hoàn công ngay trong ngày.",
   "home.hero.noSignal": "Hoạt động khi không có tín hiệu",

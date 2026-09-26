@@ -113,6 +113,31 @@ export const de: Catalog = {
   "home.hero.eyebrow": "Netzwerkverifizierte Fotobeweise",
   "home.hero.title1": "Der Beweis, dass Ihre Arbeit",
   "home.hero.title2": "erledigt ist.",
+
+  /* The hidden H1 and the home page's image alt text, grouped so all of it can be
+     read in one place. The alts used to reuse the visible industry labels
+     ("Construction", "HVAC", "Before"), which named the subject but said nothing
+     about what is happening in the frame or that the capture is verified. */
+  "home.hero.h1Seo":
+    "Fälschungssichere Baustellen-Fotodokumentation mit netzwerkgeprüfter Zeit, GPS-Position und Adresse",
+  "home.samples.altFiber":
+    "Ein Glasfasertechniker fotografiert eine Spleißmuffe, von GeoCliks mit geprüfter Zeit und GPS gestempelt",
+  "home.samples.altConstruction":
+    "Holzrahmenbau auf einer Baustelle, dokumentiert mit einem GeoCliks-Foto samt Prüfcode",
+  "home.samples.altProperty":
+    "Eine Objektverwalterin fotografiert eine Wohnungsabnahme mit geprüfter Zeit und Adresse",
+  "home.samples.altHvac":
+    "Ein Klimatechniker dokumentiert eine fertige Verflüssiger-Montage mit einem geprüften GeoCliks-Foto",
+  "home.compare.altBefore":
+    "Sturmschaden am Dach, vor der Reparatur fotografiert mit geprüfter Zeit und GPS",
+  "home.compare.altAfter":
+    "Dasselbe Dach nach der Sanierung, geprüft für einen Vorher-Nachher-Nachweis",
+  "home.delivery.altT1":
+    "Lieferwagen werden im Depot beladen, bevor eine in GeoCliks geplante Tour startet",
+  "home.delivery.altT2": "Ein Fahrer holt eine Restaurantbestellung für eine geprüfte Tour ab",
+  "home.delivery.altT3":
+    "Einkaufstaschen werden an der Haustür mit einem Liefernachweis-Foto übergeben",
+
   "home.hero.body":
     "GeoCliks versieht jedes Feldfoto mit einem netzwerkverifizierten Zeitstempel, GPS-Koordinaten und der Straßenadresse — und sperrt es dann mit einem einmaligen Fotocode, den niemand ändern kann. Die Teams fotografieren, das Büro bekommt den Abschlussbericht am selben Tag.",
   "home.hero.noSignal": "Funktioniert ohne Empfang",

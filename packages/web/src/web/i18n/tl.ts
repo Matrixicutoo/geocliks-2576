@@ -115,6 +115,31 @@ export const tl: Catalog = {
   "home.hero.eyebrow": "Ebidensyang larawan na beripikado ng network",
   "home.hero.title1": "Patunay na ang trabaho mo",
   "home.hero.title2": "ay totoong nangyari.",
+
+  /* The hidden H1 and the home page's image alt text, grouped so all of it can be
+     read in one place. The alts used to reuse the visible industry labels
+     ("Construction", "HVAC", "Before"), which named the subject but said nothing
+     about what is happening in the frame or that the capture is verified. */
+  "home.hero.h1Seo":
+    "Hindi mapepekeng dokumentasyong larawan sa site, may oras, GPS at address na beripikado ng network",
+  "home.samples.altFiber":
+    "Fiber technician na kumukuha ng larawan ng splice closure, tinatakan ng GeoCliks ng beripikadong oras at GPS",
+  "home.samples.altConstruction":
+    "Kahoy na framing sa isang site, nadokumento sa larawang GeoCliks at sa verification code nito",
+  "home.samples.altProperty":
+    "Property manager na kumukuha ng larawan ng walkthrough ng unit, may beripikadong oras at address",
+  "home.samples.altHvac":
+    "HVAC technician na nagdodokumento ng natapos na condenser install sa beripikadong larawang GeoCliks",
+  "home.compare.altBefore":
+    "Bubong na sinira ng bagyo, kuha bago ang repair, may beripikadong oras at GPS",
+  "home.compare.altAfter":
+    "Parehong bubong matapos palitan, beripikado para sa before-and-after na claim",
+  "home.delivery.altT1":
+    "Mga delivery van na nagkakarga sa depot bago ang rutang plinano sa GeoCliks",
+  "home.delivery.altT2": "Driver na sumusundo ng order sa restawran para sa beripikadong ruta",
+  "home.delivery.altT3":
+    "Mga grocery tote na iniabot sa pintuan kasama ang larawang proof of delivery",
+
   "home.hero.body":
     "Tinatatakan ng GeoCliks ang bawat larawan sa field ng oras na beripikado ng network, GPS coordinates at street address — at sine-seal ito sa isang natatanging photo code na walang makakaedit. Kumukuha ang crew, nakakatanggap ang opisina ng closeout report sa parehong araw.",
   "home.hero.noSignal": "Gumagana kahit walang signal",

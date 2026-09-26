@@ -113,6 +113,29 @@ export const pl: Catalog = {
   "home.hero.eyebrow": "Dowody fotograficzne weryfikowane przez sieć",
   "home.hero.title1": "Dowód, że twoja praca",
   "home.hero.title2": "się wydarzyła.",
+
+  /* The hidden H1 and the home page's image alt text, grouped so all of it can be
+     read in one place. The alts used to reuse the visible industry labels
+     ("Construction", "HVAC", "Before"), which named the subject but said nothing
+     about what is happening in the frame or that the capture is verified. */
+  "home.hero.h1Seo":
+    "Dokumentacja zdjęciowa budowy zabezpieczona przed manipulacją, z czasem, GPS i adresem weryfikowanymi przez sieć",
+  "home.samples.altFiber":
+    "Technik światłowodowy fotografuje mufę, oznaczoną przez GeoCliks zweryfikowanym czasem i GPS",
+  "home.samples.altConstruction":
+    "Drewniana konstrukcja na budowie, udokumentowana zdjęciem GeoCliks i jego kodem weryfikacji",
+  "home.samples.altProperty":
+    "Zarządczyni nieruchomości fotografuje przegląd lokalu ze zweryfikowanym czasem i adresem",
+  "home.samples.altHvac":
+    "Technik HVAC dokumentuje ukończony montaż agregatu zweryfikowanym zdjęciem GeoCliks",
+  "home.compare.altBefore":
+    "Dach uszkodzony przez burzę, sfotografowany przed naprawą ze zweryfikowanym czasem i GPS",
+  "home.compare.altAfter": "Ten sam dach po wymianie, zweryfikowany do zgłoszenia przed i po",
+  "home.delivery.altT1": "Furgonetki dostawcze ładowane w bazie przed trasą zaplanowaną w GeoCliks",
+  "home.delivery.altT2": "Kurier odbiera zamówienie z restauracji na zweryfikowanej trasie",
+  "home.delivery.altT3":
+    "Torby z zakupami przekazane pod drzwiami ze zdjęciem potwierdzającym dostawę",
+
   "home.hero.body":
     "GeoCliks oznacza każde zdjęcie z terenu znacznikiem czasu weryfikowanym przez sieć, współrzędnymi GPS i adresem — a potem blokuje je unikalnym kodem zdjęcia, którego nikt nie zmieni. Ekipy fotografują, biuro dostaje raport zamknięcia tego samego dnia.",
   "home.hero.noSignal": "Działa bez zasięgu",

@@ -114,6 +114,31 @@ export const ptBR: Catalog = {
   "home.hero.eyebrow": "Provas fotográficas verificadas pela rede",
   "home.hero.title1": "A prova de que seu trabalho",
   "home.hero.title2": "aconteceu.",
+
+  /* The hidden H1 and the home page's image alt text, grouped so all of it can be
+     read in one place. The alts used to reuse the visible industry labels
+     ("Construction", "HVAC", "Before"), which named the subject but said nothing
+     about what is happening in the frame or that the capture is verified. */
+  "home.hero.h1Seo":
+    "Documentação fotográfica de obra à prova de fraude, com hora, GPS e endereço verificados pela rede",
+  "home.samples.altFiber":
+    "Técnico de fibra fotografa uma caixa de emenda, selada pelo GeoCliks com hora e GPS verificados",
+  "home.samples.altConstruction":
+    "Estrutura de madeira em obra, documentada com uma foto GeoCliks e seu código de verificação",
+  "home.samples.altProperty":
+    "Gestora predial fotografa a vistoria de um apartamento com hora e endereço verificados",
+  "home.samples.altHvac":
+    "Técnico de climatização documenta a instalação de um condensador com uma foto GeoCliks verificada",
+  "home.compare.altBefore":
+    "Telhado danificado por tempestade, fotografado antes do reparo com hora e GPS verificados",
+  "home.compare.altAfter":
+    "O mesmo telhado depois da troca, verificado para um laudo de antes e depois",
+  "home.delivery.altT1":
+    "Vans de entrega carregando no depósito antes de uma rota planejada no GeoCliks",
+  "home.delivery.altT2": "Entregador retira um pedido de restaurante para uma rota verificada",
+  "home.delivery.altT3":
+    "Sacolas de mercado entregues na porta com uma foto de comprovação de entrega",
+
   "home.hero.body":
     "A GeoCliks marca cada foto de campo com data e hora verificadas pela rede, coordenadas GPS e o endereço — e depois a sela com um código de foto único que ninguém pode editar. As equipes fotografam e o escritório recebe o relatório de encerramento no mesmo dia.",
   "home.hero.noSignal": "Funciona sem sinal",

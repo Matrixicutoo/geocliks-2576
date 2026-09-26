@@ -114,6 +114,30 @@ export const it: Catalog = {
   "home.hero.eyebrow": "Prove fotografiche verificate dalla rete",
   "home.hero.title1": "La prova che il tuo lavoro",
   "home.hero.title2": "è stato fatto.",
+
+  /* The hidden H1 and the home page's image alt text, grouped so all of it can be
+     read in one place. The alts used to reuse the visible industry labels
+     ("Construction", "HVAC", "Before"), which named the subject but said nothing
+     about what is happening in the frame or that the capture is verified. */
+  "home.hero.h1Seo":
+    "Documentazione fotografica di cantiere a prova di manomissione, con ora, GPS e indirizzo verificati dalla rete",
+  "home.samples.altFiber":
+    "Un tecnico della fibra fotografa una muffola di giunzione, marcata da GeoCliks con ora e GPS verificati",
+  "home.samples.altConstruction":
+    "Struttura in legno in cantiere, documentata con una foto GeoCliks e il suo codice di verifica",
+  "home.samples.altProperty":
+    "Una property manager fotografa il sopralluogo di un'unità con ora e indirizzo verificati",
+  "home.samples.altHvac":
+    "Un tecnico HVAC documenta l'installazione di un condensatore con una foto GeoCliks verificata",
+  "home.compare.altBefore":
+    "Tetto danneggiato dal maltempo, fotografato prima della riparazione con ora e GPS verificati",
+  "home.compare.altAfter":
+    "Lo stesso tetto dopo la sostituzione, verificato per una pratica prima-dopo",
+  "home.delivery.altT1": "Furgoni in carico al deposito prima di un giro pianificato in GeoCliks",
+  "home.delivery.altT2": "Un corriere ritira un ordine dal ristorante per un giro verificato",
+  "home.delivery.altT3":
+    "Borse della spesa consegnate sulla soglia con una foto di prova di consegna",
+
   "home.hero.body":
     "GeoCliks marca ogni foto di cantiere con un orario verificato dalla rete, le coordinate GPS e l'indirizzo — poi la sigilla con un codice foto univoco che nessuno può modificare. Le squadre scattano, l'ufficio riceve il report di chiusura lo stesso giorno.",
   "home.hero.noSignal": "Funziona senza segnale",

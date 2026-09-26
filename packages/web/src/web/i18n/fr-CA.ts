@@ -114,6 +114,31 @@ export const frCA: Catalog = {
   "home.hero.eyebrow": "Preuves photo vérifiées par le réseau",
   "home.hero.title1": "La preuve que votre travail",
   "home.hero.title2": "a bien eu lieu.",
+
+  /* The hidden H1 and the home page's image alt text, grouped so all of it can be
+     read in one place. The alts used to reuse the visible industry labels
+     ("Construction", "HVAC", "Before"), which named the subject but said nothing
+     about what is happening in the frame or that the capture is verified. */
+  "home.hero.h1Seo":
+    "Documentation photo de chantier infalsifiable, avec heure, GPS et adresse vérifiés par le réseau",
+  "home.samples.altFiber":
+    "Un technicien en fibre photographie un boîtier d'épissure, estampillé par GeoCliks avec l'heure et le GPS vérifiés",
+  "home.samples.altConstruction":
+    "Charpente en bois sur un chantier, documentée par une photo GeoCliks et son code de vérification",
+  "home.samples.altProperty":
+    "Une gestionnaire d'immeuble photographie l'inspection d'un logement avec l'heure et l'adresse vérifiées",
+  "home.samples.altHvac":
+    "Un technicien CVC documente l'installation d'un condenseur avec une photo GeoCliks vérifiée",
+  "home.compare.altBefore":
+    "Toiture endommagée par la tempête, photographiée avant la réparation avec l'heure et le GPS vérifiés",
+  "home.compare.altAfter":
+    "La même toiture après le remplacement, vérifiée pour une réclamation avant-après",
+  "home.delivery.altT1":
+    "Des camionnettes de livraison chargent au dépôt avant une tournée planifiée dans GeoCliks",
+  "home.delivery.altT2": "Un livreur récupère une commande de restaurant pour une tournée vérifiée",
+  "home.delivery.altT3":
+    "Des sacs d'épicerie remis à la porte avec une photo de preuve de livraison",
+
   "home.hero.body":
     "GeoCliks estampille chaque photo de chantier avec un horodatage vérifié par le réseau, les coordonnées GPS et l'adresse civique — puis la verrouille avec un code photo unique que personne ne peut modifier. Les équipes photographient, le bureau reçoit le rapport de clôture le jour même.",
   "home.hero.noSignal": "Fonctionne sans signal",

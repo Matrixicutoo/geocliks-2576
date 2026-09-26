@@ -113,6 +113,24 @@ export const ar: Catalog = {
   "home.hero.eyebrow": "أدلة صور موثّقة عبر الشبكة",
   "home.hero.title1": "إثبات أن عملك",
   "home.hero.title2": "قد أُنجز.",
+
+  /* The hidden H1 and the home page's image alt text, grouped so all of it can be
+     read in one place. The alts used to reuse the visible industry labels
+     ("Construction", "HVAC", "Before"), which named the subject but said nothing
+     about what is happening in the frame or that the capture is verified. */
+  "home.hero.h1Seo":
+    "توثيق فوتوغرافي للمواقع غير قابل للتلاعب، بوقت وإحداثيات GPS وعنوان موّثقة عبر الشبكة",
+  "home.samples.altFiber":
+    "فني ألياف ضوئية يصوّر علبة وصل، موسومة من GeoCliks بوقت وإحداثيات موّثقة",
+  "home.samples.altConstruction": "هيكل خشبي في موقع بناء، موثّق بصورة GeoCliks تحمل رمز تحقق",
+  "home.samples.altProperty": "مديرة عقارات تصوّر جولة تفتيش على وحدة سكنية بوقت وعنوان موثّقين",
+  "home.samples.altHvac": "فني تكييف يوثّق تركيب مكثف منجز بصورة GeoCliks موثّقة",
+  "home.compare.altBefore": "سطح تضرر من عاصفة، مصوّر قبل الإصلاح بوقت وإحداثيات موّثقة",
+  "home.compare.altAfter": "السطح نفسه بعد الاستبدال، موثّق لمطالبة قبل وبعد",
+  "home.delivery.altT1": "شاحنات توصيل تُحمّل في المستودع قبل جولة مخططة في GeoCliks",
+  "home.delivery.altT2": "سائق يستلم طلب مطعم لجولة توصيل موثّقة",
+  "home.delivery.altT3": "أكياس بقالة تُسلّم عند الباب مع صورة إثبات التسليم",
+
   "home.hero.body":
     "يضع GeoCliks على كل صورة ميدانية طابعًا زمنيًا موثّقًا عبر الشبكة وإحداثيات GPS وعنوان الشارع — ثم يقفلها برمز صورة فريد لا يمكن لأحد تعديله. الفِرق تصوّر، والمكتب يحصل على تقرير الإنجاز في اليوم نفسه.",
   "home.hero.noSignal": "يعمل بدون إشارة",

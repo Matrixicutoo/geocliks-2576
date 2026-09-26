@@ -114,6 +114,31 @@ export const es: Catalog = {
   "home.hero.eyebrow": "Evidencia fotográfica verificada por red",
   "home.hero.title1": "La prueba de que tu trabajo",
   "home.hero.title2": "se hizo.",
+
+  /* The hidden H1 and the home page's image alt text, grouped so all of it can be
+     read in one place. The alts used to reuse the visible industry labels
+     ("Construction", "HVAC", "Before"), which named the subject but said nothing
+     about what is happening in the frame or that the capture is verified. */
+  "home.hero.h1Seo":
+    "Documentación fotográfica de obra a prueba de manipulaciones, con hora, GPS y dirección verificados por red",
+  "home.samples.altFiber":
+    "Un técnico de fibra fotografía una caja de empalme, sellada por GeoCliks con hora y GPS verificados",
+  "home.samples.altConstruction":
+    "Estructura de madera en una obra, documentada con una foto GeoCliks y su código de verificación",
+  "home.samples.altProperty":
+    "Una administradora de fincas fotografía la inspección de una vivienda con hora y dirección verificadas",
+  "home.samples.altHvac":
+    "Un técnico de climatización documenta la instalación de un condensador con una foto GeoCliks verificada",
+  "home.compare.altBefore":
+    "Tejado dañado por una tormenta, fotografiado antes de la reparación con hora y GPS verificados",
+  "home.compare.altAfter":
+    "El mismo tejado tras la sustitución, verificado para una reclamación de antes y después",
+  "home.delivery.altT1":
+    "Furgonetas de reparto cargando en el depósito antes de una ruta planificada en GeoCliks",
+  "home.delivery.altT2": "Un repartidor recoge un pedido de restaurante para una ruta verificada",
+  "home.delivery.altT3":
+    "Bolsas de la compra entregadas en la puerta con una foto de prueba de entrega",
+
   "home.hero.body":
     "GeoCliks marca cada foto de campo con una hora verificada por la red, coordenadas GPS y la dirección — y luego la sella con un código de foto único que nadie puede editar. Las cuadrillas capturan y la oficina recibe el informe de cierre el mismo día.",
   "home.hero.noSignal": "Funciona sin señal",
