@@ -15,7 +15,7 @@ import {
   LandingSection,
   LandingSteps,
 } from "../components/landing-page";
-import { breadcrumbSchema, faqSchema } from "../lib/structured-data";
+import { pageFaq } from "../lib/page-schema";
 
 /**
  * Search landing page for "construction photo documentation software" and its
@@ -88,33 +88,7 @@ const TEAM_CARDS = [
   },
 ];
 
-const FAQ = [
-  {
-    question: "Is a GeoCliks timestamp different from my phone's built-in one?",
-    answer:
-      "Yes. A phone's timestamp comes from the device clock, and a device clock can be changed in settings — which is exactly what gets pointed out when a photo's date matters. GeoCliks verifies the time against our servers when the capture arrives. If the device clock disagrees with ours by more than a few minutes, the capture is marked device-timed instead of verified, rather than quietly passing as verified.",
-  },
-  {
-    question: "Does it work without cell signal on a job site?",
-    answer:
-      "Yes. Captures are queued on the phone and upload themselves when the crew is back in range. A queued capture is sealed as network-verified at the moment it reaches our servers.",
-  },
-  {
-    question: "Can a client verify a photo without a GeoCliks account?",
-    answer:
-      "Yes. Every capture carries a unique photo code, and anyone can enter it at geocliks.com/verify — no account, no app, no sign-in. That is the point: verification a client has to take your word for is not verification.",
-  },
-  {
-    question: "What actually stops someone editing the photo afterwards?",
-    answer:
-      "Each capture is stored with a SHA-256 content hash and a signature, and every event affecting it is written to an append-only record. An edited copy no longer matches its hash, so the verification page reports it as altered rather than as the original.",
-  },
-  {
-    question: "Does GeoCliks make a photo legally admissible?",
-    answer:
-      "No, and no software honestly can. GeoCliks is not a notary or a legal service, and whether a court, insurer or GC accepts a record is their decision. What it does is make undetected tampering hard and give a third party a way to check a photo independently.",
-  },
-];
+const FAQ = pageFaq("/construction-photo-documentation");
 
 export default function ConstructionPhotoDocumentation() {
   return (
@@ -123,10 +97,6 @@ export default function ConstructionPhotoDocumentation() {
       eyebrow="Construction photo documentation"
       h1="Construction Photo Documentation Your Client Can't Dispute"
       sub="Every photo carries a network-verified time, GPS location and street address — locked the moment it's taken."
-      jsonLd={[
-        faqSchema(FAQ),
-        breadcrumbSchema([{ name: "Construction Photo Documentation" }]),
-      ]}
     >
       <LandingSection
         label="Why crews look for this"

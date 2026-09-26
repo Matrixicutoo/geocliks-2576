@@ -7,7 +7,6 @@ import { articlesOf } from "../help/types";
 import { useLocale, useT } from "../lib/i18n";
 import { useSeo } from "../lib/seo";
 import { helpSeo } from "../lib/seo-routes";
-import { breadcrumbSchema, faqSchema } from "../lib/structured-data";
 
 /** One category: its sections in order, each article as a row. */
 export default function HelpCategory() {
@@ -19,10 +18,6 @@ export default function HelpCategory() {
     [locale, params.category],
   );
 
-  // Called before the not-found branch below, because hooks cannot sit behind a
-  // conditional return. An unknown category slug is marked noindex rather than
-  // left to be indexed as a thin duplicate of the Help Center index.
-  const articles = category ? articlesOf(category) : [];
   // Search copy comes from `seo-routes.ts`, not from the catalog's `summary`:
   // the summary is visible copy written to read well in a category list, and it
   // is also what the server bakes into the HTML response. Falling back to the
@@ -34,20 +29,6 @@ export default function HelpCategory() {
           title: copy?.title ?? `${category.title} — GeoCliks Help`,
           description: copy?.description ?? category.summary,
           path: `/help/${category.slug}`,
-          jsonLd: [
-            breadcrumbSchema([
-              { name: "Help Center", path: "/help" },
-              { name: category.title },
-            ]),
-            // Each article's title is the problem and its summary is the
-            // one-line answer, which is exactly a question/answer pair.
-            faqSchema(
-              articles.map((article) => ({
-                question: article.title,
-                answer: article.summary,
-              })),
-            ),
-          ],
         }
       : { title: t("help.notFoundTitle"), noindex: true },
   );

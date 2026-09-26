@@ -16,7 +16,7 @@ import {
   LandingSection,
   LandingSteps,
 } from "../components/landing-page";
-import { breadcrumbSchema, faqSchema } from "../lib/structured-data";
+import { pageFaq } from "../lib/page-schema";
 
 /**
  * Search landing page for "roofing photo documentation" and its neighbours
@@ -91,38 +91,7 @@ const CREW_CARDS = [
   },
 ];
 
-const FAQ = [
-  {
-    question: "What photos does an insurance adjuster usually want on a roof claim?",
-    answer:
-      "Practice varies by carrier, but the recurring pattern is overview shots that identify the property, close-ups of the damage with something for scale, the same planes photographed after the work, and dates that put those two sets in order. The part roofers lose on is rarely the photography — it is that the dates come from a phone and the carrier has no way to check them.",
-  },
-  {
-    question: "Does GeoCliks measure the roof or produce an estimate?",
-    answer:
-      "No. It does not measure squares, generate a diagram, or produce an Xactimate or similar estimate, and it will not replace the measurement tool you already use. It documents and verifies what was there and what you did, which is the part those tools do not do.",
-  },
-  {
-    question: "Can I prove the damage predates my repair?",
-    answer:
-      "You can show a photo whose capture time was verified against our servers rather than read from your phone, sealed with a content hash so a later edit is detectable, with a code the carrier can look up independently. That is a substantially stronger record than a camera-roll photo. Whether a specific carrier accepts it is still their decision — GeoCliks is not an insurance or legal service and cannot promise a claim outcome.",
-  },
-  {
-    question: "Does it work up on a roof with no signal?",
-    answer:
-      "Yes. Captures queue on the phone and upload when you are back in range, and the recorded time is the moment of capture, not of upload. GPS is read on the roof, so the stamp is the property you were standing on.",
-  },
-  {
-    question: "Can the homeowner see the photos?",
-    answer:
-      "You choose. Share a link to a set, or hand over a photo code so they can verify a single image on the public page. Neither requires them to install anything or create an account.",
-  },
-  {
-    question: "How is this different from the construction documentation page?",
-    answer:
-      "Same product, different argument. A general contractor is usually documenting against a client dispute over progress and scope; a roofer is usually documenting against an adjuster who needs a dated before and a dated after of the same plane. The before/after pairing and the export format matter more here, which is why this page exists separately.",
-  },
-];
+const FAQ = pageFaq("/roofing-photo-documentation");
 
 export default function RoofingPhotoDocumentation() {
   return (
@@ -131,7 +100,6 @@ export default function RoofingPhotoDocumentation() {
       eyebrow="Roofing photo documentation"
       h1="Roofing Photo Documentation That Holds Up on a Claim"
       sub="Dated before and after shots of the same roof, with network-verified time, GPS and street address on every capture — and a code the adjuster can check."
-      jsonLd={[faqSchema(FAQ), breadcrumbSchema([{ name: "Roofing Photo Documentation" }])]}
     >
       <LandingSection
         label="Why roofers look for this"

@@ -7,7 +7,6 @@ import { articlesOf } from "../help/types";
 import { useLocale, useT } from "../lib/i18n";
 import { useSeo } from "../lib/seo";
 import { PAGE_SEO } from "../lib/seo-routes";
-import { breadcrumbSchema } from "../lib/structured-data";
 
 /** Matches on title, summary, keywords and body text — one pass, no index. */
 function useSearch(query: string) {
@@ -63,7 +62,6 @@ export default function Help() {
     title: t("seo.help.title"),
     description: PAGE_SEO["/help"].description,
     path: "/help",
-    jsonLd: breadcrumbSchema([{ name: "Help Center" }]),
   });
 
   return (

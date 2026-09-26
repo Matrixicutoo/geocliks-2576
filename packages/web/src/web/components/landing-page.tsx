@@ -210,7 +210,7 @@ export function LandingFaq({
   entries,
   center = false,
 }: {
-  entries: Array<{ question: string; answer: string }>;
+  entries: readonly { question: string; answer: string }[];
   /** Centre the block and its copy, for the pages whose bands are centred. */
   center?: boolean;
 }) {

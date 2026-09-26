@@ -8,7 +8,7 @@ import {
   LandingSection,
   LandingSteps,
 } from "../components/landing-page";
-import { breadcrumbSchema, faqSchema } from "../lib/structured-data";
+import { pageFaq } from "../lib/page-schema";
 
 /**
  * Search landing page for "gps timestamp camera" and its neighbours
@@ -82,38 +82,7 @@ const PRACTICAL_CARDS = [
   },
 ];
 
-const FAQ = [
-  {
-    question: "What is a GPS timestamp camera?",
-    answer:
-      "A camera app that writes the date, time and location onto the photo at the moment it is taken, instead of leaving them in metadata that any editor can rewrite. The category is crowded with free apps that do exactly that and nothing more — the stamp is drawn from the phone's own clock and location, so it is a record of what the phone was told, not of what happened.",
-  },
-  {
-    question: "How is this different from a free timestamp camera app?",
-    answer:
-      "Three things, and the first is the one that matters. The time is verified against our servers rather than read from the device, so changing the phone clock does not change the stamp — it flags the photo. The image is sealed with a SHA-256 hash, so a later edit is detectable instead of invisible. And every capture gets a code that a third party can check on a public page without your involvement. A free stamp app gives you a photo with text on it, which is worth exactly as much as the trust the other side already has in you.",
-  },
-  {
-    question: "Can a GPS timestamp photo be faked?",
-    answer:
-      "The common methods can be defeated, and pretending otherwise would be dishonest. Changing the device clock is caught by server-side verification. Editing the file afterwards breaks its hash. Mock-location tools are the hardest case in the category — GeoCliks records the accuracy radius and the positioning source and flags captures that look wrong, which raises the cost of faking without reducing it to zero. What matters in practice is that an independent party can check the record rather than having to trust the photographer.",
-  },
-  {
-    question: "Does it stamp video too?",
-    answer:
-      "Yes. Video captures carry the same verified time, coordinates and address, and the same sealing. Full-length video is on the paid plans; the free plan covers photo capture and short clips.",
-  },
-  {
-    question: "Does it need internet to take the photo?",
-    answer:
-      "No. Capturing works offline and the photo queues on the phone. It is sealed as network-verified when it reaches our servers, which can be hours later — the recorded capture time is still the moment the shutter fired, verified against the queue record rather than against the upload.",
-  },
-  {
-    question: "Where does the stamp appear on the photo?",
-    answer:
-      "In a corner overlay with the time, coordinates and address, sized to stay legible without covering the subject. The same values are stored as metadata, and the photo code is printed with them so anyone reading a printout can verify it.",
-  },
-];
+const FAQ = pageFaq("/gps-timestamp-camera");
 
 export default function GpsTimestampCamera() {
   return (
@@ -122,7 +91,6 @@ export default function GpsTimestampCamera() {
       eyebrow="GPS timestamp camera"
       h1="A GPS Timestamp Camera That Doesn't Trust Your Phone's Clock"
       sub="Verified time from the network, coordinates with their accuracy radius, the resolved street address — sealed into every photo and checkable by anyone."
-      jsonLd={[faqSchema(FAQ), breadcrumbSchema([{ name: "GPS Timestamp Camera" }])]}
     >
       <LandingSection
         label="The distinction that matters"

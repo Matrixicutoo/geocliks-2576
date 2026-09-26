@@ -9,15 +9,17 @@
  * Both halves now read the same table in `seo-routes.ts`, so the tags a crawler
  * gets and the tags a visitor ends up with cannot drift apart.
  *
- * Field Notes structured data is written here too, from `blog-schema.ts`, and
- * nowhere else: an Article and a FAQPage that only exist after React mounts are
- * invisible to the answer engines they are for.
+ * Structured data is written here too — from `blog-schema.ts` for Field Notes
+ * and `page-schema.ts` for the home page, the landing pages and the Help Center
+ * — and nowhere else: an Article and a FAQPage that only exist after React
+ * mounts are invisible to the answer engines they are for.
  *
  * String rewriting rather than a DOM parse on purpose: this runs on every HTML
  * request, the shell is a fixed file we control, and pulling in a parser to
  * change four tags would cost more than it buys.
  */
 import { jsonLdForPath } from "./blog-schema";
+import { marketingJsonLd } from "./page-schema";
 import { SITE_URL, seoForPath } from "./seo-routes";
 
 /** Escapes a value going into a double-quoted HTML attribute. */
@@ -109,10 +111,11 @@ export function injectSeoIntoHtml(html: string, pathname: string): string {
   }
 
   // Structured data, for the crawlers that read the response and never run the
-  // JavaScript that `useSeo({ jsonLd })` needs. Field Notes only, for now: the
-  // marketing and Help Center blocks are built inside their page components,
-  // where the server cannot reach them without moving them out first.
-  for (const block of jsonLdForPath(pathname)) {
+  // JavaScript that `useSeo({ jsonLd })` needs. Two catalogs, split by what they
+  // have to read: Field Notes from the post files, everything else — the home
+  // page, the landing pages, the Help Center — from `page-schema.ts`. The paths
+  // they answer are disjoint, so no block is written twice.
+  for (const block of [...jsonLdForPath(pathname), ...marketingJsonLd(pathname)]) {
     out = appendToHead(out, jsonLdScript(block, pathname));
   }
 

@@ -8,7 +8,7 @@ import {
 } from "../components/landing-page";
 import { cn } from "../lib/utils";
 import { SUPPORT_EMAIL } from "../lib/support";
-import { breadcrumbSchema, faqSchema } from "../lib/structured-data";
+import { pageFaq } from "../lib/page-schema";
 
 /**
  * Comparison landing page for "companycam alternatives" and its neighbours.
@@ -107,33 +107,7 @@ const ROWS: Array<{ feature: string; detail?: string; us: Cell; them: Cell }> = 
   },
 ];
 
-const FAQ = [
-  {
-    question: "What is the actual difference between GeoCliks and CompanyCam?",
-    answer:
-      "CompanyCam is a shared photo feed for construction teams, and a good one. GeoCliks is built around proving a photo, so the verification layer goes further: the timestamp is checked against our servers rather than read off the phone, the street address is written in alongside the coordinates, and every capture gets a code anyone can check independently at geocliks.com/verify. If your photos are mainly for coordination, that layer is overhead. If they get disputed, it is the whole point.",
-  },
-  {
-    question: "Is GeoCliks cheaper than CompanyCam?",
-    answer:
-      "For most teams, yes, and the shape of the bill differs more than the number. CompanyCam prices per user on top of a plan minimum — from $63 a month for one user, plus $29 for each additional. GeoCliks charges a flat monthly price with the seats included: $7 for one person, $45 for ten, $105 for twenty-five. There is also a free plan that covers 300 verified photos a month.",
-  },
-  {
-    question: "Can I move my CompanyCam photo history into GeoCliks?",
-    answer:
-      "There is no automated import today. You can export your photos from CompanyCam and keep that archive, and most teams switch by running GeoCliks on new jobs from a chosen date while the old projects stay where they are. One thing to be clear about: photos imported from anywhere else cannot be network-verified after the fact, because the verification happens at capture. An imported photo is a photo, not a GeoCliks-sealed capture.",
-  },
-  {
-    question: "Do I have to move the whole crew at once?",
-    answer:
-      "No. Seats are included in the plan rather than billed individually, so you can put one crew on GeoCliks for a job, keep everyone else where they are, and decide afterwards.",
-  },
-  {
-    question: "Does GeoCliks do everything CompanyCam does?",
-    answer:
-      "Not everything. CompanyCam has grown into adjacent territory — on-site payments, marketing tools, e-signature, room measurement, AI captioning. GeoCliks does not do those and is not trying to. It does photo and video evidence, Teamspace, reports and delivery routes. If you want the photo app to also be the CRM, CompanyCam is the broader product.",
-  },
-];
+const FAQ = pageFaq("/alternatives/companycam");
 
 function Mark({ cell }: { cell: Cell }) {
   // The icon is decorative, so the yes/no verdict has to reach a screen reader
@@ -172,10 +146,6 @@ export default function AlternativesCompanyCam() {
       eyebrow="GeoCliks vs CompanyCam"
       h1="GeoCliks vs CompanyCam"
       sub="Both put GPS-tagged photos in front of your crew. Here's where they actually differ."
-      jsonLd={[
-        faqSchema(FAQ),
-        breadcrumbSchema([{ name: "Alternatives" }, { name: "CompanyCam" }]),
-      ]}
     >
       <LandingSection
         label="The short version"

@@ -24,7 +24,6 @@ import { SiteNav } from "../components/site-nav";
 import { scrollSiteToId } from "../lib/site-scroll";
 import { useSeo } from "../lib/seo";
 import { PAGE_SEO } from "../lib/seo-routes";
-import { homeSchema } from "../lib/structured-data";
 
 const INDUSTRIES: TKey[] = [
   "industry.construction",
@@ -709,7 +708,6 @@ export default function Index() {
     title: tSeo("seo.home.title"),
     description: PAGE_SEO["/"].description,
     path: "/",
-    jsonLd: homeSchema(),
   });
 
   // The marketing site is always light, whatever a signed-in member picked for
