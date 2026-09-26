@@ -12,7 +12,7 @@
  * site does not have (Help Center search is client-side, with no shareable
  * query URL).
  */
-import { LEGAL_ENTITY } from "./company";
+import { BRAND_PROFILES, LEGAL_ENTITY } from "./company";
 // From `seo-routes` rather than the `seo` hook module, which re-exports the same
 // two values: that keeps this file React-free, so the server-side HTML injector
 // can build blocks from it without pulling React into the server.
@@ -34,6 +34,12 @@ const POSTAL_ADDRESS = {
 /**
  * The publisher. `@id` is a stable node reference so the other blocks can point
  * at this one instead of restating it.
+ *
+ * `sameAs` and `foundingLocation` are here to settle a name collision rather
+ * than to decorate the block: "geocliks" as a query is dominated by a dissolved
+ * French SAS of the same name, so the profiles and the place are what tie this
+ * entity to this site. No `foundingDate` — the real one is not recorded anywhere
+ * in this repo, and a guessed date is worse than an absent field.
  */
 export function organizationSchema(): object {
   return {
@@ -47,6 +53,16 @@ export function organizationSchema(): object {
     description:
       "GeoCliks makes tamper-proof photo documentation for field teams — network-verified time, GPS coordinates and street address stamped on every capture.",
     address: POSTAL_ADDRESS,
+    sameAs: BRAND_PROFILES,
+    foundingLocation: {
+      "@type": "Place",
+      address: {
+        "@type": "PostalAddress",
+        addressLocality: POSTAL_ADDRESS.addressLocality,
+        addressRegion: POSTAL_ADDRESS.addressRegion,
+        addressCountry: POSTAL_ADDRESS.addressCountry,
+      },
+    },
   };
 }
 
