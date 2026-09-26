@@ -111,6 +111,7 @@ const RESOURCE_ITEMS: MenuItem[] = [
   { label: "home.nav.website", href: "https://geocliks.com/", external: true },
   { label: "home.nav.help", href: "/help" },
   { label: "home.nav.constructionDocs", href: "/construction-photo-documentation" },
+  { label: "home.nav.about", href: "/about" },
   { label: "home.nav.vsCompanycam", href: "/alternatives/companycam" },
   { label: "home.footer.terms", href: "/terms" },
   { label: "home.footer.privacy", href: "/privacy" },

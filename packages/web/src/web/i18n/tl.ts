@@ -620,6 +620,7 @@ export const tl: Catalog = {
   "home.nav.website": "Website",
   "home.nav.help": "Sentro ng tulong",
   "home.nav.constructionDocs": "Dokumentasyon ng larawan sa konstruksiyon",
+  "home.nav.about": "Tungkol sa GeoCliks",
   "home.nav.fieldNotes": "Mga tala sa field",
   "home.nav.blog": "Blog",
   "home.footer.fieldNotesTag": "Mga gabay sa verified na photo documentation",

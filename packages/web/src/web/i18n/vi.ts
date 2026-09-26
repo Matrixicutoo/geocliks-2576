@@ -610,6 +610,7 @@ export const vi: Catalog = {
   "home.nav.website": "Trang web",
   "home.nav.help": "Trung tâm trợ giúp",
   "home.nav.constructionDocs": "Tài liệu ảnh công trình",
+  "home.nav.about": "Về GeoCliks",
   "home.nav.fieldNotes": "Ghi chú hiện trường",
   "home.nav.blog": "Blog",
   "home.footer.fieldNotesTag": "Hướng dẫn tài liệu ảnh đã xác minh",

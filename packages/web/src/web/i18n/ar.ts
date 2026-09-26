@@ -591,6 +591,7 @@ export const ar: Catalog = {
   "home.nav.website": "الموقع الإلكتروني",
   "home.nav.help": "مركز المساعدة",
   "home.nav.constructionDocs": "توثيق صور البناء",
+  "home.nav.about": "نبذة عن GeoCliks",
   "home.nav.fieldNotes": "ملاحظات ميدانية",
   "home.nav.blog": "المدونة",
   "home.footer.fieldNotesTag": "أدلة توثيق الصور الموثَّقة",

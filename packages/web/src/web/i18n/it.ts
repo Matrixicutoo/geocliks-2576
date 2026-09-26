@@ -617,6 +617,7 @@ export const it: Catalog = {
   "home.nav.website": "Sito web",
   "home.nav.help": "Centro assistenza",
   "home.nav.constructionDocs": "Documentazione fotografica di cantiere",
+  "home.nav.about": "Chi è GeoCliks",
   "home.nav.fieldNotes": "Note dal campo",
   "home.nav.blog": "Blog",
   "home.footer.fieldNotesTag": "Guide alla documentazione fotografica verificata",

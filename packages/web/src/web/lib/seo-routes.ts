@@ -135,6 +135,15 @@ export const PAGE_SEO = {
       "The six rules behind every Field Notes post: topics chosen from demand data, the answer in the first three lines, published numbers only, and no competitor named or ranked.",
   },
 
+  // The identity page. Title leads with the entity name rather than "About"
+  // because the query it has to win is "geocliks" itself, against a dissolved
+  // French SAS of the same name — see the note in `company.ts`.
+  "/about": {
+    title: "About GeoCliks — The Company Behind the Photo Seal",
+    description:
+      "Who GeoCliks is: a Moncton, New Brunswick company building verified field photo documentation. How the seal works, what we will not claim, and how to reach us.",
+  },
+
   "/terms": {
     title: "Terms of Service — GeoCliks",
     description:

@@ -615,6 +615,7 @@ export const pl: Catalog = {
   "home.nav.website": "Strona www",
   "home.nav.help": "Centrum pomocy",
   "home.nav.constructionDocs": "Dokumentacja zdjęciowa budowy",
+  "home.nav.about": "O GeoCliks",
   "home.nav.fieldNotes": "Notatki z terenu",
   "home.nav.blog": "Blog",
   "home.footer.fieldNotesTag": "Poradniki weryfikowanej dokumentacji zdjęciowej",

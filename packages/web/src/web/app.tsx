@@ -56,6 +56,7 @@ const RoofingPhotoDocumentation = lazy(() => import("./pages/roofing-photo-docum
 const HvacPhotoDocumentation = lazy(() => import("./pages/hvac-photo-documentation"));
 const PropertyInspectionPhotos = lazy(() => import("./pages/property-inspection-photos"));
 const PricingPage = lazy(() => import("./pages/pricing"));
+const About = lazy(() => import("./pages/about"));
 // Field Notes. The blog lives inside the app at /blog rather than on its own
 // subdomain, so it shares this site's nav, footer, SEO table and sitemap.
 const BlogIndex = lazy(() => import("./pages/blog"));
@@ -314,6 +315,9 @@ function App() {
                 <AlternativesCompanyCam />
               </Route>
 
+              <Route path="/about">
+                <About />
+              </Route>
               <Route path="/terms">
                 <Terms />
               </Route>

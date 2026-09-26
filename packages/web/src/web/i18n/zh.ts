@@ -580,6 +580,7 @@ export const zh: Catalog = {
   "home.nav.website": "官网",
   "home.nav.help": "帮助中心",
   "home.nav.constructionDocs": "施工照片记录",
+  "home.nav.about": "关于 GeoCliks",
   "home.nav.fieldNotes": "现场笔记",
   "home.nav.blog": "博客",
   "home.footer.fieldNotesTag": "已验证照片记录指南",

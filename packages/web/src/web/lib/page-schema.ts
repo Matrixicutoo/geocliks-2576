@@ -23,9 +23,11 @@ import { articlesOf } from "../help/types";
 import { SALES_EMAIL } from "./support";
 import {
   type Crumb,
+  aboutPageSchema,
   breadcrumbSchema,
   faqSchema,
   homeSchema,
+  organizationSchema,
   techArticleSchema,
 } from "./structured-data";
 
@@ -44,6 +46,45 @@ interface PageSchema {
 }
 
 export const PAGE_SCHEMA = {
+  // The identity page. Its FAQ is deliberately about the entity rather than the
+  // product — who you are dealing with, which GeoCliks this is, who owns the
+  // captures — because those are the questions an answer engine gets asked
+  // about a vendor and cannot currently resolve from anywhere on this site.
+  "/about": {
+    crumbs: [{ name: "About" }],
+    faq: [
+    {
+      question: "Who is behind GeoCliks?",
+      answer:
+        "GeoCliks is a Canadian company registered at 34-18 Clearview Street, Moncton, NB, E1A 4H2, and its terms are governed by the law of the Province of New Brunswick. It builds one thing: verified photo and video documentation for field teams, on iOS, Android and the web from a single account.",
+    },
+    {
+      question: "Is this the same GeoCliks as the French company?",
+      answer:
+        "No, and the confusion is reasonable. A French SAS called GeoCliks, since dissolved, still appears in search results for the name and has no connection to this company or this product. The GeoCliks that publishes this site and the app is the New Brunswick company named above.",
+    },
+    {
+      question: "Who owns the photos and the data?",
+      answer:
+        "The workspace does. GeoCliks stores and processes captures on the workspace's behalf, and removing a member does not delete the captures they made — the evidence record belongs to the workspace, by design. Deleting your own account removes your profile and credentials; captures you made inside a workspace you do not own stay with that workspace.",
+    },
+    {
+      question: "Is verification actually the same on the free plan?",
+      answer:
+        "Yes. The watermark data, the photo code and the seal are identical on the free plan and on the largest paid one. Paid plans buy volume, seats, video length, exports, sharing and delivery routing — never a stronger proof. A photo code issued on the free plan still resolves after you stop paying.",
+    },
+    {
+      question: "Can GeoCliks guarantee that a court or an insurer accepts a photo?",
+      answer:
+        "No, and nobody honestly can. GeoCliks is not a law firm, a notary or an expert witness, and whether a court, an insurer or a card network accepts a record is their decision. What it can do is make the record specific and independently checkable, so the argument is about the evidence rather than about whether you can produce any.",
+    },
+    {
+      question: "What languages does GeoCliks work in?",
+      answer:
+        "The app and the Help Center run in eleven languages — English, French (Canada), Spanish, Portuguese (Brazil), German, Italian, Polish, Arabic, Vietnamese, Tagalog and Chinese — with a banner on any help article whose body is still English. The search landing pages on this site are English-only on purpose.",
+    },
+    ],
+  },
   "/pricing": {
     crumbs: [{ name: "Pricing" }],
     faq: [
@@ -356,10 +397,15 @@ export function marketingJsonLd(pathname: string): object[] {
 
   if (path in PAGE_SCHEMA) {
     const page = PAGE_SCHEMA[path as keyof typeof PAGE_SCHEMA];
-    return [
+    const blocks = [
       faqSchema(page.faq.map((entry) => ({ ...entry }))),
       breadcrumbSchema(page.crumbs.map((crumb) => ({ ...crumb }))),
     ];
+    // The About page carries the entity blocks as well: it is the page whose
+    // subject *is* the company, and the home page is otherwise the only place
+    // the Organization node is published.
+    if (path === "/about") return [organizationSchema(), aboutPageSchema(), ...blocks];
+    return blocks;
   }
 
   if (path === "/help") return [breadcrumbSchema([{ name: "Help Center" }])];

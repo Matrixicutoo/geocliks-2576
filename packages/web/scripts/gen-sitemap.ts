@@ -41,6 +41,7 @@ const STATIC_PATHS = [
   "/hvac-photo-documentation",
   "/property-inspection-photos",
   "/alternatives/companycam",
+  "/about",
   "/blog",
   "/blog/method",
   "/terms",

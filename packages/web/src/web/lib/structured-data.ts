@@ -96,6 +96,29 @@ export function softwareApplicationSchema(): object {
 /** Both home-page blocks, in the order they should appear. */
 export const homeSchema = (): object[] => [organizationSchema(), softwareApplicationSchema()];
 
+/**
+ * `/about` as an AboutPage whose `mainEntity` is the Organization node.
+ *
+ * This is the one page whose job is the entity rather than the product, so it
+ * is the page that should say "this URL is about that company" in a form a
+ * knowledge graph reads. It is emitted alongside a full `organizationSchema()`
+ * — the home page is otherwise the only place the Organization node exists, and
+ * an About page that references an `@id` no crawler fetched resolves to nothing.
+ */
+export function aboutPageSchema(): object {
+  return {
+    "@context": "https://schema.org",
+    "@type": "AboutPage",
+    "@id": `${absoluteUrl("/about")}#page`,
+    url: absoluteUrl("/about"),
+    name: `About ${LEGAL_ENTITY}`,
+    primaryImageOfPage: absoluteUrl("/og-image.png"),
+    mainEntity: { "@id": `${SITE_URL}/#organization` },
+    about: { "@id": `${SITE_URL}/#organization` },
+    publisher: { "@id": `${SITE_URL}/#organization` },
+  };
+}
+
 export interface Crumb {
   name: string;
   /** Site-relative path. Omit on the current page — the last crumb needs no link. */

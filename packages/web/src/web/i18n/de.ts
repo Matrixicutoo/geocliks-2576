@@ -622,6 +622,7 @@ export const de: Catalog = {
   "home.nav.website": "Website",
   "home.nav.help": "Hilfecenter",
   "home.nav.constructionDocs": "Baustellen-Fotodokumentation",
+  "home.nav.about": "Über GeoCliks",
   "home.nav.fieldNotes": "Feldnotizen",
   "home.nav.blog": "Blog",
   "home.footer.fieldNotesTag": "Leitfäden zur verifizierten Fotodokumentation",

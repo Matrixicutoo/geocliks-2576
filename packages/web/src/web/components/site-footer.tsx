@@ -113,6 +113,9 @@ export function SiteFooter() {
               >
                 geocliks.com
               </a>
+              <Link to="/about" className="transition-colors hover:text-chalk">
+                {t("home.nav.about")}
+              </Link>
               <Link to="/terms" className="transition-colors hover:text-chalk">
                 {t("home.footer.terms")}
               </Link>

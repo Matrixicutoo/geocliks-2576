@@ -617,6 +617,7 @@ export const ptBR: Catalog = {
   "home.nav.website": "Site",
   "home.nav.help": "Central de ajuda",
   "home.nav.constructionDocs": "Documentação fotográfica de obra",
+  "home.nav.about": "Sobre a GeoCliks",
   "home.nav.fieldNotes": "Notas de campo",
   "home.nav.blog": "Blog",
   "home.footer.fieldNotesTag": "Guias de documentação fotográfica verificada",
