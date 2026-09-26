@@ -73,6 +73,9 @@ export const tl: Catalog = {
   "seo.construction.title": "Software para sa Dokumentasyon ng Larawan sa Konstruksiyon | GeoCliks",
   "seo.construction.description":
     "Mga larawan sa konstruksiyon na may GPS at timestamp na hindi kayang pekein ng crew at kayang i-verify ng kliyente. Teamspace sync, closeout report at isang na-verify na code kada larawan.",
+  "seo.timemark.title": "GeoCliks kontra Timemark: beripikasyon at presyo",
+  "seo.timemark.description":
+    "Pareho nilang tsinetsek ang oras ng litrato sa network. Ikumpara ang sakop ng bawat selyo, kung nakabukas ang photo code bilang default, at kung paano naiiba ang presyo kada upuan sa patag na presyo.",
   "signin.subtitle": "Hindi mapepekeng dokumentasyon ng larawan para sa mga field team.",
   "signin.apple": "Magpatuloy sa Apple",
   "signin.google": "Magpatuloy sa Google",
@@ -2025,4 +2028,128 @@ export const tl: Catalog = {
   "con.faq.q5": "Ginagawa ba ng GeoCliks na legal na katanggap-tanggap ang isang larawan?",
   "con.faq.a5":
     "Hindi, at walang software na tapat na makakapangako niyan. Hindi notaryo o legal service ang GeoCliks, at ang pagtanggap ng korte, insurer o GC sa isang rekord ay desisyon nila. Ang ginagawa nito ay pahirapan ang hindi natutuklasang pakikialam at magbigay sa third party ng paraan para tsekin ang larawan nang nakapag-iisa.",
+  "tm.eyebrow": "GeoCliks kontra Timemark",
+  "tm.h1": "GeoCliks kontra Timemark",
+  "tm.sub":
+    "Ang pinakamalapit na paghahambing sa site na ito. Pareho silang nagtsetsek ng oras sa isang network at nagbibigay ng code sa bawat litrato — ito ang totoong natitira pang pagpipilian.",
+  "tm.s1.label": "Ang maikling bersyon",
+  "tm.s1.h2": "Parehong ideya. Magkaibang sagot sa kung ano ang sakop ng isang selyo.",
+  "tm.s1.intro":
+    "Ang Timemark ang pinakamalapit sa produktong ito sa merkado, at ang karaniwang lansi ng isang comparison page — ang sabihing hindi talaga nagbeberipika ang kabila — ay mali. Kinukuha nila ang oras mula sa network, naglalabas sila ng code kada litrato, at kahit sino ay makakatsek ng code na iyon sa site nila nang walang app. Kung pumipili ka sa dalawa, ang tapat na pagkakaiba ay makikitid at mas espesipiko kaysa sa anumang listahan ng feature: kung nakabukas na ang code bago mo ito kailanganin, kung sakop ng selyo ang mga byte ng larawan o ang rekord lang na tinuturo ng code, at kung tumataas ang bayarin kada upuan.",
+  "tm.s2.label": "Feature kada feature",
+  "tm.s2.h2": "Ang paghahambing, may pinagmulan",
+  "tm.table.caption": "GeoCliks ikinumpara sa Timemark, feature kada feature",
+  "tm.table.feature": "Feature",
+  "tm.table.us": "GeoCliks",
+  "tm.table.them": "Timemark",
+  "tm.yes": "Oo",
+  "tm.no": "Hindi",
+  "tm.verifiedOn": "26 Setyembre 2026",
+  "tm.sources":
+    "Ang kolum ng Timemark ay binasa sa timemark.com, sa comparison table ng mga plano nila, sa FAQ nila at sa help.timemark.com noong {date}, at inilalarawan ang nakasaad sa dokumentasyon nila. Nagbabago ang mga plano at feature ng mga vendor — tingnan ang kasalukuyang pricing page nila bago magdesisyon, at sabihan kami sa {email} kung may hilera na dito na luma na. Ang mga presyo ay USD.",
+  "tm.r1.feature": "Oras na galing sa network, hindi sa telepono",
+  "tm.r1.detail": "Kung kakayanin ng petsa ng litrato ang pagpalit ng oras sa device.",
+  "tm.r1.us": "Iniingatan lahat: oras ng server, oras ng device, at ang agwat sa pagitan nila",
+  "tm.r1.them": "Nakasaad sa dokumentasyon nila na galing sa network ang oras at hindi sa device",
+  "tm.r2.feature": "Kahit sino ay makakatsek ng litrato nang walang app",
+  "tm.r2.us": "Isang code kada kuha, tsinetsek sa geocliks.com/verify",
+  "tm.r2.them": "Isang 14-karakter na Photo Code, tsinetsek sa verify.timemark.com",
+  "tm.r3.feature": "Maberipika nang hindi kailangang mag-on muna ng setting",
+  "tm.r3.detail":
+    "Ang litratong hindi kailanman nabigyan ng code ay hindi na matsetsek mamaya, saan man mapunta ang alitan.",
+  "tm.r3.us": "Bawat kuha sa bawat plano ay may code — walang kailangang i-on",
+  "tm.r3.them":
+    'Ang Photo Code ay feature na kailangang i-on: sa FAQ nila, sinasagot ang bigong beripikasyon ng "tiyaking nakabukas ang Photo Code feature"',
+  "tm.r4.feature": "Nakaselyo ang mga byte ng larawan",
+  "tm.r4.detail": "Kung ang pag-edit sa file mismo ay nauulat bilang pag-edit.",
+  "tm.r4.us":
+    "SHA-256 ng mga byte, kasama ang HMAC-SHA256 na lagda sa metadata — ang pagbago sa kahit alin sa dalawa ay pumuputol sa selyo",
+  "tm.r4.them":
+    "Ang verification page nila ay naglalarawan ng pagtukoy sa integridad ng larawan; sinasabi sa help nila na ang pag-edit ng watermark ng litrato pagkatapos ng kuha ay hindi nagbabago sa Photo Code nito, at nakalista sa mga bayad na plano nila ang pag-edit o pag-alis ng watermark pagkatapos ng kuha",
+  "tm.r5.feature": "Radius ng tumpak na GPS na naitatala bilang default",
+  "tm.r5.detail":
+    "Ang lokasyong sinasabing eksakto hanggang metro mula sa kuhang may apatnapung metrong agwat ay hindi tunay na katumpakan.",
+  "tm.r5.us": "Iniingatan sa bawat kuha at ipinapakita sa verification page",
+  "tm.r5.them":
+    "Isang opsyonal na field ng watermark — inilalarawan sa FAQ nila ang pag-on ng Accuracy sa ilalim ng More Options",
+  "tm.r6.feature": "Walang ads",
+  "tm.r6.us": "Sa lahat ng plano, kasama ang libre",
+  "tm.r6.them":
+    'Ang "walang ads" ay nakalista bilang hilera ng bayad na plano sa sarili nilang comparison ng mga plano',
+  "tm.r7.feature": "Hindi makakapasok sa rekord ang litrato mula sa gallery",
+  "tm.r7.detail":
+    "Ang butas na kailangang takpan ng bawat kasangkapan sa dokumentasyon ng litrato.",
+  "tm.r7.us":
+    "Sa app kinukuha ang mga litrato; walang daanan ng pag-import papunta sa rekord ng litrato",
+  "tm.r7.them":
+    'Nababara kapag ino-on ng may-ari ng Teamspace ang setting nilang "Timemark capture only"',
+  "tm.r8.feature": "Video",
+  "tm.r8.us":
+    "Beripikadong video: 30-segundong clip sa libre, hanggang tatlong minuto kada clip sa Plus",
+  "tm.r8.them":
+    "Awtomatikong naka-save sa Teamspace, kung saan binibilang sa FAQ nila ang bawat 10 segundo ng video bilang isang litrato sa limitasyon ng plano",
+  "tm.r9.feature": "Mga ruta ng delivery at proof of delivery",
+  "tm.r9.detail": "Mag-dispatch ng driver, i-optimize ang mga hinto, kumuha ng lagda sa pintuan.",
+  "tm.r9.us": "Sa mga planong Delivery",
+  "tm.r9.them":
+    "Ang mga litratong proof of delivery ay isa sa mga nakalistang gamit nila; hindi inilalarawan ang dispatch ng ruta at optimisasyon ng hinto",
+  "tm.r10.feature": "Libreng plano",
+  "tm.r10.us": "300 beripikadong litrato kada buwan, 3 proyekto, walang card",
+  "tm.r10.them": "100 litrato sa Teamspace at 3 proyekto, ayon sa comparison ng mga plano nila",
+  "tm.r11.feature": "Presyo",
+  "tm.r11.us":
+    "Patag na buwanang antas kasama na ang upuan: $7 mag-isa, $25 Business, $45 para sa 10 upuan, $105 para sa 25. Walang bayad kada upuan.",
+  "tm.r11.them":
+    "Kada user, kada buwan: Plus $5, Business $7, Enterprise nakamarkang paparating. Mas mura sa amin kung isang tao lang; $70 kada buwan doon, samantalang sampung upuan dito ay $45.",
+  "tm.s3.label": "Kung saan sila panalo",
+  "tm.s3.h2": "Dalawang dahilan para piliin ang Timemark",
+  "tm.s3.intro":
+    "Ang hindi pagsabi nito ay magpapababa sa kredibilidad ng buong pahina, hindi magpapataas.",
+  "tm.win1.label": "Isang tao, pinakamababang presyo",
+  "tm.win1.body":
+    "Ang Plus plan nila ay $5 kada user kontra sa $7 namin para sa isang upuan. Kung nag-iisa ka at gusto lang ng maayos na watermark at wala nang iba, dalawang dolyar silang mas mura at wala nang maidadahilan. Ang patag na antas dito ay nagsisimula lang na sumulit kapag may tropa ka na.",
+  "tm.win2.label": "Mas malawak na saklaw",
+  "tm.win2.body":
+    "May mga bagay silang wala sa produktong ito: digital na checklist, pagsubaybay ng oras, KML map overlay, backup sa OneDrive at SharePoint, photo collage, sampung wika ng interface. Kung ang problema mo sa dokumentasyon ay problema talaga ng lawak, totoong sagot iyon at hindi ka pinipigilan ng pahinang ito.",
+  "tm.s4.label": "Paglipat",
+  "tm.s4.h2": "Ano talaga ang hitsura ng paglipat",
+  "tm.s4.intro":
+    "Walang importer, at may dahilang dapat sabihin nang prangka: ang beripikasyon ay nangyayari sa sandali ng kuha, kaya ang mga litratong kinuha sa ibang app — pati sa Timemark — ay hindi na maseselyuhan dito pabalik. Ang pag-import ay magbibigay sa iyo ng archive, hindi rekord ng ebidensya. Lumilipat ang mga grupo sa pamamagitan ng paghila ng linya sa isang petsa. Ang bagong trabaho ay kinukuha sa GeoCliks, ang lumang proyekto ay nananatili sa pinaglalagyan nito at nai-export pa rin. Kasama ang upuan sa plano, kaya makakalipat ang isang tropa nang hindi lumilipat ang buong kompanya.",
+  "tm.pick.label": "Piliin ang GeoCliks kung",
+  "tm.pick.1":
+    "Mas gusto mong matsetsek ang bawat litrato bilang default kaysa alalahanin pang mag-on ng code bago ang trabahong pala-palang naging mahalaga.",
+  "tm.pick.2":
+    "Gusto mong sakupin ng selyo ang mga byte ng larawan, para ang pag-edit sa file ay nauulat bilang pag-edit.",
+  "tm.pick.3":
+    "Nagbabayad ka para sa isang tropa at hindi para sa isang upuan, kung saan panalo ang patag na antas kontra presyo kada user.",
+  "tm.pick.4":
+    "Ang radius ng tumpak na GPS ay nabibilang sa rekord at hindi sa menu ng mga setting.",
+  "tm.pick.5":
+    "Nagpapatakbo ka rin ng delivery at gusto mong magkasama sa isang account ang dispatch, optimisasyon ng hinto at lagda sa pintuan.",
+  "tm.faqSection.label": "Mga tanong",
+  "tm.faqSection.h2": "Mga madalas itanong",
+  "tm.cta.h2": "Patakbuhin ang dalawa sa isang trabaho",
+  "tm.cta.body":
+    "Sakop ng libreng plano ang 300 beripikadong litrato kada buwan nang walang card. Kunan ang parehong pader nang dalawang beses, tapos subukang basagin ang bawat rekord — mas mabilis iyon magdesisyon kaysa anumang talahanayan.",
+  "tm.cta.primary": "Subukan ang GeoCliks nang libre",
+  "tm.cta.secondary": "Tingnan kung paano gumagana ang pagseselyo",
+  "tm.related.lead": "Ikinukumpara mo ba ito sa isang photo feed?",
+  "tm.related.companycam": "Basahin ang GeoCliks kontra CompanyCam",
+  "tm.related.mid": ", o",
+  "tm.related.construction": "ang pangkalahatang tanaw sa dokumentasyon ng litrato sa konstruksyon",
+  "tm.faq.q1": "Ano ba talaga ang pagkakaiba ng GeoCliks at Timemark?",
+  "tm.faq.a1":
+    "Mas kaunti kaysa sa iaangkin ng karamihan sa mga comparison page. Pareho silang kumukuha ng oras ng kuha mula sa network at hindi sa telepono, pareho silang naglalabas ng code kada litrato, at pareho silang nagpapahintulot kahit sino na tsekin ang code na iyon sa web nang walang app. Tatlo ang totoong pagkakaiba. Ang code ng GeoCliks ay nasa bawat kuha sa bawat plano, samantalang ang Photo Code ng Timemark ay feature na kailangang i-on — ang sarili nilang FAQ ay sumasagot sa bigong beripikasyon sa pagsasabing i-on ito. Ang selyo ng GeoCliks ay sumasakop sa mga byte ng larawan gamit ang SHA-256 hash at HMAC-SHA256 na lagda sa metadata, samantalang sinasabi sa help ng Timemark na ang pag-edit ng watermark ng litrato pagkatapos ng kuha ay nag-iiwan sa Photo Code nito nang hindi nagbabago. At ang GeoCliks ay nagtatakda ng patag na buwanang antas kasama na ang upuan, hindi kada user.",
+  "tm.faq.q2": "Mas mura ba ang GeoCliks kaysa Timemark?",
+  "tm.faq.a2":
+    "Nakadepende iyon nang buo sa dami ng taong binabayaran mo. Ang Timemark ay nagpepresyo kada user — $5 kada buwan sa Plus, $7 sa Business — kaya mas mura ang isang tao doon kaysa sa $7 na halaga ng solo plan ng GeoCliks. Ang GeoCliks ay nagtatakda ng patag na antas na may kasamang upuan: $25 para sa Business, $45 para sa sampung upuan, $105 para sa dalawampu't lima. Kaya ang sampung upuan ay $70 kada buwan sa Business plan nila kontra $45 dito, at lumalaki ang agwat habang dumarami ang tropa. Pareho silang may libreng plano: 300 beripikadong litrato kada buwan dito, 100 litrato sa Teamspace doon.",
+  "tm.faq.q3": "Mailalipat ko ba ang mga litrato ko sa Timemark papunta sa GeoCliks?",
+  "tm.faq.a3":
+    "Hindi bilang beripikadong kuha, at iyon ay katangian ng paggana ng beripikasyon at hindi kulang na feature. Ang litrato ay naseselyuhan sa sandaling kunan ito, gamit ang oras ng server at hash ng mga byte sa pagdating nila, kaya walang ini-import pagkatapos ang matapat na mabibigyan ng selyong iyon. Maaari mong itago ang archive mo sa Timemark at mag-export mula roon gaya ng dati. Ang mga grupong lumilipat ay karaniwang pumipili ng petsa, kinukunan ang bagong trabaho sa GeoCliks mula roon, at iniiwan ang lumang proyekto sa pinaglalagyan nito.",
+  "tm.faq.q4": "Pareho ba ang photo code ng Timemark at ang photo code ng GeoCliks?",
+  "tm.faq.a4":
+    "Pareho ang trabaho nila — maikling string sa larawan na maitatype ng pangatlong panig sa site ng vendor para matingnan ang naitalang oras at lugar — at ang sa Timemark ay 14 karakter kontra sa mas maikli naming isa. Ang pinagkaiba ay kung saan nakakabit ang code. Ang sa amin ay nilalagdaan kasama ang SHA-256 hash ng mga byte ng larawan, kaya ang binagong file ay hindi na tumutugma sa rekord na tinuturo ng code. Ang sa kanila ay tumutukoy sa rekord ng kuha, at sinasabi ng help center nila na ang pag-edit ng watermark pagkatapos ng kuha ay hindi nagbabago sa code, samantalang ang mga bayad na plano nila ay nag-aalok ng pag-edit o pag-alis ng watermark na iyon.",
+  "tm.faq.q5": "Bakit ko pipiliin ang Timemark kaysa GeoCliks?",
+  "tm.faq.a5":
+    "Dalawang tapat na dahilan. Kung nag-iisa ka at gusto mo ng pinakamurang app ng beripikadong litrato, mas mababa ang Plus plan nila sa amin ng dalawang dolyar kada buwan. At kung lawak ang kailangan mo higit sa lalim, may mga bagay silang wala sa produktong ito: digital na checklist, pagsubaybay ng oras, KML map overlay, backup sa OneDrive at SharePoint, at interface sa sampung wika. Ang isusuko mo ay isang code na nakabukas bago mo pa kailanganin, isang selyo sa mga byte ng larawan, at patag na presyo sa laki ng tropa.",
 };

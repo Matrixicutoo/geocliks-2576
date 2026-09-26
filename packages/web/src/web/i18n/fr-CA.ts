@@ -73,6 +73,9 @@ export const frCA: Catalog = {
   "seo.construction.title": "Photos de chantier horodatées et géolocalisées | GeoCliks",
   "seo.construction.description":
     "Des photos de chantier horodatées et géolocalisées que votre équipe ne peut pas truquer et que le client peut vérifier. Teamspace, rapports de clôture, un code par photo.",
+  "seo.timemark.title": "GeoCliks contre Timemark : vérification et prix",
+  "seo.timemark.description":
+    "Les deux vérifient l'heure de la photo auprès d'un réseau. Comparez ce que chaque sceau couvre, si le code photo est actif par défaut et comment le prix par poste et le prix fixe diffèrent.",
   "signin.subtitle": "Documentation photo infalsifiable pour les équipes de terrain.",
   "signin.apple": "Continuer avec Apple",
   "signin.google": "Continuer avec Google",
@@ -2034,4 +2037,128 @@ export const frCA: Catalog = {
   "con.faq.q5": "GeoCliks rend-elle une photo admissible en preuve?",
   "con.faq.a5":
     "Non, et aucun logiciel honnête ne le peut. GeoCliks n'est ni un notaire ni un service juridique, et l'acceptation d'un dossier par un tribunal, un assureur ou un entrepreneur général relève d'eux. Ce qu'elle fait, c'est rendre une falsification indétectable difficile et donner à un tiers un moyen de vérifier la photo lui-même.",
+  "tm.eyebrow": "GeoCliks contre Timemark",
+  "tm.h1": "GeoCliks contre Timemark",
+  "tm.sub":
+    "La comparaison la plus serrée du site. Les deux vérifient l'heure auprès d'un réseau et donnent un code à chaque photo — voici ce qui reste vraiment à choisir.",
+  "tm.s1.label": "En bref",
+  "tm.s1.h2": "Même idée. Réponse différente à ce qu'un sceau couvre.",
+  "tm.s1.intro":
+    "Timemark est ce qui ressemble le plus à ce produit sur le marché, et le réflexe habituel d'une page de comparaison — prétendre que l'autre ne vérifie rien pour vrai — serait faux. Ils prennent l'heure sur le réseau, ils émettent un code par photo, et n'importe qui peut vérifier ce code sur leur site sans installer l'appli. Si vous choisissez entre les deux, les vraies différences sont plus étroites et plus précises que ne le laisse croire une liste de fonctions : est-ce que le code est actif avant que vous en ayez besoin, est-ce que le sceau couvre les octets de l'image ou l'enregistrement vers lequel le code pointe, et est-ce que la facture grimpe par utilisateur.",
+  "tm.s2.label": "Fonction par fonction",
+  "tm.s2.h2": "La comparaison, avec les sources",
+  "tm.table.caption": "GeoCliks comparé à Timemark, fonction par fonction",
+  "tm.table.feature": "Fonction",
+  "tm.table.us": "GeoCliks",
+  "tm.table.them": "Timemark",
+  "tm.yes": "Oui",
+  "tm.no": "Non",
+  "tm.verifiedOn": "26 septembre 2026",
+  "tm.sources":
+    "La colonne Timemark a été lue sur timemark.com, dans leur tableau comparatif de forfaits, dans leur FAQ et sur help.timemark.com le {date}, et décrit ce que leur documentation indique. Les fournisseurs changent leurs forfaits et leurs fonctions — vérifiez leur page de prix actuelle avant de décider, et écrivez-nous à {email} si une ligne d'ici n'est plus à jour. Les prix sont en USD.",
+  "tm.r1.feature": "L'heure vient du réseau, pas du téléphone",
+  "tm.r1.detail":
+    "Si la date d'une photo survit au fait que quelqu'un change l'horloge de l'appareil.",
+  "tm.r1.us":
+    "L'heure du serveur, celle de l'appareil et l'écart entre les deux sont tous conservés",
+  "tm.r1.them": "Leur documentation indique que l'heure vient du réseau plutôt que de l'appareil",
+  "tm.r2.feature": "N'importe qui peut vérifier une photo sans l'appli",
+  "tm.r2.us": "Un code par prise, vérifiable sur geocliks.com/verify",
+  "tm.r2.them": "Un Photo Code de 14 caractères, vérifiable sur verify.timemark.com",
+  "tm.r3.feature": "Vérifiable sans avoir activé un réglage d'abord",
+  "tm.r3.detail":
+    "Une photo qui n'a jamais reçu de code ne peut pas être vérifiée après coup, peu importe la tournure du litige.",
+  "tm.r3.us": "Chaque prise, sur chaque forfait, reçoit un code — il n'y a rien à activer",
+  "tm.r3.them":
+    "Photo Code est une fonction à activer : leur FAQ répond à une vérification échouée par « assurez-vous que la fonction Photo Code est activée »",
+  "tm.r4.feature": "Les octets de l'image sont scellés",
+  "tm.r4.detail": "Si une modification du fichier lui-même est signalée comme une modification.",
+  "tm.r4.us":
+    "SHA-256 des octets, plus une signature HMAC-SHA256 sur les métadonnées — altérer l'un ou l'autre brise le sceau",
+  "tm.r4.them":
+    "Leur page de vérification décrit une détection d'intégrité de l'image; leur aide note que modifier le filigrane d'une photo après la prise ne change pas son Photo Code, et leurs forfaits payants incluent la modification ou le retrait du filigrane après la prise",
+  "tm.r5.feature": "Rayon de précision GPS enregistré par défaut",
+  "tm.r5.detail":
+    "Une position annoncée au mètre à partir d'un relevé à quarante mètres près est une fausse précision.",
+  "tm.r5.us": "Conservé avec chaque prise et affiché sur la page de vérification",
+  "tm.r5.them":
+    "Un champ facultatif du filigrane — leur FAQ explique comment activer Précision sous Plus d'options",
+  "tm.r6.feature": "Aucune publicité",
+  "tm.r6.us": "Sur tous les forfaits, y compris le gratuit",
+  "tm.r6.them":
+    "« Aucune publicité » figure comme ligne de forfait payant dans leur propre comparatif",
+  "tm.r7.feature": "Les photos de la galerie ne peuvent pas entrer au dossier",
+  "tm.r7.detail":
+    "Le trou que tout outil de documentation photo doit refermer d'une façon ou d'une autre.",
+  "tm.r7.us":
+    "Les prises se font dans l'appli; il n'y a aucune voie d'importation vers le dossier photo",
+  "tm.r7.them":
+    "Bloqué dès qu'un propriétaire de Teamspace active leur réglage « prises Timemark seulement »",
+  "tm.r8.feature": "Vidéo",
+  "tm.r8.us":
+    "Vidéo vérifiée : clips de 30 secondes sur le gratuit, jusqu'à trois minutes par clip sur Plus",
+  "tm.r8.them":
+    "Sauvegardée automatiquement dans Teamspace, où leur FAQ compte chaque 10 secondes de vidéo comme une photo sur la limite du forfait",
+  "tm.r9.feature": "Tournées de livraison et preuve de livraison",
+  "tm.r9.detail": "Répartir les chauffeurs, optimiser les arrêts, faire signer à la porte.",
+  "tm.r9.us": "Sur les forfaits Livraison",
+  "tm.r9.them":
+    "Les photos de preuve de livraison font partie de leurs cas d'usage listés; la répartition des tournées et l'optimisation des arrêts ne sont pas décrites",
+  "tm.r10.feature": "Forfait gratuit",
+  "tm.r10.us": "300 photos vérifiées par mois, 3 projets, sans carte",
+  "tm.r10.them": "100 photos dans Teamspace et 3 projets, selon leur comparatif de forfaits",
+  "tm.r11.feature": "Prix",
+  "tm.r11.us":
+    "Paliers mensuels fixes avec les postes inclus : 7 $ en solo, 25 $ Business, 45 $ pour 10 postes, 105 $ pour 25. Aucuns frais par utilisateur.",
+  "tm.r11.them":
+    "Par utilisateur, par mois : Plus 5 $, Business 7 $, Enterprise annoncé à venir. Moins cher que nous pour une personne; 70 $ par mois là où dix postes nous coûtent 45 $.",
+  "tm.s3.label": "Là où ils gagnent",
+  "tm.s3.h2": "Deux raisons de choisir Timemark à la place",
+  "tm.s3.intro": "Omettre ceci rendrait le reste de la page moins crédible, pas plus.",
+  "tm.win1.label": "Une personne, le prix le plus bas",
+  "tm.win1.body":
+    "Leur forfait Plus est à 5 $ par utilisateur contre nos 7 $ pour un seul poste. Si vous travaillez seul et que vous voulez seulement un filigrane bien fait, ils sont deux dollars moins chers et il n'y a pas d'argument à faire. Les paliers fixes d'ici ne commencent à rapporter qu'avec une équipe.",
+  "tm.win2.label": "Plus de surface",
+  "tm.win2.body":
+    "Ils offrent des choses que ce produit n'a pas : listes de vérification numériques, suivi du temps, couches de carte KML, sauvegarde OneDrive et SharePoint, collages de photos, dix langues d'interface. Si votre problème de documentation est en fait un problème d'étendue, c'est une vraie réponse et cette page n'essaie pas de vous en dissuader.",
+  "tm.s4.label": "Migration",
+  "tm.s4.h2": "À quoi ressemble vraiment le passage",
+  "tm.s4.intro":
+    "Il n'y a pas d'outil d'importation, et la raison mérite d'être dite clairement : la vérification se fait au moment de la prise, donc les photos prises dans une autre appli — Timemark comprise — ne peuvent pas être scellées ici après coup. Les importer vous donnerait une archive, pas un dossier de preuve. Les équipes migrent en tirant une ligne à une date. Les nouveaux chantiers sont pris dans GeoCliks, les anciens projets restent où ils sont et restent exportables. Les postes viennent avec le forfait, donc une équipe peut migrer sans que toute l'entreprise bouge.",
+  "tm.pick.label": "Choisissez GeoCliks si",
+  "tm.pick.1":
+    "Vous préférez que chaque photo soit vérifiable par défaut plutôt que de penser à activer un code avant le chantier qui finit par compter.",
+  "tm.pick.2":
+    "Vous voulez que le sceau couvre les octets de l'image, pour qu'une modification du fichier soit signalée comme telle.",
+  "tm.pick.3":
+    "Vous payez pour une équipe plutôt que pour un poste, et là les paliers fixes battent le prix par utilisateur.",
+  "tm.pick.4": "Le rayon de précision GPS appartient au dossier, pas à un menu de réglages.",
+  "tm.pick.5":
+    "Vous faites aussi de la livraison et voulez répartition, optimisation des arrêts et signatures à la porte dans le même compte.",
+  "tm.faqSection.label": "Questions",
+  "tm.faqSection.h2": "Foire aux questions",
+  "tm.cta.h2": "Faites rouler les deux sur un même chantier",
+  "tm.cta.body":
+    "Le forfait gratuit couvre 300 photos vérifiées par mois sans carte. Prenez le même mur deux fois, puis essayez de casser chaque dossier — ça tranche plus vite que n'importe quel tableau.",
+  "tm.cta.primary": "Essayer GeoCliks gratuitement",
+  "tm.cta.secondary": "Voir comment le scellement fonctionne",
+  "tm.related.lead": "Vous comparez plutôt avec un fil de photos?",
+  "tm.related.companycam": "Lisez GeoCliks contre CompanyCam",
+  "tm.related.mid": ", ou",
+  "tm.related.construction": "le survol de la documentation photo en construction",
+  "tm.faq.q1": "Quelle est la vraie différence entre GeoCliks et Timemark?",
+  "tm.faq.a1":
+    "Moins que ne le prétendrait la plupart des pages de comparaison. Les deux prennent l'heure de la prise sur un réseau plutôt que sur le téléphone, les deux émettent un code par photo, et les deux permettent à n'importe qui de vérifier ce code sur le web sans l'appli. Trois différences sont réelles. Un code GeoCliks est sur chaque prise de chaque forfait, alors que le Photo Code de Timemark est une fonction à activer — leur propre FAQ répond à une vérification échouée en vous disant de l'allumer. Un sceau GeoCliks couvre les octets de l'image avec un hachage SHA-256 et une signature HMAC-SHA256 sur les métadonnées, alors que l'aide de Timemark note que modifier le filigrane d'une photo après la prise laisse son Photo Code intact. Et GeoCliks facture des paliers mensuels fixes avec les postes inclus plutôt que par utilisateur.",
+  "tm.faq.q2": "GeoCliks est-il moins cher que Timemark?",
+  "tm.faq.a2":
+    "Ça dépend entièrement du nombre de personnes que vous payez. Timemark facture par utilisateur — 5 $ par mois sur Plus, 7 $ sur Business — donc une seule personne coûte moins cher là que les 7 $ du forfait solo de GeoCliks. GeoCliks facture des paliers fixes avec les postes dedans : 25 $ pour Business, 45 $ pour dix postes, 105 $ pour vingt-cinq. Dix postes, c'est donc 70 $ par mois sur leur forfait Business contre 45 $ ici, et l'écart grandit avec l'équipe. Les deux ont un forfait gratuit : 300 photos vérifiées par mois ici, 100 photos dans Teamspace là.",
+  "tm.faq.q3": "Puis-je transférer mes photos Timemark dans GeoCliks?",
+  "tm.faq.a3":
+    "Pas comme prises vérifiées, et c'est une propriété du fonctionnement de la vérification plutôt qu'une fonction manquante. Une photo est scellée au moment où elle est prise, avec l'heure du serveur et un hachage des octets tels qu'ils arrivent, donc rien d'importé par la suite ne peut recevoir ce sceau honnêtement. Vous pouvez garder votre archive Timemark et exporter à partir d'elle comme d'habitude. Les équipes qui migrent choisissent en général une date, prennent les nouveaux chantiers dans GeoCliks à partir de là, et laissent les anciens projets où ils sont.",
+  "tm.faq.q4": "Le code photo de Timemark est-il la même chose qu'un code photo GeoCliks?",
+  "tm.faq.a4":
+    "Ils font le même travail — une courte chaîne sur l'image qu'un tiers peut taper sur le site du fournisseur pour voir l'heure et le lieu enregistrés — et celui de Timemark fait 14 caractères contre le nôtre, plus court. La différence est ce à quoi le code est lié. Le nôtre est signé avec un hachage SHA-256 des octets de l'image, donc un fichier altéré ne correspond plus au dossier vers lequel le code pointe. Le leur renvoie au dossier de prise, et leur centre d'aide indique que modifier le filigrane après la prise ne change pas le code, tandis que leurs forfaits payants offrent de modifier ou de retirer ce filigrane.",
+  "tm.faq.q5": "Pourquoi choisirais-je Timemark plutôt que GeoCliks?",
+  "tm.faq.a5":
+    "Deux raisons honnêtes. Si vous êtes seul et voulez l'appli de photos vérifiées la moins chère, leur forfait Plus nous bat de deux dollars par mois. Et si vous avez besoin d'étendue plus que de profondeur, ils offrent des choses que ce produit n'a pas : listes de vérification numériques, suivi du temps, couches de carte KML, sauvegarde OneDrive et SharePoint, et une interface en dix langues. Ce que vous abandonneriez, c'est un code actif avant que vous en ayez besoin, un sceau sur les octets de l'image et un prix fixe à taille d'équipe.",
 };

@@ -81,6 +81,9 @@ export const en = {
   "seo.construction.title": "Construction Photo Documentation Software | GeoCliks",
   "seo.construction.description":
     "GPS- and time-stamped construction photos your crew can't fake and clients can verify. Teamspace sync, closeout reports and a verified code per shot.",
+  "seo.timemark.title": "GeoCliks vs Timemark — Compare Verification & Pricing",
+  "seo.timemark.description":
+    "Both verify photo time against a network. Compare what each seal actually covers, whether the photo code is on by default, and how per-seat and flat pricing differ.",
   "signin.subtitle": "Tamper-proof photo documentation for field teams.",
   "signin.apple": "Continue with Apple",
   "signin.google": "Continue with Google",
@@ -1997,6 +2000,121 @@ export const en = {
   "con.faq.q5": "Does GeoCliks make a photo legally admissible?",
   "con.faq.a5":
     "No, and no software honestly can. GeoCliks is not a notary or a legal service, and whether a court, insurer or GC accepts a record is their decision. What it does is make undetected tampering hard and give a third party a way to check a photo independently.",
+  "tm.eyebrow": "GeoCliks vs Timemark",
+  "tm.h1": "GeoCliks vs Timemark",
+  "tm.sub":
+    "The closest comparison on this site. Both verify the time against a network and give every photo a code — here is what is actually left to choose between.",
+  "tm.s1.label": "The short version",
+  "tm.s1.h2": "Same idea. Different answer to what a seal covers.",
+  "tm.s1.intro":
+    "Timemark is the nearest thing to this product on the market, and the usual comparison-page move — claiming the other side does not really verify anything — would be false. They take the time off the network, they issue a per-photo code, and anyone can check that code on their site without installing the app. If you are choosing between the two, the honest differences are narrower and more specific than any feature list suggests: whether the code is on before you need it, whether the seal covers the image bytes or the record the code points at, and whether the bill scales by seat.",
+  "tm.s2.label": "Feature by feature",
+  "tm.s2.h2": "The comparison, with sources",
+  "tm.table.caption": "GeoCliks compared with Timemark, feature by feature",
+  "tm.table.feature": "Feature",
+  "tm.table.us": "GeoCliks",
+  "tm.table.them": "Timemark",
+  "tm.yes": "Yes",
+  "tm.no": "No",
+  "tm.verifiedOn": "26 September 2026",
+  "tm.sources":
+    "The Timemark column was read from timemark.com, their plan comparison table, their FAQ and help.timemark.com on {date}, and describes what their documentation states. Vendors change plans and features — check their current pricing page before you decide, and tell us at {email} if a row here has gone out of date. Prices are USD.",
+  "tm.r1.feature": "Time taken from the network, not the phone",
+  "tm.r1.detail": "Whether a photo's date survives someone changing the device clock.",
+  "tm.r1.us": "Server time, device time and the gap between them are all stored",
+  "tm.r1.them": "Their documentation states the time comes from the network rather than the device",
+  "tm.r2.feature": "Anyone can check a photo without the app",
+  "tm.r2.us": "A code per capture, checked at geocliks.com/verify",
+  "tm.r2.them": "A 14-character Photo Code, checked at verify.timemark.com",
+  "tm.r3.feature": "Verifiable without switching a setting on first",
+  "tm.r3.detail": "A photo that was never coded cannot be checked later, however the dispute goes.",
+  "tm.r3.us": "Every capture on every plan gets a code — there is nothing to enable",
+  "tm.r3.them":
+    'Photo Code is a feature to turn on: their FAQ answers a failed verification with "make sure the Photo Code feature is enabled"',
+  "tm.r4.feature": "The image bytes are sealed",
+  "tm.r4.detail": "Whether an edit to the file itself reports as an edit.",
+  "tm.r4.us":
+    "SHA-256 of the bytes, plus an HMAC-SHA256 signature over the metadata — altering either breaks the seal",
+  "tm.r4.them":
+    "Their verification page describes image integrity detection; their help notes that editing a photo's watermark after capture does not change its Photo Code, and their paid plans list editing or removing the watermark after capture",
+  "tm.r5.feature": "GPS accuracy radius recorded by default",
+  "tm.r5.detail": "A location claimed to the metre off a forty-metre fix is a false precision.",
+  "tm.r5.us": "Stored with every capture and shown on the verification page",
+  "tm.r5.them":
+    "An optional watermark field — their FAQ describes toggling Accuracy on under More Options",
+  "tm.r6.feature": "No ads",
+  "tm.r6.us": "On every plan, including free",
+  "tm.r6.them": '"No ads" is listed as a paid-plan row in their own plan comparison',
+  "tm.r7.feature": "Gallery photos cannot enter the record",
+  "tm.r7.detail": "The hole every photo-documentation tool has to close somehow.",
+  "tm.r7.us": "Captures are taken in the app; there is no import path into the photo record",
+  "tm.r7.them": 'Blocked once a Teamspace owner turns on their "Timemark capture only" setting',
+  "tm.r8.feature": "Video",
+  "tm.r8.us": "Verified video: 30-second clips on free, up to three minutes per clip on Plus",
+  "tm.r8.them":
+    "Auto-saved to Teamspace, where their FAQ counts every 10 seconds of video as one photo against the plan limit",
+  "tm.r9.feature": "Delivery routes and proof of delivery",
+  "tm.r9.detail": "Dispatch drivers, optimise stops, capture a signature at the door.",
+  "tm.r9.us": "On the Delivery plans",
+  "tm.r9.them":
+    "Proof-of-delivery photos are one of their listed use cases; route dispatch and stop optimisation are not described",
+  "tm.r10.feature": "Free plan",
+  "tm.r10.us": "300 verified photos a month, 3 projects, no card",
+  "tm.r10.them": "100 photos in Teamspace and 3 projects, per their plan comparison",
+  "tm.r11.feature": "Pricing",
+  "tm.r11.us":
+    "Flat monthly bands with the seats included: $7 solo, $25 Business, $45 for 10 seats, $105 for 25. No per-seat charge.",
+  "tm.r11.them":
+    "Per user, per month: Plus $5, Business $7, Enterprise marked coming soon. Cheaper than us for one person; $70 a month where ten seats cost us $45.",
+  "tm.s3.label": "Where they win",
+  "tm.s3.h2": "Two reasons to pick Timemark instead",
+  "tm.s3.intro": "Leaving this out would make the rest of the page less believable, not more.",
+  "tm.win1.label": "One person, lowest price",
+  "tm.win1.body":
+    "Their Plus plan is $5 a user against our $7 for a single seat. If you are a sole operator who wants the watermark cleaned up and nothing else, they are two dollars cheaper and there is no argument to make. The flat-band pricing here only starts paying you back at a crew.",
+  "tm.win2.label": "More surface area",
+  "tm.win2.body":
+    "They ship things this product does not: digital checklists, time tracking, KML map overlays, OneDrive and SharePoint backup, photo collages, ten interface languages. If your documentation problem is really a breadth problem, that is a real answer and this page is not trying to talk you out of it.",
+  "tm.s4.label": "Switching",
+  "tm.s4.h2": "What moving over actually looks like",
+  "tm.s4.intro":
+    "There is no importer, and there is a reason worth stating plainly: verification happens at the moment of capture, so photos taken in another app — Timemark included — cannot be retroactively sealed here. Importing them would give you an archive, not an evidence record. Teams switch by drawing a line at a date. New jobs get captured in GeoCliks, old projects stay where they are and stay exportable. Seats come with the plan, so one crew can move without the whole company moving.",
+  "tm.pick.label": "Pick GeoCliks if",
+  "tm.pick.1":
+    "You would rather every photo be checkable by default than remember to switch a code on before the job that turns out to matter.",
+  "tm.pick.2":
+    "You want the seal to cover the image bytes, so an edit to the file reports as an edit.",
+  "tm.pick.3":
+    "You are paying for a crew rather than a seat, where flat bands beat per-user pricing.",
+  "tm.pick.4": "The GPS accuracy radius belongs on the record rather than in a settings menu.",
+  "tm.pick.5":
+    "You also run deliveries and want dispatch, stop optimisation and door signatures in the same account.",
+  "tm.faqSection.label": "Questions",
+  "tm.faqSection.h2": "Frequently asked",
+  "tm.cta.h2": "Run both on one job",
+  "tm.cta.body":
+    "The free plan covers 300 verified photos a month with no card. Capture the same wall twice, then try to break each record — that settles it faster than any table.",
+  "tm.cta.primary": "Try GeoCliks free",
+  "tm.cta.secondary": "See how sealing works",
+  "tm.related.lead": "Comparing against a photo feed instead?",
+  "tm.related.companycam": "Read GeoCliks vs CompanyCam",
+  "tm.related.mid": ", or",
+  "tm.related.construction": "the construction photo documentation overview",
+  "tm.faq.q1": "What is the actual difference between GeoCliks and Timemark?",
+  "tm.faq.a1":
+    "Less than most comparison pages would claim. Both take the capture time from a network rather than the phone, both issue a per-photo code, and both let anyone check that code on the web without the app. Three differences are real. A GeoCliks code is on every capture on every plan, while Timemark's Photo Code is a feature to enable — their own FAQ answers a failed verification by telling you to switch it on. A GeoCliks seal covers the image bytes with a SHA-256 hash and an HMAC-SHA256 signature over the metadata, while Timemark's help notes that editing a photo's watermark after capture leaves its Photo Code unchanged. And GeoCliks charges flat monthly bands with the seats included rather than per user.",
+  "tm.faq.q2": "Is GeoCliks cheaper than Timemark?",
+  "tm.faq.a2":
+    "It depends entirely on how many people you are paying for. Timemark prices per user — $5 a month on Plus, $7 on Business — so one person is cheaper there than the $7 a GeoCliks solo plan costs. GeoCliks charges flat bands with the seats in them: $25 for Business, $45 for ten seats, $105 for twenty-five. Ten seats is therefore $70 a month on their Business plan against $45 here, and the gap widens with the crew. Both have a free plan: 300 verified photos a month here, 100 photos in Teamspace there.",
+  "tm.faq.q3": "Can I move my Timemark photos into GeoCliks?",
+  "tm.faq.a3":
+    "Not as verified captures, and that is a property of how verification works rather than a missing feature. A photo is sealed at the moment it is taken, using the server's time and a hash of the bytes as they arrive, so nothing imported afterwards can be given that seal honestly. You can keep your Timemark archive and export from it as normal. Teams switching usually pick a date, capture new jobs in GeoCliks from then on, and leave the old projects where they are.",
+  "tm.faq.q4": "Is Timemark's photo code the same as a GeoCliks photo code?",
+  "tm.faq.a4":
+    "They do the same job — a short string on the image that a third party can type into the vendor's site to see the recorded time and place — and Timemark's is 14 characters to our shorter one. The difference is what the code is bound to. Ours is signed together with a SHA-256 hash of the image bytes, so an altered file no longer matches the record the code points at. Theirs maps to the capture record, and their help centre states that editing the watermark after capture does not change the code, while their paid plans offer editing or removing that watermark.",
+  "tm.faq.q5": "Why would I pick Timemark over GeoCliks?",
+  "tm.faq.a5":
+    "Two honest reasons. If you are one person and want the cheapest verified-photo app, their Plus plan undercuts us by two dollars a month. And if you need breadth more than depth, they ship things this product does not: digital checklists, time tracking, KML map overlays, OneDrive and SharePoint backup, and an interface in ten languages. What you would be giving up is a code that is on before you need it, a seal over the image bytes, and flat pricing at crew size.",
 } as const;
 
 export type Catalog = Record<keyof typeof en, string>;

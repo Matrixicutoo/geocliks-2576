@@ -72,6 +72,9 @@ export const vi: Catalog = {
   "seo.construction.title": "Phần mềm tài liệu ảnh thi công | GeoCliks",
   "seo.construction.description":
     "Ảnh thi công có GPS và dấu thời gian mà tổ của bạn không thể làm giả và khách hàng tự xác thực được. Đồng bộ Teamspace, báo cáo nghiệm thu và một mã đã xác thực cho mỗi ảnh.",
+  "seo.timemark.title": "GeoCliks so với Timemark: xác thực và giá",
+  "seo.timemark.description":
+    "Cả hai xác thực thời gian ảnh với một mạng. So sánh mỗi con dấu bao phủ những gì, mã ảnh có bật theo mặc định hay không, và giá theo người khác giá cố định thế nào.",
   "signin.subtitle": "Hồ sơ ảnh chống giả mạo cho đội ngũ hiện trường.",
   "signin.apple": "Tiếp tục với Apple",
   "signin.google": "Tiếp tục với Google",
@@ -1983,4 +1986,121 @@ export const vi: Catalog = {
   "con.faq.q5": "GeoCliks có làm cho một tấm ảnh được tòa chấp nhận về mặt pháp lý không?",
   "con.faq.a5":
     "Không, và không phần mềm nào trung thực mà dám nói vậy. GeoCliks không phải công chứng viên hay dịch vụ pháp lý, và việc tòa án, công ty bảo hiểm hay tổng thầu có chấp nhận một hồ sơ hay không là quyết định của họ. Điều GeoCliks làm là khiến việc can thiệp mà không bị phát hiện trở nên khó, và cho bên thứ ba một cách kiểm tra ảnh một cách độc lập.",
+  "tm.eyebrow": "GeoCliks so với Timemark",
+  "tm.h1": "GeoCliks so với Timemark",
+  "tm.sub":
+    "So sánh sát sao nhất trên trang này. Cả hai đều xác thực thời gian với một mạng và gắn mã cho từng ảnh — đây là những gì thật sự còn lại để chọn.",
+  "tm.s1.label": "Bản ngắn",
+  "tm.s1.h2": "Cùng một ý tưởng. Khác nhau ở chỗ con dấu bao phủ tới đâu.",
+  "tm.s1.intro":
+    "Timemark là thứ gần nhất với sản phẩm này trên thị trường, và nước đi thường thấy của một trang so sánh — nói rằng bên kia chẳng thật sự xác thực gì cả — sẽ là sai. Họ lấy thời gian từ mạng, họ phát một mã cho mỗi ảnh, và ai cũng kiểm tra được mã đó trên trang của họ mà không cần cài ứng dụng. Nếu bạn đang chọn giữa hai bên, những khác biệt trung thực hẹp hơn và cụ thể hơn bất kỳ danh sách tính năng nào: mã có bật sẵn trước khi bạn cần hay không, con dấu bao phủ các byte của ảnh hay chỉ bản ghi mà mã trỏ tới, và hóa đơn có tăng theo từng chỗ ngồi hay không.",
+  "tm.s2.label": "Từng tính năng",
+  "tm.s2.h2": "Bảng so sánh, kèm nguồn",
+  "tm.table.caption": "GeoCliks so với Timemark, từng tính năng",
+  "tm.table.feature": "Tính năng",
+  "tm.table.us": "GeoCliks",
+  "tm.table.them": "Timemark",
+  "tm.yes": "Có",
+  "tm.no": "Không",
+  "tm.verifiedOn": "26 tháng 9 năm 2026",
+  "tm.sources":
+    "Cột Timemark được đọc từ timemark.com, bảng so sánh gói của họ, phần hỏi đáp của họ và help.timemark.com vào ngày {date}, và mô tả đúng những gì tài liệu của họ nêu. Nhà cung cấp thay đổi gói và tính năng — hãy xem trang giá hiện tại của họ trước khi quyết định, và cho chúng tôi biết ở {email} nếu một dòng ở đây đã lỗi thời. Giá tính bằng USD.",
+  "tm.r1.feature": "Thời gian lấy từ mạng, không lấy từ điện thoại",
+  "tm.r1.detail": "Liệu ngày của một tấm ảnh có sống sót khi ai đó đổi đồng hồ thiết bị.",
+  "tm.r1.us": "Giờ máy chủ, giờ thiết bị và độ lệch giữa hai bên đều được lưu",
+  "tm.r1.them": "Tài liệu của họ nêu rằng thời gian đến từ mạng thay vì từ thiết bị",
+  "tm.r2.feature": "Ai cũng kiểm tra được một tấm ảnh mà không cần ứng dụng",
+  "tm.r2.us": "Một mã cho mỗi lần chụp, kiểm tra tại geocliks.com/verify",
+  "tm.r2.them": "Một Photo Code 14 ký tự, kiểm tra tại verify.timemark.com",
+  "tm.r3.feature": "Xác thực được mà không phải bật một thiết lập trước",
+  "tm.r3.detail":
+    "Một tấm ảnh chưa từng được gắn mã thì không thể kiểm tra về sau, tranh chấp có đi theo hướng nào cũng vậy.",
+  "tm.r3.us": "Mọi lần chụp ở mọi gói đều có mã — không có gì phải bật",
+  "tm.r3.them":
+    'Photo Code là một tính năng phải bật: phần hỏi đáp của họ trả lời một lần xác thực thất bại bằng câu "hãy đảm bảo tính năng Photo Code đang được bật"',
+  "tm.r4.feature": "Các byte của ảnh được niêm phong",
+  "tm.r4.detail": "Liệu một lần sửa chính tệp ảnh có bị báo là đã sửa.",
+  "tm.r4.us":
+    "SHA-256 của các byte, cộng chữ ký HMAC-SHA256 trên phần siêu dữ liệu — đổi bất kỳ bên nào cũng làm vỡ con dấu",
+  "tm.r4.them":
+    "Trang xác thực của họ mô tả việc phát hiện tính toàn vẹn của ảnh; phần trợ giúp của họ ghi rằng sửa hình chìm của một tấm ảnh sau khi chụp không làm đổi Photo Code, và các gói trả phí của họ có liệt kê việc sửa hoặc bỏ hình chìm sau khi chụp",
+  "tm.r5.feature": "Bán kính sai số GPS được ghi theo mặc định",
+  "tm.r5.detail":
+    "Một vị trí nói chính xác tới mét từ một phép định vị sai số bốn mươi mét là độ chính xác giả.",
+  "tm.r5.us": "Được lưu cùng mọi lần chụp và hiển thị trên trang xác thực",
+  "tm.r5.them":
+    "Một trường hình chìm tùy chọn — phần hỏi đáp của họ hướng dẫn bật Độ chính xác trong Tùy chọn khác",
+  "tm.r6.feature": "Không quảng cáo",
+  "tm.r6.us": "Ở mọi gói, kể cả gói miễn phí",
+  "tm.r6.them":
+    '"Không quảng cáo" được ghi là một dòng của gói trả phí trong chính bảng so sánh gói của họ',
+  "tm.r7.feature": "Ảnh trong thư viện không thể vào hồ sơ",
+  "tm.r7.detail": "Cái lỗ mà mọi công cụ tài liệu ảnh đều phải bịt bằng cách nào đó.",
+  "tm.r7.us": "Ảnh được chụp trong ứng dụng; không có đường nhập ảnh vào hồ sơ ảnh",
+  "tm.r7.them": 'Bị chặn khi chủ một Teamspace bật thiết lập "chỉ ảnh chụp bằng Timemark" của họ',
+  "tm.r8.feature": "Video",
+  "tm.r8.us": "Video đã xác thực: clip 30 giây ở gói miễn phí, tới ba phút mỗi clip ở gói Plus",
+  "tm.r8.them":
+    "Tự lưu vào Teamspace, nơi phần hỏi đáp của họ tính mỗi 10 giây video là một ảnh trong hạn mức gói",
+  "tm.r9.feature": "Tuyến giao hàng và bằng chứng giao hàng",
+  "tm.r9.detail": "Điều phối tài xế, tối ưu điểm dừng, lấy chữ ký tại cửa.",
+  "tm.r9.us": "Ở các gói Giao hàng",
+  "tm.r9.them":
+    "Ảnh bằng chứng giao hàng là một trong các tình huống dùng họ liệt kê; điều phối tuyến và tối ưu điểm dừng thì không được mô tả",
+  "tm.r10.feature": "Gói miễn phí",
+  "tm.r10.us": "300 ảnh đã xác thực mỗi tháng, 3 dự án, không cần thẻ",
+  "tm.r10.them": "100 ảnh trong Teamspace và 3 dự án, theo bảng so sánh gói của họ",
+  "tm.r11.feature": "Giá",
+  "tm.r11.us":
+    "Các bậc tháng cố định đã gồm chỗ ngồi: 7 $ cho một người, 25 $ Business, 45 $ cho 10 chỗ, 105 $ cho 25. Không thu theo từng chỗ.",
+  "tm.r11.them":
+    "Theo người, theo tháng: Plus 5 $, Business 7 $, Enterprise ghi là sắp có. Rẻ hơn chúng tôi khi chỉ một người; 70 $ một tháng ở chỗ mười chỗ ngồi bên chúng tôi là 45 $.",
+  "tm.s3.label": "Chỗ họ thắng",
+  "tm.s3.h2": "Hai lý do để chọn Timemark thay vì đây",
+  "tm.s3.intro": "Bỏ phần này ra sẽ làm phần còn lại của trang kém đáng tin hơn, chứ không hơn.",
+  "tm.win1.label": "Một người, giá thấp nhất",
+  "tm.win1.body":
+    "Gói Plus của họ là 5 $ một người so với 7 $ của chúng tôi cho một chỗ ngồi. Nếu bạn làm một mình và chỉ muốn hình chìm cho gọn gàng, họ rẻ hơn hai đô la và không có gì để tranh luận. Bậc giá cố định ở đây chỉ bắt đầu có lợi khi có một tổ.",
+  "tm.win2.label": "Nhiều bề rộng hơn",
+  "tm.win2.body":
+    "Họ có những thứ sản phẩm này không có: danh sách kiểm tra số, theo dõi giờ làm, lớp bản đồ KML, sao lưu OneDrive và SharePoint, ghép ảnh, mười ngôn ngữ giao diện. Nếu vấn đề tài liệu của bạn thực chất là vấn đề bề rộng, đó là một câu trả lời thật và trang này không cố nói bạn từ bỏ nó.",
+  "tm.s4.label": "Chuyển sang",
+  "tm.s4.h2": "Chuyển sang đây thực tế trông như thế nào",
+  "tm.s4.intro":
+    "Không có công cụ nhập, và có một lý do đáng nói thẳng: việc xác thực diễn ra ngay lúc chụp, nên ảnh chụp bằng ứng dụng khác — kể cả Timemark — không thể được niêm phong ở đây về sau. Nhập chúng vào sẽ cho bạn một kho lưu trữ, không phải một hồ sơ bằng chứng. Các đội chuyển sang bằng cách vạch một mốc ngày. Việc mới thì chụp trong GeoCliks, dự án cũ để nguyên chỗ và vẫn xuất được. Chỗ ngồi đã nằm trong gói, nên một tổ có thể chuyển mà không cần cả công ty chuyển.",
+  "tm.pick.label": "Chọn GeoCliks nếu",
+  "tm.pick.1":
+    "Bạn thà để mọi tấm ảnh đều kiểm tra được theo mặc định còn hơn phải nhớ bật mã trước đúng cái việc rốt cuộc lại quan trọng.",
+  "tm.pick.2": "Bạn muốn con dấu bao phủ các byte của ảnh, để một lần sửa tệp bị báo là đã sửa.",
+  "tm.pick.3":
+    "Bạn trả tiền cho một tổ chứ không cho một chỗ ngồi, và ở đó bậc giá cố định thắng giá theo người.",
+  "tm.pick.4": "Bán kính sai số GPS thuộc về hồ sơ chứ không thuộc về một menu thiết lập.",
+  "tm.pick.5":
+    "Bạn cũng chạy giao hàng và muốn điều phối, tối ưu điểm dừng cùng chữ ký tại cửa trong cùng một tài khoản.",
+  "tm.faqSection.label": "Câu hỏi",
+  "tm.faqSection.h2": "Câu hỏi thường gặp",
+  "tm.cta.h2": "Chạy cả hai trên cùng một việc",
+  "tm.cta.body":
+    "Gói miễn phí cho 300 ảnh đã xác thực mỗi tháng, không cần thẻ. Chụp cùng một mảng tường hai lần, rồi thử phá từng bản ghi — cách đó phân định nhanh hơn mọi bảng so sánh.",
+  "tm.cta.primary": "Dùng thử GeoCliks miễn phí",
+  "tm.cta.secondary": "Xem cách niêm phong hoạt động",
+  "tm.related.lead": "Bạn đang so với một dòng ảnh thì sao?",
+  "tm.related.companycam": "Đọc GeoCliks so với CompanyCam",
+  "tm.related.mid": ", hoặc",
+  "tm.related.construction": "tổng quan về tài liệu ảnh trong xây dựng",
+  "tm.faq.q1": "Khác biệt thật sự giữa GeoCliks và Timemark là gì?",
+  "tm.faq.a1":
+    "Ít hơn những gì phần lớn trang so sánh sẽ tuyên bố. Cả hai đều lấy thời điểm chụp từ một mạng thay vì từ điện thoại, cả hai đều phát một mã cho mỗi ảnh, và cả hai đều cho phép bất kỳ ai kiểm tra mã đó trên web mà không cần ứng dụng. Ba khác biệt là thật. Mã GeoCliks có trên mọi lần chụp ở mọi gói, còn Photo Code của Timemark là một tính năng phải bật — chính phần hỏi đáp của họ trả lời một lần xác thực thất bại bằng cách bảo bạn bật nó lên. Con dấu GeoCliks bao phủ các byte của ảnh bằng một hàm băm SHA-256 và một chữ ký HMAC-SHA256 trên siêu dữ liệu, còn phần trợ giúp của Timemark ghi rằng sửa hình chìm của một tấm ảnh sau khi chụp vẫn để Photo Code nguyên vẹn. Và GeoCliks thu theo bậc tháng cố định đã gồm chỗ ngồi thay vì thu theo từng người.",
+  "tm.faq.q2": "GeoCliks có rẻ hơn Timemark không?",
+  "tm.faq.a2":
+    "Hoàn toàn tùy vào bạn đang trả tiền cho bao nhiêu người. Timemark tính theo người — 5 $ một tháng ở Plus, 7 $ ở Business — nên một người bên đó rẻ hơn 7 $ của gói một người bên GeoCliks. GeoCliks tính theo bậc cố định với chỗ ngồi nằm trong đó: 25 $ cho Business, 45 $ cho mười chỗ, 105 $ cho hai mươi lăm chỗ. Vậy mười chỗ là 70 $ một tháng ở gói Business của họ so với 45 $ ở đây, và khoảng cách rộng thêm khi tổ đông hơn. Cả hai đều có gói miễn phí: 300 ảnh đã xác thực mỗi tháng ở đây, 100 ảnh trong Teamspace ở đó.",
+  "tm.faq.q3": "Tôi có chuyển được ảnh Timemark của mình vào GeoCliks không?",
+  "tm.faq.a3":
+    "Không chuyển được dưới dạng ảnh đã xác thực, và đó là bản chất của cách xác thực hoạt động chứ không phải một tính năng còn thiếu. Một tấm ảnh được niêm phong ngay lúc nó được chụp, dùng giờ của máy chủ và một hàm băm của các byte đúng như khi chúng tới, nên không gì nhập vào sau đó có thể được cấp con dấu ấy một cách trung thực. Bạn có thể giữ kho Timemark của mình và xuất dữ liệu từ đó như thường. Các đội chuyển sang thường chọn một ngày, từ đó chụp việc mới trong GeoCliks, và để các dự án cũ ở nguyên chỗ.",
+  "tm.faq.q4": "Photo code của Timemark có giống mã ảnh của GeoCliks không?",
+  "tm.faq.a4":
+    "Chúng làm cùng một việc — một chuỗi ngắn trên ảnh mà người thứ ba có thể nhập vào trang của nhà cung cấp để xem thời gian và địa điểm đã ghi — và mã của Timemark dài 14 ký tự so với mã ngắn hơn của chúng tôi. Khác biệt nằm ở chỗ mã được gắn vào cái gì. Mã của chúng tôi được ký cùng một hàm băm SHA-256 của các byte ảnh, nên một tệp đã bị thay đổi sẽ không còn khớp với bản ghi mà mã trỏ tới. Mã của họ ánh xạ tới bản ghi lần chụp, và trung tâm trợ giúp của họ nêu rằng sửa hình chìm sau khi chụp không làm đổi mã, trong khi các gói trả phí của họ lại cho sửa hoặc bỏ hình chìm đó.",
+  "tm.faq.q5": "Vì sao tôi lại chọn Timemark thay vì GeoCliks?",
+  "tm.faq.a5":
+    "Hai lý do trung thực. Nếu bạn làm một mình và muốn ứng dụng ảnh đã xác thực rẻ nhất, gói Plus của họ thấp hơn chúng tôi hai đô la một tháng. Và nếu bạn cần bề rộng hơn là chiều sâu, họ có những thứ sản phẩm này không có: danh sách kiểm tra số, theo dõi giờ làm, lớp bản đồ KML, sao lưu OneDrive và SharePoint, cùng giao diện mười ngôn ngữ. Điều bạn sẽ từ bỏ là một mã bật sẵn trước khi bạn cần, một con dấu trên các byte của ảnh, và giá cố định ở quy mô một tổ.",
 };

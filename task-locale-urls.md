@@ -340,3 +340,32 @@ failures. tsc clean.
 Note for the rest of the queue: the dev server intermittently needs more than
 45s to compile a locale chunk on first hit, so the Playwright check now retries
 a URL up to three times before calling it a failure.
+
+## `/alternatives/timemark` — done
+
+93 new keys per catalog under `tm.*` (11 comparison rows × feature/detail/us/
+them, the two "where they win" cards, the five "pick GeoCliks if" bullets, five
+FAQ pairs, CTA, related links, plus `seo.timemark.title`/`.description`), all
+eleven locales, pure insertions — 0 deletions on every catalog after formatting.
+
+The page had the same shape as the CompanyCam comparison, so it got the same
+treatment: `Cell.note` and the `ROWS` fields became `TKey`, `Mark` calls
+`useLocale()` itself and resolves `tm.yes`/`tm.no`, and the module-level
+`VERIFIED_ON` constant became the `tm.verifiedOn` key, interpolated into
+`tm.sources` alongside the support address. `pageFaq` moved inside the
+component so it takes `locale`.
+
+`PAGE_SCHEMA` FAQ converted to `{ keys: { question, answer } }` (five entries),
+path added to `LOCALIZED_PATHS`, `LOCALIZED_SEO` row pointing at
+`seo.timemark.*`. Sitemap 169 -> 179 URLs.
+
+`zh.json` in the scratch dir did not parse on the first pass — straight double
+quotes inside Chinese string values. Fixed by swapping the inner pairs for
+“ ” before applying, which is the right typography for that locale anyway.
+`ar.ts` `home.samples.altFiber` collapsed under `oxfmt` again and was restored
+by hand.
+
+Verified on all eleven — localized `<title>`, prefixed canonical, one `FAQPage`
+block each; post-hydration `canonical == og:url` and translated `<h1>` on
+en/es/ar/zh/pl across this page and the six earlier ones, 35/35, 0 failures.
+tsc clean, lint at the 9-error baseline.

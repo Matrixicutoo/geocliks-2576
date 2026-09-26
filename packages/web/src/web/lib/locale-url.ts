@@ -75,6 +75,7 @@ export const LOCALIZED_PATHS: readonly string[] = [
   "/property-inspection-photos",
   "/alternatives/companycam",
   "/construction-photo-documentation",
+  "/alternatives/timemark",
 ];
 
 const LOCALIZED = new Set(LOCALIZED_PATHS);
