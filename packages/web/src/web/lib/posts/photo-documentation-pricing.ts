@@ -109,6 +109,27 @@ export const photoDocumentationPricing: Post = {
         "Divide by your monthly capture volume. That is cost per verified photo — the only number that compares two differently-shaped plans.",
       ],
     },
+    {
+      kind: "links",
+      label: "Where this goes on the site",
+      items: [
+        {
+          href: "/pricing",
+          text: "The GeoCliks plans",
+          note: "every tier, seat cap and export format in one table, so you can run step six against real numbers.",
+        },
+        {
+          href: "/alternatives/companycam",
+          text: "GeoCliks vs CompanyCam",
+          note: "the per-seat versus per-workspace arithmetic worked through against the usual incumbent.",
+        },
+        {
+          href: "/construction-photo-documentation",
+          text: "Construction photo documentation",
+          note: "what the spend buys on a job site, if you have the budget settled and want the workflow.",
+        },
+      ],
+    },
   ],
   faq: [
     {

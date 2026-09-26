@@ -113,6 +113,32 @@ export const photoProofOfDelivery: Post = {
       label: "Free tier, same seal",
       text: "On GeoCliks the $0 plan captures with the same network time, GPS, address and hash as the $105 plan. What the paid tiers add is volume, seats, export formats and longer verified video — not the proof itself. Verification behind a paywall is the category norm; it should not be.",
     },
+    {
+      kind: "links",
+      label: "Where this goes on the site",
+      items: [
+        {
+          href: "/proof-of-delivery",
+          text: "Proof of delivery with GeoCliks",
+          note: "the five fields above as a working capture, including what the recipient sees when they check the code.",
+        },
+        {
+          href: "/gps-timestamp-camera",
+          text: "The GPS timestamp camera",
+          note: "where the time and the coordinate come from, and why it is not the phone.",
+        },
+        {
+          href: "/pricing",
+          text: "Plans and pricing",
+          note: "capture plans and Delivery Routes are priced separately — this is the table that shows both.",
+        },
+        {
+          href: "/alternatives/companycam",
+          text: "GeoCliks vs CompanyCam",
+          note: "for teams already carrying a photo tool and wondering whether it clears the chargeback bar.",
+        },
+      ],
+    },
   ],
   faq: [
     {

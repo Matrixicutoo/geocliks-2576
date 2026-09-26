@@ -135,6 +135,32 @@ export const tamperProofFieldPhoto: Post = {
         "Check which of the above your plan gates behind a higher tier. That is the real price of the tool.",
       ],
     },
+    {
+      kind: "links",
+      label: "Where this goes on the site",
+      items: [
+        {
+          href: "/gps-timestamp-camera",
+          text: "The GPS timestamp camera",
+          note: "the three layers above as a product page: what each capture records and what it refuses to claim.",
+        },
+        {
+          href: "/construction-photo-documentation",
+          text: "Construction photo documentation",
+          note: "the same mechanism applied to progress, change orders and closeout packages.",
+        },
+        {
+          href: "/pricing",
+          text: "Plans and pricing",
+          note: "confirm for yourself which tier the seal sits on. It is all of them.",
+        },
+        {
+          href: "/alternatives/companycam",
+          text: "GeoCliks vs CompanyCam",
+          note: "if you are comparing on evidence quality rather than on feature count.",
+        },
+      ],
+    },
   ],
   faq: [
     {

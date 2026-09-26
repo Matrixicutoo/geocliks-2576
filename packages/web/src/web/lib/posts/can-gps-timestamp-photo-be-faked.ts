@@ -109,6 +109,32 @@ export const canGpsTimestampPhotoBeFaked: Post = {
       kind: "p",
       text: "One practical point, because it decides whether any of this reaches your field crew. If verification is a paid feature, the people taking the photos are usually on the tier that lacks it. GeoCliks puts network-verified time, GPS with street address, the photo code, the public verification page and offline capture on every plan including Free ($0, 300 captures a month, no card). Paid tiers — $7, $25, $45, $105 — add seats, volume and export formats, not a stronger seal.",
     },
+    {
+      kind: "links",
+      label: "Where this goes on the site",
+      items: [
+        {
+          href: "/gps-timestamp-camera",
+          text: "The GPS timestamp camera, in detail",
+          note: "what the capture records, and how it differs from a free stamp app that reads the phone's own clock.",
+        },
+        {
+          href: "/construction-photo-documentation",
+          text: "Construction photo documentation",
+          note: "the same verification applied to progress, change orders and closeout, where most of these disputes start.",
+        },
+        {
+          href: "/pricing",
+          text: "Plans and pricing",
+          note: "the full table, including which tier the export formats sit on.",
+        },
+        {
+          href: "/alternatives/companycam",
+          text: "How GeoCliks compares to CompanyCam",
+          note: "if you are weighing this against the incumbent on verification rather than on features.",
+        },
+      ],
+    },
   ],
   faq: [
     {

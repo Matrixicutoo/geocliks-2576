@@ -127,6 +127,27 @@ export const bestConstructionPhotoSoftware: Post = {
         "One tap, no training.",
       ],
     },
+    {
+      kind: "links",
+      label: "Where this goes on the site",
+      items: [
+        {
+          href: "/construction-photo-documentation",
+          text: "Construction photo documentation",
+          note: "how GeoCliks answers all nine checks, written for the general contractor's version of the problem.",
+        },
+        {
+          href: "/pricing",
+          text: "Plans and pricing",
+          note: "the flat per-workspace table, so you can run the headcount arithmetic from check seven yourself.",
+        },
+        {
+          href: "/alternatives/companycam",
+          text: "GeoCliks vs CompanyCam",
+          note: "the same nine checks applied to the tool most shortlists start with.",
+        },
+      ],
+    },
   ],
   faq: [
     {

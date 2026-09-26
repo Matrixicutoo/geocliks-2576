@@ -1,3 +1,5 @@
+import { Link } from "wouter";
+import { ArrowRight } from "lucide-react";
 import type { Block } from "../lib/posts";
 
 function slug(text: string) {
@@ -59,6 +61,32 @@ function BlockView({ block }: { block: Block }) {
         <aside className="my-8 border border-line bg-white px-6 py-5">
           <div className="eyebrow text-amber-deep">{block.label}</div>
           <p className="mt-2.5 mb-0 text-[17px] leading-[1.65]">{block.text}</p>
+        </aside>
+      );
+
+    // Internal links. Rendered inside the measure as a bordered aside so it
+    // reads as an aside rather than as body copy the reader has to parse.
+    case "links":
+      return (
+        <aside className="my-8 border-l-[3px] border-amber bg-white py-5 pr-6 pl-6">
+          <div className="eyebrow text-amber-deep">{block.label}</div>
+          <ul className="mt-3.5 mb-0 space-y-3.5">
+            {block.items.map((item) => (
+              <li key={item.href} className="flex gap-3">
+                <ArrowRight className="mt-[6px] h-4 w-4 shrink-0 text-amber" strokeWidth={2.5} />
+                <span className="text-[16px] leading-[1.6]">
+                  <Link
+                    to={item.href}
+                    className="font-bold text-amber-deep underline decoration-amber/40 underline-offset-4 hover:decoration-amber"
+                  >
+                    {item.text}
+                  </Link>
+                  {" — "}
+                  <span className="text-chalk/80">{item.note}</span>
+                </span>
+              </li>
+            ))}
+          </ul>
         </aside>
       );
 

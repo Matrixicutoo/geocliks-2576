@@ -8,7 +8,13 @@ export type Block =
   | { kind: "ol"; items: string[] }
   | { kind: "callout"; label: string; text: string }
   | { kind: "table"; caption?: string; head: string[]; rows: string[][] }
-  | { kind: "code"; text: string };
+  | { kind: "code"; text: string }
+  // A pointer out of the post and into the product pages. Posts are plain
+  // strings by design — no inline HTML, no markdown parsing — so a link has to
+  // be its own block rather than something embedded in a paragraph. Each entry
+  // carries the reason to follow it: a bare list of page titles is navigation,
+  // and nobody reads navigation in the middle of an article.
+  | { kind: "links"; label: string; items: { href: string; text: string; note: string }[] };
 
 export type FaqItem = { q: string; a: string };
 
