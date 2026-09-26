@@ -277,3 +277,34 @@ anchor's value before inserting). New gotcha: running `oxfmt` over the whole
 `i18n/*.ts` glob collapses a pre-existing two-line string in `ar.ts`
 (`home.samples.altFiber`) onto one line. Reverted by hand; format the touched
 files individually next time, or diff `ar.ts` immediately after.
+
+## `/alternatives/companycam` — eleven languages
+
+Fifth page, first comparison page. 78 keys per catalog (76 page strings — the
+twelve table rows are the bulk of them — plus 10 FAQ strings and 2 head-copy
+rows). `ROWS` now carries `TKey`s and resolves through `t()` in the component;
+`Cell.note` is a `TKey`, and the three plain yes/yes rows keep no note at all
+because there is nothing to translate in them. `Mark` calls `useLocale()`
+itself so the screen-reader verdict ("Yes."/"No.") is translated too.
+
+The "as of" date is new here: `cc.verifiedOn` is written the way each language
+writes a date and fills `{date}` in `cc.sources`, with `SUPPORT_EMAIL` filling
+`{email}` — `t(key, vars)` does the substitution. Moving the date means editing
+eleven rows, which is the trade for not showing "14 September 2026" on the
+Arabic and Chinese pages.
+
+`PAGE_SCHEMA` FAQ converted to `{ keys: { question, answer } }` (five entries,
+not six), path added to `LOCALIZED_PATHS`, `LOCALIZED_SEO` row pointing at
+`seo.companycam.*`. Sitemap 149 -> 159 URLs.
+
+Verified on all eleven — localized `<title>`, prefixed canonical, localized
+`FAQPage` question names; post-hydration `canonical == og:url` and translated
+`<h1>` on en/es/ar/zh/pl, plus the same check across the four earlier pages, 0
+failures. No `{date}`/`{email}` braces left in the rendered body on en/es/ar.
+tsc clean, lint 9 errors = baseline.
+
+Two formatter notes for the rest of the queue. The `ar.ts`
+`home.samples.altFiber` collapse recurred even formatting files one at a time —
+diff every touched catalog after `oxfmt` and revert it. And `oxfmt` over
+`page-schema.ts` reformats ~378 lines of the whole file: edit that file with a
+scoped string replace and do not format it.

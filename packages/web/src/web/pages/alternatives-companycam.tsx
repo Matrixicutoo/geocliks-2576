@@ -1,14 +1,10 @@
 import { Link } from "wouter";
 import { Check, Minus } from "lucide-react";
-import {
-  LandingCta,
-  LandingFaq,
-  LandingPage,
-  LandingSection,
-} from "../components/landing-page";
+import { LandingCta, LandingFaq, LandingPage, LandingSection } from "../components/landing-page";
 import { cn } from "../lib/utils";
 import { SUPPORT_EMAIL } from "../lib/support";
 import { pageFaq } from "../lib/page-schema";
+import { useLocale, type TKey } from "../lib/i18n";
 
 /**
  * Comparison landing page for "companycam alternatives" and its neighbours.
@@ -17,14 +13,16 @@ import { pageFaq } from "../lib/page-schema";
  * wrong is expensive, so two rules are baked into how this file is written:
  *
  *  1. Every CompanyCam claim below was read off companycam.com and their own
- *     help centre on the date in `VERIFIED_ON`, and the row says what their
+ *     help centre on the date in `cc.verifiedOn`, and the row says what their
  *     documentation says rather than what is convenient. Where they simply do
  *     not describe something — whether their timestamp is checked against
  *     anything but the device — the row says that, instead of claiming a "No"
  *     that cannot be sourced.
- *  2. `VERIFIED_ON` is rendered on the page. Vendors change plans and features,
- *     and a comparison table with no date on it is a liability the moment they
- *     do. Re-check the rows and move the date when you touch this page.
+ *  2. That date is rendered on the page. Vendors change plans and features, and
+ *     a comparison table with no date on it is a liability the moment they do.
+ *     Re-check the rows and move the date when you touch this page — it lives in
+ *     the catalogs as `cc.verifiedOn`, written the way each language writes a
+ *     date, so moving it means eleven rows rather than one constant.
  *
  * The GeoCliks column is drawn from the product itself and from the live plan
  * table — `billing.plans`, which is the DB rows an operator edits in
@@ -34,88 +32,79 @@ import { pageFaq } from "../lib/page-schema";
  * running site, never off the seed file.
  */
 
-/** The day the CompanyCam column was last checked against their public site. */
-const VERIFIED_ON = "14 September 2026";
-
 type Cell =
-  | { kind: "yes"; note?: string }
-  | { kind: "no"; note?: string }
-  | { kind: "text"; note: string };
+  | { kind: "yes"; note?: TKey }
+  | { kind: "no"; note?: TKey }
+  | { kind: "text"; note: TKey };
 
-const ROWS: Array<{ feature: string; detail?: string; us: Cell; them: Cell }> = [
+const ROWS: Array<{ feature: TKey; detail?: TKey; us: Cell; them: Cell }> = [
   {
-    feature: "Network-verified timestamp",
-    detail: "The time is checked against a server, not taken from the phone's clock.",
-    us: { kind: "yes", note: "Captures whose device clock disagrees are flagged device-timed" },
-    them: { kind: "text", note: "Not described — photos are stamped with the device date and time" },
+    feature: "cc.r1.feature",
+    detail: "cc.r1.detail",
+    us: { kind: "yes", note: "cc.r1.us" },
+    them: { kind: "text", note: "cc.r1.them" },
   },
   {
-    feature: "Street address on the capture",
-    us: { kind: "yes", note: "Coordinates and the resolved address" },
-    them: { kind: "text", note: "GPS latitude and longitude" },
+    feature: "cc.r2.feature",
+    us: { kind: "yes", note: "cc.r2.us" },
+    them: { kind: "text", note: "cc.r2.them" },
   },
   {
-    feature: "Stamping on by default",
-    detail: "Whether a photo is documented without anyone remembering to switch something on.",
-    us: { kind: "yes", note: "Every capture, every account" },
-    them: { kind: "text", note: "Opt-in toggle each user turns on in their own settings" },
+    feature: "cc.r3.feature",
+    detail: "cc.r3.detail",
+    us: { kind: "yes", note: "cc.r3.us" },
+    them: { kind: "text", note: "cc.r3.them" },
   },
   {
-    feature: "Independently verifiable photo code",
-    detail: "A third party can check a single photo without an account.",
-    us: { kind: "yes", note: "Any code checks at geocliks.com/verify" },
+    feature: "cc.r4.feature",
+    detail: "cc.r4.detail",
+    us: { kind: "yes", note: "cc.r4.us" },
     them: { kind: "no" },
   },
   {
-    feature: "Tamper-evident content hash",
-    us: { kind: "yes", note: "SHA-256 plus an append-only event record" },
+    feature: "cc.r5.feature",
+    us: { kind: "yes", note: "cc.r5.us" },
     them: { kind: "no" },
   },
   {
-    feature: "Works fully offline, syncs on reconnect",
+    feature: "cc.r6.feature",
     us: { kind: "yes" },
     them: { kind: "yes" },
   },
-  { feature: "Shared project feed for the team", us: { kind: "yes" }, them: { kind: "yes" } },
-  { feature: "Before / after comparison", us: { kind: "yes" }, them: { kind: "yes" } },
+  { feature: "cc.r7.feature", us: { kind: "yes" }, them: { kind: "yes" } },
+  { feature: "cc.r8.feature", us: { kind: "yes" }, them: { kind: "yes" } },
   {
-    feature: "Report export",
-    us: { kind: "yes", note: "PDF, Excel, ZIP and KMZ" },
-    them: { kind: "yes", note: "Photo reports" },
+    feature: "cc.r9.feature",
+    us: { kind: "yes", note: "cc.r9.us" },
+    them: { kind: "yes", note: "cc.r9.them" },
   },
   {
-    feature: "Delivery routes and proof of delivery",
-    detail: "Dispatch drivers, optimise stops, capture a signature at the door.",
-    us: { kind: "yes", note: "On the Delivery plans" },
+    feature: "cc.r10.feature",
+    detail: "cc.r10.detail",
+    us: { kind: "yes", note: "cc.r10.us" },
     them: { kind: "no" },
   },
   {
-    feature: "Free plan",
-    us: { kind: "yes", note: "300 verified photos a month, no card" },
-    them: { kind: "text", note: "Free trial only" },
+    feature: "cc.r11.feature",
+    us: { kind: "yes", note: "cc.r11.us" },
+    them: { kind: "text", note: "cc.r11.them" },
   },
   {
-    feature: "Pricing",
-    us: {
-      kind: "text",
-      note: "Flat monthly bands with seats included: $7 solo, $25 Business, $45 for 10 seats, $105 for 25. No per-seat charge.",
-    },
-    them: {
-      kind: "text",
-      note: "From $63/month for 1 user (Core), $119 for 3 (Crew), $199 for 3 (Scale), billed annually — plus $29 per additional user.",
-    },
+    feature: "cc.r12.feature",
+    us: { kind: "text", note: "cc.r12.us" },
+    them: { kind: "text", note: "cc.r12.them" },
   },
 ];
 
-const FAQ = pageFaq("/alternatives/companycam");
-
 function Mark({ cell }: { cell: Cell }) {
+  const { t } = useLocale();
   // The icon is decorative, so the yes/no verdict has to reach a screen reader
   // as text. Skipped when the visible copy is already that word, which would
   // otherwise be read as "No. No".
-  const word = cell.kind === "yes" ? "Yes" : cell.kind === "no" ? "No" : "";
+  const word = cell.kind === "yes" ? t("cc.yes") : cell.kind === "no" ? t("cc.no") : "";
+  const note = cell.note ? t(cell.note) : "";
   // With no note, the cell already renders the bare word.
-  const visible = cell.note?.trim() || word;
+  const visible = note.trim() || word;
   const verdict = word && visible !== word ? `${word}.` : "";
 
   return (
@@ -125,14 +114,19 @@ function Mark({ cell }: { cell: Cell }) {
       ) : cell.kind === "no" ? (
         <Minus className="mt-0.5 size-4 shrink-0 text-fog/50" aria-hidden />
       ) : null}
-      <span className={cn("text-[13.5px] leading-snug", cell.kind === "no" ? "text-fog/70" : "text-fog")}>
+      <span
+        className={cn(
+          "text-[13.5px] leading-snug",
+          cell.kind === "no" ? "text-fog/70" : "text-fog",
+        )}
+      >
         {verdict ? <span className="sr-only">{verdict} </span> : null}
         {cell.kind === "yes" && !cell.note ? (
-          <span className="font-semibold text-chalk">Yes</span>
+          <span className="font-semibold text-chalk">{t("cc.yes")}</span>
         ) : cell.kind === "no" && !cell.note ? (
-          "No"
+          t("cc.no")
         ) : (
-          cell.note
+          note
         )}
       </span>
     </div>
@@ -140,35 +134,33 @@ function Mark({ cell }: { cell: Cell }) {
 }
 
 export default function AlternativesCompanyCam() {
+  const { t, locale } = useLocale();
+  const faq = pageFaq("/alternatives/companycam", locale);
+  const who: TKey[] = ["cc.who.1", "cc.who.2", "cc.who.3", "cc.who.4"];
+
   return (
     <LandingPage
       path="/alternatives/companycam"
-      eyebrow="GeoCliks vs CompanyCam"
-      h1="GeoCliks vs CompanyCam"
-      sub="Both put GPS-tagged photos in front of your crew. Here's where they actually differ."
+      eyebrow={t("cc.eyebrow")}
+      h1={t("cc.h1")}
+      sub={t("cc.sub")}
     >
-      <LandingSection
-        label="The short version"
-        h2="One is a photo feed. One is an evidence record."
-        intro="CompanyCam is built for construction teams that want a shared photo feed, and it does that well. GeoCliks is built for teams that need every photo to hold up when someone disputes it — a network-verified timestamp, GPS coordinates and the street address locked into the capture itself, with a unique code anyone can check independently. If your work gets questioned, by a client, an inspector or in an insurance claim, that verification layer is the difference. If it never does, you are paying for something you will not use."
-      />
+      <LandingSection label={t("cc.s1.label")} h2={t("cc.s1.h2")} intro={t("cc.s1.intro")} />
 
-      <LandingSection label="Feature by feature" h2="The comparison, with sources">
+      <LandingSection label={t("cc.s2.label")} h2={t("cc.s2.h2")}>
         <div className="overflow-x-auto rounded-[12px] border border-line">
           <table className="w-full min-w-[720px] border-collapse text-start">
-            <caption className="sr-only">
-              GeoCliks compared with CompanyCam, feature by feature
-            </caption>
+            <caption className="sr-only">{t("cc.table.caption")}</caption>
             <thead>
               <tr className="border-b border-line bg-ink-2">
                 <th scope="col" className="label px-4 py-3 text-start">
-                  Feature
+                  {t("cc.table.feature")}
                 </th>
                 <th scope="col" className="label px-4 py-3 text-start text-amber">
-                  GeoCliks
+                  {t("cc.table.us")}
                 </th>
                 <th scope="col" className="label px-4 py-3 text-start">
-                  CompanyCam
+                  {t("cc.table.them")}
                 </th>
               </tr>
             </thead>
@@ -177,11 +169,11 @@ export default function AlternativesCompanyCam() {
                 <tr key={row.feature} className="border-b border-line last:border-0">
                   <th scope="row" className="px-4 py-4 align-top text-start">
                     <span className="font-display text-[14px] font-semibold text-chalk">
-                      {row.feature}
+                      {t(row.feature)}
                     </span>
                     {row.detail ? (
                       <span className="mt-1 block text-[12.5px] leading-snug text-fog/80">
-                        {row.detail}
+                        {t(row.detail)}
                       </span>
                     ) : null}
                   </th>
@@ -198,67 +190,54 @@ export default function AlternativesCompanyCam() {
         </div>
 
         <p className="mt-4 max-w-[820px] text-[12.5px] leading-relaxed text-fog/80">
-          The CompanyCam column was read from companycam.com and their own help centre on{" "}
-          {VERIFIED_ON}, and describes what their documentation states. Vendors change plans and
-          features — check their current pricing page before you decide, and tell us at{" "}
-          {SUPPORT_EMAIL} if a row here has gone out of date. Prices are USD.
+          {t("cc.sources", { date: t("cc.verifiedOn"), email: SUPPORT_EMAIL })}
         </p>
       </LandingSection>
 
-      <LandingSection
-        label="Switching"
-        h2="What moving over actually looks like"
-        intro="Worth saying plainly, because most comparison pages are vague here: there is no one-click importer. Photos already taken in another app cannot be retroactively network-verified, because the verification happens at the moment of capture — so importing them would give you an archive, not an evidence record. What teams do instead is draw a line at a date: new jobs get captured in GeoCliks, old projects stay where they are and stay exportable. Seats come with the plan, so you can start with one crew rather than the whole company."
-      >
+      <LandingSection label={t("cc.s3.label")} h2={t("cc.s3.h2")} intro={t("cc.s3.intro")}>
         <div className="rounded-[12px] border border-line bg-ink-2 p-5 sm:p-6">
-          <p className="label">Who this is for</p>
+          <p className="label">{t("cc.who.label")}</p>
           <ul className="mt-4 space-y-3">
-            {[
-              "Teams that have had a photo's authenticity questioned by a client, a GC or an inspector.",
-              "Work where photo evidence has to survive an insurance claim or a legal dispute.",
-              "Crews that want the documentation to happen without anyone remembering to enable it.",
-              "Operations that also run deliveries and want proof of delivery in the same account.",
-            ].map((line) => (
-              <li key={line} className="flex items-start gap-2.5">
+            {who.map((key) => (
+              <li key={key} className="flex items-start gap-2.5">
                 <Check className="mt-0.5 size-4 shrink-0 text-amber" aria-hidden />
-                <span className="text-[14px] leading-relaxed text-fog">{line}</span>
+                <span className="text-[14px] leading-relaxed text-fog">{t(key)}</span>
               </li>
             ))}
           </ul>
           <p className="mt-5 border-t border-line pt-4 text-[13.5px] leading-relaxed text-fog">
-            If what you need is a shared project photo feed and nothing has ever been disputed,
-            CompanyCam is a reasonable answer and this page is not trying to talk you out of it.
+            {t("cc.who.foot")}
           </p>
         </div>
       </LandingSection>
 
-      <LandingSection label="Questions" h2="Frequently asked">
-        <LandingFaq entries={FAQ} />
+      <LandingSection label={t("cc.faqSection.label")} h2={t("cc.faqSection.h2")}>
+        <LandingFaq entries={faq} />
       </LandingSection>
 
       <LandingCta
-        h2="Try it on one job"
-        body="The free plan covers 300 verified photos a month with no card. Run it alongside what you have and see whether the verification layer earns its place."
-        primary={{ label: "Try GeoCliks free", to: "/get-app" }}
-        secondary={{ label: "See how verification works", to: "/help/verify/how-sealing-works" }}
+        h2={t("cc.cta.h2")}
+        body={t("cc.cta.body")}
+        primary={{ label: t("cc.cta.primary"), to: "/get-app" }}
+        secondary={{ label: t("cc.cta.secondary"), to: "/help/verify/how-sealing-works" }}
       />
 
       <section className="border-b border-line">
         <div className="mx-auto max-w-[1180px] px-5 py-10">
           <p className="text-[13.5px] leading-relaxed text-fog">
-            Documenting construction work specifically?{" "}
+            {t("cc.related.lead")}{" "}
             <Link
               to="/construction-photo-documentation"
               className="font-semibold text-amber underline decoration-amber/40 underline-offset-4 hover:decoration-amber"
             >
-              Read the construction photo documentation overview
+              {t("cc.related.construction")}
             </Link>
-            . Comparing timestamp apps instead?{" "}
+            {t("cc.related.mid")}{" "}
             <Link
               to="/alternatives/timemark"
               className="font-semibold text-amber underline decoration-amber/40 underline-offset-4 hover:decoration-amber"
             >
-              See GeoCliks vs Timemark
+              {t("cc.related.timemark")}
             </Link>
             .
           </p>

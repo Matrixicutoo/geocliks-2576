@@ -67,6 +67,9 @@ export const tl: Catalog = {
   "seo.inspection.title": "App ng litrato sa inspeksyon — beripikadong patunay ng move-in",
   "seo.inspection.description":
     "Litrato ng inspeksyon sa move-in at move-out na may beripikadong oras, GPS at address ng unit, para ang away sa deposito ay nakasalalay sa talaan at hindi sa salita ng isa't isa.",
+  "seo.companycam.title": "GeoCliks vs CompanyCam — beripikadong litrato, patag na presyo",
+  "seo.companycam.description":
+    "Petsado at may pinagmulang paghahambing ng GeoCliks at CompanyCam: oras na beripikado sa network, photo code na matsetsek ng kahit sino, at patag na buwanang plano na kasama na ang mga upuan.",
   "signin.subtitle": "Hindi mapepekeng dokumentasyon ng larawan para sa mga field team.",
   "signin.apple": "Magpatuloy sa Apple",
   "signin.google": "Magpatuloy sa Google",
@@ -1823,4 +1826,100 @@ export const tl: Catalog = {
   "inspection.faq.q6": "Gaano katagal iniingatan ang mga litrato?",
   "inspection.faq.a6":
     "Habang aktibo ang workspace mo — at mahalaga ito rito, dahil ang away sa deposito ay maaaring sumulpot makalipas ang isang taon mula nang lumipat ang umuupa. I-export ang buong set sa PDF, Excel o ZIP kahit kailan mo gustuhing may sariling kopya sa labas ng sistema.",
+  "cc.eyebrow": "GeoCliks vs CompanyCam",
+  "cc.h1": "GeoCliks vs CompanyCam",
+  "cc.sub":
+    "Pareho nilang inilalapag sa harap ng tropa mo ang mga litratong may GPS. Ito ang totoong pinagkaiba nila.",
+  "cc.s1.label": "Ang maikling bersyon",
+  "cc.s1.h2": "Ang isa ay feed ng litrato. Ang isa ay talaan ng ebidensya.",
+  "cc.s1.intro":
+    "Ginawa ang CompanyCam para sa mga construction team na gusto ng shared photo feed, at magaling naman ito diyan. Ginawa ang GeoCliks para sa mga team na kailangang tumayo ang bawat litrato kapag pinagdudahan ito ng iba: oras na beripikado sa network, mga koordinada ng GPS at ang street address na nakakandado sa kuha mismo, kasama ang isang kakaibang code na kahit sino ay makakatsek nang mag-isa. Kapag kinuwestiyon ang trabaho mo — ng kliyente, ng inspektor, o sa isang insurance claim — ang layer ng beripikasyon na iyon ang pinagkaiba. Kung hindi naman ito nangyayari, binabayaran mo ang isang bagay na hindi mo gagamitin.",
+  "cc.s2.label": "Isa-isang tampok",
+  "cc.s2.h2": "Ang paghahambing, may pinagmulan",
+  "cc.table.caption": "GeoCliks kumpara sa CompanyCam, isa-isang tampok",
+  "cc.table.feature": "Tampok",
+  "cc.table.us": "GeoCliks",
+  "cc.table.them": "CompanyCam",
+  "cc.yes": "Oo",
+  "cc.no": "Hindi",
+  "cc.verifiedOn": "14 Setyembre 2026",
+  "cc.sources":
+    "Binasa ang kolum ng CompanyCam sa companycam.com at sa kanilang sariling help center noong {date}, at isinasaad nito ang nakasulat sa dokumentasyon nila. Nagbabago ang mga plano at tampok ng mga vendor: tingnan ang kasalukuyang pricing page nila bago ka magdesisyon, at sabihan kami sa {email} kung may hilera rito na luma na. Nasa USD ang mga presyo.",
+  "cc.r1.feature": "Oras na beripikado sa network",
+  "cc.r1.detail": "Itinatapat ang oras sa isang server, hindi kinukuha sa orasan ng telepono.",
+  "cc.r1.us":
+    "Ang mga kuha na hindi tugma ang orasan ng device ay minamarkahan bilang device-timed",
+  "cc.r1.them": "Hindi inilalarawan — tinatatakan ang litrato ng petsa at oras ng device",
+  "cc.r2.feature": "Street address sa kuha",
+  "cc.r2.us": "Mga koordinada at ang naresolbang address",
+  "cc.r2.them": "Latitude at longitude ng GPS",
+  "cc.r3.feature": "Naka-on ang tatak bilang default",
+  "cc.r3.detail":
+    "Kung nadodokumento ang litrato nang walang kailangang mag-alala kung sino ang magbubukas ng isang setting.",
+  "cc.r3.us": "Bawat kuha, bawat account",
+  "cc.r3.them": "Opsyonal na switch na ang mismong user ang nagbubukas sa sariling settings",
+  "cc.r4.feature": "Photo code na makatsek nang hiwalay",
+  "cc.r4.detail": "Kayang tsekan ng ibang tao ang isang litrato nang walang account.",
+  "cc.r4.us": "Kahit anong code ay natsetsek sa geocliks.com/verify",
+  "cc.r5.feature": "Content hash na halata kapag ginalaw",
+  "cc.r5.us": "SHA-256 kasama ang talaan ng pangyayari na puro dagdag lang",
+  "cc.r6.feature": "Gumagana nang buong offline, nagsi-sync pagbalik ng signal",
+  "cc.r7.feature": "Shared project feed para sa team",
+  "cc.r8.feature": "Paghahambing ng bago / pagkatapos",
+  "cc.r9.feature": "Pag-export ng report",
+  "cc.r9.us": "PDF, Excel, ZIP at KMZ",
+  "cc.r9.them": "Mga photo report",
+  "cc.r10.feature": "Mga ruta ng delivery at patunay ng paghatid",
+  "cc.r10.detail": "Magpadala ng driver, i-optimize ang mga hinto, kumuha ng pirma sa pintuan.",
+  "cc.r10.us": "Nasa mga planong Delivery",
+  "cc.r11.feature": "Libreng plano",
+  "cc.r11.us": "300 beripikadong litrato kada buwan, walang card",
+  "cc.r11.them": "Libreng trial lamang",
+  "cc.r12.feature": "Presyo",
+  "cc.r12.us":
+    "Patag na buwanang antas na kasama na ang mga upuan: $7 solo, $25 Business, $45 para sa 10 upuan, $105 para sa 25. Walang bayad kada upuan.",
+  "cc.r12.them":
+    "Mula $63/buwan para sa 1 user (Core), $119 para sa 3 (Crew), $199 para sa 3 (Scale), taunang bayad — dagdag $29 kada karagdagang user.",
+  "cc.s3.label": "Paglipat",
+  "cc.s3.h2": "Ganito talaga ang paglipat",
+  "cc.s3.intro":
+    "Sabihin na natin nang malinaw, dahil malabo ang halos lahat ng comparison page dito: wala pang one-click importer. Ang mga litratong kinuha na sa ibang app ay hindi na mababeripika sa network pabalik, dahil sa sandali ng kuha nangyayari ang beripikasyon — kaya ang pag-import ay magbibigay sa iyo ng arkibo, hindi ng talaan ng ebidensya. Ang ginagawa ng mga team ay gumuhit ng linya sa isang petsa: ang bagong trabaho ay kinukuha sa GeoCliks, ang lumang proyekto ay nananatili kung saan ito at nananatiling ma-export. Kasama na ang mga upuan sa plano, kaya makakapagsimula ka sa isang tropa at hindi sa buong kompanya.",
+  "cc.who.label": "Para kanino ito",
+  "cc.who.1":
+    "Mga team na may litratong pinagdudahan na ang pagka-tunay ng kliyente, ng general contractor o ng inspektor.",
+  "cc.who.2":
+    "Trabahong kailangang tumagal ang ebidensyang litrato sa isang insurance claim o legal na alitan.",
+  "cc.who.3":
+    "Mga tropa na gustong basta na lang mangyari ang dokumentasyon nang walang kailangang mag-alalang magbukas nito.",
+  "cc.who.4":
+    "Mga operasyong may delivery din at gustong sa isang account lang ang patunay ng paghatid.",
+  "cc.who.foot":
+    "Kung shared project photo feed lang ang kailangan mo at wala pa namang napagtatalunan, matino namang sagot ang CompanyCam at hindi ka pinipilit ng pahinang ito na lumihis.",
+  "cc.faqSection.label": "Mga tanong",
+  "cc.faqSection.h2": "Mga madalas itanong",
+  "cc.cta.h2": "Subukan sa isang trabaho lang",
+  "cc.cta.body":
+    "Saklaw ng libreng plano ang 300 beripikadong litrato kada buwan nang walang card. Patakbuhin ito kasabay ng kasalukuyan mong gamit at tingnan kung karapat-dapat ang layer ng beripikasyon.",
+  "cc.cta.primary": "Subukan ang GeoCliks nang libre",
+  "cc.cta.secondary": "Tingnan kung paano gumagana ang beripikasyon",
+  "cc.related.lead": "Trabahong konstruksyon ba talaga ang dinodokumento mo?",
+  "cc.related.construction":
+    "Basahin ang pangkalahatang-tanaw sa dokumentasyong litrato sa konstruksyon",
+  "cc.related.mid": ". Mga app ba ng timestamp ang inihahambing mo?",
+  "cc.related.timemark": "Tingnan ang GeoCliks vs Timemark",
+  "cc.faq.q1": "Ano talaga ang pinagkaiba ng GeoCliks at CompanyCam?",
+  "cc.faq.a1":
+    "Ang CompanyCam ay shared photo feed para sa mga construction team, at maganda naman. Ang GeoCliks ay binuo sa paligid ng pagpapatunay sa litrato, kaya mas malalim ang layer ng beripikasyon: itinatapat ang oras sa aming mga server at hindi binabasa sa telepono, isinusulat ang street address katabi ng koordinada, at bawat kuha ay may code na makatsek ng kahit sino sa geocliks.com/verify. Kung pangkoordinasyon lang ang mga litrato mo, pabigat ang layer na iyon. Kung pinagtatalunan naman, iyon ang buong punto.",
+  "cc.faq.q2": "Mas mura ba ang GeoCliks kaysa CompanyCam?",
+  "cc.faq.a2":
+    "Para sa karamihan ng team, oo, at mas malaki ang pagkaiba sa anyo ng bill kaysa sa mismong halaga. Nagpe-presyo ang CompanyCam kada user sa ibabaw ng minimum ng plano — mula $63 kada buwan para sa isang user, dagdag $29 kada karagdagan. Patag na buwanang presyo ang GeoCliks na kasama na ang mga upuan: $7 para sa isang tao, $45 para sa sampu, $105 para sa dalawampu't lima. May libreng plano rin na saklaw ang 300 beripikadong litrato kada buwan.",
+  "cc.faq.q3": "Mailipat ko ba sa GeoCliks ang kasaysayan ng litrato ko sa CompanyCam?",
+  "cc.faq.a3":
+    "Wala pang awtomatikong import ngayon. Mae-export mo ang mga litrato mo sa CompanyCam at maitatago ang arkibong iyon, at lumilipat ang karamihan ng team sa pamamagitan ng paggamit ng GeoCliks sa bagong trabaho mula sa piniling petsa habang nananatili sa kinalalagyan ang mga lumang proyekto. Isang bagay na dapat malinaw: ang mga litratong na-import kahit saan ay hindi na mababeripika sa network pagkatapos, dahil sa kuha nangyayari ang beripikasyon. Ang na-import na litrato ay litrato lang, hindi kuhang sinelyuhan ng GeoCliks.",
+  "cc.faq.q4": "Kailangan bang ilipat lahat ng tropa nang sabay?",
+  "cc.faq.a4":
+    "Hindi. Kasama na ang mga upuan sa plano at hindi binibilang isa-isa, kaya maaari mong ilagay sa GeoCliks ang isang tropa para sa isang trabaho, iwan ang iba kung saan sila, at magdesisyon pagkatapos.",
+  "cc.faq.q5": "Kaya ba ng GeoCliks ang lahat ng kayang gawin ng CompanyCam?",
+  "cc.faq.a5":
+    "Hindi lahat. Lumaki na ang CompanyCam sa mga katabing larangan — bayad sa site, kagamitan sa marketing, e-signature, pagsukat ng kuwarto, caption gamit ang AI. Hindi ginagawa ng GeoCliks ang mga iyon at hindi rin sinusubukan. Ginagawa nito ang ebidensyang litrato at video, Teamspace, mga report at mga ruta ng delivery. Kung gusto mong ang photo app ay CRM na rin, mas malawak na produkto ang CompanyCam.",
 };

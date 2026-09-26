@@ -66,6 +66,9 @@ export const vi: Catalog = {
   "seo.inspection.title": "Ứng dụng ảnh kiểm tra nhà — bằng chứng nhận nhà đã xác minh",
   "seo.inspection.description":
     "Ảnh kiểm tra lúc nhận và trả nhà kèm giờ đã xác minh, GPS và địa chỉ căn hộ, để tranh chấp tiền cọc dựa vào hồ sơ chứ không dựa vào lời ai nói.",
+  "seo.companycam.title": "GeoCliks vs CompanyCam — ảnh đã xác minh, giá cố định",
+  "seo.companycam.description":
+    "Bảng so sánh có ngày và có dẫn nguồn giữa GeoCliks và CompanyCam: dấu thời gian xác minh qua mạng, mã ảnh ai cũng kiểm tra được, và các gói tháng cố định đã gồm chỗ người dùng.",
   "signin.subtitle": "Hồ sơ ảnh chống giả mạo cho đội ngũ hiện trường.",
   "signin.apple": "Tiếp tục với Apple",
   "signin.google": "Tiếp tục với Google",
@@ -1785,4 +1788,96 @@ export const vi: Catalog = {
   "inspection.faq.q6": "Ảnh được giữ trong bao lâu?",
   "inspection.faq.a6":
     "Chừng nào workspace của bạn còn hoạt động — điều này quan trọng ở đây, vì tranh chấp tiền cọc có thể nổi lên một năm sau khi người thuê dọn vào. Xuất cả bộ ra PDF, Excel hay ZIP bất cứ lúc nào bạn muốn có bản của riêng mình ngoài hệ thống.",
+  "cc.eyebrow": "GeoCliks vs CompanyCam",
+  "cc.h1": "GeoCliks vs CompanyCam",
+  "cc.sub":
+    "Cả hai đều đưa ảnh gắn GPS đến trước mắt đội của bạn. Đây là chỗ chúng khác nhau thật sự.",
+  "cc.s1.label": "Bản ngắn",
+  "cc.s1.h2": "Một bên là dòng ảnh. Một bên là hồ sơ bằng chứng.",
+  "cc.s1.intro":
+    "CompanyCam được làm cho các đội thi công muốn một dòng ảnh dùng chung, và nó làm tốt việc đó. GeoCliks được làm cho những đội cần mỗi tấm ảnh đứng vững khi có người tranh cãi: giờ được xác minh qua mạng, toạ độ GPS và địa chỉ đường phố khoá thẳng vào chính tấm ảnh, kèm một mã duy nhất ai cũng kiểm tra độc lập được. Nếu công việc của bạn bị chất vấn — bởi khách, bởi người kiểm định hay trong một vụ bồi thường bảo hiểm — lớp xác minh đó chính là khác biệt. Nếu chẳng bao giờ bị, bạn đang trả tiền cho thứ mình sẽ không dùng.",
+  "cc.s2.label": "Từng tính năng",
+  "cc.s2.h2": "Bảng so sánh, có dẫn nguồn",
+  "cc.table.caption": "GeoCliks so với CompanyCam, từng tính năng một",
+  "cc.table.feature": "Tính năng",
+  "cc.table.us": "GeoCliks",
+  "cc.table.them": "CompanyCam",
+  "cc.yes": "Có",
+  "cc.no": "Không",
+  "cc.verifiedOn": "14 tháng 9 năm 2026",
+  "cc.sources":
+    "Cột CompanyCam được đọc từ companycam.com và trung tâm trợ giúp của chính họ vào ngày {date}, và nêu đúng những gì tài liệu của họ nói. Nhà cung cấp thay đổi gói và tính năng: hãy xem trang giá hiện tại của họ trước khi quyết định, và cho chúng tôi biết ở {email} nếu một dòng ở đây đã lỗi thời. Giá tính bằng USD.",
+  "cc.r1.feature": "Dấu thời gian xác minh qua mạng",
+  "cc.r1.detail": "Giờ được đối chiếu với máy chủ, không lấy từ đồng hồ điện thoại.",
+  "cc.r1.us": "Ảnh có đồng hồ thiết bị lệch sẽ được đánh dấu là giờ theo thiết bị",
+  "cc.r1.them": "Không thấy nêu — ảnh được đóng ngày và giờ của thiết bị",
+  "cc.r2.feature": "Địa chỉ đường phố trên ảnh",
+  "cc.r2.us": "Toạ độ và địa chỉ đã phân giải",
+  "cc.r2.them": "Kinh độ và vĩ độ GPS",
+  "cc.r3.feature": "Đóng dấu bật sẵn",
+  "cc.r3.detail": "Ảnh có được lưu chứng mà không cần ai nhớ bật thứ gì lên hay không.",
+  "cc.r3.us": "Mọi lần chụp, mọi tài khoản",
+  "cc.r3.them": "Tuỳ chọn mà từng người dùng phải tự bật trong cài đặt của mình",
+  "cc.r4.feature": "Mã ảnh kiểm tra độc lập được",
+  "cc.r4.detail": "Người thứ ba kiểm tra được một tấm ảnh mà không cần tài khoản.",
+  "cc.r4.us": "Mọi mã đều kiểm tra được tại geocliks.com/verify",
+  "cc.r5.feature": "Mã băm nội dung chống sửa",
+  "cc.r5.us": "SHA-256 kèm một sổ sự kiện chỉ ghi thêm",
+  "cc.r6.feature": "Chạy hoàn toàn offline, đồng bộ khi có mạng lại",
+  "cc.r7.feature": "Dòng ảnh dự án dùng chung cho cả đội",
+  "cc.r8.feature": "So sánh trước / sau",
+  "cc.r9.feature": "Xuất báo cáo",
+  "cc.r9.us": "PDF, Excel, ZIP và KMZ",
+  "cc.r9.them": "Báo cáo ảnh",
+  "cc.r10.feature": "Tuyến giao hàng và bằng chứng giao hàng",
+  "cc.r10.detail": "Điều tài xế, tối ưu điểm dừng, lấy chữ ký ngay tại cửa.",
+  "cc.r10.us": "Có trong các gói Giao hàng",
+  "cc.r11.feature": "Gói miễn phí",
+  "cc.r11.us": "300 ảnh đã xác minh mỗi tháng, không cần thẻ",
+  "cc.r11.them": "Chỉ có bản dùng thử",
+  "cc.r12.feature": "Giá",
+  "cc.r12.us":
+    "Các mức tháng cố định, đã gồm chỗ người dùng: 7 $ một người, 25 $ Business, 45 $ cho 10 chỗ, 105 $ cho 25. Không thu thêm theo đầu người.",
+  "cc.r12.them":
+    "Từ 63 $/tháng cho 1 người (Core), 119 $ cho 3 (Crew), 199 $ cho 3 (Scale), tính theo năm — cộng 29 $ mỗi người thêm.",
+  "cc.s3.label": "Chuyển sang",
+  "cc.s3.h2": "Chuyển qua thực tế sẽ như thế nào",
+  "cc.s3.intro":
+    "Nói thẳng cho rõ, vì phần lớn trang so sánh đều nói vòng ở chỗ này: không có công cụ nhập một cú nhấn. Ảnh đã chụp trong ứng dụng khác không thể xác minh qua mạng về sau, vì việc xác minh xảy ra ngay lúc chụp — nhập vào chỉ cho bạn một kho lưu trữ, không phải hồ sơ bằng chứng. Các đội thường vạch một mốc ngày: việc mới chụp trong GeoCliks, dự án cũ để nguyên chỗ và vẫn xuất được. Chỗ người dùng đi kèm gói, nên bạn có thể bắt đầu với một tổ thay vì cả công ty.",
+  "cc.who.label": "Dành cho ai",
+  "cc.who.1":
+    "Đội từng bị khách, bị tổng thầu hay người kiểm định chất vấn tính thật của một tấm ảnh.",
+  "cc.who.2":
+    "Công việc mà bằng chứng ảnh phải trụ được qua một vụ bồi thường bảo hiểm hoặc tranh chấp pháp lý.",
+  "cc.who.3": "Tổ muốn việc lưu chứng tự diễn ra mà không cần ai nhớ bật.",
+  "cc.who.4":
+    "Đơn vị cũng chạy giao hàng và muốn bằng chứng giao hàng nằm trong cùng một tài khoản.",
+  "cc.who.foot":
+    "Nếu điều bạn cần chỉ là một dòng ảnh dự án dùng chung và chưa có gì từng bị tranh cãi, CompanyCam là lựa chọn hợp lý và trang này không cố can bạn.",
+  "cc.faqSection.label": "Câu hỏi",
+  "cc.faqSection.h2": "Câu hỏi thường gặp",
+  "cc.cta.h2": "Thử trên một việc thôi",
+  "cc.cta.body":
+    "Gói miễn phí gồm 300 ảnh đã xác minh mỗi tháng, không cần thẻ. Chạy song song với thứ bạn đang dùng và xem lớp xác minh có đáng chỗ của nó không.",
+  "cc.cta.primary": "Dùng thử GeoCliks miễn phí",
+  "cc.cta.secondary": "Xem cách xác minh hoạt động",
+  "cc.related.lead": "Bạn đang lưu chứng công trình xây dựng cụ thể?",
+  "cc.related.construction": "Đọc bài tổng quan về lưu chứng ảnh công trình",
+  "cc.related.mid": ". Hay bạn đang so sánh các ứng dụng đóng dấu thời gian?",
+  "cc.related.timemark": "Xem GeoCliks vs Timemark",
+  "cc.faq.q1": "Khác biệt thực sự giữa GeoCliks và CompanyCam là gì?",
+  "cc.faq.a1":
+    "CompanyCam là một dòng ảnh dùng chung cho các đội thi công, và là một cái tốt. GeoCliks được dựng quanh việc chứng minh một tấm ảnh, nên lớp xác minh đi xa hơn: dấu thời gian được đối chiếu với máy chủ của chúng tôi thay vì đọc từ điện thoại, địa chỉ đường phố được ghi cạnh toạ độ, và mỗi lần chụp đều nhận một mã ai cũng kiểm tra độc lập được tại geocliks.com/verify. Nếu ảnh của bạn chủ yếu để phối hợp công việc, lớp đó là gánh thêm. Nếu ảnh bị tranh cãi, nó là toàn bộ vấn đề.",
+  "cc.faq.q2": "GeoCliks có rẻ hơn CompanyCam không?",
+  "cc.faq.a2":
+    "Với phần lớn đội thì có, và hình dạng hoá đơn khác nhau nhiều hơn con số. CompanyCam thu theo người dùng trên một mức gói tối thiểu — từ 63 $ một tháng cho một người, cộng 29 $ cho mỗi người thêm. GeoCliks thu một mức tháng cố định đã gồm chỗ: 7 $ cho một người, 45 $ cho mười, 105 $ cho hai mươi lăm. Ngoài ra có gói miễn phí gồm 300 ảnh đã xác minh mỗi tháng.",
+  "cc.faq.q3": "Tôi có chuyển được kho ảnh CompanyCam sang GeoCliks không?",
+  "cc.faq.a3":
+    "Hiện chưa có nhập tự động. Bạn xuất ảnh khỏi CompanyCam và giữ kho đó, và phần lớn đội chuyển bằng cách dùng GeoCliks cho việc mới từ một ngày đã chọn, còn dự án cũ để nguyên chỗ. Một điều cần nói rõ: ảnh nhập từ bất kỳ đâu khác đều không thể xác minh qua mạng về sau, vì việc xác minh xảy ra lúc chụp. Ảnh nhập vào là một tấm ảnh, không phải một bản chụp đã được GeoCliks niêm.",
+  "cc.faq.q4": "Tôi có phải chuyển cả tổ cùng lúc không?",
+  "cc.faq.a4":
+    "Không. Chỗ người dùng nằm trong gói chứ không tính riêng từng người, nên bạn có thể cho một tổ dùng GeoCliks cho một việc, để những người khác nguyên chỗ, rồi quyết định sau.",
+  "cc.faq.q5": "GeoCliks có làm mọi thứ CompanyCam làm không?",
+  "cc.faq.a5":
+    "Không phải mọi thứ. CompanyCam đã lan sang các mảng kề bên — thu tiền tại công trình, công cụ tiếp thị, ký điện tử, đo phòng, chú thích bằng AI. GeoCliks không làm những cái đó và cũng không cố làm. Nó làm bằng chứng ảnh và video, Teamspace, báo cáo và tuyến giao hàng. Nếu bạn muốn ứng dụng ảnh kiêm luôn CRM, CompanyCam là sản phẩm rộng hơn.",
 };

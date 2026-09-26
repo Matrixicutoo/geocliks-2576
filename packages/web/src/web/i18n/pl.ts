@@ -66,6 +66,9 @@ export const pl: Catalog = {
   "seo.inspection.title": "Aplikacja do zdjęć z przeglądu — potwierdzony dowód wprowadzenia",
   "seo.inspection.description":
     "Zdjęcia z przeglądu przy wprowadzeniu i wyprowadzeniu z potwierdzoną godziną, GPS i adresem lokalu, żeby spór o kaucję rozstrzygała dokumentacja, a nie czyjeś słowo.",
+  "seo.companycam.title": "GeoCliks vs CompanyCam — potwierdzone zdjęcia, stała cena",
+  "seo.companycam.description":
+    "Datowane, oparte na źródłach porównanie GeoCliks i CompanyCam: czas potwierdzony przez sieć, kody zdjęć sprawdzalne przez każdego i stałe plany miesięczne z miejscami w cenie.",
   "signin.subtitle": "Odporna na manipulacje dokumentacja zdjęciowa dla ekip w terenie.",
   "signin.apple": "Kontynuuj z Apple",
   "signin.google": "Kontynuuj z Google",
@@ -1797,4 +1800,96 @@ export const pl: Catalog = {
   "inspection.faq.q6": "Jak długo przechowywane są zdjęcia?",
   "inspection.faq.a6":
     "Tak długo, jak twoja przestrzeń robocza jest aktywna — a tu to się liczy, bo spór o kaucję może wypłynąć rok po wprowadzeniu najemcy. Wyeksportuj pełny zestaw do PDF, Excela albo ZIP, kiedy tylko chcesz mieć własną kopię poza systemem.",
+  "cc.eyebrow": "GeoCliks vs CompanyCam",
+  "cc.h1": "GeoCliks vs CompanyCam",
+  "cc.sub": "Oba stawiają przed ekipą zdjęcia z GPS. Oto gdzie naprawdę się różnią.",
+  "cc.s1.label": "Wersja krótka",
+  "cc.s1.h2": "Jedno to strumień zdjęć. Drugie to zapis dowodowy.",
+  "cc.s1.intro":
+    "CompanyCam jest zrobiony dla ekip budowlanych, które chcą wspólnego strumienia zdjęć, i robi to dobrze. GeoCliks jest zrobiony dla zespołów, którym każde zdjęcie musi się obronić, gdy ktoś je podważa: czas potwierdzony przez sieć, współrzędne GPS i adres wpisane w samo ujęcie, plus unikalny kod, który każdy może sprawdzić niezależnie. Jeśli twoja praca bywa kwestionowana — przez klienta, inspektora albo w sprawie ubezpieczeniowej — ta warstwa weryfikacji jest różnicą. Jeśli nigdy nie bywa, płacisz za coś, czego nie wykorzystasz.",
+  "cc.s2.label": "Funkcja po funkcji",
+  "cc.s2.h2": "Porównanie, ze źródłami",
+  "cc.table.caption": "GeoCliks w porównaniu z CompanyCam, funkcja po funkcji",
+  "cc.table.feature": "Funkcja",
+  "cc.table.us": "GeoCliks",
+  "cc.table.them": "CompanyCam",
+  "cc.yes": "Tak",
+  "cc.no": "Nie",
+  "cc.verifiedOn": "14 września 2026",
+  "cc.sources":
+    "Kolumnę CompanyCam odczytano z companycam.com i z ich własnego centrum pomocy w dniu {date}; opisuje to, co mówi ich dokumentacja. Dostawcy zmieniają plany i funkcje: sprawdź ich aktualną stronę cennika przed decyzją i napisz na {email}, jeśli któryś wiersz tutaj się zdezaktualizował. Ceny w USD.",
+  "cc.r1.feature": "Czas potwierdzony przez sieć",
+  "cc.r1.detail": "Godzina jest sprawdzana z serwerem, a nie brana z zegara telefonu.",
+  "cc.r1.us": "Ujęcia, w których zegar urządzenia się rozjeżdża, są oznaczane jako czas urządzenia",
+  "cc.r1.them": "Nieopisane — zdjęcia dostają datę i godzinę z urządzenia",
+  "cc.r2.feature": "Adres na ujęciu",
+  "cc.r2.us": "Współrzędne i rozwiązany adres",
+  "cc.r2.them": "Szerokość i długość GPS",
+  "cc.r3.feature": "Znak włączony domyślnie",
+  "cc.r3.detail":
+    "Czy zdjęcie jest udokumentowane bez tego, by ktoś musiał pamiętać o włączeniu czegoś.",
+  "cc.r3.us": "Każde ujęcie, każde konto",
+  "cc.r3.them": "Opcjonalny przełącznik, który każdy użytkownik włącza we własnych ustawieniach",
+  "cc.r4.feature": "Kod zdjęcia weryfikowalny niezależnie",
+  "cc.r4.detail": "Osoba trzecia może sprawdzić jedno zdjęcie bez konta.",
+  "cc.r4.us": "Każdy kod sprawdza się na geocliks.com/verify",
+  "cc.r5.feature": "Skrót treści odporny na podmianę",
+  "cc.r5.us": "SHA-256 plus dziennik zdarzeń tylko do dopisywania",
+  "cc.r6.feature": "Działa w pełni offline, synchronizuje po powrocie sieci",
+  "cc.r7.feature": "Wspólny strumień projektu dla zespołu",
+  "cc.r8.feature": "Porównanie przed / po",
+  "cc.r9.feature": "Eksport raportów",
+  "cc.r9.us": "PDF, Excel, ZIP i KMZ",
+  "cc.r9.them": "Raporty zdjęciowe",
+  "cc.r10.feature": "Trasy dostaw i potwierdzenie doręczenia",
+  "cc.r10.detail": "Przydziel kierowców, zoptymalizuj przystanki, zbierz podpis w drzwiach.",
+  "cc.r10.us": "W planach Dostawy",
+  "cc.r11.feature": "Plan darmowy",
+  "cc.r11.us": "300 potwierdzonych zdjęć na miesiąc, bez karty",
+  "cc.r11.them": "Tylko darmowy okres próbny",
+  "cc.r12.feature": "Ceny",
+  "cc.r12.us":
+    "Stałe progi miesięczne z miejscami w cenie: 7 $ solo, 25 $ Business, 45 $ za 10 miejsc, 105 $ za 25. Bez opłaty za miejsce.",
+  "cc.r12.them":
+    "Od 63 $/mies. za 1 użytkownika (Core), 119 $ za 3 (Crew), 199 $ za 3 (Scale), rozliczane rocznie — plus 29 $ za każdego kolejnego użytkownika.",
+  "cc.s3.label": "Przesiadka",
+  "cc.s3.h2": "Jak naprawdę wygląda przejście",
+  "cc.s3.intro":
+    "Warto powiedzieć wprost, bo większość stron porównawczych jest tu mętna: nie ma importu jednym kliknięciem. Zdjęć zrobionych już w innej aplikacji nie da się potwierdzić przez sieć wstecz, bo weryfikacja dzieje się w momencie ujęcia — import dałby ci archiwum, a nie zapis dowodowy. Zespoły robią to inaczej: stawiają granicę na dacie. Nowe zlecenia są dokumentowane w GeoCliks, stare projekty zostają tam, gdzie są, i dalej dają się eksportować. Miejsca są w cenie planu, więc możesz zacząć od jednej ekipy, a nie od całej firmy.",
+  "cc.who.label": "Dla kogo to jest",
+  "cc.who.1":
+    "Zespoły, którym klient, generalny wykonawca albo inspektor już podważył autentyczność zdjęcia.",
+  "cc.who.2":
+    "Prace, w których dowód ze zdjęcia musi przetrwać sprawę ubezpieczeniową albo spór prawny.",
+  "cc.who.3": "Ekipy, które chcą, żeby dokumentacja działa sama, bez pamiętania o włączaniu.",
+  "cc.who.4":
+    "Firmy, które prowadzą też dostawy i chcą potwierdzenia doręczenia na tym samym koncie.",
+  "cc.who.foot":
+    "Jeśli potrzebujesz wspólnego strumienia zdjęć projektu i nigdy nic nie było podważane, CompanyCam jest rozsądną odpowiedzią, a ta strona nie próbuje cię od niego odciągać.",
+  "cc.faqSection.label": "Pytania",
+  "cc.faqSection.h2": "Często zadawane pytania",
+  "cc.cta.h2": "Sprawdź na jednym zleceniu",
+  "cc.cta.body":
+    "Darmowy plan obejmuje 300 potwierdzonych zdjęć na miesiąc, bez karty. Uruchom go obok tego, co masz, i sprawdź, czy warstwa weryfikacji zasługuje na swoje miejsce.",
+  "cc.cta.primary": "Wypróbuj GeoCliks bezpłatnie",
+  "cc.cta.secondary": "Zobacz, jak działa weryfikacja",
+  "cc.related.lead": "Dokumentujesz konkretnie roboty budowlane?",
+  "cc.related.construction": "Przeczytaj przegląd dokumentacji zdjęciowej budowy",
+  "cc.related.mid": ". A może porównujesz aplikacje ze znacznikiem czasu?",
+  "cc.related.timemark": "Zobacz GeoCliks vs Timemark",
+  "cc.faq.q1": "Jaka jest faktyczna różnica między GeoCliks a CompanyCam?",
+  "cc.faq.a1":
+    "CompanyCam to wspólny strumień zdjęć dla ekip budowlanych, i to dobry. GeoCliks jest zbudowany wokół udowodnienia zdjęcia, więc warstwa weryfikacji idzie dalej: czas jest sprawdzany z naszymi serwerami, a nie czytany z telefonu, adres jest wpisany obok współrzędnych, a każde ujęcie dostaje kod, który każdy może sprawdzić niezależnie na geocliks.com/verify. Jeśli twoje zdjęcia służą głównie koordynacji, ta warstwa jest balastem. Jeśli są podważane, jest całym sensem.",
+  "cc.faq.q2": "Czy GeoCliks jest tańszy od CompanyCam?",
+  "cc.faq.a2":
+    "Dla większości zespołów tak, a kształt rachunku różni się bardziej niż sama kwota. CompanyCam liczy za użytkownika powyżej minimum planu — od 63 $ miesięcznie za jednego użytkownika, plus 29 $ za każdego kolejnego. GeoCliks bierze stałą cenę miesięczną z miejscami w cenie: 7 $ za jedną osobę, 45 $ za dziesięć, 105 $ za dwadzieścia pięć. Jest też plan darmowy, który obejmuje 300 potwierdzonych zdjęć na miesiąc.",
+  "cc.faq.q3": "Czy mogę przenieść swoją historię zdjęć z CompanyCam do GeoCliks?",
+  "cc.faq.a3":
+    "Dziś nie ma automatycznego importu. Możesz wyeksportować zdjęcia z CompanyCam i zachować to archiwum, a większość zespołów przechodzi tak, że od wybranej daty prowadzi nowe zlecenia w GeoCliks, a stare projekty zostają tam, gdzie są. Jedna rzecz do jasnego powiedzenia: zdjęć zaimportowanych skądkolwiek nie da się potwierdzić przez sieć po fakcie, bo weryfikacja dzieje się przy ujęciu. Zaimportowane zdjęcie to zdjęcie, a nie ujęcie opieczętowane przez GeoCliks.",
+  "cc.faq.q4": "Czy muszę przenieść całą ekipę naraz?",
+  "cc.faq.a4":
+    "Nie. Miejsca są w cenie planu, a nie liczone pojedynczo, więc możesz posadzić jedną ekipę na GeoCliks przy jednym zleceniu, resztę zostawić tam, gdzie jest, i zdecydować później.",
+  "cc.faq.q5": "Czy GeoCliks robi wszystko to, co CompanyCam?",
+  "cc.faq.a5":
+    "Nie wszystko. CompanyCam rozrósł się na sąsiednie obszary — płatności na budowie, narzędzia marketingowe, e-podpis, pomiary pomieszczeń, opisy z AI. GeoCliks tego nie robi i nie próbuje. Robi dowód zdjęciowy i wideo, Teamspace, raporty i trasy dostaw. Jeśli chcesz, by aplikacja do zdjęć była też CRM-em, CompanyCam jest szerszym produktem.",
 };

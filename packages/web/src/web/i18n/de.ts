@@ -66,6 +66,9 @@ export const de: Catalog = {
   "seo.inspection.title": "App für Übergabefotos — geprüfter Einzugsnachweis",
   "seo.inspection.description":
     "Einzugs- und Auszugsfotos mit geprüfter Uhrzeit, GPS und Wohnungsadresse, damit der Kautionsstreit an der Aktenlage hängt und nicht an Aussage gegen Aussage.",
+  "seo.companycam.title": "GeoCliks vs CompanyCam — geprüfte Fotos, Festpreis",
+  "seo.companycam.description":
+    "Ein datierter, belegter Vergleich von GeoCliks und CompanyCam: netzwerkgeprüfte Zeitstempel, von jedem prüfbare Fotocodes und feste Monatstarife mit inkludierten Plätzen.",
   "signin.subtitle": "Fälschungssichere Fotodokumentation für Außendienstteams.",
   "signin.apple": "Mit Apple fortfahren",
   "signin.google": "Mit Google fortfahren",
@@ -1821,4 +1824,98 @@ export const de: Catalog = {
   "inspection.faq.q6": "Wie lange werden die Fotos aufbewahrt?",
   "inspection.faq.a6":
     "Solange Ihr Workspace aktiv ist — und das zählt hier, weil ein Kautionsstreit noch ein Jahr nach dem Einzug auftauchen kann. Exportieren Sie eine vollständige Serie jederzeit als PDF, Excel oder ZIP, wenn Sie eine eigene Kopie außerhalb des Systems wollen.",
+  "cc.eyebrow": "GeoCliks vs CompanyCam",
+  "cc.h1": "GeoCliks vs CompanyCam",
+  "cc.sub":
+    "Beide bringen GPS-markierte Fotos vor die Augen Ihres Teams. Hier liegen die echten Unterschiede.",
+  "cc.s1.label": "Die Kurzfassung",
+  "cc.s1.h2": "Das eine ist ein Foto-Feed. Das andere ist ein Beweisprotokoll.",
+  "cc.s1.intro":
+    "CompanyCam ist für Baufirmen gemacht, die einen gemeinsamen Foto-Feed wollen, und das kann es gut. GeoCliks ist für Teams gemacht, bei denen jedes Foto halten muss, wenn jemand widerspricht: netzwerkgeprüfter Zeitstempel, GPS-Koordinaten und die Straßenadresse fest in der Aufnahme selbst, dazu ein eindeutiger Code, den jeder unabhängig prüfen kann. Wenn Ihre Arbeit infrage gestellt wird — von einem Kunden, einem Prüfer oder in einem Versicherungsfall — macht diese Prüfebene den Unterschied. Wenn nie, zahlen Sie für etwas, das Sie nicht brauchen.",
+  "cc.s2.label": "Funktion für Funktion",
+  "cc.s2.h2": "Der Vergleich, mit Quellen",
+  "cc.table.caption": "GeoCliks im Vergleich mit CompanyCam, Funktion für Funktion",
+  "cc.table.feature": "Funktion",
+  "cc.table.us": "GeoCliks",
+  "cc.table.them": "CompanyCam",
+  "cc.yes": "Ja",
+  "cc.no": "Nein",
+  "cc.verifiedOn": "14. September 2026",
+  "cc.sources":
+    "Die CompanyCam-Spalte wurde am {date} auf companycam.com und im dortigen Hilfecenter nachgelesen und gibt wieder, was deren Dokumentation sagt. Anbieter ändern Tarife und Funktionen: Prüfen Sie vor der Entscheidung die aktuelle Preisseite und schreiben Sie uns an {email}, wenn eine Zeile hier veraltet ist. Preise in USD.",
+  "cc.r1.feature": "Netzwerkgeprüfter Zeitstempel",
+  "cc.r1.detail":
+    "Die Zeit wird gegen einen Server geprüft, nicht von der Uhr des Telefons genommen.",
+  "cc.r1.us": "Aufnahmen mit abweichender Geräteuhr werden als gerätegestempelt markiert",
+  "cc.r1.them": "Nicht beschrieben — Fotos werden mit Datum und Zeit des Geräts gestempelt",
+  "cc.r2.feature": "Straßenadresse auf der Aufnahme",
+  "cc.r2.us": "Koordinaten und die aufgelöste Adresse",
+  "cc.r2.them": "GPS-Breite und -Länge",
+  "cc.r3.feature": "Stempel standardmäßig aktiv",
+  "cc.r3.detail":
+    "Ob ein Foto dokumentiert ist, ohne dass jemand daran denken muss, etwas einzuschalten.",
+  "cc.r3.us": "Jede Aufnahme, jedes Konto",
+  "cc.r3.them": "Optionaler Schalter, den jeder Nutzer in seinen eigenen Einstellungen aktiviert",
+  "cc.r4.feature": "Unabhängig prüfbarer Fotocode",
+  "cc.r4.detail": "Ein Dritter kann ein einzelnes Foto ohne Konto prüfen.",
+  "cc.r4.us": "Jeder Code lässt sich auf geocliks.com/verify prüfen",
+  "cc.r5.feature": "Manipulationssicherer Inhalts-Hash",
+  "cc.r5.us": "SHA-256 plus ein reines Anfüge-Ereignisprotokoll",
+  "cc.r6.feature": "Läuft komplett offline, synchronisiert bei Verbindung",
+  "cc.r7.feature": "Gemeinsamer Projekt-Feed für das Team",
+  "cc.r8.feature": "Vorher-/Nachher-Vergleich",
+  "cc.r9.feature": "Berichtsexport",
+  "cc.r9.us": "PDF, Excel, ZIP und KMZ",
+  "cc.r9.them": "Fotoberichte",
+  "cc.r10.feature": "Lieferrouten und Liefernachweis",
+  "cc.r10.detail": "Fahrer einteilen, Stopps optimieren, an der Tür eine Unterschrift aufnehmen.",
+  "cc.r10.us": "In den Liefer-Tarifen",
+  "cc.r11.feature": "Kostenloser Tarif",
+  "cc.r11.us": "300 geprüfte Fotos pro Monat, ohne Karte",
+  "cc.r11.them": "Nur kostenlose Testphase",
+  "cc.r12.feature": "Preise",
+  "cc.r12.us":
+    "Feste Monatsstufen mit inkludierten Plätzen: 7 $ solo, 25 $ Business, 45 $ für 10 Plätze, 105 $ für 25. Keine Gebühr pro Platz.",
+  "cc.r12.them":
+    "Ab 63 $/Monat für 1 Nutzer (Core), 119 $ für 3 (Crew), 199 $ für 3 (Scale), jährlich abgerechnet — plus 29 $ je weiterem Nutzer.",
+  "cc.s3.label": "Wechsel",
+  "cc.s3.h2": "Wie der Umstieg wirklich aussieht",
+  "cc.s3.intro":
+    "Das gehört klar gesagt, weil die meisten Vergleichsseiten hier schwammig bleiben: Es gibt keinen Ein-Klick-Import. Fotos, die schon in einer anderen App entstanden sind, lassen sich nicht nachträglich netzwerkprüfen, denn die Prüfung passiert im Moment der Aufnahme — ein Import ergäbe ein Archiv, kein Beweisprotokoll. Teams ziehen stattdessen eine Linie an einem Datum: neue Aufträge werden in GeoCliks aufgenommen, alte Projekte bleiben, wo sie sind, und bleiben exportierbar. Plätze gehören zum Tarif, Sie können also mit einer Kolonne statt mit der ganzen Firma anfangen.",
+  "cc.who.label": "Für wen das ist",
+  "cc.who.1":
+    "Teams, bei denen ein Kunde, ein Generalunternehmer oder ein Prüfer die Echtheit eines Fotos schon einmal bezweifelt hat.",
+  "cc.who.2":
+    "Arbeiten, bei denen Fotobeweise einen Versicherungsfall oder einen Rechtsstreit überstehen müssen.",
+  "cc.who.3":
+    "Kolonnen, bei denen die Dokumentation passieren soll, ohne dass jemand daran denken muss.",
+  "cc.who.4": "Betriebe, die auch ausliefern und den Liefernachweis im selben Konto wollen.",
+  "cc.who.foot":
+    "Wenn Sie einen gemeinsamen Projekt-Foto-Feed brauchen und nie etwas bestritten wurde, ist CompanyCam eine vernünftige Antwort, und diese Seite versucht nicht, Sie davon abzubringen.",
+  "cc.faqSection.label": "Fragen",
+  "cc.faqSection.h2": "Häufige Fragen",
+  "cc.cta.h2": "Probieren Sie es an einem Auftrag",
+  "cc.cta.body":
+    "Der kostenlose Tarif deckt 300 geprüfte Fotos pro Monat ohne Karte. Lassen Sie es parallel zu Ihrem bisherigen Werkzeug laufen und sehen Sie, ob sich die Prüfebene ihren Platz verdient.",
+  "cc.cta.primary": "GeoCliks kostenlos testen",
+  "cc.cta.secondary": "So funktioniert die Prüfung",
+  "cc.related.lead": "Dokumentieren Sie speziell Bauarbeiten?",
+  "cc.related.construction": "Lesen Sie den Überblick zur Baufoto-Dokumentation",
+  "cc.related.mid": ". Vergleichen Sie eher Zeitstempel-Apps?",
+  "cc.related.timemark": "GeoCliks vs Timemark ansehen",
+  "cc.faq.q1": "Was ist der tatsächliche Unterschied zwischen GeoCliks und CompanyCam?",
+  "cc.faq.a1":
+    "CompanyCam ist ein gemeinsamer Foto-Feed für Baufirmen, und ein guter. GeoCliks ist darauf gebaut, ein Foto zu beweisen, also geht die Prüfebene weiter: der Zeitstempel wird gegen unsere Server geprüft statt vom Telefon gelesen, die Straßenadresse steht neben den Koordinaten, und jede Aufnahme bekommt einen Code, den jeder unabhängig auf geocliks.com/verify prüfen kann. Wenn Ihre Fotos vor allem der Abstimmung dienen, ist diese Ebene Ballast. Wenn sie bestritten werden, ist sie der ganze Zweck.",
+  "cc.faq.q2": "Ist GeoCliks günstiger als CompanyCam?",
+  "cc.faq.a2":
+    "Für die meisten Teams ja, und die Form der Rechnung unterscheidet sich mehr als die Zahl. CompanyCam rechnet pro Nutzer über einem Tarifminimum ab — ab 63 $ im Monat für einen Nutzer, plus 29 $ je weiterem. GeoCliks verlangt einen festen Monatspreis mit inkludierten Plätzen: 7 $ für eine Person, 45 $ für zehn, 105 $ für fünfundzwanzig. Es gibt außerdem einen kostenlosen Tarif mit 300 geprüften Fotos pro Monat.",
+  "cc.faq.q3": "Kann ich meine CompanyCam-Fotohistorie in GeoCliks übernehmen?",
+  "cc.faq.a3":
+    "Einen automatischen Import gibt es heute nicht. Sie können Ihre Fotos aus CompanyCam exportieren und dieses Archiv behalten; die meisten Teams wechseln, indem sie GeoCliks ab einem gewählten Datum für neue Aufträge nutzen, während die alten Projekte bleiben, wo sie sind. Eines gehört klar gesagt: Fotos, die von irgendwo anders importiert werden, lassen sich nicht nachträglich netzwerkprüfen, denn die Prüfung passiert bei der Aufnahme. Ein importiertes Foto ist ein Foto, keine von GeoCliks gesiegelte Aufnahme.",
+  "cc.faq.q4": "Muss ich die ganze Kolonne auf einmal umstellen?",
+  "cc.faq.a4":
+    "Nein. Plätze sind im Tarif enthalten statt einzeln abgerechnet, Sie können also eine Kolonne für einen Auftrag auf GeoCliks setzen, alle anderen lassen, wo sie sind, und danach entscheiden.",
+  "cc.faq.q5": "Macht GeoCliks alles, was CompanyCam macht?",
+  "cc.faq.a5":
+    "Nicht alles. CompanyCam ist in Nachbargebiete gewachsen — Zahlungen vor Ort, Marketingwerkzeuge, E-Signatur, Raumaufmaß, KI-Bildtexte. GeoCliks macht das nicht und will es nicht. Es macht Foto- und Videobeweise, Teamspace, Berichte und Lieferrouten. Wenn die Foto-App auch das CRM sein soll, ist CompanyCam das breitere Produkt.",
 };

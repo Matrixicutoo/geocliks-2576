@@ -75,6 +75,9 @@ export const en = {
   "seo.inspection.title": "Property Inspection Photo App — Verified Move-In Proof",
   "seo.inspection.description":
     "Move-in and move-out inspection photos with verified time, GPS and unit address, so a deposit dispute turns on the record instead of on whose word it is.",
+  "seo.companycam.title": "GeoCliks vs CompanyCam — Verified Photos, Flat Pricing",
+  "seo.companycam.description":
+    "A dated, sourced comparison of GeoCliks and CompanyCam: network-verified timestamps, independently checkable photo codes, and flat monthly plans with seats included.",
   "signin.subtitle": "Tamper-proof photo documentation for field teams.",
   "signin.apple": "Continue with Apple",
   "signin.google": "Continue with Google",
@@ -1801,6 +1804,97 @@ export const en = {
   "inspection.faq.q6": "How long are the photos kept?",
   "inspection.faq.a6":
     "For as long as your workspace is active — which matters here, because a deposit dispute can surface a year after the tenant moved in. Export a full set to PDF, Excel or ZIP whenever you want your own copy outside the system.",
+  "cc.eyebrow": "GeoCliks vs CompanyCam",
+  "cc.h1": "GeoCliks vs CompanyCam",
+  "cc.sub": "Both put GPS-tagged photos in front of your crew. Here's where they actually differ.",
+  "cc.s1.label": "The short version",
+  "cc.s1.h2": "One is a photo feed. One is an evidence record.",
+  "cc.s1.intro":
+    "CompanyCam is built for construction teams that want a shared photo feed, and it does that well. GeoCliks is built for teams that need every photo to hold up when someone disputes it — a network-verified timestamp, GPS coordinates and the street address locked into the capture itself, with a unique code anyone can check independently. If your work gets questioned, by a client, an inspector or in an insurance claim, that verification layer is the difference. If it never does, you are paying for something you will not use.",
+  "cc.s2.label": "Feature by feature",
+  "cc.s2.h2": "The comparison, with sources",
+  "cc.table.caption": "GeoCliks compared with CompanyCam, feature by feature",
+  "cc.table.feature": "Feature",
+  "cc.table.us": "GeoCliks",
+  "cc.table.them": "CompanyCam",
+  "cc.yes": "Yes",
+  "cc.no": "No",
+  "cc.verifiedOn": "14 September 2026",
+  "cc.sources":
+    "The CompanyCam column was read from companycam.com and their own help centre on {date}, and describes what their documentation states. Vendors change plans and features — check their current pricing page before you decide, and tell us at {email} if a row here has gone out of date. Prices are USD.",
+  "cc.r1.feature": "Network-verified timestamp",
+  "cc.r1.detail": "The time is checked against a server, not taken from the phone's clock.",
+  "cc.r1.us": "Captures whose device clock disagrees are flagged device-timed",
+  "cc.r1.them": "Not described — photos are stamped with the device date and time",
+  "cc.r2.feature": "Street address on the capture",
+  "cc.r2.us": "Coordinates and the resolved address",
+  "cc.r2.them": "GPS latitude and longitude",
+  "cc.r3.feature": "Stamping on by default",
+  "cc.r3.detail":
+    "Whether a photo is documented without anyone remembering to switch something on.",
+  "cc.r3.us": "Every capture, every account",
+  "cc.r3.them": "Opt-in toggle each user turns on in their own settings",
+  "cc.r4.feature": "Independently verifiable photo code",
+  "cc.r4.detail": "A third party can check a single photo without an account.",
+  "cc.r4.us": "Any code checks at geocliks.com/verify",
+  "cc.r5.feature": "Tamper-evident content hash",
+  "cc.r5.us": "SHA-256 plus an append-only event record",
+  "cc.r6.feature": "Works fully offline, syncs on reconnect",
+  "cc.r7.feature": "Shared project feed for the team",
+  "cc.r8.feature": "Before / after comparison",
+  "cc.r9.feature": "Report export",
+  "cc.r9.us": "PDF, Excel, ZIP and KMZ",
+  "cc.r9.them": "Photo reports",
+  "cc.r10.feature": "Delivery routes and proof of delivery",
+  "cc.r10.detail": "Dispatch drivers, optimise stops, capture a signature at the door.",
+  "cc.r10.us": "On the Delivery plans",
+  "cc.r11.feature": "Free plan",
+  "cc.r11.us": "300 verified photos a month, no card",
+  "cc.r11.them": "Free trial only",
+  "cc.r12.feature": "Pricing",
+  "cc.r12.us":
+    "Flat monthly bands with seats included: $7 solo, $25 Business, $45 for 10 seats, $105 for 25. No per-seat charge.",
+  "cc.r12.them":
+    "From $63/month for 1 user (Core), $119 for 3 (Crew), $199 for 3 (Scale), billed annually — plus $29 per additional user.",
+  "cc.s3.label": "Switching",
+  "cc.s3.h2": "What moving over actually looks like",
+  "cc.s3.intro":
+    "Worth saying plainly, because most comparison pages are vague here: there is no one-click importer. Photos already taken in another app cannot be retroactively network-verified, because the verification happens at the moment of capture — so importing them would give you an archive, not an evidence record. What teams do instead is draw a line at a date: new jobs get captured in GeoCliks, old projects stay where they are and stay exportable. Seats come with the plan, so you can start with one crew rather than the whole company.",
+  "cc.who.label": "Who this is for",
+  "cc.who.1":
+    "Teams that have had a photo's authenticity questioned by a client, a GC or an inspector.",
+  "cc.who.2": "Work where photo evidence has to survive an insurance claim or a legal dispute.",
+  "cc.who.3":
+    "Crews that want the documentation to happen without anyone remembering to enable it.",
+  "cc.who.4": "Operations that also run deliveries and want proof of delivery in the same account.",
+  "cc.who.foot":
+    "If what you need is a shared project photo feed and nothing has ever been disputed, CompanyCam is a reasonable answer and this page is not trying to talk you out of it.",
+  "cc.faqSection.label": "Questions",
+  "cc.faqSection.h2": "Frequently asked",
+  "cc.cta.h2": "Try it on one job",
+  "cc.cta.body":
+    "The free plan covers 300 verified photos a month with no card. Run it alongside what you have and see whether the verification layer earns its place.",
+  "cc.cta.primary": "Try GeoCliks free",
+  "cc.cta.secondary": "See how verification works",
+  "cc.related.lead": "Documenting construction work specifically?",
+  "cc.related.construction": "Read the construction photo documentation overview",
+  "cc.related.mid": ". Comparing timestamp apps instead?",
+  "cc.related.timemark": "See GeoCliks vs Timemark",
+  "cc.faq.q1": "What is the actual difference between GeoCliks and CompanyCam?",
+  "cc.faq.a1":
+    "CompanyCam is a shared photo feed for construction teams, and a good one. GeoCliks is built around proving a photo, so the verification layer goes further: the timestamp is checked against our servers rather than read off the phone, the street address is written in alongside the coordinates, and every capture gets a code anyone can check independently at geocliks.com/verify. If your photos are mainly for coordination, that layer is overhead. If they get disputed, it is the whole point.",
+  "cc.faq.q2": "Is GeoCliks cheaper than CompanyCam?",
+  "cc.faq.a2":
+    "For most teams, yes, and the shape of the bill differs more than the number. CompanyCam prices per user on top of a plan minimum — from $63 a month for one user, plus $29 for each additional. GeoCliks charges a flat monthly price with the seats included: $7 for one person, $45 for ten, $105 for twenty-five. There is also a free plan that covers 300 verified photos a month.",
+  "cc.faq.q3": "Can I move my CompanyCam photo history into GeoCliks?",
+  "cc.faq.a3":
+    "There is no automated import today. You can export your photos from CompanyCam and keep that archive, and most teams switch by running GeoCliks on new jobs from a chosen date while the old projects stay where they are. One thing to be clear about: photos imported from anywhere else cannot be network-verified after the fact, because the verification happens at capture. An imported photo is a photo, not a GeoCliks-sealed capture.",
+  "cc.faq.q4": "Do I have to move the whole crew at once?",
+  "cc.faq.a4":
+    "No. Seats are included in the plan rather than billed individually, so you can put one crew on GeoCliks for a job, keep everyone else where they are, and decide afterwards.",
+  "cc.faq.q5": "Does GeoCliks do everything CompanyCam does?",
+  "cc.faq.a5":
+    "Not everything. CompanyCam has grown into adjacent territory — on-site payments, marketing tools, e-signature, room measurement, AI captioning. GeoCliks does not do those and is not trying to. It does photo and video evidence, Teamspace, reports and delivery routes. If you want the photo app to also be the CRM, CompanyCam is the broader product.",
 } as const;
 
 export type Catalog = Record<keyof typeof en, string>;

@@ -200,6 +200,10 @@ export const LOCALIZED_SEO: Record<string, { title: TKey; description: TKey }> =
     title: "seo.inspection.title",
     description: "seo.inspection.description",
   },
+  "/alternatives/companycam": {
+    title: "seo.companycam.title",
+    description: "seo.companycam.description",
+  },
 };
 
 /**
