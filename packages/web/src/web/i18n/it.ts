@@ -64,6 +64,9 @@ export const it: Catalog = {
   "seo.hvac.title": "Documentazione foto HVAC e prova dell'intervento",
   "seo.hvac.description":
     "Dimostra che il tecnico è arrivato, in che stato era l'impianto e che l'installazione è finita: ora verificata, GPS e indirizzo su ogni foto.",
+  "seo.inspection.title": "App foto di sopralluogo — prova d'ingresso verificata",
+  "seo.inspection.description":
+    "Foto di sopralluogo d'ingresso e d'uscita con ora verificata, GPS e indirizzo dell'unità, così la contestazione sulla cauzione si decide sul documento e non sulla parola di ciascuno.",
   "signin.subtitle": "Documentazione fotografica a prova di manomissione per squadre sul campo.",
   "signin.apple": "Continua con Apple",
   "signin.google": "Continua con Google",
@@ -1721,4 +1724,93 @@ export const it: Catalog = {
   "hvac.faq.q6": "GeoCliks gestisce chiamate, preventivi o fatture?",
   "hvac.faq.a6":
     "No. Non è una piattaforma di field service management e non ne sostituisce una: niente preventivi, niente fatture e nessuna pianificazione oltre all'assegnazione degli scatti ai lavori. Si occupa del livello documentale ed è fatto per stare accanto a ciò che già usi per gestire gli interventi.",
+  "inspection.eyebrow": "Foto di sopralluogo immobiliare",
+  "inspection.h1": "Foto di sopralluogo con una data che nessuno può contestare",
+  "inspection.sub":
+    "Verbali fotografici di ingresso e di uscita in cui ogni scatto porta un'ora verificata sui server, il GPS e l'indirizzo dell'unità — e l'inquilino può controllarli anche lui.",
+  "inspection.why.label": "Perché lo cercano gli amministratori immobiliari",
+  "inspection.why.h2":
+    "Lei e l'inquilino concordate che la moquette è macchiata. Non concordate su quando.",
+  "inspection.why.intro":
+    "Quasi ogni contestazione sulla cauzione si riduce a una sola domanda: quel danno c'era già prima che entrassero? Di solito entrambe le parti hanno foto. Nessuna delle due prova una data, perché la marca temporale di un telefono è l'ora che al telefono è stata dichiarata. Verifichi l'ora dello scatto fuori dal telefono e la discussione smette di riguardare la credibilità e comincia a riguardare il documento.",
+  "inspection.how.label": "Come funziona",
+  "inspection.how.h2": "Due sopralluoghi, a dodici mesi di distanza, un unico verbale abbinato.",
+  "inspection.step1.title": "Giri l'unità all'ingresso",
+  "inspection.step1.body":
+    "Stanza per stanza, più i contatori e ogni danno già presente. Ogni scatto porta un'ora verificata contro i nostri server, le coordinate e l'indirizzo risolto.",
+  "inspection.step2.title": "Lo colleghi all'unità",
+  "inspection.step2.body":
+    "Gli scatti si archiviano in un progetto per quell'indirizzo, così il set d'ingresso resta unito invece di disperdersi nel rullino per dodici mesi.",
+  "inspection.step3.title": "Ripeta il giro all'uscita",
+  "inspection.step3.body":
+    "Le stesse stanze nello stesso ordine. Abbini ogni scatto al corrispondente dell'ingresso, così la differenza — o la sua assenza — si vede una accanto all'altra.",
+  "inspection.step4.title": "Condivida il documento",
+  "inspection.step4.body":
+    "Mandi all'inquilino un link o un codice foto. Può verificare qualsiasi scatto su una pagina pubblica, senza account e senza app, e vedere le stesse date verificate che vede lei.",
+  "inspection.deposit.label": "Per il fascicolo della cauzione",
+  "inspection.deposit.h2": "Tre cose che il rullino del telefono non può darle.",
+  "inspection.deposit1.title": "La data è la discussione",
+  "inspection.deposit1.body":
+    "Nessuno contesta che il muro sia segnato. Si contesta quando è successo. Un'ora di scatto verificata sui nostri server anziché letta dal telefono è ciò che chiude la questione, e è l'unica cosa che il rullino non può dare.",
+  "inspection.deposit2.title": "Prima e dopo, abbinati",
+  "inspection.deposit2.body":
+    "Metta lo scatto d'ingresso e quello d'uscita della stessa stanza uno accanto all'altro, ciascuno con la propria data e il proprio indirizzo verificati, e la contestazione sullo stato si spiega da sé.",
+  "inspection.deposit3.title": "Sigillato contro modifiche successive",
+  "inspection.deposit3.body":
+    "Ogni scatto viene sigillato quando raggiunge i nostri server. Se una foto viene alterata dopo, la verifica fallisce — e vale in entrambe le direzioni: è proprio per questo che conviene mostrare all'inquilino la stessa pagina che usa lei.",
+  "inspection.portfolio.label": "Su tutto il patrimonio",
+  "inspection.portfolio.h2": "Ordinato per unità, non per il mese in cui è accaduto.",
+  "inspection.portfolio1.title": "Un solo account per tutto il patrimonio",
+  "inspection.portfolio1.body":
+    "Un progetto per unità o per edificio, così preparare un'unità a un indirizzo non significa frugare in tutto ciò che è stato fotografato questo trimestre.",
+  "inspection.portfolio2.title": "Indirizzi risolti, non digitati",
+  "inspection.portfolio2.body":
+    "Le coordinate si leggono allo scatto e si risolvono in un indirizzo, così una foto dell'unità 4B non finisce archiviata sotto la 4A perché qualcuno ha sbagliato a digitare alle undici di sera.",
+  "inspection.portfolio3.title": "Verbali di stato che si esportano",
+  "inspection.portfolio3.body":
+    "PDF per il fascicolo dell'inquilino o la lettera sulla cauzione, Excel per l'ufficio, ZIP degli originali per un avvocato o un arbitro — ogni foto stampata con ora, indirizzo e codice di verifica.",
+  "inspection.team.label": "Per tutta la squadra",
+  "inspection.team.h2": "Prezzi e permessi pensati per un ufficio di amministrazione.",
+  "inspection.team1.title": "Tecnici e gestori con posti inclusi",
+  "inspection.team1.body":
+    "Aggiunga il personale delle locazioni, i manutentori e il responsabile di zona senza pagare a testa, così documentare una riconsegna non costa di più solo perché il patrimonio è cresciuto.",
+  "inspection.team2.title": "Ruoli che rispecchiano l'organizzazione",
+  "inspection.team2.body":
+    "Chi è sul campo scatta e vede il proprio lavoro, l'ufficio vede i documenti di ogni unità. Nessuno ha bisogno dei permessi da amministratore per fotografare una cucina.",
+  "inspection.team3.title": "Gratis per la prossima riconsegna",
+  "inspection.team3.body":
+    "300 scatti verificati al mese senza costi, verifica inclusa. Abbastanza per diversi sopralluoghi d'ingresso completi prima di decidere qualsiasi cosa.",
+  "inspection.faq.label": "Domande",
+  "inspection.faq.h2": "Domande frequenti",
+  "inspection.cta.h2": "Documenti come si deve la prossima riconsegna",
+  "inspection.cta.body":
+    "Gratis per sempre con 300 scatti verificati al mese, senza carta. I piani a pagamento aggiungono scatti illimitati, Teamspace per l'ufficio e tutta la gamma di esportazioni.",
+  "inspection.cta.primary": "Scarica l'app",
+  "inspection.cta.secondary": "Vedi piani e prezzi",
+  "inspection.related.lead": "Correlati:",
+  "inspection.related.gps": "come funziona la fotocamera con GPS e marca temporale",
+  "inspection.related.hvac": "documentazione di climatizzazione e interventi di assistenza",
+  "inspection.related.or": ", oppure",
+  "inspection.related.pricing": "confronta i piani",
+  "inspection.disclaimer":
+    "Solo documentazione — non è un sistema di gestione dei contratti di locazione né una consulenza legale sulle norme in materia di cauzione, che variano da stato e da provincia.",
+  "inspection.faq.q1":
+    "Perché non usare semplicemente la fotocamera del telefono per le foto di sopralluogo?",
+  "inspection.faq.a1":
+    "Perché una foto da telefono porta la data che il telefono dichiara, e sia l'orologio sia i metadati si cambiano in una quindicina di secondi. In una contestazione sulla cauzione la data è di solito l'unico fatto controverso: il dato su cui deve fare più affidamento è proprio quello che il rullino non le dà alcun motivo di credere. GeoCliks verifica invece l'ora dello scatto contro i nostri server.",
+  "inspection.faq.q2": "Regge in una contestazione sulla cauzione o davanti al giudice di pace?",
+  "inspection.faq.a2":
+    "Valutare le prove spetta a chi decide e le norme sulla cauzione cambiano da stato a stato e da provincia a provincia, quindi nessuno può onestamente promettere un esito. Ciò che cambia è la qualità di quello che porta: un set di foto con ore verificate sui server, indirizzi risolti e sigilli che rivelano ogni manomissione, che la controparte può controllare da sé su una pagina pubblica. È un documento decisamente più solido di un'esportazione dal rullino.",
+  "inspection.faq.q3": "L'inquilino può vedere e controllare le foto?",
+  "inspection.faq.a3":
+    "Sì, e conviene farlo. Condivida il set d'ingresso al momento dell'ingresso. L'inquilino verifica qualsiasi scatto con il suo codice su una pagina pubblica — senza account, senza app — e vede la stessa data e lo stesso indirizzo verificati che vede lei. Accordarsi sul documento all'inizio è ciò che evita la lite alla fine.",
+  "inspection.faq.q4": "E se nell'unità non c'è segnale, o è un seminterrato?",
+  "inspection.faq.a4":
+    "Gli scatti si mettono in coda sul telefono e si sigillano quando raggiungono i nostri server, e l'ora registrata è quella dello scatto, non del caricamento. Anche il GPS si legge allo scatto, così un seminterrato o un corridoio interno marcano comunque la posizione dell'edificio e non il punto in cui il telefono ha ripreso segnale.",
+  "inspection.faq.q5": "È uno strumento di gestione delle locazioni o di checklist di sopralluogo?",
+  "inspection.faq.a5":
+    "No. Non c'è contratto, non c'è registro degli affitti, non c'è contabilità e non c'è un modulo di checklist stanza per stanza da compilare. GeoCliks è lo strato di documentazione fotografica, ed è fatto per stare accanto al gestionale immobiliare che già usa.",
+  "inspection.faq.q6": "Per quanto tempo restano conservate le foto?",
+  "inspection.faq.a6":
+    "Per tutto il tempo in cui il suo workspace è attivo — e qui conta, perché una contestazione sulla cauzione può emergere un anno dopo l'ingresso dell'inquilino. Esporti un set completo in PDF, Excel o ZIP ogni volta che vuole una copia sua fuori dal sistema.",
 };

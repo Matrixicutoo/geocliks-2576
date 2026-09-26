@@ -63,6 +63,9 @@ export const pl: Catalog = {
   "seo.hvac.title": "Dokumentacja zdjęciowa HVAC i dowód wizyty serwisu",
   "seo.hvac.description":
     "Udowodnij, że technik przyjechał, w jakim stanie było urządzenie i że montaż skończono — zweryfikowana godzina, GPS i adres na każdym zdjęciu.",
+  "seo.inspection.title": "Aplikacja do zdjęć z przeglądu — potwierdzony dowód wprowadzenia",
+  "seo.inspection.description":
+    "Zdjęcia z przeglądu przy wprowadzeniu i wyprowadzeniu z potwierdzoną godziną, GPS i adresem lokalu, żeby spór o kaucję rozstrzygała dokumentacja, a nie czyjeś słowo.",
   "signin.subtitle": "Odporna na manipulacje dokumentacja zdjęciowa dla ekip w terenie.",
   "signin.apple": "Kontynuuj z Apple",
   "signin.google": "Kontynuuj z Google",
@@ -1706,4 +1709,92 @@ export const pl: Catalog = {
   "hvac.faq.q6": "Czy GeoCliks robi dyspozytornię, wyceny albo faktury?",
   "hvac.faq.a6":
     "Nie. To nie platforma do zarządzania serwisem w terenie i jej nie zastępuje — nie ma wycen, faktur ani planowania poza przypisywaniem zdjęć do zleceń. Obsługuje warstwę dokumentacji i jest zrobiony tak, by stał obok tego, czym już prowadzisz zlecenia.",
+  "inspection.eyebrow": "Zdjęcia z przeglądu lokalu",
+  "inspection.h1": "Zdjęcia z przeglądu lokalu z datą, której nikt nie podważy",
+  "inspection.sub":
+    "Obchody przy wprowadzeniu i wyprowadzeniu, gdzie każde zdjęcie nosi godzinę potwierdzoną na serwerze, GPS i adres lokalu — a najemca też może je sprawdzić.",
+  "inspection.why.label": "Dlaczego szukają tego zarządcy nieruchomości",
+  "inspection.why.h2":
+    "Zgadzacie się z najemcą, że wykładzina jest poplamiona. Nie zgadzacie się, kiedy.",
+  "inspection.why.intro":
+    "Niemal każdy spór o kaucję sprowadza się do jednego pytania: czy ta usterka istniała przed wprowadzeniem? Zwykle obie strony mają zdjęcia. Żaden z tych zbiorów nie dowodzi daty, bo znacznik czasu w telefonie to po prostu godzina, którą telefonowi podano. Potwierdź godzinę zdjęcia poza telefonem i spór przestaje dotyczyć wiarygodności, a zaczyna dotyczyć dokumentacji.",
+  "inspection.how.label": "Jak to działa",
+  "inspection.how.h2": "Dwa obchody w odstępie dwunastu miesięcy, jedna sparowana dokumentacja.",
+  "inspection.step1.title": "Obejdź lokal przy wprowadzeniu",
+  "inspection.step1.body":
+    "Pomieszczenie po pomieszczeniu, plus liczniki i każde istniejące uszkodzenie. Każde zdjęcie nosi godzinę potwierdzoną wobec naszych serwerów, współrzędne i rozwiązany adres.",
+  "inspection.step2.title": "Przypisz je do lokalu",
+  "inspection.step2.body":
+    "Zdjęcia trafiają do projektu tego adresu, więc zestaw z wprowadzenia trzyma się razem, zamiast rozsypywać się w galerii na dwanaście miesięcy.",
+  "inspection.step3.title": "Obejdź go ponownie przy wyprowadzeniu",
+  "inspection.step3.body":
+    "Te same pomieszczenia w tej samej kolejności. Sparuj każde zdjęcie z odpowiednikiem z wprowadzenia, żeby różnica — albo jej brak — była widoczna obok siebie.",
+  "inspection.step4.title": "Udostępnij dokumentację",
+  "inspection.step4.body":
+    "Wyślij najemcy link albo kod zdjęcia. Sprawdzi każde zdjęcie na publicznej stronie, bez konta i bez aplikacji, i zobaczy te same potwierdzone daty co ty.",
+  "inspection.deposit.label": "Do akt kaucji",
+  "inspection.deposit.h2": "Trzy rzeczy, których galeria w telefonie nie da.",
+  "inspection.deposit1.title": "Spór toczy się o datę",
+  "inspection.deposit1.body":
+    "Nikt nie zaprzecza, że ściana jest obtarta. Spór idzie o to, kiedy się to stało. Godzina zdjęcia potwierdzona na naszych serwerach, a nie odczytana z telefonu, rozstrzyga tę kwestię — i jest tym jedynym, czego galeria nie zapewni.",
+  "inspection.deposit2.title": "Przed i po, w parach",
+  "inspection.deposit2.body":
+    "Zestaw zdjęcie z wprowadzenia i z wyprowadzenia tego samego pomieszczenia obok siebie, każde z własną potwierdzoną datą i adresem, i twierdzenie o stanie lokalu tłumaczy się samo.",
+  "inspection.deposit3.title": "Zaplombowane przed późniejszą edycją",
+  "inspection.deposit3.body":
+    "Każde zdjęcie jest plombowane w chwili dotarcia na nasze serwery. Jeśli ktoś je potem zmieni, weryfikacja się nie powiedzie — działa to w obie strony, i właśnie dlatego warto pokazać najemcy tę samą stronę, z której korzystasz.",
+  "inspection.portfolio.label": "W całym portfelu",
+  "inspection.portfolio.h2": "Ułożone według lokalu, nie według miesiąca.",
+  "inspection.portfolio1.title": "Jedno konto na cały portfel",
+  "inspection.portfolio1.body":
+    "Projekt na lokal albo na budynek, więc przygotowanie jednego adresu nie oznacza przekopywania wszystkiego, co sfotografowano w tym kwartale.",
+  "inspection.portfolio2.title": "Adresy rozwiązane, nie wpisywane",
+  "inspection.portfolio2.body":
+    "Współrzędne są czytane w chwili zdjęcia i zamieniane na adres, więc zdjęcie z lokalu 4B nie trafia do 4A, bo ktoś o jedenastej wieczorem pomylił klawisz.",
+  "inspection.portfolio3.title": "Protokoły stanu, które da się wyeksportować",
+  "inspection.portfolio3.body":
+    "PDF do akt najemcy albo do pisma o kaucji, Excel dla biura, ZIP z oryginałami dla prawnika lub arbitra — każde zdjęcie z wydrukowaną godziną, adresem i kodem weryfikacji.",
+  "inspection.team.label": "Dla całego zespołu",
+  "inspection.team.h2": "Cena i uprawnienia pomyślane dla biura zarządzania.",
+  "inspection.team1.title": "Inspektorzy i zarządcy na miejscach w cenie",
+  "inspection.team1.body":
+    "Dodaj dział najmu, techników i dyrektora regionalnego bez opłaty od głowy, żeby dokumentowanie przekazania lokalu nigdy nie kosztowało więcej tylko dlatego, że portfel się rozrósł.",
+  "inspection.team2.title": "Role dopasowane do organizacji",
+  "inspection.team2.body":
+    "Ludzie w terenie robią zdjęcia i widzą swoją pracę, biuro widzi dokumentację każdego lokalu. Nikt nie potrzebuje uprawnień administratora, by sfotografować kuchnię.",
+  "inspection.team3.title": "Bezpłatnie na najbliższe przekazanie",
+  "inspection.team3.body":
+    "300 potwierdzonych zdjęć miesięcznie bez opłat, weryfikacja w cenie. Wystarczy na kilka pełnych obchodów przy wprowadzeniu, zanim cokolwiek zdecydujesz.",
+  "inspection.faq.label": "Pytania",
+  "inspection.faq.h2": "Często zadawane pytania",
+  "inspection.cta.h2": "Udokumentuj najbliższe przekazanie jak należy",
+  "inspection.cta.body":
+    "Na zawsze bezpłatnie do 300 potwierdzonych zdjęć miesięcznie, bez karty. Plany płatne dodają zdjęcia bez limitu, Teamspace dla biura i pełny zestaw eksportów.",
+  "inspection.cta.primary": "Pobierz aplikację",
+  "inspection.cta.secondary": "Zobacz plany i ceny",
+  "inspection.related.lead": "Powiązane:",
+  "inspection.related.gps": "jak działa kamera ze znacznikiem GPS i czasu",
+  "inspection.related.hvac": "dokumentacja HVAC i wizyt serwisowych",
+  "inspection.related.or": ", albo",
+  "inspection.related.pricing": "porównaj plany",
+  "inspection.disclaimer":
+    "Tylko dokumentacja — to nie system zarządzania najmem ani porada prawna dotycząca zasad kaucji, które różnią się w zależności od stanu i prowincji.",
+  "inspection.faq.q1": "Dlaczego nie użyć po prostu kamery w telefonie do zdjęć z przeglądu?",
+  "inspection.faq.a1":
+    "Bo zdjęcie z telefonu nosi datę, którą telefon podaje, a zegar i metadane zdjęcia da się zmienić w jakieś piętnaście sekund. W sporze o kaucję data jest zwykle jedynym kwestionowanym faktem, czyli liczba, na której najbardziej musisz się oprzeć, to dokładnie ta, której galeria nie daje żadnego powodu ufać. GeoCliks potwierdza godzinę zdjęcia wobec naszych serwerów.",
+  "inspection.faq.q2": "Czy to się obroni w sporze o kaucję albo przed sądem?",
+  "inspection.faq.a2":
+    "Ocena dowodów należy do orzekającego, a zasady kaucji różnią się między stanami i prowincjami, więc nikt nie obieca ci uczciwie wyniku. Zmienia się jakość tego, co przedstawiasz: zbiór zdjęć z godzinami potwierdzonymi na serwerze, rozwiązanymi adresami i plombami ujawniającymi ingerencję, które druga strona może sprawdzić sama na publicznej stronie. To dokumentacja wyraźnie mocniejsza niż eksport z galerii.",
+  "inspection.faq.q3": "Czy najemca może zobaczyć i sprawdzić zdjęcia?",
+  "inspection.faq.a3":
+    "Tak, i warto to zrobić. Udostępnij zestaw z wprowadzenia już przy wprowadzeniu. Najemca sprawdzi każde zdjęcie jego kodem na publicznej stronie — bez konta, bez aplikacji — i zobaczy tę samą potwierdzoną datę i adres co ty. Uzgodnienie dokumentacji na początku jest tym, co zatrzymuje spór na końcu.",
+  "inspection.faq.q4": "A jeśli w lokalu nie ma zasięgu albo to piwnica?",
+  "inspection.faq.a4":
+    "Zdjęcia czekają w kolejce w telefonie i są plombowane, gdy dotrą na nasze serwery, a zapisana godzina to moment zdjęcia, nie moment wysyłki. GPS też jest czytany w chwili zdjęcia, więc piwnica albo wewnętrzny korytarz nadal znaczy lokalizację budynku, a nie miejsce, gdzie telefon odzyskał zasięg.",
+  "inspection.faq.q5": "Czy to narzędzie do zarządzania najmem albo do list kontrolnych przeglądu?",
+  "inspection.faq.a5":
+    "Nie. Nie ma umowy najmu, nie ma rejestru czynszów, nie ma księgowości i nie ma formularza listy kontrolnej do wypełniania pomieszczenie po pomieszczeniu. GeoCliks to warstwa dokumentacji zdjęciowej, zbudowana tak, by stać obok systemu zarządzania nieruchomościami, którego już używasz.",
+  "inspection.faq.q6": "Jak długo przechowywane są zdjęcia?",
+  "inspection.faq.a6":
+    "Tak długo, jak twoja przestrzeń robocza jest aktywna — a tu to się liczy, bo spór o kaucję może wypłynąć rok po wprowadzeniu najemcy. Wyeksportuj pełny zestaw do PDF, Excela albo ZIP, kiedy tylko chcesz mieć własną kopię poza systemem.",
 };

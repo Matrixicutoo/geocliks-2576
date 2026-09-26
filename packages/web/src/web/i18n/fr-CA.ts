@@ -64,6 +64,9 @@ export const frCA: Catalog = {
   "seo.hvac.title": "Documentation photo CVC et preuve d'appel de service",
   "seo.hvac.description":
     "Prouvez que le technicien est venu, l'état de l'équipement et la fin de l'installation : heure vérifiée, GPS et adresse sur chaque photo de service.",
+  "seo.inspection.title": "Appli photos d'inspection — Preuve d'entrée vérifiée",
+  "seo.inspection.description":
+    "Photos d'inspection d'entrée et de sortie avec heure vérifiée, GPS et adresse du logement, pour qu'un litige de dépôt se règle sur le dossier plutôt que sur la parole de chacun.",
   "signin.subtitle": "Documentation photo infalsifiable pour les équipes de terrain.",
   "signin.apple": "Continuer avec Apple",
   "signin.google": "Continuer avec Google",
@@ -1741,4 +1744,94 @@ export const frCA: Catalog = {
   "hvac.faq.q6": "GeoCliks fait-il la répartition, les soumissions ou la facturation ?",
   "hvac.faq.a6":
     "Non. Ce n'est pas une plateforme de gestion de services sur le terrain et ça ne remplace pas la vôtre — aucune soumission, aucune facturation et aucune planification au-delà de l'affectation des prises aux travaux. Ça gère la couche documentation et c'est fait pour cohabiter avec ce que vous utilisez déjà pour faire rouler les appels.",
+  "inspection.eyebrow": "Photos d'inspection de logement",
+  "inspection.h1": "Des photos d'inspection avec une date que personne ne peut contester",
+  "inspection.sub":
+    "Visites d'entrée et de sortie où chaque prise porte une heure vérifiée sur nos serveurs, le GPS et l'adresse du logement — et le locataire peut les vérifier lui aussi.",
+  "inspection.why.label": "Pourquoi les gestionnaires immobiliers cherchent ça",
+  "inspection.why.h2":
+    "Vous et le locataire êtes d'accord que le tapis est taché. Vous n'êtes pas d'accord sur le moment.",
+  "inspection.why.intro":
+    "Presque tous les litiges de dépôt se ramènent à une seule question : est-ce que ce dommage existait avant leur arrivée? Les deux parties ont généralement des photos. Aucune des deux ne prouve une date, parce que l'horodatage d'un téléphone est l'heure qu'on a dite au téléphone. Vérifiez l'heure de prise ailleurs que sur le téléphone et le débat cesse de porter sur la crédibilité pour porter sur le dossier.",
+  "inspection.how.label": "Comment ça marche",
+  "inspection.how.h2": "Deux visites, douze mois d'écart, un seul dossier apparié.",
+  "inspection.step1.title": "Faites la visite d'entrée",
+  "inspection.step1.body":
+    "Pièce par pièce, plus les compteurs et tout dommage déjà présent. Chaque prise porte une heure vérifiée sur nos serveurs, les coordonnées et l'adresse civique résolue.",
+  "inspection.step2.title": "Rattachez-la au logement",
+  "inspection.step2.body":
+    "Les prises se classent dans un projet lié à cette adresse, donc la série d'entrée reste groupée au lieu de se disperser dans la pellicule pendant douze mois.",
+  "inspection.step3.title": "Refaites la visite à la sortie",
+  "inspection.step3.body":
+    "Les mêmes pièces dans le même ordre. Appariez chaque photo avec celle d'entrée pour que l'écart — ou l'absence d'écart — se voie côte à côte.",
+  "inspection.step4.title": "Partagez le dossier",
+  "inspection.step4.body":
+    "Envoyez au locataire un lien ou un code de photo. Il peut vérifier n'importe quelle prise sur une page publique, sans compte ni application, et voir les mêmes dates vérifiées que vous.",
+  "inspection.deposit.label": "Pour le dossier de dépôt",
+  "inspection.deposit.h2": "Trois choses que la pellicule ne peut pas vous donner.",
+  "inspection.deposit1.title": "La date, c'est tout le débat",
+  "inspection.deposit1.body":
+    "Personne ne contredit que le mur est éraflé. On conteste quand c'est arrivé. Une heure de prise vérifiée sur nos serveurs plutôt que lue sur un téléphone, voilà ce qui règle la question, et c'est la seule chose que la pellicule ne peut pas fournir.",
+  "inspection.deposit2.title": "Avant et après, appariés",
+  "inspection.deposit2.body":
+    "Mettez la photo d'entrée et celle de sortie de la même pièce l'une à côté de l'autre, chacune avec sa date et son adresse vérifiées, et la réclamation sur l'état parle d'elle-même.",
+  "inspection.deposit3.title": "Scellé contre les retouches ultérieures",
+  "inspection.deposit3.body":
+    "Chaque prise est scellée en arrivant sur nos serveurs. Si une photo est modifiée après, la vérification échoue — ça vaut dans les deux sens, et c'est justement pourquoi il faut montrer au locataire la même page que vous utilisez.",
+  "inspection.portfolio.label": "Sur tout le parc",
+  "inspection.portfolio.h2": "Classé par logement, pas par mois.",
+  "inspection.portfolio1.title": "Un seul compte pour tout le parc",
+  "inspection.portfolio1.body":
+    "Un projet par logement ou par immeuble, pour qu'une remise en état à une adresse n'oblige pas à fouiller tout ce qui a été photographié ce trimestre.",
+  "inspection.portfolio2.title": "Adresses résolues, pas tapées",
+  "inspection.portfolio2.body":
+    "Les coordonnées sont lues à la prise et résolues en adresse civique, donc une photo du logement 4B ne se classe pas dans le 4A parce que quelqu'un s'est trompé de touche à onze heures du soir.",
+  "inspection.portfolio3.title": "Des rapports d'état qui s'exportent",
+  "inspection.portfolio3.body":
+    "PDF pour le dossier du locataire ou la lettre de dépôt, Excel pour le bureau, ZIP des originaux pour un avocat ou un arbitre — chaque photo imprimée avec son heure, son adresse et son code de vérification.",
+  "inspection.team.label": "Pour toute l'équipe",
+  "inspection.team.h2": "Un prix et des permissions pensés pour un bureau de gestion.",
+  "inspection.team1.title": "Inspecteurs et gestionnaires, sièges inclus",
+  "inspection.team1.body":
+    "Ajoutez le personnel de location, les techniciens d'entretien et le gestionnaire régional sans payer par tête, pour que documenter une remise en état ne coûte jamais plus parce que le parc a grossi.",
+  "inspection.team2.title": "Des rôles qui collent à l'organisation",
+  "inspection.team2.body":
+    "Le personnel de terrain prend les photos et voit son propre travail, le bureau voit les dossiers de chaque logement. Personne n'a besoin d'un accès admin pour photographier une cuisine.",
+  "inspection.team3.title": "Gratuit pour la prochaine remise en état",
+  "inspection.team3.body":
+    "300 prises vérifiées par mois sans frais, vérification incluse. De quoi faire plusieurs visites d'entrée complètes avant de décider quoi que ce soit.",
+  "inspection.faq.label": "Questions",
+  "inspection.faq.h2": "Questions fréquentes",
+  "inspection.cta.h2": "Documentez la prochaine remise en état comme il faut",
+  "inspection.cta.body":
+    "Gratuit pour toujours jusqu'à 300 prises vérifiées par mois, sans carte. Les forfaits payants ajoutent les prises illimitées, Teamspace pour le bureau et toute la gamme d'exports.",
+  "inspection.cta.primary": "Obtenir l'application",
+  "inspection.cta.secondary": "Voir les forfaits et les prix",
+  "inspection.related.lead": "À lire aussi :",
+  "inspection.related.gps": "comment fonctionne la caméra GPS horodatée",
+  "inspection.related.hvac": "documentation CVC et appels de service",
+  "inspection.related.or": ", ou",
+  "inspection.related.pricing": "comparer les forfaits",
+  "inspection.disclaimer":
+    "Documentation seulement — ce n'est pas un système de gestion de baux, ni un avis juridique sur les règles de dépôt, qui varient d'un État et d'une province à l'autre.",
+  "inspection.faq.q1":
+    "Pourquoi ne pas simplement utiliser l'appareil du téléphone pour les photos d'inspection?",
+  "inspection.faq.a1":
+    "Parce qu'une photo de téléphone porte la date que le téléphone affirme, et l'horloge comme les métadonnées se changent en une quinzaine de secondes. Dans un litige de dépôt, la date est souvent le seul fait contesté : la donnée dont vous avez le plus besoin est précisément celle que la pellicule ne vous donne aucune raison de croire. GeoCliks vérifie plutôt l'heure de prise sur nos serveurs.",
+  "inspection.faq.q2": "Est-ce que ça tient dans un litige de dépôt ou aux petites créances?",
+  "inspection.faq.a2":
+    "Apprécier la preuve est le travail du décideur et les règles de dépôt diffèrent selon l'État et la province, donc personne ne peut honnêtement vous promettre un résultat. Ce qui change, c'est la qualité de ce que vous déposez : une série de photos avec des heures vérifiées sur serveur, des adresses résolues et des sceaux qui révèlent toute altération, que l'autre partie peut vérifier elle-même sur une page publique. C'est un dossier nettement plus solide qu'un export de pellicule.",
+  "inspection.faq.q3": "Le locataire peut-il voir et vérifier les photos?",
+  "inspection.faq.a3":
+    "Oui, et ça vaut la peine. Partagez la série d'entrée au moment de l'entrée. Il vérifie n'importe quelle prise avec son code sur une page publique — sans compte, sans application — et voit la même date et la même adresse vérifiées que vous. S'entendre sur le dossier au début, c'est ce qui évite la dispute à la fin.",
+  "inspection.faq.q4": "Et si le logement n'a pas de signal, ou c'est un sous-sol?",
+  "inspection.faq.a4":
+    "Les prises se mettent en file sur le téléphone et se scellent en arrivant sur nos serveurs, et l'heure enregistrée est celle de la prise, pas celle de l'envoi. Le GPS est lu à la prise aussi, donc un sous-sol ou un corridor intérieur marque quand même l'emplacement de l'immeuble et non l'endroit où le téléphone a retrouvé le signal.",
+  "inspection.faq.q5":
+    "Est-ce un outil de gestion de baux ou de listes de vérification d'inspection?",
+  "inspection.faq.a5":
+    "Non. Pas de bail, pas de grand livre des loyers, pas de comptabilité et aucun formulaire de liste pièce par pièce à remplir. GeoCliks est la couche de documentation photo, conçue pour cohabiter avec le système de gestion immobilière que vous utilisez déjà.",
+  "inspection.faq.q6": "Combien de temps les photos sont-elles conservées?",
+  "inspection.faq.a6":
+    "Aussi longtemps que votre espace de travail est actif — et ici ça compte, parce qu'un litige de dépôt peut surgir un an après l'arrivée du locataire. Exportez une série complète en PDF, Excel ou ZIP dès que vous voulez votre propre copie hors du système.",
 };

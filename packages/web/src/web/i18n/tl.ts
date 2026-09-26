@@ -64,6 +64,9 @@ export const tl: Catalog = {
   "seo.hvac.title": "Dokumentasyong Litrato ng HVAC at Patunay ng Bisita",
   "seo.hvac.description":
     "Patunayan na dumating ang technician, ang kondisyon ng kagamitan at natapos ang install — beripikadong oras, GPS at address sa bawat litrato ng serbisyo.",
+  "seo.inspection.title": "App ng litrato sa inspeksyon — beripikadong patunay ng move-in",
+  "seo.inspection.description":
+    "Litrato ng inspeksyon sa move-in at move-out na may beripikadong oras, GPS at address ng unit, para ang away sa deposito ay nakasalalay sa talaan at hindi sa salita ng isa't isa.",
   "signin.subtitle": "Hindi mapepekeng dokumentasyon ng larawan para sa mga field team.",
   "signin.apple": "Magpatuloy sa Apple",
   "signin.google": "Magpatuloy sa Google",
@@ -1730,4 +1733,94 @@ export const tl: Catalog = {
   "hvac.faq.q6": "Gumagawa ba ang GeoCliks ng dispatch, quoting o invoicing?",
   "hvac.faq.a6":
     "Hindi. Hindi ito field service management platform at hindi nito papalitan ang isa — walang quoting, walang invoicing at walang scheduling maliban sa pag-assign ng mga kuha sa trabaho. Hinahawakan nito ang layer ng dokumentasyon, at gawa ito para sumabay sa kung anuman ang gamit mo na sa pagpapatakbo ng mga call.",
+  "inspection.eyebrow": "Litrato ng inspeksyon ng property",
+  "inspection.h1": "Litrato ng inspeksyon na may petsang walang makakatutol",
+  "inspection.sub":
+    "Paglilibot sa unit sa move-in at move-out kung saan bawat kuha ay may oras na beripikado sa server, GPS at address ng unit — at makakatingin din ang umuupa.",
+  "inspection.why.label": "Bakit ito hinahanap ng mga property manager",
+  "inspection.why.h2":
+    "Sang-ayon kayo ng umuupa na may mantsa ang carpet. Ang hindi kayo sang-ayon ay kung kailan.",
+  "inspection.why.intro":
+    "Halos bawat away sa deposito ay bumabagsak sa isang tanong: nandoon na ba ang sira bago pa sila lumipat? Karaniwan, may litrato ang dalawang panig. Wala sa dalawa ang nakakapagpatunay ng petsa, dahil ang timestamp ng telepono ay kung anong oras ang isinabi sa telepono. Beripikahin ang oras ng kuha sa labas ng telepono at ang usapin ay hindi na kung sino ang kapani-panalig kundi kung ano ang nasa talaan.",
+  "inspection.how.label": "Paano ito gumagana",
+  "inspection.how.h2":
+    "Dalawang paglilibot, labindalawang buwan ang pagitan, isang talaang nakapares.",
+  "inspection.step1.title": "Libutin ang unit sa move-in",
+  "inspection.step1.body":
+    "Kuwarto por kuwarto, kasama ang mga metro at anumang sirang nandoon na. Bawat kuha ay may oras na beripikado sa aming mga server, ang koordinado at ang naresolbang address sa kalye.",
+  "inspection.step2.title": "Ikabit ito sa unit",
+  "inspection.step2.body":
+    "Naka-file ang mga kuha sa isang proyekto para sa address na iyon, kaya nananatiling magkasama ang set ng move-in at hindi nagkakalat sa camera roll nang labindalawang buwan.",
+  "inspection.step3.title": "Libutin itong muli sa move-out",
+  "inspection.step3.body":
+    "Parehong kuwarto, parehong sunod-sunod. Iparis ang bawat kuha sa katapat nito noong move-in para ang pagkakaiba — o ang kawalan nito — ay agad makita nang magkatabi.",
+  "inspection.step4.title": "Ibahagi ang talaan",
+  "inspection.step4.body":
+    "Padalhan ang umuupa ng link o photo code. Mabeberipika niya ang anumang kuha sa isang pampublikong pahina, walang account at walang app, at makikita ang parehong beripikadong petsa na nakikita mo.",
+  "inspection.deposit.label": "Para sa file ng deposito",
+  "inspection.deposit.h2": "Tatlong bagay na hindi kayang ibigay ng camera roll.",
+  "inspection.deposit1.title": "Ang petsa ang pinagtatalunan",
+  "inspection.deposit1.body":
+    "Walang tumututol na gasgas ang pader. Ang pinagtatalunan ay kung kailan nangyari. Isang oras ng kuha na beripikado sa aming mga server — hindi binasa sa telepono — ang tumatapos sa usapin, at iyon ang isang bagay na hindi kayang ibigay ng camera roll.",
+  "inspection.deposit2.title": "Bago at pagkatapos, nakapares",
+  "inspection.deposit2.body":
+    "Itabi ang kuha sa move-in at sa move-out ng parehong kuwarto, bawat isa may sariling beripikadong petsa at address, at ang paghahabol tungkol sa kondisyon ay nagpapaliwanag na sa sarili nito.",
+  "inspection.deposit3.title": "Selyado laban sa pag-edit pagkatapos",
+  "inspection.deposit3.body":
+    "Sineselyuhan ang bawat kuha pagdating nito sa aming mga server. Kung binago ang litrato pagkatapos, bumabagsak ang beripikasyon — tumatalab ito sa dalawang panig, at iyon ang dahilan kaya ipinapakita sa umuupa ang parehong pahinang ginagamit mo.",
+  "inspection.portfolio.label": "Sa buong portfolio",
+  "inspection.portfolio.h2": "Nakahanay ayon sa unit, hindi ayon sa buwan ng pangyayari.",
+  "inspection.portfolio1.title": "Isang account sa buong portfolio",
+  "inspection.portfolio1.body":
+    "Isang proyekto kada unit o kada gusali, kaya ang paghahanda ng isang unit sa isang address ay hindi nangangahulugang hahalungkatin lahat ng nakuhanan ngayong quarter.",
+  "inspection.portfolio2.title": "Address na naresolba, hindi tinipa",
+  "inspection.portfolio2.body":
+    "Binabasa ang koordinado sa sandali ng kuha at niresolba sa address sa kalye, kaya hindi napupunta sa unit 4A ang litrato mula sa unit 4B dahil may nagkamali ng tipa alas-onse ng gabi.",
+  "inspection.portfolio3.title": "Mga condition report na nae-export",
+  "inspection.portfolio3.body":
+    "PDF para sa file ng umuupa o sa sulat tungkol sa deposito, Excel para sa opisina, ZIP ng mga orihinal para sa abogado o arbitrator — bawat litrato may nakalimbag na oras, address at verification code.",
+  "inspection.team.label": "Para sa buong tim",
+  "inspection.team.h2": "Presyo at permiso na nakaayon sa isang management office.",
+  "inspection.team1.title": "Mga inspektor at manager sa kasamang upuan",
+  "inspection.team1.body":
+    "Isama ang leasing staff, ang mga maintenance tech at ang regional manager nang walang bayad kada tao, kaya hindi tumataas ang gastos sa pagtatala ng turnover dahil lang lumaki ang portfolio.",
+  "inspection.team2.title": "Mga role na tugma sa organisasyon",
+  "inspection.team2.body":
+    "Kumukuha ang field staff at nakikita ang sarili nilang trabaho, nakikita ng opisina ang talaan ng bawat unit. Walang kailangang admin access para kunan ng litrato ang isang kusina.",
+  "inspection.team3.title": "Libre para sa susunod na turnover",
+  "inspection.team3.body":
+    "300 beripikadong kuha kada buwan nang walang bayad, kasama na ang beripikasyon. Sapat para sa ilang buong paglilibot sa move-in bago ka magdesisyon ng kahit ano.",
+  "inspection.faq.label": "Mga tanong",
+  "inspection.faq.h2": "Mga madalas itanong",
+  "inspection.cta.h2": "Itala nang tama ang susunod na turnover",
+  "inspection.cta.body":
+    "Libre nang habambuhay para sa 300 beripikadong kuha kada buwan, walang card. Ang bayad na plano ay may walang limitasyong kuha, Teamspace para sa opisina at ang buong hanay ng export.",
+  "inspection.cta.primary": "Kunin ang app",
+  "inspection.cta.secondary": "Tingnan ang plano at presyo",
+  "inspection.related.lead": "Kaugnay:",
+  "inspection.related.gps": "kung paano gumagana ang GPS timestamp camera",
+  "inspection.related.hvac": "dokumentasyon ng HVAC at service call",
+  "inspection.related.or": ", o",
+  "inspection.related.pricing": "ihambing ang mga plano",
+  "inspection.disclaimer":
+    "Dokumentasyon lamang — hindi ito sistema ng pamamahala ng lease, at hindi payong legal sa mga patakaran sa deposito, na nag-iiba kada estado at kada probinsya.",
+  "inspection.faq.q1":
+    "Bakit hindi na lang gamitin ang camera ng telepono para sa litrato ng inspeksyon?",
+  "inspection.faq.a1":
+    "Dahil ang litrato mula sa telepono ay may dalang petsa na sinasabi ng telepono, at ang orasan at metadata ng litrato ay pareho nang mababago sa mga labinlimang segundo. Sa away sa deposito, ang petsa ang karaniwang tanging pinagtatalunang bagay, kaya ang numerong pinakakailangan mong pagkatiwalaan ay iyon din ang hindi ka binibigyan ng camera roll ng dahilan para pagkatiwalaan. Sa GeoCliks, ang oras ng kuha ay beripikado sa aming mga server.",
+  "inspection.faq.q2": "Tatagal ba ito sa away sa deposito o sa small claims?",
+  "inspection.faq.a2":
+    "Ang pagtimbang ng ebidensya ay trabaho ng humuhusga at nag-iiba ang patakaran sa deposito kada estado at probinsya, kaya walang makakapangakong tapat ng resulta. Ang nagbabago ay ang kalidad ng dala mo: isang set ng litrato na may oras na beripikado sa server, naresolbang address at selyong nagpapakita ng pakikialam, na kayang tingnan mismo ng kabilang panig sa pampublikong pahina. Malinaw na mas matibay iyon kaysa sa export mula sa camera roll.",
+  "inspection.faq.q3": "Makikita at masusuri ba ng umuupa ang mga litrato?",
+  "inspection.faq.a3":
+    "Oo, at mabuting gawin. Ibahagi ang set ng move-in sa mismong move-in. Mabeberipika niya ang anumang kuha sa pamamagitan ng code sa pampublikong pahina — walang account, walang app — at makikita ang parehong beripikadong petsa at address na nakikita mo. Ang pagkakasundo sa talaan sa simula ang humahadlang sa away sa huli.",
+  "inspection.faq.q4": "Paano kung walang signal ang unit, o basement ito?",
+  "inspection.faq.a4":
+    "Pumipila ang mga kuha sa telepono at sineselyuhan pagdating sa aming mga server, at ang naitatalang oras ay ang sandali ng kuha, hindi ang sandali ng upload. Binabasa rin ang GPS sa sandali ng kuha, kaya ang basement o loob na pasilyo ay nagtatatak pa rin ng lokasyon ng gusali at hindi kung saan nakabawi ng signal ang telepono.",
+  "inspection.faq.q5": "Kasangkapan ba ito sa pamamahala ng lease o sa checklist ng inspeksyon?",
+  "inspection.faq.a5":
+    "Hindi. Walang lease, walang ledger ng upa, walang accounting at walang form ng checklist na kuwarto por kuwarto na pupunan. Ang GeoCliks ang layer ng dokumentasyon sa litrato, at ginawa para makasama ang anumang property management system na ginagamit mo na.",
+  "inspection.faq.q6": "Gaano katagal iniingatan ang mga litrato?",
+  "inspection.faq.a6":
+    "Habang aktibo ang workspace mo — at mahalaga ito rito, dahil ang away sa deposito ay maaaring sumulpot makalipas ang isang taon mula nang lumipat ang umuupa. I-export ang buong set sa PDF, Excel o ZIP kahit kailan mo gustuhing may sariling kopya sa labas ng sistema.",
 };

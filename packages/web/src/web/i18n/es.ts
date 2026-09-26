@@ -64,6 +64,9 @@ export const es: Catalog = {
   "seo.hvac.title": "Documentación fotográfica de HVAC y prueba de visita",
   "seo.hvac.description":
     "Demuestra que el técnico llegó, en qué estado estaba el equipo y que la instalación quedó terminada: hora verificada, GPS y dirección en cada foto.",
+  "seo.inspection.title": "App de fotos de inspección — Prueba de entrada verificada",
+  "seo.inspection.description":
+    "Fotos de inspección de entrada y salida con hora verificada, GPS y dirección de la unidad, para que una disputa por el depósito se resuelva con el registro y no con la palabra de cada uno.",
   "signin.subtitle": "Documentación fotográfica inalterable para equipos de campo.",
   "signin.apple": "Continuar con Apple",
   "signin.google": "Continuar con Google",
@@ -1727,4 +1730,95 @@ export const es: Catalog = {
   "hvac.faq.q6": "¿GeoCliks hace despacho, presupuestos o facturación?",
   "hvac.faq.a6":
     "No. No es una plataforma de gestión de servicio de campo y no sustituye a una: no hay presupuestos, ni facturación, ni planificación más allá de asignar capturas a trabajos. Se ocupa de la capa de documentación y está hecho para convivir con lo que ya uses para gestionar los avisos.",
+  "inspection.eyebrow": "Fotos de inspección de inmuebles",
+  "inspection.h1": "Fotos de inspección con una fecha que nadie puede discutir",
+  "inspection.sub":
+    "Recorridos de entrada y de salida donde cada captura lleva hora verificada en el servidor, GPS y la dirección de la unidad — y el inquilino también puede comprobarlas.",
+  "inspection.why.label": "Por qué lo buscan los administradores de inmuebles",
+  "inspection.why.h2":
+    "Usted y el inquilino coinciden en que la alfombra está manchada. No coinciden en cuándo.",
+  "inspection.why.intro":
+    "Casi toda disputa por un depósito se reduce a una sola pregunta: ¿ese daño ya existía antes de que se mudaran? Normalmente las dos partes tienen fotos. Ninguna de las dos prueba una fecha, porque la marca de tiempo de un teléfono es la hora que al teléfono le dijeron que era. Verifique la hora de captura fuera del teléfono y la discusión deja de ser sobre credibilidad y pasa a ser sobre el registro.",
+  "inspection.how.label": "Cómo funciona",
+  "inspection.how.h2": "Dos recorridos, doce meses de diferencia, un solo registro emparejado.",
+  "inspection.step1.title": "Recorra la unidad al entrar",
+  "inspection.step1.body":
+    "Habitación por habitación, más los medidores y cualquier daño existente. Cada captura lleva una hora verificada contra nuestros servidores, las coordenadas y la dirección resuelta.",
+  "inspection.step2.title": "Asócielo a la unidad",
+  "inspection.step2.body":
+    "Las capturas se archivan en un proyecto de esa dirección, así el conjunto de entrada se mantiene junto en lugar de dispersarse por el carrete durante doce meses.",
+  "inspection.step3.title": "Recórrala de nuevo al salir",
+  "inspection.step3.body":
+    "Las mismas habitaciones en el mismo orden. Empareje cada foto con su equivalente de entrada para que la diferencia — o la ausencia de diferencia — se vea una al lado de la otra.",
+  "inspection.step4.title": "Comparta el registro",
+  "inspection.step4.body":
+    "Envíe al inquilino un enlace o un código de foto. Puede verificar cualquier captura en una página pública, sin cuenta y sin app, y ver las mismas fechas verificadas que usted.",
+  "inspection.deposit.label": "Para el expediente del depósito",
+  "inspection.deposit.h2": "Tres cosas que el carrete del teléfono no le puede dar.",
+  "inspection.deposit1.title": "La fecha es la discusión",
+  "inspection.deposit1.body":
+    "Nadie discute que la pared está rozada. Discuten cuándo pasó. Una hora de captura verificada en nuestros servidores, y no leída del teléfono, es lo que resuelve eso, y es lo único que el carrete no le puede dar.",
+  "inspection.deposit2.title": "Antes y después, emparejados",
+  "inspection.deposit2.body":
+    "Ponga la foto de entrada y la de salida de la misma habitación una al lado de la otra, cada una con su fecha y dirección verificadas, y el reclamo por el estado se explica solo.",
+  "inspection.deposit3.title": "Sellado contra ediciones posteriores",
+  "inspection.deposit3.body":
+    "Cada captura se sella al llegar a nuestros servidores. Si una foto se altera después, la verificación falla — lo que corta para los dos lados, y por eso conviene mostrarle al inquilino la misma página que usa usted.",
+  "inspection.portfolio.label": "En toda la cartera",
+  "inspection.portfolio.h2": "Organizado por unidad, no por el mes en que pasó.",
+  "inspection.portfolio1.title": "Una sola cuenta para toda la cartera",
+  "inspection.portfolio1.body":
+    "Un proyecto por unidad o por edificio, así preparar una unidad en una dirección no obliga a revolver todo lo fotografiado este trimestre.",
+  "inspection.portfolio2.title": "Direcciones resueltas, no escritas a mano",
+  "inspection.portfolio2.body":
+    "Las coordenadas se leen en el momento de la captura y se resuelven a una dirección, así una foto de la unidad 4B no termina archivada en la 4A porque alguien se equivocó al teclear a las once de la noche.",
+  "inspection.portfolio3.title": "Informes de estado que se exportan",
+  "inspection.portfolio3.body":
+    "PDF para el expediente del inquilino o la carta del depósito, Excel para la oficina, ZIP de los originales para un abogado o un árbitro — cada foto impresa con su hora, dirección y código de verificación.",
+  "inspection.team.label": "Para todo el equipo",
+  "inspection.team.h2": "Precio y permisos pensados para una oficina de administración.",
+  "inspection.team1.title": "Inspectores y gerentes con asientos incluidos",
+  "inspection.team1.body":
+    "Agregue al personal de arrendamiento, a los técnicos de mantenimiento y al gerente regional sin pagar por cabeza, así documentar una unidad nunca cuesta más porque la cartera creció.",
+  "inspection.team2.title": "Roles que encajan con la organización",
+  "inspection.team2.body":
+    "El personal de campo captura y ve su propio trabajo, la oficina ve los registros de cada unidad. Nadie necesita acceso de administrador para fotografiar una cocina.",
+  "inspection.team3.title": "Gratis para la próxima unidad",
+  "inspection.team3.body":
+    "300 capturas verificadas al mes sin costo, verificación incluida. Suficiente para varios recorridos de entrada completos antes de decidir nada.",
+  "inspection.faq.label": "Preguntas",
+  "inspection.faq.h2": "Preguntas frecuentes",
+  "inspection.cta.h2": "Documente bien la próxima entrega de unidad",
+  "inspection.cta.body":
+    "Gratis para siempre con 300 capturas verificadas al mes, sin tarjeta. Los planes pagos añaden capturas ilimitadas, Teamspace para la oficina y el conjunto completo de exportaciones.",
+  "inspection.cta.primary": "Descargar la app",
+  "inspection.cta.secondary": "Ver planes y precios",
+  "inspection.related.lead": "Relacionado:",
+  "inspection.related.gps": "cómo funciona la cámara con marca de GPS y hora",
+  "inspection.related.hvac": "documentación de climatización y visitas de servicio",
+  "inspection.related.or": ", o",
+  "inspection.related.pricing": "comparar los planes",
+  "inspection.disclaimer":
+    "Solo documentación — no es un sistema de gestión de contratos de alquiler ni asesoría legal sobre las normas de depósitos, que varían según el estado y la provincia.",
+  "inspection.faq.q1":
+    "¿Por qué no usar simplemente la cámara del teléfono para las fotos de inspección?",
+  "inspection.faq.a1":
+    "Porque una foto de teléfono lleva la fecha que el teléfono afirma, y tanto el reloj como los metadatos de la foto se pueden cambiar en unos quince segundos. En una disputa por un depósito la fecha suele ser el único hecho discutido, así que el dato del que más necesita depender es justo el que el carrete no le da ninguna razón para creer. GeoCliks verifica la hora de captura contra nuestros servidores.",
+  "inspection.faq.q2":
+    "¿Esto se sostiene en una disputa por el depósito o en un juicio de menor cuantía?",
+  "inspection.faq.a2":
+    "Valorar la prueba es tarea de quien juzga y las normas de depósitos cambian según el estado y la provincia, así que nadie puede prometerle honestamente un resultado. Lo que cambia es la calidad de lo que usted presenta: un conjunto de fotos con horas verificadas en el servidor, direcciones resueltas y sellos que delatan cualquier manipulación, que la otra parte puede comprobar por su cuenta en una página pública. Ese registro es materialmente más sólido que una exportación del carrete.",
+  "inspection.faq.q3": "¿El inquilino puede ver y comprobar las fotos?",
+  "inspection.faq.a3":
+    "Sí, y conviene hacerlo. Comparta el conjunto de entrada en el momento de la entrada. El inquilino verifica cualquier captura con su código en una página pública — sin cuenta, sin app — y ve la misma fecha y dirección verificadas que usted. Ponerse de acuerdo sobre el registro al principio es lo que evita la discusión al final.",
+  "inspection.faq.q4": "¿Y si la unidad no tiene señal, o es un sótano?",
+  "inspection.faq.a4":
+    "Las capturas quedan en cola en el teléfono y se sellan al llegar a nuestros servidores, y la hora registrada es el momento de la captura, no el de la subida. El GPS también se lee en el momento de la captura, así que un sótano o un pasillo interior siguen marcando la ubicación del edificio y no el punto donde el teléfono recuperó la señal.",
+  "inspection.faq.q5":
+    "¿Es una herramienta de gestión de alquileres o de listas de verificación de inspección?",
+  "inspection.faq.a5":
+    "No. No hay contrato, ni libro de rentas, ni contabilidad, ni formulario de checklist habitación por habitación que rellenar. GeoCliks es la capa de documentación fotográfica, y está hecho para convivir con el sistema de administración de inmuebles que ya use.",
+  "inspection.faq.q6": "¿Cuánto tiempo se conservan las fotos?",
+  "inspection.faq.a6":
+    "Mientras su espacio de trabajo esté activo — y aquí eso importa, porque una disputa por el depósito puede aparecer un año después de que el inquilino se mudó. Exporte un conjunto completo a PDF, Excel o ZIP cuando quiera tener su propia copia fuera del sistema.",
 };

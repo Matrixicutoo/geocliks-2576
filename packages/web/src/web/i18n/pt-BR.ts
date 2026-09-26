@@ -64,6 +64,9 @@ export const ptBR: Catalog = {
   "seo.hvac.title": "Documentação fotográfica de HVAC e prova de visita",
   "seo.hvac.description":
     "Comprove que o técnico chegou, o estado do equipamento e a conclusão da instalação: hora verificada, GPS e endereço em cada foto do serviço.",
+  "seo.inspection.title": "App de fotos de vistoria — Prova de entrada verificada",
+  "seo.inspection.description":
+    "Fotos de vistoria de entrada e saída com hora verificada, GPS e endereço da unidade, para que a disputa de caução seja decidida pelo registro e não pela palavra de cada um.",
   "signin.subtitle": "Documentação fotográfica à prova de fraudes para equipes de campo.",
   "signin.apple": "Continuar com a Apple",
   "signin.google": "Continuar com o Google",
@@ -1711,4 +1714,93 @@ export const ptBR: Catalog = {
   "hvac.faq.q6": "A GeoCliks faz despacho, orçamento ou faturamento?",
   "hvac.faq.a6":
     "Não. Não é uma plataforma de gestão de serviços de campo e não substitui uma — não há orçamento, faturamento nem agendamento além de atribuir capturas a serviços. Ela cuida da camada de documentação e foi feita para conviver com o que você já usa para rodar os atendimentos.",
+  "inspection.eyebrow": "Fotos de vistoria de imóvel",
+  "inspection.h1": "Fotos de vistoria com uma data que ninguém contesta",
+  "inspection.sub":
+    "Vistorias de entrada e de saída em que cada captura leva hora verificada no servidor, GPS e o endereço da unidade — e o inquilino também pode conferir.",
+  "inspection.why.label": "Por que administradores de imóveis procuram isso",
+  "inspection.why.h2":
+    "Você e o inquilino concordam que o tapete está manchado. Discordam sobre quando.",
+  "inspection.why.intro":
+    "Quase toda disputa de caução se resume a uma única pergunta: esse dano já existia antes de o inquilino entrar? Normalmente as duas partes têm fotos. Nenhuma das duas prova uma data, porque a marca de tempo de um celular é a hora que alguém disse ao celular que era. Verifique a hora da captura fora do celular e a discussão deixa de ser sobre credibilidade e passa a ser sobre o registro.",
+  "inspection.how.label": "Como funciona",
+  "inspection.how.h2": "Duas vistorias, doze meses de intervalo, um registro pareado.",
+  "inspection.step1.title": "Faça a vistoria de entrada",
+  "inspection.step1.body":
+    "Ambiente por ambiente, mais os medidores e qualquer dano já existente. Cada captura leva uma hora verificada contra nossos servidores, as coordenadas e o endereço resolvido.",
+  "inspection.step2.title": "Vincule à unidade",
+  "inspection.step2.body":
+    "As capturas ficam arquivadas em um projeto daquele endereço, então o conjunto de entrada permanece junto em vez de se espalhar pela galeria por doze meses.",
+  "inspection.step3.title": "Refaça a vistoria na saída",
+  "inspection.step3.body":
+    "Os mesmos ambientes na mesma ordem. Pareie cada foto com a equivalente da entrada, para que a diferença — ou a ausência dela — apareça lado a lado.",
+  "inspection.step4.title": "Compartilhe o registro",
+  "inspection.step4.body":
+    "Envie ao inquilino um link ou um código de foto. Ele verifica qualquer captura em uma página pública, sem conta e sem aplicativo, e vê as mesmas datas verificadas que você.",
+  "inspection.deposit.label": "Para o dossiê da caução",
+  "inspection.deposit.h2": "Três coisas que a galeria do celular não dá.",
+  "inspection.deposit1.title": "A data é a discussão",
+  "inspection.deposit1.body":
+    "Ninguém discute que a parede está riscada. Discute-se quando isso aconteceu. Uma hora de captura verificada em nossos servidores, e não lida do celular, é o que resolve isso — e é a única coisa que a galeria não consegue dar.",
+  "inspection.deposit2.title": "Antes e depois, pareados",
+  "inspection.deposit2.body":
+    "Coloque a foto de entrada e a de saída do mesmo ambiente uma ao lado da outra, cada uma com data e endereço verificados, e a alegação sobre o estado se explica sozinha.",
+  "inspection.deposit3.title": "Selado contra edições posteriores",
+  "inspection.deposit3.body":
+    "Cada captura é selada ao chegar aos nossos servidores. Se a foto for alterada depois, a verificação falha — o que vale para os dois lados, e é justamente por isso que convém mostrar ao inquilino a mesma página que você usa.",
+  "inspection.portfolio.label": "Em toda a carteira",
+  "inspection.portfolio.h2": "Organizado por unidade, não pelo mês em que aconteceu.",
+  "inspection.portfolio1.title": "Uma conta para toda a carteira",
+  "inspection.portfolio1.body":
+    "Um projeto por unidade ou por prédio, então preparar uma unidade em um endereço não obriga a garimpar tudo o que foi fotografado neste trimestre.",
+  "inspection.portfolio2.title": "Endereços resolvidos, não digitados",
+  "inspection.portfolio2.body":
+    "As coordenadas são lidas na captura e resolvidas em endereço, então uma foto da unidade 4B não vai para a 4A porque alguém digitou errado às onze da noite.",
+  "inspection.portfolio3.title": "Laudos de estado que exportam",
+  "inspection.portfolio3.body":
+    "PDF para o dossiê do inquilino ou a carta da caução, Excel para o escritório, ZIP dos originais para um advogado ou um árbitro — cada foto impressa com hora, endereço e código de verificação.",
+  "inspection.team.label": "Para a equipe inteira",
+  "inspection.team.h2": "Preço e permissões pensados para um escritório de administração.",
+  "inspection.team1.title": "Vistoriadores e gestores com assentos inclusos",
+  "inspection.team1.body":
+    "Adicione a equipe de locação, os técnicos de manutenção e o gerente regional sem pagar por cabeça, para que documentar uma unidade nunca custe mais porque a carteira cresceu.",
+  "inspection.team2.title": "Papéis que combinam com a estrutura",
+  "inspection.team2.body":
+    "A equipe de campo captura e vê o próprio trabalho; o escritório vê os registros de todas as unidades. Ninguém precisa de acesso de administrador para fotografar uma cozinha.",
+  "inspection.team3.title": "Grátis na próxima unidade",
+  "inspection.team3.body":
+    "300 capturas verificadas por mês sem custo, verificação incluída. Suficiente para várias vistorias de entrada completas antes de decidir qualquer coisa.",
+  "inspection.faq.label": "Dúvidas",
+  "inspection.faq.h2": "Perguntas frequentes",
+  "inspection.cta.h2": "Documente a próxima vistoria do jeito certo",
+  "inspection.cta.body":
+    "Grátis para sempre com 300 capturas verificadas por mês, sem cartão. Os planos pagos incluem capturas ilimitadas, Teamspace para o escritório e o conjunto completo de exportações.",
+  "inspection.cta.primary": "Baixar o app",
+  "inspection.cta.secondary": "Ver planos e preços",
+  "inspection.related.lead": "Relacionado:",
+  "inspection.related.gps": "como funciona a câmera com GPS e data e hora",
+  "inspection.related.hvac": "documentação de climatização e chamados de serviço",
+  "inspection.related.or": ", ou",
+  "inspection.related.pricing": "comparar os planos",
+  "inspection.disclaimer":
+    "Apenas documentação — não é sistema de gestão de contratos de locação nem orientação jurídica sobre regras de caução, que variam por estado e província.",
+  "inspection.faq.q1": "Por que não usar só a câmera do celular nas fotos de vistoria?",
+  "inspection.faq.a1":
+    "Porque a foto de celular carrega a data que o celular afirma, e tanto o relógio quanto os metadados podem ser alterados em cerca de quinze segundos. Em uma disputa de caução a data costuma ser o único fato contestado, ou seja, o número em que você mais precisa confiar é exatamente aquele que a galeria não dá motivo nenhum para acreditar. O GeoCliks verifica a hora da captura contra nossos servidores.",
+  "inspection.faq.q2":
+    "Isso se sustenta em uma disputa de caução ou em um juizado de pequenas causas?",
+  "inspection.faq.a2":
+    "Pesar a prova é tarefa de quem julga e as regras de caução variam por estado e província, então ninguém pode honestamente prometer um resultado. O que muda é a qualidade do que você apresenta: um conjunto de fotos com horas verificadas no servidor, endereços resolvidos e selos que revelam qualquer manipulação, que a outra parte pode conferir por conta própria em uma página pública. É um registro materialmente mais forte do que uma exportação da galeria.",
+  "inspection.faq.q3": "O inquilino consegue ver e conferir as fotos?",
+  "inspection.faq.a3":
+    "Sim, e vale a pena. Compartilhe o conjunto de entrada no momento da entrada. Ele verifica qualquer captura com o código em uma página pública — sem conta, sem app — e vê a mesma data e o mesmo endereço verificados que você. Combinar o registro no começo é o que evita a briga no fim.",
+  "inspection.faq.q4": "E se a unidade não tiver sinal, ou for um subsolo?",
+  "inspection.faq.a4":
+    "As capturas entram na fila no celular e são seladas ao chegar aos nossos servidores, e a hora registrada é o momento da captura, não o do envio. O GPS também é lido na captura, então um subsolo ou um corredor interno ainda marca a localização do prédio, e não o ponto em que o celular recuperou sinal.",
+  "inspection.faq.q5": "É uma ferramenta de gestão de locação ou de checklist de vistoria?",
+  "inspection.faq.a5":
+    "Não. Não há contrato, nem livro de aluguéis, nem contabilidade, nem formulário de checklist ambiente por ambiente para preencher. O GeoCliks é a camada de documentação fotográfica, feita para conviver com o sistema de administração de imóveis que você já usa.",
+  "inspection.faq.q6": "Por quanto tempo as fotos ficam guardadas?",
+  "inspection.faq.a6":
+    "Enquanto seu workspace estiver ativo — e aqui isso importa, porque uma disputa de caução pode aparecer um ano depois da entrada do inquilino. Exporte um conjunto completo em PDF, Excel ou ZIP sempre que quiser sua própria cópia fora do sistema.",
 };

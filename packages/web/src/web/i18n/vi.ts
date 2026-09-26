@@ -63,6 +63,9 @@ export const vi: Catalog = {
   "seo.hvac.title": "Tài liệu ảnh HVAC & bằng chứng lượt bảo trì",
   "seo.hvac.description":
     "Chứng minh thợ đã đến, thiết bị ở tình trạng nào và việc lắp đã xong — giờ xác thực, GPS và địa chỉ trên từng ảnh dịch vụ, khách tự kiểm tra được.",
+  "seo.inspection.title": "Ứng dụng ảnh kiểm tra nhà — bằng chứng nhận nhà đã xác minh",
+  "seo.inspection.description":
+    "Ảnh kiểm tra lúc nhận và trả nhà kèm giờ đã xác minh, GPS và địa chỉ căn hộ, để tranh chấp tiền cọc dựa vào hồ sơ chứ không dựa vào lời ai nói.",
   "signin.subtitle": "Hồ sơ ảnh chống giả mạo cho đội ngũ hiện trường.",
   "signin.apple": "Tiếp tục với Apple",
   "signin.google": "Tiếp tục với Google",
@@ -1694,4 +1697,92 @@ export const vi: Catalog = {
   "hvac.faq.q6": "GeoCliks có làm điều phối, báo giá hay hoá đơn?",
   "hvac.faq.a6":
     "Không. Nó không phải nền tảng quản lý dịch vụ hiện trường và không thay thế một nền tảng như vậy — không báo giá, không hoá đơn và không lên lịch ngoài việc gán ảnh vào công việc. Nó lo lớp ghi nhận, và được làm để chạy song song với thứ bạn đang dùng để điều hành các lượt bảo trì.",
+  "inspection.eyebrow": "Ảnh kiểm tra nhà cho thuê",
+  "inspection.h1": "Ảnh kiểm tra nhà với ngày tháng không ai bắt bẻ được",
+  "inspection.sub":
+    "Đi kiểm tra lúc nhận nhà và lúc trả nhà, mỗi ảnh đều mang giờ được xác minh trên máy chủ, GPS và địa chỉ căn hộ — và người thuê cũng kiểm tra được.",
+  "inspection.why.label": "Vì sao bên quản lý nhà tìm đến việc này",
+  "inspection.why.h2":
+    "Bạn và người thuê đều đồng ý là thảm bị bẩn. Chỉ khác nhau ở chỗ bẩn từ khi nào.",
+  "inspection.why.intro":
+    "Gần như mọi tranh chấp tiền cọc đều gói lại trong một câu hỏi: hỏng hóc này đã có trước khi họ dọn vào chưa? Thường thì cả hai bên đều có ảnh. Không bên nào chứng minh được ngày, vì dấu thời gian trên điện thoại chỉ là giờ mà người ta cài cho điện thoại. Hãy xác minh giờ chụp ở ngoài chiếc điện thoại, và cuộc tranh luận thôi xoay quanh việc ai đáng tin, mà xoay quanh hồ sơ.",
+  "inspection.how.label": "Cách hoạt động",
+  "inspection.how.h2": "Hai lần đi kiểm tra cách nhau mười hai tháng, một bộ hồ sơ ghép đôi.",
+  "inspection.step1.title": "Đi một vòng lúc nhận nhà",
+  "inspection.step1.body":
+    "Từng phòng một, thêm đồng hồ điện nước và mọi hỏng hóc đã có. Mỗi ảnh mang giờ được xác minh với máy chủ của chúng tôi, toạ độ và địa chỉ đường phố đã phân giải.",
+  "inspection.step2.title": "Gắn ảnh vào căn hộ",
+  "inspection.step2.body":
+    "Ảnh được lưu vào một dự án của địa chỉ đó, nên bộ ảnh nhận nhà nằm chung một chỗ thay vì rải rác trong thư viện ảnh suốt mười hai tháng.",
+  "inspection.step3.title": "Đi lại vòng đó lúc trả nhà",
+  "inspection.step3.body":
+    "Vẫn những phòng đó, vẫn thứ tự đó. Ghép mỗi ảnh với ảnh tương ứng lúc nhận nhà, để khác biệt — hoặc việc không có khác biệt — nhìn thấy ngay khi đặt cạnh nhau.",
+  "inspection.step4.title": "Chia sẻ hồ sơ",
+  "inspection.step4.body":
+    "Gửi cho người thuê một đường link hoặc mã ảnh. Họ xác minh được bất kỳ ảnh nào trên trang công khai, không cần tài khoản, không cần ứng dụng, và thấy đúng những ngày đã xác minh mà bạn thấy.",
+  "inspection.deposit.label": "Cho hồ sơ tiền cọc",
+  "inspection.deposit.h2": "Ba thứ thư viện ảnh điện thoại không cho bạn được.",
+  "inspection.deposit1.title": "Ngày tháng chính là điểm tranh chấp",
+  "inspection.deposit1.body":
+    "Không ai phủ nhận bức tường bị xước. Người ta tranh nhau chuyện nó xước khi nào. Giờ chụp được xác minh trên máy chủ của chúng tôi, chứ không phải đọc từ điện thoại, mới giải quyết được chuyện đó — và đó đúng là thứ thư viện ảnh không thể cho bạn.",
+  "inspection.deposit2.title": "Trước và sau, ghép thành đôi",
+  "inspection.deposit2.body":
+    "Đặt ảnh nhận nhà và ảnh trả nhà của cùng một phòng cạnh nhau, mỗi ảnh có ngày và địa chỉ đã xác minh riêng, thì khẳng định về tình trạng căn hộ tự nó đã rõ.",
+  "inspection.deposit3.title": "Niêm phong chống sửa về sau",
+  "inspection.deposit3.body":
+    "Mỗi ảnh được niêm phong khi về tới máy chủ của chúng tôi. Nếu sau đó ảnh bị chỉnh, việc xác minh sẽ thất bại — điều này đúng cho cả hai phía, và đó chính là lý do nên cho người thuê xem đúng trang mà bạn dùng.",
+  "inspection.portfolio.label": "Trên toàn bộ danh mục nhà",
+  "inspection.portfolio.h2": "Sắp theo căn hộ, không phải theo tháng xảy ra.",
+  "inspection.portfolio1.title": "Một tài khoản cho cả danh mục",
+  "inspection.portfolio1.body":
+    "Một dự án cho mỗi căn hoặc mỗi toà nhà, nên lo bàn giao ở một địa chỉ không có nghĩa là phải đào lại tất cả những gì đã chụp trong quý này.",
+  "inspection.portfolio2.title": "Địa chỉ được phân giải, không phải gõ tay",
+  "inspection.portfolio2.body":
+    "Toạ độ được đọc lúc chụp rồi phân giải thành địa chỉ đường phố, nên ảnh của căn 4B không bị xếp vào căn 4A vì ai đó gõ sai lúc mười một giờ đêm.",
+  "inspection.portfolio3.title": "Biên bản tình trạng xuất được ra file",
+  "inspection.portfolio3.body":
+    "PDF cho hồ sơ người thuê hoặc thư về tiền cọc, Excel cho văn phòng, ZIP ảnh gốc cho luật sư hay trọng tài viên — mỗi ảnh in kèm giờ, địa chỉ và mã xác minh.",
+  "inspection.team.label": "Cho cả đội",
+  "inspection.team.h2": "Giá và quyền hạn đặt theo một văn phòng quản lý nhà.",
+  "inspection.team1.title": "Người kiểm tra và quản lý dùng chỗ có sẵn",
+  "inspection.team1.body":
+    "Thêm nhân viên cho thuê, thợ bảo trì và quản lý vùng mà không trả theo đầu người, nên ghi hồ sơ một lần bàn giao không bao giờ đắt hơn chỉ vì danh mục nhà nhiều lên.",
+  "inspection.team2.title": "Vai trò khớp với bộ máy",
+  "inspection.team2.body":
+    "Người ngoài hiện trường chụp và xem việc của mình, văn phòng xem hồ sơ của mọi căn hộ. Không ai cần quyền admin để chụp một cái bếp.",
+  "inspection.team3.title": "Miễn phí cho lần bàn giao tới",
+  "inspection.team3.body":
+    "300 ảnh đã xác minh mỗi tháng, miễn phí, gồm cả phần xác minh. Đủ cho vài lượt đi kiểm tra nhận nhà đầy đủ trước khi bạn quyết định gì.",
+  "inspection.faq.label": "Câu hỏi",
+  "inspection.faq.h2": "Câu hỏi thường gặp",
+  "inspection.cta.h2": "Ghi hồ sơ lần bàn giao tới cho đúng cách",
+  "inspection.cta.body":
+    "Miễn phí mãi mãi với 300 ảnh đã xác minh mỗi tháng, không cần thẻ. Gói trả phí thêm số ảnh không giới hạn, Teamspace cho văn phòng và toàn bộ các kiểu xuất file.",
+  "inspection.cta.primary": "Tải ứng dụng",
+  "inspection.cta.secondary": "Xem gói và giá",
+  "inspection.related.lead": "Liên quan:",
+  "inspection.related.gps": "camera đóng dấu GPS và thời gian hoạt động thế nào",
+  "inspection.related.hvac": "hồ sơ ảnh HVAC và lượt bảo trì",
+  "inspection.related.or": ", hoặc",
+  "inspection.related.pricing": "so sánh các gói",
+  "inspection.disclaimer":
+    "Chỉ là hồ sơ ảnh — không phải hệ thống quản lý hợp đồng thuê, cũng không phải tư vấn pháp lý về quy định tiền cọc, thứ khác nhau theo từng bang và từng tỉnh.",
+  "inspection.faq.q1": "Sao không dùng luôn camera điện thoại cho ảnh kiểm tra nhà?",
+  "inspection.faq.a1":
+    "Vì ảnh điện thoại mang cái ngày mà điện thoại tự khai, còn đồng hồ máy và metadata ảnh đều sửa được trong khoảng mười lăm giây. Trong tranh chấp tiền cọc, ngày thường là dữ kiện duy nhất bị tranh, nghĩa là con số bạn cần dựa vào nhất lại chính là con số mà thư viện ảnh không cho bạn lý do nào để tin. GeoCliks thay vào đó xác minh giờ chụp với máy chủ của chúng tôi.",
+  "inspection.faq.q2": "Cái này có đứng vững trong tranh chấp tiền cọc hay ở toà án nhỏ không?",
+  "inspection.faq.a2":
+    "Cân nhắc chứng cứ là việc của người phân xử, quy định tiền cọc lại khác nhau theo bang và theo tỉnh, nên không ai hứa thật lòng cho bạn một kết quả được. Điều thay đổi là chất lượng thứ bạn mang tới: một bộ ảnh có giờ xác minh trên máy chủ, địa chỉ đã phân giải và niêm phong lộ dấu can thiệp, mà bên kia tự kiểm tra được trên trang công khai. Đó là hồ sơ vững hơn hẳn so với ảnh xuất từ thư viện điện thoại.",
+  "inspection.faq.q3": "Người thuê có xem và kiểm tra ảnh được không?",
+  "inspection.faq.a3":
+    "Được, và nên làm vậy. Hãy chia sẻ bộ ảnh nhận nhà ngay lúc nhận nhà. Họ xác minh bất kỳ ảnh nào bằng mã trên trang công khai — không tài khoản, không ứng dụng — và thấy đúng ngày và địa chỉ đã xác minh mà bạn thấy. Thống nhất hồ sơ ngay từ đầu chính là thứ chặn cuộc tranh cãi ở cuối.",
+  "inspection.faq.q4": "Nếu căn hộ không có tín hiệu, hoặc là tầng hầm thì sao?",
+  "inspection.faq.a4":
+    "Ảnh xếp hàng trên điện thoại và được niêm phong khi về tới máy chủ của chúng tôi, còn giờ ghi lại là lúc chụp, không phải lúc tải lên. GPS cũng được đọc lúc chụp, nên tầng hầm hay hành lang bên trong vẫn đóng dấu vị trí của toà nhà, chứ không phải nơi điện thoại có lại tín hiệu.",
+  "inspection.faq.q5": "Đây có phải công cụ quản lý hợp đồng thuê hay danh mục kiểm tra không?",
+  "inspection.faq.a5":
+    "Không. Không có hợp đồng thuê, không sổ tiền thuê, không kế toán và không có mẫu danh mục kiểm tra từng phòng để điền. GeoCliks là lớp hồ sơ ảnh, và được làm để chạy song song với hệ thống quản lý bất động sản bạn đang dùng.",
+  "inspection.faq.q6": "Ảnh được giữ trong bao lâu?",
+  "inspection.faq.a6":
+    "Chừng nào workspace của bạn còn hoạt động — điều này quan trọng ở đây, vì tranh chấp tiền cọc có thể nổi lên một năm sau khi người thuê dọn vào. Xuất cả bộ ra PDF, Excel hay ZIP bất cứ lúc nào bạn muốn có bản của riêng mình ngoài hệ thống.",
 };

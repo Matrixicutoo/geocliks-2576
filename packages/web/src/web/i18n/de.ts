@@ -63,6 +63,9 @@ export const de: Catalog = {
   "seo.hvac.title": "HLK-Fotodokumentation & Nachweis des Serviceeinsatzes",
   "seo.hvac.description":
     "Belegen Sie, dass der Techniker da war, in welchem Zustand die Anlage war und dass der Einbau fertig ist: geprüfte Zeit, GPS und Adresse pro Foto.",
+  "seo.inspection.title": "App für Übergabefotos — geprüfter Einzugsnachweis",
+  "seo.inspection.description":
+    "Einzugs- und Auszugsfotos mit geprüfter Uhrzeit, GPS und Wohnungsadresse, damit der Kautionsstreit an der Aktenlage hängt und nicht an Aussage gegen Aussage.",
   "signin.subtitle": "Fälschungssichere Fotodokumentation für Außendienstteams.",
   "signin.apple": "Mit Apple fortfahren",
   "signin.google": "Mit Google fortfahren",
@@ -1730,4 +1733,92 @@ export const de: Catalog = {
   "hvac.faq.q6": "Macht GeoCliks Einsatzsteuerung, Angebote oder Rechnungen?",
   "hvac.faq.a6":
     "Nein. Es ist keine Field-Service-Management-Plattform und ersetzt keine — keine Angebote, keine Rechnungen und keine Planung über das Zuordnen von Aufnahmen zu Aufträgen hinaus. Es übernimmt die Dokumentationsschicht und ist dafür gebaut, neben dem zu laufen, womit Sie die Einsätze schon steuern.",
+  "inspection.eyebrow": "Fotos für die Wohnungsübergabe",
+  "inspection.h1": "Übergabefotos mit einem Datum, das niemand bestreiten kann",
+  "inspection.sub":
+    "Einzugs- und Auszugsbegehungen, bei denen jede Aufnahme eine serverseitig geprüfte Uhrzeit, GPS und die Wohnungsadresse trägt — und der Mieter kann sie ebenfalls prüfen.",
+  "inspection.why.label": "Warum Verwalter danach suchen",
+  "inspection.why.h2":
+    "Sie und der Mieter sind sich einig, dass der Teppich Flecken hat. Uneinig sind Sie beim Wann.",
+  "inspection.why.intro":
+    "Fast jeder Streit um die Kaution hängt an einer einzigen Frage: War dieser Schaden schon vor dem Einzug da? Meist haben beide Seiten Fotos. Keine der beiden Serien belegt ein Datum, denn der Zeitstempel eines Handys ist genau die Zeit, die man dem Handy gesagt hat. Prüfen Sie die Aufnahmezeit außerhalb des Geräts, und der Streit dreht sich nicht mehr um Glaubwürdigkeit, sondern um die Aktenlage.",
+  "inspection.how.label": "So funktioniert es",
+  "inspection.how.h2": "Zwei Begehungen, zwölf Monate auseinander, ein zusammengeführter Nachweis.",
+  "inspection.step1.title": "Beim Einzug durch die Wohnung gehen",
+  "inspection.step1.body":
+    "Raum für Raum, dazu die Zählerstände und alle vorhandenen Schäden. Jede Aufnahme trägt eine gegen unsere Server geprüfte Uhrzeit, die Koordinaten und die aufgelöste Straßenadresse.",
+  "inspection.step2.title": "Der Wohnung zuordnen",
+  "inspection.step2.body":
+    "Aufnahmen werden in einem Projekt für diese Adresse abgelegt, sodass die Einzugsserie zusammenbleibt und sich nicht zwölf Monate lang in der Galerie verstreut.",
+  "inspection.step3.title": "Beim Auszug erneut begehen",
+  "inspection.step3.body":
+    "Dieselben Räume in derselben Reihenfolge. Stellen Sie jede Aufnahme ihrem Gegenstück vom Einzug gegenüber, damit der Unterschied — oder das Fehlen eines Unterschieds — direkt nebeneinander sichtbar ist.",
+  "inspection.step4.title": "Den Nachweis teilen",
+  "inspection.step4.body":
+    "Schicken Sie dem Mieter einen Link oder einen Fotocode. Er kann jede Aufnahme auf einer öffentlichen Seite prüfen, ohne Konto und ohne App, und sieht dieselben geprüften Daten wie Sie.",
+  "inspection.deposit.label": "Für die Kautionsakte",
+  "inspection.deposit.h2": "Drei Dinge, die die Handygalerie nicht liefert.",
+  "inspection.deposit1.title": "Das Datum ist der Streitpunkt",
+  "inspection.deposit1.body":
+    "Niemand bestreitet, dass die Wand Schrammen hat. Bestritten wird, wann das passiert ist. Eine auf unseren Servern geprüfte Aufnahmezeit statt einer vom Handy abgelesenen klärt genau das — und ist das Einzige, was die Galerie nicht liefern kann.",
+  "inspection.deposit2.title": "Vorher und nachher, zugeordnet",
+  "inspection.deposit2.body":
+    "Legen Sie die Einzugs- und die Auszugsaufnahme desselben Raums nebeneinander, jede mit eigenem geprüftem Datum und eigener Adresse, und die Behauptung über den Zustand erklärt sich selbst.",
+  "inspection.deposit3.title": "Gegen späteres Bearbeiten versiegelt",
+  "inspection.deposit3.body":
+    "Jede Aufnahme wird versiegelt, sobald sie unsere Server erreicht. Wird ein Foto danach verändert, scheitert die Prüfung — das gilt in beide Richtungen, und genau darum zeigt man dem Mieter dieselbe Seite, die man selbst nutzt.",
+  "inspection.portfolio.label": "Über den ganzen Bestand",
+  "inspection.portfolio.h2": "Nach Wohnung geordnet, nicht nach Monat.",
+  "inspection.portfolio1.title": "Ein Konto für den gesamten Bestand",
+  "inspection.portfolio1.body":
+    "Ein Projekt pro Wohnung oder pro Haus, damit eine Übergabe an einer Adresse nicht bedeutet, alles zu durchsuchen, was in diesem Quartal fotografiert wurde.",
+  "inspection.portfolio2.title": "Adressen aufgelöst, nicht getippt",
+  "inspection.portfolio2.body":
+    "Die Koordinaten werden bei der Aufnahme gelesen und zu einer Straßenadresse aufgelöst, damit ein Foto aus Wohnung 4B nicht unter 4A landet, weil sich nachts um elf jemand vertippt hat.",
+  "inspection.portfolio3.title": "Zustandsberichte, die sich exportieren lassen",
+  "inspection.portfolio3.body":
+    "PDF für die Mieterakte oder das Kautionsschreiben, Excel fürs Büro, ZIP der Originale für Anwalt oder Schlichter — jedes Foto mit Uhrzeit, Adresse und Prüfcode ausgegeben.",
+  "inspection.team.label": "Für das ganze Team",
+  "inspection.team.h2": "Preise und Rechte für ein Verwaltungsbüro gedacht.",
+  "inspection.team1.title": "Begeher und Verwalter mit inkludierten Plätzen",
+  "inspection.team1.body":
+    "Nehmen Sie Vermietung, Haustechnik und Regionalleitung dazu, ohne pro Kopf zu zahlen, damit die Dokumentation einer Übergabe nie teurer wird, nur weil der Bestand gewachsen ist.",
+  "inspection.team2.title": "Rollen, die zur Organisation passen",
+  "inspection.team2.body":
+    "Außendienst fotografiert und sieht die eigene Arbeit, das Büro sieht die Nachweise jeder Wohnung. Niemand braucht Admin-Rechte, um eine Küche zu fotografieren.",
+  "inspection.team3.title": "Für die nächste Übergabe kostenlos",
+  "inspection.team3.body":
+    "300 geprüfte Aufnahmen pro Monat kostenlos, Verifizierung inklusive. Genug für mehrere vollständige Einzugsbegehungen, bevor Sie irgendetwas entscheiden.",
+  "inspection.faq.label": "Fragen",
+  "inspection.faq.h2": "Häufige Fragen",
+  "inspection.cta.h2": "Die nächste Übergabe richtig dokumentieren",
+  "inspection.cta.body":
+    "Dauerhaft kostenlos für 300 geprüfte Aufnahmen pro Monat, ohne Karte. Bezahlte Tarife bringen unbegrenzte Aufnahmen, Teamspace fürs Büro und den vollen Satz an Exporten.",
+  "inspection.cta.primary": "App holen",
+  "inspection.cta.secondary": "Tarife und Preise ansehen",
+  "inspection.related.lead": "Passend dazu:",
+  "inspection.related.gps": "wie die GPS-Zeitstempel-Kamera funktioniert",
+  "inspection.related.hvac": "Dokumentation von Klima- und Serviceeinsätzen",
+  "inspection.related.or": ", oder",
+  "inspection.related.pricing": "die Tarife vergleichen",
+  "inspection.disclaimer":
+    "Nur Dokumentation — kein System zur Mietvertragsverwaltung und keine Rechtsberatung zu Kautionsregeln, die sich je nach Bundesstaat und Provinz unterscheiden.",
+  "inspection.faq.q1": "Warum nicht einfach die Handykamera für die Übergabefotos nehmen?",
+  "inspection.faq.a1":
+    "Weil ein Handyfoto das Datum trägt, das das Handy behauptet, und sowohl die Uhr als auch die Metadaten lassen sich in etwa fünfzehn Sekunden ändern. Beim Kautionsstreit ist das Datum meist der einzige umstrittene Punkt — die Angabe, auf die Sie sich am meisten verlassen müssen, ist also genau die, der die Galerie keinen Grund zum Vertrauen gibt. GeoCliks prüft die Aufnahmezeit stattdessen gegen unsere Server.",
+  "inspection.faq.q2": "Hält das im Kautionsstreit oder vor Gericht stand?",
+  "inspection.faq.a2":
+    "Beweise zu würdigen ist Sache der entscheidenden Stelle, und Kautionsregeln unterscheiden sich je nach Bundesstaat und Provinz — ein Ergebnis kann Ihnen also niemand ehrlich versprechen. Was sich ändert, ist die Qualität dessen, was Sie vorlegen: eine Fotoserie mit serverseitig geprüften Zeiten, aufgelösten Adressen und manipulationssicheren Siegeln, die die Gegenseite selbst auf einer öffentlichen Seite prüfen kann. Das ist ein deutlich belastbarerer Nachweis als ein Galerie-Export.",
+  "inspection.faq.q3": "Kann der Mieter die Fotos sehen und prüfen?",
+  "inspection.faq.a3":
+    "Ja, und es lohnt sich. Teilen Sie die Einzugsserie direkt beim Einzug. Der Mieter prüft jede Aufnahme mit ihrem Code auf einer öffentlichen Seite — ohne Konto, ohne App — und sieht dasselbe geprüfte Datum und dieselbe Adresse wie Sie. Sich am Anfang über den Nachweis zu einigen, verhindert den Streit am Ende.",
+  "inspection.faq.q4": "Was, wenn die Wohnung keinen Empfang hat oder im Keller liegt?",
+  "inspection.faq.a4":
+    "Aufnahmen werden auf dem Handy in eine Warteschlange gestellt und versiegelt, sobald sie unsere Server erreichen; festgehalten wird der Moment der Aufnahme, nicht der des Uploads. Auch GPS wird bei der Aufnahme gelesen, sodass ein Keller oder ein Innengang weiterhin den Standort des Gebäudes stempelt und nicht die Stelle, an der das Handy wieder Empfang hatte.",
+  "inspection.faq.q5": "Ist das ein Werkzeug für Mietverwaltung oder Übergabe-Checklisten?",
+  "inspection.faq.a5":
+    "Nein. Kein Mietvertrag, kein Mietkonto, keine Buchhaltung und kein Checklistenformular, das Raum für Raum auszufüllen ist. GeoCliks ist die Ebene der Fotodokumentation und dafür gebaut, neben der Hausverwaltungssoftware zu laufen, die Sie schon nutzen.",
+  "inspection.faq.q6": "Wie lange werden die Fotos aufbewahrt?",
+  "inspection.faq.a6":
+    "Solange Ihr Workspace aktiv ist — und das zählt hier, weil ein Kautionsstreit noch ein Jahr nach dem Einzug auftauchen kann. Exportieren Sie eine vollständige Serie jederzeit als PDF, Excel oder ZIP, wenn Sie eine eigene Kopie außerhalb des Systems wollen.",
 };

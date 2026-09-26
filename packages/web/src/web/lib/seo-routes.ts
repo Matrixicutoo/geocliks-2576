@@ -196,6 +196,10 @@ export const LOCALIZED_SEO: Record<string, { title: TKey; description: TKey }> =
   "/proof-of-delivery": { title: "seo.pod.title", description: "seo.pod.description" },
   "/gps-timestamp-camera": { title: "seo.gps.title", description: "seo.gps.description" },
   "/hvac-photo-documentation": { title: "seo.hvac.title", description: "seo.hvac.description" },
+  "/property-inspection-photos": {
+    title: "seo.inspection.title",
+    description: "seo.inspection.description",
+  },
 };
 
 /**

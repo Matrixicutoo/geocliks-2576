@@ -72,6 +72,9 @@ export const en = {
   "seo.hvac.title": "HVAC Photo Documentation & Service Call Proof",
   "seo.hvac.description":
     "Prove the technician arrived, what the equipment looked like, and that the install was finished — verified time, GPS and address on every service photo.",
+  "seo.inspection.title": "Property Inspection Photo App — Verified Move-In Proof",
+  "seo.inspection.description":
+    "Move-in and move-out inspection photos with verified time, GPS and unit address, so a deposit dispute turns on the record instead of on whose word it is.",
   "signin.subtitle": "Tamper-proof photo documentation for field teams.",
   "signin.apple": "Continue with Apple",
   "signin.google": "Continue with Google",
@@ -1711,6 +1714,93 @@ export const en = {
   "hvac.faq.q6": "Does GeoCliks do dispatch, quoting or invoicing?",
   "hvac.faq.a6":
     "No. It is not a field service management platform and does not replace one — there is no quoting, no invoicing and no scheduling beyond assigning captures to jobs. It handles the documentation layer, and it is built to sit alongside whatever you already use to run the calls.",
+  "inspection.eyebrow": "Property inspection photos",
+  "inspection.h1": "Property Inspection Photos With a Date Nobody Can Argue With",
+  "inspection.sub":
+    "Move-in and move-out walkthroughs where every capture carries a server-verified time, GPS and unit address — and the tenant can check them too.",
+  "inspection.why.label": "Why property managers look for this",
+  "inspection.why.h2": "You and the tenant agree the carpet is stained. You disagree about when.",
+  "inspection.why.intro":
+    "Almost every deposit dispute comes down to a single question: did this condition exist before they moved in? Both sides usually have photos. Neither set proves a date, because a phone's timestamp is whatever the phone was told the time was. Verify the capture time somewhere outside the phone and the argument stops being about credibility and starts being about the record.",
+  "inspection.how.label": "How it works",
+  "inspection.how.h2": "Two walkthroughs, twelve months apart, one paired record.",
+  "inspection.step1.title": "Walk the unit at move-in",
+  "inspection.step1.body":
+    "Room by room, plus the meters and any existing damage. Every capture carries a time verified against our servers, the coordinates and the resolved street address.",
+  "inspection.step2.title": "Attach it to the unit",
+  "inspection.step2.body":
+    "Captures file against a project for that address, so the move-in set stays together instead of scattering through a camera roll for twelve months.",
+  "inspection.step3.title": "Walk it again at move-out",
+  "inspection.step3.body":
+    "The same rooms in the same order. Pair each shot against its move-in counterpart so the difference — or the absence of one — is visible side by side.",
+  "inspection.step4.title": "Share the record",
+  "inspection.step4.body":
+    "Send the tenant a link or a photo code. They can verify any capture on a public page, with no account and no app, and see the same verified dates you do.",
+  "inspection.deposit.label": "For the deposit file",
+  "inspection.deposit.h2": "Three things a camera roll cannot give you.",
+  "inspection.deposit1.title": "The date is the argument",
+  "inspection.deposit1.body":
+    "Nobody disputes that the wall is scuffed. They dispute when it happened. A capture time verified on our servers rather than read off a phone is what settles that, and it is the one thing a camera roll cannot give you.",
+  "inspection.deposit2.title": "Before and after, paired",
+  "inspection.deposit2.body":
+    "Put the move-in and move-out shot of the same room next to each other, each with its own verified date and address, and the condition claim explains itself.",
+  "inspection.deposit3.title": "Sealed against later edits",
+  "inspection.deposit3.body":
+    "Each capture is sealed when it reaches our servers. If a photo is altered afterwards, verification fails — which cuts both ways, and that is the point of showing the tenant the same page you use.",
+  "inspection.portfolio.label": "Across the portfolio",
+  "inspection.portfolio.h2": "Organised by unit, not by the month it happened.",
+  "inspection.portfolio1.title": "One account across the portfolio",
+  "inspection.portfolio1.body":
+    "A project per unit or per building, so a turn at one address does not mean digging through everything photographed this quarter.",
+  "inspection.portfolio2.title": "Addresses resolved, not typed",
+  "inspection.portfolio2.body":
+    "Coordinates are read at capture and resolved to a street address, so a photo from unit 4B is not filed under unit 4A because somebody mistyped it at eleven at night.",
+  "inspection.portfolio3.title": "Condition reports that export",
+  "inspection.portfolio3.body":
+    "PDF for the tenant file or the deposit letter, Excel for the office, ZIP of the originals for an attorney or an arbitrator — each photo printed with its time, address and verification code.",
+  "inspection.team.label": "For the whole team",
+  "inspection.team.h2": "Priced and permissioned for a management office.",
+  "inspection.team1.title": "Inspectors and managers on flat seats",
+  "inspection.team1.body":
+    "Add the leasing staff, the maintenance techs and the regional manager without paying per head, so documenting a turn never costs more because the portfolio grew.",
+  "inspection.team2.title": "Roles that match the org",
+  "inspection.team2.body":
+    "Field staff capture and see their own work, the office sees the records for every unit. Nobody needs admin access to photograph a kitchen.",
+  "inspection.team3.title": "Free for the next turn",
+  "inspection.team3.body":
+    "300 verified captures a month at no cost, verification included. Enough for several full move-in walkthroughs before you decide anything.",
+  "inspection.faq.label": "Questions",
+  "inspection.faq.h2": "Frequently asked",
+  "inspection.cta.h2": "Document the next turn properly",
+  "inspection.cta.body":
+    "Free forever for 300 verified captures a month, no card. Paid plans add unlimited captures, Teamspace for the office and the full set of exports.",
+  "inspection.cta.primary": "Get the app",
+  "inspection.cta.secondary": "See plans and pricing",
+  "inspection.related.lead": "Related:",
+  "inspection.related.gps": "how the GPS timestamp camera works",
+  "inspection.related.hvac": "HVAC and service call documentation",
+  "inspection.related.or": ", or",
+  "inspection.related.pricing": "compare the plans",
+  "inspection.disclaimer":
+    "Documentation only — not a lease management system, and not legal advice on deposit rules, which vary by state and province.",
+  "inspection.faq.q1": "Why not just use the phone camera for inspection photos?",
+  "inspection.faq.a1":
+    "Because a phone photo carries the date the phone claims, and a phone's clock and photo metadata can both be changed in about fifteen seconds. In a deposit dispute the date is usually the only contested fact, so the one number you most need to rely on is the one a camera roll gives you no reason to trust. GeoCliks verifies capture time against our servers instead.",
+  "inspection.faq.q2": "Will this hold up in a deposit dispute or at small claims?",
+  "inspection.faq.a2":
+    "Weighing evidence is the adjudicator's job and deposit rules differ by state and province, so nobody can honestly promise you an outcome. What changes is the quality of what you bring: a set of photos with server-verified times, resolved addresses and tamper-evident seals, which the other side can check themselves on a public page. That is a materially stronger record than an export from a camera roll.",
+  "inspection.faq.q3": "Can the tenant see and check the photos?",
+  "inspection.faq.a3":
+    "Yes, and it is worth doing. Share the move-in set at move-in. They verify any capture with its code on a public page — no account, no app — and see the same verified date and address you do. Agreeing on the record at the start is what stops the argument at the end.",
+  "inspection.faq.q4": "What if the unit has no signal, or it's a basement?",
+  "inspection.faq.a4":
+    "Captures queue on the phone and seal when they reach our servers, and the time recorded is the moment of capture, not the moment of upload. GPS is read at capture too, so a basement or an interior corridor still stamps the building's location rather than wherever the phone got signal back.",
+  "inspection.faq.q5": "Is this a lease management or inspection-checklist tool?",
+  "inspection.faq.a5":
+    "No. There is no lease, no rent ledger, no accounting and no room-by-room checklist form to fill in. GeoCliks is the photo documentation layer, and it is built to sit alongside whichever property management system you already run.",
+  "inspection.faq.q6": "How long are the photos kept?",
+  "inspection.faq.a6":
+    "For as long as your workspace is active — which matters here, because a deposit dispute can surface a year after the tenant moved in. Export a full set to PDF, Excel or ZIP whenever you want your own copy outside the system.",
 } as const;
 
 export type Catalog = Record<keyof typeof en, string>;

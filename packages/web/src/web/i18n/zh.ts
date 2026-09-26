@@ -63,6 +63,9 @@ export const zh: Catalog = {
   "seo.hvac.title": "暖通空调照片记录与上门服务凭证",
   "seo.hvac.description":
     "证明技师已到场、设备原本状况以及安装已完工——每张服务照片都带有校验时间、GPS 和街道地址，付款方可自行核验。",
+  "seo.inspection.title": "房屋验收照片应用 — 可核验的入住凭证",
+  "seo.inspection.description":
+    "入住与退租验收照片，带有核验时间、GPS 和房号地址，让押金争议靠记录说话，而不是靠谁的说法。",
   "signin.subtitle": "为现场团队提供防篡改的照片记录。",
   "signin.apple": "使用 Apple 继续",
   "signin.google": "使用 Google 继续",
@@ -1608,4 +1611,91 @@ export const zh: Catalog = {
   "hvac.faq.q6": "GeoCliks 提供派工、报价或开票吗？",
   "hvac.faq.a6":
     "不提供。它不是现场服务管理平台，也不替代一个——没有报价、没有开票，除了把照片归到工单之外也没有排程。它负责的是记录留证这一层，设计上是与你现有的上门管理工具并行使用。",
+  "inspection.eyebrow": "房屋验收照片",
+  "inspection.h1": "带着无人能争辩的日期的房屋验收照片",
+  "inspection.sub":
+    "入住和退租的逐间拍摄，每张照片都带有服务器核验的时间、GPS 和房号地址——租客也能自己核验。",
+  "inspection.why.label": "物业管理方为什么找这个",
+  "inspection.why.h2": "你和租客都同意地毯脏了，分歧在于什么时候脏的。",
+  "inspection.why.intro":
+    "几乎每一起押金争议都归结为一个问题：租客入住之前这个问题就存在吗？通常双方都有照片，但两边都证明不了日期，因为手机上的时间戳只是别人告给手机的时间。把拍摄时间放到手机之外去核验，争论就不再是谁更可信，而是记录本身怎么说。",
+  "inspection.how.label": "怎么用",
+  "inspection.how.h2": "相隔十二个月的两次拍摄，一份成对的记录。",
+  "inspection.step1.title": "入住时走一遍房屋",
+  "inspection.step1.body":
+    "一间一间拍，再加上水电表和所有已有损坏。每张照片都带有对我们服务器核验过的时间、坐标和解析出的街道地址。",
+  "inspection.step2.title": "归到这套房下面",
+  "inspection.step2.body":
+    "照片归档到该地址的项目里，入住那组照片会整组留在一起，而不是在相册里散落十二个月。",
+  "inspection.step3.title": "退租时再走一遍",
+  "inspection.step3.body":
+    "同样的房间，同样的顺序。把每张照片和入住时的对应照片配成一对，差异——或者没有差异——就能并排看出来。",
+  "inspection.step4.title": "把记录分享出去",
+  "inspection.step4.body":
+    "给租客发一个链接或照片编码。无需账号、无需下载应用，他就能在公开页面上核验任意一张照片，看到和你一样的核验日期。",
+  "inspection.deposit.label": "为押金卷宗准备",
+  "inspection.deposit.h2": "手机相册给不了的三件事。",
+  "inspection.deposit1.title": "日期就是争议本身",
+  "inspection.deposit1.body":
+    "没人否认墙面被刮花了，大家争的是什么时候刮的。在我们服务器上核验过的拍摄时间——而不是从手机读出来的时间——才能把这件事定下来，这也正是相册给不了的东西。",
+  "inspection.deposit2.title": "前后照片，一一对应",
+  "inspection.deposit2.body":
+    "把同一个房间的入住照和退租照并排放好，各带自己核验过的日期和地址，关于房屋状况的主张就不用再解释了。",
+  "inspection.deposit3.title": "封存后无法再改",
+  "inspection.deposit3.body":
+    "每张照片到达我们服务器时就被封存。之后若被改动，核验就会失败——这对双方同样有效，也正因为这样，才值得把你自己用的那个页面拿给租客看。",
+  "inspection.portfolio.label": "整个资产组合",
+  "inspection.portfolio.h2": "按房号归档，而不是按发生的月份。",
+  "inspection.portfolio1.title": "一个账号管所有房产",
+  "inspection.portfolio1.body":
+    "每套房或每栋楼一个项目，处理一处地址的交接时，不用把本季度拍过的所有东西翻一遍。",
+  "inspection.portfolio2.title": "地址是解析出来的，不是手打的",
+  "inspection.portfolio2.body":
+    "坐标在拍摄瞬间读取并解析成街道地址，不会因为有人晚上十一点打错字，就把 4B 室的照片归到 4A 室。",
+  "inspection.portfolio3.title": "可导出的房屋状况报告",
+  "inspection.portfolio3.body":
+    "PDF 给租客卷宗或押金函，Excel 给办公室，原图 ZIP 给律师或仲裁人——每张照片都带有时间、地址和核验码。",
+  "inspection.team.label": "给整个团队",
+  "inspection.team.h2": "定价和权限是按管理办公室设计的。",
+  "inspection.team1.title": "验房人员和管理者按固定席位",
+  "inspection.team1.body":
+    "把租赁人员、维修技师和区域经理都加进来，不按人头收费，房产变多了，记录一次交接也不会更贵。",
+  "inspection.team2.title": "与组织结构匹配的角色",
+  "inspection.team2.body":
+    "现场人员负责拍摄并查看自己的工作，办公室能看到每套房的记录。拍一张厨房的照片，不需要管理员权限。",
+  "inspection.team3.title": "下一次交接免费用",
+  "inspection.team3.body":
+    "每月 300 张核验照片免费，含核验服务。足够在做任何决定之前，完整走完好几次入住验收。",
+  "inspection.faq.label": "问题",
+  "inspection.faq.h2": "常见问题",
+  "inspection.cta.h2": "把下一次交接好好记录下来",
+  "inspection.cta.body":
+    "每月 300 张核验照片永久免费，无需银行卡。付费方案提供无限拍摄、办公室用的 Teamspace 和完整的导出功能。",
+  "inspection.cta.primary": "获取应用",
+  "inspection.cta.secondary": "查看方案与价格",
+  "inspection.related.lead": "相关内容：",
+  "inspection.related.gps": "GPS 时间戳相机是怎么工作的",
+  "inspection.related.hvac": "暖通空调与上门服务记录",
+  "inspection.related.or": "，或者",
+  "inspection.related.pricing": "比较各个方案",
+  "inspection.disclaimer":
+    "仅用于记录留证——不是租约管理系统，也不构成关于押金规则的法律意见，各州与各省的规定并不相同。",
+  "inspection.faq.q1": "验房照片为什么不能直接用手机相机拍？",
+  "inspection.faq.a1":
+    "因为手机照片带的是手机自己声称的日期，而手机时钟和照片元数据都能在十五秒左右改掉。押金争议里，日期往往是唯一有争议的事实，也就是说你最需要依靠的那个数字，恰恰是相册最没理由让人相信的那个。GeoCliks 改为把拍摄时间对我们的服务器核验。",
+  "inspection.faq.q2": "这在押金争议或小额诉讼里站得住脚吗？",
+  "inspection.faq.a2":
+    "衡量证据是裁决方的工作，押金规则又因州因省而异，所以没人能诚实地向你保证结果。会改变的是你提交材料的质量：一组带有服务器核验时间、解析地址和防篡改封存的照片，对方可以自己在公开页面上核验。这份记录比从相册导出的照片要扎实得多。",
+  "inspection.faq.q3": "租客能看到并核验这些照片吗？",
+  "inspection.faq.a3":
+    "能，而且值得这么做。入住时就把入住那组照片分享给他。他用照片编码在公开页面上核验任意一张——不用账号、不用装应用——看到和你一样的核验日期和地址。在开头就对记录达成一致，才能避免最后吵起来。",
+  "inspection.faq.q4": "如果房里没信号，或者是地下室怎么办？",
+  "inspection.faq.a4":
+    "照片会先在手机上排队，到达我们服务器时再封存，记录下来的时间是拍摄那一刻，不是上传那一刻。GPS 也是在拍摄时读取的，所以地下室或内部走廊标记的仍是这栋楼的位置，而不是手机重新有信号的地方。",
+  "inspection.faq.q5": "这是租约管理工具或验房清单工具吗？",
+  "inspection.faq.a5":
+    "不是。没有租约、没有租金台账、没有会计功能，也没有逐间填写的检查清单表格。GeoCliks 是照片记录这一层，设计上就是配合你已经在用的那套物业管理系统。",
+  "inspection.faq.q6": "照片会保存多久？",
+  "inspection.faq.a6":
+    "只要你的工作空间还在使用就一直保存——这一点在这里很重要，因为押金争议可能在租客入住一年后才浮出水面。想在系统之外留一份自己的副本，随时可以把整组照片导出成 PDF、Excel 或 ZIP。",
 };

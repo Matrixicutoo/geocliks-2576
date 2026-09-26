@@ -313,36 +313,12 @@ export const PAGE_SCHEMA = {
   "/property-inspection-photos": {
     crumbs: [{ name: "Property Inspection Photos" }],
     faq: [
-    {
-      question: "Why not just use the phone camera for inspection photos?",
-      answer:
-        "Because a phone photo carries the date the phone claims, and a phone's clock and photo metadata can both be changed in about fifteen seconds. In a deposit dispute the date is usually the only contested fact, so the one number you most need to rely on is the one a camera roll gives you no reason to trust. GeoCliks verifies capture time against our servers instead.",
-    },
-    {
-      question: "Will this hold up in a deposit dispute or at small claims?",
-      answer:
-        "Weighing evidence is the adjudicator's job and deposit rules differ by state and province, so nobody can honestly promise you an outcome. What changes is the quality of what you bring: a set of photos with server-verified times, resolved addresses and tamper-evident seals, which the other side can check themselves on a public page. That is a materially stronger record than an export from a camera roll.",
-    },
-    {
-      question: "Can the tenant see and check the photos?",
-      answer:
-        "Yes, and it is worth doing. Share the move-in set at move-in. They verify any capture with its code on a public page — no account, no app — and see the same verified date and address you do. Agreeing on the record at the start is what stops the argument at the end.",
-    },
-    {
-      question: "What if the unit has no signal, or it's a basement?",
-      answer:
-        "Captures queue on the phone and seal when they reach our servers, and the time recorded is the moment of capture, not the moment of upload. GPS is read at capture too, so a basement or an interior corridor still stamps the building's location rather than wherever the phone got signal back.",
-    },
-    {
-      question: "Is this a lease management or inspection-checklist tool?",
-      answer:
-        "No. There is no lease, no rent ledger, no accounting and no room-by-room checklist form to fill in. GeoCliks is the photo documentation layer, and it is built to sit alongside whichever property management system you already run.",
-    },
-    {
-      question: "How long are the photos kept?",
-      answer:
-        "For as long as your workspace is active — which matters here, because a deposit dispute can surface a year after the tenant moved in. Export a full set to PDF, Excel or ZIP whenever you want your own copy outside the system.",
-    },
+      { keys: { question: "inspection.faq.q1", answer: "inspection.faq.a1" } },
+      { keys: { question: "inspection.faq.q2", answer: "inspection.faq.a2" } },
+      { keys: { question: "inspection.faq.q3", answer: "inspection.faq.a3" } },
+      { keys: { question: "inspection.faq.q4", answer: "inspection.faq.a4" } },
+      { keys: { question: "inspection.faq.q5", answer: "inspection.faq.a5" } },
+      { keys: { question: "inspection.faq.q6", answer: "inspection.faq.a6" } },
     ],
   },
 } as const satisfies Record<string, PageSchema>;

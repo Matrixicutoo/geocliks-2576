@@ -255,3 +255,25 @@ One thing worth remembering for the rest of the queue: inserting the new
 `seo.*` rows after an anchor key breaks the file whenever that anchor's value
 sits on the following line, which is how the catalogs format longer strings.
 The insert has to land after the end of the value, not after the key.
+
+## `/property-inspection-photos` — eleven languages
+
+Fourth page through the same pattern: 66 keys per catalog (52 page strings, 12
+FAQ, 2 head-copy), component reads everything through `t()`, the four
+step/card arrays carry `TKey`s, `PAGE_SCHEMA` FAQ in
+`{ keys: { question, answer } }` form, path added to `LOCALIZED_PATHS`,
+`LOCALIZED_SEO` row pointing at `seo.inspection.title` /
+`seo.inspection.description`. Sitemap 139 -> 149 URLs.
+
+Verified on all eleven — localized `<title>`, prefixed canonical, localized
+`FAQPage` question names in the server HTML; post-hydration `canonical ==
+og:url` and translated `<h1>` spot-checked on en/es/ar/zh/pl.
+
+Regressions: `/es/hvac-photo-documentation` still Spanish,
+`/es/proof-of-delivery` still Spanish. tsc clean, lint 9 errors = baseline.
+
+The anchor-insert fix from last page held (walk forward to the line ending the
+anchor's value before inserting). New gotcha: running `oxfmt` over the whole
+`i18n/*.ts` glob collapses a pre-existing two-line string in `ar.ts`
+(`home.samples.altFiber`) onto one line. Reverted by hand; format the touched
+files individually next time, or diff `ar.ts` immediately after.
