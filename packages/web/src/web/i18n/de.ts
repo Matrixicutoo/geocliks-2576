@@ -60,6 +60,9 @@ export const de: Catalog = {
   "seo.gps.title": "GPS-Zeitstempel-Kamera — geprüfte Zeit und Ort",
   "seo.gps.description":
     "Eine Zeitstempel-Kamera, die die Zeit gegen das Netz prüft statt gegen die Handyuhr und GPS-Koordinaten samt Straßenadresse in jedes Foto stempelt.",
+  "seo.hvac.title": "HLK-Fotodokumentation & Nachweis des Serviceeinsatzes",
+  "seo.hvac.description":
+    "Belegen Sie, dass der Techniker da war, in welchem Zustand die Anlage war und dass der Einbau fertig ist: geprüfte Zeit, GPS und Adresse pro Foto.",
   "signin.subtitle": "Fälschungssichere Fotodokumentation für Außendienstteams.",
   "signin.apple": "Mit Apple fortfahren",
   "signin.google": "Mit Google fortfahren",
@@ -1640,4 +1643,91 @@ export const de: Catalog = {
   "gps.related.roofing": "Dach",
   "gps.related.join": "und",
   "gps.related.delivery": "Lieferung",
+  "hvac.eyebrow": "HLK-Fotodokumentation",
+  "hvac.h1": "HLK-Fotodokumentation, die den Serviceeinsatz belegt",
+  "hvac.sub":
+    "Ankunft, Zustand und fertige Arbeit — jede Aufnahme mit netzwerkgeprüfter Zeit, GPS und Straßenadresse, nachprüfbar für den, der zahlt.",
+  "hvac.why.label": "Warum Serviceteams danach suchen",
+  "hvac.why.h2": "Der Streit geht fast nie um das Kältemittel. Er geht um den Besuch.",
+  "hvac.why.intro":
+    "Ein Kunde bestreitet die Anfahrtspauschale, weil angeblich niemand da war. Eine Hausverwaltung fragt, wie lange der Techniker wirklich im Gebäude war. Wer die Garantie zahlt, will wissen, wie das Gerät vor der Reparatur aussah und welche Seriennummer eingebaut wurde. All das beantworten vier Fotos vom Tag selbst — aber nur, wenn Zeit und Adresse auf diesen Fotos aus etwas anderem stammen als dem Handy des Technikers.",
+  "hvac.how.label": "So funktioniert es",
+  "hvac.how.h2": "Vier Aufnahmen, und der Techniker macht sie beim Arbeiten.",
+  "hvac.step1.title": "Bei der Ankunft aufnehmen",
+  "hvac.step1.body":
+    "Ein Foto von Anlage und Adresse, sobald der Techniker vor Ort ist. Die Zeit kommt aus dem Netz, damit die Ankunft dokumentiert ist, bevor irgendeine Arbeit beginnt.",
+  "hvac.step2.title": "Den Zustand dokumentieren",
+  "hvac.step2.body":
+    "Typenschild, Modell und Seriennummer, der Fehler, die Manometer. Jede Aufnahme trägt geprüfte Zeit, Koordinaten und Straßenadresse.",
+  "hvac.step3.title": "Die fertige Arbeit aufnehmen",
+  "hvac.step3.body":
+    "Der abgeschlossene Einbau oder die Reparatur, gepaart mit dem Vorher-Foto, damit die Veränderung sichtbar ist und jede Hälfte ihr eigenes geprüftes Datum trägt.",
+  "hvac.step4.title": "Nachweis mit der Rechnung senden",
+  "hvac.step4.body":
+    "Die Foto-Codes anhängen. Kunde, Hausverwaltung oder Garantiezahler kann jede Aufnahme auf einer öffentlichen Seite ohne Konto prüfen.",
+  "hvac.call.label": "Für den Serviceeinsatz gebaut",
+  "hvac.call.h2": "Drei Belege, die die üblichen Streitfälle beenden.",
+  "hvac.call1.title": "Ankunft und Abfahrt, geprüft",
+  "hvac.call1.body":
+    "Der wiederkehrende Servicestreit ist, ob der Techniker da war und wie lange er blieb. Zwei Aufnahmen mit servergeprüfter Zeit beantworten das ohne Stundenzettel, den jemand glauben muss.",
+  "hvac.call2.title": "Messwerte vor Ort fotografiert",
+  "hvac.call2.body":
+    "Ein in ein Formular getippter Manometerwert ist eine Behauptung. Derselbe Wert, fotografiert mit geprüfter Zeit und der Objektadresse dabei, ist ein Beleg.",
+  "hvac.call3.title": "Typenschilder, Seriennummern und was eingebaut wurde",
+  "hvac.call3.body":
+    "Modell und Seriennummer vor Ort erfasst und versiegelt, damit das Foto später nicht ausgetauscht werden kann. Nützlich an dem Tag, an dem eine Garantiefrage kommt, welches Gerät wohin ging.",
+  "hvac.ops.label": "Fürs Büro",
+  "hvac.ops.h2": "Fotos, die sich selbst zum Auftrag ablegen.",
+  "hvac.ops1.title": "Jeder Techniker, jeder Einsatz, ein Konto",
+  "hvac.ops1.body":
+    "Aufnahmen legen sich selbst zum Auftrag ab, damit das Büro am Wochenende nicht Fotos aus sechs Kamerarollen zusammensucht.",
+  "hvac.ops2.title": "Der Arbeitstag auf einer Karte",
+  "hvac.ops2.body":
+    "Sehen Sie, welche Adressen dokumentiert sind und zu welchem Einsatz noch keine Aufnahme vorliegt — geografisch statt als Liste.",
+  "hvac.ops3.title": "Serviceunterlagen, die sich exportieren lassen",
+  "hvac.ops3.body":
+    "PDF für die Kundenakte, Excel fürs Büro, ZIP für die Hausverwaltung, die die Originale will — jedes Foto gedruckt mit Zeit, Adresse und Code.",
+  "hvac.team.label": "Für das ganze Team",
+  "hvac.team.h2": "Preis und Rechte, die zu einer Servicemannschaft passen.",
+  "hvac.team1.title": "Plätze inklusive, nicht abgerechnet",
+  "hvac.team1.body":
+    "Nehmen Sie das ganze Serviceteam in einen Pauschaltarif auf, statt pro Techniker zu zahlen — Dokumentieren kostet nie mehr, weil Sie eingestellt haben.",
+  "hvac.team2.title": "Rollen, die zu einem Servicebetrieb passen",
+  "hvac.team2.body":
+    "Die Einsatzleitung sieht das Board, Techniker sehen ihre eigenen Einsätze, das Büro sieht die Unterlagen. Niemand braucht das ganze System für einen Auftrag.",
+  "hvac.team3.title": "Beim nächsten Einsatz kostenlos testen",
+  "hvac.team3.body":
+    "300 geprüfte Aufnahmen im Monat kostenlos, Verifizierung inklusive. Genug für eine echte Arbeitswoche, bevor Sie etwas entscheiden.",
+  "hvac.faq.label": "Fragen",
+  "hvac.faq.h2": "Häufige Fragen",
+  "hvac.cta.h2": "Den nächsten Serviceeinsatz richtig dokumentieren",
+  "hvac.cta.body":
+    "Für immer kostenlos mit 300 geprüften Aufnahmen im Monat, ohne Karte. Bezahlte Tarife bringen unbegrenzte Aufnahmen, Teamspace für die ganze Mannschaft und alle Exporte.",
+  "hvac.cta.primary": "App holen",
+  "hvac.cta.secondary": "Tarife und Preise ansehen",
+  "hvac.related.lead": "Passend dazu:",
+  "hvac.related.gps": "wie die GPS-Zeitstempel-Kamera funktioniert",
+  "hvac.related.inspection": "Fotos für die Objektbegehung",
+  "hvac.related.or": ", oder",
+  "hvac.related.pricing": "Tarife vergleichen",
+  "hvac.disclaimer":
+    "Nur Dokumentation — keine Einsatzsteuerung, Angebote oder Rechnungen und keine Garantie- oder Normprüfung.",
+  "hvac.faq.q1": "Warum einen HLK-Serviceeinsatz überhaupt fotografieren?",
+  "hvac.faq.a1":
+    "Weil die zwei Dinge, die hinterher am häufigsten bestritten werden, nicht technisch sind. Es geht darum, ob der Techniker zur Zeit auf dem Auftrag eingetroffen ist und in welchem Zustand die Anlage war, bevor jemand sie angefasst hat. Beides ist vor Ort in Sekunden festgehalten und einen Monat später aus Erinnerung und Kamerarolle kaum zu rekonstruieren.",
+  "hvac.faq.q2": "Beweist das, dass mein Techniker vor Ort war?",
+  "hvac.faq.a2":
+    "Sie bekommen eine Aufnahme, deren Zeit gegen unsere Server geprüft und nicht vom Handy des Technikers gelesen wurde, gestempelt mit Koordinaten und aufgelöster Straßenadresse des Aufnahmeorts und versiegelt, sodass eine späte Änderung erkennbar ist. Dieser Beleg ist deutlich schwerer wegzuwischen als ein Foto mit Handy-Zeitstempel. Er beweist, dass ein Handy mit der App an diesem Ort zu dieser Zeit ein Foto gemacht hat — nicht, wer es gehalten hat.",
+  "hvac.faq.q3": "Funktioniert es im Technikraum ohne Empfang?",
+  "hvac.faq.a3":
+    "Ja. Aufnahmen warten auf dem Handy und werden versiegelt, sobald sie unsere Server erreichen; erfasst wird der Moment der Aufnahme. GPS wird bei der Aufnahme gelesen, also stempelt ein Kellertechnikraum trotzdem die Gebäudeposition und nicht den Ort, an dem das Handy wieder Netz hatte.",
+  "hvac.faq.q4": "Genügt ein geprüftes Foto für einen Garantieantrag des Herstellers?",
+  "hvac.faq.a4":
+    "Das entscheidet der Hersteller, und jeder Anbieter, der etwas anderes behauptet, rät. GeoCliks macht die Fotodokumentation konkret und unabhängig prüfbar — geprüftes Einbaudatum, die Seriennummer vom Typenschild, die fertige Arbeit — damit das Garantiegespräch um die Unterlagen geht und nicht darum, ob Sie welche haben.",
+  "hvac.faq.q5": "Kann eine Hausverwaltung die Fotos ohne Konto sehen?",
+  "hvac.faq.a5":
+    "Ja. Senden Sie einen Freigabelink für einen Satz oder einen einzelnen Foto-Code, den sie auf der öffentlichen Prüfseite eingibt. Keine App, kein Login.",
+  "hvac.faq.q6": "Macht GeoCliks Einsatzsteuerung, Angebote oder Rechnungen?",
+  "hvac.faq.a6":
+    "Nein. Es ist keine Field-Service-Management-Plattform und ersetzt keine — keine Angebote, keine Rechnungen und keine Planung über das Zuordnen von Aufnahmen zu Aufträgen hinaus. Es übernimmt die Dokumentationsschicht und ist dafür gebaut, neben dem zu laufen, womit Sie die Einsätze schon steuern.",
 };

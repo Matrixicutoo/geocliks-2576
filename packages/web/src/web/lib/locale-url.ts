@@ -71,6 +71,7 @@ export const LOCALIZED_PATHS: readonly string[] = [
   "/get-app",
   "/proof-of-delivery",
   "/gps-timestamp-camera",
+  "/hvac-photo-documentation",
 ];
 
 const LOCALIZED = new Set(LOCALIZED_PATHS);

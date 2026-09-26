@@ -61,6 +61,9 @@ export const tl: Catalog = {
   "seo.gps.title": "GPS timestamp camera — beripikadong oras at lugar",
   "seo.gps.description":
     "Isang timestamp camera na binebalidahan ang oras sa network at hindi sa relo ng telepono, at itinatatak ang GPS at address sa bawat litrato.",
+  "seo.hvac.title": "Dokumentasyong Litrato ng HVAC at Patunay ng Bisita",
+  "seo.hvac.description":
+    "Patunayan na dumating ang technician, ang kondisyon ng kagamitan at natapos ang install — beripikadong oras, GPS at address sa bawat litrato ng serbisyo.",
   "signin.subtitle": "Hindi mapepekeng dokumentasyon ng larawan para sa mga field team.",
   "signin.apple": "Magpatuloy sa Apple",
   "signin.google": "Magpatuloy sa Google",
@@ -1640,4 +1643,91 @@ export const tl: Catalog = {
   "gps.related.roofing": "bubong",
   "gps.related.join": "at",
   "gps.related.delivery": "delivery",
+  "hvac.eyebrow": "Dokumentasyong litrato ng HVAC",
+  "hvac.h1": "Dokumentasyong litrato ng HVAC na nagpapatunay na nangyari ang bisita",
+  "hvac.sub":
+    "Pagdating, kondisyon ng unit at tapos na trabaho — may tatak na oras na beripikado sa network, GPS at address ang bawat kuha, at macheck ng kahit sinong nagbabayad.",
+  "hvac.why.label": "Bakit ito hinahanap ng mga service team",
+  "hvac.why.h2": "Bihirang tungkol sa refrigerant ang away. Tungkol ito sa bisita.",
+  "hvac.why.intro":
+    "Tinututulan ng kliyente ang trip charge dahil sabi nila walang dumating. Tinatanong ng property manager kung gaano katagal talaga nasa loob ng building ang technician. Gusto malaman ng nagbabayad ng warranty kung ano ang itsura ng unit bago ang repair at kung anong serial ang nailagay. Nasasagot lahat ng iyon ng apat na litratong kinuha sa araw mismo — pero kung ang oras at address sa mga litratong iyon ay galing sa iba, hindi sa sariling telepono ng technician.",
+  "hvac.how.label": "Paano ito gumagana",
+  "hvac.how.h2": "Apat na kuha, at kinukuha ito ng technician habang nagtatrabaho.",
+  "hvac.step1.title": "Kuha sa pagdating",
+  "hvac.step1.body":
+    "Isang kuha ng unit at ng address pagdating ng technician sa site. Sa network nanggagaling ang oras, kaya nakatala na ang pagdating bago magsimula ang anumang trabaho.",
+  "hvac.step2.title": "Idokumento ang kondisyon",
+  "hvac.step2.body":
+    "Nameplate, model at serial, ang sira, ang mga gauge. May tatak na beripikadong oras, coordinates at address ang bawat kuha.",
+  "hvac.step3.title": "Kunan ang tapos na trabaho",
+  "hvac.step3.body":
+    "Ang tapos na install o repair, ikinapareha sa kuha ng bago para kitang-kita ang ipinagbago at may sariling beripikadong petsa ang dalawang panig.",
+  "hvac.step4.title": "Isama ang patunay sa invoice",
+  "hvac.step4.body":
+    "Ilagay ang mga photo code. Ang kliyente, ang property manager o ang nagbabayad ng warranty ay makakacheck ng kahit aling kuha sa pampublikong page, walang account.",
+  "hvac.call.label": "Ginawa para sa service call",
+  "hvac.call.h2": "Tatlong tala na nagtatapos sa mga karaniwang away.",
+  "hvac.call1.title": "Pagdating at pag-alis, beripikado",
+  "hvac.call1.body":
+    "Ang paulit-ulit na away sa service ay kung dumating ba ang technician at gaano siya katagal. Nasasagot ito ng dalawang kuha na may oras na beripikado sa server, walang timesheet na kailangang pagkatiwalaan.",
+  "hvac.call2.title": "Mga reading na kinunan sa pwesto",
+  "hvac.call2.body":
+    "Ang gauge reading na tinype sa form ay isang sabi-sabi lang. Ang parehong reading na kinunan ng litrato kasama ang beripikadong oras at address ng site ay isang tala.",
+  "hvac.call3.title": "Nameplate, serial at kung ano ang nailagay",
+  "hvac.call3.body":
+    "Model at serial na kinunan sa site at sinelyuhan, kaya hindi na mapapalitan ang litrato mamaya. Kapaki-pakinabang sa araw na may tanong sa warranty kung aling unit ang napunta saan.",
+  "hvac.ops.label": "Para sa opisina",
+  "hvac.ops.h2": "Mga litratong sila na ang naghahain sa tamang trabaho.",
+  "hvac.ops1.title": "Bawat tech, bawat call, isang account",
+  "hvac.ops1.body":
+    "Sila na ang pumupwesto sa ilalim ng trabaho, kaya hindi na hinahabol ng opisina ang mga litrato sa anim na camera roll pagsapit ng katapusan ng linggo.",
+  "hvac.ops2.title": "Ang trabaho ng araw sa mapa",
+  "hvac.ops2.body":
+    "Tingnan kung aling mga address ang naidokumento at aling call ang wala pa ni isang kuha, sa mapa at hindi sa listahan.",
+  "hvac.ops3.title": "Service record na nae-export",
+  "hvac.ops3.body":
+    "PDF para sa file ng kliyente, Excel para sa opisina, ZIP para sa property manager na gusto ang orihinal — bawat litrato may nakaprint na oras, address at code.",
+  "hvac.team.label": "Para sa buong tim",
+  "hvac.team.h2": "Presyo at permiso na kasya sa isang service crew.",
+  "hvac.team1.title": "Kasama na ang mga upuan, hindi minemetro",
+  "hvac.team1.body":
+    "Isama ang buong service team sa isang flat na plano kaysa magbayad kada technician, kaya hindi lumalaki ang gastos sa pagdokumento dahil lang nakapagkuha ka ng tao.",
+  "hvac.team2.title": "Mga role na bagay sa service business",
+  "hvac.team2.body":
+    "Nakikita ng dispatcher ang board, nakikita ng technician ang sariling call, nakikita ng opisina ang mga tala. Walang kailangan ng buong sistema para idokumento ang isang trabaho.",
+  "hvac.team3.title": "Libreng subukan sa susunod na call",
+  "hvac.team3.body":
+    "300 beripikadong kuha kada buwan nang walang bayad, kasama ang beripikasyon. Sapat para tumakbo ng isang totoong linggo bago magdesisyon.",
+  "hvac.faq.label": "Mga tanong",
+  "hvac.faq.h2": "Mga madalas itanong",
+  "hvac.cta.h2": "Idokumento nang tama ang susunod na service call",
+  "hvac.cta.body":
+    "Libre habambuhay para sa 300 beripikadong kuha kada buwan, walang card. Dinadagdag ng bayad na plano ang walang limitasyong kuha, Teamspace para sa buong crew at buong set ng export.",
+  "hvac.cta.primary": "Kunin ang app",
+  "hvac.cta.secondary": "Tingnan ang plano at presyo",
+  "hvac.related.lead": "Kaugnay:",
+  "hvac.related.gps": "kung paano gumagana ang GPS timestamp camera",
+  "hvac.related.inspection": "mga litrato sa inspeksyon ng ari-arian",
+  "hvac.related.or": ", o",
+  "hvac.related.pricing": "ihambing ang mga plano",
+  "hvac.disclaimer":
+    "Dokumentasyon lamang — walang dispatch, quoting o invoicing, at walang pagpapasya sa warranty o code.",
+  "hvac.faq.q1": "Bakit pa kukunan ng litrato ang isang HVAC service call?",
+  "hvac.faq.a1":
+    "Dahil ang dalawang bagay na pinakamadalas kuwestiyunin pagkatapos ay hindi teknikal. Ito ay kung dumating ang technician sa oras na nakasaad sa ticket, at kung anong kondisyon ang kagamitan bago ito hawakan ninuman. Napakadali itong itala sa mismong oras at halos imposibleng itayong muli makalipas ang isang buwan gamit ang memorya at camera roll.",
+  "hvac.faq.q2": "Mapapatunayan ba nito na nasa site ang technician ko?",
+  "hvac.faq.a2":
+    "Binibigyan ka nito ng kuha na ang oras ay beripikado laban sa aming mga server, hindi binasa sa telepono ng technician, may tatak na coordinates at naresolbang address ng pinagkunan, at sinelyuhan para matukoy ang huling pag-edit. Mas mahirap itong basta iwaksi kaysa litratong may timestamp ng telepono. Pinapatunayan nitong may teleponong may app na kumuha ng litrato sa lugar at oras na iyon — hindi nito mapapatunayan kung sino ang may hawak.",
+  "hvac.faq.q3": "Gumagana ba sa mechanical room na walang signal?",
+  "hvac.faq.a3":
+    "Oo. Pumipila ang mga kuha sa telepono at sineselyuhan pagsapit sa aming mga server, at ang oras na naitala ay ang sandali ng pagkuha. Binabasa ang GPS sa pagkuha, kaya ang plant room sa basement ay tinatatakan pa rin ang lokasyon ng gusali at hindi ang lugar kung saan muling nakakonekta ang telepono.",
+  "hvac.faq.q4": "Sasapat ba ang beripikadong litrato sa warranty claim ng manufacturer?",
+  "hvac.faq.a4":
+    "Desisyon iyon ng manufacturer, at nanghuhula ang kahit sinong vendor na magsabi ng iba. Ang ginagawa ng GeoCliks ay gawing tiyak at malayang macheck ang talaan ng litrato — beripikadong petsa ng install, ang serial sa nameplate, ang tapos na trabaho — para ang usapan sa warranty ay tungkol sa talaan at hindi tungkol sa kung may maipapakita ka.",
+  "hvac.faq.q5": "Makikita ba ng property manager ang litrato nang walang account?",
+  "hvac.faq.a5":
+    "Oo. Magpadala ng share link para sa isang set, o isang photo code na ipapasok nila sa pampublikong verification page. Walang app, walang sign-in.",
+  "hvac.faq.q6": "Gumagawa ba ang GeoCliks ng dispatch, quoting o invoicing?",
+  "hvac.faq.a6":
+    "Hindi. Hindi ito field service management platform at hindi nito papalitan ang isa — walang quoting, walang invoicing at walang scheduling maliban sa pag-assign ng mga kuha sa trabaho. Hinahawakan nito ang layer ng dokumentasyon, at gawa ito para sumabay sa kung anuman ang gamit mo na sa pagpapatakbo ng mga call.",
 };

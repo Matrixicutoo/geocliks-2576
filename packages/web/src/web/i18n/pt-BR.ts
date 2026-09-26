@@ -61,6 +61,9 @@ export const ptBR: Catalog = {
   "seo.gps.title": "App de câmera com GPS e hora verificada",
   "seo.gps.description":
     "Uma câmera com data que verifica a hora na rede em vez do relógio do celular e grava coordenadas GPS e endereço em cada foto.",
+  "seo.hvac.title": "Documentação fotográfica de HVAC e prova de visita",
+  "seo.hvac.description":
+    "Comprove que o técnico chegou, o estado do equipamento e a conclusão da instalação: hora verificada, GPS e endereço em cada foto do serviço.",
   "signin.subtitle": "Documentação fotográfica à prova de fraudes para equipes de campo.",
   "signin.apple": "Continuar com a Apple",
   "signin.google": "Continuar com o Google",
@@ -1621,4 +1624,91 @@ export const ptBR: Catalog = {
   "gps.related.roofing": "telhados",
   "gps.related.join": "e",
   "gps.related.delivery": "entregas",
+  "hvac.eyebrow": "Documentação fotográfica de HVAC",
+  "hvac.h1": "Documentação fotográfica de HVAC que prova que a visita aconteceu",
+  "hvac.sub":
+    "Chegada, estado do equipamento e serviço concluído: cada captura com hora verificada pela rede, GPS e endereço, conferível por quem está pagando.",
+  "hvac.why.label": "Por que as equipes de serviço procuram isso",
+  "hvac.why.h2": "A discussão quase nunca é sobre o refrigerante. É sobre a visita.",
+  "hvac.why.intro":
+    "Um cliente contesta a taxa de deslocamento porque diz que ninguém apareceu. Um administrador de condomínio pergunta quanto tempo o técnico ficou de fato no prédio. Quem paga a garantia quer saber como o equipamento estava antes do reparo e qual número de série foi instalado. Tudo isso se responde com quatro fotos tiradas no dia — mas só se as horas e os endereços dessas fotos vierem de algo diferente do próprio celular do técnico.",
+  "hvac.how.label": "Como funciona",
+  "hvac.how.h2": "Quatro capturas, e o técnico faz todas enquanto trabalha.",
+  "hvac.step1.title": "Capture na chegada",
+  "hvac.step1.body":
+    "Uma foto do equipamento e do endereço quando o técnico chega ao local. A hora vem da rede, então a chegada fica registrada antes de qualquer serviço começar.",
+  "hvac.step2.title": "Documente a condição",
+  "hvac.step2.body":
+    "Placa de identificação, modelo e número de série, o defeito, os manômetros. Cada captura leva hora verificada, coordenadas e endereço.",
+  "hvac.step3.title": "Capture o serviço concluído",
+  "hvac.step3.body":
+    "A instalação ou o reparo pronto, pareado com a foto do antes para que a mudança fique visível e cada metade carregue sua própria data verificada.",
+  "hvac.step4.title": "Envie a prova com a nota",
+  "hvac.step4.body":
+    "Anexe os códigos das fotos. O cliente, o administrador ou quem paga a garantia pode conferir qualquer captura numa página pública, sem conta.",
+  "hvac.call.label": "Feito para o atendimento",
+  "hvac.call.h2": "Três registros que encerram as discussões mais comuns.",
+  "hvac.call1.title": "Chegada e saída, verificadas",
+  "hvac.call1.body":
+    "A disputa recorrente no serviço é se o técnico apareceu e quanto tempo ficou. Duas capturas com horas verificadas em servidor respondem isso sem uma folha de ponto que alguém precise acreditar.",
+  "hvac.call2.title": "Leituras fotografadas no local",
+  "hvac.call2.body":
+    "Uma leitura de manômetro digitada num formulário é uma afirmação. A mesma leitura fotografada com hora verificada e o endereço do local anexado é um registro.",
+  "hvac.call3.title": "Placas, números de série e o que foi instalado",
+  "hvac.call3.body":
+    "Modelo e número de série capturados no local e selados, de modo que a foto não possa ser trocada depois. Útil no dia em que chega uma dúvida de garantia sobre qual equipamento foi para onde.",
+  "hvac.ops.label": "Para o escritório",
+  "hvac.ops.h2": "Fotos que se arquivam sozinhas junto ao serviço.",
+  "hvac.ops1.title": "Cada técnico, cada atendimento, uma conta",
+  "hvac.ops1.body":
+    "As capturas se arquivam sozinhas no serviço, então o escritório não fica atrás de fotos em seis galerias diferentes no fim da semana.",
+  "hvac.ops2.title": "O dia de trabalho num mapa",
+  "hvac.ops2.body":
+    "Veja quais endereços foram documentados e qual atendimento ainda não tem nenhuma captura, geograficamente e não como lista.",
+  "hvac.ops3.title": "Registros de serviço que exportam",
+  "hvac.ops3.body":
+    "PDF para a pasta do cliente, Excel para o escritório, ZIP para o administrador que quer os originais — cada foto impressa com hora, endereço e código.",
+  "hvac.team.label": "Para a equipe inteira",
+  "hvac.team.h2": "Preço e permissões pensados para uma equipe de campo.",
+  "hvac.team1.title": "Assentos inclusos, não medidos",
+  "hvac.team1.body":
+    "Coloque toda a equipe de serviço num plano fixo em vez de pagar por técnico, então documentar um atendimento nunca custa mais porque você contratou.",
+  "hvac.team2.title": "Papéis que cabem numa empresa de serviço",
+  "hvac.team2.body":
+    "Quem despacha vê o painel, os técnicos veem seus atendimentos, o escritório vê os registros. Ninguém precisa do sistema todo para documentar um serviço.",
+  "hvac.team3.title": "Grátis para testar no próximo atendimento",
+  "hvac.team3.body":
+    "300 capturas verificadas por mês sem custo, com verificação incluída. O suficiente para rodar uma semana real antes de decidir qualquer coisa.",
+  "hvac.faq.label": "Perguntas",
+  "hvac.faq.h2": "Perguntas frequentes",
+  "hvac.cta.h2": "Documente o próximo atendimento do jeito certo",
+  "hvac.cta.body":
+    "Grátis para sempre com 300 capturas verificadas por mês, sem cartão. Os planos pagos somam capturas ilimitadas, Teamspace para a equipe toda e todas as exportações.",
+  "hvac.cta.primary": "Baixar o app",
+  "hvac.cta.secondary": "Ver planos e preços",
+  "hvac.related.lead": "Relacionado:",
+  "hvac.related.gps": "como funciona a câmera com GPS e hora",
+  "hvac.related.inspection": "fotos de inspeção de imóveis",
+  "hvac.related.or": ", ou",
+  "hvac.related.pricing": "compare os planos",
+  "hvac.disclaimer":
+    "Somente documentação — sem despacho, orçamento ou faturamento, e sem determinação de garantia ou de conformidade com normas.",
+  "hvac.faq.q1": "Por que fotografar um atendimento de HVAC?",
+  "hvac.faq.a1":
+    "Porque as duas coisas mais questionadas depois não são técnicas. São se o técnico chegou na hora que a ordem diz e em que estado o equipamento estava antes de alguém mexer nele. As duas são triviais de registrar na hora e quase impossíveis de reconstruir um mês depois com memória e uma galeria de fotos.",
+  "hvac.faq.q2": "Isso prova que meu técnico estava no local?",
+  "hvac.faq.a2":
+    "Dá a você uma captura cuja hora foi verificada nos nossos servidores em vez de lida no celular do técnico, marcada com as coordenadas e o endereço resolvido de onde foi tirada, e selada para que uma edição posterior seja detectável. É um registro muito mais difícil de descartar do que uma foto com a hora do celular. Prova que um celular rodando o app tirou uma foto naquele lugar e momento — não prova quem estava segurando.",
+  "hvac.faq.q3": "Funciona numa casa de máquinas sem sinal?",
+  "hvac.faq.a3":
+    "Sim. As capturas ficam na fila no celular e são seladas ao chegar nos nossos servidores, e a hora registrada é a do momento da captura. O GPS é lido na captura, então uma casa de máquinas no subsolo ainda marca a localização do prédio e não onde o celular reconectou.",
+  "hvac.faq.q4": "Uma foto verificada resolve um pedido de garantia do fabricante?",
+  "hvac.faq.a4":
+    "Isso é decisão do fabricante, e qualquer fornecedor que diga o contrário está chutando. O que a GeoCliks faz é tornar o registro fotográfico específico e conferível de forma independente — data de instalação verificada, o número de série da placa, o serviço concluído — para que a conversa de garantia seja sobre o registro e não sobre se você consegue apresentar um.",
+  "hvac.faq.q5": "Um administrador pode ver as fotos sem conta?",
+  "hvac.faq.a5":
+    "Sim. Envie um link de compartilhamento de um conjunto, ou um código de foto que ele digita na página pública de verificação. Sem app, sem login.",
+  "hvac.faq.q6": "A GeoCliks faz despacho, orçamento ou faturamento?",
+  "hvac.faq.a6":
+    "Não. Não é uma plataforma de gestão de serviços de campo e não substitui uma — não há orçamento, faturamento nem agendamento além de atribuir capturas a serviços. Ela cuida da camada de documentação e foi feita para conviver com o que você já usa para rodar os atendimentos.",
 };

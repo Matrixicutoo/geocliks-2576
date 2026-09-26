@@ -60,6 +60,9 @@ export const pl: Catalog = {
   "seo.gps.title": "Kamera ze znacznikiem GPS — czas i miejsce z sieci",
   "seo.gps.description":
     "Kamera ze znacznikiem czasu, która weryfikuje godzinę w sieci, a nie w zegarze telefonu, i wpisuje współrzędne GPS oraz adres w każde zdjęcie.",
+  "seo.hvac.title": "Dokumentacja zdjęciowa HVAC i dowód wizyty serwisu",
+  "seo.hvac.description":
+    "Udowodnij, że technik przyjechał, w jakim stanie było urządzenie i że montaż skończono — zweryfikowana godzina, GPS i adres na każdym zdjęciu.",
   "signin.subtitle": "Odporna na manipulacje dokumentacja zdjęciowa dla ekip w terenie.",
   "signin.apple": "Kontynuuj z Apple",
   "signin.google": "Kontynuuj z Google",
@@ -1616,4 +1619,91 @@ export const pl: Catalog = {
   "gps.related.roofing": "dachy",
   "gps.related.join": "i",
   "gps.related.delivery": "dostawy",
+  "hvac.eyebrow": "Dokumentacja zdjęciowa HVAC",
+  "hvac.h1": "Dokumentacja zdjęciowa HVAC, która dowodzi, że wizyta się odbyła",
+  "hvac.sub":
+    "Przyjazd, stan urządzenia i skończona praca — każde zdjęcie ze zweryfikowaną w sieci godziną, GPS i adresem, sprawdzalne dla tego, kto płaci.",
+  "hvac.why.label": "Dlaczego szukają tego serwisanci",
+  "hvac.why.h2": "Spór prawie nigdy nie dotyczy czynnika chłodniczego. Dotyczy wizyty.",
+  "hvac.why.intro":
+    "Klient kwestionuje opłatę za dojazd, bo twierdzi, że nikt nie przyjechał. Zarządca nieruchomości pyta, ile czasu technik naprawdę był w budynku. Ten, kto płaci z gwarancji, chce wiedzieć, jak urządzenie wyglądało przed naprawą i jaki numer seryjny został zamontowany. Na wszystko to odpowiadają cztery zdjęcia zrobione tego samego dnia — ale tylko wtedy, gdy godziny i adresy na tych zdjęciach pochodzą z czegoś innego niż telefon samego technika.",
+  "hvac.how.label": "Jak to działa",
+  "hvac.how.h2": "Cztery zdjęcia, a technik robi je w trakcie pracy.",
+  "hvac.step1.title": "Zdjęcie po przyjeździe",
+  "hvac.step1.body":
+    "Kadr z urządzeniem i adresem w chwili, gdy technik dociera na miejsce. Godzina pochodzi z sieci, więc przyjazd jest w dokumentacji, zanim zacznie się jakakolwiek praca.",
+  "hvac.step2.title": "Udokumentuj stan",
+  "hvac.step2.body":
+    "Tabliczka znamionowa, model i numer seryjny, usterka, manometry. Każde zdjęcie ma zweryfikowaną godzinę, współrzędne i adres.",
+  "hvac.step3.title": "Sfotografuj skończoną pracę",
+  "hvac.step3.body":
+    "Gotowy montaż lub naprawa, zestawione ze zdjęciem „przed”, żeby zmiana była widoczna, a każda połowa miała własną zweryfikowaną datę.",
+  "hvac.step4.title": "Wyślij dowód razem z fakturą",
+  "hvac.step4.body":
+    "Dołącz kody zdjęć. Klient, zarządca nieruchomości albo płatnik gwarancji sprawdzi każde zdjęcie na publicznej stronie, bez konta.",
+  "hvac.call.label": "Zrobione pod zlecenie serwisowe",
+  "hvac.call.h2": "Trzy zapisy, które kończą typowe spory.",
+  "hvac.call1.title": "Przyjazd i wyjazd, zweryfikowane",
+  "hvac.call1.body":
+    "Powtarzalny spór w serwisie to czy technik się zjawił i jak długo został. Dwa zdjęcia z godziną zweryfikowaną na serwerze odpowiadają na to bez karty pracy, w którą ktoś musi uwierzyć.",
+  "hvac.call2.title": "Odczyty sfotografowane na miejscu",
+  "hvac.call2.body":
+    "Odczyt manometru wpisany do formularza to twierdzenie. Ten sam odczyt sfotografowany ze zweryfikowaną godziną i adresem obiektu to zapis.",
+  "hvac.call3.title": "Tabliczki, numery seryjne i co zostało zamontowane",
+  "hvac.call3.body":
+    "Model i numer seryjny uchwycone na miejscu i zapieczętowane, więc zdjęcia nie da się później podmienić. Przydatne w dniu, gdy pojawia się pytanie gwarancyjne, które urządzenie trafiło gdzie.",
+  "hvac.ops.label": "Dla biura",
+  "hvac.ops.h2": "Zdjęcia, które same układają się przy zleceniu.",
+  "hvac.ops1.title": "Każdy technik, każde zlecenie, jedno konto",
+  "hvac.ops1.body":
+    "Zdjęcia same trafiają do zlecenia, więc biuro nie goni za nimi po sześciu galeriach pod koniec tygodnia.",
+  "hvac.ops2.title": "Dzień pracy na mapie",
+  "hvac.ops2.body":
+    "Zobacz, które adresy są udokumentowane, a które zlecenie nie ma jeszcze żadnego zdjęcia — geograficznie, a nie jako lista.",
+  "hvac.ops3.title": "Dokumentacja serwisowa, która się eksportuje",
+  "hvac.ops3.body":
+    "PDF do teczki klienta, Excel dla biura, ZIP dla zarządcy, który chce oryginały — każde zdjęcie z wydrukowaną godziną, adresem i kodem.",
+  "hvac.team.label": "Dla całego zespołu",
+  "hvac.team.h2": "Cena i uprawnienia skrojone pod brygadę serwisową.",
+  "hvac.team1.title": "Stanowiska w cenie, nie na liczniku",
+  "hvac.team1.body":
+    "Dodaj cały zespół serwisowy w ramach płaskiego planu, zamiast płacić od technika — dokumentowanie zlecenia nigdy nie kosztuje więcej, bo kogoś zatrudniłeś.",
+  "hvac.team2.title": "Role pasujące do firmy serwisowej",
+  "hvac.team2.body":
+    "Dyspozytor widzi tablicę, technicy widzą swoje zlecenia, biuro widzi dokumentację. Nikt nie potrzebuje całego systemu, żeby udokumentować jedno zlecenie.",
+  "hvac.team3.title": "Bezpłatnie do sprawdzenia na kolejnym zleceniu",
+  "hvac.team3.body":
+    "300 zweryfikowanych zdjęć miesięcznie bez opłat, z weryfikacją w zestawie. Tyle, by przejechać prawdziwy tydzień, zanim cokolwiek zdecydujesz.",
+  "hvac.faq.label": "Pytania",
+  "hvac.faq.h2": "Często zadawane pytania",
+  "hvac.cta.h2": "Udokumentuj kolejne zlecenie serwisowe jak należy",
+  "hvac.cta.body":
+    "Na zawsze bezpłatnie 300 zweryfikowanych zdjęć miesięcznie, bez karty. Plany płatne dodają zdjęcia bez limitu, Teamspace dla całej brygady i pełny zestaw eksportów.",
+  "hvac.cta.primary": "Pobierz aplikację",
+  "hvac.cta.secondary": "Zobacz plany i ceny",
+  "hvac.related.lead": "Powiązane:",
+  "hvac.related.gps": "jak działa kamera ze znacznikiem GPS i czasu",
+  "hvac.related.inspection": "zdjęcia z przeglądu nieruchomości",
+  "hvac.related.or": ", albo",
+  "hvac.related.pricing": "porównaj plany",
+  "hvac.disclaimer":
+    "Tylko dokumentacja — bez dyspozytorni, wycen i fakturowania, bez orzekania o gwarancji czy zgodności z przepisami.",
+  "hvac.faq.q1": "Po co w ogóle fotografować zlecenie serwisowe HVAC?",
+  "hvac.faq.a1":
+    "Bo dwie rzeczy najczęściej podważane później nie są techniczne. To czy technik przyjechał o godzinie ze zlecenia i w jakim stanie było urządzenie, zanim ktokolwiek go dotknął. Jedno i drugie zapisuje się na miejscu w sekundę, a miesiąc później prawie nie da się tego odtworzyć z pamięci i galerii zdjęć.",
+  "hvac.faq.q2": "Czy to dowodzi, że mój technik był na miejscu?",
+  "hvac.faq.a2":
+    "Daje zdjęcie, którego godzinę zweryfikowano wobec naszych serwerów, a nie odczytano z telefonu technika, oznaczone współrzędnymi i rozwiązanym adresem miejsca wykonania, i zapieczętowane tak, że późniejsza edycja jest wykrywalna. Taki zapis znacznie trudniej zbyć niż zdjęcie ze znacznikiem czasu z telefonu. Dowodzi, że telefon z aplikacją zrobił zdjęcie w tym miejscu i czasie — nie dowodzi, kto go trzymał.",
+  "hvac.faq.q3": "Czy działa w maszynowni bez zasięgu?",
+  "hvac.faq.a3":
+    "Tak. Zdjęcia czekają w kolejce w telefonie i są pieczętowane, gdy dotrą na nasze serwery, a zapisana godzina to moment zrobienia zdjęcia. GPS odczytywany jest przy zdjęciu, więc maszynownia w piwnicy i tak oznacza lokalizację budynku, a nie miejsce, w którym telefon odzyskał zasięg.",
+  "hvac.faq.q4": "Czy zweryfikowane zdjęcie wystarczy do roszczenia gwarancyjnego u producenta?",
+  "hvac.faq.a4":
+    "To decyzja producenta, a każdy dostawca, który mówi inaczej, zgaduje. GeoCliks sprawia, że dokumentacja zdjęciowa jest konkretna i niezależnie sprawdzalna — zweryfikowana data montażu, numer seryjny z tabliczki, skończona praca — żeby rozmowa o gwarancji dotyczyła dokumentacji, a nie tego, czy w ogóle jesteś w stanie ją przedstawić.",
+  "hvac.faq.q5": "Czy zarządca nieruchomości zobaczy zdjęcia bez konta?",
+  "hvac.faq.a5":
+    "Tak. Wyślij link do zestawu albo pojedynczy kod zdjęcia, który wpisze na publicznej stronie weryfikacji. Bez aplikacji, bez logowania.",
+  "hvac.faq.q6": "Czy GeoCliks robi dyspozytornię, wyceny albo faktury?",
+  "hvac.faq.a6":
+    "Nie. To nie platforma do zarządzania serwisem w terenie i jej nie zastępuje — nie ma wycen, faktur ani planowania poza przypisywaniem zdjęć do zleceń. Obsługuje warstwę dokumentacji i jest zrobiony tak, by stał obok tego, czym już prowadzisz zlecenia.",
 };

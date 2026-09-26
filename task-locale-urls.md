@@ -221,3 +221,37 @@ Regressions checked both directions: `/es/proof-of-delivery` still Spanish, and
 `/es/hvac-photo-documentation` — still untranslated — still falls back to the
 English head and canonicalizes to the bare English URL. tsc clean, lint 9 errors
 = unchanged baseline.
+
+## `/hvac-photo-documentation`, translated
+
+Third page, same pattern. 66 keys per catalog (52 page strings, 12 FAQ, 2
+head-copy), component reads everything through `t()`, the four card/step arrays
+carry `TKey`s instead of literals, `PAGE_SCHEMA` FAQ in
+`{ keys: { question, answer } }` form so the visible copy and the `FAQPage`
+markup stay one string, path added to `LOCALIZED_PATHS`, `LOCALIZED_SEO` row
+pointing at `seo.hvac.title` / `seo.hvac.description`. Sitemap 129 -> 139 URLs.
+
+Verified after hydration on all eleven — localized `<title>`, prefixed
+canonical, `canonical == og:url`, `<h1>` and the first FAQ heading in the right
+language:
+
+| URL | `<h1>` reads | canonical |
+|---|---|---|
+| `/hvac-photo-documentation` | English | `/hvac-photo-documentation` |
+| `/es/…` | Spanish | `/es/hvac-photo-documentation` |
+| `/fr-ca/…` | French | `/fr-ca/hvac-photo-documentation` |
+| `/pt-br/…`, `/de/…`, `/it/…` | match | prefixed |
+| `/zh/…` | "能证明上门服务确实发生过的暖通空调照片记录" | `/zh/hvac-photo-documentation` |
+| `/vi/…` | "Tài liệu ảnh HVAC chứng minh lượt bảo trì…" | `/vi/hvac-photo-documentation` |
+| `/tl/…` | "Dokumentasyong litrato ng HVAC…" | `/tl/hvac-photo-documentation` |
+| `/ar/…` | "توثيق بالصور لأعمال التكييف…" | `/ar/hvac-photo-documentation` |
+| `/pl/…` | "Dokumentacja zdjęciowa HVAC…" | `/pl/hvac-photo-documentation` |
+
+Regressions: `/es/proof-of-delivery` still Spanish; `/es/property-inspection-photos`
+— next in the queue, still untranslated — still serves the English head and
+canonicalizes to the bare English URL. tsc clean, lint 9 errors = baseline.
+
+One thing worth remembering for the rest of the queue: inserting the new
+`seo.*` rows after an anchor key breaks the file whenever that anchor's value
+sits on the following line, which is how the catalogs format longer strings.
+The insert has to land after the end of the value, not after the key.

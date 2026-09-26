@@ -61,6 +61,9 @@ export const it: Catalog = {
   "seo.gps.title": "Fotocamera timestamp GPS — ora e luogo verificati",
   "seo.gps.description":
     "Una fotocamera con timestamp che verifica l'ora sulla rete invece che sull'orologio del telefono e imprime coordinate GPS e indirizzo civico in ogni foto.",
+  "seo.hvac.title": "Documentazione foto HVAC e prova dell'intervento",
+  "seo.hvac.description":
+    "Dimostra che il tecnico è arrivato, in che stato era l'impianto e che l'installazione è finita: ora verificata, GPS e indirizzo su ogni foto.",
   "signin.subtitle": "Documentazione fotografica a prova di manomissione per squadre sul campo.",
   "signin.apple": "Continua con Apple",
   "signin.google": "Continua con Google",
@@ -1631,4 +1634,91 @@ export const it: Catalog = {
   "gps.related.roofing": "coperture",
   "gps.related.join": "e",
   "gps.related.delivery": "consegne",
+  "hvac.eyebrow": "Documentazione fotografica HVAC",
+  "hvac.h1": "Documentazione fotografica HVAC che prova che l'intervento c'è stato",
+  "hvac.sub":
+    "Arrivo, stato dell'impianto e lavoro finito: ogni scatto con ora verificata dalla rete, GPS e indirizzo, e controllabile da chi paga.",
+  "hvac.why.label": "Perché i team di assistenza la cercano",
+  "hvac.why.h2": "La discussione non è quasi mai sul refrigerante. È sulla visita.",
+  "hvac.why.intro":
+    "Un cliente contesta il diritto di chiamata perché dice che non è venuto nessuno. Un amministratore chiede quanto tempo il tecnico sia stato davvero nell'edificio. Chi paga la garanzia vuole sapere com'era l'unità prima della riparazione e quale matricola è stata installata. A tutto questo rispondono quattro foto scattate quel giorno, ma solo se orari e indirizzi di quelle foto vengono da qualcosa che non è il telefono del tecnico.",
+  "hvac.how.label": "Come funziona",
+  "hvac.how.h2": "Quattro scatti, e il tecnico li fa mentre lavora.",
+  "hvac.step1.title": "Scatta all'arrivo",
+  "hvac.step1.body":
+    "Una foto dell'unità e dell'indirizzo quando il tecnico arriva sul posto. L'ora viene dalla rete, così l'arrivo è a verbale prima che inizi qualsiasi lavoro.",
+  "hvac.step2.title": "Documenta lo stato",
+  "hvac.step2.body":
+    "Targhetta, modello e matricola, il guasto, i manometri. Ogni scatto porta ora verificata, coordinate e indirizzo.",
+  "hvac.step3.title": "Scatta il lavoro finito",
+  "hvac.step3.body":
+    "L'installazione o la riparazione completata, abbinata alla foto del prima perché il cambiamento si veda e ogni metà porti la propria data verificata.",
+  "hvac.step4.title": "Invia la prova con la fattura",
+  "hvac.step4.body":
+    "Allega i codici foto. Il cliente, l'amministratore o chi paga la garanzia può verificare qualsiasi scatto su una pagina pubblica, senza account.",
+  "hvac.call.label": "Fatto per l'intervento",
+  "hvac.call.h2": "Tre prove che chiudono le contestazioni più comuni.",
+  "hvac.call1.title": "Arrivo e uscita, verificati",
+  "hvac.call1.body":
+    "La contestazione ricorrente nell'assistenza è se il tecnico si è presentato e quanto è rimasto. Due scatti con ora verificata dal server rispondono senza un foglio ore che qualcuno debba credere.",
+  "hvac.call2.title": "Letture fotografate sul posto",
+  "hvac.call2.body":
+    "Una lettura del manometro digitata in un modulo è un'affermazione. La stessa lettura fotografata con ora verificata e l'indirizzo del sito allegato è una prova.",
+  "hvac.call3.title": "Targhette, matricole e cosa è stato installato",
+  "hvac.call3.body":
+    "Modello e matricola acquisiti sul posto e sigillati, così la foto non può essere sostituita dopo. Utile il giorno in cui arriva una domanda di garanzia su quale unità è andata dove.",
+  "hvac.ops.label": "Per l'ufficio",
+  "hvac.ops.h2": "Foto che si archiviano da sole sull'intervento.",
+  "hvac.ops1.title": "Ogni tecnico, ogni chiamata, un solo account",
+  "hvac.ops1.body":
+    "Gli scatti si archiviano da soli sull'intervento, così l'ufficio non rincorre le foto in sei rullini diversi a fine settimana.",
+  "hvac.ops2.title": "La giornata su una mappa",
+  "hvac.ops2.body":
+    "Vedi quali indirizzi sono documentati e quale intervento non ha ancora nessuno scatto, geograficamente invece che come elenco.",
+  "hvac.ops3.title": "Registri di assistenza che si esportano",
+  "hvac.ops3.body":
+    "PDF per il fascicolo del cliente, Excel per l'ufficio, ZIP per l'amministratore che vuole gli originali: ogni foto stampata con ora, indirizzo e codice.",
+  "hvac.team.label": "Per tutta la squadra",
+  "hvac.team.h2": "Prezzi e permessi pensati per una squadra di assistenza.",
+  "hvac.team1.title": "Postazioni incluse, non a consumo",
+  "hvac.team1.body":
+    "Aggiungi tutta la squadra con un piano fisso invece di pagare per tecnico, così documentare un intervento non costa mai di più perché hai assunto.",
+  "hvac.team2.title": "Ruoli adatti a un'impresa di assistenza",
+  "hvac.team2.body":
+    "Chi smista vede la bacheca, i tecnici vedono i propri interventi, l'ufficio vede i registri. Nessuno ha bisogno di tutto il sistema per documentare un lavoro.",
+  "hvac.team3.title": "Da provare gratis al prossimo intervento",
+  "hvac.team3.body":
+    "300 scatti verificati al mese senza costi, verifica inclusa. Abbastanza per fare una settimana vera prima di decidere qualsiasi cosa.",
+  "hvac.faq.label": "Domande",
+  "hvac.faq.h2": "Domande frequenti",
+  "hvac.cta.h2": "Documenta bene il prossimo intervento",
+  "hvac.cta.body":
+    "Gratis per sempre con 300 scatti verificati al mese, senza carta. I piani a pagamento aggiungono scatti illimitati, Teamspace per tutta la squadra e tutte le esportazioni.",
+  "hvac.cta.primary": "Scarica l'app",
+  "hvac.cta.secondary": "Vedi piani e prezzi",
+  "hvac.related.lead": "Correlati:",
+  "hvac.related.gps": "come funziona la fotocamera con GPS e ora",
+  "hvac.related.inspection": "foto per i sopralluoghi immobiliari",
+  "hvac.related.or": ", oppure",
+  "hvac.related.pricing": "confronta i piani",
+  "hvac.disclaimer":
+    "Solo documentazione: nessuna gestione chiamate, preventivi o fatturazione, e nessuna valutazione di garanzia o conformità normativa.",
+  "hvac.faq.q1": "Perché fotografare un intervento HVAC?",
+  "hvac.faq.a1":
+    "Perché le due cose più contestate dopo non sono tecniche. Sono se il tecnico è arrivato all'ora indicata sul rapporto e in che stato era l'impianto prima che qualcuno lo toccasse. Entrambe si registrano in un attimo sul posto e sono quasi impossibili da ricostruire un mese dopo a memoria e con un rullino.",
+  "hvac.faq.q2": "Prova che il mio tecnico era sul posto?",
+  "hvac.faq.a2":
+    "Ti dà uno scatto la cui ora è stata verificata sui nostri server invece di essere letta dal telefono del tecnico, marcato con le coordinate e l'indirizzo risolto del luogo dello scatto e sigillato perché una modifica successiva sia rilevabile. È una prova molto più difficile da liquidare di una foto con l'ora del telefono. Dimostra che un telefono con l'app ha scattato in quel luogo e in quel momento: non può dimostrare chi lo teneva.",
+  "hvac.faq.q3": "Funziona in un locale tecnico senza segnale?",
+  "hvac.faq.a3":
+    "Sì. Gli scatti restano in coda sul telefono e vengono sigillati quando raggiungono i nostri server, e l'ora registrata è quella dello scatto. Il GPS si legge allo scatto, quindi un locale tecnico interrato marca comunque la posizione dell'edificio e non il punto in cui il telefono ha ripreso segnale.",
+  "hvac.faq.q4": "Una foto verificata basta per una richiesta di garanzia al produttore?",
+  "hvac.faq.a4":
+    "Lo decide il produttore, e qualsiasi fornitore che ti dica il contrario sta tirando a indovinare. Quello che fa GeoCliks è rendere la documentazione fotografica precisa e verificabile in modo indipendente — data di installazione verificata, la matricola sulla targhetta, il lavoro finito — così la conversazione sulla garanzia riguarda i documenti e non se sei in grado di produrne.",
+  "hvac.faq.q5": "Un amministratore può vedere le foto senza account?",
+  "hvac.faq.a5":
+    "Sì. Invia un link di condivisione per un set, o un singolo codice foto da inserire nella pagina pubblica di verifica. Nessuna app, nessun accesso.",
+  "hvac.faq.q6": "GeoCliks gestisce chiamate, preventivi o fatture?",
+  "hvac.faq.a6":
+    "No. Non è una piattaforma di field service management e non ne sostituisce una: niente preventivi, niente fatture e nessuna pianificazione oltre all'assegnazione degli scatti ai lavori. Si occupa del livello documentale ed è fatto per stare accanto a ciò che già usi per gestire gli interventi.",
 };

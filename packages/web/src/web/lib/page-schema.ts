@@ -302,36 +302,12 @@ export const PAGE_SCHEMA = {
   "/hvac-photo-documentation": {
     crumbs: [{ name: "HVAC Photo Documentation" }],
     faq: [
-    {
-      question: "Why photograph an HVAC service call at all?",
-      answer:
-        "Because the two things most often questioned afterwards are not technical. They are whether the technician arrived when the ticket says, and what condition the equipment was in before anyone touched it. Both are trivial to record at the time and nearly impossible to reconstruct a month later from memory and a camera roll.",
-    },
-    {
-      question: "Can this prove my technician was on site?",
-      answer:
-        "It gives you a capture whose time was verified against our servers rather than read from the technician's phone, stamped with the coordinates and resolved street address of where it was taken, and sealed so a later edit is detectable. That is a much harder record to wave away than a photo with a phone timestamp. It proves a phone running the app took a photo at that place and time — it cannot prove who was holding it.",
-    },
-    {
-      question: "Does it work in a mechanical room with no signal?",
-      answer:
-        "Yes. Captures queue on the phone and seal when they reach our servers, and the recorded time is the moment of capture. GPS is read at capture, so a basement plant room still stamps the building's location rather than wherever the phone reconnected.",
-    },
-    {
-      question: "Will a verified photo satisfy a manufacturer's warranty claim?",
-      answer:
-        "That is the manufacturer's call, and any vendor telling you otherwise is guessing. What GeoCliks does is make the photo record specific and independently checkable — verified install date, the serial on the nameplate, the finished work — so a warranty conversation is about the record rather than about whether you can produce one.",
-    },
-    {
-      question: "Can a property manager see the photos without an account?",
-      answer:
-        "Yes. Send a share link for a set, or a single photo code they can enter on the public verification page. No app, no sign-in.",
-    },
-    {
-      question: "Does GeoCliks do dispatch, quoting or invoicing?",
-      answer:
-        "No. It is not a field service management platform and does not replace one — there is no quoting, no invoicing and no scheduling beyond assigning captures to jobs. It handles the documentation layer, and it is built to sit alongside whatever you already use to run the calls.",
-    },
+      { keys: { question: "hvac.faq.q1", answer: "hvac.faq.a1" } },
+      { keys: { question: "hvac.faq.q2", answer: "hvac.faq.a2" } },
+      { keys: { question: "hvac.faq.q3", answer: "hvac.faq.a3" } },
+      { keys: { question: "hvac.faq.q4", answer: "hvac.faq.a4" } },
+      { keys: { question: "hvac.faq.q5", answer: "hvac.faq.a5" } },
+      { keys: { question: "hvac.faq.q6", answer: "hvac.faq.a6" } },
     ],
   },
   "/property-inspection-photos": {

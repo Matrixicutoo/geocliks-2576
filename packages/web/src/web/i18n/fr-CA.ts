@@ -61,6 +61,9 @@ export const frCA: Catalog = {
   "seo.gps.title": "Caméra GPS horodatée — Heure et lieu vérifiés",
   "seo.gps.description":
     "Une caméra horodatée qui vérifie l'heure auprès du réseau plutôt que de l'horloge du téléphone, et inscrit coordonnées GPS et adresse sur chaque photo.",
+  "seo.hvac.title": "Documentation photo CVC et preuve d'appel de service",
+  "seo.hvac.description":
+    "Prouvez que le technicien est venu, l'état de l'équipement et la fin de l'installation : heure vérifiée, GPS et adresse sur chaque photo de service.",
   "signin.subtitle": "Documentation photo infalsifiable pour les équipes de terrain.",
   "signin.apple": "Continuer avec Apple",
   "signin.google": "Continuer avec Google",
@@ -1650,4 +1653,92 @@ export const frCA: Catalog = {
   "gps.related.roofing": "toiture",
   "gps.related.join": "et",
   "gps.related.delivery": "livraison",
+  "hvac.eyebrow": "Documentation photo CVC",
+  "hvac.h1": "Une documentation photo CVC qui prouve que l'appel de service a eu lieu",
+  "hvac.sub":
+    "Arrivée, état de l'équipement et travail terminé : chaque prise porte l'heure vérifiée par le réseau, le GPS et l'adresse civique, vérifiable par le payeur.",
+  "hvac.why.label": "Pourquoi les équipes de service cherchent ça",
+  "hvac.why.h2": "Le litige ne porte presque jamais sur le frigorigène. Il porte sur la visite.",
+  "hvac.why.intro":
+    "Un client conteste les frais de déplacement parce qu'il affirme que personne n'est venu. Un gestionnaire d'immeuble demande combien de temps le technicien est resté sur place. Le payeur de la garantie veut savoir de quoi l'appareil avait l'air avant la réparation et quel numéro de série a été installé. Tout cela se règle avec quatre photos prises le jour même — à condition que les heures et les adresses de ces photos viennent d'ailleurs que du téléphone du technicien.",
+  "hvac.how.label": "Comment ça marche",
+  "hvac.how.h2": "Quatre prises, et le technicien les fait en travaillant.",
+  "hvac.step1.title": "Prise à l'arrivée",
+  "hvac.step1.body":
+    "Une photo de l'appareil et de l'adresse au moment où le technicien arrive. L'heure vient du réseau, donc l'arrivée est consignée avant que le travail commence.",
+  "hvac.step2.title": "Documentez l'état",
+  "hvac.step2.body":
+    "Plaque signalétique, modèle et numéro de série, la panne, les manomètres. Chaque prise porte l'heure vérifiée, les coordonnées et l'adresse civique.",
+  "hvac.step3.title": "Photographiez le travail terminé",
+  "hvac.step3.body":
+    "L'installation ou la réparation achevée, jumelée à la photo d'avant pour que le changement soit visible et que chaque moitié porte sa propre date vérifiée.",
+  "hvac.step4.title": "Envoyez la preuve avec la facture",
+  "hvac.step4.body":
+    "Joignez les codes de photo. Le client, le gestionnaire d'immeuble ou le payeur de la garantie peut vérifier n'importe quelle prise sur une page publique, sans compte.",
+  "hvac.call.label": "Conçu pour l'appel de service",
+  "hvac.call.h2": "Trois preuves qui closent les litiges courants.",
+  "hvac.call1.title": "Arrivée et départ, vérifiés",
+  "hvac.call1.body":
+    "Le litige récurrent en service, c'est de savoir si le technicien s'est présenté et combien de temps il est resté. Deux prises dont l'heure est vérifiée au serveur y répondent sans feuille de temps que quelqu'un doit croire.",
+  "hvac.call2.title": "Des relevés photographiés sur place",
+  "hvac.call2.body":
+    "Un relevé de manomètre saisi dans un formulaire est une affirmation. Le même relevé photographié avec une heure vérifiée et l'adresse du site est une preuve.",
+  "hvac.call3.title": "Plaques, numéros de série et ce qui a été installé",
+  "hvac.call3.body":
+    "Modèle et numéro de série captés sur place et scellés, donc la photo ne peut pas être remplacée plus tard. Utile le jour où une question de garantie arrive sur quel appareil est allé où.",
+  "hvac.ops.label": "Pour le bureau",
+  "hvac.ops.h2": "Des photos qui se classent elles-mêmes avec le bon appel.",
+  "hvac.ops1.title": "Chaque technicien, chaque appel, un seul compte",
+  "hvac.ops1.body":
+    "Les prises se classent d'elles-mêmes avec l'appel, donc le bureau ne court pas après des photos dans six pellicules à la fin de la semaine.",
+  "hvac.ops2.title": "La journée sur une carte",
+  "hvac.ops2.body":
+    "Voyez quelles adresses ont été documentées et quel appel n'a encore aucune prise, de façon géographique plutôt qu'en liste.",
+  "hvac.ops3.title": "Des dossiers de service qui s'exportent",
+  "hvac.ops3.body":
+    "PDF pour le dossier client, Excel pour le bureau, ZIP pour le gestionnaire qui veut les originaux — chaque photo imprimée avec son heure, son adresse et son code.",
+  "hvac.team.label": "Pour toute l'équipe",
+  "hvac.team.h2": "Un prix et des permissions faits pour une équipe de service.",
+  "hvac.team1.title": "Les sièges sont inclus, pas facturés",
+  "hvac.team1.body":
+    "Ajoutez toute l'équipe de service sur un forfait fixe au lieu de payer par technicien : documenter un appel ne coûte jamais plus parce que vous avez embauché.",
+  "hvac.team2.title": "Des rôles adaptés à une entreprise de service",
+  "hvac.team2.body":
+    "Les répartiteurs voient le tableau, les techniciens voient leurs appels, le bureau voit les dossiers. Personne n'a besoin de tout le système pour documenter un travail.",
+  "hvac.team3.title": "Gratuit à essayer au prochain appel",
+  "hvac.team3.body":
+    "300 prises vérifiées par mois sans frais, vérification incluse. De quoi faire une vraie semaine avant de décider quoi que ce soit.",
+  "hvac.faq.label": "Questions",
+  "hvac.faq.h2": "Foire aux questions",
+  "hvac.cta.h2": "Documentez le prochain appel de service comme il faut",
+  "hvac.cta.body":
+    "Gratuit pour toujours jusqu'à 300 prises vérifiées par mois, sans carte. Les forfaits payants ajoutent les prises illimitées, Teamspace pour toute l'équipe et tous les exports.",
+  "hvac.cta.primary": "Obtenir l'application",
+  "hvac.cta.secondary": "Voir les forfaits et les prix",
+  "hvac.related.lead": "À lire aussi :",
+  "hvac.related.gps": "comment fonctionne la caméra GPS horodatée",
+  "hvac.related.inspection": "photos d'inspection de propriété",
+  "hvac.related.or": ", ou",
+  "hvac.related.pricing": "comparez les forfaits",
+  "hvac.disclaimer":
+    "Documentation seulement — aucune répartition, soumission ou facturation, et aucune détermination de garantie ou de conformité au code.",
+  "hvac.faq.q1": "Pourquoi photographier un appel de service CVC ?",
+  "hvac.faq.a1":
+    "Parce que les deux choses les plus souvent remises en question après coup ne sont pas techniques. C'est de savoir si le technicien est arrivé à l'heure inscrite au billet, et dans quel état était l'équipement avant que quiconque y touche. Les deux se consignent en un instant sur place et sont presque impossibles à reconstituer un mois plus tard de mémoire et à partir d'une pellicule.",
+  "hvac.faq.q2": "Est-ce que ça prouve que mon technicien était sur place ?",
+  "hvac.faq.a2":
+    "Ça vous donne une prise dont l'heure a été vérifiée auprès de nos serveurs plutôt que lue sur le téléphone du technicien, marquée des coordonnées et de l'adresse civique résolue du lieu de la prise, et scellée pour qu'une modification ultérieure soit détectable. C'est une preuve bien plus difficile à écarter qu'une photo horodatée par le téléphone. Ça prouve qu'un téléphone exécutant l'application a pris une photo à cet endroit et à ce moment — ça ne prouve pas qui le tenait.",
+  "hvac.faq.q3": "Est-ce que ça fonctionne dans une salle mécanique sans signal ?",
+  "hvac.faq.a3":
+    "Oui. Les prises attendent sur le téléphone et sont scellées en atteignant nos serveurs, et l'heure retenue est celle de la prise. Le GPS est lu au moment de la prise, donc une salle mécanique au sous-sol marque quand même l'emplacement de l'immeuble et non l'endroit où le téléphone a retrouvé le réseau.",
+  "hvac.faq.q4":
+    "Une photo vérifiée suffira-t-elle pour une réclamation de garantie du fabricant ?",
+  "hvac.faq.a4":
+    "C'est au fabricant d'en décider, et tout fournisseur qui vous dit le contraire devine. Ce que GeoCliks fait, c'est rendre le dossier photo précis et vérifiable de façon indépendante — date d'installation vérifiée, numéro de série sur la plaque, travail terminé — pour que la discussion de garantie porte sur le dossier et non sur votre capacité à en produire un.",
+  "hvac.faq.q5": "Un gestionnaire d'immeuble peut-il voir les photos sans compte ?",
+  "hvac.faq.a5":
+    "Oui. Envoyez un lien de partage pour un ensemble, ou un seul code de photo qu'il saisit sur la page publique de vérification. Sans application, sans connexion.",
+  "hvac.faq.q6": "GeoCliks fait-il la répartition, les soumissions ou la facturation ?",
+  "hvac.faq.a6":
+    "Non. Ce n'est pas une plateforme de gestion de services sur le terrain et ça ne remplace pas la vôtre — aucune soumission, aucune facturation et aucune planification au-delà de l'affectation des prises aux travaux. Ça gère la couche documentation et c'est fait pour cohabiter avec ce que vous utilisez déjà pour faire rouler les appels.",
 };

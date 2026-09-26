@@ -69,6 +69,9 @@ export const en = {
   "seo.gps.title": "GPS Timestamp Camera App — Verified Time & Location",
   "seo.gps.description":
     "A timestamp camera that verifies the time against the network instead of the phone clock, and stamps GPS coordinates and street address into every photo.",
+  "seo.hvac.title": "HVAC Photo Documentation & Service Call Proof",
+  "seo.hvac.description":
+    "Prove the technician arrived, what the equipment looked like, and that the install was finished — verified time, GPS and address on every service photo.",
   "signin.subtitle": "Tamper-proof photo documentation for field teams.",
   "signin.apple": "Continue with Apple",
   "signin.google": "Continue with Google",
@@ -1621,6 +1624,93 @@ export const en = {
   "gps.related.roofing": "roofing",
   "gps.related.join": "and",
   "gps.related.delivery": "delivery",
+  "hvac.eyebrow": "HVAC photo documentation",
+  "hvac.h1": "HVAC Photo Documentation That Proves the Call Happened",
+  "hvac.sub":
+    "Arrival, condition and completed work — each capture stamped with network-verified time, GPS and street address, and checkable by whoever is paying.",
+  "hvac.why.label": "Why service teams look for this",
+  "hvac.why.h2": "The argument is almost never about the refrigerant. It's about the visit.",
+  "hvac.why.intro":
+    "A customer disputes a trip charge because they say nobody came. A property manager asks how long the technician was actually in the building. A warranty payer wants to know what the unit looked like before the repair and which serial went in. All of it is answerable in four photos taken on the day — but only if the times and addresses on those photos came from something other than the technician's own phone.",
+  "hvac.how.label": "How it works",
+  "hvac.how.h2": "Four captures, and the tech takes them as they work.",
+  "hvac.step1.title": "Capture on arrival",
+  "hvac.step1.body":
+    "A shot of the unit and the address when the tech reaches the site. Time comes from the network, so the arrival is on the record before any work starts.",
+  "hvac.step2.title": "Document the condition",
+  "hvac.step2.body":
+    "Nameplate, model and serial, the fault, the gauges. Each capture is stamped with verified time, coordinates and street address.",
+  "hvac.step3.title": "Capture the finished work",
+  "hvac.step3.body":
+    "The completed install or repair, paired against the before shot so the change is visible and both halves carry their own verified date.",
+  "hvac.step4.title": "Send proof with the invoice",
+  "hvac.step4.body":
+    "Attach the photo codes. The customer, the property manager or the warranty payer can verify any capture on a public page with no account.",
+  "hvac.call.label": "Built for the service call",
+  "hvac.call.h2": "Three records that end the common disputes.",
+  "hvac.call1.title": "Arrival and departure, verified",
+  "hvac.call1.body":
+    "The recurring service dispute is whether the tech showed up and how long they stayed. Two captures with server-verified times answer it without a timesheet anyone has to believe.",
+  "hvac.call2.title": "Readings photographed in place",
+  "hvac.call2.body":
+    "A gauge reading typed into a form is a claim. The same reading photographed with a verified time and the site address attached is a record.",
+  "hvac.call3.title": "Nameplates, serials and what was installed",
+  "hvac.call3.body":
+    "Model and serial captured on site, sealed so the photo cannot be swapped later. Useful the day a warranty question arrives about which unit went where.",
+  "hvac.ops.label": "For the office",
+  "hvac.ops.h2": "Photos that file themselves against the job.",
+  "hvac.ops1.title": "Every tech, every call, one account",
+  "hvac.ops1.body":
+    "Captures file themselves against the job, so the office is not chasing photos out of six camera rolls at the end of the week.",
+  "hvac.ops2.title": "The day's work on a map",
+  "hvac.ops2.body":
+    "See which addresses were documented and which call has no captures against it yet, geographically rather than as a list.",
+  "hvac.ops3.title": "Service records that export",
+  "hvac.ops3.body":
+    "PDF for the customer file, Excel for the office, ZIP for a property manager who wants the originals — each photo printed with its time, address and code.",
+  "hvac.team.label": "For the whole team",
+  "hvac.team.h2": "Priced and permissioned for a service crew.",
+  "hvac.team1.title": "Seats included, not metered",
+  "hvac.team1.body":
+    "Add the whole service team on a flat plan rather than paying per technician, so documenting a call never costs more because you hired.",
+  "hvac.team2.title": "Roles that fit a service business",
+  "hvac.team2.body":
+    "Dispatchers see the board, technicians see their own calls, the office sees the records. Nobody needs the whole system to document one job.",
+  "hvac.team3.title": "Free to try on the next call",
+  "hvac.team3.body":
+    "300 verified captures a month at no cost, with verification included. Enough to run a real week before deciding anything.",
+  "hvac.faq.label": "Questions",
+  "hvac.faq.h2": "Frequently asked",
+  "hvac.cta.h2": "Document the next service call properly",
+  "hvac.cta.body":
+    "Free forever for 300 verified captures a month, no card. Paid plans add unlimited captures, Teamspace for the whole crew and the full set of exports.",
+  "hvac.cta.primary": "Get the app",
+  "hvac.cta.secondary": "See plans and pricing",
+  "hvac.related.lead": "Related:",
+  "hvac.related.gps": "how the GPS timestamp camera works",
+  "hvac.related.inspection": "property inspection photos",
+  "hvac.related.or": ", or",
+  "hvac.related.pricing": "compare the plans",
+  "hvac.disclaimer":
+    "Documentation only — no dispatch, quoting or invoicing, and no warranty or code determination.",
+  "hvac.faq.q1": "Why photograph an HVAC service call at all?",
+  "hvac.faq.a1":
+    "Because the two things most often questioned afterwards are not technical. They are whether the technician arrived when the ticket says, and what condition the equipment was in before anyone touched it. Both are trivial to record at the time and nearly impossible to reconstruct a month later from memory and a camera roll.",
+  "hvac.faq.q2": "Can this prove my technician was on site?",
+  "hvac.faq.a2":
+    "It gives you a capture whose time was verified against our servers rather than read from the technician's phone, stamped with the coordinates and resolved street address of where it was taken, and sealed so a later edit is detectable. That is a much harder record to wave away than a photo with a phone timestamp. It proves a phone running the app took a photo at that place and time — it cannot prove who was holding it.",
+  "hvac.faq.q3": "Does it work in a mechanical room with no signal?",
+  "hvac.faq.a3":
+    "Yes. Captures queue on the phone and seal when they reach our servers, and the recorded time is the moment of capture. GPS is read at capture, so a basement plant room still stamps the building's location rather than wherever the phone reconnected.",
+  "hvac.faq.q4": "Will a verified photo satisfy a manufacturer's warranty claim?",
+  "hvac.faq.a4":
+    "That is the manufacturer's call, and any vendor telling you otherwise is guessing. What GeoCliks does is make the photo record specific and independently checkable — verified install date, the serial on the nameplate, the finished work — so a warranty conversation is about the record rather than about whether you can produce one.",
+  "hvac.faq.q5": "Can a property manager see the photos without an account?",
+  "hvac.faq.a5":
+    "Yes. Send a share link for a set, or a single photo code they can enter on the public verification page. No app, no sign-in.",
+  "hvac.faq.q6": "Does GeoCliks do dispatch, quoting or invoicing?",
+  "hvac.faq.a6":
+    "No. It is not a field service management platform and does not replace one — there is no quoting, no invoicing and no scheduling beyond assigning captures to jobs. It handles the documentation layer, and it is built to sit alongside whatever you already use to run the calls.",
 } as const;
 
 export type Catalog = Record<keyof typeof en, string>;

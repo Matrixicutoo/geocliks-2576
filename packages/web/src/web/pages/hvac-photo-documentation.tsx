@@ -18,6 +18,7 @@ import {
   LandingSteps,
 } from "../components/landing-page";
 import { pageFaq } from "../lib/page-schema";
+import { useLocale, type TKey } from "../lib/i18n";
 
 /**
  * Search landing page for "HVAC photo documentation" and its neighbours
@@ -36,155 +37,110 @@ import { pageFaq } from "../lib/page-schema";
  * manufacturer, and saying otherwise here would be a promise we cannot keep.
  */
 
-const STEPS = [
-  {
-    title: "Capture on arrival",
-    body: "A shot of the unit and the address when the tech reaches the site. Time comes from the network, so the arrival is on the record before any work starts.",
-  },
-  {
-    title: "Document the condition",
-    body: "Nameplate, model and serial, the fault, the gauges. Each capture is stamped with verified time, coordinates and street address.",
-  },
-  {
-    title: "Capture the finished work",
-    body: "The completed install or repair, paired against the before shot so the change is visible and both halves carry their own verified date.",
-  },
-  {
-    title: "Send proof with the invoice",
-    body: "Attach the photo codes. The customer, the property manager or the warranty payer can verify any capture on a public page with no account.",
-  },
+const STEPS: { title: TKey; body: TKey }[] = [
+  { title: "hvac.step1.title", body: "hvac.step1.body" },
+  { title: "hvac.step2.title", body: "hvac.step2.body" },
+  { title: "hvac.step3.title", body: "hvac.step3.body" },
+  { title: "hvac.step4.title", body: "hvac.step4.body" },
 ];
 
-const CALL_CARDS = [
-  {
-    icon: Clock,
-    title: "Arrival and departure, verified",
-    body: "The recurring service dispute is whether the tech showed up and how long they stayed. Two captures with server-verified times answer it without a timesheet anyone has to believe.",
-  },
-  {
-    icon: Gauge,
-    title: "Readings photographed in place",
-    body: "A gauge reading typed into a form is a claim. The same reading photographed with a verified time and the site address attached is a record.",
-  },
-  {
-    icon: BadgeCheck,
-    title: "Nameplates, serials and what was installed",
-    body: "Model and serial captured on site, sealed so the photo cannot be swapped later. Useful the day a warranty question arrives about which unit went where.",
-  },
+const CALL_CARDS: { icon: typeof Clock; title: TKey; body: TKey }[] = [
+  { icon: Clock, title: "hvac.call1.title", body: "hvac.call1.body" },
+  { icon: Gauge, title: "hvac.call2.title", body: "hvac.call2.body" },
+  { icon: BadgeCheck, title: "hvac.call3.title", body: "hvac.call3.body" },
 ];
 
-const OPS_CARDS = [
-  {
-    icon: Truck,
-    title: "Every tech, every call, one account",
-    body: "Captures file themselves against the job, so the office is not chasing photos out of six camera rolls at the end of the week.",
-  },
-  {
-    icon: MapPin,
-    title: "The day's work on a map",
-    body: "See which addresses were documented and which call has no captures against it yet, geographically rather than as a list.",
-  },
-  {
-    icon: FileStack,
-    title: "Service records that export",
-    body: "PDF for the customer file, Excel for the office, ZIP for a property manager who wants the originals — each photo printed with its time, address and code.",
-  },
+const OPS_CARDS: { icon: typeof Clock; title: TKey; body: TKey }[] = [
+  { icon: Truck, title: "hvac.ops1.title", body: "hvac.ops1.body" },
+  { icon: MapPin, title: "hvac.ops2.title", body: "hvac.ops2.body" },
+  { icon: FileStack, title: "hvac.ops3.title", body: "hvac.ops3.body" },
 ];
 
-const TEAM_CARDS = [
-  {
-    icon: Users,
-    title: "Seats included, not metered",
-    body: "Add the whole service team on a flat plan rather than paying per technician, so documenting a call never costs more because you hired.",
-  },
-  {
-    icon: ShieldCheck,
-    title: "Roles that fit a service business",
-    body: "Dispatchers see the board, technicians see their own calls, the office sees the records. Nobody needs the whole system to document one job.",
-  },
-  {
-    icon: BadgeCheck,
-    title: "Free to try on the next call",
-    body: "300 verified captures a month at no cost, with verification included. Enough to run a real week before deciding anything.",
-  },
+const TEAM_CARDS: { icon: typeof Clock; title: TKey; body: TKey }[] = [
+  { icon: Users, title: "hvac.team1.title", body: "hvac.team1.body" },
+  { icon: ShieldCheck, title: "hvac.team2.title", body: "hvac.team2.body" },
+  { icon: BadgeCheck, title: "hvac.team3.title", body: "hvac.team3.body" },
 ];
-
-const FAQ = pageFaq("/hvac-photo-documentation");
 
 export default function HvacPhotoDocumentation() {
+  const { t, locale } = useLocale();
+  const faq = pageFaq("/hvac-photo-documentation", locale);
+  const steps = STEPS.map((step) => ({ title: t(step.title), body: t(step.body) }));
+  const card = (item: { icon: typeof Clock; title: TKey; body: TKey }) => ({
+    icon: item.icon,
+    title: t(item.title),
+    body: t(item.body),
+  });
+
   return (
     <LandingPage
       path="/hvac-photo-documentation"
-      eyebrow="HVAC photo documentation"
-      h1="HVAC Photo Documentation That Proves the Call Happened"
-      sub="Arrival, condition and completed work — each capture stamped with network-verified time, GPS and street address, and checkable by whoever is paying."
+      eyebrow={t("hvac.eyebrow")}
+      h1={t("hvac.h1")}
+      sub={t("hvac.sub")}
     >
       <LandingSection
-        label="Why service teams look for this"
-        h2="The argument is almost never about the refrigerant. It's about the visit."
-        intro="A customer disputes a trip charge because they say nobody came. A property manager asks how long the technician was actually in the building. A warranty payer wants to know what the unit looked like before the repair and which serial went in. All of it is answerable in four photos taken on the day — but only if the times and addresses on those photos came from something other than the technician's own phone."
+        label={t("hvac.why.label")}
+        h2={t("hvac.why.h2")}
+        intro={t("hvac.why.intro")}
       />
 
-      <LandingSection label="How it works" h2="Four captures, and the tech takes them as they work.">
-        <LandingSteps steps={STEPS} />
+      <LandingSection label={t("hvac.how.label")} h2={t("hvac.how.h2")}>
+        <LandingSteps steps={steps} />
       </LandingSection>
 
-      <LandingSection
-        label="Built for the service call"
-        h2="Three records that end the common disputes."
-      >
-        <LandingCards items={CALL_CARDS} />
+      <LandingSection label={t("hvac.call.label")} h2={t("hvac.call.h2")}>
+        <LandingCards items={CALL_CARDS.map(card)} />
       </LandingSection>
 
-      <LandingSection label="For the office" h2="Photos that file themselves against the job.">
-        <LandingCards items={OPS_CARDS} />
+      <LandingSection label={t("hvac.ops.label")} h2={t("hvac.ops.h2")}>
+        <LandingCards items={OPS_CARDS.map(card)} />
       </LandingSection>
 
-      <LandingSection label="For the whole team" h2="Priced and permissioned for a service crew.">
-        <LandingCards items={TEAM_CARDS} />
+      <LandingSection label={t("hvac.team.label")} h2={t("hvac.team.h2")}>
+        <LandingCards items={TEAM_CARDS.map(card)} />
       </LandingSection>
 
-      <LandingSection label="Questions" h2="Frequently asked">
-        <LandingFaq entries={FAQ} />
+      <LandingSection label={t("hvac.faq.label")} h2={t("hvac.faq.h2")}>
+        <LandingFaq entries={faq} />
       </LandingSection>
 
       <LandingCta
-        h2="Document the next service call properly"
-        body="Free forever for 300 verified captures a month, no card. Paid plans add unlimited captures, Teamspace for the whole crew and the full set of exports."
-        primary={{ label: "Get the app", to: "/get-app" }}
-        secondary={{ label: "See plans and pricing", to: "/pricing" }}
+        h2={t("hvac.cta.h2")}
+        body={t("hvac.cta.body")}
+        primary={{ label: t("hvac.cta.primary"), to: "/get-app" }}
+        secondary={{ label: t("hvac.cta.secondary"), to: "/pricing" }}
       />
 
       <section className="border-b border-line">
         <div className="mx-auto max-w-[1180px] px-5 py-10">
           <p className="text-[13.5px] leading-relaxed text-fog">
-            Related:{" "}
+            {t("hvac.related.lead")}{" "}
             <Link
               to="/gps-timestamp-camera"
               className="font-semibold text-amber underline decoration-amber/40 underline-offset-4 hover:decoration-amber"
             >
-              how the GPS timestamp camera works
+              {t("hvac.related.gps")}
             </Link>
             ,{" "}
             <Link
               to="/property-inspection-photos"
               className="font-semibold text-amber underline decoration-amber/40 underline-offset-4 hover:decoration-amber"
             >
-              property inspection photos
+              {t("hvac.related.inspection")}
             </Link>
-            , or{" "}
+            {t("hvac.related.or")}{" "}
             <Link
               to="/pricing"
               className="font-semibold text-amber underline decoration-amber/40 underline-offset-4 hover:decoration-amber"
             >
-              compare the plans
+              {t("hvac.related.pricing")}
             </Link>
             .
           </p>
           <p className="mt-3 flex items-center gap-2 text-[13px] text-fog">
             <ShieldCheck className="size-4 shrink-0 text-amber" />
-            Documentation only — no dispatch, quoting or invoicing, and no warranty or code
-            determination.
+            {t("hvac.disclaimer")}
           </p>
         </div>
       </section>

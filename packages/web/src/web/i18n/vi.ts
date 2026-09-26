@@ -60,6 +60,9 @@ export const vi: Catalog = {
   "seo.gps.title": "Camera dấu thời gian GPS — giờ và vị trí xác thực",
   "seo.gps.description":
     "Camera dấu thời gian xác thực giờ với mạng thay vì tin đồng hồ điện thoại, và in toạ độ GPS cùng địa chỉ đường phố vào mọi tấm ảnh.",
+  "seo.hvac.title": "Tài liệu ảnh HVAC & bằng chứng lượt bảo trì",
+  "seo.hvac.description":
+    "Chứng minh thợ đã đến, thiết bị ở tình trạng nào và việc lắp đã xong — giờ xác thực, GPS và địa chỉ trên từng ảnh dịch vụ, khách tự kiểm tra được.",
   "signin.subtitle": "Hồ sơ ảnh chống giả mạo cho đội ngũ hiện trường.",
   "signin.apple": "Tiếp tục với Apple",
   "signin.google": "Tiếp tục với Google",
@@ -1604,4 +1607,91 @@ export const vi: Catalog = {
   "gps.related.roofing": "lợp mái",
   "gps.related.join": "và",
   "gps.related.delivery": "giao hàng",
+  "hvac.eyebrow": "Tài liệu ảnh HVAC",
+  "hvac.h1": "Tài liệu ảnh HVAC chứng minh lượt bảo trì đã thực sự diễn ra",
+  "hvac.sub":
+    "Lúc đến, tình trạng thiết bị và phần việc đã xong — mỗi ảnh đóng dấu giờ xác thực qua mạng, GPS và địa chỉ, ai trả tiền cũng tự kiểm tra được.",
+  "hvac.why.label": "Vì sao các nhóm dịch vụ tìm đến nó",
+  "hvac.why.h2": "Tranh cãi gần như không bao giờ về gas lạnh. Nó về chuyến đi.",
+  "hvac.why.intro":
+    "Khách hàng từ chối phí đi lại vì nói không có ai đến. Ban quản lý toà nhà hỏi thợ thực sự ở trong nhà bao lâu. Bên chi trả bảo hành muốn biết thiết bị trông thế nào trước khi sửa và số sê-ri nào đã được lắp vào. Tất cả đều trả lời được bằng bốn tấm ảnh chụp ngay hôm đó — nhưng chỉ khi giờ và địa chỉ trên những tấm ảnh đó đến từ thứ khác, không phải điện thoại của chính người thợ.",
+  "hvac.how.label": "Cách hoạt động",
+  "hvac.how.h2": "Bốn tấm ảnh, và thợ chụp ngay trong lúc làm.",
+  "hvac.step1.title": "Chụp khi vừa đến",
+  "hvac.step1.body":
+    "Một tấm về thiết bị và địa chỉ khi thợ tới nơi. Giờ lấy từ mạng, nên việc có mặt đã được ghi nhận trước khi bắt tay vào việc.",
+  "hvac.step2.title": "Ghi lại tình trạng",
+  "hvac.step2.body":
+    "Nhãn máy, mã và số sê-ri, chỗ hỏng, đồng hồ áp. Mỗi ảnh đóng dấu giờ đã xác thực, toạ độ và địa chỉ đường phố.",
+  "hvac.step3.title": "Chụp phần việc đã xong",
+  "hvac.step3.body":
+    "Bản lắp đặt hay sửa chữa hoàn tất, ghép cùng tấm trước để thấy rõ thay đổi, và mỗi nửa mang ngày xác thực riêng của nó.",
+  "hvac.step4.title": "Gửi bằng chứng kèm hoá đơn",
+  "hvac.step4.body":
+    "Kèm mã ảnh. Khách hàng, ban quản lý hay bên chi trả bảo hành đều kiểm tra được bất kỳ ảnh nào trên trang công khai, không cần tài khoản.",
+  "hvac.call.label": "Làm cho lượt bảo trì",
+  "hvac.call.h2": "Ba bản ghi kết thúc những tranh cãi thường gặp.",
+  "hvac.call1.title": "Giờ đến và giờ đi, đã xác thực",
+  "hvac.call1.body":
+    "Tranh cãi lặp lại trong dịch vụ là thợ có đến không và ở bao lâu. Hai tấm ảnh có giờ xác thực từ máy chủ trả lời được, không cần bảng công mà ai cũng phải tin.",
+  "hvac.call2.title": "Số đo được chụp ngay tại chỗ",
+  "hvac.call2.body":
+    "Số đồng hồ áp gõ vào biểu mẫu chỉ là lời nói. Cùng số đo đó chụp lại kèm giờ xác thực và địa chỉ hiện trường mới là bản ghi.",
+  "hvac.call3.title": "Nhãn máy, số sê-ri và thứ đã lắp",
+  "hvac.call3.body":
+    "Mã máy và số sê-ri chụp tại chỗ rồi niêm, nên ảnh không thể bị đổi về sau. Hữu ích đúng hôm có câu hỏi bảo hành về máy nào đã đi đâu.",
+  "hvac.ops.label": "Cho văn phòng",
+  "hvac.ops.h2": "Ảnh tự vào đúng công việc của nó.",
+  "hvac.ops1.title": "Mọi thợ, mọi lượt, một tài khoản",
+  "hvac.ops1.body":
+    "Ảnh tự xếp vào công việc, nên cuối tuần văn phòng không phải đi lùng ảnh trong sáu cuộn ảnh khác nhau.",
+  "hvac.ops2.title": "Việc trong ngày trên bản đồ",
+  "hvac.ops2.body":
+    "Xem địa chỉ nào đã có tài liệu và lượt nào chưa có ảnh nào, theo vị trí thay vì theo danh sách.",
+  "hvac.ops3.title": "Hồ sơ dịch vụ xuất được ra file",
+  "hvac.ops3.body":
+    "PDF cho hồ sơ khách, Excel cho văn phòng, ZIP cho ban quản lý muốn ảnh gốc — mỗi ảnh in kèm giờ, địa chỉ và mã.",
+  "hvac.team.label": "Cho cả nhóm",
+  "hvac.team.h2": "Giá và quyền phù hợp với một tổ dịch vụ.",
+  "hvac.team1.title": "Chỗ dùng đã gồm, không tính lẻ",
+  "hvac.team1.body":
+    "Thêm cả nhóm dịch vụ vào một gói cố định thay vì trả theo từng thợ, nên tuyển thêm người cũng không làm việc ghi nhận đắt hơn.",
+  "hvac.team2.title": "Vai trò vừa với một doanh nghiệp dịch vụ",
+  "hvac.team2.body":
+    "Người điều phối thấy bảng việc, thợ thấy lượt của mình, văn phòng thấy hồ sơ. Không ai cần cả hệ thống chỉ để ghi nhận một việc.",
+  "hvac.team3.title": "Dùng thử miễn phí ở lượt kế tiếp",
+  "hvac.team3.body":
+    "300 ảnh xác thực mỗi tháng miễn phí, gồm cả kiểm chứng. Đủ để chạy một tuần thật trước khi quyết định.",
+  "hvac.faq.label": "Câu hỏi",
+  "hvac.faq.h2": "Câu hỏi thường gặp",
+  "hvac.cta.h2": "Ghi nhận lượt bảo trì tới cho đúng",
+  "hvac.cta.body":
+    "Miễn phí mãi mãi 300 ảnh xác thực mỗi tháng, không cần thẻ. Gói trả phí thêm ảnh không giới hạn, Teamspace cho cả tổ và toàn bộ cách xuất file.",
+  "hvac.cta.primary": "Tải ứng dụng",
+  "hvac.cta.secondary": "Xem gói và giá",
+  "hvac.related.lead": "Liên quan:",
+  "hvac.related.gps": "camera đóng dấu GPS và giờ hoạt động thế nào",
+  "hvac.related.inspection": "ảnh kiểm tra bất động sản",
+  "hvac.related.or": ", hoặc",
+  "hvac.related.pricing": "so sánh các gói",
+  "hvac.disclaimer":
+    "Chỉ là lớp ghi nhận — không điều phối, báo giá hay xuất hoá đơn, và không kết luận về bảo hành hay tuân thủ quy chuẩn.",
+  "hvac.faq.q1": "Tại sao phải chụp ảnh một lượt bảo trì HVAC?",
+  "hvac.faq.a1":
+    "Vì hai điều bị chất vấn nhiều nhất về sau đều không mang tính kỹ thuật. Đó là thợ có đến vào giờ ghi trên phiếu hay không, và thiết bị ở tình trạng nào trước khi có ai chạm vào. Cả hai đều rất dễ ghi lại ngay lúc đó và gần như không thể dựng lại sau một tháng bằng ký ức với một cuộn ảnh.",
+  "hvac.faq.q2": "Cái này có chứng minh được thợ của tôi đã ở hiện trường?",
+  "hvac.faq.a2":
+    "Nó cho bạn một tấm ảnh có giờ được xác thực với máy chủ của chúng tôi thay vì đọc từ điện thoại của thợ, đóng dấu toạ độ và địa chỉ đường phố đã tra được của nơi chụp, và được niêm để một lần sửa sau đó có thể bị phát hiện. Bản ghi đó khó gạt đi hơn nhiều so với ảnh có dấu giờ của điện thoại. Nó chứng minh một điện thoại đang chạy ứng dụng đã chụp ảnh tại nơi đó, lúc đó — nó không chứng minh được ai đang giữ máy.",
+  "hvac.faq.q3": "Có dùng được trong phòng máy không có tín hiệu?",
+  "hvac.faq.a3":
+    "Có. Ảnh nằm xếp hàng trên điện thoại và được niêm khi tới máy chủ của chúng tôi, còn giờ ghi lại là đúng lúc chụp. GPS được đọc ngay khi chụp, nên phòng máy dưới tầng hầm vẫn đóng dấu vị trí toà nhà chứ không phải nơi điện thoại bắt lại mạng.",
+  "hvac.faq.q4": "Ảnh đã xác thực có đủ cho một yêu cầu bảo hành của nhà sản xuất?",
+  "hvac.faq.a4":
+    "Đó là quyết định của nhà sản xuất, và nhà cung cấp nào nói chắc hơn thế là đang đoán. Việc GeoCliks làm là khiến hồ sơ ảnh trở nên cụ thể và người khác tự kiểm tra được — ngày lắp đã xác thực, số sê-ri trên nhãn máy, phần việc hoàn tất — để cuộc trao đổi bảo hành nói về hồ sơ, chứ không phải về việc bạn có xuất trình được hồ sơ hay không.",
+  "hvac.faq.q5": "Ban quản lý toà nhà xem ảnh được mà không cần tài khoản?",
+  "hvac.faq.a5":
+    "Được. Gửi liên kết chia sẻ cho một bộ ảnh, hoặc một mã ảnh để họ nhập trên trang kiểm chứng công khai. Không cần ứng dụng, không cần đăng nhập.",
+  "hvac.faq.q6": "GeoCliks có làm điều phối, báo giá hay hoá đơn?",
+  "hvac.faq.a6":
+    "Không. Nó không phải nền tảng quản lý dịch vụ hiện trường và không thay thế một nền tảng như vậy — không báo giá, không hoá đơn và không lên lịch ngoài việc gán ảnh vào công việc. Nó lo lớp ghi nhận, và được làm để chạy song song với thứ bạn đang dùng để điều hành các lượt bảo trì.",
 };
