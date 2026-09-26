@@ -26,7 +26,12 @@ import { breadcrumbSchema, faqSchema } from "../lib/structured-data";
  *     and a comparison table with no date on it is a liability the moment they
  *     do. Re-check the rows and move the date when you touch this page.
  *
- * The GeoCliks column is drawn from `api/lib/plans.ts` and the product itself.
+ * The GeoCliks column is drawn from the product itself and from the live plan
+ * table — `billing.plans`, which is the DB rows an operator edits in
+ * /admin/plans, not the shipped seeds in `api/lib/plans.ts`. Those two drifted
+ * once already: the seeds still said $12/$50/$125 after the live prices moved to
+ * $7/$45/$105, and this page had copied the seeds. Read the prices off the
+ * running site, never off the seed file.
  */
 
 /** The day the CompanyCam column was last checked against their public site. */
@@ -93,7 +98,7 @@ const ROWS: Array<{ feature: string; detail?: string; us: Cell; them: Cell }> = 
     feature: "Pricing",
     us: {
       kind: "text",
-      note: "Flat monthly bands with seats included: $12 solo, $25 Business, $50 for 10 seats, $125 for 25. No per-seat charge.",
+      note: "Flat monthly bands with seats included: $7 solo, $25 Business, $45 for 10 seats, $105 for 25. No per-seat charge.",
     },
     them: {
       kind: "text",
@@ -111,7 +116,7 @@ const FAQ = [
   {
     question: "Is GeoCliks cheaper than CompanyCam?",
     answer:
-      "For most teams, yes, and the shape of the bill differs more than the number. CompanyCam prices per user on top of a plan minimum — from $63 a month for one user, plus $29 for each additional. GeoCliks charges a flat monthly price with the seats included: $12 for one person, $50 for ten, $125 for twenty-five. There is also a free plan that covers 300 verified photos a month.",
+      "For most teams, yes, and the shape of the bill differs more than the number. CompanyCam prices per user on top of a plan minimum — from $63 a month for one user, plus $29 for each additional. GeoCliks charges a flat monthly price with the seats included: $7 for one person, $45 for ten, $105 for twenty-five. There is also a free plan that covers 300 verified photos a month.",
   },
   {
     question: "Can I move my CompanyCam photo history into GeoCliks?",

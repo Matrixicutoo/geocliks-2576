@@ -122,7 +122,7 @@ export const DEFAULT_PLANS: Seed[] = [
   {
     id: "plus",
     name: "Plus",
-    priceCents: 1200,
+    priceCents: 700,
     period: "per month",
     tagline: "Unlimited verified photos and full-length video, for one person.",
     features: [
@@ -203,7 +203,7 @@ export const DEFAULT_PLANS: Seed[] = [
   {
     id: "crew10",
     name: "Crew 10",
-    priceCents: 5000,
+    priceCents: 4500,
     period: "per month",
     tagline: "Ten seats for a growing crew. Same flat bill every month.",
     features: [
@@ -242,7 +242,7 @@ export const DEFAULT_PLANS: Seed[] = [
   {
     id: "crew25",
     name: "Crew 25",
-    priceCents: 12500,
+    priceCents: 10500,
     period: "per month",
     tagline: "Twenty-five seats for multiple crews under one account.",
     features: [
