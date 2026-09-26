@@ -84,7 +84,12 @@ export function injectSeoIntoHtml(html: string, pathname: string): string {
   // is `/get-app`, so the SEO table, the structured data and the canonical are
   // all resolved from the bare path underneath the prefix.
   const { locale, path, prefixed } = splitLocalePath(pathname);
-  const seo = seoForPath(path);
+  // The language this URL actually renders in: a prefix only counts when the
+  // path behind it is translated. Head copy and structured data both key off
+  // it, so the title, the description and the FAQPage markup cannot disagree
+  // with the page or with each other.
+  const pageLocale = prefixed && isLocalizedPath(path) ? locale : "en";
+  const seo = seoForPath(path, pageLocale);
   let out = html;
 
   if (seo.noindex) {
@@ -163,12 +168,11 @@ export function injectSeoIntoHtml(html: string, pathname: string): string {
   // page, the landing pages, the Help Center — from `page-schema.ts`. The paths
   // they answer are disjoint, so no block is written twice.
   //
-  // The structured data is built in the language the page actually renders, so a
-  // Spanish page claims a Spanish FAQ. An untranslated path under a prefix still
-  // renders English — and canonicalizes to English above — so it gets English
-  // markup: the mismatch works in both directions.
-  const schemaLocale = prefixed && isLocalizedPath(path) ? locale : "en";
-  for (const block of [...jsonLdForPath(path), ...marketingJsonLd(path, schemaLocale)]) {
+  // Built in `pageLocale`, so a Spanish page claims a Spanish FAQ. An
+  // untranslated path under a prefix still renders English — and canonicalizes
+  // to English above — so it gets English markup: the mismatch is closed in
+  // both directions.
+  for (const block of [...jsonLdForPath(path), ...marketingJsonLd(path, pageLocale)]) {
     out = appendToHead(out, jsonLdScript(block, pathname));
   }
 

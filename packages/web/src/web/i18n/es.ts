@@ -51,6 +51,13 @@ export const es: Catalog = {
 
   "seo.help.title": "Centro de ayuda — GeoCliks",
   "seo.getApp.title": "Obtén la app GeoCliks — La prueba de que tu trabajo se hizo",
+  "seo.home.description":
+    "GeoCliks sella cada foto de campo con hora verificada en red, GPS y dirección, y la bloquea con un código. Exporta informes de cierre.",
+  "seo.getApp.description":
+    "Descarga la app GeoCliks para iOS y Android. Hora verificada en red, GPS y dirección en cada foto, a prueba de manipulaciones y gratis.",
+  "seo.pod.title": "App de prueba de entrega — Foto, GPS y hora verificada",
+  "seo.pod.description":
+    "Captura pruebas de entrega que nadie puede retrasar: hora verificada en red, GPS y dirección en cada foto, con un código que el remitente puede verificar.",
   "signin.subtitle": "Documentación fotográfica inalterable para equipos de campo.",
   "signin.apple": "Continuar con Apple",
   "signin.google": "Continuar con Google",

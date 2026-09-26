@@ -8,11 +8,15 @@
  *  - the dev-time integrity check in `../help/resolve.ts`, which fails the build
  *    when a help article ships without its own copy.
  *
- * English only, deliberately. A meta description is never shown to a visitor,
- * only to a crawler building a search snippet, and a crawler arrives with no
- * language preference and gets the default locale. Titles are localized for the
- * browser tab through `useT()` where a translated one exists; the copy here is
- * what the raw HTML carries.
+ * English is the default and the fallback. The copy here is what an unprefixed
+ * URL carries, and what any page with no translated head copy carries in every
+ * language.
+ *
+ * A translated page needs more than that. `/es/proof-of-delivery` renders in
+ * Spanish, so a Spanish `<title>` and description are what Google should build
+ * its snippet from — an English snippet over a Spanish page undoes most of what
+ * translating it was for. `LOCALIZED_SEO` below names the catalog keys for the
+ * paths that have them, and `seoForPath` takes the locale to resolve.
  *
  * House rules, from the SEO audit: titles at or under ~60 characters, so they
  * are not cut off in a result; descriptions 140–160, because Google truncates
@@ -20,6 +24,9 @@
  * unique, which is the whole reason this file exists — ~68 pages previously
  * shipped the home page's title and description.
  */
+
+import type { LocaleCode } from "../../api/lib/locales";
+import { type TKey, translate } from "./catalogs";
 
 /** Canonical origin. No trailing slash — every helper here appends its own path. */
 export const SITE_URL = "https://geocliks.com";
@@ -68,9 +75,9 @@ export const PAGE_SEO = {
       "Setup guides, troubleshooting and how-tos for GeoCliks: getting started, the mobile app, Teamspace, delivery routes, plans and billing.",
   },
 
-  // Search-landing pages. English only, like the legal pages: they exist to
-  // answer English commercial queries, and a translated one would compete with
-  // itself in the same result set.
+  // Search-landing pages. The copy here is the English row; a page that has
+  // been translated also has a `LOCALIZED_SEO` entry below, and its ten other
+  // titles and descriptions live in the catalogs with the rest of its copy.
   "/construction-photo-documentation": {
     title: "Construction Photo Documentation Software | GeoCliks",
     description:
@@ -170,6 +177,24 @@ export const PAGE_SEO = {
       "How to delete your GeoCliks account and its data from the app or the website, what is removed, and what is kept.",
   },
 } satisfies Record<string, RouteSeoCopy>;
+
+/**
+ * Head copy in the other ten languages, for the paths that have it.
+ *
+ * A path appears here once its page is translated, alongside its entry in
+ * `LOCALIZED_PATHS` — the same rule, for the same reason: a Spanish title on a
+ * page that renders English would describe something the visitor never sees.
+ *
+ * Keys rather than strings, so the eleven values live in the eleven catalogs
+ * with the rest of the page's copy and the missing-key typecheck covers them
+ * too. English still resolves from `PAGE_SEO` above, so the unprefixed URL is
+ * untouched by anything here.
+ */
+export const LOCALIZED_SEO: Record<string, { title: TKey; description: TKey }> = {
+  "/": { title: "seo.home.title", description: "seo.home.description" },
+  "/get-app": { title: "seo.getApp.title", description: "seo.getApp.description" },
+  "/proof-of-delivery": { title: "seo.pod.title", description: "seo.pod.description" },
+};
 
 /**
  * Help Center copy, keyed the way the content catalog keys itself: a category is
@@ -600,15 +625,29 @@ export interface ResolvedRouteSeo extends Partial<RouteSeoCopy> {
  * marketing table first, then `/help/:category/:slug` and `/help/:category`,
  * then `/blog/:slug`.
  *
+ * `locale` is the language the page will render in. A path with translated head
+ * copy returns it; everything else returns English, which is the right answer
+ * for an unprefixed URL and the only honest one for a page whose body is still
+ * English.
+ *
  * An unknown path comes back with no copy at all rather than a guess, which
  * leaves the sitewide defaults in `index.html` in place. Private paths come
  * back `noindex` with no copy — those pages write their own titles once the app
  * boots, and a crawler only needs to be told to stay away.
  */
-export function seoForPath(pathname: string): ResolvedRouteSeo {
+export function seoForPath(pathname: string, locale: LocaleCode = "en"): ResolvedRouteSeo {
   const path = normalize(pathname);
 
   if (isPrivatePath(path)) return { noindex: true };
+
+  const translated = locale === "en" ? undefined : LOCALIZED_SEO[path];
+  if (translated) {
+    return {
+      title: translate(locale, translated.title),
+      description: translate(locale, translated.description),
+      noindex: false,
+    };
+  }
 
   const page = (PAGE_SEO as Record<string, RouteSeoCopy>)[path];
   if (page) return { ...page, noindex: false };

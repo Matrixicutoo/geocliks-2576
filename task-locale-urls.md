@@ -141,11 +141,53 @@ Verified against a running server:
 12 hreflang tags on each. tsc clean. Lint 9 errors = unchanged baseline. Sitemap
 109 -> 119 URLs, the ten new locale rows for this path.
 
-## Still open: the head copy is English on every locale URL
+## Done: the head copy speaks the page's language
 
-`seo-routes.ts` is English-only by design, so `/es/proof-of-delivery` returns a
-Spanish page with an English `<title>` and `<meta description>`. Google builds
-the snippet from those, so a Spanish result would read in English — which undoes
-much of what the translation is for. Fixing it means title + description keys per
-page per locale (2 x 11 per page), and it should ride along with each page's
-translation commit rather than becoming a separate pass.
+`seo-routes.ts` keeps English as the default and the fallback, and a new
+`LOCALIZED_SEO` table names the catalog keys for the paths that have translated
+head copy — `/`, `/get-app` and `/proof-of-delivery` today, the same three in
+`LOCALIZED_PATHS`. `seoForPath(path, locale)` resolves them; English still comes
+from `PAGE_SEO`, so every unprefixed URL is untouched.
+
+Four keys per catalog, 44 in total: `seo.home.description`,
+`seo.getApp.description`, `seo.pod.title`, `seo.pod.description`. The English
+values are the `PAGE_SEO` rows verbatim, and `seo.home.title` / `seo.getApp.title`
+already existed. House rules held: titles at or under 60 characters, descriptions
+140-160.
+
+Both sides now read the one table. `seo-html.ts` resolves a single `pageLocale`
+that drives the title, the description and the FAQ markup together; `index.tsx`,
+`get-app.tsx` and `landing-page.tsx` call `seoForPath` with the locale from
+context, so the head React writes on mount is the head the response already
+carried instead of English replacing it.
+
+### Fixed along the way: a pre-existing canonical bug
+
+`useSeo` built the canonical from whatever path a caller passed, and callers pass
+the bare English route they are — `get-app.tsx` passes the literal `"/get-app"`.
+So the server sent `/es/get-app` with the right canonical and React overwrote it
+with `https://geocliks.com/get-app` on mount: ten translations pointing at the
+English page, for a crawler that runs JavaScript, which Googlebot does. Live
+since `/get-app` was translated and never noticed.
+
+`useSeo` now reads the locale off the address bar and puts the prefix back with
+`localizedPath`, which returns the bare path for anything untranslated — the same
+rule the server applies.
+
+Verified after hydration with headless Chrome, not just in the response HTML:
+
+| URL | `<title>` | canonical |
+|---|---|---|
+| `/proof-of-delivery` | English | `/proof-of-delivery` |
+| `/es/proof-of-delivery` | "App de prueba de entrega — Foto, GPS y hora verificada" | `/es/proof-of-delivery` |
+| `/ar/proof-of-delivery` | Arabic | `/ar/proof-of-delivery` |
+| `/pl/proof-of-delivery` | "Aplikacja potwierdzenia dostawy — zdjęcie, GPS" | `/pl/proof-of-delivery` |
+| `/es/get-app` | Spanish | `/es/get-app` |
+| `/es/` | Spanish | `/es` |
+| `/es/hvac-photo-documentation` (untranslated) | English | `/hvac-photo-documentation` |
+
+`og:url` matches the canonical on every row. tsc clean. Lint 9 errors = unchanged
+baseline.
+
+From here every page's translation commit also carries its two head-copy keys and
+its `LOCALIZED_SEO` row.

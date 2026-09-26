@@ -13,11 +13,11 @@ import {
 } from "lucide-react";
 import { Logo } from "../components/logo";
 import { LanguageSelect } from "../components/language-select";
-import { useT, type TKey } from "../lib/i18n";
+import { useLocale, useT, type TKey } from "../lib/i18n";
 import { useInviteInfo } from "../queries/team";
 import { SUPPORT_EMAIL } from "../lib/support";
 import { useSeo } from "../lib/seo";
-import { PAGE_SEO } from "../lib/seo-routes";
+import { PAGE_SEO, seoForPath } from "../lib/seo-routes";
 
 /**
  * Crew-facing app landing page — the QR destination printed on trucks, crew
@@ -151,14 +151,16 @@ function InviteBanner({ code }: { code: string }) {
 
 export default function GetApp() {
   const t = useT();
+  const { locale } = useLocale();
   const invite = new URLSearchParams(useSearch()).get("invite")?.trim() ?? "";
 
   // Canonical drops the "?invite=" parameter: every invite link is a separate
   // URL for the same page, and without this each one would be crawled and
   // indexed on its own — publishing the invite codes in the process.
+  const seo = seoForPath("/get-app", locale);
   useSeo({
-    title: t("seo.getApp.title"),
-    description: PAGE_SEO["/get-app"].description,
+    title: seo.title ?? PAGE_SEO["/get-app"].title,
+    description: seo.description,
     path: "/get-app",
   });
 

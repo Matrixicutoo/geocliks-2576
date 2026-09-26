@@ -51,6 +51,13 @@ export const tl: Catalog = {
 
   "seo.help.title": "Help Center — GeoCliks",
   "seo.getApp.title": "Kunin ang GeoCliks app — Patunay na natapos ang trabaho",
+  "seo.home.description":
+    "Tinatatakan ng GeoCliks ang bawat larawan sa field ng oras na beripikado sa network, GPS at address, at nilo-lock ito sa isang code.",
+  "seo.getApp.description":
+    "Kunin ang GeoCliks app para sa iOS at Android. Oras na beripikado sa network, GPS at address sa bawat larawan, hindi mababago at libre.",
+  "seo.pod.title": "App ng patunay ng delivery — Larawan, GPS, oras",
+  "seo.pod.description":
+    "Kumuha ng patunay ng delivery na walang makakabago ng oras: oras na beripikado sa network, GPS at address sa bawat larawan, may code na macheck.",
   "signin.subtitle": "Hindi mapepekeng dokumentasyon ng larawan para sa mga field team.",
   "signin.apple": "Magpatuloy sa Apple",
   "signin.google": "Magpatuloy sa Google",

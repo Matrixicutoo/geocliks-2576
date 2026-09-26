@@ -50,6 +50,13 @@ export const zh: Catalog = {
 
   "seo.help.title": "帮助中心 — GeoCliks",
   "seo.getApp.title": "获取 GeoCliks 应用 — 证明你的工作已完成",
+  "seo.home.description":
+    "GeoCliks 为每张现场照片加上网络校验时间、GPS 与街道地址，并用唯一照片码锁定，随时导出完工报告。",
+  "seo.getApp.description":
+    "下载 iOS 与 Android 版 GeoCliks 应用。每张照片都带网络校验时间、GPS 和地址，无法篡改，拍摄免费。",
+  "seo.pod.title": "送达证明应用 — 照片、GPS 与校验时间",
+  "seo.pod.description":
+    "拍出无法回改时间的送达证明：每张签收照片都带网络校验时间、GPS 和街道地址，并附发货方可查验的照片码。",
   "signin.subtitle": "为现场团队提供防篡改的照片记录。",
   "signin.apple": "使用 Apple 继续",
   "signin.google": "使用 Google 继续",

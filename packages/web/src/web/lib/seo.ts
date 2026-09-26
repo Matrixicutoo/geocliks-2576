@@ -23,6 +23,28 @@ import { useEffect } from "react";
 // here because this module is the head's public entry point.
 export { SITE_URL, absoluteUrl } from "./seo-routes";
 import { absoluteUrl } from "./seo-routes";
+import { localizedPath, normalizePath, splitLocalePath } from "./locale-url";
+
+/**
+ * The canonical path for the URL currently open.
+ *
+ * A caller passes the bare English path it knows about — `get-app.tsx` passes
+ * `"/get-app"` from a literal — because that is the route it is, whatever
+ * language it is being read in. On `/es/get-app` that literal is the wrong
+ * canonical: it would point ten translations at the English page and drop them
+ * all from the index, and it would do it only after React mounts, contradicting
+ * the correct tag `seo-html.ts` already put in the response.
+ *
+ * So the locale comes from the address bar, and the path is put back under its
+ * prefix. `localizedPath` returns the bare path for anything not translated, so
+ * a page under a prefix it has no business being under still canonicalizes to
+ * English — the same rule the server applies.
+ */
+function canonicalPath(path?: string): string {
+  const here = window.location.pathname;
+  if (path === undefined) return normalizePath(here);
+  return localizedPath(path, splitLocalePath(here).locale);
+}
 
 export interface Seo {
   /** Full `<title>`. Write it per page — no suffix is appended. */
@@ -30,8 +52,10 @@ export interface Seo {
   /** ~155 characters. Google rewrites longer ones. */
   description?: string;
   /**
-   * Canonical path, site-relative. Defaults to the current pathname. Set it
-   * explicitly where several URLs render the same thing.
+   * Canonical path, site-relative and in its bare English form. Defaults to the
+   * current pathname. Set it explicitly where several URLs render the same
+   * thing. The locale prefix is added back from the address bar, so a route
+   * passes the one path it is rather than eleven.
    */
   path?: string;
   /** Open Graph image, site-relative. Defaults to the sitewide card. */
@@ -151,7 +175,7 @@ export function useSeo(seo: Seo): void {
       document.title = previousTitle;
     });
 
-    const url = absoluteUrl(path ?? window.location.pathname);
+    const url = absoluteUrl(canonicalPath(path));
     undo.push(setCanonical(url));
     undo.push(setMeta(TAGS.ogUrl, url));
 

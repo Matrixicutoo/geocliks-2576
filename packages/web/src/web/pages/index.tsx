@@ -18,12 +18,12 @@ import {
   Truck,
   Bell,
 } from "lucide-react";
-import { type TKey, useT } from "../lib/i18n";
+import { type TKey, useLocale, useT } from "../lib/i18n";
 import { SiteFooter } from "../components/site-footer";
 import { SiteNav } from "../components/site-nav";
 import { scrollSiteToId } from "../lib/site-scroll";
 import { useSeo } from "../lib/seo";
-import { PAGE_SEO } from "../lib/seo-routes";
+import { PAGE_SEO, seoForPath } from "../lib/seo-routes";
 
 const INDUSTRIES: TKey[] = [
   "industry.construction",
@@ -700,15 +700,17 @@ function Pricing() {
 }
 
 export default function Index() {
-  const tSeo = useT();
+  const { locale } = useLocale();
   const [, navigate] = useLocation();
   // Canonical is pinned to "/" rather than taken from the current pathname, so a
-  // visitor landing on any "/#section" link still resolves to the one home-page URL.
-  useSeo({
-    title: tSeo("seo.home.title"),
-    description: PAGE_SEO["/"].description,
-    path: "/",
-  });
+  // visitor landing on any "/#section" link still resolves to the one home-page
+  // URL — `useSeo` puts the locale prefix back on it.
+  //
+  // Title and description both come from `seoForPath`, the same table the server
+  // injector reads, so the head this mount writes is the head the response
+  // already carried rather than an English one in its place.
+  const seo = seoForPath("/", locale);
+  useSeo({ title: seo.title ?? PAGE_SEO["/"].title, description: seo.description, path: "/" });
 
   // The marketing site is always light, whatever a signed-in member picked for
   // the app shell on this device. Restore their choice when they leave `/`.

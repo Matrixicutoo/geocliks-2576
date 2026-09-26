@@ -50,6 +50,13 @@ export const de: Catalog = {
 
   "seo.help.title": "Hilfe-Center — GeoCliks",
   "seo.getApp.title": "GeoCliks-App holen — Der Beweis, dass Ihre Arbeit erledigt wurde",
+  "seo.home.description":
+    "GeoCliks versieht jedes Feldfoto mit netzwerkverifizierter Zeit, GPS und Adresse und sperrt es mit einem Code. Abschlussberichte exportieren.",
+  "seo.getApp.description":
+    "GeoCliks-App für iOS und Android laden. Netzwerkverifizierte Zeit, GPS und Adresse auf jedem Foto, fälschungssicher und kostenlos aufnehmen.",
+  "seo.pod.title": "Liefernachweis-App — Foto, GPS und geprüfte Zeit",
+  "seo.pod.description":
+    "Liefernachweise, die niemand zurückdatieren kann: netzwerkverifizierte Zeit, GPS und Adresse auf jedem Foto, mit Code zur Prüfung durch den Versender.",
   "signin.subtitle": "Fälschungssichere Fotodokumentation für Außendienstteams.",
   "signin.apple": "Mit Apple fortfahren",
   "signin.google": "Mit Google fortfahren",

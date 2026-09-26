@@ -50,6 +50,13 @@ export const vi: Catalog = {
 
   "seo.help.title": "Trung tâm trợ giúp — GeoCliks",
   "seo.getApp.title": "Tải ứng dụng GeoCliks — Bằng chứng công việc đã hoàn thành",
+  "seo.home.description":
+    "GeoCliks đóng dấu thời gian xác thực qua mạng, GPS và địa chỉ lên mọi ảnh hiện trường, rồi khóa bằng mã. Xuất báo cáo hoàn công.",
+  "seo.getApp.description":
+    "Tải ứng dụng GeoCliks cho iOS và Android. Thời gian xác thực qua mạng, GPS và địa chỉ trên mọi ảnh, không thể sửa và miễn phí.",
+  "seo.pod.title": "Ứng dụng bằng chứng giao hàng — Ảnh, GPS, giờ",
+  "seo.pod.description":
+    "Chụp bằng chứng giao hàng không ai sửa được giờ: thời gian xác thực qua mạng, GPS và địa chỉ trên mỗi ảnh, kèm mã để bên gửi kiểm tra.",
   "signin.subtitle": "Hồ sơ ảnh chống giả mạo cho đội ngũ hiện trường.",
   "signin.apple": "Tiếp tục với Apple",
   "signin.google": "Tiếp tục với Google",

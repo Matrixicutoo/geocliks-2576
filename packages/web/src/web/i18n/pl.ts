@@ -50,6 +50,13 @@ export const pl: Catalog = {
 
   "seo.help.title": "Centrum pomocy — GeoCliks",
   "seo.getApp.title": "Pobierz aplikację GeoCliks — Dowód, że praca została wykonana",
+  "seo.home.description":
+    "GeoCliks znaczy każde zdjęcie z terenu godziną potwierdzoną w sieci, GPS i adresem, a potem blokuje je kodem. Eksportuj raporty zamknięcia.",
+  "seo.getApp.description":
+    "Pobierz aplikację GeoCliks na iOS i Androida. Godzina potwierdzona w sieci, GPS i adres na każdym zdjęciu, bez możliwości edycji, bezpłatnie.",
+  "seo.pod.title": "Aplikacja potwierdzenia dostawy — zdjęcie, GPS",
+  "seo.pod.description":
+    "Rejestruj potwierdzenia dostawy, których nikt nie antydatuje: godzina z sieci, GPS i adres na każdym zdjęciu oraz kod do sprawdzenia przez nadawcę.",
   "signin.subtitle": "Odporna na manipulacje dokumentacja zdjęciowa dla ekip w terenie.",
   "signin.apple": "Kontynuuj z Apple",
   "signin.google": "Kontynuuj z Google",

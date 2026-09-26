@@ -5,7 +5,8 @@ import { SiteFooter } from "./site-footer";
 import { SiteNav } from "./site-nav";
 import { scrollSiteToTop } from "../lib/site-scroll";
 import { useSeo } from "../lib/seo";
-import { PAGE_SEO } from "../lib/seo-routes";
+import { PAGE_SEO, seoForPath } from "../lib/seo-routes";
+import { useLocale } from "../lib/i18n";
 
 /**
  * Chrome for the search landing pages — `/construction-photo-documentation` and
@@ -55,8 +56,13 @@ export function LandingPage({
   center?: boolean;
   children: React.ReactNode;
 }) {
-  const seo = PAGE_SEO[path];
-  useSeo({ title: seo.title, description: seo.description, path, jsonLd });
+  // Head copy in the language this page renders, falling back to English for a
+  // page that is not translated yet. The client has to agree with the tags
+  // `seo-html.ts` baked into the response, or the head would flip to English
+  // the moment React mounts.
+  const { locale } = useLocale();
+  const seo = seoForPath(path, locale);
+  useSeo({ title: seo.title ?? PAGE_SEO[path].title, description: seo.description, path, jsonLd });
 
   // The marketing site is always light, whatever a signed-in member picked for
   // the app shell on this device. Restore their choice when they leave.

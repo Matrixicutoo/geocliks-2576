@@ -59,6 +59,13 @@ export const en = {
   "seo.home.title": "GeoCliks — Tamper-Proof Photo Documentation for Field Teams",
   "seo.help.title": "GeoCliks Help — Guides for Solo Users, Teams & Drivers",
   "seo.getApp.title": "Download GeoCliks — GPS Timestamp Camera App",
+  "seo.home.description":
+    "GeoCliks stamps every field photo with network-verified time, GPS and street address, then locks it with a code. Export closeout reports.",
+  "seo.getApp.description":
+    "Get the GeoCliks app for iOS and Android. Network-verified time, GPS and address on every photo, tamper-proof and free to capture.",
+  "seo.pod.title": "Proof of Delivery App — Photo, GPS & Verified Time",
+  "seo.pod.description":
+    "Capture proof of delivery couriers can't backdate: network-verified time, GPS and street address on every drop photo, with a code the shipper can check.",
   "signin.subtitle": "Tamper-proof photo documentation for field teams.",
   "signin.apple": "Continue with Apple",
   "signin.google": "Continue with Google",

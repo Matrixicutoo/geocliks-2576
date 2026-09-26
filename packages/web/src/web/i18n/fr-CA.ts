@@ -51,6 +51,13 @@ export const frCA: Catalog = {
 
   "seo.help.title": "Centre d'aide — GeoCliks",
   "seo.getApp.title": "Obtenez l'application GeoCliks — La preuve que votre travail a été fait",
+  "seo.home.description":
+    "GeoCliks horodate chaque photo de terrain avec une heure vérifiée par le réseau, le GPS et l'adresse, puis la verrouille avec un code.",
+  "seo.getApp.description":
+    "Obtenez l'application GeoCliks pour iOS et Android. Heure vérifiée par le réseau, GPS et adresse sur chaque photo, inviolable et gratuite.",
+  "seo.pod.title": "Appli de preuve de livraison — Photo, GPS et heure",
+  "seo.pod.description":
+    "Captez des preuves de livraison impossibles à antidater : heure vérifiée par le réseau, GPS et adresse sur chaque photo, avec un code vérifiable.",
   "signin.subtitle": "Documentation photo infalsifiable pour les équipes de terrain.",
   "signin.apple": "Continuer avec Apple",
   "signin.google": "Continuer avec Google",
