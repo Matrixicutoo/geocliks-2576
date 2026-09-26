@@ -70,6 +70,9 @@ export const tl: Catalog = {
   "seo.companycam.title": "GeoCliks vs CompanyCam — beripikadong litrato, patag na presyo",
   "seo.companycam.description":
     "Petsado at may pinagmulang paghahambing ng GeoCliks at CompanyCam: oras na beripikado sa network, photo code na matsetsek ng kahit sino, at patag na buwanang plano na kasama na ang mga upuan.",
+  "seo.construction.title": "Software para sa Dokumentasyon ng Larawan sa Konstruksiyon | GeoCliks",
+  "seo.construction.description":
+    "Mga larawan sa konstruksiyon na may GPS at timestamp na hindi kayang pekein ng crew at kayang i-verify ng kliyente. Teamspace sync, closeout report at isang na-verify na code kada larawan.",
   "signin.subtitle": "Hindi mapepekeng dokumentasyon ng larawan para sa mga field team.",
   "signin.apple": "Magpatuloy sa Apple",
   "signin.google": "Magpatuloy sa Google",
@@ -1922,4 +1925,104 @@ export const tl: Catalog = {
   "cc.faq.q5": "Kaya ba ng GeoCliks ang lahat ng kayang gawin ng CompanyCam?",
   "cc.faq.a5":
     "Hindi lahat. Lumaki na ang CompanyCam sa mga katabing larangan — bayad sa site, kagamitan sa marketing, e-signature, pagsukat ng kuwarto, caption gamit ang AI. Hindi ginagawa ng GeoCliks ang mga iyon at hindi rin sinusubukan. Ginagawa nito ang ebidensyang litrato at video, Teamspace, mga report at mga ruta ng delivery. Kung gusto mong ang photo app ay CRM na rin, mas malawak na produkto ang CompanyCam.",
+  "con.eyebrow": "Dokumentasyon ng larawan sa konstruksiyon",
+  "con.h1": "Dokumentasyon ng Larawan sa Konstruksiyon na Hindi Matututulan ng Kliyente",
+  "con.sub":
+    "Bawat larawan ay may oras na na-verify sa network, lokasyong GPS at street address — naka-lock sa mismong sandali ng pagkuha.",
+  "con.s1.label": "Bakit hinahanap ito ng mga crew",
+  "con.s1.h2": "Walang humahanap nito bago magkaroon ng disputa. Hinahanap ito pagkatapos.",
+  "con.s1.intro":
+    "Sinasabi ng kliyente na hindi naman natapos ang trabaho. Kinukuwestiyon ng inspektor ang petsa ng pagkakatapos. Isinisisi ng isang sub sa kapwa sub ang pinsalang naroon na noong Lunes. Sa puntong iyon, hindi na makakatulong ang larawang may watermark na tinipa lang pagkatapos — ang petsa ay galing sa relong kayang baguhin ng kahit sino, at ang file ay dumaan na sa tatlong telepono at isang text message. Ginawa ang GeoCliks para sa bersyon ng usapang iyon kung saan kaya mong patunayan.",
+  "con.s2.label": "Paano ito gumagana",
+  "con.s2.h2": "Apat na hakbang, at ang unang hakbang lang ang gagawin ng crew.",
+  "con.step1.title": "Kinukuha ito ng crew",
+  "con.step1.body":
+    "Sa site, sa GeoCliks app. Hindi kailangan ng signal — ang larawang kinuha sa basement o sa lambak ay pumipila sa telepono.",
+  "con.step2.title": "Ini-lock ito ng GeoCliks",
+  "con.step2.body":
+    "Isinusulat sa larawan ang oras na na-verify sa network, ang mga koordinatang GPS at ang street address na naresolba, kasama ang SHA-256 hash at isang natatanging photo code.",
+  "con.step3.title": "Nagsi-sync ito sa proyekto",
+  "con.step3.body":
+    "Dumarating ang larawan sa Teamspace ng proyekto sa oras na makabalik sa signal ang telepono, nakapila sa ilalim ng trabahong kinabibilangan nito.",
+  "con.step4.title": "Kahit sino ay makakatsek",
+  "con.step4.body":
+    "Ang kliyente, ang inspektor o ang sarili mong PM ay maglalagay ng photo code sa geocliks.com/verify at makikita kung ang larawan ay ang orihinal na hindi ginalaw.",
+  "con.s3.label": "Ano ang nadodokumento",
+  "con.s3.h2": "Anim na sandali sa isang trabahong dapat talagang litratuhin nang maayos.",
+  "con.s3.intro":
+    "Hindi ito workflow na kailangan mong gamitin — ito ang mga puntong ang larawan na mismo ang tanging ebidensiya, at kung saan ang petsang walang makakatsek ang pagkakaiba ng isang rekord at isang away.",
+  "con.use1.title": "Natatakpang trabaho, bago ito matabunan",
+  "con.use1.body":
+    "Rebar bago ang pour, rough-in bago ang drywall, waterproofing bago ang tile. Kapag natabunan na, ang larawan na lang ang tanging rekord na umiiral — at ang petsa nito ang unang kukuwestiyunin ng inspektor o ng kinatawan ng may-ari.",
+  "con.use2.title": "Pinsalang naroon na, bago ka magsimula",
+  "con.use2.body":
+    "Ang basag na driveway, ang may mantsang kisame, ang lamog na siding na naroon na noong unang araw. Ang set ng larawan sa walkthrough bago ang mobilisasyon ang pinakamurang insurance sa trabaho, at gumagana lang ito kung matibay ang petsa.",
+  "con.use3.title": "Araw-araw na progreso kontra sa schedule",
+  "con.use3.body":
+    "Isang maikling set kada araw mula sa parehong posisyon, bawat isa ay may na-verify na petsa. Makalipas ang isang buwan, timeline na iyon na hindi na maipipilit pang baguhin, hindi lang folder ng mga larawang ang sunod-sunod ay depende sa sinasabi ng telepono.",
+  "con.use4.title": "Change order at kalagayan sa field",
+  "con.use4.body":
+    "Ang bulok sa likod ng dingding, ang conduit na wala sa plano, ang dagdag na trabahong pinakiusap lang nang berbal. Litratuhin ang kondisyon kung saan ito natagpuan, kasama ang address at oras, at magsisimula sa isang rekord ang usapan tungkol sa bayad.",
+  "con.use5.title": "Mga delivery at nasirang materyales",
+  "con.use5.body":
+    "Ano ang dumating, kailan dumating at ano ang kondisyon nang dumating — kinuha sa gate, hindi naalala na lang sa dulo ng buwan. Ang parehong larawan ay gumagana rin bilang sarili mong proof of delivery sa susunod na partido sa chain.",
+  "con.use6.title": "Punch list at closeout",
+  "con.use6.body":
+    "Bawat item ay nililitratuhan sa pagkakatagpo at muli kapag tapos na, ipinapares na before-and-after at ini-export bilang closeout package. Hindi na isang linggong paghahalungkat sa camera roll ang turnover.",
+  "con.s4.label": "Ginawa para sa sandaling kukuwestiyunin ito",
+  "con.s4.h2":
+    "Ang mga feature na mahalaga ay ang mga ginagamit mo sa araw na may nangyaring mali.",
+  "con.dispute1.title": "Before at after, magkatabi",
+  "con.dispute1.body":
+    "Ipares ang larawan bago at pagkatapos ng trabaho sa parehong lugar tungo sa isang paghahambing. Mas mabilis matapos ang disputa sa progreso kapag ang dalawang larawan ay may sariling na-verify na petsa.",
+  "con.dispute2.title": "Closeout report, handang i-turnover",
+  "con.dispute2.body":
+    "Buuin ang mga na-verify na larawan ng proyekto sa export na PDF, Excel, ZIP o KMZ, kasama ang oras, lokasyon at photo code ng bawat larawan na nakalimbag sa tabi nito.",
+  "con.dispute3.title": "Mga role na tugma sa trade",
+  "con.dispute3.body":
+    "Kumukuha ang sub para sa sariling scope nang hindi nakikita ang iba pang bahagi ng trabaho. Ang mga owner, admin, manager, dispatcher at field member ay nakikita lang ang pinapayagan ng kanilang role.",
+  "con.s5.label": "Para sa mga team na may maraming crew",
+  "con.s5.h2": "Isang account sa lahat ng crew at lahat ng trabaho.",
+  "con.team1.title": "Lahat ng larawan sa isang mapa",
+  "con.team1.body":
+    "Tingnan ang buong proyekto ayon sa lokasyon — aling elevation ang nadokumento, aling sulok ng site ang walang kumuha pa mula noong Martes.",
+  "con.team2.title": "Mag-imbita sa link o nakaprint na QR",
+  "con.team2.body":
+    "Idagdag ang mga miyembro ng crew sa workspace at i-assign sila kada proyekto. Kasama na sa plan ang mga upuan, hindi isa-isang binibili.",
+  "con.team3.title": "Mensahe at broadcast",
+  "con.team3.body":
+    "Ipadala sa buong crew ang isang pagbabago nang hindi hinihila ang kahit sino mula sa trabaho papunta sa tawag o sa group chat.",
+  "con.faqSection.label": "Mga tanong",
+  "con.faqSection.h2": "Mga madalas itanong",
+  "con.cta.h2": "Simulan ang tamang dokumentasyon sa susunod na trabaho",
+  "con.cta.body":
+    "Libre ang pagkuha nang panghabang-panahon — 300 na-verify na larawan kada buwan, walang card. Ang bayad na plano ay may walang-limitasyong pagkuha, Teamspace at buong set ng export.",
+  "con.cta.primary": "Kunin ang app",
+  "con.cta.secondary": "Tingnan kung paano gumagana ang verification",
+  "con.related.lead": "Nagkukumpara ng opsyon?",
+  "con.related.companycam": "Tingnan kung paano nakakakumpara ang GeoCliks sa CompanyCam",
+  "con.related.mid": ", o basahin ang",
+  "con.related.gettingStarted": "mga gabay sa pagsisimula",
+  "con.related2.lead": "Ayon sa trade at dokumento:",
+  "con.related2.roofing": "pagpapabubong",
+  "con.related2.hvac": "HVAC at service call",
+  "con.related2.inspection": "inspeksiyon ng ari-arian",
+  "con.related2.pod": "proof of delivery",
+  "con.related2.or": ", o",
+  "con.related2.gps": "paano gumagana ang GPS timestamp camera",
+  "con.faq.q1": "Iba ba ang timestamp ng GeoCliks sa built-in na timestamp ng telepono ko?",
+  "con.faq.a1":
+    "Oo. Ang timestamp ng telepono ay galing sa relo ng device, at ang relo ng device ay kayang baguhin sa settings — iyon din ang binabanggit kapag mahalaga ang petsa ng larawan. Ni-verify ng GeoCliks ang oras laban sa aming mga server pagdating ng larawan. Kung ang relo ng device ay hindi tugma sa amin nang lampas sa ilang minuto, mamarkahan ang larawan na device-timed at hindi verified, kaysa tahimik na dumaan bilang verified.",
+  "con.faq.q2": "Gumagana ba ito nang walang cell signal sa job site?",
+  "con.faq.a2":
+    "Oo. Pumipila ang mga larawan sa telepono at kusang nag-a-upload kapag nakabalik sa signal ang crew. Ang nakapilang larawan ay tinatatakan bilang network-verified sa mismong sandaling makarating ito sa aming mga server.",
+  "con.faq.q3": "Kaya bang i-verify ng kliyente ang larawan nang walang GeoCliks account?",
+  "con.faq.a3":
+    "Oo. Bawat larawan ay may natatanging photo code, at kahit sino ay makakapaglagay nito sa geocliks.com/verify — walang account, walang app, walang sign-in. Iyon ang punto: ang verification na kailangang pagtiwalaan lang sa salita mo ay hindi verification.",
+  "con.faq.q4": "Ano talaga ang pumipigil sa kahit sino na i-edit ang larawan pagkatapos?",
+  "con.faq.a4":
+    "Bawat larawan ay nakaimbak kasama ang SHA-256 content hash at isang signature, at bawat kaganapang may kinalaman dito ay isinusulat sa rekord na dagdag-lang. Ang na-edit na kopya ay hindi na tugma sa hash nito, kaya iuulat ito ng verification page bilang binago at hindi bilang orihinal.",
+  "con.faq.q5": "Ginagawa ba ng GeoCliks na legal na katanggap-tanggap ang isang larawan?",
+  "con.faq.a5":
+    "Hindi, at walang software na tapat na makakapangako niyan. Hindi notaryo o legal service ang GeoCliks, at ang pagtanggap ng korte, insurer o GC sa isang rekord ay desisyon nila. Ang ginagawa nito ay pahirapan ang hindi natutuklasang pakikialam at magbigay sa third party ng paraan para tsekin ang larawan nang nakapag-iisa.",
 };

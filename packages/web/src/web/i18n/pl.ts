@@ -69,6 +69,9 @@ export const pl: Catalog = {
   "seo.companycam.title": "GeoCliks vs CompanyCam — potwierdzone zdjęcia, stała cena",
   "seo.companycam.description":
     "Datowane, oparte na źródłach porównanie GeoCliks i CompanyCam: czas potwierdzony przez sieć, kody zdjęć sprawdzalne przez każdego i stałe plany miesięczne z miejscami w cenie.",
+  "seo.construction.title": "Oprogramowanie do dokumentacji zdjęciowej budowy | GeoCliks",
+  "seo.construction.description":
+    "Zdjęcia z budowy ze znacznikiem czasu i GPS, których ekipa nie podrobi, a klient zweryfikuje. Synchronizacja Teamspace, raporty odbiorowe i zweryfikowany kod przy każdym zdjęciu.",
   "signin.subtitle": "Odporna na manipulacje dokumentacja zdjęciowa dla ekip w terenie.",
   "signin.apple": "Kontynuuj z Apple",
   "signin.google": "Kontynuuj z Google",
@@ -1892,4 +1895,104 @@ export const pl: Catalog = {
   "cc.faq.q5": "Czy GeoCliks robi wszystko to, co CompanyCam?",
   "cc.faq.a5":
     "Nie wszystko. CompanyCam rozrósł się na sąsiednie obszary — płatności na budowie, narzędzia marketingowe, e-podpis, pomiary pomieszczeń, opisy z AI. GeoCliks tego nie robi i nie próbuje. Robi dowód zdjęciowy i wideo, Teamspace, raporty i trasy dostaw. Jeśli chcesz, by aplikacja do zdjęć była też CRM-em, CompanyCam jest szerszym produktem.",
+  "con.eyebrow": "Dokumentacja zdjęciowa budowy",
+  "con.h1": "Dokumentacja zdjęciowa budowy, której klient nie podważy",
+  "con.sub":
+    "Każde zdjęcie zawiera zweryfikowany sieciowo czas, lokalizację GPS i adres — zablokowane w chwili wykonania.",
+  "con.s1.label": "Dlaczego ekipy tego szukają",
+  "con.s1.h2": "Nikt nie szuka tego przed sporem. Szuka się tego po nim.",
+  "con.s1.intro":
+    "Klient twierdzi, że praca nigdy nie została wykonana. Inspektor podważa datę zakończenia. Jeden podwykonawca zrzuca na drugiego uszkodzenie, które było tam już w poniedziałek. W takim momencie zdjęcie z telefonu z dopisanym później znakiem wodnym niczego nie rozstrzygnie — data pochodzi z zegara, który każdy mógł zmienić, a plik przeszedł przez trzy telefony i wiadomość SMS. GeoCliks powstał na tę wersję rozmowy, w której możesz to udowodnić.",
+  "con.s2.label": "Jak to działa",
+  "con.s2.h2": "Cztery kroki, a ekipa wykonuje tylko pierwszy.",
+  "con.step1.title": "Ekipa robi zdjęcie",
+  "con.step1.body":
+    "Na budowie, w aplikacji GeoCliks. Zasięg nie jest potrzebny — zdjęcie zrobione w piwnicy albo w wąwozie czeka w kolejce w telefonie.",
+  "con.step2.title": "GeoCliks je blokuje",
+  "con.step2.body":
+    "Zweryfikowany sieciowo czas, współrzędne GPS i rozpoznany adres zostają zapisane w zdjęciu, razem ze skrótem SHA-256 i unikalnym kodem zdjęcia.",
+  "con.step3.title": "Synchronizuje się z projektem",
+  "con.step3.body":
+    "Zdjęcie trafia do Teamspace projektu w chwili, gdy telefon wróci w zasięg, przypisane do zlecenia, do którego należy.",
+  "con.step4.title": "Każdy może to sprawdzić",
+  "con.step4.body":
+    "Klient, inspektor albo twój własny kierownik wpisuje kod zdjęcia na geocliks.com/verify i widzi, czy zdjęcie jest nietkniętym oryginałem.",
+  "con.s3.label": "Co zostaje udokumentowane",
+  "con.s3.h2": "Sześć momentów na budowie, które warto sfotografować porządnie.",
+  "con.s3.intro":
+    "To nie proces do wdrożenia — to punkty, w których zdjęcie już jest jedynym dowodem i w których data, której nikt nie może sprawdzić, decyduje o tym, czy masz dokumentację, czy kłótnię.",
+  "con.use1.title": "Roboty zakryte, przed zakryciem",
+  "con.use1.body":
+    "Zbrojenie przed betonowaniem, instalacje przed płytą, hydroizolacja przed płytkami. Gdy to zostanie zakryte, zdjęcie jest jedynym istniejącym dowodem — a jego data jest pierwszą rzeczą, którą podważy inspektor albo przedstawiciel inwestora.",
+  "con.use2.title": "Wcześniejsze uszkodzenia, przed rozpoczęciem",
+  "con.use2.body":
+    "Pęknięty podjazd, zaciek na suficie, wygięty panel elewacji, które były tam już pierwszego dnia. Seria zdjęć z obchodu wykonana przed wejściem na budowę to najtańsze ubezpieczenie na zleceniu i działa tylko wtedy, gdy data się obroni.",
+  "con.use3.title": "Codzienny postęp wobec harmonogramu",
+  "con.use3.body":
+    "Jedna krótka seria dziennie z tych samych miejsc, każde zdjęcie ze zweryfikowaną datą. Po miesiącu to oś czasu, której nikt nie podważy, a nie folder zdjęć, których kolejność zależy od tego, co mówi telefon.",
+  "con.use4.title": "Zlecenia zmian i warunki na budowie",
+  "con.use4.body":
+    "Zbutwiałe drewno za ścianą, peszel, którego nie było na rysunkach, dodatkowa praca zlecona ustnie. Sfotografuj stan tam, gdzie go znaleziono, z adresem i godziną, i rozmowa o zapłacie zacznie się od dokumentacji.",
+  "con.use5.title": "Dostawy i uszkodzony materiał",
+  "con.use5.body":
+    "Co przyjechało, kiedy przyjechało i w jakim stanie — zdjęcie przy bramie, a nie wspomnienie na koniec miesiąca. To samo zdjęcie działa jako twój własny dowód dostawy dla kolejnej strony w łańcuchu.",
+  "con.use6.title": "Lista usterek i odbiór końcowy",
+  "con.use6.body":
+    "Każda pozycja sfotografowana w stanie znalezionym i ponownie po naprawie, zestawiona w porównanie przed–po i wyeksportowana jako pakiet odbiorowy. Odbiór przestaje być tygodniem grzebania w galerii zdjęć.",
+  "con.s4.label": "Stworzone na moment, w którym ktoś to podważy",
+  "con.s4.h2":
+    "Funkcje, które mają znaczenie, to te, których używasz w dniu, gdy coś idzie nie tak.",
+  "con.dispute1.title": "Przed i po, obok siebie",
+  "con.dispute1.body":
+    "Zestaw zdjęcia tego samego miejsca przed i po pracy w jedno porównanie. Spory o postęp kończą się szybciej, gdy oba zdjęcia mają własną zweryfikowaną datę.",
+  "con.dispute2.title": "Raporty odbiorowe gotowe do przekazania",
+  "con.dispute2.body":
+    "Zbierz zweryfikowane zdjęcia projektu w eksport PDF, Excel, ZIP lub KMZ, z godziną, lokalizacją i kodem zdjęcia wydrukowanymi obok każdego z nich.",
+  "con.dispute3.title": "Role dopasowane do branży",
+  "con.dispute3.body":
+    "Podwykonawca dokumentuje swój własny zakres, nie widząc reszty budowy. Właściciele, administratorzy, kierownicy, dyspozytorzy i pracownicy w terenie widzą tylko to, na co pozwala ich rola.",
+  "con.s5.label": "Dla firm prowadzących wiele ekip",
+  "con.s5.h2": "Jedno konto dla każdej ekipy i każdego zlecenia.",
+  "con.team1.title": "Wszystkie zdjęcia na jednej mapie",
+  "con.team1.body":
+    "Zobacz cały projekt geograficznie — które elewacje są udokumentowane, a którego narożnika budowy nikt nie fotografował od wtorku.",
+  "con.team2.title": "Zaproszenie linkiem albo wydrukowanym kodem QR",
+  "con.team2.body":
+    "Dodaj członków ekipy do przestrzeni roboczej i przypisz ich do projektów. Miejsca są wliczone w plan, a nie rozliczane pojedynczo.",
+  "con.team3.title": "Wiadomości i komunikaty",
+  "con.team3.body":
+    "Wyślij całej ekipie zmianę, nie odciągając nikogo od pracy do rozmowy telefonicznej ani grupowego czatu.",
+  "con.faqSection.label": "Pytania",
+  "con.faqSection.h2": "Często zadawane",
+  "con.cta.h2": "Zacznij dokumentować następne zlecenie porządnie",
+  "con.cta.body":
+    "Robienie zdjęć jest darmowe na zawsze — 300 zweryfikowanych zdjęć miesięcznie, bez karty. Plany płatne dodają nielimitowane zdjęcia, Teamspace i pełny zestaw eksportów.",
+  "con.cta.primary": "Pobierz aplikację",
+  "con.cta.secondary": "Zobacz, jak działa weryfikacja",
+  "con.related.lead": "Porównujesz opcje?",
+  "con.related.companycam": "Sprawdź, jak GeoCliks wypada wobec CompanyCam",
+  "con.related.mid": ", albo przeczytaj",
+  "con.related.gettingStarted": "przewodniki na start",
+  "con.related2.lead": "Według branży i dokumentu:",
+  "con.related2.roofing": "dachy",
+  "con.related2.hvac": "HVAC i zlecenia serwisowe",
+  "con.related2.inspection": "inspekcje nieruchomości",
+  "con.related2.pod": "dowód dostawy",
+  "con.related2.or": ", albo",
+  "con.related2.gps": "jak działa kamera ze znacznikiem czasu GPS",
+  "con.faq.q1": "Czy znacznik czasu GeoCliks różni się od wbudowanego w moim telefonie?",
+  "con.faq.a1":
+    "Tak. Znacznik czasu telefonu pochodzi z zegara urządzenia, a zegar urządzenia można zmienić w ustawieniach — i właśnie to zostanie podniesione, gdy data zdjęcia zacznie mieć znaczenie. GeoCliks weryfikuje czas wobec naszych serwerów w momencie, gdy zdjęcie do nas dotrze. Jeśli zegar urządzenia różni się od naszego o więcej niż kilka minut, zdjęcie zostaje oznaczone jako opatrzone czasem urządzenia, a nie zweryfikowane — zamiast po cichu przejść jako zweryfikowane.",
+  "con.faq.q2": "Czy działa bez zasięgu na budowie?",
+  "con.faq.a2":
+    "Tak. Zdjęcia czekają w kolejce w telefonie i wysyłają się same, gdy ekipa wróci w zasięg. Zdjęcie z kolejki zostaje zaplombowane jako zweryfikowane sieciowo w chwili, gdy dotrze na nasze serwery.",
+  "con.faq.q3": "Czy klient może zweryfikować zdjęcie bez konta GeoCliks?",
+  "con.faq.a3":
+    "Tak. Każde zdjęcie ma unikalny kod i każdy może go wpisać na geocliks.com/verify — bez konta, bez aplikacji, bez logowania. O to właśnie chodzi: weryfikacja, w której klient musi uwierzyć ci na słowo, nie jest weryfikacją.",
+  "con.faq.q4": "Co właściwie uniemożliwia edycję zdjęcia później?",
+  "con.faq.a4":
+    "Każde zdjęcie jest przechowywane ze skrótem treści SHA-256 i podpisem, a każde zdarzenie go dotyczące jest zapisywane w rejestrze tylko do dopisywania. Edytowana kopia nie zgadza się już ze swoim skrótem, więc strona weryfikacji zgłasza ją jako zmienioną, a nie jako oryginał.",
+  "con.faq.q5": "Czy GeoCliks czyni zdjęcie dopuszczalnym jako dowód w sądzie?",
+  "con.faq.a5":
+    "Nie i żadne oprogramowanie nie może tego uczciwie obiecać. GeoCliks nie jest notariuszem ani usługą prawną, a to, czy sąd, ubezpieczyciel lub generalny wykonawca przyjmie dokumentację, jest ich decyzją. To, co robi, to utrudnia niezauważoną manipulację i daje osobie trzeciej sposób na niezależne sprawdzenie zdjęcia.",
 };

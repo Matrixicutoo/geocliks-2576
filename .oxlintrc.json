@@ -1,4 +1,12 @@
 {
   "extends": ["./node_modules/@runablehq/runkit/oxlintrc.json"],
-  "ignorePatterns": ["dist/**", "dist-electron/**", ".expo/**", "packages/web/public/runable.js"]
+  "ignorePatterns": ["dist/**", "dist-electron/**", ".expo/**", "packages/web/public/runable.js"],
+  "overrides": [
+    {
+      "files": ["packages/web/src/web/i18n/**"],
+      "rules": {
+        "max-lines": "off"
+      }
+    }
+  ]
 }

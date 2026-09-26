@@ -22,6 +22,7 @@ import {
   LandingSteps,
 } from "../components/landing-page";
 import { pageFaq } from "../lib/page-schema";
+import { useLocale, type TKey } from "../lib/i18n";
 
 /**
  * Search landing page for "construction photo documentation software" and its
@@ -39,23 +40,11 @@ import { pageFaq } from "../lib/page-schema";
  * organizing pitch.
  */
 
-const STEPS = [
-  {
-    title: "The crew shoots it",
-    body: "On site, in the GeoCliks app. No signal needed — a capture made in a basement or a canyon queues on the phone.",
-  },
-  {
-    title: "GeoCliks locks it",
-    body: "Network-verified time, GPS coordinates and the resolved street address are written into the photo, with a SHA-256 hash and a unique photo code.",
-  },
-  {
-    title: "It syncs to the project",
-    body: "The capture lands in the project's Teamspace the moment the phone is back in range, filed under the job it belongs to.",
-  },
-  {
-    title: "Anyone can check it",
-    body: "A client, an inspector or your own PM enters the photo code at geocliks.com/verify and sees whether the photo is the untouched original.",
-  },
+const STEPS: { title: TKey; body: TKey }[] = [
+  { title: "con.step1.title", body: "con.step1.body" },
+  { title: "con.step2.title", body: "con.step2.body" },
+  { title: "con.step3.title", body: "con.step3.body" },
+  { title: "con.step4.title", body: "con.step4.body" },
 ];
 
 /**
@@ -68,182 +57,109 @@ const STEPS = [
  * orders, punch list — are what the next round of long-tail queries is written
  * in, and none of them appeared anywhere on this site.
  */
-const USE_CASES = [
-  {
-    icon: Layers,
-    title: "Concealed work, before it is covered",
-    body: "Rebar before the pour, rough-in before the drywall, waterproofing before the tile. Once it is buried, the photo is the only record that exists — and the date on it is what an inspector or an owner's rep will question first.",
-  },
-  {
-    icon: TriangleAlert,
-    title: "Pre-existing damage, before you start",
-    body: "The cracked driveway, the stained ceiling, the dented siding that was already there on day one. A walkthrough set captured before mobilization is the cheapest insurance on the job, and it only works if the date holds up.",
-  },
-  {
-    icon: CalendarDays,
-    title: "Daily progress against the schedule",
-    body: "One short set a day from the same positions, each with a verified date. A month later that is a timeline nobody can re-argue, rather than a folder of photos whose order depends on what a phone says.",
-  },
-  {
-    icon: ClipboardCheck,
-    title: "Change orders and field conditions",
-    body: "The rot behind the wall, the conduit that was not on the drawings, the extra work someone asked for verbally. Photograph the condition where it was found, with the address and the time, and the conversation about payment starts from a record.",
-  },
-  {
-    icon: Truck,
-    title: "Deliveries and damaged material",
-    body: "What arrived, when it arrived and what condition it arrived in, shot at the gate rather than remembered at the end of the month. The same capture works as your own proof of delivery to the next party down the chain.",
-  },
-  {
-    icon: ListChecks,
-    title: "Punch list and closeout",
-    body: "Each item photographed as found and again as finished, paired into a before-and-after and exported as the closeout package. Handover stops being a week of hunting through camera rolls.",
-  },
+const USE_CASES: { icon: typeof Layers; title: TKey; body: TKey }[] = [
+  { icon: Layers, title: "con.use1.title", body: "con.use1.body" },
+  { icon: TriangleAlert, title: "con.use2.title", body: "con.use2.body" },
+  { icon: CalendarDays, title: "con.use3.title", body: "con.use3.body" },
+  { icon: ClipboardCheck, title: "con.use4.title", body: "con.use4.body" },
+  { icon: Truck, title: "con.use5.title", body: "con.use5.body" },
+  { icon: ListChecks, title: "con.use6.title", body: "con.use6.body" },
 ];
 
-const DISPUTE_CARDS = [
-  {
-    icon: GitCompareArrows,
-    title: "Before and after, side by side",
-    body: "Pair the pre-work and post-work captures of the same spot into one comparison. Progress disputes end faster when both photos carry their own verified date.",
-  },
-  {
-    icon: FileStack,
-    title: "Closeout reports, ready to hand over",
-    body: "Bundle a project's verified photos into a PDF, Excel, ZIP or KMZ export, with each capture's time, location and photo code printed beside it.",
-  },
-  {
-    icon: ShieldCheck,
-    title: "Roles that match the trade",
-    body: "A sub captures for their own scope without seeing the rest of the job. Owners, admins, managers, dispatchers and field members each see only what their role allows.",
-  },
+const DISPUTE_CARDS: { icon: typeof Layers; title: TKey; body: TKey }[] = [
+  { icon: GitCompareArrows, title: "con.dispute1.title", body: "con.dispute1.body" },
+  { icon: FileStack, title: "con.dispute2.title", body: "con.dispute2.body" },
+  { icon: ShieldCheck, title: "con.dispute3.title", body: "con.dispute3.body" },
 ];
 
-const TEAM_CARDS = [
-  {
-    icon: MapPin,
-    title: "Every capture on one map",
-    body: "See the whole project geographically — which elevations got documented, which corner of the site nobody has shot since Tuesday.",
-  },
-  {
-    icon: Users,
-    title: "Invite by link or printed QR",
-    body: "Add crew members to the workspace and assign them by project. Seats are included in the plan rather than billed one at a time.",
-  },
-  {
-    icon: MessageSquare,
-    title: "Messages and broadcasts",
-    body: "Send the whole crew a change without pulling anyone off the job into a phone call or a group text thread.",
-  },
+const TEAM_CARDS: { icon: typeof Layers; title: TKey; body: TKey }[] = [
+  { icon: MapPin, title: "con.team1.title", body: "con.team1.body" },
+  { icon: Users, title: "con.team2.title", body: "con.team2.body" },
+  { icon: MessageSquare, title: "con.team3.title", body: "con.team3.body" },
 ];
 
-const FAQ = pageFaq("/construction-photo-documentation");
+const LINK_CLASS =
+  "font-semibold text-amber underline decoration-amber/40 underline-offset-4 hover:decoration-amber";
 
 export default function ConstructionPhotoDocumentation() {
+  const { t, locale } = useLocale();
+  const faq = pageFaq("/construction-photo-documentation", locale);
+  const steps = STEPS.map((step) => ({ title: t(step.title), body: t(step.body) }));
+  const card = (item: { icon: typeof Layers; title: TKey; body: TKey }) => ({
+    icon: item.icon,
+    title: t(item.title),
+    body: t(item.body),
+  });
+
   return (
     <LandingPage
       path="/construction-photo-documentation"
-      eyebrow="Construction photo documentation"
-      h1="Construction Photo Documentation Your Client Can't Dispute"
-      sub="Every photo carries a network-verified time, GPS location and street address — locked the moment it's taken."
+      eyebrow={t("con.eyebrow")}
+      h1={t("con.h1")}
+      sub={t("con.sub")}
     >
-      <LandingSection
-        label="Why crews look for this"
-        h2="Nobody searches for this before a dispute. They search for it after one."
-        intro="A client says the work was never done. An inspector questions a completion date. One sub blames another for damage that was there on Monday. At that point a phone photo with a watermark typed on afterwards is not going to settle anything — the date came from a clock anyone could have changed, and the file has been through three phones and a text message. GeoCliks is built for the version of that conversation where you can prove it."
-      />
+      <LandingSection label={t("con.s1.label")} h2={t("con.s1.h2")} intro={t("con.s1.intro")} />
 
-      <LandingSection label="How it works" h2="Four steps, and the crew only does the first one.">
-        <LandingSteps steps={STEPS} />
+      <LandingSection label={t("con.s2.label")} h2={t("con.s2.h2")}>
+        <LandingSteps steps={steps} />
       </LandingSection>
 
-      <LandingSection
-        label="What gets documented"
-        h2="Six moments on a job worth photographing properly."
-        intro="Not a workflow to adopt — the points where a photograph is already the only evidence, and where a date nobody can check is the difference between a record and an argument."
-      >
-        <LandingCards items={USE_CASES} />
+      <LandingSection label={t("con.s3.label")} h2={t("con.s3.h2")} intro={t("con.s3.intro")}>
+        <LandingCards items={USE_CASES.map(card)} />
       </LandingSection>
 
-      <LandingSection
-        label="Built for the moment it gets questioned"
-        h2="The features that matter are the ones you use on the day it goes wrong."
-      >
-        <LandingCards items={DISPUTE_CARDS} />
+      <LandingSection label={t("con.s4.label")} h2={t("con.s4.h2")}>
+        <LandingCards items={DISPUTE_CARDS.map(card)} />
       </LandingSection>
 
-      <LandingSection
-        label="For teams running multiple crews"
-        h2="One account across every crew and every job."
-      >
-        <LandingCards items={TEAM_CARDS} />
+      <LandingSection label={t("con.s5.label")} h2={t("con.s5.h2")}>
+        <LandingCards items={TEAM_CARDS.map(card)} />
       </LandingSection>
 
-      <LandingSection label="Questions" h2="Frequently asked">
-        <LandingFaq entries={FAQ} />
+      <LandingSection label={t("con.faqSection.label")} h2={t("con.faqSection.h2")}>
+        <LandingFaq entries={faq} />
       </LandingSection>
 
       <LandingCta
-        h2="Start documenting the next job properly"
-        body="Capturing is free forever — 300 verified photos a month, no card. Paid plans add unlimited captures, Teamspace and the full set of exports."
-        primary={{ label: "Get the app", to: "/get-app" }}
-        secondary={{ label: "See how verification works", to: "/help/verify/how-sealing-works" }}
+        h2={t("con.cta.h2")}
+        body={t("con.cta.body")}
+        primary={{ label: t("con.cta.primary"), to: "/get-app" }}
+        secondary={{ label: t("con.cta.secondary"), to: "/help/verify/how-sealing-works" }}
       />
 
       <section className="border-b border-line">
         <div className="mx-auto max-w-[1180px] px-5 py-10">
           <p className="text-[13.5px] leading-relaxed text-fog">
-            Comparing options?{" "}
-            <Link
-              to="/alternatives/companycam"
-              className="font-semibold text-amber underline decoration-amber/40 underline-offset-4 hover:decoration-amber"
-            >
-              See how GeoCliks compares to CompanyCam
+            {t("con.related.lead")}{" "}
+            <Link to="/alternatives/companycam" className={LINK_CLASS}>
+              {t("con.related.companycam")}
             </Link>
-            , or read the{" "}
-            <Link
-              to="/help/getting-started"
-              className="font-semibold text-amber underline decoration-amber/40 underline-offset-4 hover:decoration-amber"
-            >
-              getting-started guides
+            {t("con.related.mid")}{" "}
+            <Link to="/help/getting-started" className={LINK_CLASS}>
+              {t("con.related.gettingStarted")}
             </Link>
             .
           </p>
           <p className="mt-3 text-[13.5px] leading-relaxed text-fog">
-            By trade and document:{" "}
-            <Link
-              to="/roofing-photo-documentation"
-              className="font-semibold text-amber underline decoration-amber/40 underline-offset-4 hover:decoration-amber"
-            >
-              roofing
+            {t("con.related2.lead")}{" "}
+            <Link to="/roofing-photo-documentation" className={LINK_CLASS}>
+              {t("con.related2.roofing")}
             </Link>
             ,{" "}
-            <Link
-              to="/hvac-photo-documentation"
-              className="font-semibold text-amber underline decoration-amber/40 underline-offset-4 hover:decoration-amber"
-            >
-              HVAC and service calls
+            <Link to="/hvac-photo-documentation" className={LINK_CLASS}>
+              {t("con.related2.hvac")}
             </Link>
             ,{" "}
-            <Link
-              to="/property-inspection-photos"
-              className="font-semibold text-amber underline decoration-amber/40 underline-offset-4 hover:decoration-amber"
-            >
-              property inspections
+            <Link to="/property-inspection-photos" className={LINK_CLASS}>
+              {t("con.related2.inspection")}
             </Link>
             ,{" "}
-            <Link
-              to="/proof-of-delivery"
-              className="font-semibold text-amber underline decoration-amber/40 underline-offset-4 hover:decoration-amber"
-            >
-              proof of delivery
+            <Link to="/proof-of-delivery" className={LINK_CLASS}>
+              {t("con.related2.pod")}
             </Link>
-            , or{" "}
-            <Link
-              to="/gps-timestamp-camera"
-              className="font-semibold text-amber underline decoration-amber/40 underline-offset-4 hover:decoration-amber"
-            >
-              how the GPS timestamp camera works
+            {t("con.related2.or")}{" "}
+            <Link to="/gps-timestamp-camera" className={LINK_CLASS}>
+              {t("con.related2.gps")}
             </Link>
             .
           </p>

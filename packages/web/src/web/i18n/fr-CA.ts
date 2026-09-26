@@ -70,6 +70,9 @@ export const frCA: Catalog = {
   "seo.companycam.title": "GeoCliks vs CompanyCam — photos vérifiées, tarif fixe",
   "seo.companycam.description":
     "Une comparaison datée et sourcée de GeoCliks et CompanyCam : horodatage vérifié par le réseau, codes photo vérifiables par n'importe qui, et forfaits mensuels fixes avec les sièges inclus.",
+  "seo.construction.title": "Photos de chantier horodatées et géolocalisées | GeoCliks",
+  "seo.construction.description":
+    "Des photos de chantier horodatées et géolocalisées que votre équipe ne peut pas truquer et que le client peut vérifier. Teamspace, rapports de clôture, un code par photo.",
   "signin.subtitle": "Documentation photo infalsifiable pour les équipes de terrain.",
   "signin.apple": "Continuer avec Apple",
   "signin.google": "Continuer avec Google",
@@ -1932,4 +1935,103 @@ export const frCA: Catalog = {
   "cc.faq.q5": "GeoCliks fait-elle tout ce que fait CompanyCam ?",
   "cc.faq.a5":
     "Pas tout. CompanyCam s'est étendue au territoire voisin — paiements sur place, outils de marketing, signature électronique, prise de mesures de pièces, légendes par IA. GeoCliks ne fait pas ça et n'essaie pas. Elle fait la preuve photo et vidéo, Teamspace, les rapports et les tournées de livraison. Si vous voulez que l'appli photo soit aussi le CRM, CompanyCam est le produit le plus large.",
+  "con.eyebrow": "Documentation photo de chantier",
+  "con.h1": "Une documentation photo de chantier que votre client ne peut pas contester",
+  "con.sub":
+    "Chaque photo porte une heure vérifiée par le réseau, la position GPS et l'adresse civique — scellées au moment de la prise.",
+  "con.s1.label": "Pourquoi les équipes cherchent ça",
+  "con.s1.h2": "Personne ne cherche ça avant un litige. On le cherche après.",
+  "con.s1.intro":
+    "Le client dit que les travaux n'ont jamais été faits. Un inspecteur remet en question une date d'achèvement. Un sous-traitant en accuse un autre pour un dommage qui était déjà là lundi. À ce stade, une photo de cellulaire avec un filigrane ajouté après ne réglera rien : la date vient d'une horloge que n'importe qui pouvait changer, et le fichier est passé par trois téléphones et un texto. GeoCliks est faite pour la version de cette conversation où vous pouvez le prouver.",
+  "con.s2.label": "Comment ça marche",
+  "con.s2.h2": "Quatre étapes, et l'équipe ne fait que la première.",
+  "con.step1.title": "L'équipe la prend",
+  "con.step1.body":
+    "Sur le chantier, dans l'app GeoCliks. Sans réseau aussi : une prise faite dans un sous-sol ou au fond d'une vallée se met en file sur le téléphone.",
+  "con.step2.title": "GeoCliks la scelle",
+  "con.step2.body":
+    "L'heure vérifiée par le réseau, les coordonnées GPS et l'adresse civique résolue sont inscrites dans la photo, avec une empreinte SHA-256 et un code de photo unique.",
+  "con.step3.title": "Elle se synchronise au projet",
+  "con.step3.body":
+    "La prise arrive dans le Teamspace du projet dès que le téléphone retrouve le réseau, classée sous le chantier auquel elle appartient.",
+  "con.step4.title": "N'importe qui peut la vérifier",
+  "con.step4.body":
+    "Un client, un inspecteur ou votre propre chargé de projet entre le code de photo sur geocliks.com/verify et voit s'il s'agit de l'original intact.",
+  "con.s3.label": "Ce qui se documente",
+  "con.s3.h2": "Six moments d'un chantier qui méritent d'être photographiés comme il faut.",
+  "con.s3.intro":
+    "Pas une méthode à adopter : les moments où la photo est déjà la seule preuve, et où une date que personne ne peut vérifier fait la différence entre un dossier et une chicane.",
+  "con.use1.title": "Les ouvrages cachés, avant de les recouvrir",
+  "con.use1.body":
+    "L'armature avant la coulée, la plomberie et l'électricité avant le gypse, l'étanchéité avant la céramique. Une fois recouvert, la photo est le seul dossier qui existe — et la date est la première chose qu'un inspecteur ou le représentant du propriétaire va contester.",
+  "con.use2.title": "Les dommages préexistants, avant de commencer",
+  "con.use2.body":
+    "L'entrée fissurée, le plafond taché, le revêtement bosselé qui étaient déjà là le premier jour. Une visite photographiée avant la mobilisation est l'assurance la moins chère du chantier, et elle ne vaut que si la date tient.",
+  "con.use3.title": "L'avancement quotidien face à l'échéancier",
+  "con.use3.body":
+    "Une courte série par jour, des mêmes positions, chacune avec une date vérifiée. Un mois plus tard, c'est une chronologie que personne ne peut rediscuter, au lieu d'un dossier de photos dont l'ordre dépend de ce que dit un téléphone.",
+  "con.use4.title": "Avenants et conditions de chantier",
+  "con.use4.body":
+    "La pourriture derrière le mur, le conduit absent des plans, l'extra demandé de vive voix. Photographiez la condition là où elle a été trouvée, avec l'adresse et l'heure, et la discussion sur le paiement part d'un dossier.",
+  "con.use5.title": "Livraisons et matériaux abîmés",
+  "con.use5.body":
+    "Ce qui est arrivé, quand, et dans quel état, photographié à la barrière plutôt que reconstitué de mémoire en fin de mois. La même prise sert de preuve de livraison au suivant dans la chaîne.",
+  "con.use6.title": "Liste de déficiences et clôture",
+  "con.use6.body":
+    "Chaque point photographié tel que trouvé puis une fois corrigé, jumelés en avant-après et exportés comme dossier de clôture. La remise cesse d'être une semaine à fouiller des pellicules.",
+  "con.s4.label": "Faite pour le moment où ça se contestera",
+  "con.s4.h2": "Les fonctions qui comptent sont celles que vous utilisez le jour où ça tourne mal.",
+  "con.dispute1.title": "Avant et après, côte à côte",
+  "con.dispute1.body":
+    "Jumelez les prises d'avant et d'après travaux du même endroit en une seule comparaison. Les litiges d'avancement se règlent plus vite quand les deux photos portent leur propre date vérifiée.",
+  "con.dispute2.title": "Rapports de clôture, prêts à remettre",
+  "con.dispute2.body":
+    "Regroupez les photos vérifiées d'un projet en une exportation PDF, Excel, ZIP ou KMZ, avec l'heure, la position et le code de chaque prise imprimés à côté.",
+  "con.dispute3.title": "Des rôles à la mesure du métier",
+  "con.dispute3.body":
+    "Un sous-traitant documente son propre lot sans voir le reste du chantier. Propriétaires, administrateurs, gestionnaires, répartiteurs et membres sur le terrain ne voient que ce que leur rôle permet.",
+  "con.s5.label": "Pour les entreprises à plusieurs équipes",
+  "con.s5.h2": "Un seul compte pour toutes les équipes et tous les chantiers.",
+  "con.team1.title": "Toutes les prises sur une carte",
+  "con.team1.body":
+    "Voyez le projet au complet géographiquement : quelles élévations ont été documentées, quel coin du chantier personne n'a photographié depuis mardi.",
+  "con.team2.title": "Invitez par lien ou par code QR imprimé",
+  "con.team2.body":
+    "Ajoutez les membres de l'équipe à l'espace de travail et assignez-les par projet. Les sièges sont inclus au forfait au lieu d'être facturés un à un.",
+  "con.team3.title": "Messages et diffusions",
+  "con.team3.body":
+    "Annoncez un changement à toute l'équipe sans sortir personne du travail pour un appel ou un fil de textos de groupe.",
+  "con.faqSection.label": "Questions",
+  "con.faqSection.h2": "Foire aux questions",
+  "con.cta.h2": "Documentez le prochain chantier comme il faut",
+  "con.cta.body":
+    "La prise de photos est gratuite pour toujours : 300 photos vérifiées par mois, sans carte. Les forfaits payants ajoutent les prises illimitées, le Teamspace et toutes les exportations.",
+  "con.cta.primary": "Obtenir l'app",
+  "con.cta.secondary": "Voir comment la vérification fonctionne",
+  "con.related.lead": "Vous comparez les options?",
+  "con.related.companycam": "Voyez comment GeoCliks se compare à CompanyCam",
+  "con.related.mid": ", ou lisez les",
+  "con.related.gettingStarted": "guides de démarrage",
+  "con.related2.lead": "Par métier et par document :",
+  "con.related2.roofing": "toiture",
+  "con.related2.hvac": "CVC et appels de service",
+  "con.related2.inspection": "inspections de propriété",
+  "con.related2.pod": "preuve de livraison",
+  "con.related2.or": ", ou",
+  "con.related2.gps": "comment fonctionne la caméra à horodatage GPS",
+  "con.faq.q1": "L'heure de GeoCliks est-elle différente de celle de mon téléphone?",
+  "con.faq.a1":
+    "Oui. L'heure d'un téléphone vient de l'horloge de l'appareil, et cette horloge se change dans les réglages — c'est exactement ce qu'on soulèvera quand la date d'une photo compte. GeoCliks vérifie l'heure auprès de nos serveurs à l'arrivée de la prise. Si l'horloge de l'appareil s'écarte de la nôtre de plus de quelques minutes, la prise est marquée « heure de l'appareil » au lieu de vérifiée, plutôt que de passer discrètement pour vérifiée.",
+  "con.faq.q2": "Est-ce que ça marche sans réseau cellulaire sur un chantier?",
+  "con.faq.a2":
+    "Oui. Les prises se mettent en file sur le téléphone et se téléversent d'elles-mêmes quand l'équipe retrouve le réseau. Une prise en file est scellée comme vérifiée par le réseau au moment où elle atteint nos serveurs.",
+  "con.faq.q3": "Un client peut-il vérifier une photo sans compte GeoCliks?",
+  "con.faq.a3":
+    "Oui. Chaque prise porte un code de photo unique, et n'importe qui peut l'entrer sur geocliks.com/verify — sans compte, sans app, sans connexion. C'est tout le point : une vérification où le client doit vous croire sur parole n'est pas une vérification.",
+  "con.faq.q4": "Qu'est-ce qui empêche vraiment quelqu'un de modifier la photo après?",
+  "con.faq.a4":
+    "Chaque prise est conservée avec une empreinte de contenu SHA-256 et une signature, et tout événement qui la touche est inscrit dans un registre en ajout seul. Une copie modifiée ne correspond plus à son empreinte, donc la page de vérification la signale comme altérée et non comme l'original.",
+  "con.faq.q5": "GeoCliks rend-elle une photo admissible en preuve?",
+  "con.faq.a5":
+    "Non, et aucun logiciel honnête ne le peut. GeoCliks n'est ni un notaire ni un service juridique, et l'acceptation d'un dossier par un tribunal, un assureur ou un entrepreneur général relève d'eux. Ce qu'elle fait, c'est rendre une falsification indétectable difficile et donner à un tiers un moyen de vérifier la photo lui-même.",
 };

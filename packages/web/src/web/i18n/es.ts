@@ -70,6 +70,9 @@ export const es: Catalog = {
   "seo.companycam.title": "GeoCliks vs CompanyCam — fotos verificadas, precio fijo",
   "seo.companycam.description":
     "Comparativa fechada y con fuentes de GeoCliks y CompanyCam: hora verificada contra la red, códigos de foto comprobables por cualquiera y planes mensuales fijos con los puestos incluidos.",
+  "seo.construction.title": "Fotos de obra con hora y GPS verificados | GeoCliks",
+  "seo.construction.description":
+    "Fotos de obra con hora y GPS verificados que tu equipo no puede falsear y tu cliente sí puede comprobar. Teamspace, informes de cierre y un código por foto.",
   "signin.subtitle": "Documentación fotográfica inalterable para equipos de campo.",
   "signin.apple": "Continuar con Apple",
   "signin.google": "Continuar con Google",
@@ -1918,4 +1921,103 @@ export const es: Catalog = {
   "cc.faq.q5": "¿GeoCliks hace todo lo que hace CompanyCam?",
   "cc.faq.a5":
     "No todo. CompanyCam ha crecido hacia terreno adyacente: cobros en obra, herramientas de marketing, firma electrónica, medición de estancias, títulos con IA. GeoCliks no hace eso ni lo pretende. Hace prueba fotográfica y de vídeo, Teamspace, informes y rutas de reparto. Si quieres que la app de fotos sea también el CRM, CompanyCam es el producto más amplio.",
+  "con.eyebrow": "Documentación fotográfica de obra",
+  "con.h1": "Documentación fotográfica de obra que tu cliente no puede discutir",
+  "con.sub":
+    "Cada foto lleva hora verificada contra la red, ubicación GPS y dirección de la calle, fijadas en el momento de tomarla.",
+  "con.s1.label": "Por qué los equipos buscan esto",
+  "con.s1.h2": "Nadie busca esto antes de una disputa. Lo buscan después de una.",
+  "con.s1.intro":
+    "El cliente dice que el trabajo nunca se hizo. Un inspector cuestiona una fecha de finalización. Un subcontratista culpa a otro por un daño que ya estaba el lunes. A esas alturas, una foto de móvil con una marca de agua escrita después no va a resolver nada: la fecha salió de un reloj que cualquiera podía cambiar y el archivo pasó por tres teléfonos y un mensaje. GeoCliks está hecha para la versión de esa conversación en la que puedes demostrarlo.",
+  "con.s2.label": "Cómo funciona",
+  "con.s2.h2": "Cuatro pasos, y el equipo solo hace el primero.",
+  "con.step1.title": "El equipo la toma",
+  "con.step1.body":
+    "En obra, con la app de GeoCliks. Sin cobertura también: una captura hecha en un sótano o en un barranco queda en cola en el teléfono.",
+  "con.step2.title": "GeoCliks la sella",
+  "con.step2.body":
+    "La hora verificada contra la red, las coordenadas GPS y la dirección postal resuelta se escriben en la foto, junto con un hash SHA-256 y un código de foto único.",
+  "con.step3.title": "Se sincroniza con el proyecto",
+  "con.step3.body":
+    "La captura llega al Teamspace del proyecto en cuanto el teléfono recupera cobertura, archivada en la obra a la que pertenece.",
+  "con.step4.title": "Cualquiera puede comprobarla",
+  "con.step4.body":
+    "Un cliente, un inspector o tu propio jefe de obra introduce el código de foto en geocliks.com/verify y ve si la foto es el original intacto.",
+  "con.s3.label": "Qué se documenta",
+  "con.s3.h2": "Seis momentos de una obra que vale la pena fotografiar bien.",
+  "con.s3.intro":
+    "No es un método que haya que adoptar: son los puntos en los que la fotografía ya es la única prueba, y en los que una fecha que nadie puede comprobar es la diferencia entre un registro y una discusión.",
+  "con.use1.title": "Trabajo que queda oculto, antes de taparlo",
+  "con.use1.body":
+    "El armado antes del hormigonado, las instalaciones antes del tabique, la impermeabilización antes del azulejo. Una vez tapado, la foto es el único registro que existe, y la fecha es lo primero que cuestionará un inspector o el representante de la propiedad.",
+  "con.use2.title": "Daños previos, antes de empezar",
+  "con.use2.body":
+    "La entrada agrietada, el techo manchado, el revestimiento abollado que ya estaban el primer día. Un recorrido fotografiado antes de entrar en obra es el seguro más barato del trabajo, y solo sirve si la fecha aguanta.",
+  "con.use3.title": "Avance diario frente al plazo",
+  "con.use3.body":
+    "Una serie corta al día desde las mismas posiciones, cada una con fecha verificada. Un mes después eso es una cronología que nadie puede rediscutir, en lugar de una carpeta de fotos cuyo orden depende de lo que diga un teléfono.",
+  "con.use4.title": "Órdenes de cambio y condiciones en obra",
+  "con.use4.body":
+    "La madera podrida detrás del muro, el conducto que no estaba en los planos, el trabajo extra que alguien pidió de palabra. Fotografía la condición donde se encontró, con la dirección y la hora, y la conversación sobre el pago arranca desde un registro.",
+  "con.use5.title": "Entregas y material dañado",
+  "con.use5.body":
+    "Qué llegó, cuándo llegó y en qué estado llegó, fotografiado en la entrada y no recordado a fin de mes. La misma captura sirve como tu propia prueba de entrega hacia el siguiente de la cadena.",
+  "con.use6.title": "Repasos y cierre de obra",
+  "con.use6.body":
+    "Cada punto fotografiado tal como se encontró y otra vez ya terminado, emparejados en un antes y después y exportados como paquete de cierre. La entrega deja de ser una semana rebuscando en carretes de fotos.",
+  "con.s4.label": "Hecha para el momento en que se cuestiona",
+  "con.s4.h2": "Las funciones que importan son las que usas el día que algo sale mal.",
+  "con.dispute1.title": "Antes y después, lado a lado",
+  "con.dispute1.body":
+    "Empareja las capturas previas y posteriores del mismo punto en una sola comparación. Las disputas por el avance se acaban antes cuando las dos fotos llevan su propia fecha verificada.",
+  "con.dispute2.title": "Informes de cierre, listos para entregar",
+  "con.dispute2.body":
+    "Reúne las fotos verificadas de un proyecto en una exportación PDF, Excel, ZIP o KMZ, con la hora, la ubicación y el código de cada captura impresos al lado.",
+  "con.dispute3.title": "Roles a la medida del oficio",
+  "con.dispute3.body":
+    "Un subcontratista captura lo de su alcance sin ver el resto de la obra. Propietarios, administradores, encargados, despachadores y personal de campo ven solo lo que su rol permite.",
+  "con.s5.label": "Para empresas con varios equipos",
+  "con.s5.h2": "Una sola cuenta para cada equipo y cada obra.",
+  "con.team1.title": "Todas las capturas en un mapa",
+  "con.team1.body":
+    "Ve el proyecto entero sobre el terreno: qué fachadas quedaron documentadas y qué rincón de la obra nadie ha fotografiado desde el martes.",
+  "con.team2.title": "Invita por enlace o con un QR impreso",
+  "con.team2.body":
+    "Añade a los miembros del equipo al espacio de trabajo y asígnalos por proyecto. Los puestos vienen incluidos en el plan en vez de facturarse uno a uno.",
+  "con.team3.title": "Mensajes y avisos generales",
+  "con.team3.body":
+    "Comunica un cambio a todo el equipo sin sacar a nadie del trabajo para una llamada o un grupo de mensajes.",
+  "con.faqSection.label": "Preguntas",
+  "con.faqSection.h2": "Preguntas frecuentes",
+  "con.cta.h2": "Empieza a documentar bien la próxima obra",
+  "con.cta.body":
+    "Capturar es gratis para siempre: 300 fotos verificadas al mes, sin tarjeta. Los planes de pago añaden capturas ilimitadas, Teamspace y todas las exportaciones.",
+  "con.cta.primary": "Descargar la app",
+  "con.cta.secondary": "Ver cómo funciona la verificación",
+  "con.related.lead": "¿Comparando opciones?",
+  "con.related.companycam": "Mira cómo se compara GeoCliks con CompanyCam",
+  "con.related.mid": ", o lee las",
+  "con.related.gettingStarted": "guías para empezar",
+  "con.related2.lead": "Por oficio y por documento:",
+  "con.related2.roofing": "tejados",
+  "con.related2.hvac": "climatización y avisos de servicio",
+  "con.related2.inspection": "inspecciones de inmuebles",
+  "con.related2.pod": "prueba de entrega",
+  "con.related2.or": ", o",
+  "con.related2.gps": "cómo funciona la cámara con GPS y hora",
+  "con.faq.q1": "¿La hora de GeoCliks es distinta de la que pone mi teléfono?",
+  "con.faq.a1":
+    "Sí. La hora de un teléfono sale del reloj del dispositivo, y ese reloj se puede cambiar en los ajustes, que es justo lo que alguien señalará cuando la fecha de una foto importe. GeoCliks verifica la hora contra nuestros servidores cuando llega la captura. Si el reloj del dispositivo se desvía del nuestro más de unos minutos, la captura se marca como hora del dispositivo en lugar de verificada, en vez de pasar como verificada sin más.",
+  "con.faq.q2": "¿Funciona sin cobertura en la obra?",
+  "con.faq.a2":
+    "Sí. Las capturas quedan en cola en el teléfono y se suben solas cuando el equipo vuelve a tener señal. Una captura en cola se sella como verificada contra la red en el momento en que llega a nuestros servidores.",
+  "con.faq.q3": "¿Puede un cliente verificar una foto sin cuenta de GeoCliks?",
+  "con.faq.a3":
+    "Sí. Cada captura lleva un código de foto único y cualquiera puede introducirlo en geocliks.com/verify: sin cuenta, sin app, sin iniciar sesión. De eso se trata: una verificación en la que el cliente tiene que creerte no es una verificación.",
+  "con.faq.q4": "¿Qué impide de verdad que alguien edite la foto después?",
+  "con.faq.a4":
+    "Cada captura se guarda con un hash de contenido SHA-256 y una firma, y todo evento que la afecte se escribe en un registro de solo añadido. Una copia editada ya no coincide con su hash, así que la página de verificación la señala como alterada en lugar de como el original.",
+  "con.faq.q5": "¿GeoCliks hace que una foto sea admisible como prueba legal?",
+  "con.faq.a5":
+    "No, y ningún software honesto puede. GeoCliks no es una notaría ni un servicio jurídico, y que un tribunal, una aseguradora o una contrata acepten un registro es su decisión. Lo que hace es dificultar la manipulación no detectada y dar a un tercero una forma de comprobar la foto por su cuenta.",
 };

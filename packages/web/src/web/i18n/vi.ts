@@ -69,6 +69,9 @@ export const vi: Catalog = {
   "seo.companycam.title": "GeoCliks vs CompanyCam — ảnh đã xác minh, giá cố định",
   "seo.companycam.description":
     "Bảng so sánh có ngày và có dẫn nguồn giữa GeoCliks và CompanyCam: dấu thời gian xác minh qua mạng, mã ảnh ai cũng kiểm tra được, và các gói tháng cố định đã gồm chỗ người dùng.",
+  "seo.construction.title": "Phần mềm tài liệu ảnh thi công | GeoCliks",
+  "seo.construction.description":
+    "Ảnh thi công có GPS và dấu thời gian mà tổ của bạn không thể làm giả và khách hàng tự xác thực được. Đồng bộ Teamspace, báo cáo nghiệm thu và một mã đã xác thực cho mỗi ảnh.",
   "signin.subtitle": "Hồ sơ ảnh chống giả mạo cho đội ngũ hiện trường.",
   "signin.apple": "Tiếp tục với Apple",
   "signin.google": "Tiếp tục với Google",
@@ -1880,4 +1883,104 @@ export const vi: Catalog = {
   "cc.faq.q5": "GeoCliks có làm mọi thứ CompanyCam làm không?",
   "cc.faq.a5":
     "Không phải mọi thứ. CompanyCam đã lan sang các mảng kề bên — thu tiền tại công trình, công cụ tiếp thị, ký điện tử, đo phòng, chú thích bằng AI. GeoCliks không làm những cái đó và cũng không cố làm. Nó làm bằng chứng ảnh và video, Teamspace, báo cáo và tuyến giao hàng. Nếu bạn muốn ứng dụng ảnh kiêm luôn CRM, CompanyCam là sản phẩm rộng hơn.",
+  "con.eyebrow": "Tài liệu ảnh thi công",
+  "con.h1": "Tài liệu ảnh thi công mà khách hàng không thể phản bác",
+  "con.sub":
+    "Mỗi ảnh đều mang thời gian được xác thực qua mạng, vị trí GPS và địa chỉ đường phố — khóa lại ngay khoảnh khắc chụp.",
+  "con.s1.label": "Vì sao các tổ thi công tìm đến giải pháp này",
+  "con.s1.h2": "Không ai tìm thứ này trước khi có tranh chấp. Người ta tìm nó sau khi đã xảy ra.",
+  "con.s1.intro":
+    "Khách hàng nói công việc chưa bao giờ được làm. Thanh tra thắc mắc về ngày hoàn thành. Một nhà thầu phụ đổ lỗi cho nhà thầu phụ khác về hư hỏng đã có từ hôm thứ Hai. Đến lúc đó, một ảnh điện thoại dán watermark sau khi chụp sẽ không giải quyết được gì — ngày tháng đến từ một đồng hồ ai cũng đổi được, và tệp ảnh đã đi qua ba chiếc điện thoại cùng một tin nhắn. GeoCliks được tạo ra cho phiên bản cuộc trò chuyện đó, phiên bản mà bạn chứng minh được.",
+  "con.s2.label": "Cách hoạt động",
+  "con.s2.h2": "Bốn bước, và tổ thi công chỉ làm bước đầu tiên.",
+  "con.step1.title": "Tổ thi công chụp ảnh",
+  "con.step1.body":
+    "Tại công trường, trong ứng dụng GeoCliks. Không cần tín hiệu — ảnh chụp dưới tầng hầm hay trong hẻm núi sẽ được xếp hàng trên điện thoại.",
+  "con.step2.title": "GeoCliks khóa ảnh lại",
+  "con.step2.body":
+    "Thời gian được xác thực qua mạng, tọa độ GPS và địa chỉ đường phố đã phân giải được ghi vào ảnh, kèm mã băm SHA-256 và một mã ảnh duy nhất.",
+  "con.step3.title": "Ảnh đồng bộ về dự án",
+  "con.step3.body":
+    "Ảnh vào Teamspace của dự án ngay khi điện thoại có lại tín hiệu, được lưu đúng theo công trình mà nó thuộc về.",
+  "con.step4.title": "Ai cũng kiểm tra được",
+  "con.step4.body":
+    "Khách hàng, thanh tra hay chính quản lý dự án của bạn nhập mã ảnh tại geocliks.com/verify và thấy ngay ảnh đó có phải bản gốc chưa bị sửa hay không.",
+  "con.s3.label": "Những gì được lưu lại",
+  "con.s3.h2": "Sáu thời điểm trên công trình đáng được chụp ảnh đúng cách.",
+  "con.s3.intro":
+    "Không phải một quy trình để bạn áp dụng — đây là những điểm mà ảnh chụp vốn đã là bằng chứng duy nhất, và là nơi một ngày tháng không ai kiểm tra được chính là khác biệt giữa một hồ sơ và một cuộc tranh cãi.",
+  "con.use1.title": "Phần việc bị che kín, trước khi bị phủ lên",
+  "con.use1.body":
+    "Cốt thép trước khi đổ bê tông, phần thô trước khi đóng tấm thạch cao, lớp chống thấm trước khi ốp gạch. Một khi đã bị vùi lấp, ảnh là hồ sơ duy nhất còn tồn tại — và ngày trên ảnh là điều thanh tra hay đại diện chủ đầu tư sẽ thắc mắc trước tiên.",
+  "con.use2.title": "Hư hỏng có từ trước, trước khi bạn bắt đầu",
+  "con.use2.body":
+    "Lối xe nứt, trần bị thấm loang, tấm ốp tường móp đã có sẵn từ ngày đầu. Một bộ ảnh đi khảo sát chụp trước khi tập trung máy móc là khoản bảo hiểm rẻ nhất trên công trình, và nó chỉ có giá trị nếu ngày tháng đứng vững.",
+  "con.use3.title": "Tiến độ hằng ngày so với kế hoạch",
+  "con.use3.body":
+    "Mỗi ngày một bộ ảnh ngắn từ cùng những vị trí, mỗi ảnh có ngày đã xác thực. Một tháng sau, đó là một dòng thời gian không ai tranh cãi lại được, thay vì một thư mục ảnh mà thứ tự phụ thuộc vào điện thoại nói gì.",
+  "con.use4.title": "Lệnh thay đổi và điều kiện hiện trường",
+  "con.use4.body":
+    "Chỗ mục sau tường, ống luồn dây không có trên bản vẽ, phần việc thêm mà ai đó yêu cầu bằng miệng. Hãy chụp hiện trạng ngay tại nơi phát hiện, kèm địa chỉ và thời gian, để cuộc trao đổi về thanh toán bắt đầu từ một hồ sơ.",
+  "con.use5.title": "Giao hàng và vật liệu bị hỏng",
+  "con.use5.body":
+    "Cái gì đã đến, đến khi nào và trong tình trạng nào, chụp ngay tại cổng chứ không phải nhớ lại vào cuối tháng. Cũng chính ảnh đó dùng được làm bằng chứng giao hàng của bạn cho bên tiếp theo trong chuỗi.",
+  "con.use6.title": "Danh mục tồn đọng và nghiệm thu bàn giao",
+  "con.use6.body":
+    "Mỗi hạng mục được chụp lúc phát hiện và chụp lại lúc hoàn thành, ghép thành cặp trước–sau rồi xuất ra thành bộ tài liệu bàn giao. Bàn giao không còn là một tuần lục lọi trong thư viện ảnh.",
+  "con.s4.label": "Được tạo ra cho khoảnh khắc bị chất vấn",
+  "con.s4.h2": "Những tính năng quan trọng là những tính năng bạn dùng vào ngày có chuyện.",
+  "con.dispute1.title": "Trước và sau, đặt cạnh nhau",
+  "con.dispute1.body":
+    "Ghép ảnh trước và sau khi làm của cùng một vị trí thành một so sánh. Tranh chấp về tiến độ kết thúc nhanh hơn khi cả hai ảnh đều mang ngày đã xác thực của riêng mình.",
+  "con.dispute2.title": "Báo cáo nghiệm thu, sẵn sàng bàn giao",
+  "con.dispute2.body":
+    "Gom ảnh đã xác thực của một dự án thành bản xuất PDF, Excel, ZIP hoặc KMZ, với thời gian, vị trí và mã ảnh của từng ảnh in ngay bên cạnh.",
+  "con.dispute3.title": "Vai trò khớp với từng bộ phận thi công",
+  "con.dispute3.body":
+    "Nhà thầu phụ chụp cho phạm vi công việc của riêng mình mà không thấy phần còn lại của công trình. Chủ sở hữu, quản trị viên, quản lý, điều phối viên và thành viên hiện trường mỗi người chỉ thấy những gì vai trò của họ cho phép.",
+  "con.s5.label": "Dành cho đội quản lý nhiều tổ thi công",
+  "con.s5.h2": "Một tài khoản cho mọi tổ và mọi công trình.",
+  "con.team1.title": "Mọi ảnh trên cùng một bản đồ",
+  "con.team1.body":
+    "Xem toàn bộ dự án theo địa lý — mặt đứng nào đã có tài liệu, góc nào của công trường chưa ai chụp từ hôm thứ Ba.",
+  "con.team2.title": "Mời bằng liên kết hoặc mã QR in ra",
+  "con.team2.body":
+    "Thêm thành viên tổ vào không gian làm việc và phân theo dự án. Số chỗ đã bao gồm trong gói chứ không tính tiền từng người một.",
+  "con.team3.title": "Tin nhắn và thông báo chung",
+  "con.team3.body":
+    "Gửi một thay đổi cho cả tổ mà không phải kéo ai ra khỏi công việc để gọi điện hay vào nhóm chat.",
+  "con.faqSection.label": "Câu hỏi",
+  "con.faqSection.h2": "Thường gặp",
+  "con.cta.h2": "Bắt đầu lưu tài liệu công trình tiếp theo cho đúng cách",
+  "con.cta.body":
+    "Chụp ảnh miễn phí mãi mãi — 300 ảnh đã xác thực mỗi tháng, không cần thẻ. Gói trả phí bổ sung chụp không giới hạn, Teamspace và toàn bộ các định dạng xuất.",
+  "con.cta.primary": "Tải ứng dụng",
+  "con.cta.secondary": "Xem cách xác thực hoạt động",
+  "con.related.lead": "Đang so sánh các lựa chọn?",
+  "con.related.companycam": "Xem GeoCliks so với CompanyCam",
+  "con.related.mid": ", hoặc đọc",
+  "con.related.gettingStarted": "hướng dẫn bắt đầu",
+  "con.related2.lead": "Theo ngành nghề và loại tài liệu:",
+  "con.related2.roofing": "lợp mái",
+  "con.related2.hvac": "HVAC và các cuộc gọi dịch vụ",
+  "con.related2.inspection": "kiểm định bất động sản",
+  "con.related2.pod": "bằng chứng giao hàng",
+  "con.related2.or": ", hoặc",
+  "con.related2.gps": "cách camera dấu thời gian GPS hoạt động",
+  "con.faq.q1":
+    "Dấu thời gian của GeoCliks có khác với dấu thời gian sẵn có trên điện thoại của tôi không?",
+  "con.faq.a1":
+    "Có. Dấu thời gian của điện thoại đến từ đồng hồ thiết bị, và đồng hồ thiết bị có thể đổi trong phần cài đặt — đó đúng là điều bị chỉ ra khi ngày của một tấm ảnh trở nên quan trọng. GeoCliks xác thực thời gian với máy chủ của chúng tôi khi ảnh được gửi về. Nếu đồng hồ thiết bị lệch với chúng tôi hơn vài phút, ảnh sẽ được đánh dấu là lấy thời gian từ thiết bị chứ không phải đã xác thực, thay vì âm thầm được coi là đã xác thực.",
+  "con.faq.q2": "Có dùng được khi công trường không có tín hiệu di động không?",
+  "con.faq.a2":
+    "Có. Ảnh được xếp hàng trên điện thoại và tự tải lên khi tổ thi công trở lại vùng có tín hiệu. Một ảnh đang xếp hàng sẽ được niêm phong là đã xác thực qua mạng vào đúng khoảnh khắc nó đến máy chủ của chúng tôi.",
+  "con.faq.q3": "Khách hàng có thể xác thực ảnh mà không cần tài khoản GeoCliks không?",
+  "con.faq.a3":
+    "Có. Mỗi ảnh mang một mã ảnh duy nhất, và bất kỳ ai cũng có thể nhập mã đó tại geocliks.com/verify — không cần tài khoản, không cần ứng dụng, không cần đăng nhập. Đó chính là điểm cốt lõi: một sự xác thực mà khách hàng phải tin lời bạn thì không phải là xác thực.",
+  "con.faq.q4": "Thực tế điều gì ngăn người khác chỉnh sửa ảnh về sau?",
+  "con.faq.a4":
+    "Mỗi ảnh được lưu kèm mã băm nội dung SHA-256 và một chữ ký, và mọi sự kiện liên quan đến nó đều được ghi vào một bản ghi chỉ thêm mới. Một bản sao đã bị sửa sẽ không còn khớp với mã băm của nó, nên trang xác thực sẽ báo đó là ảnh đã bị thay đổi chứ không phải bản gốc.",
+  "con.faq.q5": "GeoCliks có làm cho một tấm ảnh được tòa chấp nhận về mặt pháp lý không?",
+  "con.faq.a5":
+    "Không, và không phần mềm nào trung thực mà dám nói vậy. GeoCliks không phải công chứng viên hay dịch vụ pháp lý, và việc tòa án, công ty bảo hiểm hay tổng thầu có chấp nhận một hồ sơ hay không là quyết định của họ. Điều GeoCliks làm là khiến việc can thiệp mà không bị phát hiện trở nên khó, và cho bên thứ ba một cách kiểm tra ảnh một cách độc lập.",
 };

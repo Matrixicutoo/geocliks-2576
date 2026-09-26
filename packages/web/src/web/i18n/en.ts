@@ -78,6 +78,9 @@ export const en = {
   "seo.companycam.title": "GeoCliks vs CompanyCam — Verified Photos, Flat Pricing",
   "seo.companycam.description":
     "A dated, sourced comparison of GeoCliks and CompanyCam: network-verified timestamps, independently checkable photo codes, and flat monthly plans with seats included.",
+  "seo.construction.title": "Construction Photo Documentation Software | GeoCliks",
+  "seo.construction.description":
+    "GPS- and time-stamped construction photos your crew can't fake and clients can verify. Teamspace sync, closeout reports and a verified code per shot.",
   "signin.subtitle": "Tamper-proof photo documentation for field teams.",
   "signin.apple": "Continue with Apple",
   "signin.google": "Continue with Google",
@@ -1895,6 +1898,105 @@ export const en = {
   "cc.faq.q5": "Does GeoCliks do everything CompanyCam does?",
   "cc.faq.a5":
     "Not everything. CompanyCam has grown into adjacent territory — on-site payments, marketing tools, e-signature, room measurement, AI captioning. GeoCliks does not do those and is not trying to. It does photo and video evidence, Teamspace, reports and delivery routes. If you want the photo app to also be the CRM, CompanyCam is the broader product.",
+  "con.eyebrow": "Construction photo documentation",
+  "con.h1": "Construction Photo Documentation Your Client Can't Dispute",
+  "con.sub":
+    "Every photo carries a network-verified time, GPS location and street address — locked the moment it's taken.",
+  "con.s1.label": "Why crews look for this",
+  "con.s1.h2": "Nobody searches for this before a dispute. They search for it after one.",
+  "con.s1.intro":
+    "A client says the work was never done. An inspector questions a completion date. One sub blames another for damage that was there on Monday. At that point a phone photo with a watermark typed on afterwards is not going to settle anything — the date came from a clock anyone could have changed, and the file has been through three phones and a text message. GeoCliks is built for the version of that conversation where you can prove it.",
+  "con.s2.label": "How it works",
+  "con.s2.h2": "Four steps, and the crew only does the first one.",
+  "con.step1.title": "The crew shoots it",
+  "con.step1.body":
+    "On site, in the GeoCliks app. No signal needed — a capture made in a basement or a canyon queues on the phone.",
+  "con.step2.title": "GeoCliks locks it",
+  "con.step2.body":
+    "Network-verified time, GPS coordinates and the resolved street address are written into the photo, with a SHA-256 hash and a unique photo code.",
+  "con.step3.title": "It syncs to the project",
+  "con.step3.body":
+    "The capture lands in the project's Teamspace the moment the phone is back in range, filed under the job it belongs to.",
+  "con.step4.title": "Anyone can check it",
+  "con.step4.body":
+    "A client, an inspector or your own PM enters the photo code at geocliks.com/verify and sees whether the photo is the untouched original.",
+  "con.s3.label": "What gets documented",
+  "con.s3.h2": "Six moments on a job worth photographing properly.",
+  "con.s3.intro":
+    "Not a workflow to adopt — the points where a photograph is already the only evidence, and where a date nobody can check is the difference between a record and an argument.",
+  "con.use1.title": "Concealed work, before it is covered",
+  "con.use1.body":
+    "Rebar before the pour, rough-in before the drywall, waterproofing before the tile. Once it is buried, the photo is the only record that exists — and the date on it is what an inspector or an owner's rep will question first.",
+  "con.use2.title": "Pre-existing damage, before you start",
+  "con.use2.body":
+    "The cracked driveway, the stained ceiling, the dented siding that was already there on day one. A walkthrough set captured before mobilization is the cheapest insurance on the job, and it only works if the date holds up.",
+  "con.use3.title": "Daily progress against the schedule",
+  "con.use3.body":
+    "One short set a day from the same positions, each with a verified date. A month later that is a timeline nobody can re-argue, rather than a folder of photos whose order depends on what a phone says.",
+  "con.use4.title": "Change orders and field conditions",
+  "con.use4.body":
+    "The rot behind the wall, the conduit that was not on the drawings, the extra work someone asked for verbally. Photograph the condition where it was found, with the address and the time, and the conversation about payment starts from a record.",
+  "con.use5.title": "Deliveries and damaged material",
+  "con.use5.body":
+    "What arrived, when it arrived and what condition it arrived in, shot at the gate rather than remembered at the end of the month. The same capture works as your own proof of delivery to the next party down the chain.",
+  "con.use6.title": "Punch list and closeout",
+  "con.use6.body":
+    "Each item photographed as found and again as finished, paired into a before-and-after and exported as the closeout package. Handover stops being a week of hunting through camera rolls.",
+  "con.s4.label": "Built for the moment it gets questioned",
+  "con.s4.h2": "The features that matter are the ones you use on the day it goes wrong.",
+  "con.dispute1.title": "Before and after, side by side",
+  "con.dispute1.body":
+    "Pair the pre-work and post-work captures of the same spot into one comparison. Progress disputes end faster when both photos carry their own verified date.",
+  "con.dispute2.title": "Closeout reports, ready to hand over",
+  "con.dispute2.body":
+    "Bundle a project's verified photos into a PDF, Excel, ZIP or KMZ export, with each capture's time, location and photo code printed beside it.",
+  "con.dispute3.title": "Roles that match the trade",
+  "con.dispute3.body":
+    "A sub captures for their own scope without seeing the rest of the job. Owners, admins, managers, dispatchers and field members each see only what their role allows.",
+  "con.s5.label": "For teams running multiple crews",
+  "con.s5.h2": "One account across every crew and every job.",
+  "con.team1.title": "Every capture on one map",
+  "con.team1.body":
+    "See the whole project geographically — which elevations got documented, which corner of the site nobody has shot since Tuesday.",
+  "con.team2.title": "Invite by link or printed QR",
+  "con.team2.body":
+    "Add crew members to the workspace and assign them by project. Seats are included in the plan rather than billed one at a time.",
+  "con.team3.title": "Messages and broadcasts",
+  "con.team3.body":
+    "Send the whole crew a change without pulling anyone off the job into a phone call or a group text thread.",
+  "con.faqSection.label": "Questions",
+  "con.faqSection.h2": "Frequently asked",
+  "con.cta.h2": "Start documenting the next job properly",
+  "con.cta.body":
+    "Capturing is free forever — 300 verified photos a month, no card. Paid plans add unlimited captures, Teamspace and the full set of exports.",
+  "con.cta.primary": "Get the app",
+  "con.cta.secondary": "See how verification works",
+  "con.related.lead": "Comparing options?",
+  "con.related.companycam": "See how GeoCliks compares to CompanyCam",
+  "con.related.mid": ", or read the",
+  "con.related.gettingStarted": "getting-started guides",
+  "con.related2.lead": "By trade and document:",
+  "con.related2.roofing": "roofing",
+  "con.related2.hvac": "HVAC and service calls",
+  "con.related2.inspection": "property inspections",
+  "con.related2.pod": "proof of delivery",
+  "con.related2.or": ", or",
+  "con.related2.gps": "how the GPS timestamp camera works",
+  "con.faq.q1": "Is a GeoCliks timestamp different from my phone's built-in one?",
+  "con.faq.a1":
+    "Yes. A phone's timestamp comes from the device clock, and a device clock can be changed in settings — which is exactly what gets pointed out when a photo's date matters. GeoCliks verifies the time against our servers when the capture arrives. If the device clock disagrees with ours by more than a few minutes, the capture is marked device-timed instead of verified, rather than quietly passing as verified.",
+  "con.faq.q2": "Does it work without cell signal on a job site?",
+  "con.faq.a2":
+    "Yes. Captures are queued on the phone and upload themselves when the crew is back in range. A queued capture is sealed as network-verified at the moment it reaches our servers.",
+  "con.faq.q3": "Can a client verify a photo without a GeoCliks account?",
+  "con.faq.a3":
+    "Yes. Every capture carries a unique photo code, and anyone can enter it at geocliks.com/verify — no account, no app, no sign-in. That is the point: verification a client has to take your word for is not verification.",
+  "con.faq.q4": "What actually stops someone editing the photo afterwards?",
+  "con.faq.a4":
+    "Each capture is stored with a SHA-256 content hash and a signature, and every event affecting it is written to an append-only record. An edited copy no longer matches its hash, so the verification page reports it as altered rather than as the original.",
+  "con.faq.q5": "Does GeoCliks make a photo legally admissible?",
+  "con.faq.a5":
+    "No, and no software honestly can. GeoCliks is not a notary or a legal service, and whether a court, insurer or GC accepts a record is their decision. What it does is make undetected tampering hard and give a third party a way to check a photo independently.",
 } as const;
 
 export type Catalog = Record<keyof typeof en, string>;

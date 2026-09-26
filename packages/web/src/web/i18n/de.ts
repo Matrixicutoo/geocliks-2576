@@ -69,6 +69,9 @@ export const de: Catalog = {
   "seo.companycam.title": "GeoCliks vs CompanyCam — geprüfte Fotos, Festpreis",
   "seo.companycam.description":
     "Ein datierter, belegter Vergleich von GeoCliks und CompanyCam: netzwerkgeprüfte Zeitstempel, von jedem prüfbare Fotocodes und feste Monatstarife mit inkludierten Plätzen.",
+  "seo.construction.title": "Baustellen-Fotodokumentation mit GPS und Zeit | GeoCliks",
+  "seo.construction.description":
+    "Baustellenfotos mit geprüfter Zeit und GPS, die Ihre Mannschaft nicht fälschen und Kunden selbst prüfen können. Teamspace, Abnahmeberichte, ein Code pro Foto.",
   "signin.subtitle": "Fälschungssichere Fotodokumentation für Außendienstteams.",
   "signin.apple": "Mit Apple fortfahren",
   "signin.google": "Mit Google fortfahren",
@@ -1918,4 +1921,103 @@ export const de: Catalog = {
   "cc.faq.q5": "Macht GeoCliks alles, was CompanyCam macht?",
   "cc.faq.a5":
     "Nicht alles. CompanyCam ist in Nachbargebiete gewachsen — Zahlungen vor Ort, Marketingwerkzeuge, E-Signatur, Raumaufmaß, KI-Bildtexte. GeoCliks macht das nicht und will es nicht. Es macht Foto- und Videobeweise, Teamspace, Berichte und Lieferrouten. Wenn die Foto-App auch das CRM sein soll, ist CompanyCam das breitere Produkt.",
+  "con.eyebrow": "Baustellen-Fotodokumentation",
+  "con.h1": "Baustellen-Fotodokumentation, die Ihr Kunde nicht bestreiten kann",
+  "con.sub":
+    "Jedes Foto trägt eine netzwerkgeprüfte Uhrzeit, GPS-Position und Straßenadresse — festgeschrieben im Moment der Aufnahme.",
+  "con.s1.label": "Warum Teams danach suchen",
+  "con.s1.h2": "Danach sucht niemand vor einem Streit. Man sucht danach hinterher.",
+  "con.s1.intro":
+    "Der Kunde sagt, die Arbeit sei nie gemacht worden. Ein Prüfer bezweifelt ein Fertigstellungsdatum. Ein Nachunternehmer schiebt einem anderen einen Schaden zu, der schon am Montag da war. An diesem Punkt klärt ein Handyfoto mit nachträglich eingetipptem Wasserzeichen nichts: Das Datum kam von einer Uhr, die jeder verstellen konnte, und die Datei ist durch drei Telefone und eine Nachricht gelaufen. GeoCliks ist für die Variante dieses Gesprächs gebaut, in der Sie es beweisen können.",
+  "con.s2.label": "So funktioniert es",
+  "con.s2.h2": "Vier Schritte, und die Mannschaft macht nur den ersten.",
+  "con.step1.title": "Die Mannschaft fotografiert",
+  "con.step1.body":
+    "Auf der Baustelle, in der GeoCliks-App. Auch ohne Netz: Eine Aufnahme im Keller oder in einer Schlucht wartet auf dem Telefon in der Warteschlange.",
+  "con.step2.title": "GeoCliks versiegelt",
+  "con.step2.body":
+    "Netzwerkgeprüfte Uhrzeit, GPS-Koordinaten und die aufgelöste Straßenadresse werden ins Foto geschrieben, dazu ein SHA-256-Hash und ein eindeutiger Fotocode.",
+  "con.step3.title": "Es landet im Projekt",
+  "con.step3.body":
+    "Die Aufnahme geht in den Teamspace des Projekts, sobald das Telefon wieder Netz hat, einsortiert unter der Baustelle, zu der sie gehört.",
+  "con.step4.title": "Jeder kann es prüfen",
+  "con.step4.body":
+    "Ein Kunde, ein Prüfer oder Ihr eigener Bauleiter gibt den Fotocode auf geocliks.com/verify ein und sieht, ob das Foto das unveränderte Original ist.",
+  "con.s3.label": "Was dokumentiert wird",
+  "con.s3.h2": "Sechs Momente auf einer Baustelle, die man richtig fotografieren sollte.",
+  "con.s3.intro":
+    "Kein Verfahren, das man einführen muss — die Stellen, an denen das Foto ohnehin der einzige Beweis ist und an denen ein Datum, das niemand prüfen kann, den Unterschied zwischen Nachweis und Streit ausmacht.",
+  "con.use1.title": "Verdeckte Arbeit, bevor sie zu ist",
+  "con.use1.body":
+    "Bewehrung vor dem Betonieren, Rohinstallation vor dem Trockenbau, Abdichtung vor den Fliesen. Ist es verbaut, ist das Foto der einzige Nachweis, der existiert — und das Datum darauf ist das Erste, was ein Prüfer oder der Vertreter des Bauherrn anzweifelt.",
+  "con.use2.title": "Vorschäden, bevor Sie anfangen",
+  "con.use2.body":
+    "Die gerissene Zufahrt, die verfärbte Decke, die verbeulte Fassade, die schon am ersten Tag da waren. Ein Rundgang, fotografiert vor der Einrichtung der Baustelle, ist die günstigste Versicherung am Bau — und sie taugt nur, wenn das Datum hält.",
+  "con.use3.title": "Täglicher Fortschritt gegen den Terminplan",
+  "con.use3.body":
+    "Eine kurze Serie pro Tag von denselben Standpunkten, jede mit geprüftem Datum. Einen Monat später ist das ein Ablauf, den niemand neu verhandelt, statt eines Ordners, dessen Reihenfolge davon abhängt, was ein Telefon behauptet.",
+  "con.use4.title": "Nachträge und Zustände vor Ort",
+  "con.use4.body":
+    "Die Fäulnis hinter der Wand, das Leerrohr, das nicht im Plan stand, die Zusatzarbeit, die jemand mündlich bestellt hat. Fotografieren Sie den Zustand dort, wo er gefunden wurde, mit Adresse und Uhrzeit, und das Gespräch über die Bezahlung beginnt bei einem Nachweis.",
+  "con.use5.title": "Lieferungen und beschädigtes Material",
+  "con.use5.body":
+    "Was kam, wann es kam und in welchem Zustand — am Tor aufgenommen, nicht am Monatsende aus dem Gedächtnis rekonstruiert. Dieselbe Aufnahme dient als Ihr eigener Liefernachweis gegenüber dem Nächsten in der Kette.",
+  "con.use6.title": "Mängelliste und Abnahme",
+  "con.use6.body":
+    "Jeder Punkt fotografiert, wie er vorgefunden wurde, und noch einmal fertig, als Vorher-Nachher gepaart und als Abnahmepaket exportiert. Die Übergabe ist keine Woche Suche in Fotoalben mehr.",
+  "con.s4.label": "Gebaut für den Moment, in dem es angezweifelt wird",
+  "con.s4.h2": "Die Funktionen, die zählen, sind die vom Tag, an dem es schiefgeht.",
+  "con.dispute1.title": "Vorher und nachher, nebeneinander",
+  "con.dispute1.body":
+    "Paaren Sie die Aufnahme vor und nach der Arbeit an derselben Stelle zu einem Vergleich. Streit über den Fortschritt endet schneller, wenn beide Fotos ihr eigenes geprüftes Datum tragen.",
+  "con.dispute2.title": "Abnahmeberichte, fertig zur Übergabe",
+  "con.dispute2.body":
+    "Bündeln Sie die geprüften Fotos eines Projekts als PDF-, Excel-, ZIP- oder KMZ-Export, mit Uhrzeit, Ort und Fotocode jeder Aufnahme daneben.",
+  "con.dispute3.title": "Rollen, die zum Gewerk passen",
+  "con.dispute3.body":
+    "Ein Nachunternehmer dokumentiert sein eigenes Gewerk, ohne den Rest der Baustelle zu sehen. Inhaber, Admins, Manager, Disponenten und Feldmitglieder sehen jeweils nur, was ihre Rolle zulässt.",
+  "con.s5.label": "Für Betriebe mit mehreren Kolonnen",
+  "con.s5.h2": "Ein Konto über jede Kolonne und jede Baustelle.",
+  "con.team1.title": "Jede Aufnahme auf einer Karte",
+  "con.team1.body":
+    "Sehen Sie das Projekt räumlich: welche Ansichten dokumentiert sind und welche Ecke der Baustelle seit Dienstag niemand fotografiert hat.",
+  "con.team2.title": "Einladen per Link oder gedrucktem QR-Code",
+  "con.team2.body":
+    "Nehmen Sie Mitarbeiter in den Workspace auf und weisen Sie sie Projekten zu. Plätze sind im Tarif enthalten, statt einzeln abgerechnet zu werden.",
+  "con.team3.title": "Nachrichten und Rundrufe",
+  "con.team3.body":
+    "Geben Sie der ganzen Mannschaft eine Änderung durch, ohne jemanden für einen Anruf oder eine Gruppenchat-Kette von der Arbeit zu holen.",
+  "con.faqSection.label": "Fragen",
+  "con.faqSection.h2": "Häufige Fragen",
+  "con.cta.h2": "Dokumentieren Sie die nächste Baustelle richtig",
+  "con.cta.body":
+    "Aufnehmen ist dauerhaft kostenlos: 300 geprüfte Fotos im Monat, ohne Karte. Bezahlte Tarife bringen unbegrenzte Aufnahmen, Teamspace und alle Exporte.",
+  "con.cta.primary": "App holen",
+  "con.cta.secondary": "Ansehen, wie die Prüfung funktioniert",
+  "con.related.lead": "Sie vergleichen Optionen?",
+  "con.related.companycam": "Sehen Sie, wie GeoCliks im Vergleich zu CompanyCam abschneidet",
+  "con.related.mid": ", oder lesen Sie die",
+  "con.related.gettingStarted": "Einstiegsanleitungen",
+  "con.related2.lead": "Nach Gewerk und Nachweis:",
+  "con.related2.roofing": "Dachdecker",
+  "con.related2.hvac": "Heizung, Klima und Serviceeinsätze",
+  "con.related2.inspection": "Objektbegehungen",
+  "con.related2.pod": "Liefernachweis",
+  "con.related2.or": ", oder",
+  "con.related2.gps": "wie die GPS-Zeitstempel-Kamera funktioniert",
+  "con.faq.q1": "Ist ein GeoCliks-Zeitstempel anders als der meines Telefons?",
+  "con.faq.a1":
+    "Ja. Der Zeitstempel eines Telefons kommt von der Geräteuhr, und eine Geräteuhr lässt sich in den Einstellungen verstellen — genau darauf wird hingewiesen, wenn das Datum eines Fotos wichtig wird. GeoCliks prüft die Zeit gegen unsere Server, sobald die Aufnahme ankommt. Weicht die Geräteuhr um mehr als ein paar Minuten von unserer ab, wird die Aufnahme als gerätegestempelt markiert statt als geprüft — anstatt stillschweigend als geprüft durchzugehen.",
+  "con.faq.q2": "Funktioniert es ohne Mobilfunk auf der Baustelle?",
+  "con.faq.a2":
+    "Ja. Aufnahmen warten auf dem Telefon in der Warteschlange und laden sich selbst hoch, sobald die Mannschaft wieder Netz hat. Eine wartende Aufnahme wird in dem Moment als netzwerkgeprüft versiegelt, in dem sie unsere Server erreicht.",
+  "con.faq.q3": "Kann ein Kunde ein Foto ohne GeoCliks-Konto prüfen?",
+  "con.faq.a3":
+    "Ja. Jede Aufnahme trägt einen eindeutigen Fotocode, und jeder kann ihn auf geocliks.com/verify eingeben — kein Konto, keine App, keine Anmeldung. Darum geht es: Eine Prüfung, bei der der Kunde Ihnen glauben muss, ist keine Prüfung.",
+  "con.faq.q4": "Was hindert jemanden tatsächlich daran, das Foto später zu bearbeiten?",
+  "con.faq.a4":
+    "Jede Aufnahme wird mit einem SHA-256-Inhaltshash und einer Signatur gespeichert, und jedes Ereignis dazu wird in ein nur anfügbares Protokoll geschrieben. Eine bearbeitete Kopie passt nicht mehr zu ihrem Hash, also meldet die Prüfseite sie als verändert und nicht als Original.",
+  "con.faq.q5": "Macht GeoCliks ein Foto vor Gericht verwertbar?",
+  "con.faq.a5":
+    "Nein, und keine Software kann das ehrlicherweise. GeoCliks ist kein Notar und kein Rechtsdienst, und ob ein Gericht, ein Versicherer oder ein Generalunternehmer einen Nachweis akzeptiert, entscheiden die. Was es leistet: unentdeckte Manipulation schwer machen und einem Dritten einen Weg geben, das Foto selbst zu prüfen.",
 };
