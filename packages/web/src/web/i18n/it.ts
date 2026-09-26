@@ -696,7 +696,7 @@ export const it: Catalog = {
   "getapp.office3": "Condividi un link che il cliente non può contestare",
   "getapp.storeTitle": "Installala sul camion",
   "getapp.storeBody":
-    "Il piano gratuito stampa ora verificata, GPS, indirizzo e un codice univoco. 5 $/mese quando servono esportazioni illimitate e layout prima/dopo.",
+    "Il piano gratuito stampa ora verificata, GPS, indirizzo e un codice univoco. 7 $/mese quando servono esportazioni illimitate e layout prima/dopo.",
   "getapp.storeIos": "Scarica su App Store",
   "getapp.storeAndroid": "Disponibile su Google Play",
   "getapp.comingSoon": "Schede store in arrivo — nel frattempo usa la fotocamera del browser",

@@ -686,7 +686,7 @@ export const vi: Catalog = {
   "getapp.office3": "Chia sẻ liên kết khách hàng không thể phản bác",
   "getapp.storeTitle": "Cài lên xe công trường",
   "getapp.storeBody":
-    "Gói miễn phí in thời gian đã xác thực, GPS, địa chỉ và mã duy nhất. 5 $/tháng khi bạn cần xuất không giới hạn và bố cục trước/sau.",
+    "Gói miễn phí in thời gian đã xác thực, GPS, địa chỉ và mã duy nhất. 7 $/tháng khi bạn cần xuất không giới hạn và bố cục trước/sau.",
   "getapp.storeIos": "Tải trên App Store",
   "getapp.storeAndroid": "Tải trên Google Play",
   "getapp.comingSoon": "Sắp có trên các store — trong lúc đó hãy dùng camera trình duyệt",

@@ -697,7 +697,7 @@ export const es: Catalog = {
   "getapp.office3": "Comparte un enlace que el cliente no puede discutir",
   "getapp.storeTitle": "Instálala en el camión",
   "getapp.storeBody":
-    "El plan gratuito estampa hora verificada, GPS, dirección y un código único. 5 USD/mes cuando necesitas exportaciones ilimitadas y diseños antes/después.",
+    "El plan gratuito estampa hora verificada, GPS, dirección y un código único. 7 USD/mes cuando necesitas exportaciones ilimitadas y diseños antes/después.",
   "getapp.storeIos": "Descargar en el App Store",
   "getapp.storeAndroid": "Disponible en Google Play",
   "getapp.comingSoon":

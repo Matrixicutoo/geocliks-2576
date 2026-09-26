@@ -699,7 +699,7 @@ export const de: Catalog = {
   "getapp.office3": "Teilen Sie einen Link, den der Kunde nicht bestreiten kann",
   "getapp.storeTitle": "Aufs Fahrzeug holen",
   "getapp.storeBody":
-    "Der Gratis-Plan stempelt verifizierte Zeit, GPS, Adresse und einen einmaligen Code. 5 $/Monat für unbegrenzte Exporte und Vorher/Nachher-Layouts.",
+    "Der Gratis-Plan stempelt verifizierte Zeit, GPS, Adresse und einen einmaligen Code. 7 $/Monat für unbegrenzte Exporte und Vorher/Nachher-Layouts.",
   "getapp.storeIos": "Im App Store laden",
   "getapp.storeAndroid": "Bei Google Play",
   "getapp.comingSoon": "Store-Einträge folgen bald — nutzen Sie bis dahin die Browser-Kamera",

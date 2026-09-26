@@ -699,7 +699,7 @@ export const tl: Catalog = {
   "getapp.office3": "Mag-share ng link na hindi mapagtatalunan ng kliyente",
   "getapp.storeTitle": "Ilagay sa trak",
   "getapp.storeBody":
-    "Ang free plan ay nag-stamp ng verified na oras, GPS, address, at natatanging code. $5/buwan kapag kailangan ng walang limitasyong export at before/after layouts.",
+    "Ang free plan ay nag-stamp ng verified na oras, GPS, address, at natatanging code. $7/buwan kapag kailangan ng walang limitasyong export at before/after layouts.",
   "getapp.storeIos": "I-download sa App Store",
   "getapp.storeAndroid": "Kunin sa Google Play",
   "getapp.comingSoon": "Malapit nang mailista sa store — gamitin muna ang browser camera",

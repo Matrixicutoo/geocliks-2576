@@ -692,7 +692,7 @@ export const pl: Catalog = {
   "getapp.office3": "Udostępnij link, z którym klient nie będzie się spierać",
   "getapp.storeTitle": "Zainstaluj w samochodzie",
   "getapp.storeBody":
-    "Plan darmowy nadrukowuje zweryfikowany czas, GPS, adres i unikalny kod. 5 $/mies., gdy potrzebujesz nielimitowanych eksportów i układów przed/po.",
+    "Plan darmowy nadrukowuje zweryfikowany czas, GPS, adres i unikalny kod. 7 $/mies., gdy potrzebujesz nielimitowanych eksportów i układów przed/po.",
   "getapp.storeIos": "Pobierz w App Store",
   "getapp.storeAndroid": "Pobierz z Google Play",
   "getapp.comingSoon": "Wpisy w sklepach już wkrótce — na razie użyj kamery w przeglądarce",

@@ -694,7 +694,7 @@ export const ptBR: Catalog = {
   "getapp.office3": "Compartilhe um link que o cliente não pode contestar",
   "getapp.storeTitle": "Coloque no caminhão",
   "getapp.storeBody":
-    "O plano gratuito estampa hora verificada, GPS, endereço e um código único. US$ 5/mês quando você precisa de exportações ilimitadas e layouts antes/depois.",
+    "O plano gratuito estampa hora verificada, GPS, endereço e um código único. US$ 7/mês quando você precisa de exportações ilimitadas e layouts antes/depois.",
   "getapp.storeIos": "Baixar na App Store",
   "getapp.storeAndroid": "Disponível no Google Play",
   "getapp.comingSoon": "Lojas em breve — use a câmera do navegador nesse meio-tempo",

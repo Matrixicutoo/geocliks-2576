@@ -703,7 +703,7 @@ export const en = {
   "getapp.office3": "Share a link the client can't argue with",
   "getapp.storeTitle": "Get it on the truck",
   "getapp.storeBody":
-    "Free plan stamps verified time, GPS, address, and a unique code. $5/month when you need unlimited exports and before/after layouts.",
+    "Free plan stamps verified time, GPS, address, and a unique code. $7/month when you need unlimited exports and before/after layouts.",
   "getapp.storeIos": "Download on the App Store",
   "getapp.storeAndroid": "Get it on Google Play",
   "getapp.comingSoon": "Store listings coming soon — use the browser camera meanwhile",

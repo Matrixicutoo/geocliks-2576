@@ -703,7 +703,7 @@ export const frCA: Catalog = {
   "getapp.office3": "Partagez un lien que le client ne peut contester",
   "getapp.storeTitle": "Installez-la dans le camion",
   "getapp.storeBody":
-    "Le forfait gratuit estampe l'heure vérifiée, le GPS, l'adresse et un code unique. 5 $/mois quand vous avez besoin d'exports illimités et de mises en page avant/après.",
+    "Le forfait gratuit estampe l'heure vérifiée, le GPS, l'adresse et un code unique. 7 $/mois quand vous avez besoin d'exports illimités et de mises en page avant/après.",
   "getapp.storeIos": "Télécharger sur l'App Store",
   "getapp.storeAndroid": "Disponible sur Google Play",
   "getapp.comingSoon":

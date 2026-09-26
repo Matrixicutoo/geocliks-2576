@@ -655,7 +655,7 @@ export const zh: Catalog = {
   "getapp.office3": "分享一个客户无从争辩的链接",
   "getapp.storeTitle": "装到工程车上",
   "getapp.storeBody":
-    "免费方案即可印上已验证时间、GPS、地址和唯一代码。需要无限导出和前后对比排版时，每月 5 美元。",
+    "免费方案即可印上已验证时间、GPS、地址和唯一代码。需要无限导出和前后对比排版时，每月 7 美元。",
   "getapp.storeIos": "在 App Store 下载",
   "getapp.storeAndroid": "在 Google Play 获取",
   "getapp.comingSoon": "应用商店上架即将开放——在此期间请使用浏览器相机",
