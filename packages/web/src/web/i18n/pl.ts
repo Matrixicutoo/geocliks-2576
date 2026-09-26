@@ -81,6 +81,9 @@ export const pl: Catalog = {
   "seo.roofing.title": "Dokumentacja zdjęciowa dachu na potrzeby szkód",
   "seo.roofing.description":
     "Dokumentuj uszkodzenia i wymianę dachu z weryfikowanym czasem, GPS i adresem na każdym zdjęciu, zestawione przed i po dla rzeczoznawców i właścicieli.",
+  "seo.pricing.title": "Cennik GeoCliks — plany dla ekip i flot dostawczych",
+  "seo.pricing.description":
+    "Weryfikowane zdjęcia bezpłatnie na zawsze. Zdjęcia bez limitu i pełne wideo od 7 $ miesięcznie, ekipy z teamspace od 25 $, trasy dostaw wyceniane za przystanek.",
   "signin.subtitle": "Odporna na manipulacje dokumentacja zdjęciowa dla ekip w terenie.",
   "signin.apple": "Kontynuuj z Apple",
   "signin.google": "Kontynuuj z Google",
@@ -2311,4 +2314,117 @@ export const pl: Catalog = {
   "rf.faq.q6": "Czym to się różni od strony o dokumentacji budowy?",
   "rf.faq.a6":
     "Ten sam produkt, inny argument. Generalny wykonawca zwykle dokumentuje pod spór z klientem o postęp i zakres; dachiarz zwykle dokumentuje pod rzeczoznawcę, który potrzebuje datowanego przed i datowanego po tej samej połaci. Tutaj bardziej liczą się łączenie przed/po i format eksportu, dlatego ta strona istnieje osobno.",
+  "pr.eyebrow": "Plany i ceny",
+  "pr.h1": "Zacznij bezpłatnie. Płać, gdy ekipa rośnie, nie wcześniej.",
+  "pr.sub":
+    "Weryfikowane zdjęcia są darmowe na zawsze – bez karty i bez daty wygaśnięcia. Wszystko powyżej wyceniamy według tego, co naprawdę nas kosztuje: ile fotografujesz, ile osób się loguje i do ilu drzwi pukasz.",
+  "pr.s1.label": "01 — Plany",
+  "pr.s1.h2": "Dwie rodziny, wyceniane według dwóch różnych rzeczy.",
+  "pr.s1.intro":
+    "Plany dowodowe mierzy się liczbą zdjęć, wideo i stanowisk. Plany dostawcze mierzy się liczbą przystanków i kierowców i zawierają wszystko, co weryfikują plany dowodowe. Wybierz ten, który odpowiada pracy.",
+  "pr.plansNote":
+    "Ceny są w USD miesięcznie, rozliczane za przestrzeń roboczą, a nie za stanowisko – plan na pięć stanowisk to jedna faktura, nie pięć. Potrzebujesz SSO, podpisanej umowy powierzenia lub dokumentów zakupowych? To Enterprise, przy każdym wolumenie:",
+  "pr.s2.label": "02 — W każdym planie",
+  "pr.s2.h2": "Dowód nie staje się lepszy, kiedy nam zapłacisz.",
+  "pr.s2.intro":
+    "Wiele narzędzi chowa wiarygodną wersję za najwyższym poziomem. Oto co dostaje darmowa przestrzeń robocza – i czego przestrzeń Enterprise nie dostaje więcej.",
+  "pr.same1.title": "Weryfikacja nigdy nie jest dodatkiem na sprzedaż",
+  "pr.same1.body":
+    "Plan darmowy i Enterprise oznaczają zdjęcie tak samo: czas potwierdzony przez sieć, współrzędne GPS i adres, na który się rozwiązują.",
+  "pr.same2.title": "Każde zdjęcie zachowuje swój kod",
+  "pr.same2.body":
+    "Kod zdjęcia rozwiązuje się, a pieczęć przechodzi weryfikację na zawsze – także po obniżeniu planu i po tym, jak całkowicie przestaniesz nam płacić.",
+  "pr.same3.title": "W terenie nie potrzebujesz zasięgu",
+  "pr.same3.body":
+    "Rób zdjęcia w piwnicy, w kanionie albo w parkingu wielopoziomowym, w każdym planie. Telefon kolejkuje ujęcie i wysyła je, gdy znów pojawi się kreska zasięgu.",
+  "pr.s3.label": "03 — Porównanie",
+  "pr.s3.h2": "Każdy limit, plan przy planie.",
+  "pr.s3.intro":
+    "Czytane bezpośrednio z katalogu planów, który czyta nasz własny kod pilnujący limitów – liczba tutaj to liczba, która obowiązuje w twojej przestrzeni roboczej.",
+  "pr.table.feature": "Funkcja",
+  "pr.group.verification": "Weryfikacja",
+  "pr.group.capture": "Zdjęcia",
+  "pr.group.team": "Zespół, raporty i udostępnianie",
+  "pr.group.delivery": "Trasy dostaw",
+  "pr.row.verified.label": "Potwierdzony czas, GPS i adres",
+  "pr.row.verified.note": "Czas z sieci, nie zegar telefonu.",
+  "pr.row.photoCode.label": "Unikalny kod zdjęcia na każdym ujęciu",
+  "pr.row.publicPage.label": "Publiczna strona weryfikacji",
+  "pr.row.offline.label": "Zdjęcia offline z automatycznym wysyłaniem",
+  "pr.row.offline.note": "Czeka w kolejce w telefonie i wysyła się, gdy wróci zasięg.",
+  "pr.row.captures.label": "Zdjęcia miesięcznie",
+  "pr.row.videoClip.label": "Weryfikowane wideo, na klip",
+  "pr.row.videoAvailable.label": "Wideo dostępne",
+  "pr.row.videoAvailable.note": "Jak długo wideo działa od dnia otwarcia przestrzeni roboczej.",
+  "pr.row.projects.label": "Projekty",
+  "pr.row.templates.label": "Szablony znaku wodnego",
+  "pr.row.branding.label": "Twoje logo na znaku wodnym",
+  "pr.row.seats.label": "Stanowiska",
+  "pr.row.seats.note":
+    "Stanowisko to jedna osoba, która może się zalogować. Oczekujące zaproszenia zajmują jedno.",
+  "pr.row.teamspace.label": "Teamspace",
+  "pr.row.teamspace.note": "Każde zdjęcie i klip ekipy trafia do jednego wspólnego strumienia.",
+  "pr.row.roles.label": "Role i dostęp na poziomie projektu",
+  "pr.row.shareLinks.label": "Linki do podglądu na żywo dla klientów",
+  "pr.row.exports.label": "Eksporty",
+  "pr.row.reports.label": "Projekty, mapa i raporty zamknięcia",
+  "pr.row.reports.note":
+    "System zdjęć z budowy. Wyłączony w planach dostawczych, wycenionych pod jazdę.",
+  "pr.row.stops.label": "Przystanki miesięcznie",
+  "pr.row.stops.note":
+    "Liczone w chwili dodania przystanku do trasy, dostarczone czy nie. Zerują się 1. dnia miesiąca.",
+  "pr.row.drivers.label": "Kierowcy",
+  "pr.row.dispatch.label": "Dyspozycja na żywo",
+  "pr.row.dispatch.note": "Wstaw nowe zlecenie do trasy, która jest już w drodze.",
+  "pr.row.optimizer.label": "Inteligentny optymalizator",
+  "pr.row.optimizer.note":
+    "Kolejność po sieci drogowej. Bez niego standardowy solver i tak ustawi kolejność trasy.",
+  "pr.row.tracking.label": "Linki do śledzenia i e-maile o przyjazdzie",
+  "pr.row.signature.label": "Podpis w drzwiach",
+  "pr.cell.unlimited": "Bez limitu",
+  "pr.cell.alwaysOn": "Zawsze włączone",
+  "pr.cell.firstDays": "Pierwsze {days} dni",
+  "pr.cell.min": "{n} min",
+  "pr.cell.sec": "{n} s",
+  "pr.cell.included": "W zestawie",
+  "pr.cell.notIncluded": "Niedostępne",
+  "pr.tableNote.custom":
+    "{name} celowo nie ma w tabeli – jego limity ustalamy z tobą, a nie wybieramy z listy.",
+  "pr.tableNote.lead": "Pełne wyjaśnienie każdego limitu znajdziesz w",
+  "pr.tableNote.link": "pomocy o planach i płatnościach",
+  "pr.faqSection.label": "04 — Pytania",
+  "pr.faqSection.h2": "O co pytają, zanim zapłacą.",
+  "pr.faq.q1": "Czy darmowy plan jest naprawdę darmowy?",
+  "pr.faq.a1":
+    "Tak, i nie wygasa. Plan darmowy obejmuje 300 zdjęć miesięcznie, trzy projekty, jedno stanowisko, dwa szablony znaku wodnego, 30-sekundowe klipy wideo w pierwszych trzech dniach oraz eksport PDF do 20 zdjęć. Karta nie jest wymagana.",
+  "pr.faq.q2": "Co liczy się jako stanowisko?",
+  "pr.faq.a2":
+    "Jedna osoba, która może zalogować się do twojej przestrzeni roboczej, niezależnie od roli – właściciel także. Oczekujące zaproszenie blokuje stanowisko, dopóki nie zostanie przyjęte lub odwołane; inaczej można by wysłać dziesięć zaproszeń na dwa stanowiska i wszyscy, którzy je przyjmą, przekroczyliby plan.",
+  "pr.faq.q3": "Czy płatne plany weryfikują zdjęcia lepiej niż darmowy?",
+  "pr.faq.a3":
+    "Nie. Dane znaku wodnego, kod zdjęcia i pieczęć są identyczne w każdym planie. Płacisz za wolumen, długość wideo, teamspace, eksporty, udostępnianie i trasy dostaw – nigdy za sam dowód.",
+  "pr.faq.q4": "Które plany zawierają trasy dostaw?",
+  "pr.faq.a4":
+    "Plus i wyżej mają miesięczny limit przystanków, więc możesz prowadzić trasy bez wychodzenia z planów dowodowych. Jeśli jazda to większość pracy, plany dostawcze kosztują znacznie mniej za przystanek i dodają dyspozycję na żywo, inteligentny optymalizator i więcej kierowców.",
+  "pr.faq.q5": "Jak liczone są przystanki dostaw?",
+  "pr.faq.a5":
+    "Na miesiąc kalendarzowy, z zerowaniem 1. dnia. Przystanek liczy się w chwili dodania do trasy, niezależnie od tego, czy przesyłka zostanie dostarczona. Przekroczenie limitu blokuje tworzenie nowych tras do następnego miesiąca, więc wybierz plan pokrywający najbardziej zajęty tydzień, a nie średni.",
+  "pr.faq.q6": "Czy plany dostawcze mają okres próbny?",
+  "pr.faq.a6":
+    "Każdy plan dostawczy zaczyna się bezpłatnym okresem próbnym i dlatego jego przycisk mówi Bezpłatny okres próbny. Okres próbny przysługuje raz na przestrzeń roboczą, nie raz na plan – przejście z jednego planu dostawczego na drugi jest rozliczane od razu.",
+  "pr.faq.q7": "Czy mogę później zmienić plan?",
+  "pr.faq.a7":
+    "W każdej chwili, w sekcji Płatności w ustawieniach przestrzeni roboczej, i może to zrobić tylko właściciel. Podwyższenie działa natychmiast i nic z już zapisanych zdjęć nie jest ruszane. Obniżenie jest odrzucane, dopóki twoja przestrzeń robocza jest większa niż plan docelowy – prosimy o usunięcie członków, zamiast po cichu odciąć trzy osoby.",
+  "pr.faq.q8": "Co stanie się z moimi zdjęciami, jeśli zrezygnuję?",
+  "pr.faq.a8":
+    "Nie są usuwane, a weryfikacja dalej działa. Kończą się funkcje płatne: eksporty Excel, ZIP i KMZ, linki do udostępniania, teamspace i trasy dostaw. Wyeksportuj wszystko, czego potrzebujesz poza GeoCliks, przed rezygnacją – w planie darmowym wracasz do PDF z 20 zdjęciami.",
+  "pr.faq.q9": "Jak obsługiwana jest płatność i gdzie są faktury?",
+  "pr.faq.a9":
+    "Przez naszego operatora płatności na hostowanej stronie płatności – numer twojej karty nigdy nie dociera do serwerów GeoCliks. Każda płatność tworzy fakturę w portalu rozliczeniowym, gdzie możesz też dodać nazwę firmy i dane podatkowe.",
+  "pr.faq.q10": "A jeśli jesteśmy więksi niż Crew 25 albo Fleet 500?",
+  "pr.faq.a10":
+    "Wtedy plan jest rozmową. Enterprise obejmuje indywidualne wolumeny, indywidualne warunki i nadzór, jakiego potrzebuje firma z wieloma lokalizacjami. Napisz na sales@geocliks.com, podaj wielkość zespołu, branżę i regiony, a dobierzemy go razem z tobą.",
+  "pr.cta.h2": "Zrób jedno weryfikowane zdjęcie, zanim cokolwiek zdecydujesz.",
+  "pr.cta.body":
+    "Darmowy plan uruchamiasz w minutę i nigdy nie prosi o kartę. Jeśli sprawdzi się na następnym zleceniu, płatne plany na ciebie czekają.",
 };

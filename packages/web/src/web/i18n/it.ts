@@ -82,6 +82,9 @@ export const it: Catalog = {
   "seo.roofing.title": "Documentazione fotografica del tetto per i sinistri",
   "seo.roofing.description":
     "Documenta danni e rifacimento del tetto con ora verificata, GPS e indirizzo su ogni foto, abbinate prima e dopo per periti e proprietari.",
+  "seo.pricing.title": "Prezzi GeoCliks — Piani per squadre e flotte",
+  "seo.pricing.description":
+    "Cattura foto verificata gratis per sempre. Foto illimitate e video completo da 7 $ al mese, squadre con teamspace da 25 $ e percorsi di consegna prezzati a fermata.",
   "signin.subtitle": "Documentazione fotografica a prova di manomissione per squadre sul campo.",
   "signin.apple": "Continua con Apple",
   "signin.google": "Continua con Google",
@@ -2333,4 +2336,119 @@ export const it: Catalog = {
   "rf.faq.q6": "In cosa è diverso dalla pagina sulla documentazione di cantiere?",
   "rf.faq.a6":
     "Stesso prodotto, argomento diverso. Un'impresa generale in genere documenta contro una contestazione del cliente su avanzamento e ambito; un lattoniere in genere documenta davanti a un perito che ha bisogno di un prima con data e un dopo con data della stessa falda. Qui contano più l'abbinamento prima/dopo e il formato di esportazione, ed è per questo che questa pagina esiste a parte.",
+  "pr.eyebrow": "Piani e prezzi",
+  "pr.h1": "Inizia gratis. Paghi quando la squadra cresce, non prima.",
+  "pr.sub":
+    "La cattura verificata è gratuita per sempre: nessuna carta, nessuna scadenza. Tutto ciò che c'è sopra è prezzato su quello che davvero ci costa qualcosa: quanto scatti, quante persone accedono e a quante porte suoni.",
+  "pr.s1.label": "01 — I piani",
+  "pr.s1.h2": "Due famiglie, prezzate su due cose diverse.",
+  "pr.s1.intro":
+    "I piani evidenza si dimensionano su catture, video e postazioni. I piani consegna si dimensionano su fermate e autisti e includono tutto ciò che i piani evidenza verificano. Scegli quello che corrisponde al lavoro.",
+  "pr.plansNote":
+    "I prezzi sono in USD al mese, fatturati per spazio di lavoro e non per postazione: un piano da cinque postazioni è una fattura, non cinque. Ti servono SSO, un DPA firmato o documenti per l'ufficio acquisti? Quello è Enterprise, a qualsiasi volume:",
+  "pr.s2.label": "02 — In ogni piano",
+  "pr.s2.h2": "La prova non migliora perché ci paghi.",
+  "pr.s2.intro":
+    "Molti strumenti mettono la versione affidabile dietro al livello più alto. Ecco cosa ottiene uno spazio di lavoro gratuito e di cui uno Enterprise non ottiene di più.",
+  "pr.same1.title": "La verifica non è mai l'extra da vendere",
+  "pr.same1.body":
+    "Gratis ed Enterprise timbrano una foto allo stesso modo: ora verificata dalla rete, coordinate GPS e l'indirizzo a cui corrispondono.",
+  "pr.same2.title": "Ogni cattura conserva il suo codice",
+  "pr.same2.body":
+    "Un codice foto si risolve e un sigillo si verifica per sempre — anche dopo un downgrade e dopo che hai smesso del tutto di pagarci.",
+  "pr.same3.title": "Il campo non ha bisogno di segnale",
+  "pr.same3.body":
+    "Scatta in un seminterrato, in un canyon o in un parcheggio coperto con qualsiasi piano. Il telefono mette lo scatto in coda e lo carica quando torna una tacca.",
+  "pr.s3.label": "03 — Confronta",
+  "pr.s3.h2": "Ogni limite, piano contro piano.",
+  "pr.s3.intro":
+    "Letto direttamente dal catalogo dei piani che legge il nostro stesso codice di controllo, quindi un numero qui è il numero che vale per il tuo spazio di lavoro.",
+  "pr.table.feature": "Funzione",
+  "pr.group.verification": "Verifica",
+  "pr.group.capture": "Cattura",
+  "pr.group.team": "Squadra, report e condivisione",
+  "pr.group.delivery": "Percorsi di consegna",
+  "pr.row.verified.label": "Ora, GPS e indirizzo verificati",
+  "pr.row.verified.note": "Ora di rete, non l'orologio del telefono.",
+  "pr.row.photoCode.label": "Codice foto univoco su ogni cattura",
+  "pr.row.publicPage.label": "Pagina pubblica di verifica",
+  "pr.row.offline.label": "Cattura offline con caricamento automatico",
+  "pr.row.offline.note": "Resta in coda sul telefono e si carica quando torna il segnale.",
+  "pr.row.captures.label": "Catture al mese",
+  "pr.row.videoClip.label": "Video verificato, per clip",
+  "pr.row.videoAvailable.label": "Video disponibile",
+  "pr.row.videoAvailable.note":
+    "Per quanto tempo il video resta attivo dal giorno in cui apre lo spazio di lavoro.",
+  "pr.row.projects.label": "Progetti",
+  "pr.row.templates.label": "Modelli di filigrana",
+  "pr.row.branding.label": "Il tuo logo nella filigrana",
+  "pr.row.seats.label": "Postazioni",
+  "pr.row.seats.note":
+    "Una postazione è una persona che può accedere. Gli inviti in sospeso ne occupano una.",
+  "pr.row.teamspace.label": "Teamspace",
+  "pr.row.teamspace.note":
+    "Ogni foto e clip della squadra si sincronizza in un unico feed condiviso.",
+  "pr.row.roles.label": "Ruoli e accesso per progetto",
+  "pr.row.shareLinks.label": "Link di condivisione live per i clienti",
+  "pr.row.exports.label": "Esportazioni",
+  "pr.row.reports.label": "Progetti, mappa e report di chiusura",
+  "pr.row.reports.note":
+    "Il sistema di foto di cantiere. Disattivato nei piani consegna, prezzati per la guida.",
+  "pr.row.stops.label": "Fermate al mese",
+  "pr.row.stops.note":
+    "Conta quando una fermata viene aggiunta a un percorso, consegnata o no. Si azzera il 1°.",
+  "pr.row.drivers.label": "Autisti",
+  "pr.row.dispatch.label": "Dispatch live",
+  "pr.row.dispatch.note": "Inserisci un nuovo ordine in un percorso già in corso.",
+  "pr.row.optimizer.label": "Ottimizzatore intelligente",
+  "pr.row.optimizer.note":
+    "Ordinamento sulla rete stradale. Senza di esso il solver standard ordina comunque il percorso.",
+  "pr.row.tracking.label": "Link di tracciamento ed email di arrivo",
+  "pr.row.signature.label": "Firma alla porta",
+  "pr.cell.unlimited": "Illimitato",
+  "pr.cell.alwaysOn": "Sempre attivo",
+  "pr.cell.firstDays": "Primi {days} giorni",
+  "pr.cell.min": "{n} min",
+  "pr.cell.sec": "{n} s",
+  "pr.cell.included": "Incluso",
+  "pr.cell.notIncluded": "Non incluso",
+  "pr.tableNote.custom":
+    "{name} non è in tabella di proposito: i suoi limiti si definiscono con te, non si scelgono da un elenco.",
+  "pr.tableNote.lead": "Tutti i dettagli su cosa significa ogni soglia sono nell'",
+  "pr.tableNote.link": "aiuto su piani e fatturazione",
+  "pr.faqSection.label": "04 — Domande",
+  "pr.faqSection.h2": "Cosa chiedono prima di pagare.",
+  "pr.faq.q1": "Il piano gratuito è davvero gratuito?",
+  "pr.faq.a1":
+    "Sì, e non scade. Il piano gratuito copre 300 catture al mese, tre progetti, una postazione, due modelli di filigrana, clip video da 30 secondi per i primi tre giorni e un'esportazione PDF fino a 20 foto. Nessuna carta richiesta.",
+  "pr.faq.q2": "Cosa conta come postazione?",
+  "pr.faq.a2":
+    "Una persona che può accedere al tuo spazio di lavoro, qualunque sia il suo ruolo — titolare compreso. Un invito in sospeso tiene una postazione finché non viene accettato o revocato, altrimenti si potrebbero inviare dieci inviti su due postazioni e tutti quelli che accettano sarebbero oltre il piano.",
+  "pr.faq.q3": "I piani a pagamento verificano le foto meglio di quello gratuito?",
+  "pr.faq.a3":
+    "No. I dati della filigrana, il codice foto e il sigillo sono identici in ogni piano. Quello che paghi è volume, durata del video, teamspace, esportazioni, condivisione e percorsi di consegna — mai la prova in sé.",
+  "pr.faq.q4": "Quali piani includono i percorsi di consegna?",
+  "pr.faq.a4":
+    "Plus e superiori hanno una soglia mensile di fermate, così puoi fare percorsi senza uscire dai piani evidenza. Se la guida è la maggior parte del lavoro, i piani consegna costano molto meno per fermata e aggiungono dispatch live, l'ottimizzatore intelligente e più autisti.",
+  "pr.faq.q5": "Come vengono contate le fermate di consegna?",
+  "pr.faq.a5":
+    "Per mese di calendario, con azzeramento il 1°. Una fermata conta quando viene aggiunta a un percorso, che finisca consegnata o no. Superare la soglia blocca la creazione di nuovi percorsi fino al mese successivo, quindi scegli il piano che copre la settimana più intensa, non la media.",
+  "pr.faq.q6": "C'è una prova sui piani consegna?",
+  "pr.faq.a6":
+    "Ogni piano consegna inizia con una prova gratuita, ed è per questo che il pulsante dice Prova gratuita. La prova è una per spazio di lavoro, non una per piano: passare da un piano consegna a un altro viene fatturato subito.",
+  "pr.faq.q7": "Posso cambiare piano più avanti?",
+  "pr.faq.a7":
+    "In qualsiasi momento, da Fatturazione nelle impostazioni dello spazio di lavoro, e solo il titolare può farlo. Passare a un piano superiore vale subito e nulla di già catturato viene toccato. Scendere viene rifiutato mentre il tuo spazio di lavoro è più grande del piano di destinazione: ti chiediamo di rimuovere prima dei membri invece di tagliare fuori tre persone in silenzio.",
+  "pr.faq.q8": "Cosa succede alle mie foto se disdico?",
+  "pr.faq.a8":
+    "Non vengono eliminate e la verifica continua a funzionare. Si fermano le funzioni a pagamento: esportazioni Excel, ZIP e KMZ, link di condivisione, teamspace e percorsi di consegna. Esporta quello che ti serve fuori da GeoCliks prima di disdire: sul piano gratuito torni a un PDF di 20 foto.",
+  "pr.faq.q9": "Come viene gestito il pagamento e dove sono le fatture?",
+  "pr.faq.a9":
+    "Tramite il nostro processore di pagamento su un checkout ospitato: il numero della tua carta non arriva mai ai server di GeoCliks. Ogni pagamento genera una fattura nel portale di fatturazione, dove puoi anche aggiungere ragione sociale e dati fiscali.",
+  "pr.faq.q10": "E se siamo più grandi di Crew 25 o Fleet 500?",
+  "pr.faq.a10":
+    "Allora il piano è una conversazione. Enterprise copre volumi su misura, condizioni su misura e la governance che serve a un'operazione su più sedi. Scrivi a sales@geocliks.com con la dimensione del team, il settore e le aree e lo dimensioniamo con te.",
+  "pr.cta.h2": "Scatta una foto verificata prima di decidere qualsiasi cosa.",
+  "pr.cta.body":
+    "Il piano gratuito si attiva in un minuto e non chiede mai la carta. Se tiene sul tuo prossimo lavoro, i piani a pagamento sono lì.",
 };

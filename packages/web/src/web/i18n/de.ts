@@ -81,6 +81,9 @@ export const de: Catalog = {
   "seo.roofing.title": "Dach-Fotodokumentation für Schadenfälle",
   "seo.roofing.description":
     "Dokumentieren Sie Dachschäden und Neueindeckung mit geprüfter Zeit, GPS und Anschrift auf jedem Foto, als Vorher/Nachher-Paar für Gutachter und Eigentümer.",
+  "seo.pricing.title": "GeoCliks Preise — Tarife für Teams und Lieferflotten",
+  "seo.pricing.description":
+    "Verifizierte Fotoaufnahmen für immer kostenlos. Unbegrenzt Fotos und Video in voller Länge ab 7 $ pro Monat, Teamspace-Crews ab 25 $, Lieferrouten nach Stopp bepreist.",
   "signin.subtitle": "Fälschungssichere Fotodokumentation für Außendienstteams.",
   "signin.apple": "Mit Apple fortfahren",
   "signin.google": "Mit Google fortfahren",
@@ -2338,4 +2341,117 @@ export const de: Catalog = {
   "rf.faq.q6": "Worin unterscheidet sich das von der Seite zur Baudokumentation?",
   "rf.faq.a6":
     "Gleiches Produkt, anderes Argument. Ein Generalunternehmer dokumentiert meist gegen einen Kundenstreit über Fortschritt und Umfang; ein Dachdecker dokumentiert meist gegen einen Gutachter, der ein datiertes Vorher und ein datiertes Nachher derselben Fläche braucht. Die Vorher/Nachher-Paarung und das Exportformat zählen hier mehr, und deshalb gibt es diese Seite getrennt.",
+  "pr.eyebrow": "Tarife & Preise",
+  "pr.h1": "Kostenlos starten. Zahlen, wenn das Team wächst – nicht vorher.",
+  "pr.sub":
+    "Verifizierte Aufnahmen sind für immer kostenlos – keine Karte, kein Ablaufdatum. Alles darüber kostet nach dem, was uns tatsächlich etwas kostet: wie viel du fotografierst, wie viele Personen sich anmelden und an wie viele Türen du klopfst.",
+  "pr.s1.label": "01 — Die Tarife",
+  "pr.s1.h2": "Zwei Familien, nach zwei verschiedenen Dingen bepreist.",
+  "pr.s1.intro":
+    "Evidence-Tarife bemessen sich nach Aufnahmen, Video und Plätzen. Delivery-Tarife bemessen sich nach Stopps und Fahrern und enthalten alles, was die Evidence-Tarife verifizieren. Nimm den, der zur Arbeit passt.",
+  "pr.plansNote":
+    "Die Preise sind in USD pro Monat und werden pro Workspace statt pro Platz abgerechnet – ein Tarif mit fünf Plätzen ist eine Rechnung, nicht fünf. Du brauchst SSO, einen unterzeichneten AVV oder Einkaufsunterlagen? Das ist Enterprise, bei jedem Volumen:",
+  "pr.s2.label": "02 — In jedem Tarif",
+  "pr.s2.h2": "Der Nachweis wird nicht besser, wenn du uns bezahlst.",
+  "pr.s2.intro":
+    "Viele Tools stecken die vertrauenswürdige Version in die oberste Stufe. Das hier bekommt ein kostenloser Workspace – und ein Enterprise-Workspace bekommt davon nicht mehr.",
+  "pr.same1.title": "Verifizierung ist nie das Upsell",
+  "pr.same1.body":
+    "Free und Enterprise stempeln ein Foto gleich: netzwerkverifizierte Zeit, GPS-Koordinaten und die Adresse, zu der sie aufgelöst werden.",
+  "pr.same2.title": "Jede Aufnahme behält ihren Code",
+  "pr.same2.body":
+    "Ein Foto-Code löst auf und ein Siegel prüft sich für immer – auch nach einem Downgrade und nachdem du gar nichts mehr an uns zahlst.",
+  "pr.same3.title": "Das Feld braucht keinen Empfang",
+  "pr.same3.body":
+    "Nimm in einem Keller, einer Schlucht oder einem Parkhaus auf – in jedem Tarif. Das Handy stellt die Aufnahme in die Warteschlange und lädt sie hoch, sobald wieder ein Balken da ist.",
+  "pr.s3.label": "03 — Vergleich",
+  "pr.s3.h2": "Jedes Limit, Tarif gegen Tarif.",
+  "pr.s3.intro":
+    "Direkt aus dem Tarifkatalog gelesen, den unser eigener Durchsetzungscode liest – eine Zahl hier ist also die Zahl, die für deinen Workspace gilt.",
+  "pr.table.feature": "Funktion",
+  "pr.group.verification": "Verifizierung",
+  "pr.group.capture": "Aufnahme",
+  "pr.group.team": "Team, Berichte und Teilen",
+  "pr.group.delivery": "Lieferrouten",
+  "pr.row.verified.label": "Verifizierte Zeit, GPS und Adresse",
+  "pr.row.verified.note": "Netzwerkzeit, nicht die Uhr des Handys.",
+  "pr.row.photoCode.label": "Eindeutiger Foto-Code auf jeder Aufnahme",
+  "pr.row.publicPage.label": "Öffentliche Verifizierungsseite",
+  "pr.row.offline.label": "Offline-Aufnahme mit automatischem Upload",
+  "pr.row.offline.note": "Wartet auf dem Handy und lädt hoch, sobald der Empfang zurück ist.",
+  "pr.row.captures.label": "Aufnahmen pro Monat",
+  "pr.row.videoClip.label": "Verifiziertes Video, pro Clip",
+  "pr.row.videoAvailable.label": "Video verfügbar",
+  "pr.row.videoAvailable.note": "Wie lange Video ab dem Tag der Workspace-Eröffnung aktiv bleibt.",
+  "pr.row.projects.label": "Projekte",
+  "pr.row.templates.label": "Wasserzeichen-Vorlagen",
+  "pr.row.branding.label": "Dein Logo im Wasserzeichen",
+  "pr.row.seats.label": "Plätze",
+  "pr.row.seats.note":
+    "Ein Platz ist eine Person, die sich anmelden kann. Offene Einladungen belegen einen.",
+  "pr.row.teamspace.label": "Teamspace",
+  "pr.row.teamspace.note": "Jedes Foto und jeder Clip des Teams landet in einem gemeinsamen Feed.",
+  "pr.row.roles.label": "Rollen und Zugriff pro Projekt",
+  "pr.row.shareLinks.label": "Live-Freigabelinks für Kunden",
+  "pr.row.exports.label": "Exporte",
+  "pr.row.reports.label": "Projekte, Karte und Abschlussberichte",
+  "pr.row.reports.note":
+    "Das Baustellen-Fotosystem. In den Delivery-Tarifen aus, die für das Fahren bepreist sind.",
+  "pr.row.stops.label": "Stopps pro Monat",
+  "pr.row.stops.note":
+    "Zählt, sobald ein Stopp zu einer Route hinzugefügt wird – geliefert oder nicht. Setzt sich am 1. zurück.",
+  "pr.row.drivers.label": "Fahrer",
+  "pr.row.dispatch.label": "Live-Disposition",
+  "pr.row.dispatch.note": "Schiebe einen neuen Auftrag in eine Route, die schon gefahren wird.",
+  "pr.row.optimizer.label": "Intelligenter Optimierer",
+  "pr.row.optimizer.note":
+    "Sortierung nach Straßennetz. Ohne ihn sortiert der Standard-Solver die Route trotzdem.",
+  "pr.row.tracking.label": "Tracking-Links und Ankunfts-E-Mails",
+  "pr.row.signature.label": "Unterschrift an der Tür",
+  "pr.cell.unlimited": "Unbegrenzt",
+  "pr.cell.alwaysOn": "Immer an",
+  "pr.cell.firstDays": "Erste {days} Tage",
+  "pr.cell.min": "{n} Min.",
+  "pr.cell.sec": "{n} Sek.",
+  "pr.cell.included": "Enthalten",
+  "pr.cell.notIncluded": "Nicht enthalten",
+  "pr.tableNote.custom":
+    "{name} steht absichtlich nicht in der Tabelle – seine Limits werden mit dir festgelegt, nicht aus einer Liste gewählt.",
+  "pr.tableNote.lead": "Alle Details dazu, was jedes Limit bedeutet, stehen in der",
+  "pr.tableNote.link": "Hilfe zu Tarifen und Abrechnung",
+  "pr.faqSection.label": "04 — Fragen",
+  "pr.faqSection.h2": "Was Leute fragen, bevor sie zahlen.",
+  "pr.faq.q1": "Ist der kostenlose Tarif wirklich kostenlos?",
+  "pr.faq.a1":
+    "Ja, und er läuft nicht ab. Free umfasst 300 Aufnahmen pro Monat, drei Projekte, einen Platz, zwei Wasserzeichen-Vorlagen, 30-Sekunden-Videoclips in den ersten drei Tagen und einen PDF-Export von bis zu 20 Fotos. Eine Karte wird nicht verlangt.",
+  "pr.faq.q2": "Was zählt als Platz?",
+  "pr.faq.a2":
+    "Eine Person, die sich in deinem Workspace anmelden kann, unabhängig von der Rolle – den Inhaber eingeschlossen. Eine offene Einladung belegt einen Platz, bis sie angenommen oder widerrufen wird; sonst könnten zehn Einladungen gegen zwei Plätze verschickt werden und alle, die annehmen, wären über dem Tarif.",
+  "pr.faq.q3": "Verifizieren bezahlte Tarife Fotos besser als der kostenlose?",
+  "pr.faq.a3":
+    "Nein. Die Wasserzeichen-Daten, der Foto-Code und das Siegel sind in jedem Tarif identisch. Du zahlst für Volumen, Videolänge, Teamspace, Exporte, Teilen und Lieferrouten – niemals für den Nachweis selbst.",
+  "pr.faq.q4": "Welche Tarife enthalten Lieferrouten?",
+  "pr.faq.a4":
+    "Plus und höher haben ein monatliches Stopp-Kontingent, du kannst Routen also fahren, ohne die Evidence-Tarife zu verlassen. Wenn Fahren den größten Teil der Arbeit ausmacht, kosten die Delivery-Tarife deutlich weniger pro Stopp und bringen Live-Disposition, den intelligenten Optimierer und mehr Fahrer.",
+  "pr.faq.q5": "Wie werden Lieferstopps gezählt?",
+  "pr.faq.a5":
+    "Pro Kalendermonat, Rücksetzung am 1. Ein Stopp zählt, sobald er zu einer Route hinzugefügt wird, ob er am Ende geliefert wird oder nicht. Wer das Kontingent überschreitet, kann bis zum nächsten Monat keine neuen Routen bauen – nimm also den Tarif, der deine stärkste Woche abdeckt, nicht deinen Durchschnitt.",
+  "pr.faq.q6": "Gibt es eine Testphase bei den Delivery-Tarifen?",
+  "pr.faq.a6":
+    "Jeder Delivery-Tarif beginnt mit einer kostenlosen Testphase, deshalb steht auf dem Button Kostenlos testen. Die Testphase gilt einmal pro Workspace, nicht einmal pro Tarif – der Wechsel von einem Delivery-Tarif zum nächsten wird sofort abgerechnet.",
+  "pr.faq.q7": "Kann ich den Tarif später wechseln?",
+  "pr.faq.a7":
+    "Jederzeit, unter Abrechnung in den Workspace-Einstellungen, und nur der Inhaber kann es. Ein Upgrade gilt sofort und nichts bereits Aufgenommenes wird angetastet. Ein Downgrade wird abgelehnt, solange dein Workspace größer ist als der Ziel-Tarif – du wirst gebeten, zuerst Mitglieder zu entfernen, statt drei Personen stillschweigend auszusperren.",
+  "pr.faq.q8": "Was passiert mit meinen Fotos, wenn ich kündige?",
+  "pr.faq.a8":
+    "Sie werden nicht gelöscht, und die Verifizierung funktioniert weiter. Die bezahlten Funktionen enden: Excel-, ZIP- und KMZ-Exporte, Freigabelinks, Teamspace und Lieferrouten. Exportiere alles, was du brauchst, vor der Kündigung aus GeoCliks heraus – in Free bist du zurück bei einem PDF mit 20 Fotos.",
+  "pr.faq.q9": "Wie wird bezahlt und wo sind die Rechnungen?",
+  "pr.faq.a9":
+    "Über unseren Zahlungsdienstleister an einer gehosteten Kasse – deine Kartennummer erreicht die Server von GeoCliks nie. Jede Zahlung erzeugt eine Rechnung im Abrechnungsportal, wo du auch Firmenname und Steuerdaten ergänzen kannst.",
+  "pr.faq.q10": "Was, wenn wir größer sind als Crew 25 oder Fleet 500?",
+  "pr.faq.a10":
+    "Dann ist der Tarif ein Gespräch. Enterprise deckt individuelle Volumen, individuelle Konditionen und die Governance ab, die ein Betrieb mit mehreren Standorten braucht. Schreib an sales@geocliks.com mit Teamgröße, Branche und Regionen, und wir dimensionieren es mit dir.",
+  "pr.cta.h2": "Mach ein verifiziertes Foto, bevor du irgendetwas entscheidest.",
+  "pr.cta.body":
+    "Der kostenlose Tarif ist in einer Minute eingerichtet und fragt nie nach einer Karte. Wenn er sich auf deinem nächsten Auftrag hält, sind die bezahlten Tarife da.",
 };

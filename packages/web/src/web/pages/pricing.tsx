@@ -8,7 +8,7 @@ import {
   LandingSection,
 } from "../components/landing-page";
 import { PlanCard, isDeliveryPlan, type PlanView } from "../components/plan-cards";
-import { useLocale, useT } from "../lib/i18n";
+import { useLocale, useT, type TKey, type Translate } from "../lib/i18n";
 import { usePlans } from "../queries/billing";
 import { SALES_EMAIL } from "../lib/support";
 import { pageFaq } from "../lib/page-schema";
@@ -32,10 +32,11 @@ import { pageFaq } from "../lib/page-schema";
  *    compare a photo allowance with a routing allowance. The switcher keeps them
  *    apart and the table re-renders for whichever family is being read.
  *
- * Page copy is English, like the other non-home marketing pages: a translated
- * pricing essay is eleven copies to keep truthful, and the part a visitor is
- * actually reading — plan names, taglines, feature bullets, the price itself —
- * comes back from the API already localized.
+ * The page's own furniture — section headings, row labels, notes, the FAQ — is
+ * translated through the catalogs like every other marketing page. What is not
+ * translated here is the plan data itself: names, taglines, feature bullets and
+ * the price come back from the API already localized, so restating them in a
+ * catalog would be a second price list to keep truthful.
  */
 
 /** Which family of plans the cards and the table are showing. */
@@ -45,29 +46,32 @@ type Family = "evidence" | "delivery";
 type Cell = boolean | string;
 
 interface CompareRow {
-  label: string;
-  /** What this row reads off one plan. */
-  value: (plan: PlanView) => Cell;
+  label: TKey;
+  /** What this row reads off one plan. Given `t` for the rows that render words. */
+  value: (plan: PlanView, t: Translate) => Cell;
   /** Shown under the label, for the rows people misread. */
-  note?: string;
+  note?: TKey;
 }
 
 interface CompareGroup {
-  title: string;
+  title: TKey;
   rows: CompareRow[];
 }
 
 /** "-1" means unlimited everywhere in `PlanLimits`. 0 means not included. */
-const count = (n: number, unit?: string) => {
-  if (n < 0) return "Unlimited";
+const count = (n: number, t: Translate, unit?: string) => {
+  if (n < 0) return t("pr.cell.unlimited");
   if (n === 0) return false;
   const value = n.toLocaleString("en-US");
   return unit ? `${value} ${unit}` : value;
 };
 
-const minutes = (seconds: number) =>
-  seconds >= 60 ? `${Math.round(seconds / 60)} min` : `${seconds} sec`;
+const minutes = (seconds: number, t: Translate) =>
+  seconds >= 60
+    ? t("pr.cell.min", { n: Math.round(seconds / 60) })
+    : t("pr.cell.sec", { n: seconds });
 
+/** Export formats are file-type abbreviations, not prose, so they are not translated. */
 const EXPORT_LABELS: Record<string, string> = {
   pdf: "PDF",
   xlsx: "Excel",
@@ -77,134 +81,133 @@ const EXPORT_LABELS: Record<string, string> = {
 
 const COMPARE: CompareGroup[] = [
   {
-    title: "Verification",
+    title: "pr.group.verification",
     rows: [
       {
-        label: "Verified time, GPS and street address",
-        note: "Network time, not the phone's clock.",
+        label: "pr.row.verified.label",
+        note: "pr.row.verified.note",
         value: () => true,
       },
-      { label: "Unique photo code on every capture", value: () => true },
-      { label: "Public verification page", value: () => true },
+      { label: "pr.row.photoCode.label", value: () => true },
+      { label: "pr.row.publicPage.label", value: () => true },
       {
-        label: "Offline capture with auto upload",
-        note: "Queues on the phone, uploads when signal returns.",
+        label: "pr.row.offline.label",
+        note: "pr.row.offline.note",
         value: () => true,
       },
     ],
   },
   {
-    title: "Capture",
+    title: "pr.group.capture",
     rows: [
       {
-        label: "Captures per month",
-        value: (plan) => count(plan.limits.photosPerMonth),
+        label: "pr.row.captures.label",
+        value: (plan, t) => count(plan.limits.photosPerMonth, t),
       },
       {
-        label: "Verified video, per clip",
-        value: (plan) => minutes(plan.limits.videoMaxSeconds),
+        label: "pr.row.videoClip.label",
+        value: (plan, t) => minutes(plan.limits.videoMaxSeconds, t),
       },
       {
-        label: "Video available",
-        note: "How long video stays on from the day the workspace opens.",
-        value: (plan) =>
+        label: "pr.row.videoAvailable.label",
+        note: "pr.row.videoAvailable.note",
+        value: (plan, t) =>
           plan.limits.videoTrialDays === 0
-            ? "Always on"
-            : `First ${plan.limits.videoTrialDays} days`,
+            ? t("pr.cell.alwaysOn")
+            : t("pr.cell.firstDays", { days: plan.limits.videoTrialDays }),
       },
-      { label: "Projects", value: (plan) => count(plan.limits.projects) },
-      { label: "Watermark templates", value: (plan) => count(plan.limits.templates) },
-      { label: "Your logo on the watermark", value: (plan) => plan.limits.branding },
+      { label: "pr.row.projects.label", value: (plan, t) => count(plan.limits.projects, t) },
+      { label: "pr.row.templates.label", value: (plan, t) => count(plan.limits.templates, t) },
+      { label: "pr.row.branding.label", value: (plan) => plan.limits.branding },
     ],
   },
   {
-    title: "Team, reports and sharing",
+    title: "pr.group.team",
     rows: [
       {
-        label: "Seats",
-        note: "A seat is one person who can sign in. Pending invites hold one.",
-        value: (plan) => count(plan.limits.seats),
+        label: "pr.row.seats.label",
+        note: "pr.row.seats.note",
+        value: (plan, t) => count(plan.limits.seats, t),
       },
       {
-        label: "Teamspace",
-        note: "Every crew photo and clip syncs into one shared feed.",
+        label: "pr.row.teamspace.label",
+        note: "pr.row.teamspace.note",
         value: (plan) => plan.limits.teamspace,
       },
-      { label: "Roles and per-project access", value: (plan) => plan.limits.roles },
-      { label: "Live share links for clients", value: (plan) => plan.limits.shareLinks },
+      { label: "pr.row.roles.label", value: (plan) => plan.limits.roles },
+      { label: "pr.row.shareLinks.label", value: (plan) => plan.limits.shareLinks },
       {
-        label: "Exports",
+        label: "pr.row.exports.label",
         value: (plan) =>
           plan.limits.exports.length === 0
             ? false
             : plan.limits.exports.map((format) => EXPORT_LABELS[format] ?? format).join(", "),
       },
       {
-        label: "Projects, map and closeout reports",
-        note: "The job photo system. Off on the Delivery plans, which are priced for driving.",
+        label: "pr.row.reports.label",
+        note: "pr.row.reports.note",
         value: (plan) => plan.limits.fieldEnabled,
       },
     ],
   },
   {
-    title: "Delivery routes",
+    title: "pr.group.delivery",
     rows: [
       {
-        label: "Stops per month",
-        note: "Counted when a stop is added to a route, delivered or not. Resets on the 1st.",
-        value: (plan) => count(plan.limits.deliveryStopsPerMonth),
+        label: "pr.row.stops.label",
+        note: "pr.row.stops.note",
+        value: (plan, t) => count(plan.limits.deliveryStopsPerMonth, t),
       },
-      { label: "Drivers", value: (plan) => count(plan.limits.deliveryDrivers) },
+      { label: "pr.row.drivers.label", value: (plan, t) => count(plan.limits.deliveryDrivers, t) },
       {
-        label: "Live dispatch",
-        note: "Slot a new order into a route that is already being driven.",
+        label: "pr.row.dispatch.label",
+        note: "pr.row.dispatch.note",
         value: (plan) => plan.limits.deliveryDispatch,
       },
       {
-        label: "Smart optimizer",
-        note: "Road-network ordering. Without it the standard solver still orders the route.",
+        label: "pr.row.optimizer.label",
+        note: "pr.row.optimizer.note",
         value: (plan) => plan.limits.deliverySmartOptimize,
       },
-      { label: "Tracking links and arrival emails", value: (plan) => plan.limits.deliveryTracking },
-      { label: "Signature at the door", value: (plan) => plan.limits.deliverySignature },
+      { label: "pr.row.tracking.label", value: (plan) => plan.limits.deliveryTracking },
+      { label: "pr.row.signature.label", value: (plan) => plan.limits.deliverySignature },
     ],
   },
 ];
 
-const SAME_FOR_EVERYONE = [
+const SAME_FOR_EVERYONE: { icon: typeof ShieldCheck; title: TKey; body: TKey }[] = [
   {
     icon: ShieldCheck,
-    title: "Verification is never the upsell",
-    body: "Free and Enterprise stamp a photo the same way: network-verified time, GPS coordinates and the street address they resolve to.",
+    title: "pr.same1.title",
+    body: "pr.same1.body",
   },
   {
     icon: Fingerprint,
-    title: "Every capture keeps its code",
-    body: "A photo code resolves and a seal checks out for good — including after a downgrade, and after you stop paying us entirely.",
+    title: "pr.same2.title",
+    body: "pr.same2.body",
   },
   {
     icon: WifiOff,
-    title: "The field does not need signal",
-    body: "Capture in a basement, a canyon or a parkade on any plan. The phone queues the shot and uploads it when there is a bar again.",
+    title: "pr.same3.title",
+    body: "pr.same3.body",
   },
 ];
 
-const FAQ = pageFaq("/pricing");
-
 /** A tick, a dash, or the number itself. */
 function CompareCell({ value }: { value: Cell }) {
+  const t = useT();
   if (value === true)
     return (
       <>
         <Check className="mx-auto size-4 text-verified" aria-hidden />
-        <span className="sr-only">Included</span>
+        <span className="sr-only">{t("pr.cell.included")}</span>
       </>
     );
   if (value === false)
     return (
       <>
         <Minus className="mx-auto size-4 text-steel" aria-hidden />
-        <span className="sr-only">Not included</span>
+        <span className="sr-only">{t("pr.cell.notIncluded")}</span>
       </>
     );
   return <span className="mono text-[12.5px] text-chalk">{value}</span>;
@@ -219,9 +222,8 @@ function FamilySwitch({
   onChange: (next: Family) => void;
   hasDelivery: boolean;
 }) {
-  // The two family names are the one piece of page furniture that is already
-  // translated in all eleven locales — they labelled the plan groups on the home
-  // page before the plans moved here. Reused rather than retyped in English.
+  // The two family names labelled the plan groups on the home page before the
+  // plans moved here, so they are reused rather than keyed again.
   const t = useT();
   if (!hasDelivery) return null;
   const tab = (value: Family, label: string) => (
@@ -248,10 +250,10 @@ function FamilySwitch({
 }
 
 export default function Pricing() {
-  const t = useT();
-  const { locale } = useLocale();
+  const { t, locale } = useLocale();
   const plans = usePlans(locale);
   const [family, setFamily] = useState<Family>("evidence");
+  const faq = pageFaq("/pricing", locale);
 
   const all = plans.data ?? [];
   // "enterprise" is the custom top of the delivery ladder ("Everything in Delivery
@@ -275,22 +277,16 @@ export default function Pricing() {
       : // The evidence rows still apply to a Delivery plan — a driver's proof photo
         // is a verified capture — but the job photo system is off, so the group that
         // is only about projects and reports would read as a column of dashes.
-        COMPARE.filter((group) => group.title !== "Team, reports and sharing");
+        COMPARE.filter((group) => group.title !== "pr.group.team");
 
   return (
-    <LandingPage
-      path="/pricing"
-      eyebrow="Plans & pricing"
-      h1="Start free. Pay when the crew grows, not before."
-      sub="Verified capture is free forever — no card, no expiry date. Everything above it is priced on what actually costs us something: how much you shoot, how many people sign in, and how many doors you knock on."
-      center
-    >
+    <LandingPage path="/pricing" eyebrow={t("pr.eyebrow")} h1={t("pr.h1")} sub={t("pr.sub")} center>
       <LandingSection
         id="plans"
         center
-        label="01 — The plans"
-        h2="Two families, priced on two different things."
-        intro="Evidence plans are sized by captures, video and seats. Delivery plans are sized by stops and drivers, and include everything the evidence plans verify. Pick the one that matches the work."
+        label={t("pr.s1.label")}
+        h2={t("pr.s1.h2")}
+        intro={t("pr.s1.intro")}
       >
         <FamilySwitch family={family} onChange={setFamily} hasDelivery={delivery.length > 0} />
 
@@ -321,9 +317,7 @@ export default function Pricing() {
         )}
 
         <p className="mx-auto mt-6 max-w-[760px] text-[13px] leading-relaxed text-fog">
-          Prices are in USD per month, billed per workspace rather than per seat — a five-seat plan
-          is one bill, not five. Need SSO, a signed DPA or procurement paperwork? That is Enterprise
-          on any volume:{" "}
+          {t("pr.plansNote")}{" "}
           <a href={`mailto:${SALES_EMAIL}`} className="text-amber hover:underline">
             {SALES_EMAIL}
           </a>
@@ -331,21 +325,23 @@ export default function Pricing() {
         </p>
       </LandingSection>
 
-      <LandingSection
-        center
-        label="02 — On every plan"
-        h2="The proof does not get better when you pay us."
-        intro="Plenty of tools put the trustworthy version behind the top tier. Here is what a free workspace gets that an Enterprise one does not get more of."
-      >
-        <LandingCards items={SAME_FOR_EVERYONE} center />
+      <LandingSection center label={t("pr.s2.label")} h2={t("pr.s2.h2")} intro={t("pr.s2.intro")}>
+        <LandingCards
+          items={SAME_FOR_EVERYONE.map((item) => ({
+            icon: item.icon,
+            title: t(item.title),
+            body: t(item.body),
+          }))}
+          center
+        />
       </LandingSection>
 
       <LandingSection
         id="compare"
         center
-        label="03 — Compare"
-        h2="Every limit, plan against plan."
-        intro="Read straight from the plan catalogue our own enforcement code reads, so a number here is the number that applies to your workspace."
+        label={t("pr.s3.label")}
+        h2={t("pr.s3.h2")}
+        intro={t("pr.s3.intro")}
       >
         <FamilySwitch family={family} onChange={setFamily} hasDelivery={delivery.length > 0} />
 
@@ -360,7 +356,7 @@ export default function Pricing() {
                   scope="col"
                   className="mono sticky start-0 z-10 bg-ink py-3 pe-4 text-[11px] uppercase tracking-widest text-fog"
                 >
-                  Feature
+                  {t("pr.table.feature")}
                 </th>
                 {columns.map((plan) => (
                   <th key={plan.id} scope="col" className="px-3 py-3 text-center align-bottom">
@@ -383,23 +379,23 @@ export default function Pricing() {
                       sight with the columns. The label inside it is what sticks. */}
                   <th scope="colgroup" colSpan={columns.length + 1} className="bg-ink-2 p-0">
                     <span className="mono sticky start-0 inline-block px-3 py-2 text-[10.5px] uppercase tracking-[0.2em] text-amber">
-                      {group.title}
+                      {t(group.title)}
                     </span>
                   </th>
                 </tr>
                 {group.rows.map((row) => (
                   <tr key={row.label} className="border-b border-line align-top">
                     <th scope="row" className="sticky start-0 z-10 bg-ink py-3 pe-4 font-normal">
-                      <span className="block text-[13.5px] text-chalk">{row.label}</span>
+                      <span className="block text-[13.5px] text-chalk">{t(row.label)}</span>
                       {row.note && (
                         <span className="mt-0.5 block max-w-[320px] text-[12px] leading-snug text-fog">
-                          {row.note}
+                          {t(row.note)}
                         </span>
                       )}
                     </th>
                     {columns.map((plan) => (
                       <td key={plan.id} className="px-3 py-3 text-center">
-                        <CompareCell value={row.value(plan)} />
+                        <CompareCell value={row.value(plan, t)} />
                       </td>
                     ))}
                   </tr>
@@ -410,24 +406,22 @@ export default function Pricing() {
         </div>
 
         <p className="mx-auto mt-5 max-w-[760px] text-[13px] leading-relaxed text-fog">
-          {family === "delivery" && custom
-            ? `${custom.name} is not in the table on purpose — its limits are set with you, not picked from a list.`
-            : null}{" "}
-          Full detail on what each allowance means lives in the{" "}
+          {family === "delivery" && custom ? t("pr.tableNote.custom", { name: custom.name }) : null}{" "}
+          {t("pr.tableNote.lead")}{" "}
           <a href="/help/plans-billing" className="text-amber hover:underline">
-            plans and billing help
+            {t("pr.tableNote.link")}
           </a>
           .
         </p>
       </LandingSection>
 
-      <LandingSection id="faq" center label="04 — Questions" h2="What people ask before they pay.">
-        <LandingFaq entries={FAQ} center />
+      <LandingSection id="faq" center label={t("pr.faqSection.label")} h2={t("pr.faqSection.h2")}>
+        <LandingFaq entries={faq} center />
       </LandingSection>
 
       <LandingCta
-        h2="Shoot one verified photo before you decide anything."
-        body="The free plan takes a minute to start and never asks for a card. If it holds up on your next job, the paid plans are there."
+        h2={t("pr.cta.h2")}
+        body={t("pr.cta.body")}
         primary={{ label: t("home.nav.signUp"), to: "/sign-up" }}
         secondary={{ label: t("getapp.ctaPrimary"), to: "/get-app" }}
       />

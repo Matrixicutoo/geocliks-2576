@@ -82,6 +82,9 @@ export const ptBR: Catalog = {
   "seo.roofing.title": "Documentação fotográfica de telhado para sinistros",
   "seo.roofing.description":
     "Documente danos e troca de telhado com hora verificada, GPS e endereço em cada foto, pareadas antes e depois para reguladores e proprietários.",
+  "seo.pricing.title": "Preços do GeoCliks — Planos para equipes e frotas",
+  "seo.pricing.description":
+    "Captura de fotos verificada grátis para sempre. Fotos ilimitadas e vídeo completo a partir de US$ 7 por mês, equipes com teamspace a partir de US$ 25 e rotas de entrega com preço por parada.",
   "signin.subtitle": "Documentação fotográfica à prova de fraudes para equipes de campo.",
   "signin.apple": "Continuar com a Apple",
   "signin.google": "Continuar com o Google",
@@ -2319,4 +2322,118 @@ export const ptBR: Catalog = {
   "rf.faq.q6": "Qual a diferença em relação à página de documentação de obra?",
   "rf.faq.a6":
     "Mesmo produto, argumento diferente. Um construtor em geral documenta contra uma disputa com o cliente sobre andamento e escopo; um telhadista documenta contra um regulador que precisa de um antes datado e um depois datado da mesma água. Aqui o pareamento antes/depois e o formato de exportação pesam mais, e é por isso que esta página existe separada.",
+  "pr.eyebrow": "Planos e preços",
+  "pr.h1": "Comece de graça. Pague quando a equipe crescer, não antes.",
+  "pr.sub":
+    "A captura verificada é gratuita para sempre: sem cartão e sem data de validade. Tudo acima disso é cobrado pelo que realmente nos custa algo: quanto você fotografa, quantas pessoas entram na conta e em quantas portas você bate.",
+  "pr.s1.label": "01 — Os planos",
+  "pr.s1.h2": "Duas famílias, cobradas por duas coisas diferentes.",
+  "pr.s1.intro":
+    "Os planos de evidência são dimensionados por capturas, vídeo e assentos. Os planos de entrega são dimensionados por paradas e motoristas, e incluem tudo o que os planos de evidência verificam. Escolha o que combina com o trabalho.",
+  "pr.plansNote":
+    "Os preços são em USD por mês, cobrados por espaço de trabalho e não por assento: um plano de cinco assentos é uma fatura, não cinco. Precisa de SSO, de um DPA assinado ou de papelada de compras? Isso é Enterprise em qualquer volume:",
+  "pr.s2.label": "02 — Em todos os planos",
+  "pr.s2.h2": "A prova não fica melhor quando você paga.",
+  "pr.s2.intro":
+    "Muitas ferramentas deixam a versão confiável atrás do nível mais alto. Aqui está o que um espaço de trabalho gratuito recebe e do que um Enterprise não recebe mais.",
+  "pr.same1.title": "A verificação nunca é o upsell",
+  "pr.same1.body":
+    "Gratuito e Enterprise marcam uma foto do mesmo jeito: hora verificada pela rede, coordenadas GPS e o endereço a que elas correspondem.",
+  "pr.same2.title": "Cada captura mantém seu código",
+  "pr.same2.body":
+    "Um código de foto continua resolvendo e um selo continua conferindo para sempre — inclusive depois de um downgrade e depois de você parar de pagar por completo.",
+  "pr.same3.title": "O campo não precisa de sinal",
+  "pr.same3.body":
+    "Capture em um porão, num cânion ou num estacionamento coberto em qualquer plano. O telefone coloca a foto na fila e envia quando voltar a ter sinal.",
+  "pr.s3.label": "03 — Comparar",
+  "pr.s3.h2": "Todos os limites, plano contra plano.",
+  "pr.s3.intro":
+    "Lido direto do catálogo de planos que o nosso próprio código de controle lê, então um número aqui é o número que vale para o seu espaço de trabalho.",
+  "pr.table.feature": "Recurso",
+  "pr.group.verification": "Verificação",
+  "pr.group.capture": "Captura",
+  "pr.group.team": "Equipe, relatórios e compartilhamento",
+  "pr.group.delivery": "Rotas de entrega",
+  "pr.row.verified.label": "Hora, GPS e endereço verificados",
+  "pr.row.verified.note": "Hora da rede, não o relógio do telefone.",
+  "pr.row.photoCode.label": "Código de foto único em cada captura",
+  "pr.row.publicPage.label": "Página pública de verificação",
+  "pr.row.offline.label": "Captura offline com envio automático",
+  "pr.row.offline.note": "Fica na fila no telefone e sobe quando o sinal volta.",
+  "pr.row.captures.label": "Capturas por mês",
+  "pr.row.videoClip.label": "Vídeo verificado, por clipe",
+  "pr.row.videoAvailable.label": "Vídeo disponível",
+  "pr.row.videoAvailable.note":
+    "Por quanto tempo o vídeo fica ativo a partir do dia em que o espaço de trabalho é aberto.",
+  "pr.row.projects.label": "Projetos",
+  "pr.row.templates.label": "Modelos de marca d'água",
+  "pr.row.branding.label": "Seu logotipo na marca d'água",
+  "pr.row.seats.label": "Assentos",
+  "pr.row.seats.note":
+    "Um assento é uma pessoa que pode entrar na conta. Convites pendentes ocupam um.",
+  "pr.row.teamspace.label": "Teamspace",
+  "pr.row.teamspace.note": "Cada foto e clipe da equipe sincroniza em um único feed compartilhado.",
+  "pr.row.roles.label": "Papéis e acesso por projeto",
+  "pr.row.shareLinks.label": "Links de compartilhamento ao vivo para clientes",
+  "pr.row.exports.label": "Exportações",
+  "pr.row.reports.label": "Projetos, mapa e relatórios de encerramento",
+  "pr.row.reports.note":
+    "O sistema de fotos de obra. Desligado nos planos de entrega, que são precificados para dirigir.",
+  "pr.row.stops.label": "Paradas por mês",
+  "pr.row.stops.note":
+    "Contada quando uma parada é adicionada a uma rota, entregue ou não. Zera no dia 1º.",
+  "pr.row.drivers.label": "Motoristas",
+  "pr.row.dispatch.label": "Despacho ao vivo",
+  "pr.row.dispatch.note": "Encaixe um novo pedido em uma rota que já está sendo rodada.",
+  "pr.row.optimizer.label": "Otimizador inteligente",
+  "pr.row.optimizer.note":
+    "Ordenação pela malha viária. Sem ele, o solucionador padrão ainda ordena a rota.",
+  "pr.row.tracking.label": "Links de rastreio e e-mails de chegada",
+  "pr.row.signature.label": "Assinatura na porta",
+  "pr.cell.unlimited": "Ilimitado",
+  "pr.cell.alwaysOn": "Sempre ativo",
+  "pr.cell.firstDays": "Primeiros {days} dias",
+  "pr.cell.min": "{n} min",
+  "pr.cell.sec": "{n} s",
+  "pr.cell.included": "Incluído",
+  "pr.cell.notIncluded": "Não incluído",
+  "pr.tableNote.custom":
+    "{name} não está na tabela de propósito: os limites dele são definidos com você, não escolhidos de uma lista.",
+  "pr.tableNote.lead": "O detalhe completo do que significa cada limite está na",
+  "pr.tableNote.link": "ajuda de planos e cobrança",
+  "pr.faqSection.label": "04 — Perguntas",
+  "pr.faqSection.h2": "O que as pessoas perguntam antes de pagar.",
+  "pr.faq.q1": "O plano gratuito é realmente gratuito?",
+  "pr.faq.a1":
+    "Sim, e não expira. O gratuito cobre 300 capturas por mês, três projetos, um assento, dois modelos de marca d'água, clipes de vídeo de 30 segundos nos três primeiros dias e uma exportação em PDF de até 20 fotos. Nenhum cartão é pedido.",
+  "pr.faq.q2": "O que conta como assento?",
+  "pr.faq.a2":
+    "Uma pessoa que pode entrar no seu espaço de trabalho, qualquer que seja o papel dela — o proprietário incluído. Um convite pendente segura um assento até ser aceito ou revogado; do contrário, dez convites poderiam ser enviados contra dois assentos e todos que aceitassem ficariam acima do plano.",
+  "pr.faq.q3": "Os planos pagos verificam as fotos melhor do que o gratuito?",
+  "pr.faq.a3":
+    "Não. Os dados da marca d'água, o código de foto e o selo são idênticos em todos os planos. O que você paga é volume, duração de vídeo, teamspace, exportações, compartilhamento e roteirização de entrega — nunca a prova em si.",
+  "pr.faq.q4": "Quais planos incluem rotas de entrega?",
+  "pr.faq.a4":
+    "Plus e acima trazem uma cota mensal de paradas, então você pode rodar rotas sem sair dos planos de evidência. Se dirigir é a maior parte do trabalho, os planos de entrega custam muito menos por parada e acrescentam despacho ao vivo, o otimizador inteligente e mais motoristas.",
+  "pr.faq.q5": "Como as paradas de entrega são contadas?",
+  "pr.faq.a5":
+    "Por mês civil, zerando no dia 1º. Uma parada conta quando é adicionada a uma rota, tenha sido entregue ou não. Passar da cota interrompe a criação de novas rotas até o mês seguinte, então escolha o plano que cobre a sua semana mais movimentada, e não a média.",
+  "pr.faq.q6": "Existe teste nos planos de entrega?",
+  "pr.faq.a6":
+    "Todo plano de entrega começa com um teste gratuito, e é por isso que o botão dele diz Teste grátis. O teste é um por espaço de trabalho, não um por plano — mudar de um plano de entrega para outro é cobrado na hora.",
+  "pr.faq.q7": "Posso mudar de plano depois?",
+  "pr.faq.a7":
+    "A qualquer momento, em Cobrança nas configurações do seu espaço de trabalho, e só o proprietário pode fazer isso. Subir vale imediatamente e nada do que já foi capturado é tocado. Descer é recusado enquanto o seu espaço de trabalho for maior que o plano de destino — pedimos que você remova membros primeiro em vez de cortar três pessoas em silêncio.",
+  "pr.faq.q8": "O que acontece com minhas fotos se eu cancelar?",
+  "pr.faq.a8":
+    "Elas não são apagadas e a verificação continua funcionando. O que para são os recursos pagos: exportações Excel, ZIP e KMZ, links de compartilhamento, teamspace e rotas de entrega. Exporte o que precisar para fora do GeoCliks antes de cancelar — no Gratuito você volta a um PDF de 20 fotos.",
+  "pr.faq.q9": "Como o pagamento é feito e onde estão as faturas?",
+  "pr.faq.a9":
+    "Pelo nosso processador de pagamentos em um checkout hospedado — o número do seu cartão nunca chega aos servidores do GeoCliks. Cada pagamento gera uma fatura no portal de cobrança, onde você também pode adicionar o nome da empresa e os dados fiscais.",
+  "pr.faq.q10": "E se formos maiores que Crew 25 ou Fleet 500?",
+  "pr.faq.a10":
+    "Aí o plano é uma conversa. O Enterprise cobre volumes personalizados, condições personalizadas e a governança que uma operação com vários sites precisa. Escreva para sales@geocliks.com com o tamanho da equipe, o setor e as regiões e dimensionamos junto com você.",
+  "pr.cta.h2": "Tire uma foto verificada antes de decidir qualquer coisa.",
+  "pr.cta.body":
+    "O plano gratuito leva um minuto para começar e nunca pede cartão. Se ele aguentar no seu próximo serviço, os planos pagos estão aí.",
 };

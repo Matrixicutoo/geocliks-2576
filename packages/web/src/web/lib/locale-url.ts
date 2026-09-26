@@ -78,6 +78,7 @@ export const LOCALIZED_PATHS: readonly string[] = [
   "/alternatives/timemark",
   "/about",
   "/roofing-photo-documentation",
+  "/pricing",
 ];
 
 const LOCALIZED = new Set(LOCALIZED_PATHS);

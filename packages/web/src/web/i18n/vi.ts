@@ -81,6 +81,9 @@ export const vi: Catalog = {
   "seo.roofing.title": "Hồ sơ ảnh mái nhà cho bồi thường bảo hiểm",
   "seo.roofing.description":
     "Ghi lại hư hại và việc thay mái với giờ đã xác minh, GPS và địa chỉ trên mỗi ảnh, ghép trước và sau cho người thẩm định và chủ nhà.",
+  "seo.pricing.title": "Giá GeoCliks — Gói cho đội thi công và đội xe giao hàng",
+  "seo.pricing.description":
+    "Chụp ảnh có xác thực miễn phí mãi mãi. Ảnh không giới hạn và video dài đầy đủ từ 7 $ mỗi tháng, đội dùng teamspace từ 25 $, tuyến giao hàng tính giá theo điểm dừng.",
   "signin.subtitle": "Hồ sơ ảnh chống giả mạo cho đội ngũ hiện trường.",
   "signin.apple": "Tiếp tục với Apple",
   "signin.google": "Tiếp tục với Google",
@@ -2297,4 +2300,116 @@ export const vi: Catalog = {
   "rf.faq.q6": "Trang này khác gì trang hồ sơ ảnh công trường?",
   "rf.faq.a6":
     "Cùng một sản phẩm, lập luận khác nhau. Nhà thầu chính thường ghi nhận để đối phó tranh chấp với khách về tiến độ và phạm vi; thợ mái thường ghi nhận để đối phó người thẩm định cần một ảnh trước có ngày và một ảnh sau có ngày của cùng mặt mái. Ở đây việc ghép trước/sau và định dạng xuất quan trọng hơn, nên trang này tồn tại riêng.",
+  "pr.eyebrow": "Gói và giá",
+  "pr.h1": "Bắt đầu miễn phí. Trả tiền khi đội lớn lên, không sớm hơn.",
+  "pr.sub":
+    "Chụp ảnh có xác thực miễn phí mãi mãi — không cần thẻ, không có ngày hết hạn. Mọi thứ phía trên được tính theo đúng những gì thực sự tốn kém với chúng tôi: bạn chụp bao nhiêu, bao nhiêu người đăng nhập và bạn gõ bao nhiêu cánh cửa.",
+  "pr.s1.label": "01 — Các gói",
+  "pr.s1.h2": "Hai nhóm gói, tính giá theo hai thứ khác nhau.",
+  "pr.s1.intro":
+    "Gói bằng chứng được tính theo số ảnh chụp, video và chỗ ngồi. Gói giao hàng được tính theo số điểm dừng và tài xế, và bao gồm tất cả những gì gói bằng chứng xác thực. Hãy chọn gói khớp với công việc.",
+  "pr.plansNote":
+    "Giá tính bằng USD mỗi tháng, xuất hóa đơn theo không gian làm việc chứ không theo chỗ ngồi — gói năm chỗ là một hóa đơn, không phải năm. Cần SSO, một DPA đã ký hay giấy tờ mua sắm? Đó là Enterprise, ở bất kỳ khối lượng nào:",
+  "pr.s2.label": "02 — Có trong mọi gói",
+  "pr.s2.h2": "Bằng chứng không tốt hơn khi bạn trả tiền cho chúng tôi.",
+  "pr.s2.intro":
+    "Nhiều công cụ đặt bản đáng tin cậy sau bậc cao nhất. Đây là những gì một không gian làm việc miễn phí nhận được, và bản Enterprise cũng không nhận được nhiều hơn.",
+  "pr.same1.title": "Xác thực không bao giờ là món bán thêm",
+  "pr.same1.body":
+    "Gói miễn phí và Enterprise đóng dấu ảnh y như nhau: thời gian được mạng xác thực, tọa độ GPS và địa chỉ đường phố tương ứng.",
+  "pr.same2.title": "Mỗi ảnh giữ mã của nó",
+  "pr.same2.body":
+    "Mã ảnh vẫn tra được và con dấu vẫn kiểm tra được mãi mãi — kể cả sau khi hạ gói, và sau khi bạn ngừng trả tiền cho chúng tôi hoàn toàn.",
+  "pr.same3.title": "Hiện trường không cần sóng",
+  "pr.same3.body":
+    "Chụp trong tầng hầm, hẻm núi hay bãi đỗ xe nhiều tầng với bất kỳ gói nào. Điện thoại xếp ảnh vào hàng chờ và tải lên khi có sóng trở lại.",
+  "pr.s3.label": "03 — So sánh",
+  "pr.s3.h2": "Mọi giới hạn, gói đối gói.",
+  "pr.s3.intro":
+    "Đọc trực tiếp từ danh mục gói mà chính đoạn mã kiểm soát của chúng tôi đọc, nên con số ở đây là con số áp dụng cho không gian làm việc của bạn.",
+  "pr.table.feature": "Tính năng",
+  "pr.group.verification": "Xác thực",
+  "pr.group.capture": "Chụp",
+  "pr.group.team": "Đội, báo cáo và chia sẻ",
+  "pr.group.delivery": "Tuyến giao hàng",
+  "pr.row.verified.label": "Thời gian, GPS và địa chỉ đã xác thực",
+  "pr.row.verified.note": "Giờ mạng, không phải đồng hồ của điện thoại.",
+  "pr.row.photoCode.label": "Mã ảnh riêng trên mỗi lần chụp",
+  "pr.row.publicPage.label": "Trang xác thực công khai",
+  "pr.row.offline.label": "Chụp offline với tự động tải lên",
+  "pr.row.offline.note": "Xếp hàng chờ trên điện thoại, tải lên khi có sóng lại.",
+  "pr.row.captures.label": "Số ảnh mỗi tháng",
+  "pr.row.videoClip.label": "Video có xác thực, mỗi đoạn",
+  "pr.row.videoAvailable.label": "Video khả dụng",
+  "pr.row.videoAvailable.note": "Video còn bật bao lâu kể từ ngày mở không gian làm việc.",
+  "pr.row.projects.label": "Dự án",
+  "pr.row.templates.label": "Mẫu hình chìm",
+  "pr.row.branding.label": "Logo của bạn trên hình chìm",
+  "pr.row.seats.label": "Chỗ ngồi",
+  "pr.row.seats.note": "Một chỗ ngồi là một người có thể đăng nhập. Lời mời đang chờ giữ một chỗ.",
+  "pr.row.teamspace.label": "Teamspace",
+  "pr.row.teamspace.note": "Mọi ảnh và đoạn video của đội đồng bộ vào một nguồn chung.",
+  "pr.row.roles.label": "Vai trò và quyền truy cập theo dự án",
+  "pr.row.shareLinks.label": "Liên kết chia sẻ trực tiếp cho khách",
+  "pr.row.exports.label": "Xuất dữ liệu",
+  "pr.row.reports.label": "Dự án, bản đồ và báo cáo kết thúc",
+  "pr.row.reports.note":
+    "Hệ thống ảnh công trường. Tắt ở các gói Giao hàng, vốn được tính giá cho việc lái xe.",
+  "pr.row.stops.label": "Điểm dừng mỗi tháng",
+  "pr.row.stops.note":
+    "Tính khi một điểm dừng được thêm vào tuyến, dù có giao được hay không. Đặt lại vào ngày 1.",
+  "pr.row.drivers.label": "Tài xế",
+  "pr.row.dispatch.label": "Điều phối trực tiếp",
+  "pr.row.dispatch.note": "Chèn một đơn mới vào tuyến đang được chạy.",
+  "pr.row.optimizer.label": "Trình tối ưu thông minh",
+  "pr.row.optimizer.note":
+    "Sắp thứ tự theo mạng đường bộ. Không có nó, bộ giải mặc định vẫn sắp thứ tự tuyến.",
+  "pr.row.tracking.label": "Liên kết theo dõi và email thông báo đến",
+  "pr.row.signature.label": "Ký nhận tại cửa",
+  "pr.cell.unlimited": "Không giới hạn",
+  "pr.cell.alwaysOn": "Luôn bật",
+  "pr.cell.firstDays": "{days} ngày đầu",
+  "pr.cell.min": "{n} phút",
+  "pr.cell.sec": "{n} giây",
+  "pr.cell.included": "Có",
+  "pr.cell.notIncluded": "Không có",
+  "pr.tableNote.custom":
+    "{name} không nằm trong bảng là có chủ ý: giới hạn của nó được thống nhất cùng bạn, chứ không chọn từ một danh sách.",
+  "pr.tableNote.lead": "Chi tiết đầy đủ về ý nghĩa của từng mức giới hạn nằm ở",
+  "pr.tableNote.link": "trợ giúp về gói và thanh toán",
+  "pr.faqSection.label": "04 — Câu hỏi",
+  "pr.faqSection.h2": "Những điều người dùng hỏi trước khi trả tiền.",
+  "pr.faq.q1": "Gói miễn phí có thật sự miễn phí không?",
+  "pr.faq.a1":
+    "Có, và nó không hết hạn. Gói miễn phí gồm 300 ảnh mỗi tháng, ba dự án, một chỗ ngồi, hai mẫu hình chìm, đoạn video 30 giây trong ba ngày đầu và xuất PDF tối đa 20 ảnh. Không hỏi thẻ.",
+  "pr.faq.q2": "Thế nào được tính là một chỗ ngồi?",
+  "pr.faq.a2":
+    "Một người có thể đăng nhập vào không gian làm việc của bạn, bất kể vai trò — kể cả chủ sở hữu. Lời mời đang chờ giữ một chỗ cho đến khi được chấp nhận hoặc thu hồi, nếu không thì có thể gửi mười lời mời trên hai chỗ và tất cả những người chấp nhận đều vượt gói.",
+  "pr.faq.q3": "Gói trả phí có xác thực ảnh tốt hơn gói miễn phí không?",
+  "pr.faq.a3":
+    "Không. Dữ liệu hình chìm, mã ảnh và con dấu giống nhau ở mọi gói. Bạn trả tiền cho khối lượng, độ dài video, teamspace, xuất dữ liệu, chia sẻ và định tuyến giao hàng — không bao giờ cho bản thân bằng chứng.",
+  "pr.faq.q4": "Những gói nào có tuyến giao hàng?",
+  "pr.faq.a4":
+    "Plus và cao hơn có hạn mức điểm dừng hằng tháng, nên bạn chạy được tuyến mà không cần rời các gói bằng chứng. Nếu lái xe là phần lớn công việc, các gói Giao hàng rẻ hơn nhiều trên mỗi điểm dừng và thêm điều phối trực tiếp, trình tối ưu thông minh và nhiều tài xế hơn.",
+  "pr.faq.q5": "Điểm dừng giao hàng được tính thế nào?",
+  "pr.faq.a5":
+    "Theo tháng dương lịch, đặt lại vào ngày 1. Một điểm dừng được tính khi nó được thêm vào tuyến, bất kể cuối cùng có giao được hay không. Vượt hạn mức sẽ chặn việc tạo tuyến mới đến tháng sau, nên hãy chọn gói phủ được tuần cao điểm nhất chứ không phải tuần trung bình.",
+  "pr.faq.q6": "Các gói Giao hàng có dùng thử không?",
+  "pr.faq.a6":
+    "Mọi gói Giao hàng đều bắt đầu bằng bản dùng thử miễn phí, vì thế nút của nó ghi Dùng thử miễn phí. Bản dùng thử là một lần cho mỗi không gian làm việc, không phải một lần cho mỗi gói — chuyển từ gói Giao hàng này sang gói khác sẽ bị tính phí ngay.",
+  "pr.faq.q7": "Tôi có thể đổi gói sau không?",
+  "pr.faq.a7":
+    "Bất cứ lúc nào, từ mục Thanh toán trong cài đặt không gian làm việc, và chỉ chủ sở hữu làm được. Nâng gói có hiệu lực ngay và không ảnh hưởng gì đến những gì đã chụp. Hạ gói bị từ chối khi không gian làm việc của bạn lớn hơn gói đích — bạn sẽ được yêu cầu xóa thành viên trước, thay vì ba người bị cắt quyền trong im lặng.",
+  "pr.faq.q8": "Ảnh của tôi sẽ thế nào nếu tôi hủy?",
+  "pr.faq.a8":
+    "Chúng không bị xóa, và việc xác thực vẫn hoạt động. Các tính năng trả phí sẽ dừng: xuất Excel, ZIP và KMZ, liên kết chia sẻ, teamspace và tuyến giao hàng. Hãy xuất những gì bạn cần ra ngoài GeoCliks trước khi hủy — ở gói miễn phí bạn trở lại với PDF 20 ảnh.",
+  "pr.faq.q9": "Thanh toán được xử lý thế nào và hóa đơn ở đâu?",
+  "pr.faq.a9":
+    "Qua đơn vị xử lý thanh toán của chúng tôi trên trang thanh toán được lưu trữ sẵn — số thẻ của bạn không bao giờ tới máy chủ của GeoCliks. Mỗi lần thanh toán tạo một hóa đơn trong cổng thanh toán, nơi bạn cũng có thể thêm tên công ty và thông tin thuế.",
+  "pr.faq.q10": "Nếu chúng tôi lớn hơn Crew 25 hay Fleet 500 thì sao?",
+  "pr.faq.a10":
+    "Khi đó gói là một cuộc trao đổi. Enterprise bao gồm khối lượng riêng, điều khoản riêng và mức quản trị mà một hoạt động nhiều địa điểm cần. Hãy gửi email tới sales@geocliks.com kèm quy mô đội, ngành và khu vực, chúng tôi sẽ cùng bạn định lượng.",
+  "pr.cta.h2": "Hãy chụp một ảnh có xác thực trước khi quyết định bất cứ điều gì.",
+  "pr.cta.body":
+    "Gói miễn phí mất một phút để bắt đầu và không bao giờ hỏi thẻ. Nếu nó trụ được ở công việc tiếp theo, các gói trả phí luôn ở đó.",
 };

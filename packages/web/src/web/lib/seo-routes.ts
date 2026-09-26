@@ -221,6 +221,11 @@ export const LOCALIZED_SEO: Record<string, { title: TKey; description: TKey }> =
     title: "seo.roofing.title",
     description: "seo.roofing.description",
   },
+
+  "/pricing": {
+    title: "seo.pricing.title",
+    description: "seo.pricing.description",
+  },
 };
 
 /**

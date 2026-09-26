@@ -82,6 +82,9 @@ export const frCA: Catalog = {
   "seo.roofing.title": "Documentation photo de toiture pour les réclamations",
   "seo.roofing.description":
     "Documentez les dommages et le remplacement d'un toit avec l'heure vérifiée, le GPS et l'adresse sur chaque photo, jumelées avant et après pour les experts.",
+  "seo.pricing.title": "Tarifs GeoCliks — Forfaits pour équipes et flottes",
+  "seo.pricing.description":
+    "Capture photo vérifiée gratuite pour toujours. Photos illimitées et vidéo complète à partir de 7 $ par mois, équipes avec teamspace à partir de 25 $, trajets de livraison tarifés à l'arrêt.",
   "signin.subtitle": "Documentation photo infalsifiable pour les équipes de terrain.",
   "signin.apple": "Continuer avec Apple",
   "signin.google": "Continuer avec Google",
@@ -2355,4 +2358,119 @@ export const frCA: Catalog = {
   "rf.faq.q6": "En quoi est-ce différent de la page de documentation de chantier ?",
   "rf.faq.a6":
     "Même produit, argument différent. Un entrepreneur général documente généralement contre un litige avec le client sur l'avancement et la portée ; un couvreur documente généralement contre un expert qui a besoin d'un avant daté et d'un après daté du même versant. Le jumelage avant/après et le format d'exportation comptent davantage ici, et c'est pourquoi cette page existe à part.",
+  "pr.eyebrow": "Forfaits et tarifs",
+  "pr.h1": "Commencez gratuitement. Payez quand l'équipe grandit, pas avant.",
+  "pr.sub":
+    "La capture vérifiée est gratuite pour toujours : aucune carte, aucune date d'expiration. Tout ce qui se trouve au-dessus est facturé selon ce qui nous coûte vraiment quelque chose : combien vous photographiez, combien de personnes se connectent et à combien de portes vous frappez.",
+  "pr.s1.label": "01 — Les forfaits",
+  "pr.s1.h2": "Deux familles, tarifées sur deux choses différentes.",
+  "pr.s1.intro":
+    "Les forfaits preuve sont dimensionnés par captures, vidéo et sièges. Les forfaits livraison sont dimensionnés par arrêts et chauffeurs, et incluent tout ce que les forfaits preuve vérifient. Choisissez celui qui correspond au travail.",
+  "pr.plansNote":
+    "Les prix sont en USD par mois, facturés par espace de travail plutôt que par siège : un forfait de cinq sièges, c'est une facture, pas cinq. Besoin du SSO, d'un DPA signé ou de documents d'approvisionnement? C'est Enterprise, quel que soit le volume :",
+  "pr.s2.label": "02 — Sur tous les forfaits",
+  "pr.s2.h2": "La preuve ne devient pas meilleure parce que vous payez.",
+  "pr.s2.intro":
+    "Bien des outils placent la version digne de confiance derrière le palier le plus élevé. Voici ce qu'obtient un espace de travail gratuit et dont un espace Enterprise n'obtient pas davantage.",
+  "pr.same1.title": "La vérification n'est jamais l'option payante",
+  "pr.same1.body":
+    "Gratuit et Enterprise estampillent une photo de la même façon : heure vérifiée par le réseau, coordonnées GPS et l'adresse municipale à laquelle elles correspondent.",
+  "pr.same2.title": "Chaque capture garde son code",
+  "pr.same2.body":
+    "Un code de photo se résout et un sceau se vérifie pour de bon — y compris après une rétrogradation, et après que vous avez cessé de nous payer entièrement.",
+  "pr.same3.title": "Le terrain n'a pas besoin de signal",
+  "pr.same3.body":
+    "Capturez dans un sous-sol, un canyon ou un stationnement étagé avec n'importe quel forfait. Le téléphone met la photo en file et la téléverse dès qu'il y a une barre de nouveau.",
+  "pr.s3.label": "03 — Comparer",
+  "pr.s3.h2": "Toutes les limites, forfait contre forfait.",
+  "pr.s3.intro":
+    "Lu directement dans le catalogue de forfaits que lit notre propre code d'application, donc un chiffre ici est le chiffre qui s'applique à votre espace de travail.",
+  "pr.table.feature": "Fonction",
+  "pr.group.verification": "Vérification",
+  "pr.group.capture": "Capture",
+  "pr.group.team": "Équipe, rapports et partage",
+  "pr.group.delivery": "Trajets de livraison",
+  "pr.row.verified.label": "Heure, GPS et adresse vérifiés",
+  "pr.row.verified.note": "Heure du réseau, pas l'horloge du téléphone.",
+  "pr.row.photoCode.label": "Code de photo unique sur chaque capture",
+  "pr.row.publicPage.label": "Page de vérification publique",
+  "pr.row.offline.label": "Capture hors ligne avec téléversement automatique",
+  "pr.row.offline.note": "Mise en file sur le téléphone, téléversée au retour du signal.",
+  "pr.row.captures.label": "Captures par mois",
+  "pr.row.videoClip.label": "Vidéo vérifiée, par clip",
+  "pr.row.videoAvailable.label": "Vidéo disponible",
+  "pr.row.videoAvailable.note":
+    "Combien de temps la vidéo reste active à partir du jour d'ouverture de l'espace de travail.",
+  "pr.row.projects.label": "Projets",
+  "pr.row.templates.label": "Modèles de filigrane",
+  "pr.row.branding.label": "Votre logo sur le filigrane",
+  "pr.row.seats.label": "Sièges",
+  "pr.row.seats.note":
+    "Un siège, c'est une personne qui peut se connecter. Une invitation en attente en occupe un.",
+  "pr.row.teamspace.label": "Teamspace",
+  "pr.row.teamspace.note":
+    "Chaque photo et chaque clip de l'équipe se synchronisent dans un seul fil partagé.",
+  "pr.row.roles.label": "Rôles et accès par projet",
+  "pr.row.shareLinks.label": "Liens de partage en direct pour les clients",
+  "pr.row.exports.label": "Exportations",
+  "pr.row.reports.label": "Projets, carte et rapports de clôture",
+  "pr.row.reports.note":
+    "Le système de photos de chantier. Désactivé sur les forfaits livraison, tarifés pour la conduite.",
+  "pr.row.stops.label": "Arrêts par mois",
+  "pr.row.stops.note":
+    "Compté dès qu'un arrêt est ajouté à un trajet, livré ou non. Remis à zéro le 1er.",
+  "pr.row.drivers.label": "Chauffeurs",
+  "pr.row.dispatch.label": "Répartition en direct",
+  "pr.row.dispatch.note": "Insérez une nouvelle commande dans un trajet déjà en cours de conduite.",
+  "pr.row.optimizer.label": "Optimiseur intelligent",
+  "pr.row.optimizer.note":
+    "Ordonnancement selon le réseau routier. Sans lui, le solveur standard ordonne quand même le trajet.",
+  "pr.row.tracking.label": "Liens de suivi et courriels d'arrivée",
+  "pr.row.signature.label": "Signature à la porte",
+  "pr.cell.unlimited": "Illimité",
+  "pr.cell.alwaysOn": "Toujours actif",
+  "pr.cell.firstDays": "{days} premiers jours",
+  "pr.cell.min": "{n} min",
+  "pr.cell.sec": "{n} s",
+  "pr.cell.included": "Inclus",
+  "pr.cell.notIncluded": "Non inclus",
+  "pr.tableNote.custom":
+    "{name} n'est pas dans le tableau, volontairement : ses limites sont fixées avec vous, pas choisies dans une liste.",
+  "pr.tableNote.lead": "Tout le détail de ce que signifie chaque allocation se trouve dans l'",
+  "pr.tableNote.link": "aide sur les forfaits et la facturation",
+  "pr.faqSection.label": "04 — Questions",
+  "pr.faqSection.h2": "Ce que les gens demandent avant de payer.",
+  "pr.faq.q1": "Le forfait gratuit est-il vraiment gratuit?",
+  "pr.faq.a1":
+    "Oui, et il n'expire pas. Le forfait gratuit couvre 300 captures par mois, trois projets, un siège, deux modèles de filigrane, des clips vidéo de 30 secondes pendant les trois premiers jours et une exportation PDF d'au plus 20 photos. Aucune carte n'est demandée.",
+  "pr.faq.q2": "Qu'est-ce qui compte comme un siège?",
+  "pr.faq.a2":
+    "Une personne qui peut se connecter à votre espace de travail, quel que soit son rôle — le propriétaire compris. Une invitation en attente retient un siège jusqu'à ce qu'elle soit acceptée ou révoquée, sinon dix invitations pourraient être envoyées pour deux sièges et tous ceux qui accepteraient dépasseraient le forfait.",
+  "pr.faq.q3": "Les forfaits payants vérifient-ils les photos mieux que le gratuit?",
+  "pr.faq.a3":
+    "Non. Les données du filigrane, le code de photo et le sceau sont identiques sur tous les forfaits. Ce que vous payez, c'est le volume, la durée de vidéo, le teamspace, les exportations, le partage et les trajets de livraison — jamais la preuve elle-même.",
+  "pr.faq.q4": "Quels forfaits incluent les trajets de livraison?",
+  "pr.faq.a4":
+    "Plus et au-dessus comportent une allocation mensuelle d'arrêts, vous pouvez donc faire des trajets sans quitter les forfaits preuve. Si la conduite représente l'essentiel du travail, les forfaits livraison coûtent bien moins par arrêt et ajoutent la répartition en direct, l'optimiseur intelligent et plus de chauffeurs.",
+  "pr.faq.q5": "Comment les arrêts de livraison sont-ils comptés?",
+  "pr.faq.a5":
+    "Par mois civil, remis à zéro le 1er. Un arrêt compte dès qu'il est ajouté à un trajet, qu'il finisse livré ou non. Dépasser l'allocation bloque la création de nouveaux trajets jusqu'au mois suivant : choisissez donc le forfait qui couvre votre semaine la plus chargée plutôt que votre moyenne.",
+  "pr.faq.q6": "Y a-t-il un essai sur les forfaits livraison?",
+  "pr.faq.a6":
+    "Chaque forfait livraison commence par un essai gratuit, c'est pourquoi son bouton indique Essai gratuit. L'essai est unique par espace de travail, pas par forfait : passer d'un forfait livraison à un autre est facturé immédiatement.",
+  "pr.faq.q7": "Puis-je changer de forfait plus tard?",
+  "pr.faq.a7":
+    "À tout moment, depuis Facturation dans les paramètres de votre espace de travail, et seul le propriétaire peut le faire. Monter s'applique immédiatement et rien de ce qui est déjà capturé n'est touché. Descendre est refusé tant que votre espace de travail est plus grand que le forfait visé — on vous demande de retirer des membres d'abord au lieu de couper trois personnes en silence.",
+  "pr.faq.q8": "Qu'arrive-t-il à mes photos si j'annule?",
+  "pr.faq.a8":
+    "Elles ne sont pas supprimées et la vérification continue de fonctionner. Les fonctions payantes s'arrêtent : exportations Excel, ZIP et KMZ, liens de partage, teamspace et trajets de livraison. Exportez ce dont vous avez besoin hors de GeoCliks avant d'annuler — sur le forfait gratuit, vous revenez à un PDF de 20 photos.",
+  "pr.faq.q9": "Comment le paiement est-il traité et où sont les factures?",
+  "pr.faq.a9":
+    "Par notre processeur de paiement, sur une page de paiement hébergée — votre numéro de carte n'atteint jamais les serveurs de GeoCliks. Chaque paiement produit une facture dans le portail de facturation, où vous pouvez aussi ajouter le nom de votre entreprise et vos renseignements fiscaux.",
+  "pr.faq.q10": "Et si nous sommes plus gros que Crew 25 ou Fleet 500?",
+  "pr.faq.a10":
+    "Alors le forfait devient une conversation. Enterprise couvre les volumes sur mesure, les conditions sur mesure et la gouvernance dont a besoin une exploitation multisite. Écrivez à sales@geocliks.com avec la taille de votre équipe, votre secteur et vos régions et nous le dimensionnerons avec vous.",
+  "pr.cta.h2": "Prenez une photo vérifiée avant de décider quoi que ce soit.",
+  "pr.cta.body":
+    "Le forfait gratuit démarre en une minute et ne demande jamais de carte. S'il tient bon sur votre prochain chantier, les forfaits payants sont là.",
 };

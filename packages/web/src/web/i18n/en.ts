@@ -90,6 +90,9 @@ export const en = {
   "seo.roofing.title": "Roofing Photo Documentation for Claims & Closeouts",
   "seo.roofing.description":
     "Document roof damage and replacement with verified time, GPS and street address on every photo, paired before and after for adjusters and homeowners.",
+  "seo.pricing.title": "GeoCliks Pricing — Plans for Crews and Delivery Fleets",
+  "seo.pricing.description":
+    "Verified photo capture free forever. Unlimited photos and full-length video from $7 a month, teamspace crews from $25, and delivery routes priced by stop.",
   "signin.subtitle": "Tamper-proof photo documentation for field teams.",
   "signin.apple": "Continue with Apple",
   "signin.google": "Continue with Google",
@@ -2308,6 +2311,118 @@ export const en = {
   "rf.faq.q6": "How is this different from the construction documentation page?",
   "rf.faq.a6":
     "Same product, different argument. A general contractor is usually documenting against a client dispute over progress and scope; a roofer is usually documenting against an adjuster who needs a dated before and a dated after of the same plane. The before/after pairing and the export format matter more here, which is why this page exists separately.",
+  "pr.eyebrow": "Plans & pricing",
+  "pr.h1": "Start free. Pay when the crew grows, not before.",
+  "pr.sub":
+    "Verified capture is free forever — no card, no expiry date. Everything above it is priced on what actually costs us something: how much you shoot, how many people sign in, and how many doors you knock on.",
+  "pr.s1.label": "01 — The plans",
+  "pr.s1.h2": "Two families, priced on two different things.",
+  "pr.s1.intro":
+    "Evidence plans are sized by captures, video and seats. Delivery plans are sized by stops and drivers, and include everything the evidence plans verify. Pick the one that matches the work.",
+  "pr.plansNote":
+    "Prices are in USD per month, billed per workspace rather than per seat — a five-seat plan is one bill, not five. Need SSO, a signed DPA or procurement paperwork? That is Enterprise on any volume:",
+  "pr.s2.label": "02 — On every plan",
+  "pr.s2.h2": "The proof does not get better when you pay us.",
+  "pr.s2.intro":
+    "Plenty of tools put the trustworthy version behind the top tier. Here is what a free workspace gets that an Enterprise one does not get more of.",
+  "pr.same1.title": "Verification is never the upsell",
+  "pr.same1.body":
+    "Free and Enterprise stamp a photo the same way: network-verified time, GPS coordinates and the street address they resolve to.",
+  "pr.same2.title": "Every capture keeps its code",
+  "pr.same2.body":
+    "A photo code resolves and a seal checks out for good — including after a downgrade, and after you stop paying us entirely.",
+  "pr.same3.title": "The field does not need signal",
+  "pr.same3.body":
+    "Capture in a basement, a canyon or a parkade on any plan. The phone queues the shot and uploads it when there is a bar again.",
+  "pr.s3.label": "03 — Compare",
+  "pr.s3.h2": "Every limit, plan against plan.",
+  "pr.s3.intro":
+    "Read straight from the plan catalogue our own enforcement code reads, so a number here is the number that applies to your workspace.",
+  "pr.table.feature": "Feature",
+  "pr.group.verification": "Verification",
+  "pr.group.capture": "Capture",
+  "pr.group.team": "Team, reports and sharing",
+  "pr.group.delivery": "Delivery routes",
+  "pr.row.verified.label": "Verified time, GPS and street address",
+  "pr.row.verified.note": "Network time, not the phone's clock.",
+  "pr.row.photoCode.label": "Unique photo code on every capture",
+  "pr.row.publicPage.label": "Public verification page",
+  "pr.row.offline.label": "Offline capture with auto upload",
+  "pr.row.offline.note": "Queues on the phone, uploads when signal returns.",
+  "pr.row.captures.label": "Captures per month",
+  "pr.row.videoClip.label": "Verified video, per clip",
+  "pr.row.videoAvailable.label": "Video available",
+  "pr.row.videoAvailable.note": "How long video stays on from the day the workspace opens.",
+  "pr.row.projects.label": "Projects",
+  "pr.row.templates.label": "Watermark templates",
+  "pr.row.branding.label": "Your logo on the watermark",
+  "pr.row.seats.label": "Seats",
+  "pr.row.seats.note": "A seat is one person who can sign in. Pending invites hold one.",
+  "pr.row.teamspace.label": "Teamspace",
+  "pr.row.teamspace.note": "Every crew photo and clip syncs into one shared feed.",
+  "pr.row.roles.label": "Roles and per-project access",
+  "pr.row.shareLinks.label": "Live share links for clients",
+  "pr.row.exports.label": "Exports",
+  "pr.row.reports.label": "Projects, map and closeout reports",
+  "pr.row.reports.note":
+    "The job photo system. Off on the Delivery plans, which are priced for driving.",
+  "pr.row.stops.label": "Stops per month",
+  "pr.row.stops.note":
+    "Counted when a stop is added to a route, delivered or not. Resets on the 1st.",
+  "pr.row.drivers.label": "Drivers",
+  "pr.row.dispatch.label": "Live dispatch",
+  "pr.row.dispatch.note": "Slot a new order into a route that is already being driven.",
+  "pr.row.optimizer.label": "Smart optimizer",
+  "pr.row.optimizer.note":
+    "Road-network ordering. Without it the standard solver still orders the route.",
+  "pr.row.tracking.label": "Tracking links and arrival emails",
+  "pr.row.signature.label": "Signature at the door",
+  "pr.cell.unlimited": "Unlimited",
+  "pr.cell.alwaysOn": "Always on",
+  "pr.cell.firstDays": "First {days} days",
+  "pr.cell.min": "{n} min",
+  "pr.cell.sec": "{n} sec",
+  "pr.cell.included": "Included",
+  "pr.cell.notIncluded": "Not included",
+  "pr.tableNote.custom":
+    "{name} is not in the table on purpose — its limits are set with you, not picked from a list.",
+  "pr.tableNote.lead": "Full detail on what each allowance means lives in the",
+  "pr.tableNote.link": "plans and billing help",
+  "pr.faqSection.label": "04 — Questions",
+  "pr.faqSection.h2": "What people ask before they pay.",
+  "pr.faq.q1": "Is the free plan really free?",
+  "pr.faq.a1":
+    "Yes, and it does not expire. Free covers 300 captures a month, three projects, one seat, two watermark templates, 30-second video clips for the first three days, and a PDF export of up to 20 photos. No card is asked for.",
+  "pr.faq.q2": "What counts as a seat?",
+  "pr.faq.a2":
+    "One person who can sign in to your workspace, whatever their role — the owner included. A pending invitation holds a seat until it is accepted or revoked, otherwise ten invites could be sent against two seats and everyone who accepted would be over the plan.",
+  "pr.faq.q3": "Do paid plans verify photos better than the free one?",
+  "pr.faq.a3":
+    "No. The watermark data, the photo code and the seal are identical on every plan. What you pay for is volume, video length, teamspace, exports, sharing and delivery routing — never the proof itself.",
+  "pr.faq.q4": "Which plans include delivery routes?",
+  "pr.faq.a4":
+    "Plus and above carry a monthly stop allowance, so you can run routes without leaving the evidence plans. If driving is most of the work, the Delivery plans cost far less per stop and add live dispatch, the smart optimizer and more drivers.",
+  "pr.faq.q5": "How are delivery stops counted?",
+  "pr.faq.a5":
+    "Per calendar month, resetting on the 1st. A stop counts when it is added to a route, whether or not it ends up delivered. Going over the allowance stops new route building until the next month, so pick the plan that covers your busiest week rather than your average one.",
+  "pr.faq.q6": "Is there a trial on the Delivery plans?",
+  "pr.faq.a6":
+    "Every Delivery plan starts with a free trial, which is why its button reads Free trial. The trial is once per workspace, not once per plan — moving from one Delivery plan to another bills straight away.",
+  "pr.faq.q7": "Can I change plan later?",
+  "pr.faq.a7":
+    "Any time, from Billing in your workspace settings, and only the owner can do it. Moving up applies immediately and nothing already captured is touched. Moving down is refused while your workspace is bigger than the target plan — you are asked to remove members first instead of three people being cut off silently.",
+  "pr.faq.q8": "What happens to my photos if I cancel?",
+  "pr.faq.a8":
+    "They are not deleted, and verification keeps working. The paid features stop: Excel, ZIP and KMZ exports, share links, teamspace and delivery routes. Export anything you need outside GeoCliks before you cancel — on Free you are back to a PDF of 20 photos.",
+  "pr.faq.q9": "How is payment handled, and where are the invoices?",
+  "pr.faq.a9":
+    "Through our payment processor over a hosted checkout — your card number never reaches GeoCliks' servers. Every payment produces an invoice in the billing portal, where you can also add your company name and tax details.",
+  "pr.faq.q10": "What if we are bigger than Crew 25 or Fleet 500?",
+  "pr.faq.a10":
+    "Then the plan is a conversation. Enterprise covers custom volumes, custom terms, and the governance a multi-site operation needs. Email sales@geocliks.com with your team size, industry and regions and we will size it with you.",
+  "pr.cta.h2": "Shoot one verified photo before you decide anything.",
+  "pr.cta.body":
+    "The free plan takes a minute to start and never asks for a card. If it holds up on your next job, the paid plans are there.",
 } as const;
 
 export type Catalog = Record<keyof typeof en, string>;

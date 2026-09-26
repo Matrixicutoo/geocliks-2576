@@ -22,7 +22,6 @@ import type { LocaleCode } from "../../api/lib/locales";
 import { type TKey, translate } from "./catalogs";
 import { articleHref, asLocale, findArticle, findCategory } from "../help/resolve";
 import { articlesOf } from "../help/types";
-import { SALES_EMAIL } from "./support";
 import {
   type Crumb,
   aboutPageSchema,
@@ -76,55 +75,16 @@ export const PAGE_SCHEMA = {
   "/pricing": {
     crumbs: [{ name: "Pricing" }],
     faq: [
-      {
-        question: "Is the free plan really free?",
-        answer:
-          "Yes, and it does not expire. Free covers 300 captures a month, three projects, one seat, two watermark templates, 30-second video clips for the first three days, and a PDF export of up to 20 photos. No card is asked for.",
-      },
-      {
-        question: "What counts as a seat?",
-        answer:
-          "One person who can sign in to your workspace, whatever their role — the owner included. A pending invitation holds a seat until it is accepted or revoked, otherwise ten invites could be sent against two seats and everyone who accepted would be over the plan.",
-      },
-      {
-        question: "Do paid plans verify photos better than the free one?",
-        answer:
-          "No. The watermark data, the photo code and the seal are identical on every plan. What you pay for is volume, video length, teamspace, exports, sharing and delivery routing — never the proof itself.",
-      },
-      {
-        question: "Which plans include delivery routes?",
-        answer:
-          "Plus and above carry a monthly stop allowance, so you can run routes without leaving the evidence plans. If driving is most of the work, the Delivery plans cost far less per stop and add live dispatch, the smart optimizer and more drivers.",
-      },
-      {
-        question: "How are delivery stops counted?",
-        answer:
-          "Per calendar month, resetting on the 1st. A stop counts when it is added to a route, whether or not it ends up delivered. Going over the allowance stops new route building until the next month, so pick the plan that covers your busiest week rather than your average one.",
-      },
-      {
-        question: "Is there a trial on the Delivery plans?",
-        answer:
-          "Every Delivery plan starts with a free trial, which is why its button reads Free trial. The trial is once per workspace, not once per plan — moving from one Delivery plan to another bills straight away.",
-      },
-      {
-        question: "Can I change plan later?",
-        answer:
-          "Any time, from Billing in your workspace settings, and only the owner can do it. Moving up applies immediately and nothing already captured is touched. Moving down is refused while your workspace is bigger than the target plan — you are asked to remove members first instead of three people being cut off silently.",
-      },
-      {
-        question: "What happens to my photos if I cancel?",
-        answer:
-          "They are not deleted, and verification keeps working. The paid features stop: Excel, ZIP and KMZ exports, share links, teamspace and delivery routes. Export anything you need outside GeoCliks before you cancel — on Free you are back to a PDF of 20 photos.",
-      },
-      {
-        question: "How is payment handled, and where are the invoices?",
-        answer:
-          "Through our payment processor over a hosted checkout — your card number never reaches GeoCliks' servers. Every payment produces an invoice in the billing portal, where you can also add your company name and tax details.",
-      },
-      {
-        question: "What if we are bigger than Crew 25 or Fleet 500?",
-        answer: `Then the plan is a conversation. Enterprise covers custom volumes, custom terms, and the governance a multi-site operation needs. Email ${SALES_EMAIL} with your team size, industry and regions and we will size it with you.`,
-      },
+      { keys: { question: "pr.faq.q1", answer: "pr.faq.a1" } },
+      { keys: { question: "pr.faq.q2", answer: "pr.faq.a2" } },
+      { keys: { question: "pr.faq.q3", answer: "pr.faq.a3" } },
+      { keys: { question: "pr.faq.q4", answer: "pr.faq.a4" } },
+      { keys: { question: "pr.faq.q5", answer: "pr.faq.a5" } },
+      { keys: { question: "pr.faq.q6", answer: "pr.faq.a6" } },
+      { keys: { question: "pr.faq.q7", answer: "pr.faq.a7" } },
+      { keys: { question: "pr.faq.q8", answer: "pr.faq.a8" } },
+      { keys: { question: "pr.faq.q9", answer: "pr.faq.a9" } },
+      { keys: { question: "pr.faq.q10", answer: "pr.faq.a10" } },
     ],
   },
   "/alternatives/companycam": {

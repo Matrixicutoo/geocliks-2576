@@ -82,6 +82,9 @@ export const tl: Catalog = {
   "seo.roofing.title": "Dokumentasyon ng Larawan sa Bubong para sa Claim",
   "seo.roofing.description":
     "Idokumento ang pinsala at pagpapalit ng bubong na may beripikadong oras, GPS at address sa bawat larawan, ipinares na bago at pagkatapos para sa adjuster.",
+  "seo.pricing.title": "Presyo ng GeoCliks — Plano para sa Crew at Delivery Fleet",
+  "seo.pricing.description":
+    "Libre nang panghabambuhay ang verified na pagkuha ng litrato. Walang limitasyong litrato at buong haba ng video mula $7 kada buwan, crew na may teamspace mula $25, at delivery route na may presyo kada stop.",
   "signin.subtitle": "Hindi mapepekeng dokumentasyon ng larawan para sa mga field team.",
   "signin.apple": "Magpatuloy sa Apple",
   "signin.google": "Magpatuloy sa Google",
@@ -2347,4 +2350,118 @@ export const tl: Catalog = {
   "rf.faq.q6": "Paano ito naiiba sa pahina ng dokumentasyon sa konstruksiyon?",
   "rf.faq.a6":
     "Parehong produkto, ibang argumento. Karaniwang nagdodokumento ang general contractor laban sa alitan ng kliyente sa progreso at scope; karaniwang nagdodokumento ang roofer laban sa adjuster na kailangan ng may-petsang bago at may-petsang pagkatapos ng parehong slope. Mas mabigat dito ang pagpapares ng bago/pagkatapos at ang format ng export, kaya hiwalay na umiiral ang pahinang ito.",
+  "pr.eyebrow": "Mga plano at presyo",
+  "pr.h1": "Magsimula nang libre. Magbayad kapag lumaki ang crew, hindi bago pa.",
+  "pr.sub":
+    "Libre nang panghabambuhay ang verified na pagkuha ng litrato — walang card, walang expiry. Ang lahat ng nasa itaas nito ay pinepresyuhan base sa talagang may gastos sa amin: kung gaano ka karaming kumukuha, kung ilan ang nakaka-sign in, at kung ilang pintuan ang kinakatok mo.",
+  "pr.s1.label": "01 — Ang mga plano",
+  "pr.s1.h2": "Dalawang pamilya, pinepresyuhan base sa dalawang magkaibang bagay.",
+  "pr.s1.intro":
+    "Ang mga evidence plan ay nakabase sa bilang ng kuha, video at seats. Ang mga delivery plan ay nakabase sa stops at drivers, at kasama na ang lahat ng bine-verify ng evidence plans. Piliin ang tumutugma sa trabaho.",
+  "pr.plansNote":
+    "Ang mga presyo ay nasa USD kada buwan, binibili kada workspace at hindi kada seat — ang planong may limang seat ay isang bill, hindi lima. Kailangan ng SSO, nilagdaang DPA o papeles para sa procurement? Enterprise iyon, sa anumang volume:",
+  "pr.s2.label": "02 — Nasa lahat ng plano",
+  "pr.s2.h2": "Hindi bumubuti ang ebidensya kapag nagbayad ka sa amin.",
+  "pr.s2.intro":
+    "Maraming tool ang nagtatago ng mapagkakatiwalaang bersyon sa pinakamataas na tier. Ito ang nakukuha ng libreng workspace, at wala nang mas marami pa rito ang Enterprise.",
+  "pr.same1.title": "Hindi kailanman upsell ang verification",
+  "pr.same1.body":
+    "Pareho ang pagtatatak ng litrato sa Free at sa Enterprise: oras na verified sa network, GPS coordinates at ang street address na tinutumbasan nito.",
+  "pr.same2.title": "Bawat kuha ay may sariling code na nananatili",
+  "pr.same2.body":
+    "Tumutugma ang photo code at pumapasa ang seal nang panghabambuhay — kahit matapos mag-downgrade, at kahit matapos kang tumigil nang tuluyan sa pagbabayad sa amin.",
+  "pr.same3.title": "Hindi kailangan ng signal sa field",
+  "pr.same3.body":
+    "Kumuha sa basement, sa bangin o sa parking building sa kahit anong plano. Ipipila ng telepono ang kuha at iaakyat ito kapag may signal na muli.",
+  "pr.s3.label": "03 — Ihambing",
+  "pr.s3.h2": "Bawat limitasyon, plano kontra plano.",
+  "pr.s3.intro":
+    "Direktang galing sa plan catalogue na binabasa ng sarili naming enforcement code, kaya ang numerong nakikita mo rito ang numerong umaakma sa workspace mo.",
+  "pr.table.feature": "Feature",
+  "pr.group.verification": "Verification",
+  "pr.group.capture": "Pagkuha",
+  "pr.group.team": "Team, reports at pagbabahagi",
+  "pr.group.delivery": "Mga delivery route",
+  "pr.row.verified.label": "Verified na oras, GPS at street address",
+  "pr.row.verified.note": "Oras mula sa network, hindi ang relo ng telepono.",
+  "pr.row.photoCode.label": "Bukod-tanging photo code sa bawat kuha",
+  "pr.row.publicPage.label": "Pampublikong verification page",
+  "pr.row.offline.label": "Offline na pagkuha na may auto upload",
+  "pr.row.offline.note": "Nakapila sa telepono, umaakyat kapag bumalik ang signal.",
+  "pr.row.captures.label": "Mga kuha kada buwan",
+  "pr.row.videoClip.label": "Verified na video, kada clip",
+  "pr.row.videoAvailable.label": "Available ang video",
+  "pr.row.videoAvailable.note":
+    "Gaano katagal nananatiling bukas ang video mula sa araw na binuksan ang workspace.",
+  "pr.row.projects.label": "Mga proyekto",
+  "pr.row.templates.label": "Mga watermark template",
+  "pr.row.branding.label": "Ang logo mo sa watermark",
+  "pr.row.seats.label": "Mga seat",
+  "pr.row.seats.note":
+    "Ang seat ay isang taong makaka-sign in. May hawak na isa ang mga nakabinbing invite.",
+  "pr.row.teamspace.label": "Teamspace",
+  "pr.row.teamspace.note": "Ang bawat litrato at clip ng crew ay nagsi-sync sa isang shared feed.",
+  "pr.row.roles.label": "Mga role at access kada proyekto",
+  "pr.row.shareLinks.label": "Live share link para sa mga kliyente",
+  "pr.row.exports.label": "Mga export",
+  "pr.row.reports.label": "Mga proyekto, mapa at closeout report",
+  "pr.row.reports.note":
+    "Ang job photo system. Sarado sa mga Delivery plan, na pinepresyuhan para sa pagmamaneho.",
+  "pr.row.stops.label": "Mga stop kada buwan",
+  "pr.row.stops.note":
+    "Binibilang kapag naidagdag ang stop sa isang route, naideliber man o hindi. Nagre-reset tuwing ika-1.",
+  "pr.row.drivers.label": "Mga driver",
+  "pr.row.dispatch.label": "Live dispatch",
+  "pr.row.dispatch.note": "Isingit ang bagong order sa route na binabagtas na.",
+  "pr.row.optimizer.label": "Smart optimizer",
+  "pr.row.optimizer.note":
+    "Pag-order batay sa road network. Kung wala ito, ino-order pa rin ng standard solver ang route.",
+  "pr.row.tracking.label": "Tracking link at arrival email",
+  "pr.row.signature.label": "Lagda sa pintuan",
+  "pr.cell.unlimited": "Walang limitasyon",
+  "pr.cell.alwaysOn": "Laging bukas",
+  "pr.cell.firstDays": "Unang {days} araw",
+  "pr.cell.min": "{n} min",
+  "pr.cell.sec": "{n} seg",
+  "pr.cell.included": "Kasama",
+  "pr.cell.notIncluded": "Hindi kasama",
+  "pr.tableNote.custom":
+    "Sadyang wala sa talahanayan ang {name} — kasama ka sa pagtakda ng mga limitasyon nito, hindi ito pinipili sa listahan.",
+  "pr.tableNote.lead": "Ang buong detalye ng ibig sabihin ng bawat alawans ay nasa",
+  "pr.tableNote.link": "tulong sa mga plano at billing",
+  "pr.faqSection.label": "04 — Mga tanong",
+  "pr.faqSection.h2": "Ang itinatanong ng mga tao bago magbayad.",
+  "pr.faq.q1": "Talaga bang libre ang free plan?",
+  "pr.faq.a1":
+    "Oo, at hindi ito nag-e-expire. Sakop ng Free ang 300 kuha kada buwan, tatlong proyekto, isang seat, dalawang watermark template, 30-segundong video clip sa unang tatlong araw, at PDF export na hanggang 20 litrato. Walang hinihinging card.",
+  "pr.faq.q2": "Ano ang binibilang na seat?",
+  "pr.faq.a2":
+    "Isang taong makaka-sign in sa workspace mo, anuman ang role niya — kasama ang may-ari. May hawak na seat ang nakabinbing imbitasyon hangga't hindi ito natatanggap o nababawi, kung hindi ay puwedeng magpadala ng sampung imbitasyon sa dalawang seat at lalabas na lampas sa plano ang lahat ng tumanggap.",
+  "pr.faq.q3": "Mas maganda ba ang verification ng mga bayad na plano kaysa sa libre?",
+  "pr.faq.a3":
+    "Hindi. Pareho sa lahat ng plano ang data ng watermark, ang photo code at ang seal. Ang binabayaran mo ay volume, haba ng video, teamspace, export, pagbabahagi at delivery routing — hindi kailanman ang ebidensya mismo.",
+  "pr.faq.q4": "Aling mga plano ang may delivery routes?",
+  "pr.faq.a4":
+    "May buwanang alawans ng stops ang Plus pataas, kaya makakapagpatakbo ka ng route nang hindi umaalis sa evidence plans. Kung pagmamaneho ang halos buo ng trabaho, mas mura nang malaki kada stop ang mga Delivery plan at may dagdag na live dispatch, smart optimizer at mas maraming driver.",
+  "pr.faq.q5": "Paano binibilang ang mga delivery stop?",
+  "pr.faq.a5":
+    "Kada buwan ng kalendaryo, nagre-reset tuwing ika-1. Bumibilang ang stop kapag naidagdag ito sa route, naideliber man o hindi. Kapag lumampas sa alawans, hindi na makakagawa ng bagong route hanggang sa susunod na buwan, kaya piliin ang planong sasakop sa pinakaabalang linggo mo, hindi ang karaniwan.",
+  "pr.faq.q6": "May trial ba ang mga Delivery plan?",
+  "pr.faq.a6":
+    "Bawat Delivery plan ay nagsisimula sa libreng trial, at kaya nakasulat sa button nito ang Free trial. Isang trial kada workspace ito, hindi isa kada plano — ang paglipat mula sa isang Delivery plan sa iba ay agad nang binibill.",
+  "pr.faq.q7": "Puwede ba akong magpalit ng plano mamaya?",
+  "pr.faq.a7":
+    "Anumang oras, mula sa Billing sa settings ng workspace mo, at ang may-ari lang ang makakagawa nito. Agad na umeepekto ang pag-akyat at hindi ginagalaw ang anumang naikuha na. Tinatanggihan ang pag-baba habang mas malaki ang workspace mo kaysa sa target na plano — hihilingin munang mag-alis ka ng miyembro kaysa tahimik na matanggalan ng access ang tatlong tao.",
+  "pr.faq.q8": "Ano ang mangyayari sa mga litrato ko kapag nag-cancel ako?",
+  "pr.faq.a8":
+    "Hindi ito nadedelete, at patuloy na gumagana ang verification. Ang humihinto ay ang mga bayad na feature: Excel, ZIP at KMZ export, share link, teamspace at delivery routes. I-export ang kailangan mo palabas ng GeoCliks bago mag-cancel — sa Free, bumabalik ka sa PDF na 20 litrato.",
+  "pr.faq.q9": "Paano hinahawakan ang bayad, at saan ang mga invoice?",
+  "pr.faq.a9":
+    "Sa pamamagitan ng aming payment processor sa hosted checkout — hindi kailanman umaabot sa mga server ng GeoCliks ang numero ng card mo. Bawat bayad ay may kaukulang invoice sa billing portal, kung saan puwede mo ring idagdag ang pangalan ng kompanya at mga detalye sa buwis.",
+  "pr.faq.q10": "Paano kung mas malaki kami sa Crew 25 o Fleet 500?",
+  "pr.faq.a10":
+    "Kung gayon, usapan na ang plano. Sakop ng Enterprise ang pasadyang volume, pasadyang termino, at ang governance na kailangan ng operasyong maraming lugar. Mag-email sa sales@geocliks.com na may laki ng team, industriya at mga rehiyon at sukatin natin itong kasama ka.",
+  "pr.cta.h2": "Kumuha ng isang verified na litrato bago ka magdesisyon ng anuman.",
+  "pr.cta.body":
+    "Isang minuto lang ang simula ng libreng plano at hindi ito humihingi ng card. Kung kakayanin nito ang susunod mong trabaho, nariyan ang mga bayad na plano.",
 };

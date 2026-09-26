@@ -81,6 +81,9 @@ export const zh: Catalog = {
   "seo.roofing.title": "屋顶照片记录：理赔与竣工都用得上",
   "seo.roofing.description":
     "记录屋顶损坏与更换，每张照片都带经核验的时间、GPS 与地址，并按施工前后配对，交给理赔员和业主。",
+  "seo.pricing.title": "GeoCliks 价格 — 面向班组与配送车队的方案",
+  "seo.pricing.description":
+    "验证照片拍摄永久免费。每月 7 美元起即可无限拍照并录制完整时长视频，班组 teamspace 25 美元起，配送路线按站点计价。",
   "signin.subtitle": "为现场团队提供防篡改的照片记录。",
   "signin.apple": "使用 Apple 继续",
   "signin.google": "使用 Google 继续",
@@ -2186,4 +2189,112 @@ export const zh: Catalog = {
   "rf.faq.q6": "这和施工照片记录页面有什么不同？",
   "rf.faq.a6":
     "同一个产品，不同的论点。总承包商通常是为了应对客户在进度和范围上的争议而记录；屋顶施工方通常是为了应对需要同一坡面带日期的前后对照的理赔员。这里更看重前后配对和导出格式，所以这个页面单独存在。",
+  "pr.eyebrow": "方案与价格",
+  "pr.h1": "免费开始，等团队变大再付费，不必更早。",
+  "pr.sub":
+    "验证拍摄永久免费——不用绑卡，也没有到期日。之上的功能按真正让我们产生成本的部分计价：你拍多少、有多少人登录、以及你敲了多少扇门。",
+  "pr.s1.label": "01 — 方案",
+  "pr.s1.h2": "两大系列，按两种不同的东西计价。",
+  "pr.s1.intro":
+    "取证方案按拍摄量、视频和席位计量。配送方案按站点和司机计量，并包含取证方案所验证的一切。选与工作相符的那一个。",
+  "pr.plansNote":
+    "价格以美元按月计，按工作区而不是按席位开票——五个席位的方案是一张账单，而不是五张。需要 SSO、已签署的数据处理协议或采购文件？任何用量都属于 Enterprise：",
+  "pr.s2.label": "02 — 每个方案都有",
+  "pr.s2.h2": "证据不会因为你付钱而变得更好。",
+  "pr.s2.intro":
+    "不少工具把可信的那一版放在最高档之后。以下是免费工作区就能拿到、而 Enterprise 也不会拿到更多的部分。",
+  "pr.same1.title": "验证从来不是加价项",
+  "pr.same1.body":
+    "免费版和 Enterprise 给照片打的标记完全一样：经网络验证的时间、GPS 坐标，以及它们解析出的街道地址。",
+  "pr.same2.title": "每张照片都保留自己的编码",
+  "pr.same2.body":
+    "照片编码始终可以查到，封印也始终校验通过——包括降级之后，以及你完全停止付费之后。",
+  "pr.same3.title": "现场不需要信号",
+  "pr.same3.body":
+    "任何方案都可以在地下室、峡谷或立体车库里拍摄。手机会把这张照片排入队列，等再有信号时自动上传。",
+  "pr.s3.label": "03 — 对比",
+  "pr.s3.h2": "逐项限额，方案对方案。",
+  "pr.s3.intro":
+    "直接读取我们自己的限额执行代码所读的方案目录，所以这里的数字就是对你工作区生效的数字。",
+  "pr.table.feature": "功能",
+  "pr.group.verification": "验证",
+  "pr.group.capture": "拍摄",
+  "pr.group.team": "团队、报告与共享",
+  "pr.group.delivery": "配送路线",
+  "pr.row.verified.label": "经验证的时间、GPS 与街道地址",
+  "pr.row.verified.note": "网络时间，而不是手机时钟。",
+  "pr.row.photoCode.label": "每张照片都有唯一编码",
+  "pr.row.publicPage.label": "公开验证页面",
+  "pr.row.offline.label": "离线拍摄并自动上传",
+  "pr.row.offline.note": "先在手机上排队，信号恢复后上传。",
+  "pr.row.captures.label": "每月拍摄量",
+  "pr.row.videoClip.label": "验证视频，单段时长",
+  "pr.row.videoAvailable.label": "视频可用时长",
+  "pr.row.videoAvailable.note": "自工作区开通当天起，视频保持开启多久。",
+  "pr.row.projects.label": "项目",
+  "pr.row.templates.label": "水印模板",
+  "pr.row.branding.label": "水印上使用你的标志",
+  "pr.row.seats.label": "席位",
+  "pr.row.seats.note": "一个席位就是一个能登录的人。待接受的邀请会占用一个。",
+  "pr.row.teamspace.label": "Teamspace",
+  "pr.row.teamspace.note": "班组的每张照片和每段视频都同步到同一个共享信息流。",
+  "pr.row.roles.label": "角色与按项目的访问权限",
+  "pr.row.shareLinks.label": "面向客户的实时共享链接",
+  "pr.row.exports.label": "导出",
+  "pr.row.reports.label": "项目、地图与竣工报告",
+  "pr.row.reports.note": "工地照片系统。在配送方案中关闭，因为那些方案是按开车计价的。",
+  "pr.row.stops.label": "每月站点数",
+  "pr.row.stops.note": "站点一加入路线即计数，无论是否送达。每月 1 日重置。",
+  "pr.row.drivers.label": "司机",
+  "pr.row.dispatch.label": "实时派单",
+  "pr.row.dispatch.note": "把新订单插进已经在跑的路线里。",
+  "pr.row.optimizer.label": "智能优化器",
+  "pr.row.optimizer.note": "按路网排序。没有它，标准求解器同样会给路线排序。",
+  "pr.row.tracking.label": "追踪链接与到达邮件",
+  "pr.row.signature.label": "上门签收",
+  "pr.cell.unlimited": "无限",
+  "pr.cell.alwaysOn": "始终开启",
+  "pr.cell.firstDays": "前 {days} 天",
+  "pr.cell.min": "{n} 分钟",
+  "pr.cell.sec": "{n} 秒",
+  "pr.cell.included": "包含",
+  "pr.cell.notIncluded": "不包含",
+  "pr.tableNote.custom": "{name} 故意没有列进表格——它的限额是和你一起商定的，而不是从清单里挑的。",
+  "pr.tableNote.lead": "每项限额的完整说明见",
+  "pr.tableNote.link": "方案与账单帮助",
+  "pr.faqSection.label": "04 — 常见问题",
+  "pr.faqSection.h2": "付费之前，大家都会问什么。",
+  "pr.faq.q1": "免费方案真的免费吗？",
+  "pr.faq.a1":
+    "是的，而且不会过期。免费方案包含每月 300 次拍摄、三个项目、一个席位、两个水印模板、前三天可拍 30 秒视频，以及最多 20 张照片的 PDF 导出。不需要绑卡。",
+  "pr.faq.q2": "什么算一个席位？",
+  "pr.faq.a2":
+    "能登录你工作区的一个人，无论其角色——包括所有者。待接受的邀请会占住一个席位，直到被接受或撤销；否则就可能用两个席位发出十份邀请，所有接受的人都会超出方案。",
+  "pr.faq.q3": "付费方案对照片的验证会比免费方案更好吗？",
+  "pr.faq.a3":
+    "不会。水印数据、照片编码和封印在每个方案里都完全相同。你付费买的是用量、视频时长、teamspace、导出、共享和配送排线——从来不是证据本身。",
+  "pr.faq.q4": "哪些方案包含配送路线？",
+  "pr.faq.a4":
+    "Plus 及以上都带每月站点额度，所以你不必离开取证方案也能跑路线。如果开车占了工作的大部分，配送方案每个站点便宜得多，还增加实时派单、智能优化器和更多司机。",
+  "pr.faq.q5": "配送站点是怎么计数的？",
+  "pr.faq.a5":
+    "按日历月计，每月 1 日重置。站点在被加入路线时即计数，无论最终是否送达。超出额度后，直到下个月都无法新建路线，所以请按你最忙的一周来选方案，而不是平均值。",
+  "pr.faq.q6": "配送方案有试用吗？",
+  "pr.faq.a6":
+    "每个配送方案都以免费试用开始，所以它的按钮写着免费试用。试用是每个工作区一次，不是每个方案一次——从一个配送方案换到另一个会立即计费。",
+  "pr.faq.q7": "之后可以换方案吗？",
+  "pr.faq.a7":
+    "随时可以，在工作区设置的账单页面，且只有所有者能操作。升级立即生效，已经拍下的内容不会被改动。当你的工作区大于目标方案时，降级会被拒绝——系统会要你先移除成员，而不是悄悄把三个人挡在门外。",
+  "pr.faq.q8": "如果我取消订阅，我的照片会怎样？",
+  "pr.faq.a8":
+    "照片不会被删除，验证也照常有效。停止的是付费功能：Excel、ZIP 和 KMZ 导出、共享链接、teamspace 和配送路线。取消前请把需要的内容导出到 GeoCliks 之外——回到免费方案后，你只剩 20 张照片的 PDF。",
+  "pr.faq.q9": "付款如何处理，发票在哪里？",
+  "pr.faq.a9":
+    "通过我们的支付服务商在托管结账页完成——你的卡号永远不会到达 GeoCliks 的服务器。每笔付款都会在账单门户生成一张发票，你也可以在那里补充公司名称和税务信息。",
+  "pr.faq.q10": "如果我们的规模超过 Crew 25 或 Fleet 500 呢？",
+  "pr.faq.a10":
+    "那方案就是一次沟通。Enterprise 覆盖定制用量、定制条款，以及多站点运营所需的治理能力。请发邮件到 sales@geocliks.com，说明团队规模、行业和地区，我们和你一起把方案定下来。",
+  "pr.cta.h2": "在做任何决定之前，先拍一张经验证的照片。",
+  "pr.cta.body":
+    "免费方案一分钟就能开始，也从不索要银行卡。如果它在你的下一个工地站得住脚，付费方案就在那里。",
 };

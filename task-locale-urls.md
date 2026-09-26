@@ -422,3 +422,41 @@ Verified on all eleven — localized `<title>`, prefixed canonical, one `FAQPage
 block each; post-hydration `canonical == og:url` and translated `<h1>` on
 en/es/ar/zh/pl across this page and the eight earlier ones, 45/45, 0 failures.
 tsc clean, lint at the 9-error baseline.
+
+## `/pricing`
+
+The last page in the queue, and the awkward one: its doc comment said the copy
+was deliberately English-only because the plan data — names, taglines, feature
+bullets, the price itself — already comes back localized from the billing API.
+That reasoning still holds for the plan data, so it was left alone. What got
+translated is the page's own furniture: header, three section labels and
+intros, the plans note, the three "same for everyone" cards, every comparison
+row label and note across the four groups, the cell words (`Unlimited`,
+`Always on`, `First {days} days`, `{n} min`/`{n} sec`, the two screen-reader
+strings), the `Feature` column head, the table footer note, ten FAQ pairs and
+the CTA. 91 keys per locale, pure insertions, 0 deletions after formatting.
+
+`COMPARE` and `SAME_FOR_EVERYONE` became `TKey` arrays, and because the cell
+values are computed from plan limits, `count()`, `minutes()` and each row's
+`value()` now take `t` — which also meant the family filter keys off
+`"pr.group.team"` instead of the English group title. `EXPORT_LABELS` stayed
+untranslated: PDF, Excel, ZIP and KMZ are file types, not prose. The two family
+tab labels and both CTA buttons already reused existing shared keys.
+
+`PAGE_SCHEMA` FAQ converted to `{ keys: { question, answer } }` (ten entries),
+which dropped the last use of `SALES_EMAIL` in `page-schema.ts` — the now-dead
+import had to go too, or lint sat one error above baseline. Path added to
+`LOCALIZED_PATHS`, `LOCALIZED_SEO` row pointing at `seo.pricing.*`. Sitemap
+199 -> 209 URLs.
+
+`ar.ts` `home.samples.altFiber` collapsed under `oxfmt` for the tenth time and
+was restored by hand. The dev server also served stale English titles until it
+was restarted — worth knowing before trusting a curl check.
+
+Verified on all eleven — localized `<title>`, prefixed canonical, one `FAQPage`
+block and twelve `hreflang` links each; post-hydration `canonical == og:url`
+and translated `<h1>` on en/es/ar/zh/pl across this page and the nine earlier
+ones, 50/50, 0 failures. tsc clean, lint at the 9-error baseline.
+
+All ten target pages now route through real per-locale URLs in all eleven
+locales.
