@@ -57,6 +57,9 @@ export const pl: Catalog = {
   "seo.pod.title": "Aplikacja potwierdzenia dostawy — zdjęcie, GPS",
   "seo.pod.description":
     "Rejestruj potwierdzenia dostawy, których nikt nie antydatuje: godzina z sieci, GPS i adres na każdym zdjęciu oraz kod do sprawdzenia przez nadawcę.",
+  "seo.gps.title": "Kamera ze znacznikiem GPS — czas i miejsce z sieci",
+  "seo.gps.description":
+    "Kamera ze znacznikiem czasu, która weryfikuje godzinę w sieci, a nie w zegarze telefonu, i wpisuje współrzędne GPS oraz adres w każde zdjęcie.",
   "signin.subtitle": "Odporna na manipulacje dokumentacja zdjęciowa dla ekip w terenie.",
   "signin.apple": "Kontynuuj z Apple",
   "signin.google": "Kontynuuj z Google",
@@ -1536,4 +1539,81 @@ export const pl: Catalog = {
     "GeoCliks rejestruje zdjęcie, godzinę, GPS i adres. Nie zbiera podpisów odbiorców.",
   "pod.note.legal":
     "To nie usługa prawna ani notarialna. Czy zleceniodawca albo organizacja płatnicza przyjmie dokumentację, jest ich decyzją.",
+  "gps.eyebrow": "Kamera ze znacznikiem GPS i czasu",
+  "gps.h1": "Kamera ze znacznikiem GPS, która nie wierzy zegarowi w telefonie",
+  "gps.sub":
+    "Godzina potwierdzona przez sieć, współrzędne z promieniem dokładności, ustalony adres — zaplombowane w każdym zdjęciu i sprawdzalne przez każdego.",
+  "gps.distinction.label": "Różnica, która ma znaczenie",
+  "gps.distinction.h2":
+    "Każda kamera ze znacznikiem czasu wpisuje datę. Prawie żadna jej nie sprawdza.",
+  "gps.distinction.intro":
+    "Sklepy z aplikacjami są pełne darmowych kamer ze znacznikiem i wszystkie działają tak samo: odczytaj zegar, odczytaj GPS, narysuj wynik na zdjęciu. To wystarcza, dopóki nie podważa się właśnie daty — a wtedy cały dowód opiera się na zegarze, który fotografujący mógł ustawić na cokolwiek, w pliku, który każdy edytor mógł przepisać. GeoCliks weryfikuje godzinę z naszymi serwerami, plombuje obraz tak, że edycję da się wykryć, i nadaje zdjęciu kod, który osoba trzecia sprawdzi bez proszenia cię o cokolwiek.",
+  "gps.how.label": "Jak to działa",
+  "gps.how.h2": "Po naciśnięciu spustu dzieją się cztery rzeczy.",
+  "gps.step1.title": "Otwórz aparat i zrób zdjęcie",
+  "gps.step1.body":
+    "Jedno dotknięcie w aplikacji GeoCliks. Nie ma osobnego kroku «dodaj znacznik», o którym można zapomnieć — zdjęcie jest oznaczone albo nie jest zdjęciem.",
+  "gps.step2.title": "Godzina jest sprawdzana, nie przyjmowana na wiarę",
+  "gps.step2.body":
+    "Godzina zdjęcia jest weryfikowana z naszymi serwerami. Jeśli zegar urządzenia różni się o więcej niż kilka minut, zdjęcie zostaje oznaczone jako czas urządzenia, a nie przechodzi po cichu jako potwierdzone.",
+  "gps.step3.title": "Lokalizacja jest odczytywana i ustalana",
+  "gps.step3.body":
+    "Współrzędne GPS, promień dokładności i adres ustalony przez geokodowanie odwrotne są wpisywane w obraz i zapisywane jako metadane.",
+  "gps.step4.title": "Zdjęcie dostaje kod",
+  "gps.step4.body":
+    "Suma SHA-256 bajtów obrazu, podpis i unikalny kod zdjęcia — żeby każdy mógł później sprawdzić, że plik jest nietkniętym oryginałem.",
+  "gps.stamp.label": "Co ostatecznie trafia na zdjęcie",
+  "gps.stamp.h2": "Trzy elementy, każdy zamyka inną lukę.",
+  "gps.stamp1.title": "Godzina potwierdzona przez sieć",
+  "gps.stamp1.body":
+    "Data na zwykłej kamerze ze znacznikiem to to, co mówi telefon, a zegar telefonu jest o jeden ekran ustawień od powiedzenia czegokolwiek. Nasza jest weryfikowana po stronie serwera, a rozbieżność jest zgłaszana, nie ukrywana.",
+  "gps.stamp2.title": "Współrzędne, dokładność i adres",
+  "gps.stamp2.body":
+    "Szerokość i długość geograficzna, promień dokładności, z jakim je ustalono, oraz adres, na jaki się rozwiązują. Promień ma znaczenie — współrzędna bez niego to twierdzenie bez marginesu błędu.",
+  "gps.stamp3.title": "Suma kontrolna i publiczny kod",
+  "gps.stamp3.body":
+    "Każde zdjęcie jest plombowane sumą kontrolną treści i dostaje kod, który otwiera się na geocliks.com/verify. Zmień jeden piksel i plomba pęka, a strona weryfikacji to zgłasza.",
+  "gps.practical.label": "W codziennej pracy",
+  "gps.practical.h2": "Zrobione do pracy w terenie, nie na pokaz.",
+  "gps.practical1.title": "Działa bez zasięgu",
+  "gps.practical1.body":
+    "Zdjęcia czekają w kolejce w telefonie i są plombowane, gdy dotrą na nasze serwery. Lokalizacja jest odczytywana w momencie zdjęcia, więc znacznik mówi, gdzie byłeś, a nie gdzie odzyskałeś zasięg.",
+  "gps.practical2.title": "Znacznik jest w obrazie i w metadanych",
+  "gps.practical2.body":
+    "Wypalony w zdjęciu dla każdego, kto na nie patrzy, i zachowany jako uporządkowane metadane dla wszystkiego, co je czyta. Zrzut ekranu traci metadane, ale zachowuje widoczny znacznik i kod.",
+  "gps.practical3.title": "Darmowy start, bez podatku od znaku wodnego",
+  "gps.practical3.body":
+    "300 potwierdzonych zdjęć miesięcznie w planie darmowym, z weryfikacją w cenie. Znacznik nie jest płatnym dodatkiem, a na twoim zdjęciu nie ma logo aplikacji.",
+  "gps.faq.label": "Pytania",
+  "gps.faq.h2": "Często zadawane",
+  "gps.faq.q1": "Czym jest kamera ze znacznikiem GPS i czasu?",
+  "gps.faq.a1":
+    "Aplikacja aparatu, która wpisuje datę, godzinę i lokalizację na zdjęcie w chwili jego zrobienia, zamiast zostawiać je w metadanych, które każdy edytor może przepisać. Ta kategoria jest zatłoczona darmowymi aplikacjami robiącymi dokładnie tyle i nic więcej — znacznik pochodzi z własnego zegara i lokalizacji telefonu, jest więc zapisem tego, co telefonowi powiedziano, a nie tego, co się stało.",
+  "gps.faq.q2": "Czym to się różni od darmowej aplikacji ze znacznikiem czasu?",
+  "gps.faq.a2":
+    "Trzema rzeczami, a pierwsza jest tą istotną. Godzina jest weryfikowana z naszymi serwerami, a nie czytana z urządzenia, więc przestawienie zegara telefonu nie zmienia znacznika — oznacza zdjęcie flagą. Obraz jest plombowany sumą SHA-256, więc późniejszą edycję da się wykryć, zamiast pozostać niewidoczną. I każde zdjęcie dostaje kod, który osoba trzecia sprawdzi na publicznej stronie bez twojego udziału. Darmowa aplikacja ze znacznikiem daje ci zdjęcie z tekstem, a to jest warte dokładnie tyle, ile zaufania druga strona już do ciebie ma.",
+  "gps.faq.q3": "Czy zdjęcie ze znacznikiem GPS można sfałszować?",
+  "gps.faq.a3":
+    "Popularne metody da się zamknąć, a udawanie, że wszystkie, byłoby nieuczciwe. Przestawienie zegara urządzenia wychwytuje weryfikacja po stronie serwera. Edycja pliku później łamie jego sumę kontrolną. Narzędzia do podmiany lokalizacji to najtrudniejszy przypadek w tej kategorii — GeoCliks zapisuje promień dokładności i źródło pozycjonowania oraz flaguje zdjęcia, które wyglądają podejrzanie, co podnosi koszt fałszerstwa, nie sprowadzając go do zera. W praktyce liczy się to, że niezależna strona może sprawdzić zapis, zamiast musieć wierzyć fotografującemu.",
+  "gps.faq.q4": "Czy oznacza też wideo?",
+  "gps.faq.a4":
+    "Tak. Nagrania wideo noszą tę samą potwierdzoną godzinę, te same współrzędne i adres oraz tę samą plombę. Wideo pełnej długości jest w planach płatnych; plan darmowy obejmuje zdjęcia i krótkie klipy.",
+  "gps.faq.q5": "Czy do zrobienia zdjęcia potrzebny jest internet?",
+  "gps.faq.a5":
+    "Nie. Zdjęcie robi się offline i czeka w kolejce w telefonie. Plombę jako potwierdzone przez sieć dostaje, gdy dotrze na nasze serwery, choćby wiele godzin później — zapisana godzina zdjęcia to nadal moment naciśnięcia spustu, weryfikowany wobec wpisu w kolejce, a nie wobec czasu przesłania.",
+  "gps.faq.q6": "Gdzie na zdjęciu pojawia się znacznik?",
+  "gps.faq.a6":
+    "W narożniku, jako nakładka z godziną, współrzędnymi i adresem, w rozmiarze, który zostaje czytelny bez zasłaniania kadru. Te same wartości są zapisane jako metadane, a kod zdjęcia jest wydrukowany razem z nimi, więc każdy, kto czyta wydruk, może to sprawdzić.",
+  "gps.cta.h2": "Zrób potwierdzone zdjęcie w ciągu minuty",
+  "gps.cta.body":
+    "Na zawsze darmowe 300 potwierdzonych zdjęć miesięcznie, bez karty. Znacznik, plomba i publiczna strona weryfikacji są w każdym planie.",
+  "gps.cta.primary": "Pobierz aplikację",
+  "gps.cta.secondary": "Zobacz, jak działa plombowanie",
+  "gps.related.lead": "Głębiej:",
+  "gps.related.link1": "czy zdjęcie ze znacznikiem GPS można sfałszować?",
+  "gps.related.trades": "Albo zobacz kamerę w konkretnej branży:",
+  "gps.related.construction": "budowa",
+  "gps.related.roofing": "dachy",
+  "gps.related.join": "i",
+  "gps.related.delivery": "dostawy",
 };

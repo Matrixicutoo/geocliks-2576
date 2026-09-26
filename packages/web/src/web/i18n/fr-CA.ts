@@ -58,6 +58,9 @@ export const frCA: Catalog = {
   "seo.pod.title": "Appli de preuve de livraison — Photo, GPS et heure",
   "seo.pod.description":
     "Captez des preuves de livraison impossibles à antidater : heure vérifiée par le réseau, GPS et adresse sur chaque photo, avec un code vérifiable.",
+  "seo.gps.title": "Caméra GPS horodatée — Heure et lieu vérifiés",
+  "seo.gps.description":
+    "Une caméra horodatée qui vérifie l'heure auprès du réseau plutôt que de l'horloge du téléphone, et inscrit coordonnées GPS et adresse sur chaque photo.",
   "signin.subtitle": "Documentation photo infalsifiable pour les équipes de terrain.",
   "signin.apple": "Continuer avec Apple",
   "signin.google": "Continuer avec Google",
@@ -1570,4 +1573,81 @@ export const frCA: Catalog = {
     "GeoCliks saisit la photo, l'heure, le GPS et l'adresse. Il ne recueille pas la signature des destinataires.",
   "pod.note.legal":
     "Ce n'est pas un service juridique ni notarial. Qu'un expéditeur ou un réseau de cartes accepte un dossier relève de sa décision.",
+  "gps.eyebrow": "Caméra GPS horodatée",
+  "gps.h1": "Une caméra GPS horodatée qui ne se fie pas à l'horloge de votre téléphone",
+  "gps.sub":
+    "Heure vérifiée par le réseau, coordonnées avec leur rayon de précision, adresse résolue — scellées dans chaque photo et vérifiables par n'importe qui.",
+  "gps.distinction.label": "La distinction qui compte",
+  "gps.distinction.h2":
+    "Toutes les caméras horodatées inscrivent une date. Presque aucune ne la vérifie.",
+  "gps.distinction.intro":
+    "Les magasins d'applications débordent de caméras d'horodatage gratuites, et elles fonctionnent toutes pareil : lire l'horloge, lire le GPS, dessiner le résultat sur l'image. Cela suffit jusqu'au jour où c'est la date qui est contestée — et là, tout le dossier repose sur une horloge que le photographe pouvait régler à n'importe quelle heure, dans un fichier que n'importe quel éditeur pouvait réécrire. GeoCliks vérifie l'heure auprès de nos serveurs, scelle l'image pour que toute retouche soit détectable, et donne à la photo un code qu'un tiers peut consulter sans rien vous demander.",
+  "gps.how.label": "Comment ça marche",
+  "gps.how.h2": "Quatre choses se produisent quand vous appuyez sur le déclencheur.",
+  "gps.step1.title": "Ouvrez la caméra et photographiez",
+  "gps.step1.body":
+    "Une touche dans l'application GeoCliks. Il n'y a pas d'étape « ajouter le tampon » à oublier : une capture est horodatée, sinon ce n'est pas une capture.",
+  "gps.step2.title": "L'heure est vérifiée, pas présumée",
+  "gps.step2.body":
+    "L'heure de capture est vérifiée auprès de nos serveurs. Si l'horloge de l'appareil s'écarte de plus de quelques minutes, la photo est marquée comme horodatée par l'appareil au lieu de passer discrètement pour vérifiée.",
+  "gps.step3.title": "La position est lue et résolue",
+  "gps.step3.body":
+    "Les coordonnées GPS, le rayon de précision et l'adresse obtenue par géocodage inverse sont inscrits dans l'image et conservés en métadonnées.",
+  "gps.step4.title": "La photo reçoit un code",
+  "gps.step4.body":
+    "Une empreinte SHA-256 des octets de l'image, une signature et un code de photo unique, pour que n'importe qui puisse vérifier plus tard que le fichier est bien l'original intact.",
+  "gps.stamp.label": "Ce qui finit sur la photo",
+  "gps.stamp.h2": "Trois éléments, et chacun bouche une faille différente.",
+  "gps.stamp1.title": "Heure vérifiée par le réseau",
+  "gps.stamp1.body":
+    "La date d'une caméra horodatée ordinaire, c'est ce que dit le téléphone, et une horloge de téléphone est à un écran de réglages de dire n'importe quoi. La nôtre est vérifiée côté serveur, et un écart est signalé plutôt que caché.",
+  "gps.stamp2.title": "Coordonnées, précision et adresse",
+  "gps.stamp2.body":
+    "Latitude et longitude, le rayon de précision auquel elles ont été fixées, et l'adresse à laquelle elles correspondent. Le rayon compte : une coordonnée sans rayon est une affirmation sans marge.",
+  "gps.stamp3.title": "Une empreinte et un code public",
+  "gps.stamp3.body":
+    "Chaque capture est scellée par une empreinte de contenu et reçoit un code consultable sur geocliks.com/verify. Modifiez un seul pixel et le sceau se brise, ce que la page de vérification signale.",
+  "gps.practical.label": "À l'usage quotidien",
+  "gps.practical.h2": "Conçue pour le terrain, pas pour une démo.",
+  "gps.practical1.title": "Fonctionne sans réseau",
+  "gps.practical1.body":
+    "Les captures s'accumulent sur le téléphone et sont scellées dès qu'elles atteignent nos serveurs. La position est lue à la prise, donc le tampon indique où vous étiez, pas où vous avez retrouvé le signal.",
+  "gps.practical2.title": "Le tampon est dans l'image et dans les métadonnées",
+  "gps.practical2.body":
+    "Incrusté dans la photo pour qui la regarde, et conservé en métadonnées structurées pour ce qui la lit. Une capture d'écran perd les métadonnées mais garde le tampon visible et le code.",
+  "gps.practical3.title": "Gratuit pour commencer, sans taxe de filigrane",
+  "gps.practical3.body":
+    "300 captures vérifiées par mois sur le forfait gratuit, vérification incluse. Le tampon n'est pas une option payante et aucun logo d'application ne traverse votre photo.",
+  "gps.faq.label": "Questions",
+  "gps.faq.h2": "Questions fréquentes",
+  "gps.faq.q1": "Qu'est-ce qu'une caméra GPS horodatée ?",
+  "gps.faq.a1":
+    "Une application qui inscrit la date, l'heure et la position sur la photo au moment de la prise, au lieu de les laisser dans des métadonnées que n'importe quel éditeur peut réécrire. La catégorie est saturée d'applications gratuites qui font exactement cela et rien de plus : le tampon vient de l'horloge et du GPS du téléphone lui-même, c'est donc un relevé de ce qu'on a dit au téléphone, pas de ce qui s'est passé.",
+  "gps.faq.q2": "En quoi est-ce différent d'une caméra horodatée gratuite ?",
+  "gps.faq.a2":
+    "Trois choses, et la première est celle qui compte. L'heure est vérifiée auprès de nos serveurs au lieu d'être lue sur l'appareil : changer l'horloge du téléphone ne change donc pas le tampon, cela signale la photo. L'image est scellée par une empreinte SHA-256, donc une retouche ultérieure est détectable au lieu d'être invisible. Et chaque capture reçoit un code qu'un tiers peut vérifier sur une page publique sans passer par vous. Une application de tampon gratuite vous donne une photo avec du texte dessus, ce qui vaut exactement la confiance que l'autre partie vous accorde déjà.",
+  "gps.faq.q3": "Une photo GPS horodatée peut-elle être falsifiée ?",
+  "gps.faq.a3":
+    "Les méthodes courantes peuvent être neutralisées, et prétendre le contraire serait malhonnête. Changer l'horloge de l'appareil est détecté par la vérification côté serveur. Modifier le fichier ensuite casse son empreinte. Les outils de fausse position sont le cas le plus difficile de la catégorie : GeoCliks enregistre le rayon de précision et la source de positionnement et signale les captures qui paraissent anormales, ce qui rend la falsification plus coûteuse sans la ramener à zéro. Ce qui compte en pratique, c'est qu'un tiers indépendant puisse vérifier le dossier au lieu de devoir faire confiance au photographe.",
+  "gps.faq.q4": "Est-ce que la vidéo est horodatée aussi ?",
+  "gps.faq.a4":
+    "Oui. Les vidéos portent la même heure vérifiée, les mêmes coordonnées et adresse, et le même scellement. La vidéo sans limite de durée est sur les forfaits payants ; le forfait gratuit couvre la photo et les courts clips.",
+  "gps.faq.q5": "Faut-il Internet pour prendre la photo ?",
+  "gps.faq.a5":
+    "Non. La prise fonctionne hors ligne et la photo reste en file d'attente sur le téléphone. Elle est scellée comme vérifiée par le réseau dès qu'elle atteint nos serveurs, ce qui peut être des heures plus tard : l'heure de capture enregistrée reste le moment du déclenchement, vérifiée contre l'enregistrement de la file et non contre le téléversement.",
+  "gps.faq.q6": "Où le tampon apparaît-il sur la photo ?",
+  "gps.faq.a6":
+    "Dans une incrustation en coin avec l'heure, les coordonnées et l'adresse, dimensionnée pour rester lisible sans couvrir le sujet. Les mêmes valeurs sont conservées en métadonnées, et le code de la photo est imprimé avec elles pour que quiconque lit une version papier puisse le vérifier.",
+  "gps.cta.h2": "Prenez une photo vérifiée dans la prochaine minute",
+  "gps.cta.body":
+    "Gratuit à vie pour 300 captures vérifiées par mois, sans carte. Le tampon, le scellement et la page publique de vérification sont inclus dans tous les forfaits.",
+  "gps.cta.primary": "Obtenir l'application",
+  "gps.cta.secondary": "Voir comment le scellement fonctionne",
+  "gps.related.lead": "Pour aller plus loin :",
+  "gps.related.link1": "une photo GPS horodatée peut-elle être falsifiée ?",
+  "gps.related.trades": "Ou voyez la caméra dans un métier :",
+  "gps.related.construction": "construction",
+  "gps.related.roofing": "toiture",
+  "gps.related.join": "et",
+  "gps.related.delivery": "livraison",
 };

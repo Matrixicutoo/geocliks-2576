@@ -58,6 +58,9 @@ export const tl: Catalog = {
   "seo.pod.title": "App ng patunay ng delivery — Larawan, GPS, oras",
   "seo.pod.description":
     "Kumuha ng patunay ng delivery na walang makakabago ng oras: oras na beripikado sa network, GPS at address sa bawat larawan, may code na macheck.",
+  "seo.gps.title": "GPS timestamp camera — beripikadong oras at lugar",
+  "seo.gps.description":
+    "Isang timestamp camera na binebalidahan ang oras sa network at hindi sa relo ng telepono, at itinatatak ang GPS at address sa bawat litrato.",
   "signin.subtitle": "Hindi mapepekeng dokumentasyon ng larawan para sa mga field team.",
   "signin.apple": "Magpatuloy sa Apple",
   "signin.google": "Magpatuloy sa Google",
@@ -1560,4 +1563,81 @@ export const tl: Catalog = {
     "Kinukuha ng GeoCliks ang litrato, oras, GPS at address. Hindi ito kumukuha ng pirma ng tumanggap.",
   "pod.note.legal":
     "Hindi ito legal o notaryo na serbisyo. Desisyon ng shipper o ng card network kung tatanggapin nila ang isang record.",
+  "gps.eyebrow": "GPS timestamp camera",
+  "gps.h1": "Isang GPS timestamp camera na hindi nagtitiwala sa oras ng telepono mo",
+  "gps.sub":
+    "Oras na beripikado sa network, mga koordinada kasama ang accuracy radius, ang naresolbang address — nakaselyo sa bawat litrato at macheck ninuman.",
+  "gps.distinction.label": "Ang kaibahang mahalaga",
+  "gps.distinction.h2":
+    "Lahat ng timestamp camera ay nagsusulat ng petsa. Halos wala sa kanila ang tumitingin kung tama.",
+  "gps.distinction.intro":
+    "Puno ang mga app store ng libreng stamping camera, at pare-pareho ang gawa nila: basahin ang relo, basahin ang GPS, iguhit ang resulta sa litrato. Sapat na iyon hangga't hindi ang petsa ang pinagtatalunan — at kapag iyon na, ang buong rekord ay nakasalalay sa isang relong maaaring itinakda ng kumuha sa kahit ano, sa isang file na kayang isulat muli ng kahit anong editor. Binebalidahan ng GeoCliks ang oras sa aming mga server, iniseselyo ang imahe para matukoy ang anumang pag-edit, at binibigyan ang litrato ng code na matitingnan ng iba nang hindi humihingi ng kahit ano sa iyo.",
+  "gps.how.label": "Paano ito gumagana",
+  "gps.how.h2": "Apat na bagay ang nangyayari kapag pinindot mo ang shutter.",
+  "gps.step1.title": "Buksan ang camera at kumuha",
+  "gps.step1.body":
+    "Isang tap sa GeoCliks app. Walang hiwalay na hakbang na «idagdag ang stamp» na makakalimutan — may tatak ang isang kuha, o hindi iyon kuha.",
+  "gps.step2.title": "Sinusuri ang oras, hindi pinagkakatiwalaan",
+  "gps.step2.body":
+    "Binebalidahan ang oras ng kuha sa aming mga server. Kapag ang relo ng device ay lumihis ng mahigit ilang minuto, mamarkahan ang litrato na device-timed at hindi tahimik na papasa bilang verified.",
+  "gps.step3.title": "Binabasa at nire-resolba ang lokasyon",
+  "gps.step3.body":
+    "Ang mga koordinadang GPS, ang accuracy radius at ang reverse-geocoded na address ay isinusulat sa imahe at itinatago bilang metadata.",
+  "gps.step4.title": "Nakakakuha ng code ang litrato",
+  "gps.step4.body":
+    "Isang SHA-256 hash ng mga byte ng imahe, isang signature at isang natatanging photo code, para macheck ninuman sa bandang huli na ang file ang orihinal na walang galaw.",
+  "gps.stamp.label": "Ano ang napupunta sa litrato",
+  "gps.stamp.h2": "Tatlong piraso, at bawat isa ay nagsasara ng ibang butas.",
+  "gps.stamp1.title": "Oras na beripikado ng network",
+  "gps.stamp1.body":
+    "Ang petsa sa isang karaniwang timestamp camera ay kung ano ang sabi ng telepono, at isang settings screen lang ang layo ng relo ng telepono sa pagsabi ng kahit ano. Ang amin ay beripikado sa server side, at ang hindi pagtugma ay iniuulat at hindi itinatago.",
+  "gps.stamp2.title": "Mga koordinada, accuracy at address",
+  "gps.stamp2.body":
+    "Latitude at longitude, ang accuracy radius kung saan sila naitakda, at ang address na kinalabasan nila. Mahalaga ang radius — ang koordinadang walang radius ay isang paghahabol na walang margin.",
+  "gps.stamp3.title": "Isang hash at isang pampublikong code",
+  "gps.stamp3.body":
+    "Naseselyo ang bawat kuha sa content hash at binibigyan ng code na nire-resolba sa geocliks.com/verify. I-edit ang isang pixel at mababasag ang selyo, at iyon ang iuulat ng verification page.",
+  "gps.practical.label": "Sa araw-araw na gamit",
+  "gps.practical.h2": "Ginawa para sa field, hindi para sa demo.",
+  "gps.practical1.title": "Gumagana kahit walang signal",
+  "gps.practical1.body":
+    "Pumipila ang mga kuha sa telepono at naseselyo pagdating sa aming mga server. Binabasa ang lokasyon sa oras ng kuha, kaya ang tatak ay kung saan ka nandoon, hindi kung saan ka nagkaroon ng koneksyon.",
+  "gps.practical2.title": "Nasa imahe at nasa metadata ang tatak",
+  "gps.practical2.body":
+    "Nakatatak sa litrato para sa kahit sinong tumitingin, at nakatago bilang structured metadata para sa kahit anong nagbabasa nito. Nawawala ang metadata sa screenshot pero nananatili ang nakikitang tatak at ang code.",
+  "gps.practical3.title": "Libreng simula, walang bayad sa watermark",
+  "gps.practical3.body":
+    "300 na beripikadong kuha kada buwan sa libreng plano, kasama ang verification. Hindi bayad na upgrade ang tatak at walang logo ng app sa ibabaw ng litrato mo.",
+  "gps.faq.label": "Mga tanong",
+  "gps.faq.h2": "Mga madalas itanong",
+  "gps.faq.q1": "Ano ang GPS timestamp camera?",
+  "gps.faq.a1":
+    "Isang camera app na isinusulat ang petsa, oras at lokasyon sa litrato sa sandaling kinukuha ito, sa halip na iwan ito sa metadata na kayang isulat muli ng kahit anong editor. Siksik ang kategoryang ito ng libreng app na ganoon lang ang ginagawa at wala nang iba — ang tatak ay galing sa sariling relo at lokasyon ng telepono, kaya rekord iyon ng sinabi sa telepono, hindi ng nangyari.",
+  "gps.faq.q2": "Ano ang kaibahan nito sa libreng timestamp camera app?",
+  "gps.faq.a2":
+    "Tatlong bagay, at ang una ang mahalaga. Binebalidahan ang oras sa aming mga server sa halip na basahin sa device, kaya ang pagbabago ng relo ng telepono ay hindi nagbabago ng tatak — nagpapa-flag iyon sa litrato. Naseselyo ang imahe ng SHA-256 hash, kaya natutukoy ang huling pag-edit sa halip na maging di-nakikita. At may code ang bawat kuha na macheck ng iba sa pampublikong pahina nang wala ka. Ang libreng stamp app ay nagbibigay ng litratong may teksto, at ang halaga niyon ay eksaktong katumbas ng tiwalang meron na sa iyo ang kabilang panig.",
+  "gps.faq.q3": "Kaya bang pekein ang litratong may GPS timestamp?",
+  "gps.faq.a3":
+    "Kayang harangin ang mga karaniwang paraan, at hindi tapat ang magsabing lahat. Ang pagbabago ng relo ng device ay nahuhuli ng server-side verification. Ang pag-edit ng file pagkatapos ay bumabasag sa hash nito. Ang mga mock-location tool ang pinakamahirap na kaso sa kategorya — inirerekord ng GeoCliks ang accuracy radius at ang pinagmulan ng positioning at ini-flag ang mga kuhang mukhang mali, na nagpapamahal sa pagpepeke nang hindi ito nagagawang zero. Ang mahalaga sa praktika ay may malayang panig na makakacheck sa rekord sa halip na kailanganing magtiwala sa kumuha.",
+  "gps.faq.q4": "Tinatatakan din ba ang video?",
+  "gps.faq.a4":
+    "Oo. May kaparehong beripikadong oras, koordinada at address ang mga video capture, at kaparehong pagseselyo. Nasa bayad na plano ang buong haba ng video; saklaw ng libreng plano ang photo capture at maiikling clip.",
+  "gps.faq.q5": "Kailangan ba ng internet para makakuha ng litrato?",
+  "gps.faq.a5":
+    "Hindi. Gumagana ang pagkuha offline at pumipila ang litrato sa telepono. Naseselyo ito bilang network-verified pagdating sa aming mga server, na maaaring makalipas ang mga oras — ang naitalang oras ng kuha ay iyon pa ring sandali ng pagpindot sa shutter, beripikado laban sa rekord sa pila at hindi sa oras ng upload.",
+  "gps.faq.q6": "Saan lumilitaw ang tatak sa litrato?",
+  "gps.faq.a6":
+    "Sa isang sulok bilang overlay na may oras, koordinada at address, sukat na nananatiling nababasa nang hindi tinatakpan ang subject. Nakatago rin bilang metadata ang parehong mga halaga, at nakaprint kasama nila ang photo code para makapag-verify kahit sinong nagbabasa ng printout.",
+  "gps.cta.h2": "Kumuha ng beripikadong litrato sa susunod na minuto",
+  "gps.cta.body":
+    "Libre nang habambuhay para sa 300 beripikadong kuha kada buwan, walang card. Kasama sa lahat ng plano ang tatak, ang selyo at ang pampublikong verification page.",
+  "gps.cta.primary": "Kunin ang app",
+  "gps.cta.secondary": "Tingnan kung paano gumagana ang pagseselyo",
+  "gps.related.lead": "Mas malalim pa:",
+  "gps.related.link1": "kaya bang pekein ang litratong may GPS timestamp?",
+  "gps.related.trades": "O tingnan ang camera sa isang hanapbuhay:",
+  "gps.related.construction": "konstruksyon",
+  "gps.related.roofing": "bubong",
+  "gps.related.join": "at",
+  "gps.related.delivery": "delivery",
 };

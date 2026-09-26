@@ -191,3 +191,33 @@ baseline.
 
 From here every page's translation commit also carries its two head-copy keys and
 its `LOCALIZED_SEO` row.
+
+## `/gps-timestamp-camera`, translated
+
+Second page through the pattern, and the pattern held with nothing new invented:
+59 keys per catalog (47 page strings, 12 FAQ, 2 head-copy), the component reading
+them through `t()`, `PAGE_SCHEMA` FAQ moved to `{ keys: { question, answer } }`
+so the visible copy and the `FAQPage` markup stay one string, the path added to
+`LOCALIZED_PATHS` and a `LOCALIZED_SEO` row pointing at `seo.gps.title` /
+`seo.gps.description`. Sitemap 119 -> 129 URLs.
+
+Verified after hydration, not just in the response HTML — title, description,
+canonical and `og:url` localized and prefixed on all eleven, `<h1>` and the first
+FAQ heading in the right language on each:
+
+| URL | `<h1>` reads | canonical |
+|---|---|---|
+| `/gps-timestamp-camera` | English | `/gps-timestamp-camera` |
+| `/es/…` | "Una cámara con marca de GPS y hora…" | `/es/gps-timestamp-camera` |
+| `/fr-ca/…` | "Une caméra GPS horodatée…" | `/fr-ca/gps-timestamp-camera` |
+| `/de/…` | German | `/de/gps-timestamp-camera` |
+| `/ar/…` | Arabic | `/ar/gps-timestamp-camera` |
+| `/zh/…` | "什么是 GPS 时间戳相机？" (FAQ) | `/zh/gps-timestamp-camera` |
+| `/pl/…` | Polish | `/pl/gps-timestamp-camera` |
+
+`pt-BR`, `it`, `vi`, `tl` checked the same way and match.
+
+Regressions checked both directions: `/es/proof-of-delivery` still Spanish, and
+`/es/hvac-photo-documentation` — still untranslated — still falls back to the
+English head and canonicalizes to the bare English URL. tsc clean, lint 9 errors
+= unchanged baseline.

@@ -194,6 +194,7 @@ export const LOCALIZED_SEO: Record<string, { title: TKey; description: TKey }> =
   "/": { title: "seo.home.title", description: "seo.home.description" },
   "/get-app": { title: "seo.getApp.title", description: "seo.getApp.description" },
   "/proof-of-delivery": { title: "seo.pod.title", description: "seo.pod.description" },
+  "/gps-timestamp-camera": { title: "seo.gps.title", description: "seo.gps.description" },
 };
 
 /**

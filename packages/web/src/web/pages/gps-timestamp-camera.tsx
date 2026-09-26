@@ -9,6 +9,7 @@ import {
   LandingSteps,
 } from "../components/landing-page";
 import { pageFaq } from "../lib/page-schema";
+import { useLocale, type TKey } from "../lib/i18n";
 
 /**
  * Search landing page for "gps timestamp camera" and its neighbours
@@ -27,133 +28,106 @@ import { pageFaq } from "../lib/page-schema";
  * crew, project and reporting machinery belongs to the other pages.
  */
 
-const STEPS = [
-  {
-    title: "Open the camera and shoot",
-    body: "One tap in the GeoCliks app. There is no separate 'add stamp' step to forget — a capture is stamped or it is not a capture.",
-  },
-  {
-    title: "The time is checked, not trusted",
-    body: "The capture time is verified against our servers. If the device clock disagrees by more than a few minutes, the photo is marked device-timed rather than quietly passing as verified.",
-  },
-  {
-    title: "Location is read and resolved",
-    body: "GPS coordinates, the accuracy radius and the reverse-geocoded street address are written into the image and stored as metadata.",
-  },
-  {
-    title: "The photo gets a code",
-    body: "A SHA-256 hash of the image bytes, a signature and a unique photo code, so anyone can later check the file is the untouched original.",
-  },
+const STEPS: { title: TKey; body: TKey }[] = [
+  { title: "gps.step1.title", body: "gps.step1.body" },
+  { title: "gps.step2.title", body: "gps.step2.body" },
+  { title: "gps.step3.title", body: "gps.step3.body" },
+  { title: "gps.step4.title", body: "gps.step4.body" },
 ];
 
-const STAMP_CARDS = [
-  {
-    icon: Clock,
-    title: "Network-verified time",
-    body: "The date on a normal timestamp camera is whatever the phone says, and a phone clock is a settings screen away from saying anything. Ours is verified server-side, and a mismatch is reported instead of hidden.",
-  },
-  {
-    icon: Compass,
-    title: "Coordinates, accuracy and address",
-    body: "Latitude and longitude, the accuracy radius they were fixed to, and the street address they resolve to. The radius matters — a coordinate without one is a claim without a margin.",
-  },
-  {
-    icon: Hash,
-    title: "A hash and a public code",
-    body: "Every capture is sealed with a content hash and given a code that resolves at geocliks.com/verify. Edit one pixel and the seal breaks, which the verification page reports.",
-  },
+const STAMP_CARDS: { icon: typeof Clock; title: TKey; body: TKey }[] = [
+  { icon: Clock, title: "gps.stamp1.title", body: "gps.stamp1.body" },
+  { icon: Compass, title: "gps.stamp2.title", body: "gps.stamp2.body" },
+  { icon: Hash, title: "gps.stamp3.title", body: "gps.stamp3.body" },
 ];
 
-const PRACTICAL_CARDS = [
-  {
-    icon: WifiOff,
-    title: "Works with no signal",
-    body: "Captures queue on the phone and seal when they reach our servers. Location is read at capture, so the stamp is where you were, not where you reconnected.",
-  },
-  {
-    icon: ImageDown,
-    title: "The stamp is in the image and the metadata",
-    body: "Burned into the picture for anyone looking at it, and kept as structured metadata for anything reading it. A screenshot loses the metadata but keeps the visible stamp and the code.",
-  },
-  {
-    icon: ShieldCheck,
-    title: "Free to start, no watermark tax",
-    body: "300 verified captures a month on the free plan, with verification included. The stamp is not a paid upgrade and there is no app logo across your photo.",
-  },
+const PRACTICAL_CARDS: { icon: typeof Clock; title: TKey; body: TKey }[] = [
+  { icon: WifiOff, title: "gps.practical1.title", body: "gps.practical1.body" },
+  { icon: ImageDown, title: "gps.practical2.title", body: "gps.practical2.body" },
+  { icon: ShieldCheck, title: "gps.practical3.title", body: "gps.practical3.body" },
 ];
-
-const FAQ = pageFaq("/gps-timestamp-camera");
 
 export default function GpsTimestampCamera() {
+  const { t, locale } = useLocale();
+  const faq = pageFaq("/gps-timestamp-camera", locale);
+  const steps = STEPS.map((step) => ({ title: t(step.title), body: t(step.body) }));
+  const stampCards = STAMP_CARDS.map((card) => ({
+    icon: card.icon,
+    title: t(card.title),
+    body: t(card.body),
+  }));
+  const practicalCards = PRACTICAL_CARDS.map((card) => ({
+    icon: card.icon,
+    title: t(card.title),
+    body: t(card.body),
+  }));
+
   return (
     <LandingPage
       path="/gps-timestamp-camera"
-      eyebrow="GPS timestamp camera"
-      h1="A GPS Timestamp Camera That Doesn't Trust Your Phone's Clock"
-      sub="Verified time from the network, coordinates with their accuracy radius, the resolved street address — sealed into every photo and checkable by anyone."
+      eyebrow={t("gps.eyebrow")}
+      h1={t("gps.h1")}
+      sub={t("gps.sub")}
     >
       <LandingSection
-        label="The distinction that matters"
-        h2="Every timestamp camera writes a date. Almost none of them check it."
-        intro="The app stores are full of free stamping cameras, and they all work the same way: read the clock, read the GPS, draw the result on the picture. That is fine until the date is the thing being questioned — and then the whole record rests on a clock the photographer could have set to anything, in a file any editor could have rewritten. GeoCliks verifies the time against our servers, seals the image so edits are detectable, and gives the photo a code a third party can look up without asking you for anything."
+        label={t("gps.distinction.label")}
+        h2={t("gps.distinction.h2")}
+        intro={t("gps.distinction.intro")}
       />
 
-      <LandingSection label="How it works" h2="Four things happen when you press the shutter.">
-        <LandingSteps steps={STEPS} />
+      <LandingSection label={t("gps.how.label")} h2={t("gps.how.h2")}>
+        <LandingSteps steps={steps} />
       </LandingSection>
 
-      <LandingSection
-        label="What ends up on the photo"
-        h2="Three pieces, and each one closes a different hole."
-      >
-        <LandingCards items={STAMP_CARDS} />
+      <LandingSection label={t("gps.stamp.label")} h2={t("gps.stamp.h2")}>
+        <LandingCards items={stampCards} />
       </LandingSection>
 
-      <LandingSection label="In day-to-day use" h2="Built for the field, not for a demo.">
-        <LandingCards items={PRACTICAL_CARDS} />
+      <LandingSection label={t("gps.practical.label")} h2={t("gps.practical.h2")}>
+        <LandingCards items={practicalCards} />
       </LandingSection>
 
-      <LandingSection label="Questions" h2="Frequently asked">
-        <LandingFaq entries={FAQ} />
+      <LandingSection label={t("gps.faq.label")} h2={t("gps.faq.h2")}>
+        <LandingFaq entries={faq} />
       </LandingSection>
 
       <LandingCta
-        h2="Take a verified photo in the next minute"
-        body="Free forever for 300 verified captures a month, no card. The stamp, the seal and the public verification page are included on every plan."
-        primary={{ label: "Get the app", to: "/get-app" }}
-        secondary={{ label: "See how sealing works", to: "/help/verify/how-sealing-works" }}
+        h2={t("gps.cta.h2")}
+        body={t("gps.cta.body")}
+        primary={{ label: t("gps.cta.primary"), to: "/get-app" }}
+        secondary={{ label: t("gps.cta.secondary"), to: "/help/verify/how-sealing-works" }}
       />
 
       <section className="border-b border-line">
         <div className="mx-auto max-w-[1180px] px-5 py-10">
           <p className="text-[13.5px] leading-relaxed text-fog">
-            Going deeper:{" "}
+            {t("gps.related.lead")}{" "}
             <Link
               to="/blog/can-a-gps-timestamp-photo-be-faked"
               className="font-semibold text-amber underline decoration-amber/40 underline-offset-4 hover:decoration-amber"
             >
-              can a GPS timestamp photo be faked?
+              {t("gps.related.link1")}
             </Link>{" "}
-            Or see the camera in a trade:{" "}
+            {t("gps.related.trades")}{" "}
             <Link
               to="/construction-photo-documentation"
               className="font-semibold text-amber underline decoration-amber/40 underline-offset-4 hover:decoration-amber"
             >
-              construction
+              {t("gps.related.construction")}
             </Link>
             ,{" "}
             <Link
               to="/roofing-photo-documentation"
               className="font-semibold text-amber underline decoration-amber/40 underline-offset-4 hover:decoration-amber"
             >
-              roofing
+              {t("gps.related.roofing")}
             </Link>{" "}
-            and{" "}
+            {t("gps.related.join")}{" "}
             <Link
               to="/proof-of-delivery"
               className="font-semibold text-amber underline decoration-amber/40 underline-offset-4 hover:decoration-amber"
             >
-              delivery
+              {t("gps.related.delivery")}
             </Link>
             .
           </p>

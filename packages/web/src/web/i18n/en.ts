@@ -66,6 +66,9 @@ export const en = {
   "seo.pod.title": "Proof of Delivery App — Photo, GPS & Verified Time",
   "seo.pod.description":
     "Capture proof of delivery couriers can't backdate: network-verified time, GPS and street address on every drop photo, with a code the shipper can check.",
+  "seo.gps.title": "GPS Timestamp Camera App — Verified Time & Location",
+  "seo.gps.description":
+    "A timestamp camera that verifies the time against the network instead of the phone clock, and stamps GPS coordinates and street address into every photo.",
   "signin.subtitle": "Tamper-proof photo documentation for field teams.",
   "signin.apple": "Continue with Apple",
   "signin.google": "Continue with Google",
@@ -1542,6 +1545,82 @@ export const en = {
     "GeoCliks captures photo, time, GPS and address. It does not collect recipient signatures.",
   "pod.note.legal":
     "Not a legal or notary service. Whether a shipper or card network accepts a record is their decision.",
+  "gps.eyebrow": "GPS timestamp camera",
+  "gps.h1": "A GPS Timestamp Camera That Doesn't Trust Your Phone's Clock",
+  "gps.sub":
+    "Verified time from the network, coordinates with their accuracy radius, the resolved street address — sealed into every photo and checkable by anyone.",
+  "gps.distinction.label": "The distinction that matters",
+  "gps.distinction.h2": "Every timestamp camera writes a date. Almost none of them check it.",
+  "gps.distinction.intro":
+    "The app stores are full of free stamping cameras, and they all work the same way: read the clock, read the GPS, draw the result on the picture. That is fine until the date is the thing being questioned — and then the whole record rests on a clock the photographer could have set to anything, in a file any editor could have rewritten. GeoCliks verifies the time against our servers, seals the image so edits are detectable, and gives the photo a code a third party can look up without asking you for anything.",
+  "gps.how.label": "How it works",
+  "gps.how.h2": "Four things happen when you press the shutter.",
+  "gps.step1.title": "Open the camera and shoot",
+  "gps.step1.body":
+    "One tap in the GeoCliks app. There is no separate 'add stamp' step to forget — a capture is stamped or it is not a capture.",
+  "gps.step2.title": "The time is checked, not trusted",
+  "gps.step2.body":
+    "The capture time is verified against our servers. If the device clock disagrees by more than a few minutes, the photo is marked device-timed rather than quietly passing as verified.",
+  "gps.step3.title": "Location is read and resolved",
+  "gps.step3.body":
+    "GPS coordinates, the accuracy radius and the reverse-geocoded street address are written into the image and stored as metadata.",
+  "gps.step4.title": "The photo gets a code",
+  "gps.step4.body":
+    "A SHA-256 hash of the image bytes, a signature and a unique photo code, so anyone can later check the file is the untouched original.",
+  "gps.stamp.label": "What ends up on the photo",
+  "gps.stamp.h2": "Three pieces, and each one closes a different hole.",
+  "gps.stamp1.title": "Network-verified time",
+  "gps.stamp1.body":
+    "The date on a normal timestamp camera is whatever the phone says, and a phone clock is a settings screen away from saying anything. Ours is verified server-side, and a mismatch is reported instead of hidden.",
+  "gps.stamp2.title": "Coordinates, accuracy and address",
+  "gps.stamp2.body":
+    "Latitude and longitude, the accuracy radius they were fixed to, and the street address they resolve to. The radius matters — a coordinate without one is a claim without a margin.",
+  "gps.stamp3.title": "A hash and a public code",
+  "gps.stamp3.body":
+    "Every capture is sealed with a content hash and given a code that resolves at geocliks.com/verify. Edit one pixel and the seal breaks, which the verification page reports.",
+  "gps.practical.label": "In day-to-day use",
+  "gps.practical.h2": "Built for the field, not for a demo.",
+  "gps.practical1.title": "Works with no signal",
+  "gps.practical1.body":
+    "Captures queue on the phone and seal when they reach our servers. Location is read at capture, so the stamp is where you were, not where you reconnected.",
+  "gps.practical2.title": "The stamp is in the image and the metadata",
+  "gps.practical2.body":
+    "Burned into the picture for anyone looking at it, and kept as structured metadata for anything reading it. A screenshot loses the metadata but keeps the visible stamp and the code.",
+  "gps.practical3.title": "Free to start, no watermark tax",
+  "gps.practical3.body":
+    "300 verified captures a month on the free plan, with verification included. The stamp is not a paid upgrade and there is no app logo across your photo.",
+  "gps.faq.label": "Questions",
+  "gps.faq.h2": "Frequently asked",
+  "gps.faq.q1": "What is a GPS timestamp camera?",
+  "gps.faq.a1":
+    "A camera app that writes the date, time and location onto the photo at the moment it is taken, instead of leaving them in metadata that any editor can rewrite. The category is crowded with free apps that do exactly that and nothing more — the stamp is drawn from the phone's own clock and location, so it is a record of what the phone was told, not of what happened.",
+  "gps.faq.q2": "How is this different from a free timestamp camera app?",
+  "gps.faq.a2":
+    "Three things, and the first is the one that matters. The time is verified against our servers rather than read from the device, so changing the phone clock does not change the stamp — it flags the photo. The image is sealed with a SHA-256 hash, so a later edit is detectable instead of invisible. And every capture gets a code that a third party can check on a public page without your involvement. A free stamp app gives you a photo with text on it, which is worth exactly as much as the trust the other side already has in you.",
+  "gps.faq.q3": "Can a GPS timestamp photo be faked?",
+  "gps.faq.a3":
+    "The common methods can be defeated, and pretending otherwise would be dishonest. Changing the device clock is caught by server-side verification. Editing the file afterwards breaks its hash. Mock-location tools are the hardest case in the category — GeoCliks records the accuracy radius and the positioning source and flags captures that look wrong, which raises the cost of faking without reducing it to zero. What matters in practice is that an independent party can check the record rather than having to trust the photographer.",
+  "gps.faq.q4": "Does it stamp video too?",
+  "gps.faq.a4":
+    "Yes. Video captures carry the same verified time, coordinates and address, and the same sealing. Full-length video is on the paid plans; the free plan covers photo capture and short clips.",
+  "gps.faq.q5": "Does it need internet to take the photo?",
+  "gps.faq.a5":
+    "No. Capturing works offline and the photo queues on the phone. It is sealed as network-verified when it reaches our servers, which can be hours later — the recorded capture time is still the moment the shutter fired, verified against the queue record rather than against the upload.",
+  "gps.faq.q6": "Where does the stamp appear on the photo?",
+  "gps.faq.a6":
+    "In a corner overlay with the time, coordinates and address, sized to stay legible without covering the subject. The same values are stored as metadata, and the photo code is printed with them so anyone reading a printout can verify it.",
+  "gps.cta.h2": "Take a verified photo in the next minute",
+  "gps.cta.body":
+    "Free forever for 300 verified captures a month, no card. The stamp, the seal and the public verification page are included on every plan.",
+  "gps.cta.primary": "Get the app",
+  "gps.cta.secondary": "See how sealing works",
+  "gps.related.lead": "Going deeper:",
+  "gps.related.link1": "can a GPS timestamp photo be faked?",
+  "gps.related.trades": "Or see the camera in a trade:",
+  "gps.related.construction": "construction",
+  "gps.related.roofing": "roofing",
+  "gps.related.join": "and",
+  "gps.related.delivery": "delivery",
 } as const;
 
 export type Catalog = Record<keyof typeof en, string>;

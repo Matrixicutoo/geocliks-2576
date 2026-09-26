@@ -58,6 +58,9 @@ export const ptBR: Catalog = {
   "seo.pod.title": "App de comprovante de entrega — Foto, GPS e hora",
   "seo.pod.description":
     "Registre comprovantes de entrega que ninguém retroage: hora verificada em rede, GPS e endereço em cada foto, com um código que o embarcador confere.",
+  "seo.gps.title": "App de câmera com GPS e hora verificada",
+  "seo.gps.description":
+    "Uma câmera com data que verifica a hora na rede em vez do relógio do celular e grava coordenadas GPS e endereço em cada foto.",
   "signin.subtitle": "Documentação fotográfica à prova de fraudes para equipes de campo.",
   "signin.apple": "Continuar com a Apple",
   "signin.google": "Continuar com o Google",
@@ -1542,4 +1545,80 @@ export const ptBR: Catalog = {
     "O GeoCliks captura foto, hora, GPS e endereço. Ele não coleta assinatura de destinatários.",
   "pod.note.legal":
     "Não é um serviço jurídico nem notarial. Se um embarcador ou uma bandeira de cartão aceita um registro é decisão deles.",
+  "gps.eyebrow": "Câmera com GPS e hora",
+  "gps.h1": "Uma câmera com GPS e hora que não confia no relógio do seu celular",
+  "gps.sub":
+    "Hora verificada na rede, coordenadas com o raio de precisão e o endereço resolvido — selados em cada foto e conferíveis por qualquer pessoa.",
+  "gps.distinction.label": "A diferença que importa",
+  "gps.distinction.h2": "Toda câmera com data escreve uma data. Quase nenhuma confere.",
+  "gps.distinction.intro":
+    "As lojas de aplicativos estão cheias de câmeras gratuitas que marcam data, e todas funcionam do mesmo jeito: leem o relógio, leem o GPS e desenham o resultado sobre a imagem. Isso basta até o momento em que a data é justamente o que está em questão — e então todo o registro depende de um relógio que o fotógrafo podia ter ajustado para qualquer hora, em um arquivo que qualquer editor podia ter reescrito. O GeoCliks verifica a hora nos nossos servidores, sela a imagem para que qualquer edição seja detectável e dá à foto um código que um terceiro pode consultar sem pedir nada a você.",
+  "gps.how.label": "Como funciona",
+  "gps.how.h2": "Quatro coisas acontecem quando você aperta o botão.",
+  "gps.step1.title": "Abra a câmera e fotografe",
+  "gps.step1.body":
+    'Um toque no app do GeoCliks. Não existe um passo separado de "adicionar marca" para esquecer: ou a captura vem selada, ou não é uma captura.',
+  "gps.step2.title": "A hora é conferida, não presumida",
+  "gps.step2.body":
+    "A hora da captura é verificada nos nossos servidores. Se o relógio do aparelho divergir por mais de alguns minutos, a foto é marcada como com hora do aparelho em vez de passar silenciosamente como verificada.",
+  "gps.step3.title": "A localização é lida e resolvida",
+  "gps.step3.body":
+    "As coordenadas GPS, o raio de precisão e o endereço obtido por geocodificação reversa são gravados na imagem e guardados como metadados.",
+  "gps.step4.title": "A foto recebe um código",
+  "gps.step4.body":
+    "Um hash SHA-256 dos bytes da imagem, uma assinatura e um código de foto único, para que qualquer pessoa possa conferir depois que o arquivo é o original intacto.",
+  "gps.stamp.label": "O que acaba na foto",
+  "gps.stamp.h2": "Três peças, e cada uma fecha uma brecha diferente.",
+  "gps.stamp1.title": "Hora verificada na rede",
+  "gps.stamp1.body":
+    "A data de uma câmera com marca comum é o que o celular diz, e um relógio de celular está a uma tela de ajustes de dizer qualquer coisa. A nossa é verificada no servidor, e uma divergência é informada em vez de escondida.",
+  "gps.stamp2.title": "Coordenadas, precisão e endereço",
+  "gps.stamp2.body":
+    "Latitude e longitude, o raio de precisão com que foram fixadas e o endereço a que correspondem. O raio importa: uma coordenada sem ele é uma afirmação sem margem.",
+  "gps.stamp3.title": "Um hash e um código público",
+  "gps.stamp3.body":
+    "Cada captura é selada com um hash do conteúdo e recebe um código que abre em geocliks.com/verify. Edite um pixel e o selo se rompe, o que a página de verificação informa.",
+  "gps.practical.label": "No dia a dia",
+  "gps.practical.h2": "Feita para o campo, não para uma demonstração.",
+  "gps.practical1.title": "Funciona sem sinal",
+  "gps.practical1.body":
+    "As capturas ficam na fila do celular e são seladas ao chegar nos nossos servidores. A localização é lida na hora da captura, então a marca diz onde você estava, não onde recuperou o sinal.",
+  "gps.practical2.title": "A marca está na imagem e nos metadados",
+  "gps.practical2.body":
+    "Gravada na foto para quem olha e guardada como metadados estruturados para o que lê. Uma captura de tela perde os metadados, mas mantém a marca visível e o código.",
+  "gps.practical3.title": "Grátis para começar, sem pedágio de marca d'água",
+  "gps.practical3.body":
+    "300 capturas verificadas por mês no plano gratuito, com verificação incluída. A marca não é um upgrade pago e não há logotipo do app atravessando sua foto.",
+  "gps.faq.label": "Perguntas",
+  "gps.faq.h2": "Perguntas frequentes",
+  "gps.faq.q1": "O que é uma câmera com GPS e hora?",
+  "gps.faq.a1":
+    "Um aplicativo de câmera que escreve data, hora e localização sobre a foto no momento em que ela é tirada, em vez de deixá-las em metadados que qualquer editor pode reescrever. A categoria está lotada de apps gratuitos que fazem exatamente isso e nada mais: a marca vem do próprio relógio e GPS do celular, então é um registro do que foi dito ao celular, não do que aconteceu.",
+  "gps.faq.q2": "Qual a diferença em relação a um app de câmera com data gratuito?",
+  "gps.faq.a2":
+    "Três coisas, e a primeira é a que importa. A hora é verificada nos nossos servidores em vez de lida do aparelho, então mudar o relógio do celular não muda a marca: ela sinaliza a foto. A imagem é selada com um hash SHA-256, então uma edição posterior é detectável em vez de invisível. E cada captura recebe um código que um terceiro pode conferir em uma página pública sem a sua participação. Um app de marca gratuito dá uma foto com texto em cima, o que vale exatamente o quanto o outro lado já confia em você.",
+  "gps.faq.q3": "É possível falsificar uma foto com GPS e hora?",
+  "gps.faq.a3":
+    "Os métodos comuns podem ser barrados, e fingir o contrário seria desonesto. Mudar o relógio do aparelho é pego pela verificação no servidor. Editar o arquivo depois quebra o hash dele. Ferramentas de localização falsa são o caso mais difícil da categoria: o GeoCliks registra o raio de precisão e a fonte de posicionamento e sinaliza capturas que parecem erradas, o que encarece a falsificação sem reduzi-la a zero. O que importa na prática é que uma parte independente possa conferir o registro em vez de ter que confiar no fotógrafo.",
+  "gps.faq.q4": "Também marca vídeo?",
+  "gps.faq.a4":
+    "Sim. Os vídeos levam a mesma hora verificada, as mesmas coordenadas e endereço, e o mesmo selo. Vídeo sem limite de duração está nos planos pagos; o plano gratuito cobre fotos e clipes curtos.",
+  "gps.faq.q5": "Precisa de internet para tirar a foto?",
+  "gps.faq.a5":
+    "Não. Capturar funciona offline e a foto fica na fila do celular. Ela é selada como verificada na rede quando chega aos nossos servidores, o que pode ser horas depois: a hora de captura registrada continua sendo o momento do disparo, verificada contra o registro da fila e não contra o envio.",
+  "gps.faq.q6": "Onde a marca aparece na foto?",
+  "gps.faq.a6":
+    "Em uma sobreposição no canto com hora, coordenadas e endereço, dimensionada para continuar legível sem cobrir o assunto. Os mesmos valores são guardados como metadados, e o código da foto é impresso junto para que quem ler uma via impressa possa verificar.",
+  "gps.cta.h2": "Tire uma foto verificada no próximo minuto",
+  "gps.cta.body":
+    "Grátis para sempre com 300 capturas verificadas por mês, sem cartão. A marca, o selo e a página pública de verificação estão incluídos em todos os planos.",
+  "gps.cta.primary": "Baixar o app",
+  "gps.cta.secondary": "Ver como o selo funciona",
+  "gps.related.lead": "Para se aprofundar:",
+  "gps.related.link1": "é possível falsificar uma foto com GPS e hora?",
+  "gps.related.trades": "Ou veja a câmera em um ramo:",
+  "gps.related.construction": "construção",
+  "gps.related.roofing": "telhados",
+  "gps.related.join": "e",
+  "gps.related.delivery": "entregas",
 };

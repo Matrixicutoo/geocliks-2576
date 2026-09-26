@@ -66,7 +66,12 @@ const BY_SEGMENT = new Map<string, LocaleCode>(
  * their copy — and their FAQ markup — through `t()`. `/pricing`, `/about` and
  * the six remaining search landing pages do not yet.
  */
-export const LOCALIZED_PATHS: readonly string[] = ["/", "/get-app", "/proof-of-delivery"];
+export const LOCALIZED_PATHS: readonly string[] = [
+  "/",
+  "/get-app",
+  "/proof-of-delivery",
+  "/gps-timestamp-camera",
+];
 
 const LOCALIZED = new Set(LOCALIZED_PATHS);
 

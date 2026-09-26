@@ -58,6 +58,9 @@ export const it: Catalog = {
   "seo.pod.title": "App prova di consegna — Foto, GPS e ora verificata",
   "seo.pod.description":
     "Raccogli prove di consegna che nessuno può retrodatare: ora verificata in rete, GPS e indirizzo su ogni foto, con un codice che il mittente può controllare.",
+  "seo.gps.title": "Fotocamera timestamp GPS — ora e luogo verificati",
+  "seo.gps.description":
+    "Una fotocamera con timestamp che verifica l'ora sulla rete invece che sull'orologio del telefono e imprime coordinate GPS e indirizzo civico in ogni foto.",
   "signin.subtitle": "Documentazione fotografica a prova di manomissione per squadre sul campo.",
   "signin.apple": "Continua con Apple",
   "signin.google": "Continua con Google",
@@ -1551,4 +1554,81 @@ export const it: Catalog = {
     "GeoCliks acquisisce foto, ora, GPS e indirizzo. Non raccoglie le firme dei destinatari.",
   "pod.note.legal":
     "Non è un servizio legale né notarile. Che un mittente o un circuito di carte accetti un documento è una loro decisione.",
+  "gps.eyebrow": "Fotocamera con timestamp GPS",
+  "gps.h1": "Una fotocamera con timestamp GPS che non si fida dell'orologio del telefono",
+  "gps.sub":
+    "Ora verificata dalla rete, coordinate con il loro raggio di precisione, l'indirizzo civico risolto — sigillati in ogni foto e controllabili da chiunque.",
+  "gps.distinction.label": "La differenza che conta",
+  "gps.distinction.h2":
+    "Ogni fotocamera con timestamp scrive una data. Quasi nessuna la controlla.",
+  "gps.distinction.intro":
+    "Gli store sono pieni di fotocamere gratuite che timbrano, e funzionano tutte allo stesso modo: leggono l'orologio, leggono il GPS, disegnano il risultato sull'immagine. Va bene finché non è proprio la data a essere messa in discussione — e allora tutta la prova poggia su un orologio che il fotografo poteva impostare come voleva, in un file che qualsiasi editor poteva riscrivere. GeoCliks verifica l'ora sui nostri server, sigilla l'immagine così che le modifiche siano rilevabili e assegna alla foto un codice che un terzo può consultare senza chiedere niente a te.",
+  "gps.how.label": "Come funziona",
+  "gps.how.h2": "Quando premi lo scatto succedono quattro cose.",
+  "gps.step1.title": "Apri la fotocamera e scatta",
+  "gps.step1.body":
+    "Un tocco nell'app GeoCliks. Non c'è un passaggio separato «aggiungi timbro» da dimenticare: uno scatto è timbrato, oppure non è uno scatto.",
+  "gps.step2.title": "L'ora viene verificata, non creduta",
+  "gps.step2.body":
+    "L'ora dello scatto viene verificata sui nostri server. Se l'orologio del dispositivo si discosta di più di qualche minuto, la foto viene marcata come ora del dispositivo invece di passare in silenzio come verificata.",
+  "gps.step3.title": "La posizione viene letta e risolta",
+  "gps.step3.body":
+    "Coordinate GPS, raggio di precisione e indirizzo civico ottenuto per geocodifica inversa vengono scritti nell'immagine e conservati come metadati.",
+  "gps.step4.title": "La foto riceve un codice",
+  "gps.step4.body":
+    "Un hash SHA-256 dei byte dell'immagine, una firma e un codice foto univoco, così che chiunque possa verificare più tardi che il file è l'originale intatto.",
+  "gps.stamp.label": "Cosa finisce sulla foto",
+  "gps.stamp.h2": "Tre elementi, e ognuno chiude un buco diverso.",
+  "gps.stamp1.title": "Ora verificata dalla rete",
+  "gps.stamp1.body":
+    "La data su una normale fotocamera con timestamp è quella che dice il telefono, e l'orologio di un telefono è a una schermata di impostazioni dal dire qualsiasi cosa. La nostra è verificata lato server, e una discrepanza viene segnalata invece di essere nascosta.",
+  "gps.stamp2.title": "Coordinate, precisione e indirizzo",
+  "gps.stamp2.body":
+    "Latitudine e longitudine, il raggio di precisione con cui sono state fissate e l'indirizzo civico a cui corrispondono. Il raggio conta: una coordinata senza raggio è un'affermazione senza margine.",
+  "gps.stamp3.title": "Un hash e un codice pubblico",
+  "gps.stamp3.body":
+    "Ogni scatto è sigillato con un hash del contenuto e riceve un codice consultabile su geocliks.com/verify. Modifica un solo pixel e il sigillo si rompe, e la pagina di verifica lo segnala.",
+  "gps.practical.label": "Nell'uso quotidiano",
+  "gps.practical.h2": "Pensata per il campo, non per la demo.",
+  "gps.practical1.title": "Funziona senza segnale",
+  "gps.practical1.body":
+    "Gli scatti restano in coda sul telefono e vengono sigillati quando raggiungono i nostri server. La posizione è letta al momento dello scatto, quindi il timbro dice dov'eri, non dove ti sei ricollegato.",
+  "gps.practical2.title": "Il timbro è nell'immagine e nei metadati",
+  "gps.practical2.body":
+    "Impresso nella foto per chi la guarda, e conservato come metadato strutturato per chi la legge a macchina. Uno screenshot perde i metadati ma conserva il timbro visibile e il codice.",
+  "gps.practical3.title": "Gratis per iniziare, nessuna tassa sul watermark",
+  "gps.practical3.body":
+    "300 scatti verificati al mese nel piano gratuito, verifica inclusa. Il timbro non è un upgrade a pagamento e non c'è nessun logo dell'app sopra la tua foto.",
+  "gps.faq.label": "Domande",
+  "gps.faq.h2": "Domande frequenti",
+  "gps.faq.q1": "Cos'è una fotocamera con timestamp GPS?",
+  "gps.faq.a1":
+    "Un'app fotocamera che scrive data, ora e posizione sulla foto nel momento in cui viene scattata, invece di lasciarle nei metadati che qualsiasi editor può riscrivere. La categoria è piena di app gratuite che fanno esattamente questo e nient'altro: il timbro è preso dall'orologio e dalla posizione del telefono stesso, quindi è la registrazione di quello che al telefono è stato detto, non di quello che è accaduto.",
+  "gps.faq.q2": "In cosa è diversa da un'app gratuita con timestamp?",
+  "gps.faq.a2":
+    "Tre cose, e la prima è quella che conta. L'ora è verificata sui nostri server invece di essere letta dal dispositivo, quindi cambiare l'orologio del telefono non cambia il timbro: segnala la foto. L'immagine è sigillata con un hash SHA-256, quindi una modifica successiva è rilevabile invece di invisibile. E ogni scatto riceve un codice che un terzo può controllare su una pagina pubblica senza coinvolgerti. Un'app gratuita che timbra ti dà una foto con del testo sopra, che vale esattamente quanto la fiducia che l'altra parte ha già in te.",
+  "gps.faq.q3": "Una foto con timestamp GPS può essere falsificata?",
+  "gps.faq.a3":
+    "I metodi più comuni si possono battere, e far finta del contrario sarebbe disonesto. Cambiare l'orologio del dispositivo viene intercettato dalla verifica lato server. Modificare il file dopo rompe il suo hash. Gli strumenti di posizione finta sono il caso più difficile della categoria: GeoCliks registra il raggio di precisione e la fonte del posizionamento e segnala gli scatti che sembrano anomali, il che alza il costo del falso senza azzerarlo. Quello che conta in pratica è che una parte indipendente possa controllare la prova invece di dover credere al fotografo.",
+  "gps.faq.q4": "Timbra anche i video?",
+  "gps.faq.a4":
+    "Sì. I video portano la stessa ora verificata, le stesse coordinate e lo stesso indirizzo, e lo stesso sigillo. Il video a lunghezza piena è nei piani a pagamento; il piano gratuito copre gli scatti foto e le clip brevi.",
+  "gps.faq.q5": "Serve internet per scattare la foto?",
+  "gps.faq.a5":
+    "No. Lo scatto funziona offline e la foto resta in coda sul telefono. Viene sigillata come verificata dalla rete quando raggiunge i nostri server, anche ore dopo — l'ora di scatto registrata resta il momento in cui è partito lo scatto, verificata contro il record in coda e non contro il caricamento.",
+  "gps.faq.q6": "Dove compare il timbro sulla foto?",
+  "gps.faq.a6":
+    "In un angolo, come sovrimpressione con ora, coordinate e indirizzo, dimensionata per restare leggibile senza coprire il soggetto. Gli stessi valori sono conservati come metadati, e il codice foto è stampato con loro così che chiunque legga una copia cartacea possa verificarla.",
+  "gps.cta.h2": "Scatta una foto verificata nel prossimo minuto",
+  "gps.cta.body":
+    "Gratis per sempre per 300 scatti verificati al mese, senza carta. Timbro, sigillo e pagina pubblica di verifica sono inclusi in ogni piano.",
+  "gps.cta.primary": "Scarica l'app",
+  "gps.cta.secondary": "Come funziona il sigillo",
+  "gps.related.lead": "Per approfondire:",
+  "gps.related.link1": "una foto con timestamp GPS può essere falsificata?",
+  "gps.related.trades": "Oppure vedi la fotocamera in un mestiere:",
+  "gps.related.construction": "edilizia",
+  "gps.related.roofing": "coperture",
+  "gps.related.join": "e",
+  "gps.related.delivery": "consegne",
 };

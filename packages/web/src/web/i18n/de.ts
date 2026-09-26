@@ -57,6 +57,9 @@ export const de: Catalog = {
   "seo.pod.title": "Liefernachweis-App — Foto, GPS und geprüfte Zeit",
   "seo.pod.description":
     "Liefernachweise, die niemand zurückdatieren kann: netzwerkverifizierte Zeit, GPS und Adresse auf jedem Foto, mit Code zur Prüfung durch den Versender.",
+  "seo.gps.title": "GPS-Zeitstempel-Kamera — geprüfte Zeit und Ort",
+  "seo.gps.description":
+    "Eine Zeitstempel-Kamera, die die Zeit gegen das Netz prüft statt gegen die Handyuhr und GPS-Koordinaten samt Straßenadresse in jedes Foto stempelt.",
   "signin.subtitle": "Fälschungssichere Fotodokumentation für Außendienstteams.",
   "signin.apple": "Mit Apple fortfahren",
   "signin.google": "Mit Google fortfahren",
@@ -1561,4 +1564,80 @@ export const de: Catalog = {
     "GeoCliks erfasst Foto, Uhrzeit, GPS und Adresse. Empfängerunterschriften werden nicht erfasst.",
   "pod.note.legal":
     "Kein Rechts- oder Notardienst. Ob ein Auftraggeber oder ein Kartennetzwerk einen Nachweis akzeptiert, ist dessen Entscheidung.",
+  "gps.eyebrow": "GPS-Zeitstempel-Kamera",
+  "gps.h1": "Eine GPS-Zeitstempel-Kamera, die der Handyuhr nicht glaubt",
+  "gps.sub":
+    "Geprüfte Zeit aus dem Netz, Koordinaten mit ihrem Genauigkeitsradius, die aufgelöste Straßenadresse — in jedes Foto eingesiegelt und von jedem nachprüfbar.",
+  "gps.distinction.label": "Der Unterschied, auf den es ankommt",
+  "gps.distinction.h2": "Jede Zeitstempel-Kamera schreibt ein Datum. Fast keine prüft es.",
+  "gps.distinction.intro":
+    "Die App-Stores sind voll von kostenlosen Stempelkameras, und alle funktionieren gleich: Uhr auslesen, GPS auslesen, das Ergebnis aufs Bild schreiben. Das genügt, bis genau dieses Datum in Frage steht — dann hängt der ganze Nachweis an einer Uhr, die der Fotograf auf alles hätte stellen können, in einer Datei, die jeder Editor hätte umschreiben können. GeoCliks prüft die Zeit gegen unsere Server, siegelt das Bild so, dass Änderungen erkennbar sind, und gibt dem Foto einen Code, den Dritte nachschlagen können, ohne Sie um etwas zu bitten.",
+  "gps.how.label": "So funktioniert es",
+  "gps.how.h2": "Vier Dinge passieren, wenn Sie den Auslöser drücken.",
+  "gps.step1.title": "Kamera öffnen und auslösen",
+  "gps.step1.body":
+    "Ein Tipp in der GeoCliks-App. Es gibt keinen separaten Schritt „Stempel hinzufügen“, den man vergessen könnte — eine Aufnahme ist gestempelt oder sie ist keine Aufnahme.",
+  "gps.step2.title": "Die Zeit wird geprüft, nicht geglaubt",
+  "gps.step2.body":
+    "Der Aufnahmezeitpunkt wird gegen unsere Server geprüft. Weicht die Geräteuhr um mehr als wenige Minuten ab, wird das Foto als gerätedatiert markiert, statt still als geprüft durchzugehen.",
+  "gps.step3.title": "Der Standort wird gelesen und aufgelöst",
+  "gps.step3.body":
+    "GPS-Koordinaten, der Genauigkeitsradius und die per Reverse-Geocoding ermittelte Straßenadresse werden ins Bild geschrieben und als Metadaten gespeichert.",
+  "gps.step4.title": "Das Foto bekommt einen Code",
+  "gps.step4.body":
+    "Ein SHA-256-Hash der Bilddaten, eine Signatur und ein eindeutiger Fotocode — damit später jeder prüfen kann, dass die Datei das unveränderte Original ist.",
+  "gps.stamp.label": "Was am Ende auf dem Foto steht",
+  "gps.stamp.h2": "Drei Bestandteile, und jeder schließt eine andere Lücke.",
+  "gps.stamp1.title": "Netzwerkgeprüfte Zeit",
+  "gps.stamp1.body":
+    "Das Datum einer normalen Zeitstempel-Kamera ist, was das Handy sagt — und eine Handyuhr ist einen Einstellungsbildschirm davon entfernt, alles zu sagen. Unsere wird serverseitig geprüft, und eine Abweichung wird gemeldet statt versteckt.",
+  "gps.stamp2.title": "Koordinaten, Genauigkeit und Adresse",
+  "gps.stamp2.body":
+    "Breite und Länge, der Genauigkeitsradius, auf den sie bestimmt wurden, und die Straßenadresse, zu der sie sich auflösen. Der Radius zählt — eine Koordinate ohne ihn ist eine Behauptung ohne Fehlerspanne.",
+  "gps.stamp3.title": "Ein Hash und ein öffentlicher Code",
+  "gps.stamp3.body":
+    "Jede Aufnahme wird mit einem Inhalts-Hash gesiegelt und erhält einen Code, der sich unter geocliks.com/verify auflöst. Ein einziges geändertes Pixel bricht das Siegel, und die Prüfseite meldet es.",
+  "gps.practical.label": "Im täglichen Einsatz",
+  "gps.practical.h2": "Gebaut für den Außeneinsatz, nicht für die Demo.",
+  "gps.practical1.title": "Funktioniert ohne Empfang",
+  "gps.practical1.body":
+    "Aufnahmen warten auf dem Handy und werden gesiegelt, sobald sie unsere Server erreichen. Der Standort wird bei der Aufnahme gelesen — der Stempel zeigt also, wo Sie waren, nicht wo Sie wieder online gingen.",
+  "gps.practical2.title": "Der Stempel steckt im Bild und in den Metadaten",
+  "gps.practical2.body":
+    "Ins Bild eingebrannt für alle, die es ansehen, und als strukturierte Metadaten erhalten für alles, was es ausliest. Ein Screenshot verliert die Metadaten, behält aber den sichtbaren Stempel und den Code.",
+  "gps.practical3.title": "Kostenlos starten, keine Wasserzeichen-Steuer",
+  "gps.practical3.body":
+    "300 geprüfte Aufnahmen pro Monat im kostenlosen Tarif, Verifizierung inklusive. Der Stempel ist kein bezahltes Upgrade, und es liegt kein App-Logo über Ihrem Foto.",
+  "gps.faq.label": "Fragen",
+  "gps.faq.h2": "Häufig gefragt",
+  "gps.faq.q1": "Was ist eine GPS-Zeitstempel-Kamera?",
+  "gps.faq.a1":
+    "Eine Kamera-App, die Datum, Uhrzeit und Standort im Moment der Aufnahme aufs Foto schreibt, statt sie in Metadaten zu lassen, die jeder Editor umschreiben kann. Die Kategorie ist voll von kostenlosen Apps, die genau das tun und nicht mehr — der Stempel kommt aus der Uhr und der Ortung des Handys selbst, ist also ein Nachweis darüber, was dem Handy gesagt wurde, nicht darüber, was passiert ist.",
+  "gps.faq.q2": "Was unterscheidet das von einer kostenlosen Zeitstempel-App?",
+  "gps.faq.a2":
+    "Drei Dinge, und das erste ist das entscheidende. Die Zeit wird gegen unsere Server geprüft statt vom Gerät gelesen — die Handyuhr zu verstellen ändert also nicht den Stempel, sondern markiert das Foto. Das Bild wird mit einem SHA-256-Hash gesiegelt, eine spätere Bearbeitung ist damit erkennbar statt unsichtbar. Und jede Aufnahme erhält einen Code, den Dritte ohne Ihr Zutun auf einer öffentlichen Seite prüfen können. Eine kostenlose Stempel-App gibt Ihnen ein Foto mit Text darauf, und das ist genau so viel wert wie das Vertrauen, das die andere Seite Ihnen schon vorher entgegenbringt.",
+  "gps.faq.q3": "Kann ein GPS-Zeitstempel-Foto gefälscht werden?",
+  "gps.faq.a3":
+    "Die verbreiteten Methoden sind zu, und etwas anderes zu behaupten wäre unredlich. Die Geräteuhr zu verstellen fängt die serverseitige Prüfung ab. Die Datei nachträglich zu bearbeiten bricht ihren Hash. Mock-Location-Tools sind der schwierigste Fall in dieser Kategorie — GeoCliks erfasst den Genauigkeitsradius und die Positionsquelle und markiert Aufnahmen, die auffällig aussehen, was das Fälschen teuer macht, ohne es auf null zu bringen. Entscheidend ist in der Praxis, dass eine unabhängige Stelle den Nachweis prüfen kann, statt dem Fotografen glauben zu müssen.",
+  "gps.faq.q4": "Wird Video auch gestempelt?",
+  "gps.faq.a4":
+    "Ja. Videoaufnahmen tragen die gleiche geprüfte Zeit, die gleichen Koordinaten und die gleiche Adresse und werden genauso gesiegelt. Video in voller Länge gibt es in den Bezahltarifen; der kostenlose Tarif deckt Fotoaufnahmen und kurze Clips ab.",
+  "gps.faq.q5": "Braucht es Internet, um das Foto aufzunehmen?",
+  "gps.faq.a5":
+    "Nein. Die Aufnahme funktioniert offline, und das Foto wartet auf dem Handy. Es wird als netzwerkgeprüft gesiegelt, sobald es unsere Server erreicht, was Stunden später sein kann — die festgehaltene Aufnahmezeit bleibt der Moment des Auslösens, geprüft gegen den Warteschlangeneintrag und nicht gegen den Upload.",
+  "gps.faq.q6": "Wo erscheint der Stempel auf dem Foto?",
+  "gps.faq.a6":
+    "In einer Ecke als Overlay mit Uhrzeit, Koordinaten und Adresse, so groß, dass es lesbar bleibt, ohne das Motiv zu verdecken. Die gleichen Werte liegen als Metadaten vor, und der Fotocode wird mit ausgegeben, damit auch aus einem Ausdruck heraus jeder prüfen kann.",
+  "gps.cta.h2": "Machen Sie in der nächsten Minute ein geprüftes Foto",
+  "gps.cta.body":
+    "Dauerhaft kostenlos für 300 geprüfte Aufnahmen pro Monat, ohne Karte. Stempel, Siegel und die öffentliche Prüfseite sind in jedem Tarif enthalten.",
+  "gps.cta.primary": "App holen",
+  "gps.cta.secondary": "So funktioniert das Siegeln",
+  "gps.related.lead": "Tiefer einsteigen:",
+  "gps.related.link1": "Kann ein GPS-Zeitstempel-Foto gefälscht werden?",
+  "gps.related.trades": "Oder die Kamera im Gewerbe sehen:",
+  "gps.related.construction": "Bau",
+  "gps.related.roofing": "Dach",
+  "gps.related.join": "und",
+  "gps.related.delivery": "Lieferung",
 };

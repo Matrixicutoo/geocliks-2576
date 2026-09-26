@@ -57,6 +57,9 @@ export const vi: Catalog = {
   "seo.pod.title": "Ứng dụng bằng chứng giao hàng — Ảnh, GPS, giờ",
   "seo.pod.description":
     "Chụp bằng chứng giao hàng không ai sửa được giờ: thời gian xác thực qua mạng, GPS và địa chỉ trên mỗi ảnh, kèm mã để bên gửi kiểm tra.",
+  "seo.gps.title": "Camera dấu thời gian GPS — giờ và vị trí xác thực",
+  "seo.gps.description":
+    "Camera dấu thời gian xác thực giờ với mạng thay vì tin đồng hồ điện thoại, và in toạ độ GPS cùng địa chỉ đường phố vào mọi tấm ảnh.",
   "signin.subtitle": "Hồ sơ ảnh chống giả mạo cho đội ngũ hiện trường.",
   "signin.apple": "Tiếp tục với Apple",
   "signin.google": "Tiếp tục với Google",
@@ -1524,4 +1527,81 @@ export const vi: Catalog = {
     "GeoCliks ghi lại ảnh, giờ, GPS và địa chỉ. Ứng dụng không lấy chữ ký người nhận.",
   "pod.note.legal":
     "Đây không phải dịch vụ pháp lý hay công chứng. Bên gửi hay tổ chức thẻ có chấp nhận một hồ sơ hay không là quyết định của họ.",
+  "gps.eyebrow": "Camera dấu thời gian GPS",
+  "gps.h1": "Camera dấu thời gian GPS không tin đồng hồ điện thoại của bạn",
+  "gps.sub":
+    "Giờ đã xác thực qua mạng, toạ độ kèm bán kính độ chính xác, địa chỉ đường phố đã phân giải — niêm vào từng ảnh và ai cũng kiểm tra được.",
+  "gps.distinction.label": "Khác biệt thực sự quan trọng",
+  "gps.distinction.h2":
+    "Camera dấu thời gian nào cũng ghi một ngày. Gần như không cái nào đi kiểm tra ngày đó.",
+  "gps.distinction.intro":
+    "Các cửa hàng ứng dụng đầy camera đóng dấu miễn phí, và tất cả đều làm một kiểu: đọc đồng hồ, đọc GPS, vẽ kết quả lên ảnh. Như vậy là đủ cho tới khi chính cái ngày đó bị đặt câu hỏi — và lúc ấy toàn bộ bằng chứng chỉ dựa trên một cái đồng hồ mà người chụp có thể đặt thành bất cứ gì, trong một tệp mà bất kỳ trình chỉnh sửa nào cũng viết lại được. GeoCliks xác thực giờ với máy chủ của chúng tôi, niêm ảnh để mọi chỉnh sửa đều phát hiện được, và cấp cho ảnh một mã mà bên thứ ba tra được không cần hỏi bạn điều gì.",
+  "gps.how.label": "Cách hoạt động",
+  "gps.how.h2": "Bốn việc xảy ra khi bạn bấm chụp.",
+  "gps.step1.title": "Mở camera và chụp",
+  "gps.step1.body":
+    "Một lần chạm trong ứng dụng GeoCliks. Không có bước «thêm dấu» riêng để có thể quên — một lần chụp là đã có dấu, hoặc không phải là một lần chụp.",
+  "gps.step2.title": "Giờ được kiểm tra, không phải được tin",
+  "gps.step2.body":
+    "Giờ chụp được xác thực với máy chủ của chúng tôi. Nếu đồng hồ thiết bị lệch quá vài phút, ảnh sẽ bị đánh dấu là giờ theo thiết bị thay vì lặng lẽ đi qua như đã xác thực.",
+  "gps.step3.title": "Vị trí được đọc và phân giải",
+  "gps.step3.body":
+    "Toạ độ GPS, bán kính độ chính xác và địa chỉ đường phố có được từ phân giải ngược được ghi vào ảnh và lưu làm siêu dữ liệu.",
+  "gps.step4.title": "Ảnh nhận một mã",
+  "gps.step4.body":
+    "Mã băm SHA-256 của các byte ảnh, một chữ ký và một mã ảnh duy nhất, để sau này bất cứ ai cũng kiểm tra được rằng tệp là bản gốc chưa bị chạm tới.",
+  "gps.stamp.label": "Cuối cùng ảnh mang những gì",
+  "gps.stamp.h2": "Ba phần, mỗi phần bít một lỗ khác nhau.",
+  "gps.stamp1.title": "Giờ đã xác thực qua mạng",
+  "gps.stamp1.body":
+    "Ngày trên một camera dấu thời gian thường là bất cứ gì điện thoại nói, mà đồng hồ điện thoại chỉ cách chuyện «nói gì cũng được» đúng một màn hình cài đặt. Giờ của chúng tôi được xác thực ở phía máy chủ, và sai lệch thì được báo ra chứ không bị che.",
+  "gps.stamp2.title": "Toạ độ, độ chính xác và địa chỉ",
+  "gps.stamp2.body":
+    "Vĩ độ và kinh độ, bán kính độ chính xác mà chúng được chốt ở đó, và địa chỉ đường phố mà chúng phân giải ra. Bán kính là quan trọng — một toạ độ không có bán kính là một lời khẳng định không có sai số.",
+  "gps.stamp3.title": "Một mã băm và một mã công khai",
+  "gps.stamp3.body":
+    "Mỗi lần chụp được niêm bằng mã băm nội dung và nhận một mã tra được tại geocliks.com/verify. Sửa một điểm ảnh là niêm vỡ, và trang xác minh sẽ báo ra.",
+  "gps.practical.label": "Trong công việc hằng ngày",
+  "gps.practical.h2": "Làm cho hiện trường, không phải cho bản demo.",
+  "gps.practical1.title": "Dùng được khi không có tín hiệu",
+  "gps.practical1.body":
+    "Ảnh chụp xếp hàng trên điện thoại và được niêm khi tới máy chủ của chúng tôi. Vị trí được đọc ngay lúc chụp, nên dấu là nơi bạn đã ở, không phải nơi bạn kết nối lại.",
+  "gps.practical2.title": "Dấu nằm trong ảnh và trong siêu dữ liệu",
+  "gps.practical2.body":
+    "In vào ảnh cho người xem, và giữ dưới dạng siêu dữ liệu có cấu trúc cho máy đọc. Ảnh chụp màn hình mất siêu dữ liệu nhưng vẫn giữ dấu nhìn thấy được và mã ảnh.",
+  "gps.practical3.title": "Miễn phí để bắt đầu, không thu tiền vì dấu",
+  "gps.practical3.body":
+    "300 lần chụp đã xác thực mỗi tháng ở gói miễn phí, kèm xác minh. Dấu không phải là bản nâng cấp trả tiền và không có logo ứng dụng nào đè lên ảnh của bạn.",
+  "gps.faq.label": "Câu hỏi",
+  "gps.faq.h2": "Câu hỏi thường gặp",
+  "gps.faq.q1": "Camera dấu thời gian GPS là gì?",
+  "gps.faq.a1":
+    "Một ứng dụng camera ghi ngày, giờ và vị trí lên ảnh ngay lúc ảnh được chụp, thay vì để chúng trong siêu dữ liệu mà bất kỳ trình chỉnh sửa nào cũng viết lại được. Hạng mục này chật cứng những ứng dụng miễn phí làm đúng thế và không hơn — dấu lấy từ chính đồng hồ và định vị của điện thoại, nên nó ghi lại điều điện thoại được bảo, không phải điều đã xảy ra.",
+  "gps.faq.q2": "Nó khác ứng dụng dấu thời gian miễn phí ở đâu?",
+  "gps.faq.a2":
+    "Ba điều, và điều đầu tiên mới là điều quan trọng. Giờ được xác thực với máy chủ của chúng tôi thay vì đọc từ thiết bị, nên đổi đồng hồ điện thoại không đổi được dấu — nó làm ảnh bị gắn cờ. Ảnh được niêm bằng mã băm SHA-256, nên sửa về sau là phát hiện được chứ không vô hình. Và mỗi lần chụp nhận một mã mà bên thứ ba kiểm tra được trên một trang công khai, không cần bạn tham gia. Một ứng dụng đóng dấu miễn phí cho bạn một tấm ảnh có chữ trên đó, và nó đáng đúng bằng phần tin tưởng mà bên kia vốn đã có với bạn.",
+  "gps.faq.q3": "Ảnh dấu thời gian GPS có làm giả được không?",
+  "gps.faq.a3":
+    "Những cách phổ biến thì bít được, và nói khác đi là không trung thực. Đổi đồng hồ thiết bị bị việc xác thực phía máy chủ bắt được. Sửa tệp về sau làm vỡ mã băm của nó. Công cụ giả vị trí là ca khó nhất trong hạng mục này — GeoCliks ghi bán kính độ chính xác và nguồn định vị rồi gắn cờ những lần chụp trông bất thường, điều này làm giá của việc làm giả đắt lên chứ không đưa về không. Điều thực sự quan trọng trên thực tế là một bên độc lập có thể tự kiểm tra bằng chứng thay vì phải tin người chụp.",
+  "gps.faq.q4": "Có đóng dấu cả video không?",
+  "gps.faq.a4":
+    "Có. Video mang cùng giờ đã xác thực, cùng toạ độ và địa chỉ, và cùng cách niêm. Video dài đầy đủ nằm ở các gói trả tiền; gói miễn phí bao gồm chụp ảnh và các đoạn clip ngắn.",
+  "gps.faq.q5": "Có cần internet để chụp ảnh không?",
+  "gps.faq.a5":
+    "Không. Chụp vẫn hoạt động khi không có mạng và ảnh xếp hàng trên điện thoại. Ảnh được niêm là đã xác thực qua mạng khi tới máy chủ của chúng tôi, có thể là nhiều giờ sau — giờ chụp được ghi lại vẫn là lúc màn trập mở, xác thực theo bản ghi trong hàng đợi chứ không theo lúc tải lên.",
+  "gps.faq.q6": "Dấu xuất hiện ở đâu trên ảnh?",
+  "gps.faq.a6":
+    "Ở một góc, dưới dạng lớp phủ có giờ, toạ độ và địa chỉ, cỡ chữ đủ để đọc được mà không che chủ thể. Cùng những giá trị đó được lưu làm siêu dữ liệu, và mã ảnh được in kèm để ai đọc một bản in cũng xác minh được.",
+  "gps.cta.h2": "Chụp một tấm ảnh đã xác thực trong phút tới",
+  "gps.cta.body":
+    "Miễn phí mãi mãi cho 300 lần chụp đã xác thực mỗi tháng, không cần thẻ. Dấu, niêm và trang xác minh công khai có trong mọi gói.",
+  "gps.cta.primary": "Tải ứng dụng",
+  "gps.cta.secondary": "Xem cách niêm hoạt động",
+  "gps.related.lead": "Tìm hiểu sâu hơn:",
+  "gps.related.link1": "ảnh dấu thời gian GPS có làm giả được không?",
+  "gps.related.trades": "Hoặc xem camera trong từng nghề:",
+  "gps.related.construction": "xây dựng",
+  "gps.related.roofing": "lợp mái",
+  "gps.related.join": "và",
+  "gps.related.delivery": "giao hàng",
 };
