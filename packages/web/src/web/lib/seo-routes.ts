@@ -57,7 +57,7 @@ export const PAGE_SEO = {
   "/pricing": {
     title: "GeoCliks Pricing — Plans for Crews and Delivery Fleets",
     description:
-      "Verified photo capture free forever. Unlimited photos and full-length video from $12 a month, teamspace crews from $25, and delivery routes priced by stop.",
+      "Verified photo capture free forever. Unlimited photos and full-length video from $7 a month, teamspace crews from $25, and delivery routes priced by stop.",
   },
 
   "/help": {
@@ -81,6 +81,43 @@ export const PAGE_SEO = {
     title: "GeoCliks vs CompanyCam — Compare Features & Pricing",
     description:
       "See how GeoCliks compares to CompanyCam on tamper-proof timestamps, GPS verification, pricing and team features, with what each one does not do.",
+  },
+
+  // The five use-case pages. Each one owns a distinct query with its own intent,
+  // which is the reason they are separate pages and not sections of the home
+  // page: "gps timestamp camera" is someone looking for a tool, "proof of
+  // delivery" is someone with a chargeback, and a single page cannot rank as the
+  // best answer to both. Deliberately no `/tamper-proof-photo-documentation`
+  // page — that phrase is the home page's own H1 and the construction page's
+  // subject, and a third page on it would split the same signal three ways.
+  "/proof-of-delivery": {
+    title: "Proof of Delivery App — Photo, GPS & Verified Time",
+    description:
+      "Capture proof of delivery couriers can't backdate: network-verified time, GPS and street address on every drop photo, with a code the shipper can check.",
+  },
+
+  "/gps-timestamp-camera": {
+    title: "GPS Timestamp Camera App — Verified Time & Location",
+    description:
+      "A timestamp camera that verifies the time against the network instead of the phone clock, and stamps GPS coordinates and street address into every photo.",
+  },
+
+  "/roofing-photo-documentation": {
+    title: "Roofing Photo Documentation for Claims & Closeouts",
+    description:
+      "Document roof damage and replacement with verified time, GPS and street address on every photo, paired before and after for adjusters and homeowners.",
+  },
+
+  "/hvac-photo-documentation": {
+    title: "HVAC Photo Documentation & Service Call Proof",
+    description:
+      "Prove the technician arrived, what the equipment looked like, and that the install was finished — verified time, GPS and address on every service photo.",
+  },
+
+  "/property-inspection-photos": {
+    title: "Property Inspection Photo App — Verified Move-In Proof",
+    description:
+      "Move-in and move-out inspection photos with verified time, GPS and unit address, so a deposit dispute turns on the record instead of on whose word it is.",
   },
 
   // Field Notes. The index and the method page are static, so they key here;

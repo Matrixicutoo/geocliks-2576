@@ -182,6 +182,44 @@ export default function ConstructionPhotoDocumentation() {
             </Link>
             .
           </p>
+          <p className="mt-3 text-[13.5px] leading-relaxed text-fog">
+            By trade and document:{" "}
+            <Link
+              to="/roofing-photo-documentation"
+              className="font-semibold text-amber underline decoration-amber/40 underline-offset-4 hover:decoration-amber"
+            >
+              roofing
+            </Link>
+            ,{" "}
+            <Link
+              to="/hvac-photo-documentation"
+              className="font-semibold text-amber underline decoration-amber/40 underline-offset-4 hover:decoration-amber"
+            >
+              HVAC and service calls
+            </Link>
+            ,{" "}
+            <Link
+              to="/property-inspection-photos"
+              className="font-semibold text-amber underline decoration-amber/40 underline-offset-4 hover:decoration-amber"
+            >
+              property inspections
+            </Link>
+            ,{" "}
+            <Link
+              to="/proof-of-delivery"
+              className="font-semibold text-amber underline decoration-amber/40 underline-offset-4 hover:decoration-amber"
+            >
+              proof of delivery
+            </Link>
+            , or{" "}
+            <Link
+              to="/gps-timestamp-camera"
+              className="font-semibold text-amber underline decoration-amber/40 underline-offset-4 hover:decoration-amber"
+            >
+              how the GPS timestamp camera works
+            </Link>
+            .
+          </p>
         </div>
       </section>
     </LandingPage>

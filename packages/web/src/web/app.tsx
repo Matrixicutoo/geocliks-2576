@@ -47,6 +47,14 @@ const ConstructionPhotoDocumentation = lazy(
   () => import("./pages/construction-photo-documentation"),
 );
 const AlternativesCompanyCam = lazy(() => import("./pages/alternatives-companycam"));
+// Use-case landing pages. Each one answers a distinct search intent rather than
+// restating the home page: a trade, a document type, or the tool itself. They
+// are English-only by design — see the note in components/landing-page.tsx.
+const ProofOfDelivery = lazy(() => import("./pages/proof-of-delivery"));
+const GpsTimestampCamera = lazy(() => import("./pages/gps-timestamp-camera"));
+const RoofingPhotoDocumentation = lazy(() => import("./pages/roofing-photo-documentation"));
+const HvacPhotoDocumentation = lazy(() => import("./pages/hvac-photo-documentation"));
+const PropertyInspectionPhotos = lazy(() => import("./pages/property-inspection-photos"));
 const PricingPage = lazy(() => import("./pages/pricing"));
 // Field Notes. The blog lives inside the app at /blog rather than on its own
 // subdomain, so it shares this site's nav, footer, SEO table and sitemap.
@@ -286,6 +294,21 @@ function App() {
 
               <Route path="/construction-photo-documentation">
                 <ConstructionPhotoDocumentation />
+              </Route>
+              <Route path="/proof-of-delivery">
+                <ProofOfDelivery />
+              </Route>
+              <Route path="/gps-timestamp-camera">
+                <GpsTimestampCamera />
+              </Route>
+              <Route path="/roofing-photo-documentation">
+                <RoofingPhotoDocumentation />
+              </Route>
+              <Route path="/hvac-photo-documentation">
+                <HvacPhotoDocumentation />
+              </Route>
+              <Route path="/property-inspection-photos">
+                <PropertyInspectionPhotos />
               </Route>
               <Route path="/alternatives/companycam">
                 <AlternativesCompanyCam />
