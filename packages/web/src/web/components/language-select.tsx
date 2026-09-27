@@ -32,7 +32,7 @@ export function LanguageSelect({
    */
   drop?: "up" | "down";
 }) {
-  const { locale, override, t, setLocale, useWorkspaceDefault } = useLocale();
+  const { locale, override, workspace, t, setLocale, useWorkspaceDefault } = useLocale();
   const [open, setOpen] = useState(false);
   /**
    * On a page that exists at one URL per language, picking a language is a
@@ -50,6 +50,11 @@ export function LanguageSelect({
     if (!here) return false;
     const { path } = splitLocalePath(here.pathname);
     if (!isLocalizedPath(path)) return false;
+    // Record the choice before leaving, not just on arrival. The document being
+    // loaded reads the locale back off its own URL, but the pages with no locale
+    // URL of their own — the Help Center, the app — only have the stored value,
+    // and a picker that navigates without writing it left them a language behind.
+    setLocale(next);
     const target = localizedPath(path, next);
     here.assign(`${target}${here.search}${here.hash}`);
     return true;
@@ -82,7 +87,8 @@ export function LanguageSelect({
         aria-expanded={open}
         className={cn(
           "flex items-center gap-1.5",
-          bare && "px-1 py-2 text-[13px] font-semibold text-white transition-colors hover:text-amber",
+          bare &&
+            "px-1 py-2 text-[13px] font-semibold text-white transition-colors hover:text-amber",
           !bare && "gap-2 rounded-[12px]",
           !bare &&
             tone === "amber" && [
@@ -104,12 +110,7 @@ export function LanguageSelect({
             !bare && (tone === "amber" ? "text-on-amber" : "text-amber"),
           )}
         />
-        <span
-          className={cn(
-            "truncate",
-            bare ? "capitalize" : "mono uppercase tracking-widest",
-          )}
-        >
+        <span className={cn("truncate", bare ? "capitalize" : "mono uppercase tracking-widest")}>
           {bare ? current.code.split("-")[0] : compact ? current.code : current.native}
         </span>
         {bare && <ChevronDown className="size-3.5" />}
@@ -133,6 +134,16 @@ export function LanguageSelect({
             onClick={() => {
               useWorkspaceDefault();
               setOpen(false);
+              // On a page that exists per language the URL outranks the stored
+              // preference, so dropping the override alone would change nothing
+              // visible — the row would look broken. Go to the workspace
+              // language's address instead.
+              const here = globalThis.location;
+              if (!here) return;
+              const { path } = splitLocalePath(here.pathname);
+              if (!isLocalizedPath(path)) return;
+              const target = localizedPath(path, workspace);
+              if (target !== here.pathname) here.assign(`${target}${here.search}${here.hash}`);
             }}
             className={cn(
               "rounded-[8px] mono flex w-full items-center justify-between gap-2 border-b border-line",

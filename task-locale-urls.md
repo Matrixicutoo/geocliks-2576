@@ -460,3 +460,42 @@ ones, 50/50, 0 failures. tsc clean, lint at the 9-error baseline.
 
 All ten target pages now route through real per-locale URLs in all eleven
 locales.
+
+## Fix: the picker could not get back to English
+
+Reported after the ten pages shipped: switching language got stuck, with English
+in particular unreachable.
+
+The cause was in `fromPath()` in `i18n.tsx`. It answered the locale only when
+the URL carried a prefix, and `null` otherwise — so `locale` resolved as
+`pathLocale ?? override ?? workspace`. English pages have no prefix by design,
+so on a translated page an unprefixed URL fell through to the stored override.
+Once a visitor had read any other language, that override was in localStorage,
+and `/pricing` rendered Spanish while the server had already sent English
+markup for it. The two disagreed on hydration, and clicking English navigated to
+a URL that then re-rendered in the old language, which is the stuck state.
+
+On a translated page the absence of a prefix is as explicit as a prefix: it is
+English's address. `fromPath()` now answers `"en"` for an unprefixed path that
+is in `LOCALIZED_PATHS`, and still `null` everywhere else — the app, the Help
+Center and any page with no locale URL keep following the stored preference,
+which is what test 6 below pins down.
+
+Two smaller things in the same area:
+
+- The picker navigated without writing the choice, relying on the next document
+  to store it off its own URL. That left pages with no locale URL a language
+  behind, so `chooseLocale` now calls `setLocale` before it leaves.
+- "Follow workspace" cleared the override on a page where the URL outranks it,
+  so nothing visible happened. It now also navigates to the workspace
+  language's address.
+- The override state seeds from `fromPath()` too, so a visitor arriving from a
+  search result sees the tick against the language they are reading instead of
+  an apparently empty menu.
+
+Verified by driving the real picker in Chrome (`switch.py`): arrive at
+`/es/pricing`, pick English, pick German, pick English again, pick Spanish, then
+load `/help` — path, `<html lang>`, stored value and `<h1>` checked at every
+step, 0 failures. The same script against the reverted code fails steps 2 and 4
+with `lang=es` and `lang=de` at `/pricing`, which is the bug as reported. Full
+page regression still 50/50, tsc clean, lint at the 9-error baseline.

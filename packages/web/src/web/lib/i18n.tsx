@@ -1,6 +1,6 @@
 import { createContext, useCallback, useContext, useEffect, useMemo, useState } from "react";
 import { type LocaleCode, asLocale, isRtl } from "../../api/lib/locales";
-import { splitLocalePath } from "./locale-url";
+import { isLocalizedPath, splitLocalePath } from "./locale-url";
 import { type TKey, CATALOGS, fill } from "./catalogs";
 import { en } from "../i18n/en";
 
@@ -57,13 +57,23 @@ const fromQuery = (): LocaleCode | null => {
  * URL is the page's public identity now. A crawler fetching `/es/` must be
  * served Spanish, and a visitor who sends that link to someone whose device is
  * set to German must have them open the Spanish page they meant to share, not a
- * German one. `null` on an unprefixed URL, which leaves the stored preference in
- * charge exactly as before.
+ * German one.
+ *
+ * On a translated page the *absence* of a prefix is just as explicit: `/pricing`
+ * is the English address of a page that also lives at `/es/pricing`, so it asks
+ * for English and must outrank a stored override the same way. Answering `null`
+ * there made English the one language the picker could never reach — a member
+ * who had once read Spanish got Spanish markup at the English URL, and the
+ * server had already sent English, so the two disagreed on hydration.
+ *
+ * Still `null` for everything else — the app, the Help Center, any page with no
+ * locale URL of its own — where the stored preference stays in charge.
  */
 const fromPath = (): LocaleCode | null => {
   try {
     const split = splitLocalePath(globalThis.location?.pathname ?? "/");
-    return split.prefixed ? split.locale : null;
+    if (split.prefixed) return split.locale;
+    return isLocalizedPath(split.path) ? "en" : null;
   } catch {
     return null;
   }
@@ -92,7 +102,13 @@ type Ctx = {
 const I18nContext = createContext<Ctx | null>(null);
 
 export function I18nProvider({ children }: { children: React.ReactNode }) {
-  const [override, setOverride] = useState<LocaleCode | null>(() => fromQuery() ?? read());
+  // The URL's locale seeds the override as well as the render. Arriving on a
+  // locale URL is a language choice (the effect below stores it), so the picker
+  // has to show its tick against that language from the first paint rather than
+  // looking like nothing is selected.
+  const [override, setOverride] = useState<LocaleCode | null>(
+    () => fromPath() ?? fromQuery() ?? read(),
+  );
   const [workspace, setWorkspace] = useState<LocaleCode>("en");
 
   // Fixed for the life of the document: a locale change navigates, so this is
