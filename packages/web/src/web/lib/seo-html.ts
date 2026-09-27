@@ -36,14 +36,22 @@ function attr(value: string): string {
 
 /** Escapes text going between tags — `<title>` is the only one here. */
 function text(value: string): string {
-  return value.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+  return value
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;");
 }
 
 /**
  * Replaces the `content` of a meta tag matched by one attribute, or appends the
  * tag when the shell has none.
  */
-function setMeta(html: string, kind: "name" | "property", key: string, value: string): string {
+function setMeta(
+  html: string,
+  kind: "name" | "property",
+  key: string,
+  value: string,
+): string {
   const tag = new RegExp(`<meta\\s+${kind}="${key}"[^>]*>`, "i");
   const replacement = `<meta ${kind}="${key}" content="${attr(value)}" />`;
   if (tag.test(html)) return html.replace(tag, replacement);
@@ -110,8 +118,25 @@ export function injectSeoIntoHtml(html: string, pathname: string): string {
     }
   }
 
+  // Chrome offers to translate any page whose language is not the one the
+  // browser is set to, and for a visitor with "always translate" on for this
+  // language it just does it — silently, before they see a word of it. On a page
+  // we translated ourselves that is a regression the visitor cannot explain:
+  // they pick Polish, the URL and the picker both say Polish, and Chrome hands
+  // them a machine translation of our Polish back into English.
+  //
+  // So a page we serve in a non-English language opts out. English pages do not:
+  // a Polish speaker landing on `/` has nothing better than Chrome's offer, and
+  // taking it away would be worse than leaving it.
+  if (pageLocale !== "en") {
+    out = setMeta(out, "name", "google", "notranslate");
+  }
+
   if (seo.title) {
-    out = out.replace(/<title>[\s\S]*?<\/title>/i, `<title>${text(seo.title)}</title>`);
+    out = out.replace(
+      /<title>[\s\S]*?<\/title>/i,
+      `<title>${text(seo.title)}</title>`,
+    );
     out = setMeta(out, "property", "og:title", seo.title);
     out = setMeta(out, "name", "twitter:title", seo.title);
   }
@@ -172,7 +197,10 @@ export function injectSeoIntoHtml(html: string, pathname: string): string {
   // untranslated path under a prefix still renders English — and canonicalizes
   // to English above — so it gets English markup: the mismatch is closed in
   // both directions.
-  for (const block of [...jsonLdForPath(path), ...marketingJsonLd(path, pageLocale)]) {
+  for (const block of [
+    ...jsonLdForPath(path),
+    ...marketingJsonLd(path, pageLocale),
+  ]) {
     out = appendToHead(out, jsonLdScript(block, pathname));
   }
 

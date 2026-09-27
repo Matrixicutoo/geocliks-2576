@@ -530,3 +530,37 @@ every internal header href now carries the prefix (`/pl#top`, `/pl/blog`,
 `/pl#top` still in Polish, the mobile menu's expanded groups match, and the
 English page is unchanged at `/#top`. `switch.py` 0 failures, the 50-check page
 regression 0 failures, tsc clean, lint at the 9-error baseline.
+
+## Fix: Chrome was translating our translations back into English
+
+The report was "Polish stays English", and it was not the site. The screenshot
+showed Chrome's own bar — "Translated to English / Undo" — above a header whose
+picker read "Pl". The page was Polish. Chrome, set to always translate Polish
+for that visitor, had machine-translated it back to English before they saw it,
+which is why the copy read "Price-list" and "Deliveries" where our English
+catalog says "Pricing" and "Delivery".
+
+Chrome offers this on any page whose language differs from the browser's, which
+is exactly every page this locale work added. On a page we translated ourselves
+the offer is wrong: the visitor already chose the language, twice — the picker
+and the URL both say so.
+
+So a page rendering a non-English locale now carries
+`<meta name="google" content="notranslate">`:
+
+- `seo-html.ts` writes it server-side whenever `pageLocale !== "en"`, which is
+  the locale URLs, and before any JavaScript runs — Chrome decides whether to
+  translate at load, so the tag has to be in the response, not added later;
+- the provider in `i18n.tsx` adds and removes the same tag as the locale
+  changes, covering the pages with no locale URL of their own — the Help
+  Center, the workspace — where the language is only ever picked client-side.
+
+English pages deliberately keep the offer: a Polish speaker landing on `/` has
+nothing better than Chrome's translation, and suppressing it there would be a
+loss.
+
+Verified against the dev server: `/pl/pricing`, `/pl/` and `/de/about` carry the
+tag in the raw HTML response, `/pricing`, `/` and `/help` do not. Driving the
+picker on `/help` — English, Polish, English — the tag appears and disappears
+with the language, 0 failures. `switch.py` 0 failures, tsc clean, lint at the
+9-error baseline.

@@ -1,4 +1,11 @@
-import { createContext, useCallback, useContext, useEffect, useMemo, useState } from "react";
+import {
+  createContext,
+  useCallback,
+  useContext,
+  useEffect,
+  useMemo,
+  useState,
+} from "react";
 import { type LocaleCode, asLocale, isRtl } from "../../api/lib/locales";
 import { isLocalizedPath, splitLocalePath } from "./locale-url";
 import { type TKey, CATALOGS, fill } from "./catalogs";
@@ -31,7 +38,9 @@ const read = (): LocaleCode | null => {
  */
 const fromQuery = (): LocaleCode | null => {
   try {
-    const value = new URLSearchParams(globalThis.location?.search ?? "").get("lang");
+    const value = new URLSearchParams(globalThis.location?.search ?? "").get(
+      "lang",
+    );
     if (!value) return null;
     const code = asLocale(value);
     // `asLocale` answers English for anything it does not recognise, which would let a typo
@@ -83,7 +92,10 @@ let active: LocaleCode = fromPath() ?? fromQuery() ?? read() ?? "en";
 
 export const activeLocale = (): LocaleCode => active;
 
-export type Translate = (key: TKey, vars?: Record<string, string | number>) => string;
+export type Translate = (
+  key: TKey,
+  vars?: Record<string, string | number>,
+) => string;
 
 type Ctx = {
   /** The locale currently rendered. */
@@ -144,7 +156,11 @@ export function I18nProvider({ children }: { children: React.ReactNode }) {
     }
     const url = new URL(globalThis.location.href);
     url.searchParams.delete("lang");
-    globalThis.history?.replaceState(null, "", `${url.pathname}${url.search}${url.hash}`);
+    globalThis.history?.replaceState(
+      null,
+      "",
+      `${url.pathname}${url.search}${url.hash}`,
+    );
   }, []);
 
   useEffect(() => {
@@ -153,6 +169,27 @@ export function I18nProvider({ children }: { children: React.ReactNode }) {
     if (!root) return;
     root.lang = locale;
     root.dir = rtl ? "rtl" : "ltr";
+    // Opt out of Chrome's auto-translate while we are rendering a language we
+    // translated ourselves — otherwise a visitor with "always translate Polish"
+    // set is handed a machine translation of our Polish and never sees it.
+    // `seo-html.ts` writes the same tag server-side for the locale URLs; this
+    // covers the pages with no locale URL of their own, where the language is
+    // only ever chosen in the client. Removed again for English, so a visitor
+    // reading English still gets Chrome's offer.
+    const head = globalThis.document?.head;
+    if (!head) return;
+    const existing = head.querySelector<HTMLMetaElement>(
+      'meta[name="google"][content="notranslate"]',
+    );
+    if (locale === "en") {
+      existing?.remove();
+      return;
+    }
+    if (existing) return;
+    const meta = globalThis.document.createElement("meta");
+    meta.name = "google";
+    meta.content = "notranslate";
+    head.append(meta);
   }, [locale, rtl]);
 
   const setLocale = useCallback((next: LocaleCode) => {
