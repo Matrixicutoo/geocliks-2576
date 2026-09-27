@@ -290,6 +290,7 @@ export const de: Catalog = {
   "home.footer.desc":
     "Manipulationssichere Fotodokumentation für Außenteams. Netzwerkverifizierte Zeitstempel, GPS und Straßenadresse auf jedem Foto, professionelle Berichte mit einem Klick.",
   "home.footer.product": "Produkt",
+  "home.footer.solutions": "Lösungen",
   "home.footer.company": "Unternehmen",
   "home.footer.evidence": "Manipulationssichere Beweise",
   "home.footer.exports": "Berichte & Exporte",

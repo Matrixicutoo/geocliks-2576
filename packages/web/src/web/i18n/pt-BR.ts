@@ -291,6 +291,7 @@ export const ptBR: Catalog = {
   "home.footer.desc":
     "Documentação fotográfica inviolável para equipes de campo. Data e hora verificadas pela rede, GPS e endereço em cada foto, relatórios profissionais em um clique.",
   "home.footer.product": "Produto",
+  "home.footer.solutions": "Soluções",
   "home.footer.company": "Empresa",
   "home.footer.evidence": "Provas invioláveis",
   "home.footer.exports": "Relatórios e exportações",

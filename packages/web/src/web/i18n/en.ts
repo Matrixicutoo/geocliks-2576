@@ -298,6 +298,7 @@ export const en = {
   "home.footer.desc":
     "Tamper-proof photo documentation for field teams. Network-verified timestamps, GPS and street address on every photo, professional reports in one click.",
   "home.footer.product": "Product",
+  "home.footer.solutions": "Solutions",
   "home.footer.company": "Company",
   "home.footer.evidence": "Tamper-proof evidence",
   "home.footer.exports": "Reports & exports",

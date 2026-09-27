@@ -64,9 +64,21 @@ function NavMenu({ label, items }: { label: TKey; items: MenuItem[] }) {
         />
       </button>
 
-      {open && (
-        <div className="absolute start-0 top-full z-50 w-[248px] rounded-[12px] border border-line bg-ink-2 py-1 shadow-2xl">
-          {items.map((item) =>
+      {/* Always mounted, hidden with CSS rather than unmounted while closed.
+          `{open && …}` meant these links were in the document only for someone
+          who had hovered the button — so to a crawler the Resources menu linked
+          nothing, and the pages behind it
+          (`/construction-photo-documentation` among them) were orphans that
+          only the sitemap mentioned. Googlebot executes the JavaScript; it does
+          not hover. `hidden` keeps it out of the accessibility tree and off the
+          screen, which is what the unmount was there for. */}
+      <div
+        className={cn(
+          "absolute start-0 top-full z-50 w-[248px] rounded-[12px] border border-line bg-ink-2 py-1 shadow-2xl",
+          !open && "hidden",
+        )}
+      >
+        {items.map((item) =>
             item.external ? (
               <a
                 key={item.href}
@@ -87,10 +99,9 @@ function NavMenu({ label, items }: { label: TKey; items: MenuItem[] }) {
               >
                 {t(item.label)}
               </a>
-            ),
-          )}
-        </div>
-      )}
+          ),
+        )}
+      </div>
     </div>
   );
 }

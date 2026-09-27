@@ -64,6 +64,37 @@ function SocialRow() {
   );
 }
 
+/**
+ * The eight search landing pages, as crawlable links.
+ *
+ * These exist because they were orphans. Search Console told the story plainly:
+ * every page linked from this footer — `/`, `/pricing`, `/about` — is indexed,
+ * and every page that was not is either "Discovered" or "Crawled – currently
+ * not indexed". `/proof-of-delivery`'s only referring page was the sitemap
+ * itself. A sitemap is a hint about what exists; a link is the thing a crawler
+ * follows and the thing that says a page is worth reaching. Nine pages had the
+ * hint and none of the link.
+ *
+ * The header's Resources dropdown was not enough and is why this was easy to
+ * miss in a browser: it renders its items only while open, so the links were in
+ * the page for anyone who hovered and in the DOM for nobody who didn't.
+ * Googlebot runs the JavaScript; it does not hover.
+ *
+ * The label is each page's own `eyebrow` — the phrase it already leads with, in
+ * whatever language the visitor is reading. Reused rather than written fresh so
+ * the anchor text matches the page it points at and needs no new translation.
+ */
+const LANDING_LINKS: Array<{ to: string; label: string }> = [
+  { to: "/proof-of-delivery", label: "pod.eyebrow" },
+  { to: "/construction-photo-documentation", label: "con.eyebrow" },
+  { to: "/roofing-photo-documentation", label: "rf.eyebrow" },
+  { to: "/hvac-photo-documentation", label: "hvac.eyebrow" },
+  { to: "/property-inspection-photos", label: "inspection.eyebrow" },
+  { to: "/gps-timestamp-camera", label: "gps.eyebrow" },
+  { to: "/alternatives/companycam", label: "cc.eyebrow" },
+  { to: "/alternatives/timemark", label: "tm.eyebrow" },
+];
+
 export function SiteFooter() {
   const { locale, t } = useLocale();
   // Signing in is the assistant's only gate — every plan carries it. Signed out the link stays
@@ -72,7 +103,7 @@ export function SiteFooter() {
   return (
     <footer className="bg-ink">
       <div className="mx-auto max-w-[1180px] px-5 py-14">
-        <div className="grid gap-10 md:grid-cols-[1.4fr_1fr_1fr]">
+        <div className="grid gap-10 md:grid-cols-2 lg:grid-cols-[1.4fr_1fr_1fr_1fr]">
           <div>
             <Logo />
             <p className="mt-4 max-w-sm text-[13.5px] leading-relaxed text-fog">
@@ -117,6 +148,20 @@ export function SiteFooter() {
                   {ASSISTANT_NAME}
                 </button>
               )}
+            </div>
+          </div>
+          <div>
+            <p className="label">{t("home.footer.solutions")}</p>
+            <div className="mt-3 flex flex-col gap-2 text-[13px] text-fog">
+              {LANDING_LINKS.map((link) => (
+                <Link
+                  key={link.to}
+                  to={link.to}
+                  className="transition-colors hover:text-chalk"
+                >
+                  {t(link.label)}
+                </Link>
+              ))}
             </div>
           </div>
           <div>

@@ -291,6 +291,7 @@ export const es: Catalog = {
   "home.footer.desc":
     "Documentación fotográfica a prueba de manipulación para equipos de campo. Hora verificada por la red, GPS y dirección en cada foto, informes profesionales en un clic.",
   "home.footer.product": "Producto",
+  "home.footer.solutions": "Soluciones",
   "home.footer.company": "Empresa",
   "home.footer.evidence": "Evidencia a prueba de manipulación",
   "home.footer.exports": "Informes y exportaciones",

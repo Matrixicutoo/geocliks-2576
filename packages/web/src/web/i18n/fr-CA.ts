@@ -290,6 +290,7 @@ export const frCA: Catalog = {
   "home.footer.desc":
     "Documentation photo inviolable pour les équipes de terrain. Horodatage vérifié par le réseau, GPS et adresse civique sur chaque photo, rapports professionnels en un clic.",
   "home.footer.product": "Produit",
+  "home.footer.solutions": "Solutions",
   "home.footer.company": "Entreprise",
   "home.footer.evidence": "Preuves inviolables",
   "home.footer.exports": "Rapports et exportations",

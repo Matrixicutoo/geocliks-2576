@@ -290,6 +290,7 @@ export const tl: Catalog = {
   "home.footer.desc":
     "Dokumentasyong larawan na hindi mapapalitan para sa field teams. Oras na beripikado ng network, GPS at street address sa bawat larawan, propesyonal na ulat sa isang click.",
   "home.footer.product": "Produkto",
+  "home.footer.solutions": "Mga solusyon",
   "home.footer.company": "Kompanya",
   "home.footer.evidence": "Ebidensyang hindi mapapalitan",
   "home.footer.exports": "Mga ulat at export",

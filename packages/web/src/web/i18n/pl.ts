@@ -286,6 +286,7 @@ export const pl: Catalog = {
   "home.footer.desc":
     "Nienaruszalna dokumentacja zdjęciowa dla ekip w terenie. Znaczniki czasu weryfikowane przez sieć, GPS i adres na każdym zdjęciu, profesjonalne raporty jednym kliknięciem.",
   "home.footer.product": "Produkt",
+  "home.footer.solutions": "Rozwiązania",
   "home.footer.company": "Firma",
   "home.footer.evidence": "Dowody zabezpieczone przed manipulacją",
   "home.footer.exports": "Raporty i eksporty",

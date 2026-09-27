@@ -273,6 +273,7 @@ export const ar: Catalog = {
   "home.footer.desc":
     "توثيق صور غير قابل للتلاعب لفِرق الميدان. طوابع زمنية موثّقة عبر الشبكة، وGPS وعنوان الشارع على كل صورة، وتقارير احترافية بنقرة واحدة.",
   "home.footer.product": "المنتج",
+  "home.footer.solutions": "الحلول",
   "home.footer.company": "الشركة",
   "home.footer.evidence": "أدلة غير قابلة للتلاعب",
   "home.footer.exports": "التقارير والتصدير",

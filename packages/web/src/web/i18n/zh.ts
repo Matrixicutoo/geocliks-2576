@@ -265,6 +265,7 @@ export const zh: Catalog = {
   "home.footer.desc":
     "为现场团队打造的防篡改照片记录。每张照片都有经网络验证的时间戳、GPS 和街道地址，一键生成专业报告。",
   "home.footer.product": "产品",
+  "home.footer.solutions": "解决方案",
   "home.footer.company": "公司",
   "home.footer.evidence": "防篡改证据",
   "home.footer.exports": "报告与导出",

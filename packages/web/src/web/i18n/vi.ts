@@ -283,6 +283,7 @@ export const vi: Catalog = {
   "home.footer.desc":
     "Tài liệu ảnh chống giả mạo cho đội hiện trường. Mốc thời gian được mạng xác thực, GPS và địa chỉ trên mọi ảnh, báo cáo chuyên nghiệp chỉ một cú nhấp.",
   "home.footer.product": "Sản phẩm",
+  "home.footer.solutions": "Giải pháp",
   "home.footer.company": "Công ty",
   "home.footer.evidence": "Bằng chứng chống giả mạo",
   "home.footer.exports": "Báo cáo & xuất tệp",

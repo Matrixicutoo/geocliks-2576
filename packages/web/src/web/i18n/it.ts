@@ -289,6 +289,7 @@ export const it: Catalog = {
   "home.footer.desc":
     "Documentazione fotografica a prova di manomissione per le squadre sul campo. Orari verificati dalla rete, GPS e indirizzo su ogni foto, report professionali con un clic.",
   "home.footer.product": "Prodotto",
+  "home.footer.solutions": "Soluzioni",
   "home.footer.company": "Azienda",
   "home.footer.evidence": "Prove a prova di manomissione",
   "home.footer.exports": "Report ed esportazioni",
