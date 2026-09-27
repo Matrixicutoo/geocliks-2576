@@ -145,6 +145,7 @@ export const de: Catalog = {
   "home.nav.pricing": "Preise",
   "home.nav.startFree": "Kostenlos starten",
   "home.hero.eyebrow": "Netzwerkverifizierte Fotobeweise",
+  "home.hero.stillAlt": "Dachdecker auf einem Schindeldach nimmt ein von GeoCliks verifiziertes Baustellenfoto auf.",
   "home.hero.title1": "Der Beweis, dass Ihre Arbeit",
   "home.hero.title2": "erledigt ist.",
 

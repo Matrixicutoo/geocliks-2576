@@ -144,6 +144,7 @@ export const zh: Catalog = {
   "home.nav.pricing": "价格",
   "home.nav.startFree": "免费开始",
   "home.hero.eyebrow": "经网络验证的照片证据",
+  "home.hero.stillAlt": "屋顶工人在瓦片屋顶上拍摄经 GeoCliks 验证的施工照片。",
   "home.hero.title1": "证明你的工作",
   "home.hero.title2": "确实完成了。",
 

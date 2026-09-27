@@ -156,6 +156,7 @@ export const en = {
   "home.nav.pricing": "Pricing",
   "home.nav.startFree": "Start free",
   "home.hero.eyebrow": "Network-verified photo evidence",
+  "home.hero.stillAlt": "Roofer on a shingle roof capturing a GeoCliks-verified job photo.",
   "home.hero.title1": "Proof your work",
   "home.hero.title2": "happened.",
 

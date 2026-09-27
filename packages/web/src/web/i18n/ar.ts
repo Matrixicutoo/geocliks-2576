@@ -145,6 +145,7 @@ export const ar: Catalog = {
   "home.nav.pricing": "الأسعار",
   "home.nav.startFree": "ابدأ مجانًا",
   "home.hero.eyebrow": "أدلة صور موثّقة عبر الشبكة",
+  "home.hero.stillAlt": "عامل أسطح على سطح من القرميد يصوّر صورة عمل موثّقة من GeoCliks.",
   "home.hero.title1": "إثبات أن عملك",
   "home.hero.title2": "قد أُنجز.",
 

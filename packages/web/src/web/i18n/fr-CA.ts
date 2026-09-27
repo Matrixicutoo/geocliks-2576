@@ -146,6 +146,7 @@ export const frCA: Catalog = {
   "home.nav.pricing": "Tarifs",
   "home.nav.startFree": "Commencer gratuitement",
   "home.hero.eyebrow": "Preuves photo vérifiées par le réseau",
+  "home.hero.stillAlt": "Couvreur sur un toit en bardeaux qui prend une photo de chantier vérifiée par GeoCliks.",
   "home.hero.title1": "La preuve que votre travail",
   "home.hero.title2": "a bien eu lieu.",
 

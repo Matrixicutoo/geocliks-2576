@@ -146,6 +146,7 @@ export const es: Catalog = {
   "home.nav.pricing": "Precios",
   "home.nav.startFree": "Empezar gratis",
   "home.hero.eyebrow": "Evidencia fotográfica verificada por red",
+  "home.hero.stillAlt": "Techador en un tejado de tejas tomando una foto de obra verificada por GeoCliks.",
   "home.hero.title1": "La prueba de que tu trabajo",
   "home.hero.title2": "se hizo.",
 

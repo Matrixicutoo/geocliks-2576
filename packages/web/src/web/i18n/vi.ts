@@ -145,6 +145,7 @@ export const vi: Catalog = {
   "home.nav.pricing": "Giá",
   "home.nav.startFree": "Bắt đầu miễn phí",
   "home.hero.eyebrow": "Bằng chứng ảnh được mạng xác thực",
+  "home.hero.stillAlt": "Thợ lợp mái chụp ảnh công trường được GeoCliks xác minh trên mái ngói.",
   "home.hero.title1": "Bằng chứng công việc của bạn",
   "home.hero.title2": "đã thực sự diễn ra.",
 

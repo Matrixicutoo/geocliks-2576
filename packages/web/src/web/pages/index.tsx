@@ -128,13 +128,15 @@ function Hero() {
         <source media="(min-aspect-ratio: 37/20)" srcSet={HERO_CUTS.wide.poster} />
         {/* The `alt` describes the shot rather than being empty, because this file
             is a real photograph and the site's largest image, so it is worth
-            something in image search. `aria-hidden` stays: to a screen reader it
-            is decoration sitting under copy that says the same thing out loud, and
-            `aria-hidden` is what keeps it out of that reading — an `alt` on a
-            hidden element is read by crawlers, not announced. */}
+            something in image search. Translated like every other string: it is
+            the one piece of hero copy a reader never sees, which is exactly why
+            it was the one left in English. `aria-hidden` stays: to a screen
+            reader it is decoration sitting under copy that says the same thing
+            out loud, and `aria-hidden` is what keeps it out of that reading — an
+            `alt` on a hidden element is read by crawlers, not announced. */}
         <img
           src={HERO_CUTS.standard.poster}
-          alt="Roofer on a shingle roof capturing a GeoCliks-verified job photo."
+          alt={t("home.hero.stillAlt")}
           aria-hidden="true"
           className="hero-still pointer-events-none absolute inset-0 size-full object-cover"
           fetchPriority="high"

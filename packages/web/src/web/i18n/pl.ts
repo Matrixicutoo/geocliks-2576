@@ -145,6 +145,7 @@ export const pl: Catalog = {
   "home.nav.pricing": "Cennik",
   "home.nav.startFree": "Zacznij bezpłatnie",
   "home.hero.eyebrow": "Dowody fotograficzne weryfikowane przez sieć",
+  "home.hero.stillAlt": "Dachowiec na dachu z gontów robi zdjęcie z budowy zweryfikowane przez GeoCliks.",
   "home.hero.title1": "Dowód, że twoja praca",
   "home.hero.title2": "się wydarzyła.",
 

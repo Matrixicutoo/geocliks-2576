@@ -146,6 +146,7 @@ export const ptBR: Catalog = {
   "home.nav.pricing": "Preços",
   "home.nav.startFree": "Começar grátis",
   "home.hero.eyebrow": "Provas fotográficas verificadas pela rede",
+  "home.hero.stillAlt": "Telhadista em um telhado de telhas fazendo uma foto de obra verificada pela GeoCliks.",
   "home.hero.title1": "A prova de que seu trabalho",
   "home.hero.title2": "aconteceu.",
 

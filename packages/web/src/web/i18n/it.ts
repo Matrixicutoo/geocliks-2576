@@ -146,6 +146,7 @@ export const it: Catalog = {
   "home.nav.pricing": "Prezzi",
   "home.nav.startFree": "Inizia gratis",
   "home.hero.eyebrow": "Prove fotografiche verificate dalla rete",
+  "home.hero.stillAlt": "Conciatetti su un tetto in tegole che scatta una foto di cantiere verificata da GeoCliks.",
   "home.hero.title1": "La prova che il tuo lavoro",
   "home.hero.title2": "è stato fatto.",
 

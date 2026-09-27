@@ -147,6 +147,7 @@ export const tl: Catalog = {
   "home.nav.pricing": "Presyo",
   "home.nav.startFree": "Magsimula nang libre",
   "home.hero.eyebrow": "Ebidensyang larawan na beripikado ng network",
+  "home.hero.stillAlt": "Roofer sa bubong na shingle na kumukuha ng larawan ng trabahong beripikado ng GeoCliks.",
   "home.hero.title1": "Patunay na ang trabaho mo",
   "home.hero.title2": "ay totoong nangyari.",
 
