@@ -126,9 +126,15 @@ function Hero() {
           and `media` picks the right cut before React has even run. */}
       <picture className="contents">
         <source media="(min-aspect-ratio: 37/20)" srcSet={HERO_CUTS.wide.poster} />
+        {/* The `alt` describes the shot rather than being empty, because this file
+            is a real photograph and the site's largest image, so it is worth
+            something in image search. `aria-hidden` stays: to a screen reader it
+            is decoration sitting under copy that says the same thing out loud, and
+            `aria-hidden` is what keeps it out of that reading — an `alt` on a
+            hidden element is read by crawlers, not announced. */}
         <img
           src={HERO_CUTS.standard.poster}
-          alt=""
+          alt="Roofer on a shingle roof capturing a GeoCliks-verified job photo."
           aria-hidden="true"
           className="hero-still pointer-events-none absolute inset-0 size-full object-cover"
           fetchPriority="high"

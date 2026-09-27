@@ -32,4 +32,5 @@ export const LEGAL_EFFECTIVE_DATE = "September 4, 2026";
 export const BRAND_PROFILES = [
   "https://www.facebook.com/geocliks",
   "https://www.linkedin.com/company/geo-cliks",
+  "https://x.com/GeoCliks",
 ];

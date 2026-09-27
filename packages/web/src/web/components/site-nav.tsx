@@ -196,7 +196,6 @@ export function SiteNav() {
   // The home page's section anchors are plain anchors, not routed links, so they
   // need the locale segment put back on by hand — see `localizedHref`.
   const home = localizedHref("/#top", locale);
-  const delivery = localizedHref("/#delivery", locale);
   const [mobileOpen, setMobileOpen] = useState(false);
   const close = () => setMobileOpen(false);
   return (
@@ -220,12 +219,16 @@ export function SiteNav() {
             {t("home.nav.home")}
           </a>
           <NavMenu label="home.nav.features" items={FEATURE_ITEMS} />
-          <a
-            href={delivery}
+          {/* The page, not the home-page section: `/proof-of-delivery` is the
+              real page on the subject, is translated in all eleven locales and is
+              a URL a crawler can index — `/#delivery` was a teaser band that led
+              nowhere. A routed <Link> keeps the locale prefix on its own. */}
+          <Link
+            to="/proof-of-delivery"
             className="py-2 text-[14px] font-semibold text-white transition-colors hover:text-amber"
           >
             {t("home.nav.delivery")}
-          </a>
+          </Link>
           {/* A route now, not a fragment: the plans, their limits and the comparison
               table all live on /pricing. */}
           <Link
@@ -292,9 +295,9 @@ export function SiteNav() {
               items={FEATURE_ITEMS}
               onNavigate={close}
             />
-            <a href={delivery} onClick={close} className={mobileLink}>
+            <Link to="/proof-of-delivery" onClick={close} className={mobileLink}>
               {t("home.nav.delivery")}
-            </a>
+            </Link>
             <Link to="/pricing" onClick={close} className={mobileLink}>
               {t("home.nav.pricing")}
             </Link>
