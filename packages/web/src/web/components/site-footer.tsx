@@ -1,8 +1,13 @@
 import { Link } from "wouter";
 import { Facebook, Instagram, Linkedin, Youtube } from "lucide-react";
 import { Logo } from "./logo";
-import { ASSISTANT_NAME, openAssistant, useAssistantAccess } from "../lib/assistant";
-import { useT } from "../lib/i18n";
+import {
+  ASSISTANT_NAME,
+  openAssistant,
+  useAssistantAccess,
+} from "../lib/assistant";
+import { useLocale } from "../lib/i18n";
+import { localizedHref } from "../lib/locale-url";
 import { SALES_EMAIL, SUPPORT_EMAIL } from "../lib/support";
 import { useSocialLinks } from "../queries/site";
 
@@ -13,7 +18,12 @@ import { useSocialLinks } from "../queries/site";
  */
 function XIcon({ className }: { className?: string }) {
   return (
-    <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" className={className}>
+    <svg
+      viewBox="0 0 24 24"
+      fill="currentColor"
+      aria-hidden="true"
+      className={className}
+    >
       <path d="M17.53 3h3.06l-6.69 7.64L21.75 21h-6.16l-4.82-6.3L5.25 21H2.19l7.15-8.17L2.25 3h6.31l4.36 5.77L17.53 3Zm-1.07 16.13h1.7L7.62 4.78H5.8l10.66 14.35Z" />
     </svg>
   );
@@ -55,7 +65,7 @@ function SocialRow() {
 }
 
 export function SiteFooter() {
-  const t = useT();
+  const { locale, t } = useLocale();
   // Signing in is the assistant's only gate — every plan carries it. Signed out the link stays
   // off the marketing footer: there is no workspace to ask about yet.
   const hasAssistant = useAssistantAccess();
@@ -73,16 +83,28 @@ export function SiteFooter() {
           <div>
             <p className="label">{t("home.footer.product")}</p>
             <div className="mt-3 flex flex-col gap-2 text-[13px] text-fog">
-              <a href="/#evidence" className="transition-colors hover:text-chalk">
+              <a
+                href={localizedHref("/#evidence", locale)}
+                className="transition-colors hover:text-chalk"
+              >
                 {t("home.footer.evidence")}
               </a>
-              <a href="/#teamspace" className="transition-colors hover:text-chalk">
+              <a
+                href={localizedHref("/#teamspace", locale)}
+                className="transition-colors hover:text-chalk"
+              >
                 {t("home.nav.teamspace")}
               </a>
-              <a href="/#reports" className="transition-colors hover:text-chalk">
+              <a
+                href={localizedHref("/#reports", locale)}
+                className="transition-colors hover:text-chalk"
+              >
                 {t("home.footer.exports")}
               </a>
-              <Link to="/pricing" className="transition-colors hover:text-chalk">
+              <Link
+                to="/pricing"
+                className="transition-colors hover:text-chalk"
+              >
                 {t("home.nav.pricing")}
               </Link>
               {hasAssistant && (
@@ -119,13 +141,22 @@ export function SiteFooter() {
               <Link to="/terms" className="transition-colors hover:text-chalk">
                 {t("home.footer.terms")}
               </Link>
-              <Link to="/privacy" className="transition-colors hover:text-chalk">
+              <Link
+                to="/privacy"
+                className="transition-colors hover:text-chalk"
+              >
                 {t("home.footer.privacy")}
               </Link>
-              <Link to="/delete-account" className="transition-colors hover:text-chalk">
+              <Link
+                to="/delete-account"
+                className="transition-colors hover:text-chalk"
+              >
                 {t("home.footer.deleteAccount")}
               </Link>
-              <Link to="/get-app" className="transition-colors hover:text-chalk">
+              <Link
+                to="/get-app"
+                className="transition-colors hover:text-chalk"
+              >
                 {t("getapp.ctaPrimary")}
               </Link>
               <Link to="/verify" className="transition-colors hover:text-chalk">
@@ -145,16 +176,25 @@ export function SiteFooter() {
                   and the second anchor is the one likely discarded. One link reading
                   "Field Notes — verified photo documentation guides" spends the signal
                   once, on both the brand and the phrase. */}
-              <Link to="/blog" className="group transition-colors hover:text-chalk">
+              <Link
+                to="/blog"
+                className="group transition-colors hover:text-chalk"
+              >
                 {t("home.nav.fieldNotes")}
                 <span className="mt-0.5 block text-[11.5px] leading-snug text-fog/70 transition-colors group-hover:text-fog">
                   {t("home.footer.fieldNotesTag")}
                 </span>
               </Link>
-              <a href={`mailto:${SUPPORT_EMAIL}`} className="transition-colors hover:text-chalk">
+              <a
+                href={`mailto:${SUPPORT_EMAIL}`}
+                className="transition-colors hover:text-chalk"
+              >
                 {SUPPORT_EMAIL}
               </a>
-              <a href={`mailto:${SALES_EMAIL}`} className="transition-colors hover:text-chalk">
+              <a
+                href={`mailto:${SALES_EMAIL}`}
+                className="transition-colors hover:text-chalk"
+              >
                 {SALES_EMAIL}
               </a>
             </div>

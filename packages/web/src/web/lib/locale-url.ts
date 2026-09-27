@@ -118,7 +118,8 @@ export function splitLocalePath(pathname: string): SplitPath {
   const segment = normalized.split("/")[1] ?? "";
   const locale = BY_SEGMENT.get(segment.toLowerCase());
 
-  if (!locale) return { locale: "en", base: "", path: normalized, prefixed: false };
+  if (!locale)
+    return { locale: "en", base: "", path: normalized, prefixed: false };
 
   const rest = normalized.slice(segment.length + 1);
   return {
@@ -142,6 +143,27 @@ export function localizedPath(path: string, locale: LocaleCode): string {
   const segment = LOCALE_SEGMENT[locale];
   if (!segment || !isLocalizedPath(normalized)) return normalized;
   return normalized === "/" ? `/${segment}` : `/${segment}${normalized}`;
+}
+
+/**
+ * The locale-correct form of a link written as a plain `href`.
+ *
+ * `<Link>` gets this for free — wouter's `base` is set to the URL's locale
+ * segment, so every routed link keeps the prefix. A raw `<a href>` does not,
+ * and the header and footer are full of them: the section anchors ("/#top",
+ * "/#delivery") and the dropdown rows. Left alone, a visitor reading Polish who
+ * clicked "Start" was sent to `/#top` — the *English* home page — and the
+ * language looked like it had reset itself on the first click.
+ *
+ * Only the path is translated; a fragment or query rides along untouched. An
+ * external URL, a `mailto:` and a bare "#section" are returned as they came.
+ */
+export function localizedHref(href: string, locale: LocaleCode): string {
+  if (!href.startsWith("/")) return href;
+  const cut = href.search(/[?#]/);
+  const path = cut === -1 ? href : href.slice(0, cut);
+  const suffix = cut === -1 ? "" : href.slice(cut);
+  return `${localizedPath(path === "" ? "/" : path, locale)}${suffix}`;
 }
 
 export interface Alternate {
@@ -174,6 +196,9 @@ export function alternatesFor(path: string): Alternate[] {
 
   // x-default is where a visitor whose language we do not carry should land.
   // English, the same URL as `en` — that duplication is required, not a bug.
-  alternates.push({ hreflang: "x-default", path: localizedPath(normalized, "en") });
+  alternates.push({
+    hreflang: "x-default",
+    path: localizedPath(normalized, "en"),
+  });
   return alternates;
 }

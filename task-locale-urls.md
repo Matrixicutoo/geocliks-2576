@@ -499,3 +499,34 @@ load `/help` — path, `<html lang>`, stored value and `<h1>` checked at every
 step, 0 failures. The same script against the reverted code fails steps 2 and 4
 with `lang=es` and `lang=de` at `/pricing`, which is the bug as reported. Full
 page regression still 50/50, tsc clean, lint at the 9-error baseline.
+
+## Fix: the first nav click threw the visitor back to English
+
+Reported as "Polish doesn't change", and it is worth writing down why it looked
+like one language: the locale held until the visitor clicked something in the
+header, and the item they clicked first was "Home".
+
+`<Link>` is safe by construction — wouter's `base` is the URL's locale segment,
+so a routed link keeps the prefix. A raw `<a href>` gets none of that, and the
+header and footer are full of them: the section anchors (`/#top`,
+`/#delivery`, `/#evidence`, `/#teamspace`, `/#reports`) and every row of the
+Features, Resources and Support dropdowns. Reading `/pl/pricing` and clicking
+"Start" sent the visitor to `/#top` — the English home page — which stored
+nothing wrong and broke nothing, but read as the picker having reset itself.
+
+`localizedHref(href, locale)` in `lib/locale-url.ts` translates the path of a
+plain href and leaves its fragment and query alone. An external URL, a
+`mailto:` and a bare `#section` come back untouched, and a path outside
+`LOCALIZED_PATHS` stays bare — `/verify`, `/help`, `/terms`, `/privacy` and
+`/delete-account` have no locale URL to point at, and the Help Center follows
+the stored preference instead.
+
+Applied in `site-nav.tsx` (desktop anchors, `NavMenu`, `MobileGroup`) and
+`site-footer.tsx`.
+
+Verified in Chrome against the dev server: on `/pl/pricing` and `/de/pricing`
+every internal header href now carries the prefix (`/pl#top`, `/pl/blog`,
+`/pl/about`, `/pl/alternatives/companycam`), clicking "Start" lands on
+`/pl#top` still in Polish, the mobile menu's expanded groups match, and the
+English page is unchanged at `/#top`. `switch.py` 0 failures, the 50-check page
+regression 0 failures, tsc clean, lint at the 9-error baseline.

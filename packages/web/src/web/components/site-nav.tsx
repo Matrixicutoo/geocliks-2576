@@ -4,7 +4,8 @@ import { ChevronDown, Menu as MenuIcon, X as CloseIcon } from "lucide-react";
 import { Logo } from "./logo";
 import { LanguageSelect } from "./language-select";
 import { authClient } from "../lib/auth";
-import { type TKey, useT } from "../lib/i18n";
+import { type TKey, useLocale } from "../lib/i18n";
+import { localizedHref } from "../lib/locale-url";
 import { cn } from "../lib/utils";
 import { SALES_EMAIL, SUPPORT_EMAIL } from "../lib/support";
 
@@ -24,7 +25,7 @@ type MenuItem = { label: TKey; href: string; external?: boolean };
  * so it inherits the dark tokens from the header's `data-theme` scope.
  */
 function NavMenu({ label, items }: { label: TKey; items: MenuItem[] }) {
-  const t = useT();
+  const { locale, t } = useLocale();
   const [open, setOpen] = useState(false);
   const wrap = useRef<HTMLDivElement>(null);
 
@@ -58,7 +59,9 @@ function NavMenu({ label, items }: { label: TKey; items: MenuItem[] }) {
         className="flex items-center gap-1 py-2 text-[14px] font-semibold text-white transition-colors hover:text-amber"
       >
         {t(label)}
-        <ChevronDown className={cn("size-3.5 transition-transform", open && "rotate-180")} />
+        <ChevronDown
+          className={cn("size-3.5 transition-transform", open && "rotate-180")}
+        />
       </button>
 
       {open && (
@@ -78,7 +81,7 @@ function NavMenu({ label, items }: { label: TKey; items: MenuItem[] }) {
             ) : (
               <a
                 key={item.href}
-                href={item.href}
+                href={localizedHref(item.href, locale)}
                 className="rounded-[8px] block px-4 py-2.5 text-[13px] text-fog transition-colors hover:bg-ink-3 hover:text-chalk"
                 onClick={() => setOpen(false)}
               >
@@ -110,7 +113,10 @@ const RESOURCE_ITEMS: MenuItem[] = [
   // Apex host, to match every canonical on the site — see the note in site-footer.
   { label: "home.nav.website", href: "https://geocliks.com/", external: true },
   { label: "home.nav.help", href: "/help" },
-  { label: "home.nav.constructionDocs", href: "/construction-photo-documentation" },
+  {
+    label: "home.nav.constructionDocs",
+    href: "/construction-photo-documentation",
+  },
   { label: "home.nav.about", href: "/about" },
   { label: "home.nav.vsCompanycam", href: "/alternatives/companycam" },
   { label: "home.nav.vsTimemark", href: "/alternatives/timemark" },
@@ -146,7 +152,7 @@ function MobileGroup({
   items: MenuItem[];
   onNavigate: () => void;
 }) {
-  const t = useT();
+  const { locale, t } = useLocale();
   const [open, setOpen] = useState(false);
   return (
     <div className="border-b border-white/5">
@@ -157,15 +163,21 @@ function MobileGroup({
         className="flex w-full items-center justify-between py-3 text-[15px] font-semibold text-white transition-colors hover:text-amber"
       >
         {t(label)}
-        <ChevronDown className={cn("size-4 transition-transform", open && "rotate-180")} />
+        <ChevronDown
+          className={cn("size-4 transition-transform", open && "rotate-180")}
+        />
       </button>
       {open && (
         <div className="pb-2 ps-3">
           {items.map((item) => (
             <a
               key={item.href}
-              href={item.href}
-              {...(item.external ? { target: "_blank", rel: "noreferrer" } : {})}
+              href={
+                item.external ? item.href : localizedHref(item.href, locale)
+              }
+              {...(item.external
+                ? { target: "_blank", rel: "noreferrer" }
+                : {})}
               onClick={onNavigate}
               className="block py-2 text-[14px] text-white/70 transition-colors hover:text-amber"
             >
@@ -180,7 +192,11 @@ function MobileGroup({
 
 export function SiteNav() {
   const { data: session } = authClient.useSession();
-  const t = useT();
+  const { locale, t } = useLocale();
+  // The home page's section anchors are plain anchors, not routed links, so they
+  // need the locale segment put back on by hand — see `localizedHref`.
+  const home = localizedHref("/#top", locale);
+  const delivery = localizedHref("/#delivery", locale);
   const [mobileOpen, setMobileOpen] = useState(false);
   const close = () => setMobileOpen(false);
   return (
@@ -198,14 +214,14 @@ export function SiteNav() {
             4px taken off each of six gaps buys back more than the item costs. */}
         <nav className="hidden items-center gap-5 lg:flex xl:gap-6">
           <a
-            href="/#top"
+            href={home}
             className="py-2 text-[14px] font-semibold text-white transition-colors hover:text-amber"
           >
             {t("home.nav.home")}
           </a>
           <NavMenu label="home.nav.features" items={FEATURE_ITEMS} />
           <a
-            href="/#delivery"
+            href={delivery}
             className="py-2 text-[14px] font-semibold text-white transition-colors hover:text-amber"
           >
             {t("home.nav.delivery")}
@@ -251,10 +267,16 @@ export function SiteNav() {
             type="button"
             onClick={() => setMobileOpen((v) => !v)}
             aria-expanded={mobileOpen}
-            aria-label={mobileOpen ? t("home.nav.closeMenu") : t("home.nav.menu")}
+            aria-label={
+              mobileOpen ? t("home.nav.closeMenu") : t("home.nav.menu")
+            }
             className="-me-1 flex size-9 items-center justify-center text-white transition-colors hover:text-amber lg:hidden"
           >
-            {mobileOpen ? <CloseIcon className="size-5" /> : <MenuIcon className="size-5" />}
+            {mobileOpen ? (
+              <CloseIcon className="size-5" />
+            ) : (
+              <MenuIcon className="size-5" />
+            )}
           </button>
         </div>
       </div>
@@ -262,11 +284,15 @@ export function SiteNav() {
       {mobileOpen && (
         <div className="border-t border-white/10 lg:hidden">
           <nav className="mx-auto max-h-[70vh] max-w-[1180px] overflow-y-auto px-4 pb-5 pt-2">
-            <a href="/#top" onClick={close} className={mobileLink}>
+            <a href={home} onClick={close} className={mobileLink}>
               {t("home.nav.home")}
             </a>
-            <MobileGroup label="home.nav.features" items={FEATURE_ITEMS} onNavigate={close} />
-            <a href="/#delivery" onClick={close} className={mobileLink}>
+            <MobileGroup
+              label="home.nav.features"
+              items={FEATURE_ITEMS}
+              onNavigate={close}
+            />
+            <a href={delivery} onClick={close} className={mobileLink}>
               {t("home.nav.delivery")}
             </a>
             <Link to="/pricing" onClick={close} className={mobileLink}>
@@ -275,8 +301,16 @@ export function SiteNav() {
             <Link to="/blog" onClick={close} className={mobileLink}>
               {t("home.nav.blog")}
             </Link>
-            <MobileGroup label="home.nav.resources" items={RESOURCE_ITEMS} onNavigate={close} />
-            <MobileGroup label="home.nav.support" items={SUPPORT_ITEMS} onNavigate={close} />
+            <MobileGroup
+              label="home.nav.resources"
+              items={RESOURCE_ITEMS}
+              onNavigate={close}
+            />
+            <MobileGroup
+              label="home.nav.support"
+              items={SUPPORT_ITEMS}
+              onNavigate={close}
+            />
             <Link
               to={session ? "/app" : "/sign-in"}
               onClick={close}
