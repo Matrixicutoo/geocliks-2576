@@ -145,7 +145,10 @@ export function DashboardShell({
           {
             "--c-ink-2": "var(--c-navy)",
             "--c-ink": "var(--c-navy-soft)",
-            "--c-ink-3": "var(--c-navy-soft)",
+            // Hover/inset fill. It has to be a clear step lighter than `ink` and not navy-soft
+            // again: the settings rows hover at `ink-3/60`, so matching the card underneath
+            // them made the hover invisible. Same hue, lifted.
+            "--c-ink-3": "#2a4166",
           } as React.CSSProperties
         }
         className="sticky top-0 hidden h-screen w-[248px] shrink-0 flex-col overflow-y-auto border-r border-line bg-ink-2 text-chalk lg:flex"
