@@ -25,6 +25,11 @@ export type QueuedPhoto = {
    */
   clockOffsetMs?: number | null;
   clockSyncedAt?: number | null;
+  /**
+   * Real time between that sync and the shutter, from the hardware counter the wall clock
+   * cannot move. Lets the server catch a clock wound forward in the dead zone.
+   */
+  elapsedSinceSyncMs?: number | null;
   projectId: string | null;
   projectName: string | null;
   tag:
@@ -204,6 +209,7 @@ export async function uploadOne(item: QueuedPhoto) {
     // stamp dead-zone deliveries "unverified".
     clockOffsetMs: item.clockOffsetMs ?? null,
     clockSyncedAt: item.clockSyncedAt ?? null,
+    elapsedSinceSyncMs: item.elapsedSinceSyncMs ?? null,
     lat: item.lat,
     lng: item.lng,
     accuracyM: item.accuracyM,

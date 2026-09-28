@@ -288,6 +288,12 @@ export const photos = {
         clockOffsetMs: z.number().nullish(),
         /** Device clock when that offset was measured. */
         clockSyncedAt: z.number().nullish(),
+        /**
+         * Real time between that sync and the shutter, from the device's boot-relative
+         * counter rather than its clock. A clock changed in between makes this disagree
+         * with the wall-clock gap, which is how a forward-wound clock is caught.
+         */
+        elapsedSinceSyncMs: z.number().nullish(),
         lat: z.number().nullish(),
         lng: z.number().nullish(),
         accuracyM: z.number().nullish(),
@@ -366,6 +372,7 @@ export const photos = {
         verifiedAt,
         clockOffsetMs: input.clockOffsetMs,
         clockSyncedAt: input.clockSyncedAt,
+        elapsedSinceSyncMs: input.elapsedSinceSyncMs,
       });
       const skew = clock.skewMs;
       const code = photoCode();
@@ -472,7 +479,15 @@ export const photos = {
           orgId: context.org.id,
           type: "verified",
           actor: "GeoCliks server",
-          detail: `Network time stamped, clock skew ${Math.round(skew / 1000)}s, upload delay ${Math.round(clock.uploadDelayMs / 1000)}s, signature ${signature.slice(0, 16)}…`,
+          // The continuity line is the part an auditor cares about: whether the phone's
+          // own hardware counter agrees that the claimed interval really passed.
+          detail: `Network time stamped, clock skew ${Math.round(skew / 1000)}s, upload delay ${Math.round(clock.uploadDelayMs / 1000)}s, ${
+            clock.continuity === "consistent"
+              ? "elapsed time confirmed by device counter"
+              : clock.continuity === "broken"
+                ? `device clock moved ${Math.round((clock.clockDriftMs ?? 0) / 1000)}s against its own elapsed-time counter`
+                : "elapsed time not measurable on this device"
+          }, signature ${signature.slice(0, 16)}…`,
           at: new Date(verifiedAt),
         },
       ]);

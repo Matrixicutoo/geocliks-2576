@@ -186,6 +186,8 @@ async function sealPunch(entry: {
   lng?: number | null;
   clockOffsetMs?: number | null;
   clockSyncedAt?: number | null;
+  /** Real time since that sync, from the counter no setting can move. */
+  elapsedSinceSyncMs?: number | null;
   source?: "capture" | "manual";
 }) {
   const verifiedAt = Date.now();
@@ -195,6 +197,7 @@ async function sealPunch(entry: {
     verifiedAt,
     clockOffsetMs: entry.clockOffsetMs,
     clockSyncedAt: entry.clockSyncedAt,
+    elapsedSinceSyncMs: entry.elapsedSinceSyncMs,
   });
   const signature = await sign({
     photoCode: code,
@@ -250,6 +253,7 @@ export async function recordPunch(entry: {
   platform?: string | null;
   clockOffsetMs?: number | null;
   clockSyncedAt?: number | null;
+  elapsedSinceSyncMs?: number | null;
 }): Promise<TimeClockRow | null> {
   const window = 2 * 60 * 1000;
   const near = await db
@@ -391,6 +395,12 @@ export const timeClock = {
         /** The drift the phone measured against the server, same pair a photo sends. */
         clockOffsetMs: z.number().nullish(),
         clockSyncedAt: z.number().nullish(),
+        /**
+         * Real time since that sync, from the device's boot-relative counter. A shift
+         * cannot be lengthened by winding the clock forward in a dead zone while this
+         * disagrees with it.
+         */
+        elapsedSinceSyncMs: z.number().nullish(),
         lat: z.number().nullish(),
         lng: z.number().nullish(),
         accuracyM: z.number().nullish(),
@@ -432,6 +442,7 @@ export const timeClock = {
         platform: input.platform ?? null,
         clockOffsetMs: input.clockOffsetMs ?? null,
         clockSyncedAt: input.clockSyncedAt ?? null,
+        elapsedSinceSyncMs: input.elapsedSinceSyncMs ?? null,
       });
       if (!row) throw new ORPCError("INTERNAL_SERVER_ERROR", { message: "Punch not recorded" });
       return row;

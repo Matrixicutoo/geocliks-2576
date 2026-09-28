@@ -24,6 +24,8 @@ export type QueuedPunch = {
   at: number;
   clockOffsetMs: number | null;
   clockSyncedAt: number | null;
+  /** Real time since that sync, measured by the counter no setting can move. */
+  elapsedSinceSyncMs?: number | null;
   lat: number | null;
   lng: number | null;
   accuracyM: number | null;
@@ -79,6 +81,7 @@ export async function drainPunches(): Promise<{ sent: number; left: number }> {
         at: item.at,
         clockOffsetMs: item.clockOffsetMs,
         clockSyncedAt: item.clockSyncedAt,
+        elapsedSinceSyncMs: item.elapsedSinceSyncMs ?? null,
         lat: item.lat,
         lng: item.lng,
         accuracyM: item.accuracyM,

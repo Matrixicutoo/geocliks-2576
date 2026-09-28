@@ -1,5 +1,6 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { client } from "./api";
+import { clearMonotonicBreak, monotonicNow, touchMonotonic, type MonotonicSource } from "./monotonic";
 
 const KEY = "geocliks.clock.v1";
 
@@ -21,6 +22,17 @@ export type ClockSync = {
   offsetMs: number;
   /** Device clock when the measurement was taken. */
   syncedAtDevice: number;
+  /**
+   * The hardware elapsed-time counter at that same moment — see lib/monotonic.ts. The
+   * offset above proves what the clock read; this proves how much time has passed since,
+   * which is what catches a clock wound forward after the sync. Absent on records written
+   * by builds from before this shipped.
+   */
+  monotonicAtSync?: number;
+  /** Which counter that reading came from; only like-for-like readings are comparable. */
+  monotonicSource?: MonotonicSource;
+  /** The JS process the reading was taken in, for the session-scoped fallback counter. */
+  monotonicSessionId?: string;
 };
 
 /** Beyond this age the server stops trusting the offset, so there is no point sending it. */
@@ -75,9 +87,16 @@ export async function syncClock(): Promise<ClockSync | null> {
       const rtt = after - before;
       if (rtt > MAX_ACCEPTABLE_RTT_MS) return await readClockSync();
       const deviceMidpoint = before + rtt / 2;
+      // Anchor the elapsed-time counter to the same instant as the offset. A sync is also
+      // the moment a past reboot stops mattering, so the break flag is cleared here.
+      const reading = monotonicNow();
+      await clearMonotonicBreak(reading);
       const sync: ClockSync = {
         offsetMs: Math.round(now - deviceMidpoint),
         syncedAtDevice: after,
+        monotonicAtSync: Math.round(reading.ms),
+        monotonicSource: reading.source,
+        monotonicSessionId: reading.sessionId,
       };
       await write(sync);
       return sync;
@@ -95,22 +114,54 @@ export async function syncClock(): Promise<ClockSync | null> {
 /** Sync only when the stored offset is missing or getting stale. */
 export async function ensureClockSync(): Promise<ClockSync | null> {
   const stored = await readClockSync();
+  // Read the counter every time through, sync or not: this runs on launch, which is where
+  // a reboot taken in a dead zone gets noticed before any capture can be stamped.
+  void touchMonotonic();
   if (stored && Date.now() - stored.syncedAtDevice < RESYNC_AFTER_MS) return stored;
   return syncClock();
 }
+
+export type ClockStamp = {
+  clockOffsetMs: number | null;
+  clockSyncedAt: number | null;
+  /**
+   * Real time elapsed between the sync and this capture, read from the hardware counter
+   * rather than the clock. The server checks it against the wall-clock gap; a clock moved
+   * in between makes the two disagree. Null whenever it cannot be measured honestly — a
+   * reboot since the sync, a build without the native counter, or no sync at all.
+   */
+  elapsedSinceSyncMs: number | null;
+};
+
+const EMPTY_STAMP: ClockStamp = {
+  clockOffsetMs: null,
+  clockSyncedAt: null,
+  elapsedSinceSyncMs: null,
+};
 
 /**
  * The offset to attach to a capture, or nulls when there is nothing trustworthy to
  * send. Sending nothing is safe: the server falls back to its old behaviour.
  */
-export async function clockStampForCapture(): Promise<{
-  clockOffsetMs: number | null;
-  clockSyncedAt: number | null;
-}> {
+export async function clockStampForCapture(): Promise<ClockStamp> {
   const sync = await readClockSync();
-  if (!sync) return { clockOffsetMs: null, clockSyncedAt: null };
-  if (Date.now() - sync.syncedAtDevice > CLOCK_SYNC_MAX_AGE_MS) {
-    return { clockOffsetMs: null, clockSyncedAt: null };
-  }
-  return { clockOffsetMs: sync.offsetMs, clockSyncedAt: sync.syncedAtDevice };
+  if (!sync) return EMPTY_STAMP;
+  if (Date.now() - sync.syncedAtDevice > CLOCK_SYNC_MAX_AGE_MS) return EMPTY_STAMP;
+
+  // Read the counter at the shutter, and let it report a reset it has seen since the sync.
+  const { reading, broken } = await touchMonotonic();
+  const comparable =
+    !broken &&
+    typeof sync.monotonicAtSync === "number" &&
+    sync.monotonicSource === reading.source &&
+    (reading.source === "boot" || sync.monotonicSessionId === reading.sessionId);
+  const elapsed = comparable ? Math.round(reading.ms - sync.monotonicAtSync!) : null;
+
+  return {
+    clockOffsetMs: sync.offsetMs,
+    clockSyncedAt: sync.syncedAtDevice,
+    // A negative elapsed time is a counter that reset without being caught. Say nothing
+    // rather than send a measurement that would read as tampering.
+    elapsedSinceSyncMs: elapsed !== null && elapsed >= 0 ? elapsed : null,
+  };
 }

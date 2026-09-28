@@ -8,6 +8,11 @@
  *  2. `contentHash` — SHA-256 of the uploaded image bytes.
  *  3. `signature` — HMAC-SHA256 over the canonical metadata payload (code, hashes, times,
  *     coordinates, owner). Any later edit to image or metadata breaks the signature.
+ *
+ * A fourth thing covers the case the three above cannot: a phone with no signal, whose
+ * clock the holder changes before shooting. `resolveClock` cross-checks the interval the
+ * device's wall clock claims against the same interval as measured by its boot-relative
+ * hardware counter, which no setting can move. See `elapsedSinceSyncMs` below.
  */
 
 const SECRET = process.env.BETTER_AUTH_SECRET ?? "geocliks-dev-secret";
@@ -93,6 +98,17 @@ export const CLOCK_SYNC_MAX_AGE_MS = 24 * 60 * 60 * 1000;
 /** An offset larger than this is not a plausible measurement, it is a broken client. */
 const MAX_PLAUSIBLE_OFFSET_MS = 365 * 24 * 60 * 60 * 1000;
 
+/**
+ * How far the phone's wall clock may disagree with its own hardware elapsed-time counter
+ * before the clock is treated as having been changed.
+ *
+ * The two measure the same interval by different means, so they should agree closely. The
+ * slack covers the honest sources of difference — the counter is read a beat after the
+ * clock at each end, and a phone's crystal drifts a little — while staying far below any
+ * shift worth making: a minute of extra paid time is already well outside it.
+ */
+export const ELAPSED_DISAGREEMENT_TOLERANCE_MS = 90 * 1000;
+
 export interface ClockInput {
   /** Device clock at capture. */
   capturedAt: number;
@@ -102,7 +118,22 @@ export interface ClockInput {
   clockOffsetMs?: number | null;
   /** Device clock when that offset was measured. */
   clockSyncedAt?: number | null;
+  /**
+   * Real time between that sync and the capture, read from the device's boot-relative
+   * counter — Android `SystemClock.elapsedRealtime()`, iOS `CLOCK_MONOTONIC`. No setting
+   * can move it, so it is the one number here a user cannot rewrite. Null when the device
+   * could not measure it honestly (a reboot in between, or an older build).
+   */
+  elapsedSinceSyncMs?: number | null;
 }
+
+/**
+ * What the elapsed-time cross-check had to say.
+ *  - `consistent`: the counter agrees with the clock, so the clock was not touched.
+ *  - `broken`: they disagree. The clock moved between the sync and the capture.
+ *  - `unchecked`: no measurement to compare — an older build, or a reboot in between.
+ */
+export type ClockContinuity = "consistent" | "broken" | "unchecked";
 
 export interface ClockResult {
   /** deviceTime - serverTime: how wrong the phone's clock was at capture. */
@@ -111,6 +142,12 @@ export interface ClockResult {
   uploadDelayMs: number;
   timeSource: "network" | "device";
   integrity: "verified" | "unverified";
+  continuity: ClockContinuity;
+  /**
+   * Wall-clock gap minus real elapsed time, when both are known. Positive means the clock
+   * was pushed forward, negative back. Null when the check did not run.
+   */
+  clockDriftMs: number | null;
 }
 
 /**
@@ -137,6 +174,8 @@ export function resolveClock(input: ClockInput): ClockResult {
       uploadDelayMs,
       timeSource: "device",
       integrity: "unverified",
+      continuity: "unchecked",
+      clockDriftMs: null,
     };
   }
 
@@ -155,10 +194,44 @@ export function resolveClock(input: ClockInput): ClockResult {
   // than silently trusting a client that never proved its clock.
   const skewMs = usable ? -offset! : legacySkew;
 
+  // The offset alone only catches a clock wound backwards, which lands the capture before
+  // the last proven sync. Forward is the direction worth money — add an hour to the shift
+  // in a dead zone and every number the phone sends still agrees with itself. What does
+  // not agree is the hardware counter: it measures the interval the clock claims, and a
+  // clock that moved makes the two differ by exactly how far it moved.
+  const elapsed = input.elapsedSinceSyncMs;
+  const measurable =
+    usable && typeof elapsed === "number" && Number.isFinite(elapsed) && elapsed >= 0;
+  const clockDriftMs = measurable ? input.capturedAt - syncedAt! - elapsed! : null;
+  const continuity: ClockContinuity =
+    clockDriftMs === null
+      ? "unchecked"
+      : Math.abs(clockDriftMs) <= ELAPSED_DISAGREEMENT_TOLERANCE_MS
+        ? "consistent"
+        : "broken";
+
+  // When they disagree, the drift is the better reading of how wrong the clock was: the
+  // offset was honest when it was measured, and the clock has moved by the drift since.
+  // Report that, and never pass the capture — a clock changed mid-shift is the thing this
+  // whole file exists to make visible, whatever the resulting numbers happen to total.
+  if (continuity === "broken") {
+    const trueSkew = Math.round(-offset! + clockDriftMs!);
+    return {
+      skewMs: trueSkew,
+      uploadDelayMs,
+      timeSource: "device",
+      integrity: "unverified",
+      continuity,
+      clockDriftMs,
+    };
+  }
+
   return {
     skewMs,
     uploadDelayMs,
     timeSource: timeSourceFor(skewMs),
     integrity: Math.abs(skewMs) <= SKEW_TOLERANCE_MS ? "verified" : "unverified",
+    continuity,
+    clockDriftMs,
   };
 }

@@ -643,6 +643,7 @@ export default function Capture() {
         capturedAt,
         clockOffsetMs: clockStamp.clockOffsetMs,
         clockSyncedAt: clockStamp.clockSyncedAt,
+        elapsedSinceSyncMs: clockStamp.elapsedSinceSyncMs,
         projectId,
         // The run stands in for the project name on the delivery side, so the queue tile and
         // the stamp both read the thing the driver recognises: his route.
