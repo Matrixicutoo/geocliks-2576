@@ -121,8 +121,17 @@ export function aboutPageSchema(): object {
 
 export interface Crumb {
   name: string;
-  /** Site-relative path. Omit on the current page — the last crumb needs no link. */
-  path?: string;
+  /**
+   * Site-relative path, required on every crumb including the last one.
+   *
+   * Google's reference calls `item` optional on the final crumb, but Search
+   * Console's Breadcrumbs report flagged every page here with
+   * "Missing field 'item' (in 'itemListElement')" and marked the items invalid —
+   * so no crumb is emitted without one. A crumb that has no page of its own
+   * (there is no `/alternatives` index) is not a crumb: leave it out of the
+   * trail rather than emitting a nameless, linkless position.
+   */
+  path: string;
 }
 
 /**
@@ -137,7 +146,7 @@ export function breadcrumbSchema(crumbs: Crumb[]): object {
       "@type": "ListItem",
       position: index + 1,
       name: crumb.name,
-      ...(crumb.path ? { item: absoluteUrl(crumb.path) } : {}),
+      item: absoluteUrl(crumb.path),
     })),
   };
 }

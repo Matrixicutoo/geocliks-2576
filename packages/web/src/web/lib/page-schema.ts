@@ -21,6 +21,7 @@
 import type { LocaleCode } from "../../api/lib/locales";
 import { type TKey, translate } from "./catalogs";
 import { articleHref, asLocale, findArticle, findCategory } from "../help/resolve";
+import { localizedPath } from "./locale-url";
 import { articlesOf } from "../help/types";
 import {
   type Crumb,
@@ -62,7 +63,7 @@ export const PAGE_SCHEMA = {
   // captures — because those are the questions an answer engine gets asked
   // about a vendor and cannot currently resolve from anywhere on this site.
   "/about": {
-    crumbs: [{ name: "About" }],
+    crumbs: [{ name: "About", path: "/about" }],
     faq: [
       { keys: { question: "ab.faq.q1", answer: "ab.faq.a1" } },
       { keys: { question: "ab.faq.q2", answer: "ab.faq.a2" } },
@@ -73,7 +74,7 @@ export const PAGE_SCHEMA = {
     ],
   },
   "/pricing": {
-    crumbs: [{ name: "Pricing" }],
+    crumbs: [{ name: "Pricing", path: "/pricing" }],
     faq: [
       { keys: { question: "pr.faq.q1", answer: "pr.faq.a1" } },
       { keys: { question: "pr.faq.q2", answer: "pr.faq.a2" } },
@@ -88,7 +89,7 @@ export const PAGE_SCHEMA = {
     ],
   },
   "/alternatives/companycam": {
-    crumbs: [{ name: "Alternatives" }, { name: "CompanyCam" }],
+    crumbs: [{ name: "CompanyCam", path: "/alternatives/companycam" }],
     faq: [
       { keys: { question: "cc.faq.q1", answer: "cc.faq.a1" } },
       { keys: { question: "cc.faq.q2", answer: "cc.faq.a2" } },
@@ -99,7 +100,7 @@ export const PAGE_SCHEMA = {
   },
 
   "/alternatives/timemark": {
-    crumbs: [{ name: "Alternatives" }, { name: "Timemark" }],
+    crumbs: [{ name: "Timemark", path: "/alternatives/timemark" }],
     faq: [
       { keys: { question: "tm.faq.q1", answer: "tm.faq.a1" } },
       { keys: { question: "tm.faq.q2", answer: "tm.faq.a2" } },
@@ -109,7 +110,7 @@ export const PAGE_SCHEMA = {
     ],
   },
   "/construction-photo-documentation": {
-    crumbs: [{ name: "Construction Photo Documentation" }],
+    crumbs: [{ name: "Construction Photo Documentation", path: "/construction-photo-documentation" }],
     faq: [
       { keys: { question: "con.faq.q1", answer: "con.faq.a1" } },
       { keys: { question: "con.faq.q2", answer: "con.faq.a2" } },
@@ -119,7 +120,7 @@ export const PAGE_SCHEMA = {
     ],
   },
   "/proof-of-delivery": {
-    crumbs: [{ name: "Proof of Delivery" }],
+    crumbs: [{ name: "Proof of Delivery", path: "/proof-of-delivery" }],
     faq: [
       { keys: { question: "pod.faq.q1", answer: "pod.faq.a1" } },
       { keys: { question: "pod.faq.q2", answer: "pod.faq.a2" } },
@@ -130,7 +131,7 @@ export const PAGE_SCHEMA = {
     ],
   },
   "/gps-timestamp-camera": {
-    crumbs: [{ name: "GPS Timestamp Camera" }],
+    crumbs: [{ name: "GPS Timestamp Camera", path: "/gps-timestamp-camera" }],
     faq: [
       { keys: { question: "gps.faq.q1", answer: "gps.faq.a1" } },
       { keys: { question: "gps.faq.q2", answer: "gps.faq.a2" } },
@@ -141,7 +142,7 @@ export const PAGE_SCHEMA = {
     ],
   },
   "/roofing-photo-documentation": {
-    crumbs: [{ name: "Roofing Photo Documentation" }],
+    crumbs: [{ name: "Roofing Photo Documentation", path: "/roofing-photo-documentation" }],
     faq: [
       { keys: { question: "rf.faq.q1", answer: "rf.faq.a1" } },
       { keys: { question: "rf.faq.q2", answer: "rf.faq.a2" } },
@@ -152,7 +153,7 @@ export const PAGE_SCHEMA = {
     ],
   },
   "/hvac-photo-documentation": {
-    crumbs: [{ name: "HVAC Photo Documentation" }],
+    crumbs: [{ name: "HVAC Photo Documentation", path: "/hvac-photo-documentation" }],
     faq: [
       { keys: { question: "hvac.faq.q1", answer: "hvac.faq.a1" } },
       { keys: { question: "hvac.faq.q2", answer: "hvac.faq.a2" } },
@@ -163,7 +164,7 @@ export const PAGE_SCHEMA = {
     ],
   },
   "/property-inspection-photos": {
-    crumbs: [{ name: "Property Inspection Photos" }],
+    crumbs: [{ name: "Property Inspection Photos", path: "/property-inspection-photos" }],
     faq: [
       { keys: { question: "inspection.faq.q1", answer: "inspection.faq.a1" } },
       { keys: { question: "inspection.faq.q2", answer: "inspection.faq.a2" } },
@@ -204,6 +205,18 @@ export function pageFaq(
 }
 
 /**
+ * The same trail, pointed at the locale being served.
+ *
+ * A breadcrumb on `/es/pricing` that links `https://geocliks.com/pricing` sends
+ * the crumb and the page it describes to two different URLs. `localizedPath`
+ * returns the bare path for anything outside the translated allowlist, so a
+ * page with no Spanish URL is unaffected.
+ */
+function localizeCrumbs(crumbs: readonly Crumb[], locale: LocaleCode): Crumb[] {
+  return crumbs.map((crumb) => ({ ...crumb, path: localizedPath(crumb.path, locale) }));
+}
+
+/**
  * Structured data for a marketing or Help Center path, or none for a path that
  * gets none — the app shell, the auth pages and anything behind a token.
  *
@@ -223,7 +236,7 @@ export function marketingJsonLd(pathname: string, locale: LocaleCode = "en"): ob
     const page = PAGE_SCHEMA[path as keyof typeof PAGE_SCHEMA];
     const blocks = [
       faqSchema(pageFaq(path as keyof typeof PAGE_SCHEMA, locale).map((entry) => ({ ...entry }))),
-      breadcrumbSchema(page.crumbs.map((crumb) => ({ ...crumb }))),
+      breadcrumbSchema(localizeCrumbs(page.crumbs, locale)),
     ];
     // The About page carries the entity blocks as well: it is the page whose
     // subject *is* the company, and the home page is otherwise the only place
@@ -232,7 +245,7 @@ export function marketingJsonLd(pathname: string, locale: LocaleCode = "en"): ob
     return blocks;
   }
 
-  if (path === "/help") return [breadcrumbSchema([{ name: "Help Center" }])];
+  if (path === "/help") return [breadcrumbSchema([{ name: "Help Center", path: "/help" }])];
 
   if (path.startsWith("/help/")) return helpJsonLd(path.slice("/help/".length));
 
@@ -250,7 +263,10 @@ function helpJsonLd(rest: string): object[] {
     if (!category) return [];
     const articles = articlesOf(category);
     return [
-      breadcrumbSchema([{ name: "Help Center", path: "/help" }, { name: category.title }]),
+      breadcrumbSchema([
+        { name: "Help Center", path: "/help" },
+        { name: category.title, path: `/help/${category.slug}` },
+      ]),
       // Each article's title is the problem and its summary is the one-line
       // answer, which is exactly a question/answer pair. Same mapping the page
       // itself uses.
@@ -265,7 +281,7 @@ function helpJsonLd(rest: string): object[] {
     breadcrumbSchema([
       { name: "Help Center", path: "/help" },
       { name: found.category.title, path: `/help/${found.category.slug}` },
-      { name: found.article.title },
+      { name: found.article.title, path: href },
     ]),
     techArticleSchema({
       headline: found.article.title,
