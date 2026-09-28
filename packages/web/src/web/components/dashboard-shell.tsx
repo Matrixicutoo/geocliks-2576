@@ -137,6 +137,17 @@ export function DashboardShell({
           through the tokens; `text-chalk` is repeated here so inherited text recomputes dark too. */}
       <aside
         data-theme="dark"
+        // Navy, matching the logo bar below — the menu reads as one continuous piece of brand
+        // chrome with the header rather than a second dark surface beside it. The surface
+        // tokens are remapped instead of the classes so every card, inset and hover inside
+        // `SidebarBody` follows along, in both themes and in the mobile drawer's copy.
+        style={
+          {
+            "--c-ink-2": "var(--c-navy)",
+            "--c-ink": "var(--c-navy-soft)",
+            "--c-ink-3": "var(--c-navy-soft)",
+          } as React.CSSProperties
+        }
         className="sticky top-0 hidden h-screen w-[248px] shrink-0 flex-col overflow-y-auto border-r border-line bg-ink-2 text-chalk lg:flex"
       >
         {/* Logo block matches the page header: same dark bar, same height. */}
