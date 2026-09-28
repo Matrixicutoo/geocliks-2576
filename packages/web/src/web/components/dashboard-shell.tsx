@@ -132,7 +132,13 @@ export function DashboardShell({
 
   return (
     <div className="flex min-h-screen bg-ink text-chalk">
-      <aside className="sticky top-0 hidden h-screen w-[248px] shrink-0 flex-col overflow-y-auto border-r border-line bg-ink-2 lg:flex">
+      {/* The menu keeps the dark field palette in both themes — it is brand chrome, like the
+          header above it, not a content surface. `data-theme="dark"` repaints everything inside
+          through the tokens; `text-chalk` is repeated here so inherited text recomputes dark too. */}
+      <aside
+        data-theme="dark"
+        className="sticky top-0 hidden h-screen w-[248px] shrink-0 flex-col overflow-y-auto border-r border-line bg-ink-2 text-chalk lg:flex"
+      >
         {/* Logo block matches the page header: same dark bar, same height. */}
         <div
           data-theme="dark"
