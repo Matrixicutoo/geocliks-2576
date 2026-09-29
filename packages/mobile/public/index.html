@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<!--
+  The HTML document the web build is served inside. Native builds ignore this file.
+
+  Expo's own shell (@expo/cli's static/template/index.html) is what gets used when this file
+  is absent, and its body is white. The bundle takes a moment to load and mount, and until it
+  does that bare white document is what is on screen — long enough on the sandbox preview to
+  read as "the app opened in light mode", both on first load and again after signing in, since
+  signing in remounts the tree. This is that same shell with the app's own background painted
+  on it, so the first frame and the mounted app are the same shade and the handover is invisible.
+
+  #0B0E13 is `Colors.dark.background` (constants/theme.ts), and the same value the native
+  splash screen and the Android adaptive icon use in app.json. Keep the four in step.
+
+  Expo substitutes the two placeholder tokens below and appends the bundle's <script> tag to
+  <body>, so leave those and `<div id="root">` as they are. It substitutes the first occurrence
+  of each token only — don't name them anywhere above the tags that use them.
+-->
+<html lang="%LANG_ISO_CODE%">
+  <head>
+    <meta charset="utf-8" />
+    <meta httpEquiv="X-UA-Compatible" content="IE=edge" />
+    <!-- `viewport-fit=cover` so the safe-area insets the app reads are the real ones. -->
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, shrink-to-fit=no, viewport-fit=cover"
+    />
+    <!-- Paints the browser's own chrome: the address bar on mobile, the tab strip on desktop. -->
+    <meta name="theme-color" content="#0B0E13" />
+    <title>%WEB_TITLE%</title>
+    <!-- The `react-native-web` recommended style reset: https://necolas.github.io/react-native-web/docs/setup/#root-element -->
+    <style id="expo-reset">
+      /* These styles make the body full-height */
+      html,
+      body {
+        height: 100%;
+      }
+      /* These styles disable body scrolling if you are using <ScrollView> */
+      body {
+        overflow: hidden;
+      }
+      /* These styles make the root element full-height */
+      #root {
+        display: flex;
+        height: 100%;
+        flex: 1;
+      }
+    </style>
+    <style id="app-background">
+      /* `color-scheme` is what stops the browser painting its own light defaults over the top:
+         form controls, scrollbars, and the overscroll area past the end of a page. */
+      :root {
+        color-scheme: dark;
+      }
+      html,
+      body,
+      #root {
+        background-color: #0b0e13;
+      }
+    </style>
+  </head>
+
+  <body>
+    <!-- Use static rendering with Expo Router to support running without JavaScript. -->
+    <noscript> You need to enable JavaScript to run this app. </noscript>
+    <!-- The root element for your Expo app. -->
+    <div id="root"></div>
+  </body>
+</html>
