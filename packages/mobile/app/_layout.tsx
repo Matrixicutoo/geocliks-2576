@@ -23,7 +23,7 @@ import { usePendingInvite } from "../hooks/use-pending-invite";
 import { usePushToken } from "../hooks/use-push-token";
 import { usePushNotifications } from "../hooks/use-push-notifications";
 import { useDrainOnSignIn } from "../hooks/use-drain-on-signin";
-import { ThemeProvider, useAppTheme } from "../lib/theme";
+import { ThemeProvider, useAppTheme, useWorkspaceTheme } from "../lib/theme";
 import { I18nProvider } from "../lib/i18n";
 import { AssistantHost } from "../components/assistant-host";
 import appJson from "../app.json";
@@ -58,6 +58,11 @@ function Gate() {
   // Uploads anything captured before signing in, so photos taken without an account land
   // in the team space the moment one exists.
   useDrainOnSignIn(Boolean(session));
+  // Applies the workspace's default appearance once the org record arrives. Settings has
+  // written this column for admins all along, but nothing ever read it back, so the admin
+  // control silently did nothing and every device sat on the hardcoded dark default. Members
+  // who picked their own scheme on their own device keep it — see `lib/theme.tsx`.
+  useWorkspaceTheme(org.data?.org.theme);
 
   useEffect(() => {
     void authClient.managedAuth.handleRedirect();
