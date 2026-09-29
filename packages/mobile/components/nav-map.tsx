@@ -21,7 +21,8 @@ export type NavMapProps = {
   dashed?: boolean;
   markerTitle?: string | null;
   strokeColor: string;
-  onPanDrag?: () => void;
+  /** He moved the map himself, so the camera should stop riding him. */
+  onUserPan?: () => void;
 };
 
 /**

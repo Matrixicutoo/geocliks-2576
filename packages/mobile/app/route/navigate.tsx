@@ -247,7 +247,7 @@ export default function RouteNavigate() {
         strokeColor={colors.amber}
         // Any hand on the map means he wants to look somewhere else. The FOLLOW button gives
         // the camera back.
-        onPanDrag={() => setFollowing(false)}
+        onUserPan={() => setFollowing(false)}
       />
 
       <SafeAreaView edges={["top", "left", "right"]} style={styles.top} pointerEvents="box-none">

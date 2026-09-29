@@ -15,7 +15,7 @@ const CAMERA_EASE_MS = 800;
  * it from a shared import takes the whole web bundle down with it.
  */
 const NavMap = forwardRef<NavMapHandle, NavMapProps>(function NavMap(
-  { pin, path, dashed, markerTitle, strokeColor, onPanDrag },
+  { pin, path, dashed, markerTitle, strokeColor, onUserPan },
   ref,
 ) {
   const map = useRef<MapView | null>(null);
@@ -54,9 +54,16 @@ const NavMap = forwardRef<NavMapHandle, NavMapProps>(function NavMap(
       showsMyLocationButton={false}
       showsCompass={false}
       toolbarEnabled={false}
-      // Any hand on the map means he wants to look somewhere else. The FOLLOW button gives the
-      // camera back.
-      onPanDrag={onPanDrag}
+      // Any hand on the map means he wants to look somewhere else; the FOLLOW button gives the
+      // camera back. It takes two callbacks to hear that on both platforms: onPanDrag only
+      // fires on iOS when scrolling is switched off, which would mean he could not pan at all,
+      // so the region callback carries it there. `isGesture` separates his hand from our own
+      // camera animation — and when it is missing the view is left following, because treating
+      // an unknown as a gesture would drop follow on the first animation and never restore it.
+      onPanDrag={onUserPan}
+      onRegionChangeComplete={(_region, details) => {
+        if (details?.isGesture) onUserPan?.();
+      }}
     >
       {path.length > 1 ? (
         <Polyline
