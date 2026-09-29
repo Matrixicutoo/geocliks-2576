@@ -34,14 +34,16 @@ const REASONS: { key: FailedReason; label: TKey }[] = [
   { key: "other", label: "run.reason.other" },
 ];
 
-/** Opens the phone's own maps app. Cheap, and the single most useful button on this screen. */
-function navigateTo(address: string, lat: number | null, lng: number | null) {
-  const target = lat != null && lng != null ? `${lat},${lng}` : address;
-  const url =
-    Platform.OS === "ios"
-      ? `http://maps.apple.com/?daddr=${encodeURIComponent(target)}`
-      : `https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(target)}`;
-  void Linking.openURL(url);
+/**
+ * Where NAVIGATE goes now.
+ *
+ * It used to hand the driver to Google Maps or Apple Maps. That was free and it worked all the
+ * way to the doorstep — and then the app was in the background, and closing the stop depended
+ * on him remembering to swipe back to it. Navigation lives inside GeoCliks so that the arrival
+ * card can put the camera in front of him the moment he pulls up. See app/route/navigate.tsx.
+ */
+function navHref(routeId: string, stopId: string) {
+  return { pathname: "/route/navigate" as const, params: { routeId, stopId } };
 }
 
 export default function RouteRun() {
@@ -141,6 +143,16 @@ export default function RouteRun() {
    */
   const arrival = useArrival(current, started && !!current);
   /**
+   * He is standing at the address.
+   *
+   * Two things hang off this. The card turns into the arrival card — one big shutter, the
+   * address above it — and NAVIGATE goes dead until the stop is closed, because there is
+   * nothing left to navigate to and a driver who opens the map at the door is one who walks
+   * away from a parcel he has not photographed. It comes back by itself: the next stop is
+   * somewhere else, so the gate reads `away` again.
+   */
+  const atStop = arrival.state === "at";
+  /**
    * His way past the gate: the map never resolved this address, the pin is on the wrong side of
    * a block, the GPS is drifting in a parkade. He is holding the parcel and the customer is
    * waiting — he taps this, shoots, and carries on. Nothing is hidden from the office: every
@@ -154,8 +166,8 @@ export default function RouteRun() {
    * Straight into the map for the next stop.
    *
    * The camera hands him back here after each delivery, and what he wants next is never this
-   * screen — it is the road to the following address. So the maps app opens itself, once, as
-   * soon as the run has actually moved on. `after` carries the stop he just photographed:
+   * screen — it is the road to the following address. So the navigation screen opens itself,
+   * once, as soon as the run has actually moved on. `after` carries the stop he just photographed:
    * waiting for `current` to be a different stop is what stops it from navigating him back to
    * the doorstep he is standing on, because the close can land a beat later than the screen
    * does when the queue is draining. Nothing fires on the last stop — there is no next address.
@@ -166,10 +178,10 @@ export default function RouteRun() {
     if (!shotStopId || !current || current.id === shotStopId) return;
     if (autoNavigated.current === current.id) return;
     autoNavigated.current = current.id;
-    navigateTo(current.address ?? current.addressRaw, current.lat, current.lng);
-    // Spent: a remount, or coming back from the map, must not re-open it.
+    // Spent before pushing: a remount, or coming back from the map, must not re-open it.
     router.setParams({ after: "" });
-  }, [shotStopId, current, router]);
+    if (routeId) router.push(navHref(routeId, current.id));
+  }, [shotStopId, current, router, routeId]);
 
   const goShoot = (outcome: "delivered" | "failed") => {
     if (!current || !route) return;
@@ -361,9 +373,14 @@ export default function RouteRun() {
             <View
               style={[styles.card, { borderColor: colors.amber, backgroundColor: colors.card }]}
             >
-              <Text style={[styles.stopOf, { color: colors.amber, fontFamily: Fonts?.mono }]}>
-                {t("run.nextStop").toUpperCase()}
-              </Text>
+              {/* The same card, in its arrival state: it says he is there rather than where he
+                  is going, and the shutter below it grows into the thing his thumb lands on. */}
+              <View style={styles.stopHead}>
+                {atStop ? <Ionicons name="location" size={15} color={colors.amber} /> : null}
+                <Text style={[styles.stopOf, { color: colors.amber, fontFamily: Fonts?.mono }]}>
+                  {(atStop ? t("drive.arrived") : t("run.nextStop")).toUpperCase()}
+                </Text>
+              </View>
               <Text style={[styles.address, { color: colors.foreground }]}>
                 {current.address ?? current.addressRaw}
               </Text>
@@ -418,17 +435,40 @@ export default function RouteRun() {
                 </Pressable>
               ) : null}
 
-              {/* Driving there is the first thing he does at every stop, so it carries the same
-                  weight as closing one: filled, not an outline he has to hunt for. */}
+              {/*
+                Driving there is the first thing he does at every stop, so it carries the same
+                weight as closing one: filled, not an outline he has to hunt for.
+
+                And it goes out the moment he arrives. The two buttons trade places across the
+                stop — NAVIGATE live for the whole drive, dead at the door until the photo is
+                taken; the shutter locked for the whole drive, and the biggest thing on the
+                screen once he is there. Only ever one of them is the obvious thing to press,
+                which is what stops a driver standing at a door reopening the map.
+              */}
               <Pressable
-                onPress={() =>
-                  navigateTo(current.address ?? current.addressRaw, current.lat, current.lng)
-                }
-                style={[styles.primary, { backgroundColor: colors.amber }]}
+                onPress={() => !atStop && routeId && router.push(navHref(routeId, current.id))}
+                disabled={atStop}
+                accessibilityLabel={t("run.navigate")}
+                accessibilityState={{ disabled: atStop }}
+                style={[
+                  atStop ? styles.outline : styles.primary,
+                  atStop
+                    ? { borderColor: colors.border }
+                    : { backgroundColor: colors.amber },
+                ]}
               >
-                <Ionicons name="navigate" size={17} color={colors.primaryForeground} />
-                <Text style={[styles.primaryText, { color: colors.primaryForeground }]}>
-                  {t("run.navigate").toUpperCase()}
+                <Ionicons
+                  name={atStop ? "lock-closed" : "navigate"}
+                  size={17}
+                  color={atStop ? colors.mutedForeground : colors.primaryForeground}
+                />
+                <Text
+                  style={[
+                    atStop ? styles.outlineText : styles.primaryText,
+                    { color: atStop ? colors.mutedForeground : colors.primaryForeground },
+                  ]}
+                >
+                  {atStop ? t("drive.navLocked") : t("run.navigate").toUpperCase()}
                 </Text>
               </Pressable>
 
@@ -439,6 +479,7 @@ export default function RouteRun() {
                 accessibilityState={{ disabled: !gateOpen }}
                 style={[
                   styles.primary,
+                  atStop ? styles.shoot : null,
                   // Greyed rather than hidden: he can see the delivery button is there and
                   // waiting on the drive, which is the whole message.
                   { backgroundColor: gateOpen ? colors.amber : colors.border },
@@ -446,12 +487,13 @@ export default function RouteRun() {
               >
                 <Ionicons
                   name={gateOpen ? "camera" : "lock-closed"}
-                  size={17}
+                  size={atStop ? 22 : 17}
                   color={gateOpen ? colors.primaryForeground : colors.mutedForeground}
                 />
                 <Text
                   style={[
                     styles.primaryText,
+                    atStop ? styles.shootText : null,
                     { color: gateOpen ? colors.primaryForeground : colors.mutedForeground },
                   ]}
                 >
@@ -883,7 +925,11 @@ const styles = StyleSheet.create({
     paddingVertical: 11,
   },
   driverAction: { fontSize: 9.5, letterSpacing: 1.1 },
+  stopHead: { flexDirection: "row", alignItems: "center", gap: 5 },
   stopOf: { fontSize: 10, letterSpacing: 1.2 },
+  // The arrival state of the shutter: same button, grown into the one his thumb lands on.
+  shoot: { paddingVertical: 20, borderRadius: 10 },
+  shootText: { fontSize: 16, letterSpacing: 0.8 },
   address: { fontSize: 19, fontWeight: "700", lineHeight: 25 },
   line: { fontSize: 14 },
   meta: { fontSize: 11, lineHeight: 16 },

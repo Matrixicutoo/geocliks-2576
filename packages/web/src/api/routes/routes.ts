@@ -3,6 +3,7 @@ import { and, asc, count, desc, eq, gte, inArray, sql } from "drizzle-orm";
 import { z } from "zod";
 import { db } from "../database";
 import * as schema from "../database/schema";
+import { directionsAvailable, fetchDirections } from "../lib/directions";
 import { geocodeAll, geocodingAvailable } from "../lib/geocode";
 import { id, shareToken } from "../lib/ids";
 import { photoUrl } from "../lib/media";
@@ -910,6 +911,59 @@ export const routes = {
       }
 
       return { resolved, failed, available: geocodingAvailable() };
+    }),
+
+  /**
+   * One leg of driving, for the in-app navigation screen.
+   *
+   * Not restricted to dispatchers: this is the driver's own button. `assertRouteAccess` is the
+   * same check `get` makes, so a driver may ask for a leg of his own run and nothing else.
+   *
+   * Billed per call, so the client asks once when the map opens and again only when the driver
+   * has left the line. The stop's own pin is the destination — never the raw text — because a
+   * leg to an unresolved address would send him to the middle of a city.
+   */
+  directions: orgProc
+    .input(
+      z.object({
+        stopId: z.string(),
+        fromLat: z.number().min(-90).max(90),
+        fromLng: z.number().min(-180).max(180),
+      }),
+    )
+    .handler(async ({ input, context }) => {
+      const [stop] = await db
+        .select()
+        .from(schema.routeStops)
+        .where(
+          and(eq(schema.routeStops.id, input.stopId), eq(schema.routeStops.orgId, context.org.id)),
+        )
+        .limit(1);
+      if (!stop) throw new ORPCError("NOT_FOUND", { message: "Stop not found" });
+
+      const route = await loadRoute(context.org.id, stop.routeId);
+      assertRouteAccess(route, context);
+
+      if (!hasPin(stop)) {
+        throw new ORPCError("BAD_REQUEST", {
+          message: "This address has no pin yet — resolve it before navigating",
+        });
+      }
+
+      const leg = await fetchDirections(
+        { lat: input.fromLat, lng: input.fromLng },
+        { lat: stop.lat as number, lng: stop.lng as number },
+      );
+
+      return {
+        ...leg,
+        destination: {
+          lat: stop.lat as number,
+          lng: stop.lng as number,
+          address: stop.address ?? stop.addressRaw,
+        },
+        available: directionsAvailable(),
+      };
     }),
 
   /** Manual pin drop for an address the geocoder could not resolve. */

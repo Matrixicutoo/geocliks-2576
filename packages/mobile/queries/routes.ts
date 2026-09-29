@@ -154,3 +154,73 @@ export function useAssignRoute() {
   const invalidate = useInvalidateRoutes();
   return useMutation(orpc.routes.assign.mutationOptions({ onSuccess: invalidate }));
 }
+
+/**
+ * Stops added to a route that is not moving yet — the paste-a-list and CSV-import path in the
+ * route builder. `addLiveStop` above is its opposite number: one order, slotted into a run
+ * already under way. This one appends in the order given and leaves the ordering to
+ * `useOptimizeRoute`.
+ */
+export function useAddStops() {
+  const invalidate = useInvalidateRoutes();
+  return useMutation(orpc.routes.addStops.mutationOptions({ onSuccess: invalidate }));
+}
+
+/**
+ * Turn the pasted address text into pins. Metered — Google bills per address that is not
+ * already cached — so this is a button the dispatcher presses, never something that fires on
+ * typing. `force` re-asks for addresses that already failed once.
+ */
+export function useGeocodeStops() {
+  const invalidate = useInvalidateRoutes();
+  return useMutation(orpc.routes.geocodeStops.mutationOptions({ onSuccess: invalidate }));
+}
+
+/** Drops the pin by hand for an address the geocoder could not place. */
+export function useSetStopPin() {
+  const invalidate = useInvalidateRoutes();
+  return useMutation(orpc.routes.setStopPin.mutationOptions({ onSuccess: invalidate }));
+}
+
+/**
+ * Editing one stop. Changing the address clears its pin server-side, which is why the builder
+ * offers Resolve again straight after an edit.
+ */
+export function useUpdateStop() {
+  const invalidate = useInvalidateRoutes();
+  return useMutation(orpc.routes.updateStop.mutationOptions({ onSuccess: invalidate }));
+}
+
+/** Deleting a stop. The server refuses one that has already been closed. */
+export function useRemoveStop() {
+  const invalidate = useInvalidateRoutes();
+  return useMutation(orpc.routes.removeStop.mutationOptions({ onSuccess: invalidate }));
+}
+
+/** Manual ordering — the up/down arrows on each stop row. Marks the route human-ordered. */
+export function useReorderStops() {
+  const invalidate = useInvalidateRoutes();
+  return useMutation(orpc.routes.reorder.mutationOptions({ onSuccess: invalidate }));
+}
+
+/**
+ * Order the stops for the driver. `backend: "local"` is free and the default; `"google"` is
+ * billed per stop and is only offered on plans that carry it — the server silently falls back
+ * to local rather than failing, so the button always produces an ordered route.
+ */
+export function useOptimizeRoute() {
+  const invalidate = useInvalidateRoutes();
+  return useMutation(orpc.routes.optimize.mutationOptions({ onSuccess: invalidate }));
+}
+
+/**
+ * One leg of driving for the in-app navigation screen.
+ *
+ * A mutation rather than a query on purpose. Google bills per Directions request, and a query
+ * would refetch on every remount, window focus and cache miss — the navigation screen decides
+ * for itself when a leg is worth paying for (once on open, and again only once the driver has
+ * left the line).
+ */
+export function useDirections() {
+  return useMutation(orpc.routes.directions.mutationOptions());
+}

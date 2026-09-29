@@ -750,6 +750,20 @@ export const en = {
   "setup.deliveryTrial": "7 days of Delivery Pro, free",
   "setup.trialNote": "No card, no charge. After 7 days you drop to that system's free plan and keep everything you captured.",
   "setup.error": "Could not finish setup. Try again.",
+  "drive.title": "Navigation",
+  "drive.straightLine": "Straight line only",
+  "drive.noLocation": "Location is off - turn it on to navigate",
+  "drive.locating": "Finding you...",
+  "drive.routing": "Getting directions...",
+  "drive.follow": "Follow",
+  "drive.arrived": "Arrived",
+  "drive.openStop": "Stop details",
+  "drive.remaining": "To go",
+  "drive.eta": "Arrive {at}",
+  "drive.drive": "Drive time",
+  "drive.toDoor": "Photo at {r} m",
+  "drive.noPin": "This stop has no map pin, so there is no route to draw. Resolve the address to navigate.",
+  "drive.navLocked": "Photo first",
 } as const;
 
 export type Catalog = Record<keyof typeof en, string>;
