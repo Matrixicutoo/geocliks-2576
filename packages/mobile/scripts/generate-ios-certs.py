@@ -220,6 +220,21 @@ def fetch_from_expo():
             yield base64.b64decode(p12), node.get("certificatePassword") or "", cid
 
 
+def p12_opens(path, password):
+    """True when the .p12 can be read with this password.
+
+    A .p12 written by OpenSSL 3's defaults, or with an empty password, is rejected by the
+    macOS keychain on the build worker as an invalid password. Catching that here means a
+    bad stored certificate is replaced rather than handed to EAS to fail on.
+    """
+    for extra in ([], ["-legacy"]):
+        r = subprocess.run(["openssl", "pkcs12", "-in", path, "-passin", f"pass:{password}",
+                            "-nokeys", "-noout"] + extra, capture_output=True)
+        if r.returncode == 0:
+            return bool(password)  # an empty password reads fine locally but not on macOS
+    return False
+
+
 def verify_cert_on_apple(cert_id):
     """True if cert_id exists on Apple, False only on a definitive 404 (revoked/deleted).
     Any other failure dies — a transient outage must not be mistaken for revocation."""
@@ -291,9 +306,30 @@ def revoke_orphaned_certs():
     return revoked
 
 
+def export_p12(key_file, pem_file, password):
+    """Export a .p12 Apple's tooling can actually open.
+
+    OpenSSL 3 defaults to AES-256-CBC with a SHA-256 MAC, which the macOS keychain on the
+    EAS build worker cannot import — it reports the failure as a bad password ("Provided
+    password for the distribution certificate is probably invalid"). -legacy falls back to
+    3DES/RC2 with a SHA-1 MAC, the PKCS#12 flavour `security import` expects. An empty
+    password trips the same path, so the caller always passes a real one.
+    """
+    base = ["openssl", "pkcs12", "-export", "-out", P12_FILE,
+            "-inkey", key_file, "-in", pem_file, "-passout", f"pass:{password}"]
+    r = subprocess.run(base + ["-legacy"], capture_output=True)
+    if r.returncode == 0:
+        return
+    # OpenSSL 1.x has no -legacy flag and already writes the old algorithms by default.
+    print("   openssl -legacy unavailable, falling back to default export", file=sys.stderr)
+    r = subprocess.run(base, capture_output=True)
+    if r.returncode != 0:
+        die(f"p12 creation failed: {r.stderr.decode()}")
+
+
 def create_new_cert():
-    """Create a cert via Apple API and write it to P12_FILE (empty password).
-    Returns the cert ID, or None when Apple's cert limit is hit."""
+    """Create a cert via Apple API and write it to P12_FILE.
+    Returns (cert_id, password), or (None, None) when Apple's cert limit is hit."""
     key_file, csr_file = f"{OUTPUT_DIR}/key.pem", f"{OUTPUT_DIR}/cert.csr"
 
     r = subprocess.run(["openssl", "req", "-new", "-newkey", "rsa:2048", "-nodes",
@@ -319,7 +355,7 @@ def create_new_cert():
         # The cert limit (409 "already have a current ... certificate") is the one
         # recoverable failure: the caller revokes orphans and retries.
         if status == 409 and any("already have a current" in (e.get("detail") or "").lower() or "limit" in (e.get("detail") or "").lower() for e in errors):
-            return None
+            return None, None
         die("Certificate creation failed. Check the error above and resolve manually.")
 
     cert_id = resp["data"]["id"]
@@ -334,17 +370,14 @@ def create_new_cert():
     if r.returncode != 0:
         die(f"DER to PEM conversion failed: {r.stderr.decode()}")
 
-    r = subprocess.run(["openssl", "pkcs12", "-export", "-out", P12_FILE,
-                        "-inkey", key_file, "-in", pem_file,
-                        "-passout", "pass:"], capture_output=True)
-    if r.returncode != 0:
-        die(f"p12 creation failed: {r.stderr.decode()}")
+    password = base64.urlsafe_b64encode(os.urandom(18)).decode().rstrip("=")
+    export_p12(key_file, pem_file, password)
 
     for f_clean in [key_file, csr_file, der_file, pem_file]:
         if os.path.exists(f_clean):
             os.remove(f_clean)
 
-    return cert_id
+    return cert_id, password
 
 
 # ── Certificate Resolution (orchestrator) ──
@@ -359,13 +392,19 @@ def resolve_certificate():
     # --- Local file ---
     if os.path.exists(P12_FILE):
         cert_id, password = load_metadata()
-        if cert_id and verify_cert_on_apple(cert_id):
+        if cert_id and verify_cert_on_apple(cert_id) and p12_opens(P12_FILE, password):
             print(f"   Local cert {cert_id} verified on Apple")
             if os.path.exists(UPLOAD_PENDING):
                 upload_to_expo(cert_id, password)
             return cert_id, password
         # Set the key aside instead of deleting it — it may be the only copy
-        print(f"   Local cert {'revoked/missing on Apple' if cert_id else 'has no metadata'} — setting aside")
+        if cert_id and not password:
+            reason = "is stored without a usable password"
+        elif cert_id:
+            reason = "revoked/missing on Apple, or unreadable"
+        else:
+            reason = "has no metadata"
+        print(f"   Local cert {reason} — setting aside")
         os.replace(P12_FILE, P12_FILE + ".bak")
 
     # --- Expo servers ---
@@ -374,26 +413,34 @@ def resolve_certificate():
         if not verify_cert_on_apple(cert_id):
             print(f"   Expo cert {cert_id} is revoked/missing on Apple — skipping")
             continue
-        print(f"   Found on Expo (Apple ID: {cert_id}), verified on Apple")
         with open(P12_FILE, "wb") as f:
             f.write(p12_bytes)
+        # An older run stored certs with an empty password, which the build worker rejects.
+        # Skip those and fall through to minting a fresh one rather than failing the build.
+        if not p12_opens(P12_FILE, password):
+            print(f"   Expo cert {cert_id} cannot be opened with its stored password — skipping")
+            os.remove(P12_FILE)
+            continue
+        print(f"   Found on Expo (Apple ID: {cert_id}), verified on Apple")
         save_metadata(cert_id, password)
         return cert_id, password
 
     # --- Create new ---
     print("   Creating new certificate via Apple API...")
-    cert_id = create_new_cert()
+    cert_id, password = create_new_cert()
     if cert_id is None:
         print("   Certificate limit reached. Revoking orphaned certs...")
         if revoke_orphaned_certs() == 0:
             die("Apple cert limit reached and no orphaned certs to revoke. Revoke a cert manually at developer.apple.com")
         print("   Retrying certificate creation...")
-        cert_id = create_new_cert() or die("Certificate creation still failed after revoking orphans. Check developer.apple.com")
+        cert_id, password = create_new_cert()
+        if cert_id is None:
+            die("Certificate creation still failed after revoking orphans. Check developer.apple.com")
 
-    save_metadata(cert_id, "")
+    save_metadata(cert_id, password)
     print("   Uploading certificate to Expo...")
-    upload_to_expo(cert_id, "")
-    return cert_id, ""
+    upload_to_expo(cert_id, password)
+    return cert_id, password
 
 
 # ── Main ──
