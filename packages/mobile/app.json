@@ -28,6 +28,7 @@
       "appleTeamId": "NUVT3F3322",
       "supportsTablet": true,
       "usesAppleSignIn": true,
+      "usesIcloudStorage": true,
       "infoPlist": {
         "ITSAppUsesNonExemptEncryption": false
       },
@@ -93,6 +94,7 @@
       ],
       "expo-iap",
       "expo-apple-authentication",
+      "expo-document-picker",
       "react-native-document-scanner-plugin"
     ]
   }
