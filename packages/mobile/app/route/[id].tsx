@@ -2,7 +2,6 @@ import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import {
   ActivityIndicator,
   Linking,
-  Platform,
   Pressable,
   ScrollView,
   StyleSheet,
@@ -339,6 +338,29 @@ export default function RouteRun() {
                 ]}
               >
                 {t("driver.add").toUpperCase()}
+              </Text>
+            </Pressable>
+          ) : null}
+
+          {/* The dispatcher's way into the builder. It sits under the driver row because the two
+              are the same job — who drives it, and what is on it — and it is the only route in
+              for a phone-built list, so it shows even on a route with nothing on it yet. */}
+          {canAssign && routeId ? (
+            <Pressable
+              onPress={() => router.push({ pathname: "/route/stops", params: { routeId } })}
+              style={[styles.driver, { borderColor: colors.border, backgroundColor: colors.card }]}
+            >
+              <Ionicons name="list-outline" size={17} color={colors.amber} />
+              <Text style={[styles.line, { color: colors.foreground, flex: 1 }]} numberOfLines={1}>
+                {t("routes.editStops")}
+              </Text>
+              <Text
+                style={[
+                  styles.driverAction,
+                  { color: colors.mutedForeground, fontFamily: Fonts?.mono },
+                ]}
+              >
+                {String(stops.length)}
               </Text>
             </Pressable>
           ) : null}
