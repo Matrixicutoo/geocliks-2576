@@ -28,7 +28,6 @@
       "appleTeamId": "NUVT3F3322",
       "supportsTablet": true,
       "usesAppleSignIn": true,
-      "usesIcloudStorage": true,
       "infoPlist": {
         "ITSAppUsesNonExemptEncryption": false
       },
