@@ -17,6 +17,10 @@ import { Logo, LogoMark } from "./logo";
  * - name but no logo -> the GeoCliks globe as a neutral mark, company name beside it
  * - neither (loading, signed out, no org yet) -> the full GeoCliks lockup, unchanged
  *
+ * Nothing signs GeoCliks' own name under the company's here. The bar is the customer's
+ * letterhead inside their own account, and a product caption below it only competed with the
+ * name it was sitting under.
+ *
  * The name is clamped to two lines instead of truncated at one: "Northside Mechanical
  * Contracting" is a normal company name and cutting it to "Northside Mech…" reads as a bug.
  */
@@ -35,21 +39,19 @@ export function WorkspaceBrand({ className }: { className?: string }) {
           src={logoUrl}
           alt=""
           /* Fixed box, `contain`, light hairline: logos arrive as any aspect ratio on any
-             background, and the bar height must not move with them. */
-          className="size-8 shrink-0 rounded-[8px] border border-line bg-white/5 object-contain"
+             background, and the bar height must not move with them. The box is deliberately
+             larger than the identity avatars below it — this is the mark people recognise their
+             own account by, and it is the one thing in the column that should read at a
+             glance from arm's length. */
+          className="size-12 shrink-0 rounded-[10px] border border-line bg-white/5 object-contain"
         />
       ) : (
-        <LogoMark className="shrink-0" />
+        <LogoMark className="size-12 shrink-0" />
       )}
-      <span className="flex min-w-0 flex-col leading-none">
-        <span className="font-display line-clamp-2 text-[14px] font-extrabold leading-[1.15] tracking-tight text-chalk">
-          {name}
-        </span>
-        {/* The product still signs its own chrome, just quietly — one mono line under the
-            company name, the same slot the "FIELD EVIDENCE" tagline used to hold. */}
-        <span className="mono mt-1 shrink-0 text-[8.5px] tracking-[0.28em] text-fog">
-          GEOCLIKS
-        </span>
+      {/* Amber, not chalk: the company name is the heading of the whole signed-in chrome, and
+          the accent is what separates it from the ordinary white body text under it. */}
+      <span className="font-display line-clamp-2 min-w-0 text-[15px] font-extrabold leading-[1.15] tracking-tight text-amber">
+        {name}
       </span>
     </span>
   );

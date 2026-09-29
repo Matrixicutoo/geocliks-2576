@@ -243,13 +243,15 @@ export function ProfileMenu({ showStamp, onToggleStamp }: Props) {
                       resizeMode="contain"
                     />
                   ) : (
-                    <Ionicons name="shield-checkmark" size={20} color={colors.verified} />
+                    <Ionicons name="shield-checkmark" size={34} color={colors.verified} />
                   )}
+                  {/* Amber, like the website's: the company name heads the whole menu, and the
+                      accent is what keeps it from reading as another row of body text. */}
                   <Text
                     numberOfLines={2}
                     style={[
                       styles.brandBarName,
-                      { color: colors.foreground, fontFamily: Fonts?.displayMedium },
+                      { color: colors.amber, fontFamily: Fonts?.displayMedium },
                     ]}
                   >
                     {org.data?.org.name ?? "—"}
@@ -290,12 +292,9 @@ export function ProfileMenu({ showStamp, onToggleStamp }: Props) {
                     >
                       {user?.name ?? user?.email ?? "—"}
                     </Text>
-                    <Text
-                      numberOfLines={1}
-                      style={[styles.meta, { color: colors.mutedForeground }]}
-                    >
-                      {user?.email ?? ""}
-                    </Text>
+                    {/* No email address under the name — it is the longest string in the card
+                        and the least useful. The account screen shows it where you would go to
+                        change it. */}
                     {/* Plan, seats and role followed the workspace card here rather than
                         disappearing with it — they are what people opened that card to read,
                         and all three describe the account in front of them. */}
@@ -604,11 +603,13 @@ const styles = StyleSheet.create({
   brandLogo: { width: 26, height: 26, borderRadius: 6, borderWidth: 1 },
   // Brand bar at the head of the drawer: the workspace's logo and company name, sitting above
   // the profile card. No border or fill — it is a letterhead, not another card to tap.
-  brandBar: { flexDirection: "row", alignItems: "center", gap: 10, paddingBottom: 2 },
-  brandBarLogo: { width: 32, height: 32, borderRadius: 8, borderWidth: 1 },
+  brandBar: { flexDirection: "row", alignItems: "center", gap: 11, paddingBottom: 2 },
+  // Larger than the avatars below it: this is the mark people recognise their own account by,
+  // and it should read at a glance with the phone at arm's length.
+  brandBarLogo: { width: 46, height: 46, borderRadius: 10, borderWidth: 1 },
   // Two lines, not one: real company names are long, and clipping one to "Northside Mech..."
   // reads as a bug rather than as a deliberate truncation.
-  brandBarName: { flex: 1, minWidth: 0, fontSize: 15, lineHeight: 18 },
+  brandBarName: { flex: 1, minWidth: 0, fontSize: 16, lineHeight: 19 },
   identityText: { flex: 1, minWidth: 0 },
   name: { fontSize: 14 },
   meta: { fontSize: 11, marginTop: 3 },

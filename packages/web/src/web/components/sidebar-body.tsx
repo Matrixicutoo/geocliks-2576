@@ -82,7 +82,7 @@ export function SidebarBody({
             the account page. Two workspace identities in one column read as a duplicate. */}
         <div className="shrink-0 border-b border-line p-2">
           {org.isLoading ? (
-            <div className="h-[62px] animate-pulse rounded-[12px] bg-ink-3" />
+            <div className="h-[50px] animate-pulse rounded-[12px] bg-ink-3" />
           ) : (
             <Link
               onClick={onNavigate}
@@ -106,9 +106,9 @@ export function SidebarBody({
                 <span className="block truncate text-[13px] font-semibold text-chalk">
                   {org.data?.user.name ?? org.data?.user.email ?? "—"}
                 </span>
-                <span className="block truncate text-[11px] text-fog">
-                  {org.data?.user.email ?? ""}
-                </span>
+                {/* No email address under the name. It is the longest string in the column and
+                    the least useful — you know your own address, and the account page shows it
+                    where you would go to change it. */}
                 {/* Plan and role followed the workspace card here rather than going away with
                     it. They are what people actually came to that card to read — what this
                     account is paying for and what it is allowed to do — and both belong to the

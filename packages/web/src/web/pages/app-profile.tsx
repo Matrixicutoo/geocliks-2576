@@ -3,7 +3,6 @@ import { Link } from "wouter";
 import {
   ArrowUpCircle,
   Building2,
-  ChevronRight,
   Image as ImageIcon,
   Loader2,
   Mail,
@@ -123,6 +122,50 @@ export default function AppProfile() {
     <DashboardShell title={t("profile.title")} subtitle={t("profile.account")}>
       <div className="grid max-w-4xl gap-6 xl:grid-cols-[minmax(0,1fr)_320px]">
         <div className="min-w-0 space-y-6">
+          {/* The workspace's own details — company name, address, phone, logo — live on the
+              teamspace settings page. This page is otherwise the person, not the business, but
+              the company comes first here on purpose: it is the only door into those settings
+              now that the menu's workspace card is gone, and it is what people arrive on this
+              page looking for far more often than they come to change their own display name.
+
+              Built at the same weight as the photo card below it — big logo, real button —
+              rather than as a link row, so it reads as a destination instead of a footnote. */}
+          <section className="rounded-[12px] border border-line bg-ink-2">
+            <div className="border-b border-line px-4 py-3">
+              <p className="label text-fog">{t("org.settings.section")}</p>
+            </div>
+            <div className="flex flex-wrap items-center gap-4 p-4">
+              {/* The company's own logo when it has one — the same mark that now heads the
+                  sidebar, so this card is visibly about *their* business. */}
+              {org.data?.org.logoUrl ? (
+                <img
+                  src={org.data.org.logoUrl}
+                  alt=""
+                  className="size-20 shrink-0 rounded-[12px] border border-line bg-white/5 object-contain"
+                />
+              ) : (
+                <div className="flex size-20 shrink-0 items-center justify-center rounded-[12px] border border-line">
+                  <Building2 className="size-8 text-amber" />
+                </div>
+              )}
+              <div className="min-w-0 flex-1 space-y-2">
+                <p className="font-display truncate text-[16px] font-extrabold tracking-tight text-amber">
+                  {org.data?.org.name ?? t("org.settings.section")}
+                </p>
+                <p className="text-[12px] leading-relaxed text-fog">
+                  {t("org.settings.openHint")}
+                </p>
+                <Link
+                  to="/app/teamspace-settings"
+                  className="rounded-[8px] inline-flex items-center gap-2 border border-amber px-3 py-2 text-[13px] font-medium text-amber transition-colors hover:bg-amber hover:text-ink"
+                >
+                  <Building2 className="size-4" />
+                  {t("org.settings.title")}
+                </Link>
+              </div>
+            </div>
+          </section>
+
           {/* Avatar */}
           <section className="rounded-[12px] border border-line bg-ink-2">
             <div className="border-b border-line px-4 py-3">
@@ -224,46 +267,6 @@ export default function AppProfile() {
                 {t("profile.signInPasswordlessHint")}
               </p>
             </div>
-          </section>
-
-          {/* The workspace's own details — company name, address, phone, logo — live on the
-              teamspace settings page. This page is the person, not the business.
-
-              This row is the *only* way into that page now that the menu's workspace card is
-              gone, so it is a titled section like the ones above rather than a bare link: it
-              has to be findable by someone who is looking for "where do I change the company
-              address", not just recognisable once they have already landed on it. */}
-          <section className="rounded-[12px] border border-line bg-ink-2">
-            <div className="border-b border-line px-4 py-3">
-              <p className="label text-fog">{t("org.settings.section")}</p>
-            </div>
-            <Link
-              to="/app/teamspace-settings"
-              className="flex items-center gap-3 rounded-b-[12px] px-4 py-3 transition-colors hover:bg-ink-3/60"
-            >
-              {/* The company's own logo when it has one — the same mark that now heads the
-                  sidebar, so this row is visibly about *their* business. */}
-              {org.data?.org.logoUrl ? (
-                <img
-                  src={org.data.org.logoUrl}
-                  alt=""
-                  className="size-8 shrink-0 rounded-[8px] border border-line object-contain"
-                />
-              ) : (
-                <span className="flex size-8 shrink-0 items-center justify-center rounded-[8px] border border-line">
-                  <Building2 className="size-4 text-amber" />
-                </span>
-              )}
-              <span className="min-w-0 flex-1">
-                <span className="block truncate text-[13px] font-semibold text-chalk">
-                  {org.data?.org.name ?? t("org.settings.open")}
-                </span>
-                <span className="block text-[12px] leading-relaxed text-fog">
-                  {t("org.settings.openHint")}
-                </span>
-              </span>
-              <ChevronRight className="size-4 shrink-0 text-fog" />
-            </Link>
           </section>
 
         </div>

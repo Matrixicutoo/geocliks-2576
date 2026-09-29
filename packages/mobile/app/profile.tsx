@@ -170,6 +170,68 @@ export default function Profile() {
       </View>
 
       <ScrollView contentContainerStyle={styles.content} showsVerticalScrollIndicator={false}>
+        {/* The company leads this screen on purpose. Everything below is the person — photo,
+            display name, how they sign in — but the business is the only thing here that also
+            shows up on the reports their clients read, it is the sole door into teamspace
+            settings now that the drawer's workspace card is gone, and it is what people come
+            to this screen looking for far more often than their own display name.
+
+            Same weight as the photo card under it — big logo, centred name, real button —
+            rather than the link row it used to be, so it reads as a destination. */}
+        <Text style={[styles.section, { color: colors.mutedForeground, fontFamily: Fonts?.mono }]}>
+          {tr("org.settings.section").toUpperCase()}
+        </Text>
+        <Pressable
+          accessibilityRole="button"
+          accessibilityLabel={tr("org.settings.open")}
+          onPress={() => router.push("/teamspace-settings")}
+          style={[
+            styles.card,
+            styles.brandCard,
+            { borderColor: colors.border, backgroundColor: colors.card },
+          ]}
+        >
+          {/* The company's own logo when it has one — the same mark that heads the drawer, so
+              this card is visibly about their business rather than about the app. */}
+          {org.data?.org.logoUrl ? (
+            <Image
+              source={{ uri: org.data.org.logoUrl }}
+              style={[styles.brandCardLogo, { borderColor: colors.border }]}
+              resizeMode="contain"
+            />
+          ) : (
+            <View
+              style={[
+                styles.brandCardLogo,
+                styles.brandCardLogoEmpty,
+                { borderColor: colors.border },
+              ]}
+            >
+              <Ionicons name="business-outline" size={34} color={colors.amber} />
+            </View>
+          )}
+          <Text
+            numberOfLines={2}
+            style={[
+              styles.brandCardName,
+              { color: colors.amber, fontFamily: Fonts?.displayMedium },
+            ]}
+          >
+            {org.data?.org.name ?? tr("org.settings.section")}
+          </Text>
+          <Text style={[styles.meta, styles.brandCardHint, { color: colors.mutedForeground }]}>
+            {tr("org.settings.openHint")}
+          </Text>
+          {/* A View, not a nested Pressable: the whole card is the target, and a button inside
+              it would give the same destination two overlapping hit areas. */}
+          <View style={[styles.btn, { borderColor: colors.amber }]}>
+            <Ionicons name="business-outline" size={15} color={colors.amber} />
+            <Text style={[styles.btnText, { color: colors.amber }]}>
+              {tr("org.settings.title")}
+            </Text>
+          </View>
+        </Pressable>
+
         <View
           style={[
             styles.card,
@@ -223,49 +285,6 @@ export default function Profile() {
             ) : null}
           </View>
         </View>
-
-        <Text style={[styles.section, { color: colors.mutedForeground, fontFamily: Fonts?.mono }]}>
-          {tr("org.settings.section").toUpperCase()}
-        </Text>
-        <Pressable
-          accessibilityRole="button"
-          accessibilityLabel={tr("org.settings.open")}
-          onPress={() => router.push("/teamspace-settings")}
-          style={[
-            styles.card,
-            styles.linkRow,
-            { borderColor: colors.border, backgroundColor: colors.card },
-          ]}
-        >
-          {/* The company's own logo when it has one — the same mark that heads the drawer, so
-              this row is visibly about their business rather than about the app. */}
-          {org.data?.org.logoUrl ? (
-            <Image
-              source={{ uri: org.data.org.logoUrl }}
-              style={[styles.linkRowLogo, { borderColor: colors.border }]}
-              resizeMode="contain"
-            />
-          ) : (
-            <View style={[styles.linkRowLogo, styles.linkRowLogoEmpty, { borderColor: colors.border }]}>
-              <Ionicons name="business-outline" size={17} color={colors.amber} />
-            </View>
-          )}
-          <View style={styles.linkRowText}>
-            <Text
-              numberOfLines={1}
-              style={[
-                styles.linkRowTitle,
-                { color: colors.foreground, fontFamily: Fonts?.displayMedium },
-              ]}
-            >
-              {org.data?.org.name ?? tr("org.settings.section")}
-            </Text>
-            <Text style={[styles.meta, { color: colors.mutedForeground }]}>
-              {tr("org.settings.openHint")}
-            </Text>
-          </View>
-          <Ionicons name="chevron-forward" size={18} color={colors.mutedForeground} />
-        </Pressable>
 
         <Text style={[styles.section, { color: colors.mutedForeground, fontFamily: Fonts?.mono }]}>
           {tr("profile.account").toUpperCase()}
@@ -490,13 +509,14 @@ const styles = StyleSheet.create({
     borderRadius: 8,
   },
   btnText: { fontSize: 12 },
-  linkRow: { flexDirection: "row", alignItems: "center", gap: 12 },
-  linkRowText: { flex: 1, gap: 2 },
-  linkRowTitle: { fontSize: 14 },
-  // Fixed box with `contain`: logos arrive at any aspect ratio, and the row height must not
+  // The company card, built to the same shape as the avatar card below it.
+  brandCard: { alignItems: "center", gap: 12, paddingVertical: 20 },
+  // Fixed box with `contain`: logos arrive at any aspect ratio, and the card height must not
   // move with them.
-  linkRowLogo: { width: 34, height: 34, borderRadius: 8, borderWidth: 1 },
-  linkRowLogoEmpty: { alignItems: "center", justifyContent: "center" },
+  brandCardLogo: { width: 84, height: 84, borderRadius: 12, borderWidth: 1 },
+  brandCardLogoEmpty: { alignItems: "center", justifyContent: "center" },
+  brandCardName: { fontSize: 17, lineHeight: 21, textAlign: "center" },
+  brandCardHint: { textAlign: "center" },
   section: { fontSize: 10, letterSpacing: 2, marginTop: 8 },
   fieldLabel: { fontSize: 10, letterSpacing: 1.6 },
   input: {
