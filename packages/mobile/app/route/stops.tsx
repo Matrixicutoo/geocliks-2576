@@ -137,6 +137,11 @@ export default function RouteStops() {
    * sees what was understood — which column became the recipient, how many lines had no address
    * — before anything is added. `copyToCacheDirectory` matters on Android: a content:// URI from
    * Drive or Gmail is not readable directly.
+   *
+   * Reading it takes two paths because the picker hands back two different things. On a phone
+   * the asset is a file on disk, read through expo-file-system. In a browser — the preview —
+   * it is a blob the page cannot open by URI at all, and only the browser File object on the
+   * asset can be read; going through expo-file-system there fails every time.
    */
   const importCsv = async () => {
     try {
@@ -152,7 +157,7 @@ export default function RouteStops() {
         blame(new Error(t("routes.csvError")));
         return;
       }
-      const text = await new File(file.uri).text();
+      const text = file.file ? await file.file.text() : await new File(file.uri).text();
       if (!text.trim()) {
         blame(new Error(t("routes.csvError")));
         return;
