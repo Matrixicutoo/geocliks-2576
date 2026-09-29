@@ -4,7 +4,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { useLocalSearchParams, useRouter } from "expo-router";
 import { Ionicons } from "@expo/vector-icons";
 import * as Location from "expo-location";
-import MapView, { Marker, Polyline, PROVIDER_GOOGLE } from "react-native-maps";
+import NavMap, { type NavMapHandle } from "@/components/nav-map";
 import { Text } from "@/components/app-text";
 import { useColors } from "@/hooks/use-colors";
 import { Fonts } from "@/constants/theme";
@@ -13,7 +13,6 @@ import { useDirections, useRoute } from "@/queries/routes";
 import { ARRIVAL_RADIUS_M, useArrival } from "@/hooks/use-arrival";
 import { arrivalClock, formatDuration, formatMetres, metresBetween, metresOffPath } from "@/lib/geo";
 import { shootParams } from "@/lib/shoot";
-import { MAP_STYLE_NAV } from "@/components/map-style";
 
 /**
  * In-app turn-by-turn to one stop.
@@ -111,7 +110,7 @@ export default function RouteNavigate() {
   const arrival = useArrival(stop, !!stop);
   const directions = useDirections();
 
-  const map = useRef<MapView | null>(null);
+  const map = useRef<NavMapHandle | null>(null);
   const [leg, setLeg] = useState<Awaited<ReturnType<typeof directions.mutateAsync>> | null>(null);
   const [stepIndex, setStepIndex] = useState(0);
   // Following means the camera rides the driver. Panning the map by hand drops it, so he can
@@ -193,16 +192,8 @@ export default function RouteNavigate() {
   // The camera rides behind the driver, turned the way he is driving. Pitched, because a
   // flat-on view of a junction tells you much less than a low one does.
   useEffect(() => {
-    if (!following || !fix || !map.current) return;
-    map.current.animateCamera(
-      {
-        center: { latitude: fix.lat, longitude: fix.lng },
-        heading: fix.heading ?? 0,
-        pitch: 45,
-        zoom: 17,
-      },
-      { duration: 800 },
-    );
+    if (!following || !fix) return;
+    map.current?.follow(fix);
   }, [fix, following]);
 
   /** Everything the bottom bar says: what is left of the drive, and when he gets there. */
@@ -247,48 +238,17 @@ export default function RouteNavigate() {
 
   return (
     <View style={[styles.fill, { backgroundColor: colors.background }]}>
-      <MapView
+      <NavMap
         ref={map}
-        style={StyleSheet.absoluteFill}
-        provider={PROVIDER_GOOGLE}
-        customMapStyle={MAP_STYLE_NAV}
-        initialRegion={
-          pin
-            ? {
-                latitude: pin.lat,
-                longitude: pin.lng,
-                latitudeDelta: 0.02,
-                longitudeDelta: 0.02,
-              }
-            : undefined
-        }
-        showsUserLocation
-        showsMyLocationButton={false}
-        showsCompass={false}
-        toolbarEnabled={false}
+        pin={pin}
+        path={leg?.path ?? []}
+        dashed={leg?.provider === "direct"}
+        markerTitle={stop?.address ?? stop?.addressRaw}
+        strokeColor={colors.amber}
         // Any hand on the map means he wants to look somewhere else. The FOLLOW button gives
         // the camera back.
         onPanDrag={() => setFollowing(false)}
-      >
-        {leg && leg.path.length > 1 ? (
-          <Polyline
-            coordinates={leg.path.map((p) => ({ latitude: p.lat, longitude: p.lng }))}
-            strokeColor={colors.amber}
-            strokeWidth={6}
-            // A straight-line fallback is drawn dashed, so it never passes itself off as a road.
-            lineDashPattern={leg.provider === "direct" ? [10, 8] : undefined}
-            lineCap="round"
-          />
-        ) : null}
-        {pin ? (
-          <Marker
-            coordinate={{ latitude: pin.lat, longitude: pin.lng }}
-            title={stop?.address ?? stop?.addressRaw}
-            pinColor={colors.amber}
-          />
-        ) : null}
-        {/* The arrival radius, drawn as the ring the photo button unlocks inside. */}
-      </MapView>
+      />
 
       <SafeAreaView edges={["top", "left", "right"]} style={styles.top} pointerEvents="box-none">
         <View style={[styles.banner, { borderColor: colors.border, backgroundColor: colors.card }]}>
