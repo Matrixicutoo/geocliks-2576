@@ -4,6 +4,13 @@ import { Colors, type ColorScheme, type ThemeColors } from "@/constants/theme";
 
 /** Per-device member override. Absent = follow the workspace default. */
 const KEY = "geocliks.theme";
+/**
+ * Bumped whenever a stored override can no longer be trusted. Until now a tap anywhere on the
+ * profile menu's appearance row silently flipped the device to light and kept it there for
+ * good, and a value set that way is indistinguishable from a deliberate one — so the stored
+ * override is dropped once per bump and the workspace default takes over again.
+ */
+const RESET_KEY = "geocliks.theme.reset.1";
 
 type Ctx = {
   /** The scheme currently painted. */
@@ -30,14 +37,27 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
 
   // AsyncStorage is async, so the first frame paints the default and corrects itself.
   useEffect(() => {
-    void AsyncStorage.getItem(KEY).then((value) => {
-      if (value === "light" || value === "dark") setOverride(value);
-    });
+    let live = true;
+    void (async () => {
+      if (!(await AsyncStorage.getItem(RESET_KEY))) {
+        // First run since the reset was bumped: forget the old override rather than trust it.
+        await AsyncStorage.removeItem(KEY);
+        await AsyncStorage.setItem(RESET_KEY, "1");
+        return;
+      }
+      const value = await AsyncStorage.getItem(KEY);
+      if (live && (value === "light" || value === "dark")) setOverride(value);
+    })();
+    return () => {
+      live = false;
+    };
   }, []);
 
   const setTheme = useCallback((next: ColorScheme) => {
     setOverride(next);
     void AsyncStorage.setItem(KEY, next);
+    // A choice made from here is deliberate, so it must survive the one-time reset above.
+    void AsyncStorage.setItem(RESET_KEY, "1");
   }, []);
 
   const useWorkspaceDefault = useCallback(() => {

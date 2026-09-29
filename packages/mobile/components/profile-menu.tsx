@@ -112,7 +112,7 @@ export function ProfileMenu({ showStamp, onToggleStamp }: Props) {
   const tr = useT();
   const org = useOrg();
   // Appearance and language are answered in the drawer now, not only in Settings.
-  const { scheme, setTheme } = useAppTheme();
+  const { override, setTheme, useWorkspaceDefault } = useAppTheme();
   // Shown to anyone signed in, on every plan — matching the website's footer link.
   const assistant = useAssistantAccess();
   const [open, setOpen] = useState(false);
@@ -442,31 +442,59 @@ export function ProfileMenu({ showStamp, onToggleStamp }: Props) {
                   />
                 </View>
                 {/* Theme and language sit with the other device settings, so neither needs a
-                    trip into Settings from the capture screen. */}
-                <Pressable
-                  onPress={() => setTheme(scheme === "dark" ? "light" : "dark")}
-                  accessibilityLabel={tr("appearance.title")}
-                  style={[styles.cardRow, styles.cardRowTop, { borderColor: colors.border }]}
-                >
+                    trip into Settings from the capture screen. Each choice is its own small
+                    target: the row used to flip the whole app on any tap, which is easy to do
+                    by accident on the way past and stuck the device in light for good. */}
+                <View style={[styles.cardRow, styles.cardRowTop, { borderColor: colors.border }]}>
                   <Text style={[styles.rowText, { color: colors.foreground }]}>
                     {tr("appearance.title")}
                   </Text>
-                  <View style={styles.rowValue}>
-                    <Ionicons
-                      name={scheme === "dark" ? "moon-outline" : "sunny-outline"}
-                      size={15}
-                      color={colors.amber}
-                    />
-                    <Text
+                  <View style={styles.segment}>
+                    {(["light", "dark"] as const).map((s) => {
+                      const on = override === s;
+                      return (
+                        <Pressable
+                          key={s}
+                          onPress={() => setTheme(s)}
+                          accessibilityLabel={tr(
+                            s === "light" ? "appearance.light" : "appearance.dark",
+                          )}
+                          style={[
+                            styles.segmentItem,
+                            { borderColor: on ? colors.amber : colors.border },
+                          ]}
+                        >
+                          <Ionicons
+                            name={s === "light" ? "sunny-outline" : "moon-outline"}
+                            size={14}
+                            color={on ? colors.amber : colors.mutedForeground}
+                          />
+                        </Pressable>
+                      );
+                    })}
+                    {/* Back to whatever the workspace is set to — the way out of a stray tap. */}
+                    <Pressable
+                      onPress={useWorkspaceDefault}
+                      accessibilityLabel={tr("appearance.workspaceDefault")}
                       style={[
-                        styles.rowValueText,
-                        { color: colors.mutedForeground, fontFamily: Fonts?.mono },
+                        styles.segmentItem,
+                        { borderColor: override === null ? colors.amber : colors.border },
                       ]}
                     >
-                      {tr(scheme === "dark" ? "appearance.dark" : "appearance.light").toUpperCase()}
-                    </Text>
+                      <Text
+                        style={[
+                          styles.segmentText,
+                          {
+                            color: override === null ? colors.amber : colors.mutedForeground,
+                            fontFamily: Fonts?.mono,
+                          },
+                        ]}
+                      >
+                        AUTO
+                      </Text>
+                    </Pressable>
                   </View>
-                </Pressable>
+                </View>
                 <View style={[styles.cardRow, styles.cardRowTop, { borderColor: colors.border }]}>
                   <Text style={[styles.rowText, { color: colors.foreground }]}>
                     {tr("language.title")}
@@ -646,6 +674,19 @@ const styles = StyleSheet.create({
   rowText: { fontSize: 12.5, flex: 1 },
   rowValue: { flexDirection: "row", alignItems: "center", gap: 6 },
   rowValueText: { fontSize: 11, letterSpacing: 1 },
+  segment: { flexDirection: "row", alignItems: "center", gap: 6 },
+  segmentItem: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
+    gap: 4,
+    borderWidth: 1,
+    borderRadius: 8,
+    minWidth: 34,
+    minHeight: 30,
+    paddingHorizontal: 8,
+  },
+  segmentText: { fontSize: 10.5, letterSpacing: 1 },
   signOut: {
     flexDirection: "row",
     alignItems: "center",
