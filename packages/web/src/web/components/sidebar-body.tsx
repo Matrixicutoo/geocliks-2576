@@ -12,7 +12,6 @@ import {
 import { authClient } from "../lib/auth";
 import { useOrg } from "../queries/orgs";
 import { canInviteCrew } from "../lib/roles";
-import { homeFor } from "../lib/product";
 import { useAdminMe } from "../queries/admin";
 import { useUnreadMessages } from "../queries/messages";
 import { cn } from "../lib/utils";
@@ -114,10 +113,10 @@ export function SidebarBody({
               </Link>
               <Link
                 onClick={onNavigate}
-                /* The workspace card goes home — Routes for a delivery workspace, the
-                   Teamspace feed for a job-photos one. Hardcoding /app would hand a courier a
-                   page ProductRoute only bounces them off again. */
-                to={homeFor(org.data?.product, org.data?.role)}
+                /* The workspace card opens the workspace's own settings — the company
+                   profile, address and logo. Every role may read that page, so unlike the
+                   product homes it needs no role or product steering. */
+                to="/app/teamspace-settings"
                 className="flex items-center gap-2.5 rounded-[12px] border border-line bg-ink px-3 py-1.5 transition-colors hover:border-amber/60"
               >
                 {/* Workspace identity: the business logo when one is uploaded, the shield

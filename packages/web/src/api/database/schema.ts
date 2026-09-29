@@ -38,6 +38,31 @@ export const organizations = sqliteTable("organizations", {
    * The steps that *are* provable stay derived and ignore this column entirely.
    */
   setupAcks: text("setup_acks"),
+  /**
+   * The company's own contact details and postal address, as filled in on Teamspace settings.
+   * All nullable: a workspace is usable from the moment it has a name, and the office fills
+   * the rest in when it matters — on an invoice, a report header, a shared link's footer.
+   * `email` and `phone` are the *business's*, deliberately separate from the owner's own
+   * account details on `users`.
+   */
+  phone: text("phone"),
+  email: text("email"),
+  address1: text("address1"),
+  address2: text("address2"),
+  city: text("city"),
+  state: text("state"),
+  postalCode: text("postal_code"),
+  /** ISO 3166-1 alpha-2, so the name can be re-localised per reader instead of stored once. */
+  country: text("country"),
+  /**
+   * IANA zone id ("America/Halifax"), not an offset: an offset is wrong for half the year.
+   * This is the workspace's working day — what a timesheet or a daily recap is cut against.
+   */
+  timezone: text("timezone"),
+  /** Crew-size band, keyed ("4-10"), because nobody keeps an exact headcount accurate. */
+  companySize: text("company_size"),
+  /** Keyed attribution answer ("someone_told_me"), asked once and never shown to members. */
+  referralSource: text("referral_source"),
   ownerId: text("owner_id").notNull(),
   createdAt: integer("created_at", { mode: "timestamp_ms" }).notNull().$defaultFn(now),
 });

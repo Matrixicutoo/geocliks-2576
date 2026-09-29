@@ -33,6 +33,7 @@ const AppMessages = lazy(() => import("./pages/app-messages"));
 const AppTemplates = lazy(() => import("./pages/app-templates"));
 const AppBilling = lazy(() => import("./pages/app-billing"));
 const AppProfile = lazy(() => import("./pages/app-profile"));
+const AppTeamspaceSettings = lazy(() => import("./pages/app-teamspace-settings"));
 const AdminOverview = lazy(() => import("./pages/admin-overview"));
 const AdminUsers = lazy(() => import("./pages/admin-users"));
 const AdminWorkspaces = lazy(() => import("./pages/admin-workspaces"));
@@ -172,6 +173,16 @@ function App() {
               <Route path="/app/profile">
                 <ProtectedRoute>
                   <AppProfile />
+                </ProtectedRoute>
+              </Route>
+              {/*
+                No ProductRoute: the company profile is the workspace itself, the same record
+                on both sides of the app. Every role may read it; only the owner may write it,
+                and the server is what enforces that.
+              */}
+              <Route path="/app/teamspace-settings">
+                <ProtectedRoute>
+                  <AppTeamspaceSettings />
                 </ProtectedRoute>
               </Route>
               <Route path="/app/projects">

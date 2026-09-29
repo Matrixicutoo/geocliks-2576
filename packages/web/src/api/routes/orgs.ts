@@ -341,16 +341,33 @@ export const orgs = {
       return { product: input.product };
     }),
 
+  /**
+   * The company profile behind Teamspace settings: who the business is, where it is, and how
+   * to reach it. Owner only — this is the identity the workspace presents on a report header
+   * or a shared link, so it is not an admin's to rewrite. Every field bar the name is
+   * optional, and `nullish` on purpose: the form clears a field by sending null.
+   */
   update: orgProc
     .input(
       z.object({
         name: z.string().min(2).max(80).optional(),
         industry: z.string().max(60).nullish(),
         logoUrl: z.string().nullish(),
+        phone: z.string().max(40).nullish(),
+        email: z.string().max(160).nullish(),
+        address1: z.string().max(160).nullish(),
+        address2: z.string().max(160).nullish(),
+        city: z.string().max(80).nullish(),
+        state: z.string().max(80).nullish(),
+        postalCode: z.string().max(20).nullish(),
+        country: z.string().max(2).nullish(),
+        timezone: z.string().max(64).nullish(),
+        companySize: z.string().max(16).nullish(),
+        referralSource: z.string().max(40).nullish(),
       }),
     )
     .handler(async ({ input, context }) => {
-      requireRole(context.role, "admin");
+      requireRole(context.role, "owner");
       const [org] = await db
         .update(schema.organizations)
         .set(input)

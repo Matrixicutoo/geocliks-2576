@@ -135,6 +135,7 @@ function Gate() {
           <Stack.Screen name="queue" />
           <Stack.Screen name="time-clock" />
           <Stack.Screen name="profile" />
+          <Stack.Screen name="teamspace-settings" />
           <Stack.Screen name="plans" />
           <Stack.Screen name="sign-in" />
           <Stack.Screen name="sign-up" />

@@ -2,6 +2,8 @@ import { useEffect, useRef, useState } from "react";
 import { Link } from "wouter";
 import {
   ArrowUpCircle,
+  Building2,
+  ChevronRight,
   Image as ImageIcon,
   Loader2,
   Mail,
@@ -11,7 +13,7 @@ import {
   User,
 } from "lucide-react";
 import { DashboardShell } from "../components/dashboard-shell";
-import { useOrg, useUpdateOrg } from "../queries/orgs";
+import { useOrg } from "../queries/orgs";
 import { useDeleteAccount, useUpdateProfile } from "../queries/account";
 import { orpc } from "../lib/api";
 import { authClient } from "../lib/auth";
@@ -34,15 +36,11 @@ export default function AppProfile() {
   const t = useT();
   const org = useOrg();
   const updateProfile = useUpdateProfile();
-  const updateOrg = useUpdateOrg();
   const deleteAccount = useDeleteAccount();
   const fileRef = useRef<HTMLInputElement>(null);
-  const logoRef = useRef<HTMLInputElement>(null);
 
   const [name, setName] = useState("");
-  const [orgName, setOrgName] = useState("");
   const [uploading, setUploading] = useState(false);
-  const [logoUploading, setLogoUploading] = useState(false);
   const [armed, setArmed] = useState(false);
   const [confirm, setConfirm] = useState("");
   const [note, setNote] = useState<string | null>(null);
@@ -51,76 +49,16 @@ export default function AppProfile() {
   const user = org.data?.user;
   // Only the workspace owner removes a field member — their captures are workspace evidence.
   const canDeleteAccount = org.data?.role !== "field";
-  /** The server enforces admin+ on `orgs.update`; this keeps the page honest about it. */
-  const canRenameOrg = org.data?.role === "owner" || org.data?.role === "admin";
-  const workspaceName = org.data?.org.name;
-  /** Already a usable link when it arrives: the server mints it from the stored key. */
-  const orgLogo = org.data?.org.logoUrl ?? null;
 
   useEffect(() => {
     if (user?.name) setName((prev) => (prev ? prev : user.name));
   }, [user?.name]);
-
-  useEffect(() => {
-    if (workspaceName) setOrgName((prev) => (prev ? prev : workspaceName));
-  }, [workspaceName]);
 
   const flash = (message: string) => {
     setError(null);
     setNote(message);
     setTimeout(() => setNote(null), 4000);
   };
-
-  async function saveOrgName() {
-    setError(null);
-    const next = orgName.trim();
-    if (!next || next === workspaceName) return;
-    try {
-      await updateOrg.mutateAsync({ name: next });
-      flash(t("profile.saved"));
-    } catch (err) {
-      setError(err instanceof Error ? err.message : String(err));
-    }
-  }
-
-  /**
-   * The business logo lives on the workspace, not on a watermark template: it labels the
-   * workspace in the sidebar and the phone's menu, and any template without its own logo
-   * stamps this one. The column keeps the bare storage key, never the presigned link.
-   */
-  async function uploadLogo(file: File) {
-    setLogoUploading(true);
-    setError(null);
-    try {
-      const presign = await orpc.upload.presignLogo.call({
-        filename: file.name,
-        contentType: file.type || "image/png",
-      });
-      const res = await fetch(presign.url, {
-        method: "PUT",
-        body: file,
-        headers: { "Content-Type": file.type || "image/png" },
-      });
-      if (!res.ok) throw new Error(`Upload failed (${res.status})`);
-      await updateOrg.mutateAsync({ logoUrl: presign.key });
-      flash(t("profile.saved"));
-    } catch (err) {
-      setError(err instanceof Error ? err.message : String(err));
-    } finally {
-      setLogoUploading(false);
-      if (logoRef.current) logoRef.current.value = "";
-    }
-  }
-
-  async function removeLogo() {
-    setError(null);
-    try {
-      await updateOrg.mutateAsync({ logoUrl: null });
-      flash(t("profile.saved"));
-    } catch (err) {
-      setError(err instanceof Error ? err.message : String(err));
-    }
-  }
 
   async function uploadAvatar(file: File) {
     setUploading(true);
@@ -288,86 +226,19 @@ export default function AppProfile() {
             </div>
           </section>
 
-          {canRenameOrg ? (
-            <section className="rounded-[12px] border border-line bg-ink-2">
-              <div className="border-b border-line px-4 py-3">
-                <p className="label text-fog">{t("profile.workspace")}</p>
-              </div>
-              <div className="space-y-3 p-4">
-                <div>
-                  <span className="label">{t("templates.logo")}</span>
-                  <div className="mt-1.5 flex flex-wrap items-center gap-3">
-                    {orgLogo ? (
-                      <img
-                        src={orgLogo}
-                        alt={t("templates.logo")}
-                        className="size-14 shrink-0 rounded-[10px] border border-line bg-ink object-contain p-1"
-                      />
-                    ) : (
-                      <div className="flex size-14 shrink-0 items-center justify-center rounded-[10px] border border-dashed border-line text-fog">
-                        <ImageIcon className="size-5" />
-                      </div>
-                    )}
-                    <input
-                      ref={logoRef}
-                      type="file"
-                      accept="image/*"
-                      aria-label={t("templates.upload")}
-                      className="hidden"
-                      onChange={(e) => {
-                        const file = e.target.files?.[0];
-                        if (file) void uploadLogo(file);
-                      }}
-                    />
-                    <button
-                      type="button"
-                      onClick={() => logoRef.current?.click()}
-                      disabled={logoUploading}
-                      className="rounded-[8px] flex items-center gap-2 border border-amber px-3 py-2 text-[13px] font-medium text-amber transition-colors hover:bg-amber hover:text-ink disabled:opacity-60"
-                    >
-                      {logoUploading ? (
-                        <Loader2 className="size-4 animate-spin" />
-                      ) : (
-                        <ImageIcon className="size-4" />
-                      )}
-                      {t("templates.upload")}
-                    </button>
-                    {orgLogo && (
-                      <button
-                        type="button"
-                        onClick={() => void removeLogo()}
-                        className="rounded-[8px] border border-line px-3 py-2 text-[13px] text-fog transition-colors hover:border-alert hover:text-alert"
-                      >
-                        {t("common.delete")}
-                      </button>
-                    )}
-                  </div>
-                </div>
-                <label className="block">
-                  <span className="label">{t("profile.businessName")}</span>
-                  <input
-                    aria-label={t("profile.businessName")}
-                    value={orgName}
-                    onChange={(e) => setOrgName(e.target.value)}
-                    className="mt-1.5 w-full rounded-[8px] border border-line bg-ink px-3 py-2.5 text-[14px] text-chalk outline-none transition-colors placeholder:text-fog/60 focus:border-amber"
-                  />
-                </label>
-                <p className="text-[12px] leading-relaxed text-fog">{t("profile.workspaceHint")}</p>
-                <button
-                  type="button"
-                  disabled={
-                    updateOrg.isPending ||
-                    orgName.trim().length < 2 ||
-                    orgName.trim() === workspaceName
-                  }
-                  onClick={saveOrgName}
-                  className="rounded-[8px] mono bg-amber px-3.5 py-2 text-[11px] font-bold uppercase tracking-widest text-on-amber disabled:opacity-60"
-                >
-                  {t("profile.saveChanges")}
-                </button>
-              </div>
-            </section>
-          ) : null}
+          {/* The workspace's own details — company name, address, logo — live on the
+              teamspace settings page now, reached from the workspace card in the sidebar.
+              This page is the person, not the business. */}
+          <Link
+            to="/app/teamspace-settings"
+            className="flex items-center gap-3 rounded-[12px] border border-line bg-ink-2 px-4 py-3 transition-colors hover:border-amber/60"
+          >
+            <Building2 className="size-4 shrink-0 text-amber" />
+            <span className="min-w-0 flex-1 truncate text-[13px] text-chalk">
+              {t("org.settings.open")}
+            </span>
+            <ChevronRight className="size-4 shrink-0 text-fog" />
+          </Link>
 
         </div>
 

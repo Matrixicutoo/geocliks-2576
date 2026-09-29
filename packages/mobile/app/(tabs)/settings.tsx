@@ -1,13 +1,11 @@
 import { useCallback, useEffect, useRef, useState } from "react";
-import { ActivityIndicator, Image, Pressable, ScrollView, StyleSheet, View } from "react-native";
+import { ActivityIndicator, Pressable, ScrollView, StyleSheet, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Ionicons } from "@expo/vector-icons";
 import { useLocalSearchParams, useRouter } from "expo-router";
 import { useQueryClient } from "@tanstack/react-query";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import * as ImagePicker from "expo-image-picker";
-import { client } from "@/lib/api";
-import { Text, TextInput } from "@/components/app-text";
+import { Text } from "@/components/app-text";
 import { useColors } from "@/hooks/use-colors";
 import { Fonts } from "@/constants/theme";
 import { PUSH_STATUS_KEY } from "@/hooks/use-push-token";
@@ -23,7 +21,6 @@ import {
   useSetAppearance,
   useSetDefaultTemplate,
   useTemplates,
-  useUpdateOrg,
 } from "@/queries/orgs";
 import { SUPPORT_EMAIL } from "../../constants/support";
 import { ASSISTANT_NAME, openAssistant, useAssistantAccess } from "@/lib/assistant";
@@ -59,70 +56,12 @@ export default function Settings() {
   // Every role captures with the stamp; curating templates is the owner and admins only.
   const canManageTemplates = canManageWatermarks(org.data?.role);
 
-  // Renaming the teamspace to the business name. Owner and admin only, same as on the web.
-  const updateOrg = useUpdateOrg();
-  const workspaceName = org.data?.org.name;
-  const [orgName, setOrgName] = useState("");
-  const [orgSaved, setOrgSaved] = useState(false);
-  useEffect(() => {
-    if (workspaceName) setOrgName((prev) => (prev ? prev : workspaceName));
-  }, [workspaceName]);
-  const orgNameDirty = orgName.trim().length >= 2 && orgName.trim() !== workspaceName;
-
   /**
    * The business logo belongs to the workspace, not to one watermark template: it labels the
    * workspace in the menu and is stamped by any template that has no logo of its own. Arrives
    * as a ready-to-use link; the column itself keeps only the bare storage key.
    */
   const orgLogo = org.data?.org?.logoUrl ?? null;
-  const [logoBusy, setLogoBusy] = useState(false);
-  const [logoError, setLogoError] = useState<string | null>(null);
-  const pickLogo = async () => {
-    setLogoError(null);
-    // No pre-flight permission check: the picker raises the OS prompt itself and simply
-    // comes back cancelled if the phone says no, so there is nothing extra to explain.
-    const picked = await ImagePicker.launchImageLibraryAsync({
-      mediaTypes: ["images"],
-      quality: 1,
-    });
-    const asset = picked.canceled ? null : picked.assets[0];
-    if (!asset) return;
-    setLogoBusy(true);
-    try {
-      const contentType = asset.mimeType ?? "image/png";
-      const presigned = await client.upload.presignLogo({
-        filename: asset.fileName ?? "logo.png",
-        contentType,
-      });
-      const blob = await (await fetch(asset.uri)).blob();
-      const put = await fetch(presigned.url, {
-        method: "PUT",
-        body: blob,
-        headers: { "Content-Type": contentType },
-      });
-      if (!put.ok) throw new Error(`Storage rejected the upload (${put.status})`);
-      await updateOrg.mutateAsync({ logoUrl: presigned.key });
-    } catch (err) {
-      setLogoError(err instanceof Error ? err.message : String(err));
-    } finally {
-      setLogoBusy(false);
-    }
-  };
-  const removeLogo = async () => {
-    setLogoError(null);
-    try {
-      await updateOrg.mutateAsync({ logoUrl: null });
-    } catch (err) {
-      setLogoError(err instanceof Error ? err.message : String(err));
-    }
-  };
-  const saveOrgName = async () => {
-    if (!orgNameDirty) return;
-    await updateOrg.mutateAsync({ name: orgName.trim() });
-    setOrgSaved(true);
-    setTimeout(() => setOrgSaved(false), 4000);
-  };
-
   // Arriving from the drawer's "Watermarks" tile: scroll down to the stamp template section.
   useEffect(() => {
     if (!focusStamp) return;
@@ -202,107 +141,35 @@ export default function Settings() {
           )}
         </View>
 
-        {isAdmin ? (
-          <>
-            <Text
-              style={[styles.section, { color: colors.mutedForeground, fontFamily: Fonts?.mono }]}
-            >
-              {lang.t("profile.workspace").toUpperCase()}
+        <Text style={[styles.section, { color: colors.mutedForeground, fontFamily: Fonts?.mono }]}>
+          {lang.t("profile.workspace").toUpperCase()}
+        </Text>
+        {/*
+          The company profile lives on its own screen now: the business name, logo and the rest
+          of the company details are edited there instead of being duplicated here. Everyone may
+          open it — the screen itself is read-only for anyone but the owner.
+        */}
+        <Pressable
+          accessibilityRole="button"
+          accessibilityLabel={lang.t("org.settings.open")}
+          onPress={() => router.push("/teamspace-settings")}
+          style={[
+            styles.card,
+            styles.settingsLinkRow,
+            { borderColor: colors.border, backgroundColor: colors.card },
+          ]}
+        >
+          <Ionicons name="business-outline" size={18} color={colors.amber} />
+          <View style={styles.settingsLinkText}>
+            <Text style={[styles.settingsLinkTitle, { color: colors.foreground }]}>
+              {lang.t("org.settings.open")}
             </Text>
-            <View
-              style={[styles.card, { borderColor: colors.border, backgroundColor: colors.card }]}
-            >
-              <Text
-                style={[styles.label, { color: colors.mutedForeground, fontFamily: Fonts?.mono }]}
-              >
-                {lang.t("templates.logo").toUpperCase()}
-              </Text>
-              <View style={styles.logoRow}>
-                {orgLogo ? (
-                  <Image
-                    source={{ uri: orgLogo }}
-                    style={[styles.logoBox, { borderColor: colors.border }]}
-                    resizeMode="contain"
-                  />
-                ) : (
-                  <View style={[styles.logoBox, { borderColor: colors.border }]}>
-                    <Ionicons name="image-outline" size={20} color={colors.mutedForeground} />
-                  </View>
-                )}
-                <Pressable
-                  accessibilityLabel={lang.t("templates.upload")}
-                  onPress={() => void pickLogo()}
-                  disabled={logoBusy}
-                  style={[
-                    styles.logoButton,
-                    { borderColor: colors.amber, opacity: logoBusy ? 0.5 : 1 },
-                  ]}
-                >
-                  <Text style={[styles.logoButtonText, { color: colors.amber }]}>
-                    {logoBusy ? lang.t("common.loading") : lang.t("templates.upload")}
-                  </Text>
-                </Pressable>
-                {orgLogo ? (
-                  <Pressable
-                    accessibilityLabel={lang.t("common.delete")}
-                    onPress={() => void removeLogo()}
-                    style={[styles.logoButton, { borderColor: colors.border }]}
-                  >
-                    <Text style={[styles.logoButtonText, { color: colors.mutedForeground }]}>
-                      {lang.t("common.delete")}
-                    </Text>
-                  </Pressable>
-                ) : null}
-              </View>
-              {logoError ? (
-                <Text style={[styles.meta, { color: colors.destructive }]}>{logoError}</Text>
-              ) : null}
-              <Text
-                style={[
-                  styles.label,
-                  styles.labelSpaced,
-                  { color: colors.mutedForeground, fontFamily: Fonts?.mono },
-                ]}
-              >
-                {lang.t("profile.businessName").toUpperCase()}
-              </Text>
-              <TextInput
-                value={orgName}
-                onChangeText={setOrgName}
-                placeholder={workspaceName ?? ""}
-                placeholderTextColor={colors.mutedForeground}
-                accessibilityLabel={lang.t("profile.businessName")}
-                style={[styles.input, { borderColor: colors.border, color: colors.foreground }]}
-              />
-              <Text style={[styles.meta, { color: colors.mutedForeground }]}>
-                {lang.t("profile.workspaceHint")}
-              </Text>
-              {orgSaved ? (
-                <Text
-                  style={[styles.savedNote, { color: colors.verified, fontFamily: Fonts?.mono }]}
-                >
-                  {lang.t("profile.saved").toUpperCase()}
-                </Text>
-              ) : null}
-              <Pressable
-                accessibilityLabel={lang.t("profile.businessName")}
-                onPress={() => void saveOrgName()}
-                disabled={updateOrg.isPending || !orgNameDirty}
-                style={[
-                  styles.primary,
-                  {
-                    backgroundColor: colors.amber,
-                    opacity: updateOrg.isPending || !orgNameDirty ? 0.5 : 1,
-                  },
-                ]}
-              >
-                <Text style={[styles.primaryText, { color: colors.background }]}>
-                  {lang.t("profile.saveChanges")}
-                </Text>
-              </Pressable>
-            </View>
-          </>
-        ) : null}
+            <Text style={[styles.meta, { color: colors.mutedForeground }]}>
+              {lang.t("org.settings.subtitle")}
+            </Text>
+          </View>
+          <Ionicons name="chevron-forward" size={18} color={colors.mutedForeground} />
+        </Pressable>
 
         <Text style={[styles.section, { color: colors.mutedForeground, fontFamily: Fonts?.mono }]}>
           NOTIFICATIONS
@@ -709,17 +576,9 @@ const styles = StyleSheet.create({
   card: { borderWidth: 1, padding: 14, gap: 4, borderRadius: 12 },
   label: { fontSize: 9, letterSpacing: 1.5 },
   labelSpaced: { marginTop: 14 },
-  logoRow: { flexDirection: "row", alignItems: "center", flexWrap: "wrap", gap: 10, marginTop: 8 },
-  logoBox: {
-    width: 48,
-    height: 48,
-    borderRadius: 10,
-    borderWidth: 1,
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  logoButton: { borderWidth: 1, borderRadius: 8, paddingHorizontal: 12, paddingVertical: 9 },
-  logoButtonText: { fontSize: 13, fontWeight: "600" },
+  settingsLinkRow: { flexDirection: "row", alignItems: "center", gap: 12 },
+  settingsLinkText: { flex: 1, gap: 2 },
+  settingsLinkTitle: { fontSize: 13.5 },
   value: { fontSize: 17 },
   meta: { fontSize: 11 },
   planRow: {

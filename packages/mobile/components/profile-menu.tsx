@@ -331,7 +331,9 @@ export function ProfileMenu({ showStamp, onToggleStamp }: Props) {
               ) : null}
               {hasSession ? (
                 <Pressable
-                  onPress={() => go("/teamspace")}
+                  // The workspace card is the entry point to the company profile: every role may
+                  // read that screen, so it needs no role steering of its own.
+                  onPress={() => go("/teamspace-settings")}
                   style={[
                     styles.card,
                     styles.workspace,

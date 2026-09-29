@@ -20,7 +20,7 @@ import { useT } from "@/lib/i18n";
 import { client } from "@/lib/api";
 import { signOutCompletely } from "@/lib/sign-out";
 import { sellsSubscriptions, usesAppStoreBilling } from "@/lib/purchases";
-import { useOrg, useUpdateOrg } from "@/queries/orgs";
+import { useOrg } from "@/queries/orgs";
 import { useDeleteAccount, useUpdateProfile } from "@/queries/account";
 
 function initials(name: string | null | undefined, email: string | null | undefined) {
@@ -41,12 +41,10 @@ export default function Profile() {
   const tr = useT();
   const org = useOrg();
   const updateProfile = useUpdateProfile();
-  const updateOrg = useUpdateOrg();
   const deleteAccount = useDeleteAccount();
 
   const [name, setName] = useState("");
   const [uploading, setUploading] = useState(false);
-  const [logoBusy, setLogoBusy] = useState(false);
   const [confirm, setConfirm] = useState("");
   const [armed, setArmed] = useState(false);
   const [signingOut, setSigningOut] = useState(false);
@@ -56,13 +54,6 @@ export default function Profile() {
   const user = org.data?.user;
   // Invited field crews don't own the plan and can't remove themselves — the owner does that.
   const isField = org.data?.role === "field";
-  /**
-   * The business logo belongs to the workspace, so it sits on this screen next to the personal
-   * photo: the top of the drawer shows the photo, the workspace row below it shows this logo.
-   * Only owners and admins may change it, the same rule the server enforces on `orgs.update`.
-   */
-  const canEditOrg = org.data?.role === "owner" || org.data?.role === "admin";
-  const orgLogo = org.data?.org?.logoUrl ?? null;
 
   useEffect(() => {
     if (user?.name) setName((prev) => (prev ? prev : user.name));
@@ -109,49 +100,6 @@ export default function Profile() {
       setError(err instanceof Error ? err.message : String(err));
     } finally {
       setUploading(false);
-    }
-  };
-
-  const pickLogo = async () => {
-    setError(null);
-    // No pre-flight permission check: the picker raises the OS prompt itself and simply comes
-    // back cancelled if the phone says no.
-    const picked = await ImagePicker.launchImageLibraryAsync({
-      mediaTypes: ["images"],
-      quality: 1,
-    });
-    const asset = picked.canceled ? null : picked.assets?.[0];
-    if (!asset) return;
-    setLogoBusy(true);
-    try {
-      const contentType = asset.mimeType ?? "image/png";
-      const presigned = await client.upload.presignLogo({
-        filename: asset.fileName ?? "logo.png",
-        contentType,
-      });
-      const blob = await (await fetch(asset.uri)).blob();
-      const put = await fetch(presigned.url, {
-        method: "PUT",
-        body: blob,
-        headers: { "Content-Type": contentType },
-      });
-      if (!put.ok) throw new Error(`Storage rejected the upload (${put.status})`);
-      await updateOrg.mutateAsync({ logoUrl: presigned.key });
-      flash(tr("profile.saved"));
-    } catch (err) {
-      setError(err instanceof Error ? err.message : String(err));
-    } finally {
-      setLogoBusy(false);
-    }
-  };
-
-  const removeLogo = async () => {
-    setError(null);
-    try {
-      await updateOrg.mutateAsync({ logoUrl: null });
-      flash(tr("profile.saved"));
-    } catch (err) {
-      setError(err instanceof Error ? err.message : String(err));
     }
   };
 
@@ -276,70 +224,28 @@ export default function Profile() {
           </View>
         </View>
 
-        {canEditOrg ? (
-          <>
-            <Text
-              style={[styles.section, { color: colors.mutedForeground, fontFamily: Fonts?.mono }]}
-            >
-              {tr("profile.workspace").toUpperCase()}
+        <Text style={[styles.section, { color: colors.mutedForeground, fontFamily: Fonts?.mono }]}>
+          {tr("profile.workspace").toUpperCase()}
+        </Text>
+        <Pressable
+          accessibilityRole="button"
+          accessibilityLabel={tr("org.settings.open")}
+          onPress={() => router.push("/teamspace-settings")}
+          style={[
+            styles.card,
+            styles.linkRow,
+            { borderColor: colors.border, backgroundColor: colors.card },
+          ]}
+        >
+          <Ionicons name="business-outline" size={18} color={colors.amber} />
+          <View style={styles.linkRowText}>
+            <Text style={styles.linkRowTitle}>{tr("org.settings.open")}</Text>
+            <Text style={[styles.meta, { color: colors.mutedForeground }]}>
+              {tr("org.settings.subtitle")}
             </Text>
-            <View
-              style={[styles.card, { borderColor: colors.border, backgroundColor: colors.card }]}
-            >
-              <Text
-                style={[
-                  styles.fieldLabel,
-                  { color: colors.mutedForeground, fontFamily: Fonts?.mono },
-                ]}
-              >
-                {tr("templates.logo").toUpperCase()}
-              </Text>
-              <View style={styles.logoRow}>
-                {orgLogo ? (
-                  <Image
-                    source={{ uri: orgLogo }}
-                    style={[styles.logoBox, { borderColor: colors.border }]}
-                    resizeMode="contain"
-                  />
-                ) : (
-                  <View style={[styles.logoBox, { borderColor: colors.border }]}>
-                    <Ionicons name="image-outline" size={20} color={colors.mutedForeground} />
-                  </View>
-                )}
-                <Pressable
-                  accessibilityLabel={tr("templates.upload")}
-                  onPress={() => void pickLogo()}
-                  disabled={logoBusy}
-                  style={[styles.btn, { borderColor: colors.amber, opacity: logoBusy ? 0.6 : 1 }]}
-                >
-                  {logoBusy ? (
-                    <ActivityIndicator color={colors.amber} size="small" />
-                  ) : (
-                    <Ionicons name="image-outline" size={15} color={colors.amber} />
-                  )}
-                  <Text style={[styles.btnText, { color: colors.amber }]}>
-                    {tr("templates.upload")}
-                  </Text>
-                </Pressable>
-                {orgLogo ? (
-                  <Pressable
-                    accessibilityLabel={tr("common.delete")}
-                    onPress={() => void removeLogo()}
-                    style={[styles.btn, { borderColor: colors.border }]}
-                  >
-                    <Ionicons name="trash-outline" size={15} color={colors.mutedForeground} />
-                    <Text style={[styles.btnText, { color: colors.mutedForeground }]}>
-                      {tr("common.delete")}
-                    </Text>
-                  </Pressable>
-                ) : null}
-              </View>
-              <Text style={[styles.meta, { color: colors.mutedForeground }]}>
-                {tr("profile.workspaceHint")}
-              </Text>
-            </View>
-          </>
-        ) : null}
+          </View>
+          <Ionicons name="chevron-forward" size={18} color={colors.mutedForeground} />
+        </Pressable>
 
         <Text style={[styles.section, { color: colors.mutedForeground, fontFamily: Fonts?.mono }]}>
           {tr("profile.account").toUpperCase()}
@@ -564,15 +470,9 @@ const styles = StyleSheet.create({
     borderRadius: 8,
   },
   btnText: { fontSize: 12 },
-  logoRow: { flexDirection: "row", alignItems: "center", flexWrap: "wrap", gap: 10 },
-  logoBox: {
-    width: 48,
-    height: 48,
-    borderRadius: 10,
-    borderWidth: 1,
-    alignItems: "center",
-    justifyContent: "center",
-  },
+  linkRow: { flexDirection: "row", alignItems: "center", gap: 12 },
+  linkRowText: { flex: 1, gap: 2 },
+  linkRowTitle: { fontSize: 13.5 },
   section: { fontSize: 10, letterSpacing: 2, marginTop: 8 },
   fieldLabel: { fontSize: 10, letterSpacing: 1.6 },
   input: {
