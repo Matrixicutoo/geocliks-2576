@@ -6,6 +6,7 @@ import { LanguageSelect } from "../components/language-select";
 import { TrackMap, type TrackPin } from "../components/track-map";
 import { formatStamp } from "../components/evidence-card";
 import { useTrack } from "../queries/track";
+import { usePinnedTheme } from "../lib/theme";
 import { useT, type Translate } from "../lib/i18n";
 
 const REASON_KEY = {
@@ -51,6 +52,9 @@ export default function TrackPage() {
   const token = params.token ?? "";
   const q = useTrack(token);
   const d = q.data;
+
+  // A recipient's tracking link — public, and light like the rest of the public site.
+  usePinnedTheme("light");
 
   useEffect(() => {
     document.title = t("track.title");

@@ -6,6 +6,7 @@ import { SiteFooter } from "./site-footer";
 import { LanguageSelect } from "./language-select";
 import { useT } from "../lib/i18n";
 import { scrollSiteToTop } from "../lib/site-scroll";
+import { usePinnedTheme } from "../lib/theme";
 
 /**
  * Shared chrome for every /help page: the marketing site's pinned-dark header,
@@ -28,15 +29,11 @@ export function HelpShell({
 }) {
   const t = useT();
 
+  // The help centre is always light, whatever a signed-in member picked for the app shell.
+  usePinnedTheme("light");
+
   useEffect(() => {
-    const root = document.documentElement;
-    const previous = root.dataset.theme;
-    root.dataset.theme = "light";
     scrollSiteToTop();
-    return () => {
-      if (previous) root.dataset.theme = previous;
-      else delete root.dataset.theme;
-    };
   }, []);
 
   return (

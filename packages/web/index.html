@@ -1,12 +1,28 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" data-theme="dark">
 	<head>
 		<meta charset="UTF-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 		<link rel="icon" href="/favicon.ico" sizes="any" />
 		<link rel="icon" type="image/png" sizes="192x192" href="/icon-192.png" />
 		<link rel="apple-touch-icon" href="/apple-touch-icon.png" />
-		<meta name="theme-color" content="#ffffff" />
+		<meta name="theme-color" content="#0b0e13" />
+		<!-- Dark is the product default (see src/web/lib/theme.tsx), so <html> ships with
+		     data-theme="dark" and this runs before first paint to honour a member who already
+		     picked light on this device — otherwise the page would flash dark then correct. -->
+		<script>
+			try {
+				var t = localStorage.getItem("geocliks.theme");
+				if (t === "light" || t === "dark") {
+					document.documentElement.dataset.theme = t;
+					document
+						.querySelector('meta[name="theme-color"]')
+						.setAttribute("content", t === "light" ? "#ffffff" : "#0b0e13");
+				}
+			} catch (e) {
+				// Private mode / storage blocked: the dark default stands.
+			}
+		</script>
 		<meta
 			name="description"
 			content="GeoCliks — tamper-proof photo documentation for field teams. Network-verified time, GPS and address on every photo, synced to a shared Teamspace and exported as professional reports."

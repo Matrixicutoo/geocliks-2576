@@ -4,6 +4,7 @@ import { ArrowRight } from "lucide-react";
 import { SiteFooter } from "./site-footer";
 import { SiteNav } from "./site-nav";
 import { scrollSiteToTop } from "../lib/site-scroll";
+import { usePinnedTheme } from "../lib/theme";
 import { useSeo } from "../lib/seo";
 import { PAGE_SEO, seoForPath } from "../lib/seo-routes";
 import { useLocale } from "../lib/i18n";
@@ -65,16 +66,11 @@ export function LandingPage({
   useSeo({ title: seo.title ?? PAGE_SEO[path].title, description: seo.description, path, jsonLd });
 
   // The marketing site is always light, whatever a signed-in member picked for
-  // the app shell on this device. Restore their choice when they leave.
+  // the app shell on this device. Their choice comes back when they leave.
+  usePinnedTheme("light");
+
   useEffect(() => {
-    const root = document.documentElement;
-    const previous = root.dataset.theme;
-    root.dataset.theme = "light";
     scrollSiteToTop();
-    return () => {
-      if (previous) root.dataset.theme = previous;
-      else delete root.dataset.theme;
-    };
   }, []);
 
   return (

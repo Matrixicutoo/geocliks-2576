@@ -378,7 +378,7 @@ export const orgs = {
         .set(input)
         .where(eq(schema.organizations.id, context.org.id))
         .returning();
-      return { theme: org?.theme ?? "light", locale: org?.locale ?? "en" };
+      return { theme: org?.theme ?? "dark", locale: org?.locale ?? "en" };
     }),
 
   /**

@@ -7,6 +7,7 @@ import { LEGAL_EFFECTIVE_DATE } from "../lib/company";
 import { useSeo } from "../lib/seo";
 import { seoForPath } from "../lib/seo-routes";
 import { scrollSiteToTop } from "../lib/site-scroll";
+import { usePinnedTheme } from "../lib/theme";
 
 /**
  * Shared chrome for /terms and /privacy: the marketing site's pinned-dark header,
@@ -53,15 +54,11 @@ export function LegalPage({
     path,
   });
 
+  // Legal pages are always light, whatever a signed-in member picked for the app shell.
+  usePinnedTheme("light");
+
   useEffect(() => {
-    const root = document.documentElement;
-    const previous = root.dataset.theme;
-    root.dataset.theme = "light";
     scrollSiteToTop();
-    return () => {
-      if (previous) root.dataset.theme = previous;
-      else delete root.dataset.theme;
-    };
   }, []);
 
   return (

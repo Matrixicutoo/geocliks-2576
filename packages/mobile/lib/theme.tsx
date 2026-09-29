@@ -24,8 +24,9 @@ const ThemeContext = createContext<Ctx | null>(null);
 
 export function ThemeProvider({ children }: { children: React.ReactNode }) {
   const [override, setOverride] = useState<ColorScheme | null>(null);
-  // Light is the product default until the workspace record says otherwise.
-  const [workspace, setWorkspace] = useState<ColorScheme>("light");
+  // Dark is the product default until the workspace record says otherwise — a member who
+  // prefers light switches it per device after signing in.
+  const [workspace, setWorkspace] = useState<ColorScheme>("dark");
 
   // AsyncStorage is async, so the first frame paints the default and corrects itself.
   useEffect(() => {
@@ -63,15 +64,15 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
   return <ThemeContext.Provider value={value}>{children}</ThemeContext.Provider>;
 }
 
-/** Theme controls. Safe outside the provider (falls back to the light default). */
+/** Theme controls. Safe outside the provider (falls back to the dark default). */
 export function useAppTheme(): Ctx {
   const ctx = useContext(ThemeContext);
   if (ctx) return ctx;
   return {
-    scheme: "light",
-    colors: Colors.light,
+    scheme: "dark",
+    colors: Colors.dark,
     override: null,
-    workspace: "light",
+    workspace: "dark",
     setTheme: () => {},
     useWorkspaceDefault: () => {},
     setWorkspaceDefault: () => {},

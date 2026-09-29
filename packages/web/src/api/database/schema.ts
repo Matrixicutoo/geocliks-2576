@@ -27,7 +27,7 @@ export const organizations = sqliteTable("organizations", {
   trialPlan: text("trial_plan"),
   trialEndsAt: integer("trial_ends_at", { mode: "timestamp_ms" }),
   /** Workspace-wide default appearance. Members may override it on their own device. */
-  theme: text("theme").notNull().default("light"), // light | dark
+  theme: text("theme").notNull().default("dark"), // light | dark
   /** Workspace-wide default UI language (BCP-47). Members may override it on their own device. */
   locale: text("locale").notNull().default("en"),
   seats: integer("seats").notNull().default(1),

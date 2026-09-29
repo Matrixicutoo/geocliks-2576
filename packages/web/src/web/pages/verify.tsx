@@ -12,6 +12,7 @@ import {
 } from "lucide-react";
 import { Logo } from "../components/logo";
 import { LanguageSelect } from "../components/language-select";
+import { usePinnedTheme } from "../lib/theme";
 import { formatCoords, formatStamp } from "../components/evidence-card";
 import { useVerifyCode } from "../queries/verify";
 import { type TKey, useT } from "../lib/i18n";
@@ -74,15 +75,11 @@ export default function VerifyPage() {
   const [input, setInput] = useState(initial);
   const q = useVerifyCode(code);
 
+  // Public page — anyone checking a code lands here, signed in or not. Always light.
+  usePinnedTheme("light");
+
   useEffect(() => {
-    const root = document.documentElement;
-    const prev = root.dataset.theme;
-    root.dataset.theme = "light";
     document.title = t("verify.title");
-    return () => {
-      if (prev) root.dataset.theme = prev;
-      else delete root.dataset.theme;
-    };
   }, [t]);
 
   const d = q.data;

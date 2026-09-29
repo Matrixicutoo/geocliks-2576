@@ -1,4 +1,3 @@
-import { useEffect } from "react";
 import { Link, useSearch } from "wouter";
 import {
   Apple,
@@ -18,6 +17,7 @@ import { useInviteInfo } from "../queries/team";
 import { SUPPORT_EMAIL } from "../lib/support";
 import { useSeo } from "../lib/seo";
 import { PAGE_SEO, seoForPath } from "../lib/seo-routes";
+import { usePinnedTheme } from "../lib/theme";
 
 /**
  * Crew-facing app landing page — the QR destination printed on trucks, crew
@@ -164,15 +164,8 @@ export default function GetApp() {
     path: "/get-app",
   });
 
-  useEffect(() => {
-    const root = document.documentElement;
-    const prev = root.dataset.theme;
-    root.dataset.theme = "light";
-    return () => {
-      if (prev) root.dataset.theme = prev;
-      else delete root.dataset.theme;
-    };
-  }, []);
+  // Public page, designed light whatever a signed-in member picked for the app shell.
+  usePinnedTheme("light");
 
   return (
     <div data-theme="light" className="min-h-screen bg-ink text-chalk">

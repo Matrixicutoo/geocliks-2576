@@ -317,6 +317,10 @@ export const orgProc = authed.use(async ({ context, next }) => {
       plan: "free",
       seats: 1,
       ownerId: userId,
+      // Written explicitly rather than left to the column default: dark is the product
+      // default both apps paint before any preference exists, and an admin flips the
+      // workspace back to light from Settings → Appearance.
+      theme: "dark",
     })
     .onConflictDoNothing();
 

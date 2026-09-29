@@ -2,6 +2,7 @@ import { useEffect } from "react";
 import { SiteFooter } from "./site-footer";
 import { SiteNav } from "./site-nav";
 import { scrollSiteToTop } from "../lib/site-scroll";
+import { usePinnedTheme } from "../lib/theme";
 import { assertPostSeo } from "../lib/posts";
 
 /**
@@ -24,16 +25,11 @@ import { assertPostSeo } from "../lib/posts";
  */
 export function BlogShell({ children }: { children: React.ReactNode }) {
   // Field Notes is always light, whatever a signed-in member picked for the app
-  // shell on this device. Restore their choice when they leave.
+  // shell on this device. Their choice comes back when they leave.
+  usePinnedTheme("light");
+
   useEffect(() => {
-    const root = document.documentElement;
-    const previous = root.dataset.theme;
-    root.dataset.theme = "light";
     scrollSiteToTop();
-    return () => {
-      if (previous) root.dataset.theme = previous;
-      else delete root.dataset.theme;
-    };
   }, []);
 
   // A post without its SEO row would ship with the site's default title and

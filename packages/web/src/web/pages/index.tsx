@@ -24,6 +24,7 @@ import { SiteNav } from "../components/site-nav";
 import { scrollSiteToId } from "../lib/site-scroll";
 import { useSeo } from "../lib/seo";
 import { PAGE_SEO, seoForPath } from "../lib/seo-routes";
+import { usePinnedTheme } from "../lib/theme";
 
 const INDUSTRIES: TKey[] = [
   "industry.construction",
@@ -721,16 +722,8 @@ export default function Index() {
   useSeo({ title: seo.title ?? PAGE_SEO["/"].title, description: seo.description, path: "/" });
 
   // The marketing site is always light, whatever a signed-in member picked for
-  // the app shell on this device. Restore their choice when they leave `/`.
-  useEffect(() => {
-    const root = document.documentElement;
-    const previous = root.dataset.theme;
-    root.dataset.theme = "light";
-    return () => {
-      if (previous) root.dataset.theme = previous;
-      else delete root.dataset.theme;
-    };
-  }, []);
+  // the app shell on this device. Their choice comes back when they leave `/`.
+  usePinnedTheme("light");
 
   // Arriving with a fragment — a nav link, or a link someone was sent — has to be handled
   // here: the browser tries its own jump before React has painted the sections, finds nothing,
