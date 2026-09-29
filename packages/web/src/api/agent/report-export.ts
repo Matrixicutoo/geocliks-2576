@@ -13,6 +13,7 @@ import {
   buildZip,
   exportFilename,
   exportMime,
+  orgBrandOf,
 } from "../lib/exports";
 import { filterFields, photoScope } from "./filters";
 import type { Viewer } from "./viewer";
@@ -152,7 +153,22 @@ export function reportExportTool(viewer: Viewer, zone: string) {
       }
 
       const title = args.title?.trim() || `${viewer.orgName} — ${todayIn(zone)}`;
-      const ctx = { title, orgName: viewer.orgName, project, photos: ordered, layout };
+      // The viewer carries only the org's name, but a report built from the chat is the same
+      // document as one built from the Reports screen — so it gets the same letterhead, which
+      // means reading the row the contact details live on.
+      const [orgRow] = await db
+        .select()
+        .from(schema.organizations)
+        .where(eq(schema.organizations.id, viewer.orgId))
+        .limit(1);
+      const ctx = {
+        title,
+        orgName: viewer.orgName,
+        brand: orgRow ? await orgBrandOf(orgRow) : null,
+        project,
+        photos: ordered,
+        layout,
+      };
 
       let bytes: Uint8Array;
       if (format === "pdf") bytes = await buildPdf(ctx);

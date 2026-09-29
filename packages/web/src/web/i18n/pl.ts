@@ -2441,6 +2441,8 @@ export const pl: Catalog = {
   "org.settings.saved": "Przestrzeń zespołu zaktualizowana",
   "org.settings.select": "Wybierz…",
   "org.settings.open": "Zarządzaj profilem firmy w ustawieniach przestrzeni zespołu",
+  "org.settings.section": "Profil firmy",
+  "org.settings.openHint": "Nazwa, logo, adres i dane kontaktowe firmy używane w raportach.",
   "org.field.companyName": "Nazwa firmy",
   "org.field.phone": "Numer telefonu",
   "org.field.email": "E-mail",

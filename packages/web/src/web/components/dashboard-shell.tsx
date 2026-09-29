@@ -24,7 +24,7 @@ import { useAdminMe } from "../queries/admin";
 import { stopImpersonation } from "../lib/impersonate";
 import { useWorkspaceTheme } from "../lib/theme";
 import { type TKey, useLocale, useWorkspaceLocale } from "../lib/i18n";
-import { Logo } from "./logo";
+import { WorkspaceBrand } from "./workspace-brand";
 import { LanguageSelect } from "./language-select";
 import { NavDrawer } from "./nav-drawer";
 import { NotificationsBell } from "./notifications-bell";
@@ -32,7 +32,7 @@ import { SidebarBody } from "./sidebar-body";
 import { InviteDialog } from "./invite-form";
 import { TrialBanner } from "./trial-banner";
 import { canManageWatermarks, canManageWorkspace, canUseDelivery } from "../lib/roles";
-import { showsProduct } from "../lib/product";
+import { homeFor, showsProduct } from "../lib/product";
 
 /** Nav entries a field member can't act on — the pages are manager/owner only. */
 const MANAGER_ONLY = new Set(["/app/billing"]);
@@ -153,13 +153,16 @@ export function DashboardShell({
         }
         className="sticky top-0 hidden h-screen w-[248px] shrink-0 flex-col overflow-y-auto border-r border-line bg-ink-2 text-chalk lg:flex"
       >
-        {/* Logo block matches the page header: same dark bar, same height. */}
+        {/* Brand block matches the page header: same dark bar, same height. Inside the
+            workspace this corner carries the *workspace's* logo and company name rather than
+            the product lockup — see `WorkspaceBrand`. It opens the workspace's home, not the
+            marketing site: from in here, home means the dashboard. */}
         <div
           data-theme="dark"
           className="flex h-[68px] shrink-0 items-center border-b border-line bg-[#0d2137] px-5"
         >
-          <Link to="/">
-            <Logo />
+          <Link to={homeFor(product, role)} className="min-w-0">
+            <WorkspaceBrand />
           </Link>
         </div>
 

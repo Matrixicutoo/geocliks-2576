@@ -226,19 +226,45 @@ export default function AppProfile() {
             </div>
           </section>
 
-          {/* The workspace's own details — company name, address, logo — live on the
-              teamspace settings page now, reached from the workspace card in the sidebar.
-              This page is the person, not the business. */}
-          <Link
-            to="/app/teamspace-settings"
-            className="flex items-center gap-3 rounded-[12px] border border-line bg-ink-2 px-4 py-3 transition-colors hover:border-amber/60"
-          >
-            <Building2 className="size-4 shrink-0 text-amber" />
-            <span className="min-w-0 flex-1 truncate text-[13px] text-chalk">
-              {t("org.settings.open")}
-            </span>
-            <ChevronRight className="size-4 shrink-0 text-fog" />
-          </Link>
+          {/* The workspace's own details — company name, address, phone, logo — live on the
+              teamspace settings page. This page is the person, not the business.
+
+              This row is the *only* way into that page now that the menu's workspace card is
+              gone, so it is a titled section like the ones above rather than a bare link: it
+              has to be findable by someone who is looking for "where do I change the company
+              address", not just recognisable once they have already landed on it. */}
+          <section className="rounded-[12px] border border-line bg-ink-2">
+            <div className="border-b border-line px-4 py-3">
+              <p className="label text-fog">{t("org.settings.section")}</p>
+            </div>
+            <Link
+              to="/app/teamspace-settings"
+              className="flex items-center gap-3 rounded-b-[12px] px-4 py-3 transition-colors hover:bg-ink-3/60"
+            >
+              {/* The company's own logo when it has one — the same mark that now heads the
+                  sidebar, so this row is visibly about *their* business. */}
+              {org.data?.org.logoUrl ? (
+                <img
+                  src={org.data.org.logoUrl}
+                  alt=""
+                  className="size-8 shrink-0 rounded-[8px] border border-line object-contain"
+                />
+              ) : (
+                <span className="flex size-8 shrink-0 items-center justify-center rounded-[8px] border border-line">
+                  <Building2 className="size-4 text-amber" />
+                </span>
+              )}
+              <span className="min-w-0 flex-1">
+                <span className="block truncate text-[13px] font-semibold text-chalk">
+                  {org.data?.org.name ?? t("org.settings.open")}
+                </span>
+                <span className="block text-[12px] leading-relaxed text-fog">
+                  {t("org.settings.openHint")}
+                </span>
+              </span>
+              <ChevronRight className="size-4 shrink-0 text-fog" />
+            </Link>
+          </section>
 
         </div>
 

@@ -2450,6 +2450,8 @@ export const ptBR: Catalog = {
   "org.settings.saved": "Espaço da equipe atualizado",
   "org.settings.select": "Selecionar…",
   "org.settings.open": "Gerencie o perfil da sua empresa nas configurações do espaço da equipe",
+  "org.settings.section": "Perfil da empresa",
+  "org.settings.openHint": "Nome, logotipo, endereço e contatos usados nos seus relatórios.",
   "org.field.companyName": "Nome da empresa",
   "org.field.phone": "Telefone",
   "org.field.email": "E-mail",

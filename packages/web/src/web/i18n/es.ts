@@ -2469,6 +2469,8 @@ export const es: Catalog = {
   "org.settings.saved": "Espacio de equipo actualizado",
   "org.settings.select": "Seleccionar…",
   "org.settings.open": "Gestiona el perfil de tu empresa en los ajustes del espacio de equipo",
+  "org.settings.section": "Perfil de la empresa",
+  "org.settings.openHint": "Nombre, logotipo, dirección y datos de contacto que aparecen en tus informes.",
   "org.field.companyName": "Nombre de la empresa",
   "org.field.phone": "Número de teléfono",
   "org.field.email": "Correo electrónico",

@@ -823,6 +823,8 @@ export const en = {
   "org.settings.saved": "Teamspace updated",
   "org.settings.select": "Select…",
   "org.settings.open": "Manage your company profile in Teamspace settings",
+  "org.settings.section": "Company profile",
+  "org.settings.openHint": "Company name, logo, address and contact details used on your reports.",
   "org.field.companyName": "Company name",
   "org.field.phone": "Phone number",
   "org.field.email": "Email",

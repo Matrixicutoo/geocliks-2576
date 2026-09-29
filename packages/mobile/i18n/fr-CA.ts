@@ -818,6 +818,8 @@ export const frCA: Catalog = {
   "org.settings.saved": "Espace d'équipe mis à jour",
   "org.settings.select": "Sélectionner…",
   "org.settings.open": "Gérez le profil de votre entreprise dans les paramètres de l'espace d'équipe",
+  "org.settings.section": "Profil de l'entreprise",
+  "org.settings.openHint": "Nom, logo, adresse et coordonnées de l'entreprise utilisés dans vos rapports.",
   "org.field.companyName": "Nom de l'entreprise",
   "org.field.phone": "Numéro de téléphone",
   "org.field.email": "Courriel",

@@ -802,6 +802,8 @@ export const ar: Catalog = {
   "org.settings.saved": "تم تحديث مساحة الفريق",
   "org.settings.select": "اختر…",
   "org.settings.open": "إدارة ملف الشركة من إعدادات مساحة الفريق",
+  "org.settings.section": "ملف الشركة",
+  "org.settings.openHint": "اسم الشركة وشعارها وعنوانها وبيانات الاتصال المستخدمة في تقاريرك.",
   "org.field.companyName": "اسم الشركة",
   "org.field.phone": "رقم الهاتف",
   "org.field.email": "البريد الإلكتروني",

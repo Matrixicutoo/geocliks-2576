@@ -807,6 +807,8 @@ export const vi: Catalog = {
   "org.settings.saved": "Đã cập nhật không gian nhóm",
   "org.settings.select": "Chọn…",
   "org.settings.open": "Quản lý hồ sơ công ty trong cài đặt không gian nhóm",
+  "org.settings.section": "Hồ sơ công ty",
+  "org.settings.openHint": "Tên, logo, địa chỉ và thông tin liên hệ của công ty dùng trên báo cáo.",
   "org.field.companyName": "Tên công ty",
   "org.field.phone": "Số điện thoại",
   "org.field.email": "Email",

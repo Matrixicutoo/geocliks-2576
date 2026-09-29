@@ -76,76 +76,54 @@ export function SidebarBody({
 
   return (
     <>
-        {/* Identity then workspace, both above the destinations — the same order the mobile
-            drawer uses, so the two menus read as one product. */}
-        <div className="shrink-0 space-y-1.5 border-b border-line p-2">
+        {/* Who you are, above the destinations — the same slot the mobile drawer uses.
+            The workspace no longer has a card of its own here: the company logo and name now
+            head the whole menu in the brand bar above, and the company profile is reached from
+            the account page. Two workspace identities in one column read as a duplicate. */}
+        <div className="shrink-0 border-b border-line p-2">
           {org.isLoading ? (
-            <div className="h-[92px] animate-pulse rounded-[12px] bg-ink-3" />
+            <div className="h-[62px] animate-pulse rounded-[12px] bg-ink-3" />
           ) : (
-            <>
-              <Link
-                onClick={onNavigate}
-                to="/app/profile"
-                className="flex items-center gap-2.5 rounded-[12px] border border-line bg-ink px-3 py-1.5 transition-colors hover:border-amber/60"
-              >
-                {/* Personal identity: the uploaded profile photo when there is one, the
-                    initials badge otherwise — the same order the mobile drawer uses. */}
-                {org.data?.user.image ? (
-                  <img
-                    src={org.data.user.image}
-                    alt=""
-                    className="size-8 shrink-0 rounded-[8px] border border-amber object-cover"
-                  />
-                ) : (
-                  <span className="mono flex size-8 shrink-0 items-center justify-center rounded-[8px] border border-amber text-[12px] font-bold text-amber">
-                    {initials(org.data?.user.name, org.data?.user.email)}
-                  </span>
-                )}
-                <span className="min-w-0 flex-1">
-                  <span className="block truncate text-[13px] font-semibold text-chalk">
-                    {org.data?.user.name ?? org.data?.user.email ?? "—"}
-                  </span>
-                  <span className="block truncate text-[11px] text-fog">
-                    {org.data?.user.email ?? ""}
-                  </span>
+            <Link
+              onClick={onNavigate}
+              to="/app/profile"
+              className="flex items-center gap-2.5 rounded-[12px] border border-line bg-ink px-3 py-1.5 transition-colors hover:border-amber/60"
+            >
+              {/* Personal identity: the uploaded profile photo when there is one, the
+                  initials badge otherwise — the same order the mobile drawer uses. */}
+              {org.data?.user.image ? (
+                <img
+                  src={org.data.user.image}
+                  alt=""
+                  className="size-8 shrink-0 rounded-[8px] border border-amber object-cover"
+                />
+              ) : (
+                <span className="mono flex size-8 shrink-0 items-center justify-center rounded-[8px] border border-amber text-[12px] font-bold text-amber">
+                  {initials(org.data?.user.name, org.data?.user.email)}
                 </span>
-                <ChevronRight className="size-4 shrink-0 text-fog" />
-              </Link>
-              <Link
-                onClick={onNavigate}
-                /* The workspace card opens the workspace's own settings — the company
-                   profile, address and logo. Every role may read that page, so unlike the
-                   product homes it needs no role or product steering. */
-                to="/app/teamspace-settings"
-                className="flex items-center gap-2.5 rounded-[12px] border border-line bg-ink px-3 py-1.5 transition-colors hover:border-amber/60"
-              >
-                {/* Workspace identity: the business logo when one is uploaded, the shield
-                    badge otherwise. Fixed box so the row height never shifts. */}
-                {org.data?.org.logoUrl ? (
-                  <img
-                    src={org.data.org.logoUrl}
-                    alt=""
-                    className="size-[22px] shrink-0 rounded-[6px] border border-line object-contain"
-                  />
-                ) : (
-                  <ShieldCheck className="size-[18px] shrink-0 text-verified" />
-                )}
-                <span className="min-w-0 flex-1">
-                  <span className="block truncate text-[13px] font-semibold text-chalk">
-                    {org.data?.org.name}
-                  </span>
-                  <span className="mono block truncate text-[10px] uppercase tracking-widest text-amber">
-                    {org.data?.plan.name} · {org.data?.role}
-                  </span>
-                  {/* A trialling workspace is running on a borrowed plan, so the plan name
-                      alone is misleading — the chip says how long it is borrowed for. It takes
-                      a row of its own: sharing the plan line's row truncates the plan name,
-                      and the plan name is the thing people came to this card to read. */}
-                  <TrialChip />
+              )}
+              <span className="min-w-0 flex-1">
+                <span className="block truncate text-[13px] font-semibold text-chalk">
+                  {org.data?.user.name ?? org.data?.user.email ?? "—"}
                 </span>
-                <ChevronRight className="size-4 shrink-0 text-fog" />
-              </Link>
-            </>
+                <span className="block truncate text-[11px] text-fog">
+                  {org.data?.user.email ?? ""}
+                </span>
+                {/* Plan and role followed the workspace card here rather than going away with
+                    it. They are what people actually came to that card to read — what this
+                    account is paying for and what it is allowed to do — and both belong to the
+                    person holding the menu open. */}
+                <span className="mono block truncate text-[10px] uppercase tracking-widest text-amber">
+                  {org.data?.plan.name} · {org.data?.role}
+                </span>
+                {/* A trialling workspace is running on a borrowed plan, so the plan name alone
+                    is misleading — the chip says how long it is borrowed for. It takes a row of
+                    its own: sharing the plan line's row truncates the plan name, and the plan
+                    name is the thing people came here to read. */}
+                <TrialChip />
+              </span>
+              <ChevronRight className="size-4 shrink-0 text-fog" />
+            </Link>
           )}
         </div>
 

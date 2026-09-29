@@ -816,6 +816,8 @@ export const de: Catalog = {
   "org.settings.saved": "Teambereich aktualisiert",
   "org.settings.select": "Auswählen…",
   "org.settings.open": "Firmenprofil in den Teambereich-Einstellungen verwalten",
+  "org.settings.section": "Firmenprofil",
+  "org.settings.openHint": "Firmenname, Logo, Adresse und Kontaktdaten für Ihre Berichte.",
   "org.field.companyName": "Firmenname",
   "org.field.phone": "Telefonnummer",
   "org.field.email": "E-Mail",

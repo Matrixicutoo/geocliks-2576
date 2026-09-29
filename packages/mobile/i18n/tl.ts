@@ -817,6 +817,8 @@ export const tl: Catalog = {
   "org.settings.saved": "Na-update ang Teamspace",
   "org.settings.select": "Pumili…",
   "org.settings.open": "Pamahalaan ang profile ng kompanya sa mga setting ng Teamspace",
+  "org.settings.section": "Profile ng kompanya",
+  "org.settings.openHint": "Pangalan, logo, address at contact details na ginagamit sa mga report.",
   "org.field.companyName": "Pangalan ng kompanya",
   "org.field.phone": "Numero ng telepono",
   "org.field.email": "Email",

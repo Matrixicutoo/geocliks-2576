@@ -14,6 +14,7 @@ import {
   buildZip,
   exportFilename,
   exportMime,
+  orgBrandOf,
 } from "../lib/exports";
 
 const formatEnum = z.enum(["pdf", "xlsx", "zip", "kmz"]);
@@ -125,6 +126,8 @@ export const reports = {
       const ctx = {
         title: input.title,
         orgName: context.org.name,
+        // The company's own letterhead, straight off Teamspace settings, onto the report.
+        brand: await orgBrandOf(context.org),
         project,
         photos: ordered,
         layout: input.layout,

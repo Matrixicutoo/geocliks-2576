@@ -225,7 +225,7 @@ export default function Profile() {
         </View>
 
         <Text style={[styles.section, { color: colors.mutedForeground, fontFamily: Fonts?.mono }]}>
-          {tr("profile.workspace").toUpperCase()}
+          {tr("org.settings.section").toUpperCase()}
         </Text>
         <Pressable
           accessibilityRole="button"
@@ -237,11 +237,31 @@ export default function Profile() {
             { borderColor: colors.border, backgroundColor: colors.card },
           ]}
         >
-          <Ionicons name="business-outline" size={18} color={colors.amber} />
+          {/* The company's own logo when it has one — the same mark that heads the drawer, so
+              this row is visibly about their business rather than about the app. */}
+          {org.data?.org.logoUrl ? (
+            <Image
+              source={{ uri: org.data.org.logoUrl }}
+              style={[styles.linkRowLogo, { borderColor: colors.border }]}
+              resizeMode="contain"
+            />
+          ) : (
+            <View style={[styles.linkRowLogo, styles.linkRowLogoEmpty, { borderColor: colors.border }]}>
+              <Ionicons name="business-outline" size={17} color={colors.amber} />
+            </View>
+          )}
           <View style={styles.linkRowText}>
-            <Text style={styles.linkRowTitle}>{tr("org.settings.open")}</Text>
+            <Text
+              numberOfLines={1}
+              style={[
+                styles.linkRowTitle,
+                { color: colors.foreground, fontFamily: Fonts?.displayMedium },
+              ]}
+            >
+              {org.data?.org.name ?? tr("org.settings.section")}
+            </Text>
             <Text style={[styles.meta, { color: colors.mutedForeground }]}>
-              {tr("org.settings.subtitle")}
+              {tr("org.settings.openHint")}
             </Text>
           </View>
           <Ionicons name="chevron-forward" size={18} color={colors.mutedForeground} />
@@ -472,7 +492,11 @@ const styles = StyleSheet.create({
   btnText: { fontSize: 12 },
   linkRow: { flexDirection: "row", alignItems: "center", gap: 12 },
   linkRowText: { flex: 1, gap: 2 },
-  linkRowTitle: { fontSize: 13.5 },
+  linkRowTitle: { fontSize: 14 },
+  // Fixed box with `contain`: logos arrive at any aspect ratio, and the row height must not
+  // move with them.
+  linkRowLogo: { width: 34, height: 34, borderRadius: 8, borderWidth: 1 },
+  linkRowLogoEmpty: { alignItems: "center", justifyContent: "center" },
   section: { fontSize: 10, letterSpacing: 2, marginTop: 8 },
   fieldLabel: { fontSize: 10, letterSpacing: 1.6 },
   input: {

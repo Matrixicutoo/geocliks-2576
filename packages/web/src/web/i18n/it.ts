@@ -2465,6 +2465,8 @@ export const it: Catalog = {
   "org.settings.saved": "Spazio del team aggiornato",
   "org.settings.select": "Seleziona…",
   "org.settings.open": "Gestisci il profilo aziendale nelle impostazioni dello spazio del team",
+  "org.settings.section": "Profilo aziendale",
+  "org.settings.openHint": "Nome, logo, indirizzo e contatti dell'azienda usati nei tuoi report.",
   "org.field.companyName": "Nome dell'azienda",
   "org.field.phone": "Numero di telefono",
   "org.field.email": "Email",

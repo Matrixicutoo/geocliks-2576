@@ -228,6 +228,35 @@ export function ProfileMenu({ showStamp, onToggleStamp }: Props) {
               contentContainerStyle={styles.panelInner}
               showsVerticalScrollIndicator={false}
             >
+              {/*
+                Brand bar: the workspace's own logo and company name at the very top of the
+                drawer, the same corner the website's sidebar now gives them. Deliberately not
+                pressable — the company profile has exactly one door, on the account screen,
+                and a tappable logo here would quietly be a second one.
+              */}
+              {hasSession ? (
+                <View style={styles.brandBar}>
+                  {brandLogo ? (
+                    <Image
+                      source={{ uri: brandLogo }}
+                      style={[styles.brandBarLogo, { borderColor: colors.border }]}
+                      resizeMode="contain"
+                    />
+                  ) : (
+                    <Ionicons name="shield-checkmark" size={20} color={colors.verified} />
+                  )}
+                  <Text
+                    numberOfLines={2}
+                    style={[
+                      styles.brandBarName,
+                      { color: colors.foreground, fontFamily: Fonts?.displayMedium },
+                    ]}
+                  >
+                    {org.data?.org.name ?? "—"}
+                  </Text>
+                </View>
+              ) : null}
+
               {hasSession ? (
                 <Pressable
                   onPress={() => go("/profile")}
@@ -266,6 +295,25 @@ export function ProfileMenu({ showStamp, onToggleStamp }: Props) {
                       style={[styles.meta, { color: colors.mutedForeground }]}
                     >
                       {user?.email ?? ""}
+                    </Text>
+                    {/* Plan, seats and role followed the workspace card here rather than
+                        disappearing with it — they are what people opened that card to read,
+                        and all three describe the account in front of them. */}
+                    <Text
+                      numberOfLines={1}
+                      style={[
+                        styles.planLine,
+                        { color: colors.amber, fontFamily: Fonts?.mono },
+                      ]}
+                    >
+                      {[
+                        org.data?.plan.name?.toUpperCase(),
+                        org.data
+                          ? `${org.data.usage.members} · ${org.data.role.toUpperCase()}`
+                          : null,
+                      ]
+                        .filter(Boolean)
+                        .join(" · ")}
                     </Text>
                   </View>
                   <Ionicons name="chevron-forward" size={16} color={colors.mutedForeground} />
@@ -315,71 +363,11 @@ export function ProfileMenu({ showStamp, onToggleStamp }: Props) {
               )}
 
               {/*
-                Workspace sits directly under the profile, above the destination tiles.
-                Signed out there is no workspace yet, so the whole block is dropped rather
-                than rendered as a row of em-dashes.
+                The workspace no longer gets a card of its own here. Its logo and name head
+                the drawer inside the profile card above, and the company profile itself is
+                reached from the account screen — one entry point, matching the website, so
+                the drawer is not two competing identities stacked on each other.
               */}
-              {hasSession ? (
-                <Text
-                  style={[
-                    styles.section,
-                    { color: colors.mutedForeground, fontFamily: Fonts?.mono },
-                  ]}
-                >
-                  {tr("profile.myTeamspace").toUpperCase()}
-                </Text>
-              ) : null}
-              {hasSession ? (
-                <Pressable
-                  // The workspace card is the entry point to the company profile: every role may
-                  // read that screen, so it needs no role steering of its own.
-                  onPress={() => go("/teamspace-settings")}
-                  style={[
-                    styles.card,
-                    styles.workspace,
-                    { borderColor: colors.border, backgroundColor: colors.card },
-                  ]}
-                >
-                  {brandLogo ? (
-                    <Image
-                      source={{ uri: brandLogo }}
-                      style={[styles.brandLogo, { borderColor: colors.border }]}
-                      resizeMode="contain"
-                    />
-                  ) : (
-                    <Ionicons name="shield-checkmark" size={18} color={colors.verified} />
-                  )}
-                  <View style={styles.identityText}>
-                    <Text
-                      numberOfLines={1}
-                      style={[
-                        styles.name,
-                        { color: colors.foreground, fontFamily: Fonts?.displayMedium },
-                      ]}
-                    >
-                      {org.data?.org.name ?? "—"}
-                    </Text>
-                    <Text
-                      numberOfLines={1}
-                      style={[
-                        styles.meta,
-                        { color: colors.mutedForeground, fontFamily: Fonts?.mono },
-                      ]}
-                    >
-                      {[
-                        org.data?.plan.name?.toUpperCase(),
-                        org.data
-                          ? `${org.data.usage.members} · ${org.data.role.toUpperCase()}`
-                          : null,
-                      ]
-                        .filter(Boolean)
-                        .join(" · ")}
-                    </Text>
-                  </View>
-                  <Ionicons name="chevron-forward" size={15} color={colors.mutedForeground} />
-                </Pressable>
-              ) : null}
-
               <View style={styles.tiles}>
                 {TILES.filter(
                   (tile) =>
@@ -614,9 +602,17 @@ const styles = StyleSheet.create({
   anonBtnText: { fontSize: 13, letterSpacing: 0.3 },
   avatarText: { fontSize: 14, letterSpacing: 1 },
   brandLogo: { width: 26, height: 26, borderRadius: 6, borderWidth: 1 },
+  // Brand bar at the head of the drawer: the workspace's logo and company name, sitting above
+  // the profile card. No border or fill — it is a letterhead, not another card to tap.
+  brandBar: { flexDirection: "row", alignItems: "center", gap: 10, paddingBottom: 2 },
+  brandBarLogo: { width: 32, height: 32, borderRadius: 8, borderWidth: 1 },
+  // Two lines, not one: real company names are long, and clipping one to "Northside Mech..."
+  // reads as a bug rather than as a deliberate truncation.
+  brandBarName: { flex: 1, minWidth: 0, fontSize: 15, lineHeight: 18 },
   identityText: { flex: 1, minWidth: 0 },
   name: { fontSize: 14 },
   meta: { fontSize: 11, marginTop: 3 },
+  planLine: { fontSize: 10, letterSpacing: 1.4, marginTop: 4 },
   tiles: { flexDirection: "row", flexWrap: "wrap", gap: 10 },
   tile: {
     width: "47%",
@@ -649,14 +645,6 @@ const styles = StyleSheet.create({
   rowText: { fontSize: 12.5, flex: 1 },
   rowValue: { flexDirection: "row", alignItems: "center", gap: 6 },
   rowValueText: { fontSize: 11, letterSpacing: 1 },
-  section: { fontSize: 10, letterSpacing: 2, marginTop: 4 },
-  workspace: {
-    flexDirection: "row",
-    alignItems: "center",
-    gap: 10,
-    paddingHorizontal: 12,
-    paddingVertical: 12,
-  },
   signOut: {
     flexDirection: "row",
     alignItems: "center",

@@ -2311,6 +2311,8 @@ export const zh: Catalog = {
   "org.settings.saved": "团队空间已更新",
   "org.settings.select": "请选择…",
   "org.settings.open": "在团队空间设置中管理公司资料",
+  "org.settings.section": "公司资料",
+  "org.settings.openHint": "报告中使用的公司名称、标志、地址和联系方式。",
   "org.field.companyName": "公司名称",
   "org.field.phone": "电话号码",
   "org.field.email": "电子邮箱",

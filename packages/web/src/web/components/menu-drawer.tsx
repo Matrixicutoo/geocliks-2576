@@ -21,10 +21,18 @@ import { Logo } from "./logo";
  */
 export function MenuDrawer({
   badge = 0,
+  brand,
   children,
 }: {
   /** Count shown on the trigger, for anything unread that is out of sight while shut. */
   badge?: number;
+  /**
+   * What fills the bar at the top of the sheet, and where it links. The workspace menu puts
+   * the customer's own logo and company name there so the sheet matches the sidebar it stands
+   * in for; the admin console leaves it unset and keeps the GeoCliks lockup pointing at the
+   * public site.
+   */
+  brand?: { to: string; node: React.ReactNode };
   children: (close: () => void) => React.ReactNode;
 }) {
   const [open, setOpen] = useState(false);
@@ -123,8 +131,8 @@ export function MenuDrawer({
               data-theme="dark"
               className="flex h-[68px] shrink-0 items-center justify-between gap-2 border-b border-line bg-[#0d2137] px-4"
             >
-              <Link to="/">
-                <Logo />
+              <Link to={brand?.to ?? "/"} className="min-w-0">
+                {brand?.node ?? <Logo />}
               </Link>
               <button
                 type="button"

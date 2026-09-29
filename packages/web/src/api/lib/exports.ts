@@ -175,13 +175,82 @@ export const FOG = rgb(0.55, 0.6, 0.68);
 export const WHITE = rgb(1, 1, 1);
 export const GREEN = rgb(0.12, 0.76, 0.42);
 
+/**
+ * The company letterhead a built package is issued under: who produced this report, and how the
+ * reader reaches them. Sourced entirely from Teamspace settings, so filling that screen in once
+ * puts the office on every report from then on.
+ *
+ * Every field bar the name is optional, because a workspace is usable from the moment it has a
+ * name — a header with a logo and nothing else still reads as letterhead, and a header with only
+ * a name is exactly what reports looked like before this existed.
+ */
+export interface OrgBrand {
+  name: string;
+  logo?: Uint8Array | null;
+  phone?: string | null;
+  email?: string | null;
+  /** Postal address, already collapsed to the one or two lines a header has room for. */
+  address?: string | null;
+}
+
 interface BuildContext {
   title: string;
   orgName: string;
   project: Project | null;
   photos: Photo[];
   layout: string;
-  logoBytes?: Uint8Array | null;
+  brand?: OrgBrand | null;
+}
+
+/** The org's postal address on one line, skipping whatever the office has not filled in. */
+export function orgAddress(org: {
+  address1?: string | null;
+  address2?: string | null;
+  city?: string | null;
+  state?: string | null;
+  postalCode?: string | null;
+  country?: string | null;
+}): string | null {
+  const street = [org.address1, org.address2].map((s) => s?.trim()).filter(Boolean);
+  const locality = [org.city, org.state, org.postalCode, org.country]
+    .map((s) => s?.trim())
+    .filter(Boolean);
+  const line = [...street, ...locality].join(", ");
+  return line || null;
+}
+
+/**
+ * Build the letterhead for an org row. The logo is stored as a URL and the PDF needs bytes, so
+ * it is fetched here — best effort, exactly like the static maps: an unreachable logo means a
+ * header without one, never a failed export.
+ */
+export async function orgBrandOf(org: {
+  name: string;
+  logoUrl?: string | null;
+  phone?: string | null;
+  email?: string | null;
+  address1?: string | null;
+  address2?: string | null;
+  city?: string | null;
+  state?: string | null;
+  postalCode?: string | null;
+  country?: string | null;
+}): Promise<OrgBrand> {
+  let logo: Uint8Array | null = null;
+  if (org.logoUrl) {
+    try {
+      logo = await photoBytes(org.logoUrl);
+    } catch {
+      logo = null;
+    }
+  }
+  return {
+    name: org.name,
+    logo,
+    phone: org.phone?.trim() || null,
+    email: org.email?.trim() || null,
+    address: orgAddress(org),
+  };
 }
 
 /**
@@ -241,29 +310,96 @@ export async function buildPdf(ctx: BuildContext): Promise<Uint8Array> {
   const cover = pdf.addPage([W, H]);
   cover.drawRectangle({ x: 0, y: 0, width: W, height: H, color: INK });
   cover.drawRectangle({ x: 0, y: H - 8, width: W, height: 8, color: AMBER });
-  cover.drawText("GEOCLIKS", {
-    x: 48,
-    y: H - 92,
-    size: 12,
-    font: mono,
-    color: AMBER,
-  });
-  cover.drawText("VERIFIED PHOTO DOCUMENTATION", {
-    x: 48,
-    y: H - 110,
-    size: 9,
-    font: mono,
-    color: FOG,
-  });
 
+  /**
+   * Letterhead. The company that produced the report gets the top of the page — their logo,
+   * their name, their address and how to reach them — because that is the first question the
+   * person receiving a closeout package asks, and the answer is the client's contractor, not us.
+   * GeoCliks keeps the attribution line below the rule instead.
+   *
+   * Without a brand (an older caller) this degrades to exactly the header the cover had before:
+   * the GEOCLIKS wordmark and tagline, with the org named in the detail table below.
+   */
+  const brand = ctx.brand ?? null;
+  const logo = brand?.logo ? await embed(pdf, brand.logo) : null;
+  let headerBottom = H - 116;
+
+  if (brand) {
+    const top = H - 44;
+    const PLATE = 46;
+    let textX = 48;
+
+    if (logo) {
+      // A white plate behind it: most logos are dark ink on transparency and would disappear
+      // into the ink cover otherwise.
+      cover.drawRectangle({ x: 48, y: top - PLATE, width: PLATE, height: PLATE, color: WHITE });
+      const inner = PLATE - 8;
+      const fit = Math.min(inner / logo.width, inner / logo.height);
+      const lw = logo.width * fit;
+      const lh = logo.height * fit;
+      cover.drawImage(logo, {
+        x: 48 + (PLATE - lw) / 2,
+        y: top - PLATE + (PLATE - lh) / 2,
+        width: lw,
+        height: lh,
+      });
+      textX = 48 + PLATE + 14;
+    }
+
+    // Real company names are long ("Northside Mechanical Contracting Ltd."), so the name is
+    // shrunk to fit the line rather than cut off mid-word — an ellipsis in a letterhead reads
+    // like a bug, and there is only ever one line of it to fit.
+    const name = wa(brand.name);
+    const room = W - 48 - textX;
+    let size = 15;
+    while (size > 9.5 && bold.widthOfTextAtSize(name, size) > room) size -= 0.5;
+    cover.drawText(name, { x: textX, y: top - 15, size, font: bold, color: WHITE });
+
+    const contact = [
+      ...(brand.address ? wrap(brand.address, 62).slice(0, 2) : []),
+      [brand.phone, brand.email].filter(Boolean).join("   ·   "),
+    ].filter(Boolean);
+    contact.forEach((line, i) => {
+      cover.drawText(wa(line), { x: textX, y: top - 33 - i * 12.5, size: 8.5, font, color: FOG });
+    });
+
+    const textBottom = top - 33 - (contact.length - 1) * 12.5 - 4;
+    headerBottom = Math.min(logo ? top - PLATE : textBottom, textBottom);
+  }
+
+  const ruleY = brand ? headerBottom - 18 : H - 116;
+  if (brand) {
+    cover.drawRectangle({ x: 48, y: ruleY, width: W - 96, height: 0.75, color: rgb(0.17, 0.2, 0.25) });
+  }
+
+  cover.drawText(brand ? "GEOCLIKS · VERIFIED PHOTO DOCUMENTATION" : "GEOCLIKS", {
+    x: 48,
+    y: brand ? ruleY - 16 : H - 92,
+    size: brand ? 8 : 12,
+    font: mono,
+    color: brand ? FOG : AMBER,
+  });
+  if (!brand) {
+    cover.drawText("VERIFIED PHOTO DOCUMENTATION", {
+      x: 48,
+      y: H - 110,
+      size: 9,
+      font: mono,
+      color: FOG,
+    });
+  }
+
+  const titleTop = brand ? ruleY - 48 : H - 190;
   const titleLines = wrap(ctx.title, 26);
   titleLines.forEach((line, i) => {
-    cover.drawText(wa(line), { x: 48, y: H - 190 - i * 38, size: 30, font: bold, color: WHITE });
+    cover.drawText(wa(line), { x: 48, y: titleTop - i * 38, size: 30, font: bold, color: WHITE });
   });
 
-  let y = H - 190 - titleLines.length * 38 - 40;
+  let y = titleTop - titleLines.length * 38 - 40;
   const rows: Array<[string, string]> = [
-    ["Organization", ctx.orgName],
+    // The letterhead already says who issued this, so the row is only worth its 26 points when
+    // there is no letterhead to have said it.
+    ...(brand ? [] : ([["Organization", ctx.orgName]] as Array<[string, string]>)),
     ["Project", ctx.project?.name ?? "All projects"],
     ["Client", ctx.project?.client ?? "—"],
     ["Site", ctx.project?.address ?? ctx.project?.locationLabel ?? "—"],
@@ -572,7 +708,12 @@ export async function buildXlsx(ctx: BuildContext): Promise<Uint8Array> {
   summary.getRow(1).font = { bold: true };
   summary.addRows([
     { f: "Report", v: ctx.title },
-    { f: "Organization", v: ctx.orgName },
+    { f: "Organization", v: ctx.brand?.name ?? ctx.orgName },
+    // A spreadsheet has no letterhead, so the company's contact details belong at the top of the
+    // summary sheet — the same question answered in the place this format can answer it.
+    ...(ctx.brand?.address ? [{ f: "Address", v: ctx.brand.address }] : []),
+    ...(ctx.brand?.phone ? [{ f: "Phone", v: ctx.brand.phone }] : []),
+    ...(ctx.brand?.email ? [{ f: "Email", v: ctx.brand.email }] : []),
     { f: "Project", v: ctx.project?.name ?? "All projects" },
     { f: "Client", v: ctx.project?.client ?? "" },
     { f: "Photos", v: ctx.photos.length },
@@ -663,7 +804,15 @@ export async function buildKmz(ctx: BuildContext): Promise<Uint8Array> {
 <kml xmlns="http://www.opengis.net/kml/2.2">
   <Document>
     <name>${xml(ctx.title)}</name>
-    <description>${xml(ctx.orgName)} · ${ctx.photos.length} verified photos · generated by GeoCliks</description>
+    <description>${xml(
+      [
+        ctx.brand?.name ?? ctx.orgName,
+        ctx.brand?.address,
+        [ctx.brand?.phone, ctx.brand?.email].filter(Boolean).join(" · ") || null,
+      ]
+        .filter(Boolean)
+        .join(" — "),
+    )} · ${ctx.photos.length} verified photos · generated by GeoCliks</description>
     <Style id="tm">
       <IconStyle>
         <color>ff21b0ff</color>
@@ -682,7 +831,12 @@ ${placemarks.join("\n")}
 function readme(ctx: BuildContext) {
   return [
     `${ctx.title}`,
-    `${ctx.orgName}`,
+    `${ctx.brand?.name ?? ctx.orgName}`,
+    ...(ctx.brand?.address ? [ctx.brand.address] : []),
+    ...(ctx.brand?.phone || ctx.brand?.email
+      ? [[ctx.brand?.phone, ctx.brand?.email].filter(Boolean).join("   ·   ")]
+      : []),
+    "",
     `Project: ${ctx.project?.name ?? "All projects"}`,
     `Photos: ${ctx.photos.length}`,
     `Generated: ${fmtTime(new Date())}`,
