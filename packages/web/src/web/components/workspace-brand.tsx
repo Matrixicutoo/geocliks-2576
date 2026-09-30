@@ -47,10 +47,10 @@ export function WorkspaceBrand({ className }: { className?: string }) {
              Circular, matching the profile avatar. The padding is what makes that safe: a wide
              logo drawn edge to edge in a circle loses its ends to the curve, so it is inset far
              enough that the whole mark stays inside the round frame. */
-          className="size-12 shrink-0 rounded-full border border-line bg-white/5 object-contain p-1"
+          className="size-14 shrink-0 rounded-full border border-line bg-white/5 object-contain p-0.5"
         />
       ) : (
-        <LogoMark className="size-12 shrink-0" />
+        <LogoMark className="size-14 shrink-0" />
       )}
       {/* Amber, not chalk: the company name is the heading of the whole signed-in chrome, and
           the accent is what separates it from the ordinary white body text under it. */}
