@@ -528,6 +528,12 @@ export const it: Catalog = {
   "routes.liveNotLocated":
     "Aggiunto in fondo - non è stato possibile posizionare quell'indirizzo sulla mappa.",
   "routes.deleteRoute": "Elimina percorso",
+  "routes.archive": "Archivia",
+  "routes.restore": "Ripristina",
+  "routes.tabActive": "Attivi",
+  "routes.tabArchived": "Archiviati",
+  "routes.emptyArchived": "Non c’è ancora nulla in archivio",
+  "routes.emptyArchivedHint": "I giri completati che archivi finiscono qui. Non viene eliminato nulla: puoi ripristinarli quando vuoi.",
   "run.start": "Avvia il giro",
   "run.stopOf": "Fermata {n} di {total}",
   "run.navigate": "Avvia navigazione",

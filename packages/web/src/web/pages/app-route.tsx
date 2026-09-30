@@ -1,6 +1,7 @@
 import { useMemo, useState } from "react";
 import { Link, useLocation, useRoute as useWouterRoute } from "wouter";
 import {
+  Archive,
   ArrowLeft,
   ArrowUp,
   ArrowDown,
@@ -8,6 +9,7 @@ import {
   Loader2,
   MapPin,
   Plus,
+  RotateCcw,
   Trash2,
   TriangleAlert,
   Truck,
@@ -20,6 +22,7 @@ import { useTeam } from "../queries/team";
 import {
   useAddLiveStop,
   useAddStops,
+  useArchiveRoute,
   useGeocodeStops,
   useOptimizeRoute,
   useRemoveRoute,
@@ -135,6 +138,7 @@ export default function AppRoutePage() {
   const removeStop = useRemoveStop();
   const updateStop = useUpdateStop();
   const removeRoute = useRemoveRoute();
+  const archiveRoute = useArchiveRoute();
 
   // A late order typed straight into a run that is already moving. The contact details belong
   // here for the same reason they belong on the popup's one-stop form: the phone number is what
@@ -174,6 +178,8 @@ export default function AppRoutePage() {
   const [openPhoto, setOpenPhoto] = useState<string | null>(null);
 
   const route = detail.data?.route;
+  /** Filed away rather than deleted — see `archive` on the routes router. */
+  const archived = Boolean(route?.archivedAt);
   const stops = detail.data?.stops ?? [];
   /**
    * The run drawn along the streets, asked for only once there is something to draw. Loaded
@@ -279,12 +285,35 @@ export default function AppRoutePage() {
       title={route?.name ?? t("routes.title")}
       subtitle={route ? `${route.date} · ${route.driverName ?? t("queue.unassigned")}` : undefined}
       actions={
-        <Link
-          to="/app/routes"
-          className="inline-flex items-center gap-2 rounded-[8px] border border-line px-3 py-2 text-[13px] text-fog hover:text-chalk"
-        >
-          <ArrowLeft className="size-4" /> {t("routes.back")}
-        </Link>
+        <>
+          {/* A run that is over is filed away from here as well as from the list, since this is
+              the page a dispatcher is on when he finishes reading it. Nothing is deleted — the
+              Archived tab on the runs list holds it, and Restore puts it back. */}
+          {canManage &&
+            route &&
+            (archived || route.status === "completed" || route.status === "cancelled") && (
+              <button
+                type="button"
+                disabled={archiveRoute.isPending}
+                onClick={() =>
+                  run(async () => {
+                    await archiveRoute.mutateAsync({ id: routeId, archived: !archived });
+                    return t(archived ? "routes.restoredNotice" : "routes.archivedNotice");
+                  })
+                }
+                className="mono inline-flex items-center gap-2 rounded-[8px] border border-line px-3 py-2 text-[11px] font-bold uppercase tracking-widest text-chalk transition-colors hover:border-amber hover:text-amber disabled:opacity-60"
+              >
+                {archived ? <RotateCcw className="size-4" /> : <Archive className="size-4" />}
+                {t(archived ? "routes.restore" : "routes.archive")}
+              </button>
+            )}
+          <Link
+            to="/app/routes"
+            className="inline-flex items-center gap-2 rounded-[8px] border border-line px-3 py-2 text-[13px] text-fog hover:text-chalk"
+          >
+            <ArrowLeft className="size-4" /> {t("routes.back")}
+          </Link>
+        </>
       }
     >
       {detail.isLoading || !route ? (
@@ -346,6 +375,13 @@ export default function AppRoutePage() {
             >
               {t(STATUS_LABEL[route.status] ?? "routes.status.draft")}
             </span>
+
+            {/* Says why this run is not on the board, for anyone arriving by link. */}
+            {archived && (
+              <span className="inline-flex items-center gap-1.5 rounded-[6px] border border-line bg-ink-3 px-2 py-0.5 text-[11px] font-semibold uppercase tracking-wide text-fog">
+                <Archive className="size-3" /> {t("routes.tabArchived")}
+              </span>
+            )}
 
             {route.mode === "dispatch" && (
               <span className="rounded-[6px] border border-sky/40 bg-sky/10 px-2 py-0.5 text-[11px] font-semibold uppercase tracking-wide text-sky">

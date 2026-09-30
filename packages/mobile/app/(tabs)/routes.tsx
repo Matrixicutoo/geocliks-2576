@@ -11,7 +11,7 @@ import { AssignDriverSheet } from "@/components/assign-driver-sheet";
 import { DeliveryChecklist } from "@/components/delivery-checklist";
 import { useT, type TKey } from "@/lib/i18n";
 import { useOrg } from "@/queries/orgs";
-import { useRemoveRoute, useRoutes } from "@/queries/routes";
+import { useArchiveRoute, useRemoveRoute, useRoutes } from "@/queries/routes";
 import { canRunDeliveries } from "../../lib/roles";
 
 const STATUS_LABEL: Record<string, TKey> = {
@@ -26,9 +26,16 @@ export default function RoutesList() {
   const colors = useColors();
   const t = useT();
   const router = useRouter();
-  const query = useRoutes();
+  /**
+   * Which half of the board is on screen. A finished run is filed away rather than deleted, so
+   * the archive is a second list behind the same header, exactly as on the website.
+   */
+  const [tab, setTab] = useState<"active" | "archived">("active");
+  const archivedTab = tab === "archived";
+  const query = useRoutes(archivedTab ? { archived: true } : undefined);
   const org = useOrg();
   const removeRoute = useRemoveRoute();
+  const archiveRoute = useArchiveRoute();
   const rows = query.data ?? [];
   // Whoever may build a run may also throw one away - a dispatcher clears their own duplicates
   // rather than waiting on a manager. Same set as `canCreate` today, kept as its own name
@@ -42,6 +49,17 @@ export default function RoutesList() {
   // holds one driver, so the popup is a single-select.
   const [assignFor, setAssignFor] = useState<string | null>(null);
   const assigning = rows.find((row) => row.id === assignFor);
+
+  /** File a finished run away, or take it back out. The server refuses a run still running. */
+  const toggleArchive = (id: string) => {
+    archiveRoute.mutate(
+      { id, archived: !archivedTab },
+      {
+        onError: (e) =>
+          Alert.alert(t(archivedTab ? "routes.restore" : "routes.archive"), e.message),
+      },
+    );
+  };
 
   const confirmDelete = (id: string, name: string) => {
     Alert.alert(t("routes.deleteRoute"), name, [
@@ -95,6 +113,35 @@ export default function RoutesList() {
         </View>
       </View>
 
+      {/* Filed runs stay reachable without cluttering the working board. */}
+      <View style={styles.tabs}>
+        {(["active", "archived"] as const).map((value) => (
+          <Pressable
+            key={value}
+            onPress={() => setTab(value)}
+            style={[
+              styles.tab,
+              {
+                borderColor: tab === value ? colors.amber : colors.border,
+                backgroundColor: tab === value ? colors.amber : "transparent",
+              },
+            ]}
+          >
+            <Text
+              style={[
+                styles.tabText,
+                {
+                  color: tab === value ? colors.primaryForeground : colors.mutedForeground,
+                  fontFamily: Fonts?.mono,
+                },
+              ]}
+            >
+              {t(value === "active" ? "routes.tabActive" : "routes.tabArchived").toUpperCase()}
+            </Text>
+          </Pressable>
+        ))}
+      </View>
+
       {query.isLoading ? (
         <ActivityIndicator style={{ marginTop: 40 }} color={colors.amber} />
       ) : (
@@ -109,12 +156,16 @@ export default function RoutesList() {
           ListHeaderComponent={canCreate ? <DeliveryChecklist /> : null}
           ListEmptyComponent={
             <View style={[styles.empty, { borderColor: colors.border }]}>
-              <Ionicons name="map-outline" size={28} color={colors.mutedForeground} />
+              <Ionicons
+                name={archivedTab ? "archive-outline" : "map-outline"}
+                size={28}
+                color={colors.mutedForeground}
+              />
               <Text style={[styles.emptyTitle, { color: colors.foreground }]}>
-                {t("routes.empty")}
+                {t(archivedTab ? "routes.emptyArchived" : "routes.empty")}
               </Text>
               <Text style={[styles.emptyText, { color: colors.mutedForeground }]}>
-                {t("routes.emptyHintDriver")}
+                {t(archivedTab ? "routes.emptyArchivedHint" : "routes.emptyHintDriver")}
               </Text>
             </View>
           }
@@ -163,6 +214,27 @@ export default function RoutesList() {
                   <Ionicons name="car-outline" size={17} color={colors.primaryForeground} />
                 </Pressable>
               )}
+              {/* Filing a finished run away, and taking it back out. Only drawn on a run that
+                  is over — the server refuses the rest — so a live run can never be taken off
+                  the board under its driver. */}
+              {canCreate &&
+              (archivedTab || item.status === "completed" || item.status === "cancelled") ? (
+                <Pressable
+                  onPress={() => toggleArchive(item.id)}
+                  accessibilityLabel={t(archivedTab ? "routes.restore" : "routes.archive")}
+                  hitSlop={8}
+                  style={({ pressed }) => [
+                    styles.delete,
+                    { backgroundColor: pressed ? colors.background : "transparent" },
+                  ]}
+                >
+                  <Ionicons
+                    name={archivedTab ? "arrow-undo-outline" : "archive-outline"}
+                    size={17}
+                    color={colors.primaryForeground}
+                  />
+                </Pressable>
+              ) : null}
               {canDelete && (
                 <Pressable
                   onPress={() => confirmDelete(item.id, item.name)}
@@ -215,6 +287,9 @@ const styles = StyleSheet.create({
   },
   newText: { fontSize: 11, fontWeight: "700", letterSpacing: 0.5 },
   title: { fontSize: 15, letterSpacing: 1.5, flexShrink: 1, minWidth: 0, marginRight: 10 },
+  tabs: { flexDirection: "row", gap: 8, paddingHorizontal: 16, paddingTop: 8 },
+  tab: { borderWidth: 1, borderRadius: 8, paddingHorizontal: 12, paddingVertical: 6 },
+  tabText: { fontSize: 10, fontWeight: "700", letterSpacing: 1 },
   list: { padding: 16, gap: 10 },
   card: {
     flexDirection: "row",

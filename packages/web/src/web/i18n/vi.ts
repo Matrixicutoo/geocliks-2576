@@ -193,10 +193,10 @@ export const vi: Catalog = {
   "home.team.label": "02 — Không gian nhóm",
   "home.team.h2": "Ảnh của cả đội, ở một nơi, ngay lập tức",
   "home.team.body":
-    "Mọi ảnh kỹ thuật viên chụp đều đồng bộ vào không gian làm việc chung, sắp xếp theo dự án, khách hàng và địa điểm. Gửi liên kết chia sẻ trực tiếp là khách xem được công việc ngay khi diễn ra — không cần app, không cần đăng nhập.",
+    "Mọi ảnh kỹ thuật viên chụp đều đồng bộ vào không gian làm việc chung, sắp xếp theo dự án, khách hàng và địa điểm. Gửi liên kết chia sẻ trữc tiếp là khách xem được công việc ngay khi diễn ra — không cần app, không cần đăng nhập.",
   "home.team.b1": "Quyền theo vai trò: chủ, admin, quản lý, hiện trường",
   "home.team.b2": "Nhóm theo dự án, khách hàng, công trường hoặc mã việc",
-  "home.team.b3": "Liên kết chia sẻ trực tiếp xem được trên mọi trình duyệt",
+  "home.team.b3": "Liên kết chia sẻ trữc tiếp xem được trên mọi trình duyệt",
   "home.team.b4": "Ảnh xuất hiện chỉ vài giây sau khi chụp",
   "home.reports.label": "03 — Một cú nhấp",
   "home.reports.body":
@@ -312,7 +312,7 @@ export const vi: Catalog = {
   "projects.status.archived": "đã lưu trữ",
   "map.title": "Bản đồ hiện trường",
   "map.subtitle":
-    "Mọi ảnh có gắn vị trí trên bản đồ Google trực tiếp, kèm lộ trình cả ngày của từng đội",
+    "Mọi ảnh có gắn vị trí trên bản đồ Google trữc tiếp, kèm lộ trình cả ngày của từng đội",
   "map.route": "Lộ trình",
   "map.empty.title": "Chưa có ảnh gắn vị trí",
   "map.empty.hint": "Ảnh chụp khi bật định vị sẽ xuất hiện ở đây dưới dạng ghim.",
@@ -354,8 +354,8 @@ export const vi: Catalog = {
   "compare.photoRemoved": "Ảnh đã bị xoá",
   "share.title": "Liên kết chia sẻ",
   "share.subtitle":
-    "Chế độ xem trực tiếp khách hàng mở ngay trên trình duyệt — không cần ứng dụng, không cần đăng nhập, luôn mới nhất.",
-  "share.newLink": "Liên kết trực tiếp mới",
+    "Chế độ xem trữc tiếp khách hàng mở ngay trên trình duyệt — không cần ứng dụng, không cần đăng nhập, luôn mới nhất.",
+  "share.newLink": "Liên kết trữc tiếp mới",
   "share.label": "Nhãn",
   "share.scope": "Phạm vi",
   "share.wholeWorkspace": "Toàn bộ workspace",
@@ -400,14 +400,14 @@ export const vi: Catalog = {
   "reports.hint.pdf": "Bộ hồ sơ hoàn công — ảnh đã đóng dấu, mỗi bộ một trang.",
   "reports.hint.xlsx": "Mỗi ảnh là một dòng: mã, thời gian, toạ độ, địa chỉ, ghi chú.",
   "reports.hint.zip": "Ảnh gốc đã đóng dấu kèm bản kê siêu dữ liệu.",
-  "reports.hint.kmz": "Ghim ảnh mở trực tiếp trong Google Earth.",
+  "reports.hint.kmz": "Ghim ảnh mở trữc tiếp trong Google Earth.",
   "reports.layout.grid": "Lưới ảnh",
   "reports.layout.detailed": "Mỗi trang một ảnh",
   "reports.layout.before_after": "Trước / sau",
   "reports.layout.map": "Bản đồ + nhật ký",
   "templates.title": "Mẫu hình chìm",
   "templates.subtitle": "Con dấu được khắc vào mọi ảnh mà đội của bạn chụp.",
-  "templates.livePreview": "Xem trước trực tiếp",
+  "templates.livePreview": "Xem trước trữc tiếp",
   "templates.sampleNote":
     "Các giá trị hiển thị chỉ là ví dụ. Khi chụp, thời gian lấy từ đồng hồ máy chủ, toạ độ từ GPS của thiết bị và địa chỉ từ giải mã địa lý đảo ngược.",
   "templates.saved": "Mẫu đã lưu",
@@ -967,7 +967,7 @@ export const vi: Catalog = {
   "routes.dragHint": "Kéo một điểm dừng để sắp xếp lại, hoặc dùng các mũi tên.",
   "routes.addTitle": "Thêm điểm dừng",
   "routes.addHint":
-    "Mỗi dòng một điểm. Dán trực tiếp từ bảng tính - tab, dấu phẩy hoặc dấu chấm phẩy, có hoặc không có hàng tiêu đề. Theo thứ tự: địa chỉ, tên người nhận, địa chỉ email, số điện thoại.",
+    "Mỗi dòng một điểm. Dán trữc tiếp từ bảng tính - tab, dấu phẩy hoặc dấu chấm phẩy, có hoặc không có hàng tiêu đề. Theo thứ tự: địa chỉ, tên người nhận, địa chỉ email, số điện thoại.",
   "routes.addStops": "Thêm điểm dừng",
   "routes.added": "Đã thêm {n} điểm dừng",
   "routes.previewTitle": "Những gì sẽ được thêm",
@@ -993,6 +993,14 @@ export const vi: Catalog = {
   "routes.delim.comma": "Phân tách bằng dấu phẩy",
   "routes.delim.semicolon": "Phân tách bằng dấu chấm phẩy",
   "routes.deleteRoute": "Xóa tuyến",
+  "routes.archive": "Lưu trữ",
+  "routes.restore": "Khôi phục",
+  "routes.tabActive": "Đang hoạt động",
+  "routes.tabArchived": "Đã lưu trữ",
+  "routes.emptyArchived": "Chưa có gì được lưu trữ",
+  "routes.emptyArchivedHint": "Các chuyến đã hoàn thành mà bạn lưu trữ sẽ xuất hiện ở đây. Không có gì bị xoá — bạn có thể khôi phục bất cứ lúc nào.",
+  "routes.archivedNotice": "Đã lưu trữ chuyến.",
+  "routes.restoredNotice": "Đã khôi phục chuyến về bảng điều phối.",
   "track.title": "Theo dõi giao hàng",
   "track.loading": "Đang kiểm tra đơn giao này…",
   "track.notFoundTitle": "Không tìm thấy đơn giao đó",
@@ -2334,7 +2342,7 @@ export const vi: Catalog = {
   "pr.s3.label": "03 — So sánh",
   "pr.s3.h2": "Mọi giới hạn, gói đối gói.",
   "pr.s3.intro":
-    "Đọc trực tiếp từ danh mục gói mà chính đoạn mã kiểm soát của chúng tôi đọc, nên con số ở đây là con số áp dụng cho không gian làm việc của bạn.",
+    "Đọc trữc tiếp từ danh mục gói mà chính đoạn mã kiểm soát của chúng tôi đọc, nên con số ở đây là con số áp dụng cho không gian làm việc của bạn.",
   "pr.table.feature": "Tính năng",
   "pr.group.verification": "Xác thực",
   "pr.group.capture": "Chụp",
@@ -2358,7 +2366,7 @@ export const vi: Catalog = {
   "pr.row.teamspace.label": "Teamspace",
   "pr.row.teamspace.note": "Mọi ảnh và đoạn video của đội đồng bộ vào một nguồn chung.",
   "pr.row.roles.label": "Vai trò và quyền truy cập theo dự án",
-  "pr.row.shareLinks.label": "Liên kết chia sẻ trực tiếp cho khách",
+  "pr.row.shareLinks.label": "Liên kết chia sẻ trữc tiếp cho khách",
   "pr.row.exports.label": "Xuất dữ liệu",
   "pr.row.reports.label": "Dự án, bản đồ và báo cáo kết thúc",
   "pr.row.reports.note":
@@ -2367,7 +2375,7 @@ export const vi: Catalog = {
   "pr.row.stops.note":
     "Tính khi một điểm dừng được thêm vào tuyến, dù có giao được hay không. Đặt lại vào ngày 1.",
   "pr.row.drivers.label": "Tài xế",
-  "pr.row.dispatch.label": "Điều phối trực tiếp",
+  "pr.row.dispatch.label": "Điều phối trữc tiếp",
   "pr.row.dispatch.note": "Chèn một đơn mới vào tuyến đang được chạy.",
   "pr.row.optimizer.label": "Trình tối ưu thông minh",
   "pr.row.optimizer.note":
@@ -2398,7 +2406,7 @@ export const vi: Catalog = {
     "Không. Dữ liệu hình chìm, mã ảnh và con dấu giống nhau ở mọi gói. Bạn trả tiền cho khối lượng, độ dài video, teamspace, xuất dữ liệu, chia sẻ và định tuyến giao hàng — không bao giờ cho bản thân bằng chứng.",
   "pr.faq.q4": "Những gói nào có tuyến giao hàng?",
   "pr.faq.a4":
-    "Plus và cao hơn có hạn mức điểm dừng hằng tháng, nên bạn chạy được tuyến mà không cần rời các gói bằng chứng. Nếu lái xe là phần lớn công việc, các gói Giao hàng rẻ hơn nhiều trên mỗi điểm dừng và thêm điều phối trực tiếp, trình tối ưu thông minh và nhiều tài xế hơn.",
+    "Plus và cao hơn có hạn mức điểm dừng hằng tháng, nên bạn chạy được tuyến mà không cần rời các gói bằng chứng. Nếu lái xe là phần lớn công việc, các gói Giao hàng rẻ hơn nhiều trên mỗi điểm dừng và thêm điều phối trữc tiếp, trình tối ưu thông minh và nhiều tài xế hơn.",
   "pr.faq.q5": "Điểm dừng giao hàng được tính thế nào?",
   "pr.faq.a5":
     "Theo tháng dương lịch, đặt lại vào ngày 1. Một điểm dừng được tính khi nó được thêm vào tuyến, bất kể cuối cùng có giao được hay không. Vượt hạn mức sẽ chặn việc tạo tuyến mới đến tháng sau, nên hãy chọn gói phủ được tuần cao điểm nhất chứ không phải tuần trung bình.",

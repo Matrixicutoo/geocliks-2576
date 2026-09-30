@@ -43,12 +43,21 @@ export function waitingRoutesFor<T extends WaitingShape>(
     });
 }
 
-/** Routes the signed-in user may see. A field member only ever gets their own. */
-export function useRoutes() {
+/**
+ * Routes the signed-in user may see. A field member only ever gets their own.
+ *
+ * Archived runs are left out by default — `archived: true` reads only the filed ones, which is
+ * what the Archived tab on the routes list asks for.
+ */
+export function useRoutes(input?: { archived?: boolean }) {
   // Mounted by the tab bar on every screen, so it has to stay off until there is a session.
   const { hasSession } = useHasSession();
   return useQuery(
-    orpc.routes.list.queryOptions({ input: {}, enabled: hasSession, staleTime: 15_000 }),
+    orpc.routes.list.queryOptions({
+      input: input?.archived ? { archived: true } : {},
+      enabled: hasSession,
+      staleTime: 15_000,
+    }),
   );
 }
 
@@ -95,6 +104,15 @@ export function useCompleteStop() {
 export function useSkipStop() {
   const invalidate = useInvalidateRoutes();
   return useMutation(orpc.routes.skipStop.mutationOptions({ onSuccess: invalidate }));
+}
+
+/**
+ * File a finished run away, or put it back. Nothing is deleted either way: `useRemoveRoute`
+ * below is the destructive one. The server refuses to archive a run that is not over.
+ */
+export function useArchiveRoute() {
+  const invalidate = useInvalidateRoutes();
+  return useMutation(orpc.routes.archive.mutationOptions({ onSuccess: invalidate }));
 }
 
 /** Deleting a run. Owner/admin only - the server enforces the same rule. */

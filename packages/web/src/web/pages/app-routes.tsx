@@ -1,12 +1,14 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { Link, useLocation } from "wouter";
 import {
+  Archive,
   FileStack,
   Loader2,
   MapPin,
   PackageCheck,
   Plus,
   Route as RouteIcon,
+  RotateCcw,
   Search,
   Trash2,
   Truck,
@@ -21,7 +23,7 @@ import { NotesPanel } from "../components/notes-panel";
 import { PanelSearch } from "../components/panel-search";
 import { StatTile } from "../components/stat-tile";
 import { useOrg } from "../queries/orgs";
-import { useRemoveRoute, useRoutes } from "../queries/routes";
+import { useArchiveRoute, useRemoveRoute, useRoutes } from "../queries/routes";
 import { matchesSearch } from "../lib/search";
 import { cn } from "../lib/utils";
 import { type TKey, useT } from "../lib/i18n";
@@ -59,8 +61,21 @@ export default function AppRoutes({ openNew = false }: { openNew?: boolean }) {
   const [newOpen, setNewOpen] = useState(openNew);
   // Step two of the same chain: the stops-and-driver popup, over the same list.
   const [stopsRouteId, setStopsRouteId] = useState<string | null>(null);
-  const routes = useRoutes();
+  /**
+   * Which half of the board is on screen. A finished run is filed away rather than deleted, so
+   * the archive is a second list behind the same panel — the way the notes column works.
+   */
+  const [tab, setTab] = useState<"active" | "archived">("active");
+  const archivedTab = tab === "archived";
+  const routes = useRoutes(archivedTab ? { archived: true } : undefined);
+  /**
+   * The working board, for the counts at the foot of the page. On the Active tab this is the
+   * same query the list above reads, so it costs nothing; on the Archived tab it keeps the
+   * day's figures describing the day rather than the filing cabinet.
+   */
+  const board = useRoutes();
   const removeRoute = useRemoveRoute();
+  const archiveRoute = useArchiveRoute();
   const canManage = canRunDeliveries(org.data?.role);
   // Whoever may build a run may also throw one away - a dispatcher clears their own duplicates
   // rather than waiting on a manager. Same set as `canManage` today, kept as its own name
@@ -105,7 +120,7 @@ export default function AppRoutes({ openNew = false }: { openNew?: boolean }) {
   });
   // Deleting a run shrinks the list under what is already revealed, and so does typing a query;
   // either way, start the batches over.
-  useEffect(() => setShown(PAGE), [all.length, query]);
+  useEffect(() => setShown(PAGE), [all.length, query, tab]);
 
   // Two-step confirm: the whole row is a link, so a single stray click must never delete a run.
   const [confirmId, setConfirmId] = useState<string | null>(null);
@@ -128,7 +143,7 @@ export default function AppRoutes({ openNew = false }: { openNew?: boolean }) {
    * type is not a summary.
    */
   const tally = useMemo(() => {
-    const rows = routes.data ?? [];
+    const rows = board.data ?? [];
     const stops = rows.reduce((n, r) => n + (r.stopCount ?? 0), 0);
     const done = rows.reduce((n, r) => n + (r.doneCount ?? 0), 0);
     return {
@@ -140,7 +155,7 @@ export default function AppRoutes({ openNew = false }: { openNew?: boolean }) {
       drivers: new Set(rows.map((r) => r.driverId).filter(Boolean)).size,
       unassigned: rows.filter((r) => !r.driverId && r.status !== "cancelled").length,
     };
-  }, [routes.data]);
+  }, [board.data]);
 
   const onDelete = async (id: string) => {
     setError(null);
@@ -205,6 +220,24 @@ export default function AppRoutes({ openNew = false }: { openNew?: boolean }) {
           <section className="flex max-h-[620px] min-h-[420px] flex-col rounded-[12px] border border-line bg-ink-2">
             <header className="flex items-center gap-2 border-b border-line px-4 py-3">
               <p className="font-display text-[15px] font-semibold">{t("routes.panelTitle")}</p>
+
+              {/* Filed runs stay reachable without cluttering the working board. */}
+              <div className="ml-1 flex items-center gap-1">
+                {(["active", "archived"] as const).map((value) => (
+                  <button
+                    key={value}
+                    type="button"
+                    onClick={() => setTab(value)}
+                    className={cn(
+                      "mono rounded-[6px] px-2 py-1 text-[10px] uppercase tracking-widest transition-colors",
+                      tab === value ? "bg-ink-3 text-chalk" : "text-fog hover:text-chalk",
+                    )}
+                  >
+                    {t(value === "active" ? "routes.tabActive" : "routes.tabArchived")}
+                  </button>
+                ))}
+              </div>
+
               {canManage && (
                 <button
                   type="button"
@@ -244,12 +277,20 @@ export default function AppRoutes({ openNew = false }: { openNew?: boolean }) {
                      centred block the other two columns use rather than a second box. */
                   <div className="grid h-full place-items-center px-6 py-10 text-center">
                     <div>
-                      <RouteIcon className="mx-auto size-6 text-fog/60" />
+                      {archivedTab ? (
+                        <Archive className="mx-auto size-6 text-fog/60" />
+                      ) : (
+                        <RouteIcon className="mx-auto size-6 text-fog/60" />
+                      )}
                       <p className="font-display mt-3 text-[15px] font-semibold text-chalk">
-                        {t("routes.empty")}
+                        {archivedTab ? t("routes.emptyArchived") : t("routes.empty")}
                       </p>
                       <p className="mx-auto mt-1 max-w-sm text-[13px] text-fog">
-                        {canManage ? t("routes.emptyHint") : t("routes.emptyHintDriver")}
+                        {archivedTab
+                          ? t("routes.emptyArchivedHint")
+                          : canManage
+                            ? t("routes.emptyHint")
+                            : t("routes.emptyHintDriver")}
                       </p>
                     </div>
                   </div>
@@ -316,6 +357,36 @@ export default function AppRoutes({ openNew = false }: { openNew?: boolean }) {
                           </button>
                         )}
 
+                        {/* Filing a finished run away, and taking it back out. Only ever drawn
+                            on a run that is over — the server refuses the rest — so a live run
+                            can never be taken off the board under its driver. */}
+                        {canManage &&
+                          (archivedTab ||
+                            route.status === "completed" ||
+                            route.status === "cancelled") && (
+                            <button
+                              type="button"
+                              aria-label={t(archivedTab ? "routes.restore" : "routes.archive")}
+                              title={t(archivedTab ? "routes.restore" : "routes.archive")}
+                              disabled={archiveRoute.isPending}
+                              onClick={() => {
+                                setError(null);
+                                archiveRoute
+                                  .mutateAsync({ id: route.id, archived: !archivedTab })
+                                  .catch((e) =>
+                                    setError(e instanceof Error ? e.message : String(e)),
+                                  );
+                              }}
+                              className="grid size-8 shrink-0 place-items-center rounded-[8px] border border-line bg-ink-3 text-fog transition-colors hover:border-amber hover:text-amber disabled:opacity-60"
+                            >
+                              {archivedTab ? (
+                                <RotateCcw className="size-4" />
+                              ) : (
+                                <Archive className="size-4" />
+                              )}
+                            </button>
+                          )}
+
                         {canDelete &&
                           (confirmId === route.id ? (
                             <span className="flex shrink-0 items-center gap-1.5">
@@ -376,7 +447,7 @@ export default function AppRoutes({ openNew = false }: { openNew?: boolean }) {
           label={t("routes.statRuns")}
           value={tally.runs}
           sub={t("routes.statRunsSub", { n: tally.running })}
-          loading={routes.isLoading}
+          loading={board.isLoading}
         />
         <StatTile
           icon={MapPin}
@@ -384,7 +455,7 @@ export default function AppRoutes({ openNew = false }: { openNew?: boolean }) {
           value={tally.stops}
           accent="sky"
           sub={t("routes.statStopsSub", { n: tally.done })}
-          loading={routes.isLoading}
+          loading={board.isLoading}
         />
         <StatTile
           icon={PackageCheck}
@@ -392,7 +463,7 @@ export default function AppRoutes({ openNew = false }: { openNew?: boolean }) {
           value={`${tally.pct}%`}
           accent="verified"
           sub={t("routes.statDeliveredSub", { n: tally.done, total: tally.stops })}
-          loading={routes.isLoading}
+          loading={board.isLoading}
         />
         <StatTile
           icon={Truck}
@@ -400,7 +471,7 @@ export default function AppRoutes({ openNew = false }: { openNew?: boolean }) {
           value={tally.drivers}
           accent="amber"
           sub={t("routes.statDriversSub", { n: tally.unassigned })}
-          loading={routes.isLoading}
+          loading={board.isLoading}
         />
       </div>
 

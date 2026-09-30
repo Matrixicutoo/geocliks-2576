@@ -614,6 +614,16 @@ export const routes = sqliteTable(
     optimizedAt: integer("optimized_at", { mode: "timestamp_ms" }),
     startedAt: integer("started_at", { mode: "timestamp_ms" }),
     completedAt: integer("completed_at", { mode: "timestamp_ms" }),
+    /**
+     * When the office filed this run away. Null means it is still on the board.
+     *
+     * Deliberately its own column rather than an `archived` value on `status`: `status` is the
+     * run's lifecycle and the server moves it on its own as stops close out, so overwriting it
+     * would both lose whether the run finished or was cancelled and be undone by the next
+     * delivery. Archiving is the other axis — visibility — and only ever hides a finished run
+     * from the default list. Nothing is deleted; clearing this puts the run straight back.
+     */
+    archivedAt: integer("archived_at", { mode: "timestamp_ms" }),
     createdBy: text("created_by").notNull(),
     createdAt: integer("created_at", { mode: "timestamp_ms" }).notNull().$defaultFn(now),
   },
@@ -696,7 +706,7 @@ export const routeEvents = sqliteTable(
     routeId: text("route_id").notNull(),
     orgId: text("org_id").notNull(),
     stopId: text("stop_id"),
-    /** created | optimized | reordered | assigned | started | delivered | failed | notified | completed | cancelled */
+    /** created | optimized | reordered | assigned | started | delivered | failed | notified | completed | cancelled | archived | restored */
     event: text("event").notNull(),
     detail: text("detail"),
     actorId: text("actor_id"),

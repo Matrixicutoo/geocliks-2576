@@ -1,5 +1,5 @@
 import { ORPCError } from "@orpc/server";
-import { and, asc, count, desc, eq, gte, inArray, sql } from "drizzle-orm";
+import { and, asc, count, desc, eq, gte, inArray, isNotNull, isNull, sql } from "drizzle-orm";
 import { z } from "zod";
 import { db } from "../database";
 import * as schema from "../database/schema";
@@ -508,14 +508,32 @@ async function cachedRouteShape(routeId: string, points: LatLng[]): Promise<Rout
 }
 
 export const routes = {
-  /** Routes the caller may see. Managers see the workspace, a driver sees only their own. */
+  /**
+   * Routes the caller may see. Managers see the workspace, a driver sees only their own.
+   *
+   * Archived runs are left out unless they are asked for: that is the whole point of filing one
+   * away. `archived: true` returns only the filed ones, which is what the Archived tab reads.
+   */
   list: orgProc
-    .input(z.object({ date: z.string().optional(), status: statusEnum.optional() }).optional())
+    .input(
+      z
+        .object({
+          date: z.string().optional(),
+          status: statusEnum.optional(),
+          archived: z.boolean().optional(),
+        })
+        .optional(),
+    )
     .handler(async ({ input, context }) => {
       requireDelivery(context.role);
       const filters = [eq(schema.routes.orgId, context.org.id)];
       if (input?.date) filters.push(eq(schema.routes.date, input.date));
       if (input?.status) filters.push(eq(schema.routes.status, input.status));
+      filters.push(
+        input?.archived
+          ? isNotNull(schema.routes.archivedAt)
+          : isNull(schema.routes.archivedAt),
+      );
       if (isOwnRoutesOnly(context.role)) {
         filters.push(eq(schema.routes.driverId, context.user.id));
       }
@@ -1656,6 +1674,46 @@ export const routes = {
       .orderBy(desc(schema.routeEvents.at))
       .limit(200);
   }),
+
+  /**
+   * File a finished run away, or put it back. The row survives either way — only `remove`
+   * destroys anything, and this is the non-destructive answer to a board that has a year of
+   * finished runs on it.
+   *
+   * Only a run that is over may be filed: archiving one still out on the road would take it off
+   * the dispatcher's board while a driver is working it. Cancelled counts as over — it is
+   * finished with, whatever happened to it.
+   */
+  archive: orgProc
+    .input(z.object({ id: z.string(), archived: z.boolean() }))
+    .handler(async ({ input, context }) => {
+      // Same tier that builds a run and may delete one. Drivers never file the board.
+      requireRole(context.role, "dispatcher");
+      const route = await loadRoute(context.org.id, input.id);
+
+      if (input.archived && route.status !== "completed" && route.status !== "cancelled") {
+        throw new ORPCError("BAD_REQUEST", {
+          message: "Only a completed or cancelled route can be archived",
+        });
+      }
+
+      // Already where it is being asked to go — a double click, nothing to log.
+      if (input.archived === Boolean(route.archivedAt)) return { ok: true };
+
+      await db
+        .update(schema.routes)
+        .set({ archivedAt: input.archived ? new Date() : null })
+        .where(eq(schema.routes.id, route.id));
+
+      await logEvent({
+        routeId: route.id,
+        orgId: context.org.id,
+        event: input.archived ? "archived" : "restored",
+        actorId: context.user.id,
+      });
+
+      return { ok: true };
+    }),
 
   remove: orgProc.input(z.object({ id: z.string() })).handler(async ({ input, context }) => {
     // Dispatcher and above, the same tier that builds a run in the first place. A dispatcher

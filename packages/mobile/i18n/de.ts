@@ -529,6 +529,12 @@ export const de: Catalog = {
   "routes.liveNotLocated":
     "Am Ende hinzugefügt - diese Adresse konnte nicht auf der Karte platziert werden.",
   "routes.deleteRoute": "Tour löschen",
+  "routes.archive": "Archivieren",
+  "routes.restore": "Wiederherstellen",
+  "routes.tabActive": "Aktiv",
+  "routes.tabArchived": "Archiviert",
+  "routes.emptyArchived": "Noch nichts archiviert",
+  "routes.emptyArchivedHint": "Abgeschlossene Fahrten, die Sie ablegen, landen hier. Nichts wird gelöscht – Sie können sie jederzeit wiederherstellen.",
   "run.start": "Tour starten",
   "run.stopOf": "Stopp {n} von {total}",
   "run.navigate": "Navigation starten",

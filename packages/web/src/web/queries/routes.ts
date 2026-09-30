@@ -2,10 +2,11 @@ import { useEffect, useRef } from "react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { orpc } from "../lib/api";
 
-export function useRoutes(input?: { date?: string; status?: string }) {
+/** `archived: true` reads the filed-away runs instead of the board. */
+export function useRoutes(input?: { date?: string; status?: string; archived?: boolean }) {
   return useQuery(
     orpc.routes.list.queryOptions({
-      input: (input ?? {}) as { date?: string },
+      input: (input ?? {}) as { date?: string; archived?: boolean },
       staleTime: 15_000,
     }),
   );
@@ -146,6 +147,12 @@ export function useAssignRoute() {
 export function useRemoveRoute() {
   const invalidate = useRouteInvalidate();
   return useMutation(orpc.routes.remove.mutationOptions({ onSuccess: invalidate }));
+}
+
+/** File a finished run away, or put it back — the row survives either way. */
+export function useArchiveRoute() {
+  const invalidate = useRouteInvalidate();
+  return useMutation(orpc.routes.archive.mutationOptions({ onSuccess: invalidate }));
 }
 
 /**
