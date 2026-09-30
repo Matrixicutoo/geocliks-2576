@@ -1,4 +1,5 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import Constants from "expo-constants";
 import { Platform } from "react-native";
 import { client } from "./api";
 
@@ -222,6 +223,12 @@ export async function uploadOne(item: QueuedPhoto) {
     height: item.height,
     bytes: blob.size,
     platform: Platform.OS,
+    // Which handset shot it. The punch path has always sent this and the capture path never
+    // did, which left "Device" empty on every photo in the evidence record — the one field a
+    // dispute asks for by name. Read at upload rather than carried through the queue: the
+    // device name cannot change between the two, and reading it here fills the field in for
+    // captures already sitting in the queue from older builds.
+    deviceModel: Constants.deviceName ?? null,
     templateId: item.templateId,
     // Proof of delivery: who signed for it and the strokes they drew. Older queued
     // items predate these keys, so default them rather than sending undefined.

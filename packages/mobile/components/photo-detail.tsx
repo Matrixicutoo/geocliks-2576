@@ -133,7 +133,13 @@ export function PhotoDetail({ photoId, onClose }: { photoId: string | null; onCl
           data.verifiedAt ? formatStamp(new Date(data.verifiedAt)) : "—",
         ],
         [t("photo.timeSource").toUpperCase(), data.timeSource],
-        [t("photo.clockSkew").toUpperCase(), `${Math.round((data.clockSkewMs ?? 0) / 1000)}s`],
+        /* An unmeasured skew reads as "—", not "0s". Defaulting the null to zero printed a
+           clean pass for a capture that never reported its clock offset at all — and on a
+           record whose whole purpose is evidence, absence must not look like a result. */
+        [
+          t("photo.clockSkew").toUpperCase(),
+          data.clockSkewMs == null ? "—" : `${Math.round(data.clockSkewMs / 1000)}s`,
+        ],
         [t("evidence.coords").toUpperCase(), formatCoords(data.lat, data.lng)],
         [
           t("photo.accuracy").toUpperCase(),
