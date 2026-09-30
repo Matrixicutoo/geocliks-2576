@@ -95,10 +95,10 @@ export function SidebarBody({
                 <img
                   src={org.data.user.image}
                   alt=""
-                  className="size-8 shrink-0 rounded-[8px] border border-amber object-cover"
+                  className="size-8 shrink-0 rounded-full border border-amber object-cover"
                 />
               ) : (
-                <span className="mono flex size-8 shrink-0 items-center justify-center rounded-[8px] border border-amber text-[12px] font-bold text-amber">
+                <span className="mono flex size-8 shrink-0 items-center justify-center rounded-full border border-amber text-[12px] font-bold text-amber">
                   {initials(org.data?.user.name, org.data?.user.email)}
                 </span>
               )}

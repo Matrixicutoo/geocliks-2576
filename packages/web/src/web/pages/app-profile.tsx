@@ -141,10 +141,10 @@ export default function AppProfile() {
                 <img
                   src={org.data.org.logoUrl}
                   alt=""
-                  className="size-20 shrink-0 rounded-[12px] border border-line bg-white/5 object-contain"
+                  className="size-20 shrink-0 rounded-full border border-line bg-white/5 object-contain p-1.5"
                 />
               ) : (
-                <div className="flex size-20 shrink-0 items-center justify-center rounded-[12px] border border-line">
+                <div className="flex size-20 shrink-0 items-center justify-center rounded-full border border-line">
                   <Building2 className="size-8 text-amber" />
                 </div>
               )}
@@ -176,10 +176,10 @@ export default function AppProfile() {
                 <img
                   src={avatar}
                   alt={t("profile.photo")}
-                  className="size-20 shrink-0 rounded-[12px] border border-amber object-cover"
+                  className="size-20 shrink-0 rounded-full border border-amber object-cover"
                 />
               ) : (
-                <div className="mono flex size-20 shrink-0 items-center justify-center rounded-[12px] border border-amber text-lg text-amber">
+                <div className="mono flex size-20 shrink-0 items-center justify-center rounded-full border border-amber text-lg text-amber">
                   {initials(user?.name, user?.email)}
                 </div>
               )}

@@ -42,8 +42,12 @@ export function WorkspaceBrand({ className }: { className?: string }) {
              background, and the bar height must not move with them. The box is deliberately
              larger than the identity avatars below it — this is the mark people recognise their
              own account by, and it is the one thing in the column that should read at a
-             glance from arm's length. */
-          className="size-12 shrink-0 rounded-[10px] border border-line bg-white/5 object-contain"
+             glance from arm's length.
+
+             Circular, matching the profile avatar. The padding is what makes that safe: a wide
+             logo drawn edge to edge in a circle loses its ends to the curve, so it is inset far
+             enough that the whole mark stays inside the round frame. */
+          className="size-12 shrink-0 rounded-full border border-line bg-white/5 object-contain p-1"
         />
       ) : (
         <LogoMark className="size-12 shrink-0" />
