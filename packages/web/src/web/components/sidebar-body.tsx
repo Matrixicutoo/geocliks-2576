@@ -285,7 +285,10 @@ export function SidebarBody({
                   await authClient.signOut();
                   window.location.href = "/";
                 }}
-                className="flex w-full items-center justify-center gap-2 rounded-[12px] border border-line px-3 py-2 text-[12.5px] text-alert transition-colors hover:border-alert/60"
+                /* Filled like the card above it rather than left transparent, so the foot of
+                   the menu reads as two pieces of the same surface instead of one card and a
+                   hole in the column. */
+                className="flex w-full items-center justify-center gap-2 rounded-[12px] border border-line bg-ink px-3 py-2 text-[12.5px] text-alert transition-colors hover:border-alert/60"
               >
                 <LogOut className="size-4" /> {t("shell.signOut")}
               </button>
