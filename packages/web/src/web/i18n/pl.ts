@@ -357,6 +357,7 @@ export const pl: Catalog = {
   "compare.remove": "Usuń",
   "compare.photoRemoved": "Zdjęcie usunięte",
   "compare.createReport": "Utwórz raport",
+  "compare.share": "Udostępnij",
   "compare.reportReady": "Raport gotowy.",
   "compare.reportOnePhoto": "Jedno zdjęcie z tej pary zostało usunięte, raport pokaże tylko drugie.",
   "compare.shareNoProject": "Przypisz parę do projektu, aby udostępnić ją klientowi.",

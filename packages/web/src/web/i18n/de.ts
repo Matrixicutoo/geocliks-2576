@@ -364,6 +364,7 @@ export const de: Catalog = {
   "compare.remove": "Entfernen",
   "compare.photoRemoved": "Foto entfernt",
   "compare.createReport": "Bericht erstellen",
+  "compare.share": "Teilen",
   "compare.reportReady": "Bericht fertig.",
   "compare.reportOnePhoto": "Ein Foto dieses Paares wurde entfernt, der Bericht zeigt nur das andere.",
   "compare.shareNoProject": "Ordne ein Paar einem Projekt zu, um es mit einem Kunden zu teilen.",

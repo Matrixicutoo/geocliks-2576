@@ -368,6 +368,7 @@ export const en = {
   "compare.remove": "Remove",
   "compare.photoRemoved": "Photo removed",
   "compare.createReport": "Create report",
+  "compare.share": "Share",
   "compare.reportReady": "Report ready.",
   "compare.reportOnePhoto": "One photo in this pair was removed, so the report will only show the other.",
   "compare.shareNoProject": "Put a pair in a project to share it with a client.",

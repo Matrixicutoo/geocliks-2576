@@ -322,6 +322,8 @@ export default function AppCompare() {
   const [search, setSearch] = useState("");
   const [reportFor, setReportFor] = useState<string | null>(null);
   const [shareProject, setShareProject] = useState<string | null>(null);
+  // Opened from a pair card, the popup is locked to that pair's job; from the top, it can switch.
+  const [shareLocked, setShareLocked] = useState(false);
 
   // Memoised so an empty result is the same array every render, not a fresh `[]` that would
   // re-run every memo below it.
@@ -452,7 +454,10 @@ export default function AppCompare() {
               type="button"
               disabled={projectOptions.length === 0}
               title={projectOptions.length === 0 ? t("compare.shareNoProject") : undefined}
-              onClick={() => setShareProject(projectId || projectOptions[0]?.[0] || null)}
+              onClick={() => {
+                setShareLocked(false);
+                setShareProject(projectId || projectOptions[0]?.[0] || null);
+              }}
               className={ACTION}
             >
               <Link2 className="size-3.5" /> {t("project.shareClient")}
@@ -527,6 +532,21 @@ export default function AppCompare() {
                             className="mono inline-flex items-center gap-1.5 rounded-[8px] border border-line px-2 py-1.5 text-[10px] uppercase tracking-widest text-chalk transition-colors hover:border-amber hover:text-amber"
                           >
                             <FileStack className="size-3.5" /> {t("compare.createReport")}
+                          </button>
+                          {/* A client link is for one job, so a pair outside a project has none. */}
+                          <button
+                            type="button"
+                            aria-label={t("project.shareClient")}
+                            title={row.projectId ? t("project.shareClient") : t("compare.shareNoProject")}
+                            disabled={!row.projectId}
+                            onClick={() => {
+                              if (!row.projectId) return;
+                              setShareLocked(true);
+                              setShareProject(row.projectId);
+                            }}
+                            className="mono inline-flex items-center gap-1.5 rounded-[8px] border border-line px-2 py-1.5 text-[10px] uppercase tracking-widest text-chalk transition-colors hover:border-amber hover:text-amber disabled:pointer-events-none disabled:opacity-40"
+                          >
+                            <Link2 className="size-3.5" /> {t("compare.share")}
                           </button>
                           <button
                             type="button"
@@ -629,8 +649,8 @@ export default function AppCompare() {
         <ShareProjectDialog
           projectId={shareProject}
           projectName={projectOptions.find(([value]) => value === shareProject)?.[1] ?? null}
-          projectOptions={projectOptions}
-          onProjectChange={setShareProject}
+          projectOptions={shareLocked ? undefined : projectOptions}
+          onProjectChange={shareLocked ? undefined : setShareProject}
           onClose={() => setShareProject(null)}
         />
       )}

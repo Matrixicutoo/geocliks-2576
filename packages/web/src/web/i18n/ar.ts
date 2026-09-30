@@ -341,6 +341,7 @@ export const ar: Catalog = {
   "compare.remove": "إزالة",
   "compare.photoRemoved": "تم إزالة الصورة",
   "compare.createReport": "إنشاء تقرير",
+  "compare.share": "مشاركة",
   "compare.reportReady": "التقرير جاهز.",
   "compare.reportOnePhoto": "تمت إزالة صورة من هذا الزوج، لذا سيعرض التقرير الصورة الأخرى فقط.",
   "compare.shareNoProject": "ضع الزوج في مشروع لمشاركته مع عميل.",

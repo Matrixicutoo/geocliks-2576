@@ -361,6 +361,7 @@ export const ptBR: Catalog = {
   "compare.remove": "Remover",
   "compare.photoRemoved": "Foto removida",
   "compare.createReport": "Criar relatório",
+  "compare.share": "Compartilhar",
   "compare.reportReady": "Relatório pronto.",
   "compare.reportOnePhoto": "Uma foto deste par foi removida, então o relatório mostrará apenas a outra.",
   "compare.shareNoProject": "Coloque um par em um projeto para compartilhá-lo com um cliente.",

@@ -364,6 +364,7 @@ export const frCA: Catalog = {
   "compare.remove": "Retirer",
   "compare.photoRemoved": "Photo retirée",
   "compare.createReport": "Créer un rapport",
+  "compare.share": "Partager",
   "compare.reportReady": "Rapport prêt.",
   "compare.reportOnePhoto": "Une photo de cette paire a été retirée; le rapport ne montrera que l’autre.",
   "compare.shareNoProject": "Associez une paire à un projet pour la partager avec un client.",

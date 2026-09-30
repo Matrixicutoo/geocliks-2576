@@ -353,6 +353,7 @@ export const vi: Catalog = {
   "compare.remove": "Xoá",
   "compare.photoRemoved": "Ảnh đã bị xoá",
   "compare.createReport": "Tạo báo cáo",
+  "compare.share": "Chia sẻ",
   "compare.reportReady": "Báo cáo đã sẵn sàng.",
   "compare.reportOnePhoto": "Một ảnh trong cặp này đã bị xóa, nên báo cáo chỉ hiển thị ảnh còn lại.",
   "compare.shareNoProject": "Hãy đưa cặp ảnh vào một dự án để chia sẻ với khách hàng.",

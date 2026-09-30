@@ -333,6 +333,7 @@ export const zh: Catalog = {
   "compare.remove": "移除",
   "compare.photoRemoved": "照片已移除",
   "compare.createReport": "生成报告",
+  "compare.share": "分享",
   "compare.reportReady": "报告已生成。",
   "compare.reportOnePhoto": "此对比组中有一张照片已被删除，报告只会显示另一张。",
   "compare.shareNoProject": "将对比组归入项目后，才能分享给客户。",

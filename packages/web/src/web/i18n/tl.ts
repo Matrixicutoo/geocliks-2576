@@ -362,6 +362,7 @@ export const tl: Catalog = {
   "compare.remove": "Alisin",
   "compare.photoRemoved": "Naalis ang litrato",
   "compare.createReport": "Gumawa ng ulat",
+  "compare.share": "Ibahagi",
   "compare.reportReady": "Handa na ang ulat.",
   "compare.reportOnePhoto": "Inalis ang isang larawan sa pares na ito, kaya ang isa lang ang ipapakita ng ulat.",
   "compare.shareNoProject": "Ilagay ang pares sa isang proyekto para maibahagi ito sa kliyente.",
