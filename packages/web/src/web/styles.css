@@ -219,8 +219,8 @@
 /* Dark theme — the original field palette. */
 [data-theme="dark"] {
   --c-ink: #13151a;
-  --c-ink-2: #1b1e23;
-  --c-ink-3: #25292f;
+  --c-ink-2: #171a1e;
+  --c-ink-3: #21252b;
   --c-line: #31363e;
   --c-fog: #9daaba;
   --c-steel: #9daaba;
