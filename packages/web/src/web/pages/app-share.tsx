@@ -18,7 +18,12 @@ export default function AppShare() {
   const revoke = useRevokeShareLink();
 
   const [label, setLabel] = useState("");
-  const [projectId, setProjectId] = useState("");
+  // "Share with client" on a project page lands here with that job already picked.
+  const [projectId, setProjectId] = useState(() =>
+    typeof window === "undefined"
+      ? ""
+      : (new URLSearchParams(window.location.search).get("project") ?? ""),
+  );
   const [allowDownload, setAllowDownload] = useState(true);
   const [expires, setExpires] = useState("30");
   const [error, setError] = useState<string | null>(null);

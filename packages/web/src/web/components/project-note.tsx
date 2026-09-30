@@ -26,17 +26,30 @@ export function ProjectNote({
   notes,
   canEdit,
   onError,
+  editing: editingProp,
+  onEditingChange,
+  hideAdd = false,
 }: {
   projectId: string;
   /** What is on the job now, or null when nobody has written one. */
   notes: string | null | undefined;
   canEdit: boolean;
   onError?: (message: string) => void;
+  /** Controlled edit state, for a page that opens the editor from its own button. */
+  editing?: boolean;
+  onEditingChange?: (editing: boolean) => void;
+  /** Drop the inline "Add a note" link when the page already carries its own button for it. */
+  hideAdd?: boolean;
 }) {
   const t = useT();
   const setNote = useSetProjectNote();
 
-  const [editing, setEditing] = useState(false);
+  const [editingState, setEditingState] = useState(false);
+  const editing = editingProp ?? editingState;
+  const setEditing = (next: boolean) => {
+    setEditingState(next);
+    onEditingChange?.(next);
+  };
   const [value, setValue] = useState(notes ?? "");
   const [saving, setSaving] = useState(false);
 
@@ -145,7 +158,7 @@ export function ProjectNote({
   }
 
   // Nothing written, and nobody to write it: a crew member sees no empty row at all.
-  if (!canEdit) return null;
+  if (!canEdit || hideAdd) return null;
 
   return (
     <button

@@ -46,11 +46,25 @@ type PhotoTag = Exclude<
   "all"
 >;
 
-export function PhotoStrip({ board }: { board: "field" | "delivery" }) {
+export function PhotoStrip({
+  board,
+  projectId: lockedProjectId,
+  title,
+}: {
+  board: "field" | "delivery";
+  /**
+   * Pins the strip to one job. The project page uses the same strip as Teamspace, scoped to its
+   * own photos, so the picker is hidden there — choosing another job from inside a job is noise.
+   */
+  projectId?: string;
+  /** Header text. Defaults to the live-feed title the dashboards use. */
+  title?: string;
+}) {
   const t = useT();
   const tags = board === "delivery" ? DELIVERY_TAGS : FIELD_TAGS;
   const [tag, setTag] = useState<PhotoTag | "all">("all");
-  const [projectId, setProjectId] = useState<string | null>(null);
+  const [pickedProjectId, setProjectId] = useState<string | null>(null);
+  const projectId = lockedProjectId ?? pickedProjectId;
   const [search, setSearch] = useState("");
   const [openPhoto, setOpenPhoto] = useState<string | null>(null);
   // Removing evidence used to live on the old full-page grid. It moves here with it: field
@@ -63,7 +77,7 @@ export function PhotoStrip({ board }: { board: "field" | "delivery" }) {
 
   // Only the field board has a project picker, and a driver is not allowed to list projects at
   // all — so the delivery strip must not fire the request.
-  const projects = useProjects(undefined, { enabled: board === "field" });
+  const projects = useProjects(undefined, { enabled: board === "field" && !lockedProjectId });
   // One page is plenty for a strip — 24 tiles is already more sideways scrolling than anyone
   // does. The full grid is where you go to page through everything.
   const photos = useInfinitePhotos(
@@ -140,7 +154,7 @@ export function PhotoStrip({ board }: { board: "field" | "delivery" }) {
   return (
     <section className="rounded-[12px] border border-line bg-ink-2">
       <header className="flex flex-wrap items-center gap-2 border-b border-line px-4 py-3">
-        <p className="font-display mr-1 text-[15px] font-semibold">{t("feed.title")}</p>
+        <p className="font-display mr-1 text-[15px] font-semibold">{title ?? t("feed.title")}</p>
 
         {tags.map((value) => (
           <button
@@ -160,7 +174,7 @@ export function PhotoStrip({ board }: { board: "field" | "delivery" }) {
 
         {/* The field side files photos under projects; the delivery side files them under runs,
             so the project picker would always be empty there. */}
-        {board === "field" && (projects.data?.length ?? 0) > 0 && (
+        {board === "field" && !lockedProjectId && (projects.data?.length ?? 0) > 0 && (
           <select
             aria-label={t("teamspace.projectFilter")}
             value={projectId ?? ""}

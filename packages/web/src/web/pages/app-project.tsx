@@ -3,31 +3,35 @@ import { Link, useLocation, useParams } from "wouter";
 import {
   ArrowLeft,
   Archive,
-  ImageOff,
   Link2,
   FileStack,
   Loader2,
   MapPin,
   Navigation,
   Phone,
+  StickyNote,
   Trash2,
   UserPlus,
   Users,
 } from "lucide-react";
 import { DashboardShell } from "../components/dashboard-shell";
 import { PageTitle } from "../components/page-title";
-import { EvidenceCard, EvidenceSkeleton, formatStamp } from "../components/evidence-card";
-import { EmptyState } from "../components/empty-state";
+import { formatStamp } from "../components/evidence-card";
+import { PhotoStrip } from "../components/photo-strip";
 import { PhotoDrawer } from "../components/photo-drawer";
 import { EvidenceMap, type MapPin as EvidenceMapPin } from "../components/evidence-map";
 import { AssignCrewDialog } from "../components/assign-crew-dialog";
 import { ProjectNote } from "../components/project-note";
 import { useDestroyProject, useProject, useRemoveProject } from "../queries/projects";
 import { usePhotos } from "../queries/photos";
-import { useTeam, useAssignments, useAssignMember } from "../queries/team";
+import { useTeam, useAssignments } from "../queries/team";
 import { useOrg } from "../queries/orgs";
 import { type TKey, useT } from "../lib/i18n";
 import { canManageWorkspace, canWriteJobNote } from "../lib/roles";
+
+/** The job's action buttons, one look for all three. */
+const ACTION =
+  "mono inline-flex items-center gap-1.5 rounded-[8px] border border-line bg-ink-2 px-3 py-2 text-[10.5px] uppercase tracking-widest text-chalk transition-colors hover:border-amber hover:text-amber";
 
 const STATUS_LABEL: Record<string, TKey> = {
   active: "projects.status.active",
@@ -45,8 +49,7 @@ export default function ProjectPage() {
   const photos = usePhotos({ projectId: id, limit: 120 });
   const team = useTeam();
   const assignments = useAssignments(id);
-  const assign = useAssignMember();
-  const [openPhoto, setOpenPhoto] = useState<string | null>(null);
+    const [openPhoto, setOpenPhoto] = useState<string | null>(null);
   const archive = useRemoveProject();
   const destroy = useDestroyProject();
   const [confirmDelete, setConfirmDelete] = useState(false);
@@ -56,6 +59,7 @@ export default function ProjectPage() {
   // Writing the crew's note is the office tier, one rung wider than archiving the job.
   const canWriteNote = canWriteJobNote(org.data?.role);
   const [noteError, setNoteError] = useState<string | null>(null);
+  const [noteEditing, setNoteEditing] = useState(false);
 
   const assigned = new Set(assignments.data?.map((a) => a.userId) ?? []);
   const assignedRows = (team.data ?? []).filter((row) => assigned.has(row.userId));
@@ -140,10 +144,148 @@ export default function ProjectPage() {
         </div>
       )}
 
+      {/* The job's working actions sit first, above its photos: the office opens a job to tell
+          the crew something, put people on it or send it to the client, far more often than to
+          read its code and counts. */}
+      <div className="flex flex-wrap items-center gap-2">
+        {canWriteNote && (
+          <button
+            type="button"
+            onClick={() => setNoteEditing(true)}
+            className={ACTION}
+          >
+            <StickyNote className="size-3.5" />
+            {project.data?.notes?.trim() ? t("project.noteEdit") : t("project.noteAdd")}
+          </button>
+        )}
+        {canManage && (
+          <button type="button" onClick={() => setAssignOpen(true)} className={ACTION}>
+            <UserPlus className="size-3.5" /> {t("assign.add")}
+            {assignedRows.length > 0 && (
+              <span className="rounded-[4px] bg-amber/15 px-1.5 text-amber">
+                {assignedRows.length}
+              </span>
+            )}
+          </button>
+        )}
+        <Link to={`/app/share?project=${encodeURIComponent(id)}`} className={ACTION}>
+          <Link2 className="size-3.5" /> {t("project.shareClient")}
+        </Link>
+
+        {/* Who is on the job, at a glance. Adding and removing happens in the Assign popup. */}
+        {assignedRows.length > 0 && (
+          <div
+            className="ml-auto flex items-center -space-x-1.5"
+            title={assignedRows.map((row) => row.user?.name ?? row.user?.email).join(", ")}
+          >
+            <Users className="mr-3 size-3.5 text-fog" aria-label={t("project.crewAccess")} />
+            {assignedRows.slice(0, 6).map((row) =>
+              row.user?.image ? (
+                <img
+                  key={row.id}
+                  src={row.user.image}
+                  alt={row.user?.name ?? ""}
+                  className="size-7 rounded-full border-2 border-ink object-cover"
+                />
+              ) : (
+                <span
+                  key={row.id}
+                  className="mono grid size-7 place-items-center rounded-full border-2 border-ink bg-ink-3 text-[9.5px] text-amber"
+                >
+                  {(row.user?.name ?? row.user?.email ?? "?").slice(0, 2).toUpperCase()}
+                </span>
+              ),
+            )}
+            {assignedRows.length > 6 && (
+              <span className="mono grid size-7 place-items-center rounded-full border-2 border-ink bg-ink-3 text-[9.5px] text-fog">
+                +{assignedRows.length - 6}
+              </span>
+            )}
+          </div>
+        )}
+      </div>
+
+      {/* The note the crew reads on site, shown as it will read on their phone. Its own button
+          lives in the action row above, so the inline "add" link is dropped here. */}
+      {!project.isLoading && (
+        <ProjectNote
+          projectId={id}
+          notes={project.data?.notes}
+          canEdit={canWriteNote}
+          onError={setNoteError}
+          editing={noteEditing}
+          onEditingChange={setNoteEditing}
+          hideAdd
+        />
+      )}
+      {noteError && <p className="mono mt-2 text-[11.5px] text-alert">{noteError}</p>}
+
+      {/* This job's photos, in the same sideways strip Teamspace uses — tag chips, search and
+          bulk delete included — pinned to this project. */}
+      <div className="mt-4">
+        <PhotoStrip
+          board="field"
+          projectId={id}
+          title={t("project.evidenceCount", { n: photos.data?.total ?? 0 })}
+        />
+      </div>
+
+      {/* The site, with the map given the width of the page instead of a 200px sidebar box. */}
+      <section className="mt-4 rounded-[12px] border border-line bg-ink-2">
+        <header className="flex flex-wrap items-start gap-x-6 gap-y-2 border-b border-line px-4 py-3">
+          <div className="min-w-0 flex-1">
+            <p className="label flex items-center gap-1.5">
+              <MapPin className="size-3.5" /> {t("project.site")}
+            </p>
+            <p className="mono mt-1.5 text-[11px] leading-relaxed text-fog">
+              {[project.data?.locationLabel, project.data?.address ?? t("project.noAddress")]
+                .filter(Boolean)
+                .join(" · ")}
+              <br />
+              {project.data?.lat != null && project.data?.lng != null
+                ? `${project.data.lat.toFixed(5)}, ${project.data.lng.toFixed(5)}`
+                : t("project.noCoords")}
+            </p>
+          </div>
+          {/* Whoever to call about this job. A tel: link, so it dials from a phone and the
+              office can still copy it off a desktop. The dial string stops at the first
+              letter, so an "ext 4" stays visible but never gets dialled onto the end. */}
+          {project.data?.contactPhone && (
+            <a
+              href={`tel:${project.data.contactPhone.split(/[a-z]/i)[0].replace(/[^\d+]/g, "")}`}
+              className="mono inline-flex items-center gap-1.5 self-center text-[11px] text-fog transition-colors hover:text-amber"
+            >
+              <Phone className="size-3.5 shrink-0" /> {project.data.contactPhone}
+            </a>
+          )}
+          {/* Route to the job site itself, not to a photo. Coordinates win when the site has
+              them; otherwise the typed address is good enough for Maps to resolve. */}
+          {siteDestination && (
+            <a
+              href={`https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(siteDestination)}`}
+              target="_blank"
+              rel="noreferrer"
+              className="mono inline-flex items-center gap-2 self-center rounded-[8px] bg-amber px-4 py-2 text-[10.5px] font-bold uppercase tracking-widest text-on-amber transition-colors hover:bg-amber-deep"
+            >
+              <Navigation className="size-3.5" />
+              {t("photo.directions")}
+            </a>
+          )}
+        </header>
+        <div className="p-4">
+          <EvidenceMap
+            pins={(photos.data?.photos ?? []) as unknown as EvidenceMapPin[]}
+            onSelect={setOpenPhoto}
+            className="h-[420px] lg:h-[520px]"
+          />
+        </div>
+      </section>
+
+      {/* The job's numbers close the page: reference, not the first thing anyone needs. */}
       {project.isLoading ? (
-        <div className="h-28 animate-pulse rounded-[12px] border border-line bg-ink-2" />
+        <div className="mt-4 h-20 animate-pulse rounded-[12px] border border-line bg-ink-2" />
       ) : (
-        <div className="grid gap-px bg-line sm:grid-cols-2 lg:grid-cols-4">
+        <div className="mt-4 grid gap-px overflow-hidden rounded-[12px] border border-line bg-line sm:grid-cols-2 lg:grid-cols-4">
           {(
             [
               ["projects.fCode", project.data?.code ?? "—"],
@@ -164,181 +306,15 @@ export default function ProjectPage() {
           ))}
         </div>
       )}
-
-      {/* The note the crew reads on site. It used to render here read-only, which meant the only
-          way to fix a gate code was the new-project form it was first typed into. */}
-      {!project.isLoading && (
-        <ProjectNote
-          projectId={id}
-          notes={project.data?.notes}
-          canEdit={canWriteNote}
-          onError={setNoteError}
-        />
+      {project.data?.firstPhotoAt && (
+        <p className="mono mt-2 text-[10.5px] text-fog">
+          {t("project.first", { stamp: formatStamp(project.data.firstPhotoAt).slice(0, 16) })}
+          {" · "}
+          {t("projects.last", {
+            stamp: formatStamp(project.data.lastPhotoAt ?? project.data.firstPhotoAt).slice(0, 16),
+          })}
+        </p>
       )}
-      {noteError && <p className="mono mt-2 text-[11.5px] text-alert">{noteError}</p>}
-
-      <div className="mt-4 grid gap-4 lg:grid-cols-[1fr_280px]">
-        <div>
-          <p className="label mb-3">{t("project.evidenceCount", { n: photos.data?.total ?? 0 })}</p>
-          {photos.isLoading ? (
-            <div className="grid gap-3 grid-cols-[repeat(auto-fill,minmax(min(100%,440px),1fr))]">
-              {Array.from({ length: 6 }).map((_, i) => (
-                <EvidenceSkeleton key={i} />
-              ))}
-            </div>
-          ) : (photos.data?.photos.length ?? 0) === 0 ? (
-            <EmptyState
-              icon={ImageOff}
-              title={t("project.empty.title")}
-              hint={t("project.empty.hint")}
-            />
-          ) : (
-            <div className="grid gap-3 grid-cols-[repeat(auto-fill,minmax(min(100%,440px),1fr))]">
-              {photos.data?.photos.map((photo) => (
-                <EvidenceCard
-                  key={photo.id}
-                  photo={photo}
-                  shareable
-                  onClick={() => setOpenPhoto(photo.id)}
-                />
-              ))}
-            </div>
-          )}
-        </div>
-
-        <aside className="space-y-4">
-          <div className="rounded-[12px] border border-line bg-ink-2 p-4">
-            <p className="label flex items-center gap-1.5">
-              <MapPin className="size-3.5" /> {t("project.site")}
-            </p>
-            <p className="mono mt-2 text-[11px] leading-relaxed text-fog">
-              {project.data?.locationLabel ?? "—"}
-              <br />
-              {project.data?.address ?? t("project.noAddress")}
-              <br />
-              {project.data?.lat != null && project.data?.lng != null
-                ? `${project.data.lat.toFixed(5)}, ${project.data.lng.toFixed(5)}`
-                : t("project.noCoords")}
-            </p>
-            {/* Whoever to call about this job. A tel: link, so it dials from a phone and the
-                office can still copy it off a desktop. The dial string stops at the first
-                letter, so an "ext 4" stays visible but never gets dialled onto the end of
-                the number. */}
-            {project.data?.contactPhone && (
-              <a
-                href={`tel:${project.data.contactPhone.split(/[a-z]/i)[0].replace(/[^\d+]/g, "")}`}
-                className="mono mt-2 inline-flex items-center gap-1.5 text-[11px] text-fog transition-colors hover:text-amber"
-              >
-                <Phone className="size-3.5 shrink-0" /> {project.data.contactPhone}
-              </a>
-            )}
-            <EvidenceMap
-              pins={(photos.data?.photos ?? []) as unknown as EvidenceMapPin[]}
-              onSelect={setOpenPhoto}
-              zoomControl={false}
-              className="mt-3 h-[200px]"
-            />
-            {/* Route to the job site itself, not to a photo. Coordinates win when the site has
-                them; otherwise the typed address is good enough for Maps to resolve. No origin,
-                so Maps starts from wherever the person actually is. */}
-            {siteDestination && (
-              <div className="mt-3 flex justify-center">
-                <a
-                  href={`https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(siteDestination)}`}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="mono inline-flex items-center gap-2 rounded-[8px] bg-amber px-4 py-2 text-[10.5px] font-bold uppercase tracking-widest text-on-amber transition-colors hover:bg-amber-deep"
-                >
-                  <Navigation className="size-3.5" />
-                  {t("photo.directions")}
-                </a>
-              </div>
-            )}
-            {project.data?.firstPhotoAt && (
-              <p className="mono mt-3 border-t border-line pt-2 text-[10.5px] text-fog">
-                {t("project.first", { stamp: formatStamp(project.data.firstPhotoAt).slice(0, 16) })}
-                <br />
-                {t("projects.last", {
-                  stamp: formatStamp(project.data.lastPhotoAt ?? project.data.firstPhotoAt).slice(
-                    0,
-                    16,
-                  ),
-                })}
-              </p>
-            )}
-          </div>
-
-          <div className="rounded-[12px] border border-line bg-ink-2 p-4">
-            <p className="label flex items-center gap-1.5">
-              <Users className="size-3.5" /> {t("project.crewAccess")}
-            </p>
-            {/* Assigned crew only, one row each with its own remove — the popup is where
-                somebody gets added. */}
-            <div className="mt-3 space-y-px">
-              {team.isLoading || assignments.isLoading ? (
-                <div className="h-20 animate-pulse bg-ink-3" />
-              ) : assignedRows.length === 0 ? (
-                <p className="text-[11.5px] leading-snug text-fog">{t("assign.none")}</p>
-              ) : (
-                assignedRows.map((row) => (
-                  <div
-                    key={row.id}
-                    className="flex items-center gap-2 border-b border-line py-2 last:border-0"
-                  >
-                    {row.user?.image ? (
-                      <img
-                        src={row.user.image}
-                        alt=""
-                        className="size-7 shrink-0 rounded-[8px] border border-line object-cover"
-                      />
-                    ) : (
-                      <span className="mono grid size-7 shrink-0 place-items-center rounded-[8px] border border-line bg-ink text-[10px] text-amber">
-                        {(row.user?.name ?? row.user?.email ?? "?").slice(0, 2).toUpperCase()}
-                      </span>
-                    )}
-                    <span className="min-w-0 flex-1">
-                      <span className="block truncate text-[12.5px] text-chalk">
-                        {row.user?.name ?? row.user?.email}
-                      </span>
-                      <span className="mono block truncate text-[9.5px] uppercase tracking-widest text-fog">
-                        {row.role}
-                      </span>
-                    </span>
-                    {canManage && (
-                      <button
-                        type="button"
-                        aria-label={t("assign.remove")}
-                        disabled={assign.isPending}
-                        onClick={() =>
-                          assign.mutate({ projectId: id, userId: row.userId, assigned: false })
-                        }
-                        className="rounded-[8px] shrink-0 border border-line p-1.5 text-fog transition-colors hover:border-alert/50 hover:text-alert disabled:opacity-40"
-                      >
-                        <Trash2 className="size-3" />
-                      </button>
-                    )}
-                  </div>
-                ))
-              )}
-            </div>
-            {canManage && (
-              <button
-                type="button"
-                onClick={() => setAssignOpen(true)}
-                className="mono mt-3 flex w-full items-center justify-center gap-1.5 rounded-[8px] border border-line px-2.5 py-2 text-[10.5px] uppercase tracking-widest text-chalk transition-colors hover:border-amber hover:text-amber"
-              >
-                <UserPlus className="size-3.5" /> {t("assign.add")}
-              </button>
-            )}
-            <Link
-              to="/app/share"
-              className="mono mt-3 flex items-center gap-1.5 rounded-[8px] border border-line px-2.5 py-2 text-[10.5px] uppercase tracking-widest text-chalk hover:border-amber/60"
-            >
-              <Link2 className="size-3.5" /> {t("project.shareClient")}
-            </Link>
-          </div>
-        </aside>
-      </div>
 
       {assignOpen && canManage && (
         <AssignCrewDialog
