@@ -41,6 +41,7 @@ import {
 import { parseStops } from "../lib/parse-stops";
 import { RouteMap } from "../components/route-map";
 import { PhotoDrawer } from "../components/photo-drawer";
+import { RouteStartAddress } from "../components/route-start-address";
 import { StopAddress } from "../components/stop-address";
 import { StopNote } from "../components/stop-note";
 import { STATUS_LABEL, STATUS_STYLE } from "./app-routes";
@@ -327,22 +328,32 @@ export default function AppRoutePage() {
 
             {/* The start address, and whether it could be placed. It used to be stored and never
                 shown anywhere, which is how a depot nobody could see came to look ignored. */}
-            {route.startAddress && (
-              <p className="flex flex-wrap items-center gap-x-2 text-[13px] text-fog">
+            {(route.startAddress || canManage) && (
+              <p className="flex flex-wrap items-center gap-x-2 gap-y-1 text-[13px] text-fog">
                 <span className="mono text-[10.5px] uppercase tracking-widest">
                   {t("routes.fStartAddress")}
                 </span>
-                <span className="text-chalk">{route.startAddress}</span>
-                <span
-                  className={cn(
-                    "rounded-[6px] border px-1.5 py-0.5 text-[10px] font-semibold uppercase tracking-wide",
-                    typeof route.startLat === "number"
-                      ? "border-verified/40 bg-verified/10 text-verified"
-                      : "border-alert/40 bg-alert/10 text-alert",
-                  )}
-                >
-                  {t(typeof route.startLat === "number" ? "routes.pin.ok" : "routes.pin.failed")}
-                </span>
+                {/* Editable in place: the depot used to be askable once, in the create dialog,
+                    and unchangeable after - a typo in the line the whole drive is measured from
+                    meant rebuilding the run. */}
+                <RouteStartAddress
+                  routeId={route.id}
+                  address={route.startAddress}
+                  canEdit={canManage}
+                  onError={setError}
+                />
+                {route.startAddress && (
+                  <span
+                    className={cn(
+                      "rounded-[6px] border px-1.5 py-0.5 text-[10px] font-semibold uppercase tracking-wide",
+                      typeof route.startLat === "number"
+                        ? "border-verified/40 bg-verified/10 text-verified"
+                        : "border-alert/40 bg-alert/10 text-alert",
+                    )}
+                  >
+                    {t(typeof route.startLat === "number" ? "routes.pin.ok" : "routes.pin.failed")}
+                  </span>
+                )}
                 {route.returnToStart && <span>· {t("routes.fReturnToStart")}</span>}
               </p>
             )}

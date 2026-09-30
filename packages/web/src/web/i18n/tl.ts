@@ -910,6 +910,8 @@ export const tl: Catalog = {
   "routes.fDispatcher": "Dispatcher",
   "routes.fDispatcherHint": "Awtomatikong napupunan — ang taong gumawa ng rutang ito.",
   "routes.fStartAddress": "Address ng simula",
+  "routes.startAddressEdit": "I-edit ang address ng simula",
+  "routes.startAddressSet": "Magtakda ng address ng simula",
   "routes.fStartHint":
     "Kung saan naglo-load ang driver. Iwanang blangko para magsimula sa unang hinto.",
   "routes.fServiceMinutes": "Minuto kada hinto",

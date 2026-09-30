@@ -916,6 +916,8 @@ export const frCA: Catalog = {
   "routes.fDispatcher": "Dispatcher",
   "routes.fDispatcherHint": "Rempli automatiquement — la personne qui crée cette tournée.",
   "routes.fStartAddress": "Adresse de départ",
+  "routes.startAddressEdit": "Modifier l'adresse de départ",
+  "routes.startAddressSet": "Définir une adresse de départ",
   "routes.fStartHint": "Où le chauffeur charge. Laissez vide pour partir du premier arrêt.",
   "routes.fServiceMinutes": "Minutes par arrêt",
   "routes.fReturnToStart": "Retour au point de départ",

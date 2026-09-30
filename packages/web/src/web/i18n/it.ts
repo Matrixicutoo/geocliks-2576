@@ -906,6 +906,8 @@ export const it: Catalog = {
   "routes.fDispatcher": "Dispatcher",
   "routes.fDispatcherHint": "Compilato automaticamente: la persona che crea questo giro.",
   "routes.fStartAddress": "Indirizzo di partenza",
+  "routes.startAddressEdit": "Modifica l'indirizzo di partenza",
+  "routes.startAddressSet": "Imposta un indirizzo di partenza",
   "routes.fStartHint": "Dove carica l'autista. Lascia vuoto per partire dalla prima fermata.",
   "routes.fServiceMinutes": "Minuti per fermata",
   "routes.fReturnToStart": "Ritorno al punto di partenza",

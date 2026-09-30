@@ -896,6 +896,8 @@ export const vi: Catalog = {
   "routes.fDispatcher": "Dispatcher",
   "routes.fDispatcherHint": "Tự động điền — người tạo lộ trình này.",
   "routes.fStartAddress": "Địa chỉ xuất phát",
+  "routes.startAddressEdit": "Sửa địa chỉ xuất phát",
+  "routes.startAddressSet": "Đặt địa chỉ xuất phát",
   "routes.fStartHint": "Nơi tài xế lấy hàng. Để trống để bắt đầu từ điểm dừng đầu tiên.",
   "routes.fServiceMinutes": "Số phút mỗi điểm",
   "routes.fReturnToStart": "Quay về điểm xuất phát",

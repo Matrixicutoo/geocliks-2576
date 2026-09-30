@@ -874,6 +874,8 @@ export const ar: Catalog = {
   "routes.fDispatcher": "Dispatcher",
   "routes.fDispatcherHint": "يُملأ تلقائيًا — الشخص الذي أنشأ هذا المسار.",
   "routes.fStartAddress": "عنوان الانطلاق",
+  "routes.startAddressEdit": "تعديل عنوان الانطلاق",
+  "routes.startAddressSet": "تعيين عنوان الانطلاق",
   "routes.fStartHint": "مكان تحميل السائق. اتركه فارغا للبدء من المحطة الأولى.",
   "routes.fServiceMinutes": "دقائق لكل محطة",
   "routes.fReturnToStart": "العودة إلى نقطة البداية",

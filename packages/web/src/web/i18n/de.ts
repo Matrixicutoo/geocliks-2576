@@ -910,6 +910,8 @@ export const de: Catalog = {
   "routes.fDispatcher": "Dispatcher",
   "routes.fDispatcherHint": "Wird automatisch ausgefüllt — die Person, die diese Fahrt erstellt.",
   "routes.fStartAddress": "Startadresse",
+  "routes.startAddressEdit": "Startadresse bearbeiten",
+  "routes.startAddressSet": "Startadresse festlegen",
   "routes.fStartHint": "Wo der Fahrer lädt. Leer lassen, um am ersten Stopp zu beginnen.",
   "routes.fServiceMinutes": "Minuten pro Stopp",
   "routes.fReturnToStart": "Zurück zum Start",

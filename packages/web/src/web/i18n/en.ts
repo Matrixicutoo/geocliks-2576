@@ -912,6 +912,8 @@ export const en = {
   "routes.fDispatcher": "Dispatcher",
   "routes.fDispatcherHint": "Filled in automatically — the person creating this run.",
   "routes.fStartAddress": "Start address",
+  "routes.startAddressEdit": "Edit the start address",
+  "routes.startAddressSet": "Set a start address",
   "routes.fStartHint": "Where the driver loads up. Leave blank to start at the first stop.",
   "routes.fServiceMinutes": "Minutes per stop",
   "routes.fReturnToStart": "Return to start",

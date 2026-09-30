@@ -857,6 +857,8 @@ export const zh: Catalog = {
   "routes.fDispatcher": "Dispatcher",
   "routes.fDispatcherHint": "自动填写 — 创建此路线的人员。",
   "routes.fStartAddress": "出发地址",
+  "routes.startAddressEdit": "修改出发地址",
+  "routes.startAddressSet": "设置出发地址",
   "routes.fStartHint": "司机装货的地点。留空则从第一个站点出发。",
   "routes.fServiceMinutes": "每站分钟数",
   "routes.fReturnToStart": "返回起点",

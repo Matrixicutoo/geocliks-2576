@@ -904,6 +904,8 @@ export const ptBR: Catalog = {
   "routes.fDispatcher": "Dispatcher",
   "routes.fDispatcherHint": "Preenchido automaticamente — a pessoa que está criando esta rota.",
   "routes.fStartAddress": "Endereço de partida",
+  "routes.startAddressEdit": "Editar o endereço de partida",
+  "routes.startAddressSet": "Definir um endereço de partida",
   "routes.fStartHint": "Onde o motorista carrega. Deixe em branco para começar na primeira parada.",
   "routes.fServiceMinutes": "Minutos por parada",
   "routes.fReturnToStart": "Retornar ao início",

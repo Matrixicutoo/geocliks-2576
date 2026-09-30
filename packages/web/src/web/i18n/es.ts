@@ -908,6 +908,8 @@ export const es: Catalog = {
   "routes.fDispatcher": "Dispatcher",
   "routes.fDispatcherHint": "Se rellena automáticamente: la persona que crea esta ruta.",
   "routes.fStartAddress": "Dirección de inicio",
+  "routes.startAddressEdit": "Editar la dirección de inicio",
+  "routes.startAddressSet": "Definir una dirección de inicio",
   "routes.fStartHint": "Donde carga el conductor. Déjelo vacío para empezar en la primera parada.",
   "routes.fServiceMinutes": "Minutos por parada",
   "routes.fReturnToStart": "Volver al inicio",

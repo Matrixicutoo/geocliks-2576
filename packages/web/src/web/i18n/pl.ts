@@ -902,6 +902,8 @@ export const pl: Catalog = {
   "routes.fDispatcher": "Dispatcher",
   "routes.fDispatcherHint": "Wypełniane automatycznie — osoba tworząca tę trasę.",
   "routes.fStartAddress": "Adres startowy",
+  "routes.startAddressEdit": "Edytuj adres startowy",
+  "routes.startAddressSet": "Ustaw adres startowy",
   "routes.fStartHint": "Miejsce załadunku. Zostaw puste, aby zacząć od pierwszego przystanku.",
   "routes.fServiceMinutes": "Minuty na przystanek",
   "routes.fReturnToStart": "Powrót na start",
