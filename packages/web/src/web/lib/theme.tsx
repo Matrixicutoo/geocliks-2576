@@ -21,7 +21,7 @@ const apply = (theme: Theme) => {
   // ships the dark default; this follows every later switch.
   globalThis.document
     ?.querySelector('meta[name="theme-color"]')
-    ?.setAttribute("content", theme === "light" ? "#ffffff" : "#1a1c20");
+    ?.setAttribute("content", theme === "light" ? "#ffffff" : "#13151a");
 };
 
 type Ctx = {
