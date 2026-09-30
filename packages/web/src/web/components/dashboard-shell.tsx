@@ -146,7 +146,10 @@ export function DashboardShell({
         style={
           {
             "--c-ink-2": "#1c2d47",
-            "--c-ink": "#243858",
+            // Cards inside the menu — the identity card at the top and the settings card at
+            // the foot — sit in the header's navy, the darkest note in the column, so they
+            // read as inset into the lifted surface rather than floating above it.
+            "--c-ink": "var(--c-navy)",
             // Hover/inset fill. It has to be a clear step lighter than `ink` and not the card
             // colour again: the settings rows hover at `ink-3/60`, so matching the card
             // underneath them made the hover invisible. Same hue, lifted.
