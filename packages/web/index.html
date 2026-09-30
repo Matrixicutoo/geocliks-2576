@@ -6,7 +6,7 @@
 		<link rel="icon" href="/favicon.ico" sizes="any" />
 		<link rel="icon" type="image/png" sizes="192x192" href="/icon-192.png" />
 		<link rel="apple-touch-icon" href="/apple-touch-icon.png" />
-		<meta name="theme-color" content="#23262b" />
+		<meta name="theme-color" content="#1a1c20" />
 		<!-- Dark is the product default (see src/web/lib/theme.tsx), so <html> ships with
 		     data-theme="dark" and this runs before first paint to honour a member who already
 		     picked light on this device — otherwise the page would flash dark then correct. -->
@@ -17,7 +17,7 @@
 					document.documentElement.dataset.theme = t;
 					document
 						.querySelector('meta[name="theme-color"]')
-						.setAttribute("content", t === "light" ? "#ffffff" : "#23262b");
+						.setAttribute("content", t === "light" ? "#ffffff" : "#1a1c20");
 				}
 			} catch (e) {
 				// Private mode / storage blocked: the dark default stands.
