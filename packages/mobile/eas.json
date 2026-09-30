@@ -24,10 +24,11 @@
     "production": {
       "ios": {
         "ascAppId": "6815044346",
+        "ascApiKeyPath": "./keys/AuthKey.p8",
         "appleTeamId": "NUVT3F3322"
       },
       "android": {
-        "track": "internal"
+        "track": "alpha"
       }
     }
   },
