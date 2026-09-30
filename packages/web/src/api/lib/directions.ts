@@ -126,6 +126,124 @@ function directLine(from: LatLng, to: LatLng): Directions {
   };
 }
 
+type RoutesApiResponse = {
+  routes?: Array<{
+    duration?: string;
+    distanceMeters?: number;
+    polyline?: { encodedPolyline?: string };
+    legs?: Array<{
+      steps?: Array<{
+        distanceMeters?: number;
+        staticDuration?: string;
+        endLocation?: { latLng?: { latitude?: number; longitude?: number } };
+        navigationInstruction?: { maneuver?: string; instructions?: string };
+      }>;
+    }>;
+  }>;
+};
+
+/** Routes API durations arrive as a protobuf string like "834s". */
+function parseSeconds(value: string | undefined): number {
+  if (!value) return 0;
+  return Math.round(Number.parseFloat(value.replace(/s$/, "")) || 0);
+}
+
+/**
+ * Routes API maneuvers are SCREAMING_SNAKE ("TURN_LEFT"); the client's icon map and every
+ * existing stored leg speak Google's older kebab-case ("turn-left"). Translate at the edge so
+ * nothing downstream has to know which endpoint answered.
+ */
+function normaliseManeuver(maneuver: string | undefined): string | null {
+  if (!maneuver) return null;
+  return maneuver.toLowerCase().replace(/_/g, "-");
+}
+
+/**
+ * The current endpoint: Routes API `computeRoutes`.
+ *
+ * Google stopped enabling the legacy Directions API on new Cloud projects, which is how this
+ * silently became a straight-line app — every request came back REQUEST_DENIED and the
+ * fallback did its job too quietly to notice. Returns null on any failure so the caller can
+ * try the legacy endpoint before giving up on roads altogether.
+ */
+async function fetchViaRoutesApi(
+  from: LatLng,
+  to: LatLng,
+  key: string,
+): Promise<Directions | null> {
+  const fieldMask = [
+    "routes.duration",
+    "routes.distanceMeters",
+    "routes.polyline.encodedPolyline",
+    "routes.legs.steps.navigationInstruction",
+    "routes.legs.steps.endLocation",
+    "routes.legs.steps.distanceMeters",
+    "routes.legs.steps.staticDuration",
+  ].join(",");
+
+  const res = await fetch("https://routes.googleapis.com/directions/v2:computeRoutes", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      "X-Goog-Api-Key": key,
+      "X-Goog-FieldMask": fieldMask,
+    },
+    body: JSON.stringify({
+      origin: { location: { latLng: { latitude: from.lat, longitude: from.lng } } },
+      destination: { location: { latLng: { latitude: to.lat, longitude: to.lng } } },
+      travelMode: "DRIVE",
+      // TRAFFIC_AWARE is the cheap tier of live traffic: good ETAs without the per-request
+      // premium of TRAFFIC_AWARE_OPTIMAL, which a per-leg call does not need.
+      routingPreference: "TRAFFIC_AWARE",
+      // OVERVIEW smooths corners off the line, which on a phone screen reads as the route
+      // cutting through buildings. HIGH_QUALITY costs nothing extra and makes the drawn line
+      // actually sit on the road.
+      polylineQuality: "HIGH_QUALITY",
+      // Turn text has to be asked for by name here, unlike the legacy API.
+      computeAlternativeRoutes: false,
+      languageCode: "en-US",
+      units: "METRIC",
+    }),
+    signal: AbortSignal.timeout(12_000),
+  });
+
+  if (!res.ok) return null;
+
+  const parsed = (await res.json()) as RoutesApiResponse;
+  const route = parsed.routes?.[0];
+  if (!route) return null;
+
+  const encoded = route.polyline?.encodedPolyline;
+  const path = encoded ? decodePolyline(encoded) : [];
+  if (path.length < 2) return null;
+
+  const steps: DirectionStep[] = [];
+  for (const leg of route.legs ?? []) {
+    for (const step of leg.steps ?? []) {
+      const instruction = step.navigationInstruction?.instructions?.trim();
+      if (!instruction) continue;
+      steps.push({
+        instruction: stripHtml(instruction),
+        metres: Math.round(step.distanceMeters ?? 0),
+        seconds: parseSeconds(step.staticDuration),
+        at: {
+          lat: step.endLocation?.latLng?.latitude ?? to.lat,
+          lng: step.endLocation?.latLng?.longitude ?? to.lng,
+        },
+        maneuver: normaliseManeuver(step.navigationInstruction?.maneuver),
+      });
+    }
+  }
+
+  return {
+    path,
+    steps,
+    metres: Math.round(route.distanceMeters ?? 0),
+    seconds: parseSeconds(route.duration),
+    provider: "google",
+  };
+}
+
 type GoogleDirectionsResponse = {
   status?: string;
   routes?: Array<{
@@ -152,6 +270,14 @@ type GoogleDirectionsResponse = {
 export async function fetchDirections(from: LatLng, to: LatLng): Promise<Directions> {
   const key = apiKey();
   if (!key) return directLine(from, to);
+
+  // Routes API first: it is the only one Google enables on projects created these days.
+  try {
+    const viaRoutes = await fetchViaRoutesApi(from, to, key);
+    if (viaRoutes) return viaRoutes;
+  } catch {
+    // Fall through to the legacy endpoint below.
+  }
 
   try {
     const url = new URL("https://maps.googleapis.com/maps/api/directions/json");
