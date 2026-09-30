@@ -137,18 +137,23 @@ export function DashboardShell({
           through the tokens; `text-chalk` is repeated here so inherited text recomputes dark too. */}
       <aside
         data-theme="dark"
-        // Navy, matching the logo bar below — the menu reads as one continuous piece of brand
-        // chrome with the header rather than a second dark surface beside it. The surface
-        // tokens are remapped instead of the classes so every card, inset and hover inside
-        // `SidebarBody` follows along, in both themes and in the mobile drawer's copy.
+        // Lifted navy — the shade the settings rows used to light up to on hover, now the
+        // menu's resting surface. It still reads as one continuous piece of brand chrome with
+        // the navy header above it, a step out of it rather than beside it. The surface tokens
+        // are remapped instead of the classes so every card, inset and hover inside
+        // `SidebarBody` follows along, in both themes and in the mobile drawer's copy — each
+        // one a clear step lighter than the surface it sits on, or it disappears into it.
         style={
           {
-            "--c-ink-2": "var(--c-navy)",
-            "--c-ink": "var(--c-navy-soft)",
-            // Hover/inset fill. It has to be a clear step lighter than `ink` and not navy-soft
-            // again: the settings rows hover at `ink-3/60`, so matching the card underneath
-            // them made the hover invisible. Same hue, lifted.
-            "--c-ink-3": "#2a4166",
+            "--c-ink-2": "#1c2d47",
+            "--c-ink": "#243858",
+            // Hover/inset fill. It has to be a clear step lighter than `ink` and not the card
+            // colour again: the settings rows hover at `ink-3/60`, so matching the card
+            // underneath them made the hover invisible. Same hue, lifted.
+            "--c-ink-3": "#334c76",
+            // Dividers have to lift with the surfaces too — the field palette's line is darker
+            // than this navy and would read as a shadow between the rows.
+            "--c-line": "#2e4670",
           } as React.CSSProperties
         }
         className="sticky top-0 hidden h-screen w-[248px] shrink-0 flex-col overflow-y-auto border-r border-line bg-ink-2 text-chalk lg:flex"

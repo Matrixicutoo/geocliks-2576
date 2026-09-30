@@ -218,10 +218,10 @@
 
 /* Dark theme — the original field palette. */
 [data-theme="dark"] {
-  --c-ink: #0b0e13;
-  --c-ink-2: #11161e;
-  --c-ink-3: #1a212c;
-  --c-line: #242e3c;
+  --c-ink: #23262b;
+  --c-ink-2: #2b2f35;
+  --c-ink-3: #353a41;
+  --c-line: #424750;
   --c-fog: #9daaba;
   --c-steel: #9daaba;
   --c-chalk: #e8edf4;
@@ -233,10 +233,10 @@
   --c-sky: #48a9ff;
   --c-paper: #f7f8fa;
 
-  --c-grid: rgba(36, 46, 60, 0.55);
-  --c-grid-fine: rgba(36, 46, 60, 0.35);
+  --c-grid: rgba(66, 71, 80, 0.55);
+  --c-grid-fine: rgba(66, 71, 80, 0.35);
   --c-scan: rgba(255, 255, 255, 0.025);
-  --c-scrollbar-hover: #35435a;
+  --c-scrollbar-hover: #4e545e;
 
   --c-on-amber: #0b0e13;
 
