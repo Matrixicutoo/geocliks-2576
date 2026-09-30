@@ -310,10 +310,10 @@ export default function ProjectPage() {
       )}
       {project.data?.firstPhotoAt && (
         <p className="mono mt-2 text-[10.5px] text-fog">
-          {t("project.first", { stamp: formatStamp(project.data.firstPhotoAt).slice(0, 16) })}
+          {t("project.first", { stamp: formatStamp(project.data.firstPhotoAt).slice(0, 17) })}
           {" · "}
           {t("projects.last", {
-            stamp: formatStamp(project.data.lastPhotoAt ?? project.data.firstPhotoAt).slice(0, 16),
+            stamp: formatStamp(project.data.lastPhotoAt ?? project.data.firstPhotoAt).slice(0, 17),
           })}
         </p>
       )}

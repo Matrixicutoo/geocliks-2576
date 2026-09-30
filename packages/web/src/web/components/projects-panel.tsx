@@ -139,7 +139,7 @@ export function ProjectsPanel() {
                       {project.lastPhotoAt && (
                         <span>
                           {t("projects.last", {
-                            stamp: formatStamp(project.lastPhotoAt).slice(0, 16),
+                            stamp: formatStamp(project.lastPhotoAt).slice(0, 17),
                           })}
                         </span>
                       )}

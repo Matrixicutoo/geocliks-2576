@@ -1,8 +1,19 @@
-import { useCallback, useEffect, useMemo, useState } from "react";
-import { GitCompareArrows, Loader2, Plus, Trash2, X } from "lucide-react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import {
+  ChevronLeft,
+  ChevronRight,
+  GitCompareArrows,
+  Loader2,
+  MapPin,
+  Plus,
+  Search,
+  Trash2,
+  X,
+} from "lucide-react";
 import { DashboardShell } from "../components/dashboard-shell";
 import { EmptyState } from "../components/empty-state";
 import { PhotoDrawer } from "../components/photo-drawer";
+import { EvidenceMap, type MapPin as EvidenceMapPin } from "../components/evidence-map";
 import { formatCoords, formatStamp, VerifiedBadge } from "../components/evidence-card";
 import {
   useComparisons,
@@ -13,10 +24,7 @@ import {
 import { useProjects } from "../queries/projects";
 import { cn } from "../lib/utils";
 import { useInfiniteScroll } from "../lib/use-infinite-scroll";
-import { useT } from "../lib/i18n";
-
-/** Comparison pairs revealed per scroll batch. */
-const PAGE = 6;
+import { type TKey, useT } from "../lib/i18n";
 
 type PickerPhoto = {
   id: string;
@@ -302,18 +310,92 @@ export default function AppCompare() {
   const [openPhoto, setOpenPhoto] = useState<string | null>(null);
   const comparisons = useComparisons();
   const remove = useRemoveComparison();
-  /** Every pair is two full photos, so the page reveals a few at a time as you scroll. */
-  const [shown, setShown] = useState(PAGE);
-  const all = comparisons.data ?? [];
-  const visible = all.slice(0, shown);
-  const showMore = useCallback(() => setShown((n) => n + PAGE), []);
-  const sentinel = useInfiniteScroll({
-    hasMore: shown < all.length,
-    loading: comparisons.isLoading,
-    onLoadMore: showMore,
-  });
-  // Deleting a pair shrinks the list under what is already revealed; start the batches over.
-  useEffect(() => setShown(PAGE), [all.length]);
+  const [projectId, setProjectId] = useState("");
+  const [search, setSearch] = useState("");
+
+  // Memoised so an empty result is the same array every render, not a fresh `[]` that would
+  // re-run every memo below it.
+  const all = useMemo(() => comparisons.data ?? [], [comparisons.data]);
+
+  /** The picker only lists jobs that actually have a pair, so no choice ever leads nowhere. */
+  const projectOptions = useMemo(() => {
+    const seen = new Map<string, string>();
+    for (const row of all) {
+      if (row.projectId && row.projectName) seen.set(row.projectId, row.projectName);
+    }
+    return [...seen.entries()].sort((a, b) => a[1].localeCompare(b[1]));
+  }, [all]);
+
+  const rows = useMemo(() => {
+    const needle = search.trim().toLowerCase();
+    return all.filter((row) => {
+      if (projectId && row.projectId !== projectId) return false;
+      if (!needle) return true;
+      return `${row.title} ${row.projectName ?? ""}`.toLowerCase().includes(needle);
+    });
+  }, [all, projectId, search]);
+
+  /**
+   * Every photo in the pairs on screen, once each, for the map. A pin opens the same drawer a
+   * tile does, so the map is a way into the evidence rather than a picture of it.
+   */
+  const pins = useMemo(() => {
+    const byId = new Map<string, EvidenceMapPin>();
+    for (const row of rows) {
+      for (const photo of [row.before, row.after]) {
+        if (photo && !byId.has(photo.id)) byId.set(photo.id, photo as unknown as EvidenceMapPin);
+      }
+    }
+    return [...byId.values()];
+  }, [rows]);
+
+  /** The numbers follow the filters, so they always describe the pairs on screen. */
+  const stats = useMemo(() => {
+    const projects = new Set(rows.map((row) => row.projectId).filter(Boolean));
+    const latest = rows.reduce<number | null>((max, row) => {
+      const at = new Date(row.createdAt).getTime();
+      return max == null || at > max ? at : max;
+    }, null);
+    return {
+      pairs: rows.length,
+      projects: projects.size,
+      photos: pins.length,
+      latest: latest == null ? "—" : formatStamp(latest).slice(0, 17),
+    };
+  }, [rows, pins]);
+
+  /**
+   * The same sideways rail as the Teamspace photo strip: one row, chevrons over each end that
+   * hide when there is nothing further that way, since a mouse gives no hint the row scrolls.
+   */
+  const rail = useRef<HTMLDivElement | null>(null);
+  const [ends, setEnds] = useState({ start: false, end: false });
+  const measure = useCallback(() => {
+    const el = rail.current;
+    if (!el) return;
+    const slack = 8;
+    setEnds({
+      start: el.scrollLeft > slack,
+      end: el.scrollLeft + el.clientWidth < el.scrollWidth - slack,
+    });
+  }, []);
+  useEffect(() => {
+    const el = rail.current;
+    if (!el) return;
+    measure();
+    const observer = new ResizeObserver(measure);
+    observer.observe(el);
+    for (const child of Array.from(el.children)) observer.observe(child);
+    return () => observer.disconnect();
+  }, [measure, rows.length]);
+  const nudge = (direction: -1 | 1) => {
+    const el = rail.current;
+    if (!el) return;
+    el.scrollBy({ left: direction * Math.max(el.clientWidth * 0.8, 240), behavior: "smooth" });
+  };
+
+  const chevron =
+    "absolute top-1/2 grid size-9 -translate-y-1/2 place-items-center rounded-full border border-line bg-ink-2/95 text-steel shadow-lg transition-[background-color,border-color,color,opacity] hover:border-amber hover:bg-amber hover:text-on-amber";
 
   return (
     <DashboardShell
@@ -323,7 +405,7 @@ export default function AppCompare() {
         <button
           type="button"
           onClick={() => setOpen(true)}
- className="rounded-[8px] inline-flex items-center gap-2 bg-amber px-3.5 py-2 text-[13px] font-semibold text-ink"
+          className="rounded-[8px] inline-flex items-center gap-2 bg-amber px-3.5 py-2 text-[13px] font-semibold text-ink"
         >
           <Plus className="size-4" /> {t("compare.newPair")}
         </button>
@@ -331,9 +413,8 @@ export default function AppCompare() {
     >
       {comparisons.isLoading ? (
         <div className="space-y-4">
-          {Array.from({ length: 2 }).map((_, i) => (
-            <div key={i} className="h-64 animate-pulse rounded-[12px] border border-line bg-ink-2" />
-          ))}
+          <div className="h-72 animate-pulse rounded-[12px] border border-line bg-ink-2" />
+          <div className="h-80 animate-pulse rounded-[12px] border border-line bg-ink-2" />
         </div>
       ) : all.length === 0 ? (
         <EmptyState
@@ -344,48 +425,152 @@ export default function AppCompare() {
             <button
               type="button"
               onClick={() => setOpen(true)}
- className="rounded-[8px] bg-amber px-4 py-2 text-[13px] font-semibold text-ink"
+              className="rounded-[8px] bg-amber px-4 py-2 text-[13px] font-semibold text-ink"
             >
               {t("compare.createFirst")}
             </button>
           }
         />
       ) : (
-        <div className="grid gap-5 grid-cols-[repeat(auto-fill,minmax(min(100%,1000px),1fr))]">
-          {visible.map((row) => (
-            <article key={row.id} className="rounded-[12px] border border-line bg-ink-2">
-              <header className="flex flex-wrap items-center justify-between gap-2 border-b border-line px-4 py-3">
-                <div className="min-w-0">
-                  <p className="truncate font-display text-[15px] font-semibold text-chalk">
-                    {row.title}
-                  </p>
-                  <p className="mono text-[10px] uppercase tracking-widest text-fog">
-                    {row.projectName ?? t("compare.noProject")} ·{" "}
-                    {t("compare.created", { stamp: formatStamp(row.createdAt) })}
-                  </p>
-                </div>
-                <button
-                  type="button"
-                  onClick={() => remove.mutate({ id: row.id })}
-                  className="inline-flex items-center gap-1.5 rounded-[8px] border border-line px-2.5 py-1.5 text-[11px] text-fog transition-colors hover:border-alert/50 hover:text-alert"
+        <>
+          {/* The pairs, in one sideways slider across the top of the page. */}
+          <section className="rounded-[12px] border border-line bg-ink-2">
+            <header className="flex flex-wrap items-center gap-2 border-b border-line px-4 py-3">
+              <p className="font-display mr-1 text-[15px] font-semibold">
+                {t("compare.pairsCount", { n: rows.length })}
+              </p>
+              {projectOptions.length > 0 && (
+                <select
+                  aria-label={t("common.project")}
+                  value={projectId}
+                  onChange={(e) => setProjectId(e.target.value)}
+                  className="mono rounded-[8px] border border-line bg-ink px-2 py-1 text-[10px] uppercase tracking-widest text-chalk outline-none focus:border-amber"
                 >
-                  <Trash2 className="size-3.5" /> {t("compare.remove")}
-                </button>
-              </header>
-              <div className="grid gap-4 p-4 md:grid-cols-2">
-                <Slab side={t("tag.before")} photo={row.before} onOpen={setOpenPhoto} />
-                <Slab side={t("tag.after")} photo={row.after} onOpen={setOpenPhoto} />
-              </div>
-            </article>
-          ))}
-          {/* Scrolling near this reveals the next batch of pairs. */}
-          <div ref={sentinel} className="col-span-full h-px" />
-          {shown < all.length && (
-            <div className="mono col-span-full flex items-center justify-center gap-2 text-[11px] uppercase tracking-widest text-fog">
-              <Loader2 className="size-3.5 animate-spin" /> {t("common.loading")}
+                  <option value="">{t("common.allProjects")}</option>
+                  {projectOptions.map(([value, name]) => (
+                    <option key={value} value={value}>
+                      {name}
+                    </option>
+                  ))}
+                </select>
+              )}
+              <label className="ml-auto flex items-center gap-2 rounded-[12px] border border-line bg-ink px-2.5 py-1">
+                <Search className="size-3.5 text-fog" />
+                <input
+                  aria-label={t("compare.search")}
+                  value={search}
+                  onChange={(e) => setSearch(e.target.value)}
+                  placeholder={t("compare.search")}
+                  className="mono w-44 bg-transparent text-[11px] text-chalk outline-none placeholder:text-fog/60"
+                />
+              </label>
+            </header>
+
+            <div className="p-4">
+              {rows.length === 0 ? (
+                <p className="py-10 text-center text-[13px] text-fog">{t("compare.noMatch")}</p>
+              ) : (
+                <div className="relative">
+                  <div
+                    ref={rail}
+                    onScroll={measure}
+                    className="flex snap-x gap-4 overflow-x-auto pb-1"
+                  >
+                    {rows.map((row) => (
+                      <article
+                        key={row.id}
+                        className="w-[min(100%,560px)] shrink-0 snap-start rounded-[10px] border border-line bg-ink"
+                      >
+                        <header className="flex items-start justify-between gap-2 border-b border-line px-3 py-2.5">
+                          <div className="min-w-0">
+                            <p className="truncate font-display text-[14px] font-semibold text-chalk">
+                              {row.title}
+                            </p>
+                            <p className="mono truncate text-[9.5px] uppercase tracking-widest text-fog">
+                              {row.projectName ?? t("compare.noProject")} ·{" "}
+                              {t("compare.created", { stamp: formatStamp(row.createdAt) })}
+                            </p>
+                          </div>
+                          <button
+                            type="button"
+                            aria-label={t("compare.remove")}
+                            title={t("compare.remove")}
+                            disabled={remove.isPending}
+                            onClick={() => remove.mutate({ id: row.id })}
+                            className="shrink-0 rounded-[8px] border border-line p-1.5 text-fog transition-colors hover:border-alert/50 hover:text-alert disabled:opacity-40"
+                          >
+                            <Trash2 className="size-3.5" />
+                          </button>
+                        </header>
+                        <div className="grid grid-cols-2 gap-3 p-3">
+                          <Slab side={t("tag.before")} photo={row.before} onOpen={setOpenPhoto} />
+                          <Slab side={t("tag.after")} photo={row.after} onOpen={setOpenPhoto} />
+                        </div>
+                      </article>
+                    ))}
+                  </div>
+                  <button
+                    type="button"
+                    aria-label={t("compare.scrollBack")}
+                    onClick={() => nudge(-1)}
+                    className={cn(
+                      chevron,
+                      "left-1",
+                      ends.start ? "opacity-100" : "pointer-events-none opacity-0",
+                    )}
+                  >
+                    <ChevronLeft className="size-4" />
+                  </button>
+                  <button
+                    type="button"
+                    aria-label={t("compare.scrollOn")}
+                    onClick={() => nudge(1)}
+                    className={cn(
+                      chevron,
+                      "right-1",
+                      ends.end ? "opacity-100" : "pointer-events-none opacity-0",
+                    )}
+                  >
+                    <ChevronRight className="size-4" />
+                  </button>
+                </div>
+              )}
             </div>
-          )}
-        </div>
+          </section>
+
+          {/* Where every photo in those pairs was taken, at the width of the page. */}
+          <section className="mt-4 rounded-[12px] border border-line bg-ink-2">
+            <header className="border-b border-line px-4 py-3">
+              <p className="label flex items-center gap-1.5">
+                <MapPin className="size-3.5" /> {t("compare.mapTitle")}
+              </p>
+            </header>
+            <div className="p-4">
+              <EvidenceMap
+                pins={pins}
+                onSelect={setOpenPhoto}
+                className="h-[420px] lg:h-[520px]"
+              />
+            </div>
+          </section>
+
+          {/* The numbers close the page, for the pairs the filters leave on screen. */}
+          <div className="mt-4 grid gap-px overflow-hidden rounded-[12px] border border-line bg-line sm:grid-cols-2 lg:grid-cols-4">
+            {(
+              [
+                ["compare.statPairs", String(stats.pairs)],
+                ["compare.statProjects", String(stats.projects)],
+                ["compare.statPhotos", String(stats.photos)],
+                ["compare.statLatest", stats.latest],
+              ] as [TKey, string][]
+            ).map(([label, value]) => (
+              <div key={label} className="bg-ink-2 px-4 py-3">
+                <p className="label">{t(label)}</p>
+                <p className="mono mt-1 text-[15px] text-chalk">{value}</p>
+              </div>
+            ))}
+          </div>
+        </>
       )}
 
       {open && <NewComparisonDialog onClose={() => setOpen(false)} />}

@@ -420,7 +420,7 @@ export function EvidenceMap({
         />
       ) : null}
       <p className="mono pointer-events-none absolute bottom-2 left-3 z-10 bg-ink/80 px-1.5 py-1 text-[9.5px] uppercase tracking-widest text-fog">
-        {points.length} pins · last fix {formatStamp(latest.capturedAt ?? new Date()).slice(0, 16)}
+        {points.length} pins · last fix {formatStamp(latest.capturedAt ?? new Date()).slice(0, 17)}
       </p>
     </div>
   );
