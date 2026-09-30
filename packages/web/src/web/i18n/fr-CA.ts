@@ -982,6 +982,10 @@ export const frCA: Catalog = {
   "routes.mapNoKey":
     "La carte n'est pas encore configurée, les arrêts ne peuvent donc pas s'afficher ici.",
   "routes.mapUnlocated": "{n} arrêts pas encore sur la carte",
+  "routes.mapRoads": "Par les rues",
+  "routes.mapRoadsLoading": "Tracé du parcours en cours…",
+  "routes.mapRoadsDirect": "Aperçu à vol d'oiseau — parcours routier indisponible",
+  "routes.legFromPrevious": "Trajet depuis le point précédent",
   "routes.dragHint": "Glissez un arrêt pour réordonner, ou utilisez les flèches.",
   "routes.addTitle": "Ajouter des arrêts",
   "routes.addHint":

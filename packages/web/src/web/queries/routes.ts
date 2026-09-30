@@ -17,6 +17,28 @@ export function useRoute(id: string) {
   );
 }
 
+/**
+ * The run's road-following shape for the map.
+ *
+ * Kept out of `useRoute` deliberately: the route and its stops must render the instant the page
+ * opens, and this is a Google round trip over up to 300 waypoints. So the map draws its pins
+ * first and the street line arrives a moment later, rather than the whole page waiting on it.
+ *
+ * Long `staleTime` because it is billed per fetch and only changes when the stops do — and the
+ * stops changing invalidates the whole routes namespace anyway, which takes this with it.
+ */
+export function useRouteShape(routeId: string, enabled = true) {
+  return useQuery(
+    orpc.routes.shape.queryOptions({
+      input: { routeId },
+      enabled: Boolean(routeId) && enabled,
+      staleTime: 5 * 60_000,
+      gcTime: 30 * 60_000,
+      retry: false,
+    }),
+  );
+}
+
 function useRouteInvalidate() {
   const queryClient = useQueryClient();
   return () => {

@@ -960,6 +960,10 @@ export const vi: Catalog = {
   "routes.mapEmpty": "Chưa có điểm dừng nào trên bản đồ - hãy xử lý địa chỉ trước.",
   "routes.mapNoKey": "Bản đồ chưa được thiết lập nên không thể hiển thị điểm dừng ở đây.",
   "routes.mapUnlocated": "{n} điểm dừng chưa có trên bản đồ",
+  "routes.mapRoads": "Theo đường phố",
+  "routes.mapRoadsLoading": "Đang vẽ lộ trình theo đường phố…",
+  "routes.mapRoadsDirect": "Xem trước theo đường thẳng — không có lộ trình đường phố",
+  "routes.legFromPrevious": "Quãng đường từ điểm trước",
   "routes.dragHint": "Kéo một điểm dừng để sắp xếp lại, hoặc dùng các mũi tên.",
   "routes.addTitle": "Thêm điểm dừng",
   "routes.addHint":

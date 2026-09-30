@@ -973,6 +973,10 @@ export const it: Catalog = {
   "routes.mapNoKey":
     "La mappa non è ancora configurata, quindi le fermate non possono essere mostrate qui.",
   "routes.mapUnlocated": "{n} fermate non ancora sulla mappa",
+  "routes.mapRoads": "Lungo le strade",
+  "routes.mapRoadsLoading": "Tracciamento del percorso su strada…",
+  "routes.mapRoadsDirect": "Anteprima in linea d'aria — percorso su strada non disponibile",
+  "routes.legFromPrevious": "Tragitto dal punto precedente",
   "routes.dragHint": "Trascina una fermata per riordinare, o usa le frecce.",
   "routes.addTitle": "Aggiungi fermate",
   "routes.addHint":

@@ -272,6 +272,180 @@ async function fetchViaRoutesApi(
   };
 }
 
+/**
+ * The whole run's shape, for the dispatcher's map: every leg of the drive, along the streets.
+ *
+ * Separate from `fetchDirections` on purpose. That one answers "how do I get to the next drop
+ * from where I am standing" and carries turn text the driver hears read aloud. This one answers
+ * "what does this run actually look like" — no instructions, no traffic tier, just the line and
+ * a distance per leg, so a dispatcher can see that stops 4 and 5 are on opposite sides of a
+ * river before he sends a driver across it twice.
+ */
+export type RouteLeg = { metres: number; seconds: number };
+
+export type RouteShape = {
+  /** The drawn line, in driving order, origin first. */
+  path: LatLng[];
+  /** One per hop between consecutive waypoints — same order, so leg i ends at waypoint i+1. */
+  legs: RouteLeg[];
+  metres: number;
+  seconds: number;
+  provider: "google" | "direct";
+};
+
+/**
+ * Google takes at most 25 intermediates in one `computeRoutes` call, so a long run is asked
+ * for in chunks that overlap by one waypoint: the last stop of a chunk is the first of the
+ * next, which is what makes the stitched line continuous instead of jumping the gap.
+ */
+const MAX_INTERMEDIATES = 24;
+
+/** Straight hops, used whole when there is no key and per-chunk when a chunk fails. */
+function directShape(points: LatLng[]): RouteShape {
+  const legs: RouteLeg[] = [];
+  for (let i = 1; i < points.length; i++) {
+    const metres = Math.round(metresBetween(points[i - 1] as LatLng, points[i] as LatLng) * 1.35);
+    legs.push({ metres, seconds: Math.round(metres / (38_000 / 3600)) });
+  }
+  return {
+    path: points,
+    legs,
+    metres: legs.reduce((sum, l) => sum + l.metres, 0),
+    seconds: legs.reduce((sum, l) => sum + l.seconds, 0),
+    provider: "direct",
+  };
+}
+
+type ShapeApiResponse = {
+  routes?: Array<{
+    duration?: string;
+    distanceMeters?: number;
+    polyline?: { encodedPolyline?: string };
+    legs?: Array<{ distanceMeters?: number; duration?: string }>;
+  }>;
+};
+
+/** One chunk of the run: origin, up to 24 intermediates, destination. */
+async function fetchShapeChunk(
+  points: LatLng[],
+  key: string,
+): Promise<{ path: LatLng[]; legs: RouteLeg[] } | null> {
+  const origin = points[0] as LatLng;
+  const destination = points[points.length - 1] as LatLng;
+  const intermediates = points.slice(1, -1);
+
+  const res = await fetch("https://routes.googleapis.com/directions/v2:computeRoutes", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      "X-Goog-Api-Key": key,
+      // Only the line and the per-leg figures. No steps: the dispatcher is not being
+      // navigated, and turn text for 300 stops is a lot of response to throw away.
+      "X-Goog-FieldMask": [
+        "routes.duration",
+        "routes.distanceMeters",
+        "routes.polyline.encodedPolyline",
+        "routes.legs.distanceMeters",
+        "routes.legs.duration",
+      ].join(","),
+    },
+    body: JSON.stringify({
+      origin: { location: { latLng: { latitude: origin.lat, longitude: origin.lng } } },
+      destination: {
+        location: { latLng: { latitude: destination.lat, longitude: destination.lng } },
+      },
+      intermediates: intermediates.map((p) => ({
+        location: { latLng: { latitude: p.lat, longitude: p.lng } },
+      })),
+      travelMode: "DRIVE",
+      // Deliberately not TRAFFIC_AWARE. This is a plan being drawn, often for tomorrow, and
+      // the untimed tier is both cheaper and free of the 25-waypoint traffic restriction.
+      routingPreference: "TRAFFIC_UNAWARE",
+      polylineQuality: "HIGH_QUALITY",
+      // The office set this order, or the optimizer did. Reordering it here would silently
+      // draw a different run from the one the numbered pins show.
+      optimizeWaypointOrder: false,
+      computeAlternativeRoutes: false,
+      units: "METRIC",
+    }),
+    signal: AbortSignal.timeout(15_000),
+  });
+
+  if (!res.ok) return null;
+
+  const parsed = (await res.json()) as ShapeApiResponse;
+  const route = parsed.routes?.[0];
+  const encoded = route?.polyline?.encodedPolyline;
+  const path = encoded ? decodePolyline(encoded) : [];
+  if (path.length < 2) return null;
+
+  const legs: RouteLeg[] = (route?.legs ?? []).map((leg) => ({
+    metres: Math.round(leg.distanceMeters ?? 0),
+    seconds: parseSeconds(leg.duration),
+  }));
+  // A leg count that does not match the hops asked for would misalign every per-stop figure.
+  if (legs.length !== points.length - 1) return null;
+
+  return { path, legs };
+}
+
+/**
+ * The run's road-following shape. Never throws: any failure degrades to straight hops, so the
+ * map always draws something and the dispatcher is never left looking at an empty pane.
+ *
+ * `points` is the driving order already decided — depot first when there is one, the drops in
+ * `seq`, and the depot again on a return run.
+ */
+export async function fetchRouteShape(points: LatLng[]): Promise<RouteShape> {
+  if (points.length < 2) {
+    return { path: points, legs: [], metres: 0, seconds: 0, provider: "direct" };
+  }
+
+  const key = apiKey();
+  if (!key) return directShape(points);
+
+  const path: LatLng[] = [];
+  const legs: RouteLeg[] = [];
+  let anyGoogle = false;
+  let allGoogle = true;
+
+  for (let start = 0; start < points.length - 1; start += MAX_INTERMEDIATES + 1) {
+    // +2 for the chunk's own origin and destination; the next chunk re-uses the destination.
+    const chunk = points.slice(start, start + MAX_INTERMEDIATES + 2);
+    if (chunk.length < 2) break;
+
+    let piece: { path: LatLng[]; legs: RouteLeg[] } | null = null;
+    try {
+      piece = await fetchShapeChunk(chunk, key);
+    } catch {
+      piece = null;
+    }
+
+    if (piece) {
+      anyGoogle = true;
+    } else {
+      allGoogle = false;
+      const fallback = directShape(chunk);
+      piece = { path: fallback.path, legs: fallback.legs };
+    }
+
+    // Drop the joining point so the stitched line has no duplicated vertex.
+    path.push(...(path.length > 0 ? piece.path.slice(1) : piece.path));
+    legs.push(...piece.legs);
+  }
+
+  return {
+    path,
+    legs,
+    metres: legs.reduce((sum, l) => sum + l.metres, 0),
+    seconds: legs.reduce((sum, l) => sum + l.seconds, 0),
+    // Only "google" when every chunk came back routed. One failed chunk leaves part of the
+    // line a straight guess, and the map should say so rather than imply the whole run was
+    // driven down real streets.
+    provider: anyGoogle && allGoogle ? "google" : "direct",
+  };
+}
+
 type GoogleDirectionsResponse = {
   status?: string;
   routes?: Array<{

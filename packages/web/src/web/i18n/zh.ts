@@ -917,6 +917,10 @@ export const zh: Catalog = {
   "routes.mapEmpty": "地图上还没有停靠点 - 请先解析地址。",
   "routes.mapNoKey": "地图尚未配置，因此无法在此显示停靠点。",
   "routes.mapUnlocated": "{n} 个停靠点尚未显示在地图上",
+  "routes.mapRoads": "沿街道行驶",
+  "routes.mapRoadsLoading": "正在绘制街道路线…",
+  "routes.mapRoadsDirect": "直线预览 — 无法获取街道路线",
+  "routes.legFromPrevious": "从上一个点的行驶路程",
   "routes.dragHint": "拖动停靠点即可重新排序，或使用箭头。",
   "routes.addTitle": "添加站点",
   "routes.addHint":

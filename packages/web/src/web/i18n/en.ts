@@ -976,6 +976,10 @@ export const en = {
   "routes.mapEmpty": "No stops on the map yet - resolve the addresses first.",
   "routes.mapNoKey": "The map is not set up yet, so stops cannot be shown here.",
   "routes.mapUnlocated": "{n} stops not on the map yet",
+  "routes.mapRoads": "Along streets",
+  "routes.mapRoadsLoading": "Drawing the street route…",
+  "routes.mapRoadsDirect": "Straight-line preview — street route unavailable",
+  "routes.legFromPrevious": "Drive from the previous point",
   "routes.dragHint": "Drag a stop to reorder, or use the arrows.",
   "routes.addTitle": "Add stops",
   "routes.addHint":

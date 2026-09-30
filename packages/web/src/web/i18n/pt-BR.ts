@@ -970,6 +970,10 @@ export const ptBR: Catalog = {
   "routes.mapNoKey":
     "O mapa ainda não está configurado, então as paradas não podem ser exibidas aqui.",
   "routes.mapUnlocated": "{n} paradas ainda não estão no mapa",
+  "routes.mapRoads": "Pelas ruas",
+  "routes.mapRoadsLoading": "Traçando a rota pelas ruas…",
+  "routes.mapRoadsDirect": "Prévia em linha reta — rota pelas ruas indisponível",
+  "routes.legFromPrevious": "Percurso desde o ponto anterior",
   "routes.dragHint": "Arraste uma parada para reordenar, ou use as setas.",
   "routes.addTitle": "Adicionar paradas",
   "routes.addHint":

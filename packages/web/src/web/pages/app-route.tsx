@@ -26,6 +26,7 @@ import {
   useRemoveStop,
   useReorderStops,
   useRoute,
+  useRouteShape,
   useUpdateStop,
 } from "../queries/routes";
 import { cn } from "../lib/utils";
@@ -174,6 +175,20 @@ export default function AppRoutePage() {
 
   const route = detail.data?.route;
   const stops = detail.data?.stops ?? [];
+  /**
+   * The run drawn along the streets, asked for only once there is something to draw. Loaded
+   * separately from the route itself so the page never waits on a Google round trip.
+   */
+  const shape = useRouteShape(routeId, stops.length > 0);
+  const roadPath = shape.data?.path ?? null;
+  /** Drive from the previous point, per stop — the figure that makes an order worth changing. */
+  const legByStop = useMemo(() => {
+    const map = new Map<string, { metres: number; seconds: number }>();
+    for (const leg of shape.data?.arrivals ?? []) {
+      map.set(leg.stopId, { metres: leg.metres, seconds: leg.seconds });
+    }
+    return map;
+  }, [shape.data]);
   const unresolved = stops.filter(
     (s) => s.geocodeStatus === "pending" || s.geocodeStatus === "failed",
   );
@@ -291,6 +306,19 @@ export default function AppRoutePage() {
                     {t("routes.mapUnlocated", { n: unlocated })}
                   </span>
                 )}
+                {/* What the line on the map actually is. The straight-hop version understates
+                    a run badly, so it is labelled rather than left to look like the drive. */}
+                {shape.isFetching && !roadPath ? (
+                  <span className="text-[12px] text-fog">{t("routes.mapRoadsLoading")}</span>
+                ) : shape.data && shape.data.provider === "google" ? (
+                  <span className="text-[12px] text-fog">
+                    {t("routes.mapRoads")} ·{" "}
+                    {Math.round(shape.data.metres / 100) / 10} km ·{" "}
+                    {planClock(shape.data.seconds)}
+                  </span>
+                ) : shape.data ? (
+                  <span className="text-[12px] text-fog">{t("routes.mapRoadsDirect")}</span>
+                ) : null}
               </div>
               <RouteMap
                 stops={stops}
@@ -298,6 +326,7 @@ export default function AppRoutePage() {
                 returnToStart={route.returnToStart}
                 startLabel={t("routes.fStartAddress")}
                 returnLabel={t("routes.fReturnToStart")}
+                roadPath={roadPath}
                 // Roughly double the old 320px, and taller again on a desktop: the map is where
                 // the dispatcher reads the run, so it gets the screen rather than a strip of it.
                 className="mt-3 h-[420px] sm:h-[600px] lg:h-[720px]"
@@ -587,6 +616,23 @@ export default function AppRoutePage() {
                     <span className="grid size-7 shrink-0 place-items-center rounded-[6px] bg-ink-3 text-[12px] font-bold text-chalk">
                       {index + 1}
                     </span>
+
+                    {/* The drive to get here from the point before it, along the streets.
+                        The number the order is worth changing over: a 40-minute hop sitting
+                        between two neighbouring drops is the thing to find, and it was only
+                        findable by squinting at the line. */}
+                    {(() => {
+                      const leg = legByStop.get(stop.id);
+                      if (!leg) return null;
+                      return (
+                        <span
+                          className="mono shrink-0 text-[11px] text-fog"
+                          title={t("routes.legFromPrevious")}
+                        >
+                          {Math.round(leg.metres / 100) / 10} km · {planClock(leg.seconds)}
+                        </span>
+                      );
+                    })()}
 
                     {/* The proof, where the question gets asked. A delivered address with no
                         thumbnail beside it is the one thing the office needs to notice. */}

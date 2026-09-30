@@ -977,6 +977,10 @@ export const de: Catalog = {
   "routes.mapNoKey":
     "Die Karte ist noch nicht eingerichtet, daher können hier keine Stopps angezeigt werden.",
   "routes.mapUnlocated": "{n} Stopps noch nicht auf der Karte",
+  "routes.mapRoads": "Entlang der Straßen",
+  "routes.mapRoadsLoading": "Straßenroute wird gezeichnet…",
+  "routes.mapRoadsDirect": "Luftlinien-Vorschau – Straßenroute nicht verfügbar",
+  "routes.legFromPrevious": "Fahrt vom vorherigen Punkt",
   "routes.dragHint": "Ziehen Sie einen Stopp zum Umsortieren oder nutzen Sie die Pfeile.",
   "routes.addTitle": "Stopps hinzufügen",
   "routes.addHint":

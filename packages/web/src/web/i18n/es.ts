@@ -974,6 +974,10 @@ export const es: Catalog = {
   "routes.mapNoKey":
     "El mapa aún no está configurado, así que no se pueden mostrar las paradas aquí.",
   "routes.mapUnlocated": "{n} paradas todavía no están en el mapa",
+  "routes.mapRoads": "Por calles",
+  "routes.mapRoadsLoading": "Trazando la ruta por calles…",
+  "routes.mapRoadsDirect": "Vista en línea recta: ruta por calles no disponible",
+  "routes.legFromPrevious": "Recorrido desde el punto anterior",
   "routes.dragHint": "Arrastra una parada para reordenar, o usa las flechas.",
   "routes.addTitle": "Agregar paradas",
   "routes.addHint":

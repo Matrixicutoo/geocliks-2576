@@ -3,7 +3,13 @@ import { and, asc, count, desc, eq, gte, inArray, sql } from "drizzle-orm";
 import { z } from "zod";
 import { db } from "../database";
 import * as schema from "../database/schema";
-import { directionsAvailable, fetchDirections } from "../lib/directions";
+import {
+  directionsAvailable,
+  fetchDirections,
+  fetchRouteShape,
+  type LatLng,
+  type RouteShape,
+} from "../lib/directions";
 import { geocodeAll, geocodingAvailable } from "../lib/geocode";
 import { id, shareToken } from "../lib/ids";
 import { LOCALE_CODES } from "../lib/locales";
@@ -461,6 +467,44 @@ function assertRouteAccess(
   if (route.driverId !== context.user.id) {
     throw new ORPCError("FORBIDDEN", { message: "Not your route" });
   }
+}
+
+/**
+ * Road shapes already fetched, kept in memory for a while.
+ *
+ * The dispatcher's map asks for this on every open, and Google bills per call. The key is the
+ * waypoints themselves, so a reorder, a corrected address or a moved depot misses the cache and
+ * a pan, a zoom or a second look at the same run hits it. Bounded and swept on write, because a
+ * process that never forgets a 300-stop polyline eventually forgets nothing else.
+ */
+const SHAPE_TTL_MS = 30 * 60 * 1000;
+const SHAPE_CACHE_MAX = 200;
+const shapeCache = new Map<string, { at: number; value: RouteShape }>();
+
+function shapeKey(routeId: string, points: LatLng[]): string {
+  // Five decimals is roughly a metre — finer than any geocoder moves a pin.
+  return `${routeId}|${points.map((p) => `${p.lat.toFixed(5)},${p.lng.toFixed(5)}`).join(";")}`;
+}
+
+async function cachedRouteShape(routeId: string, points: LatLng[]): Promise<RouteShape> {
+  const key = shapeKey(routeId, points);
+  const hit = shapeCache.get(key);
+  if (hit && Date.now() - hit.at < SHAPE_TTL_MS) return hit.value;
+
+  const value = await fetchRouteShape(points);
+
+  for (const [k, entry] of shapeCache) {
+    if (Date.now() - entry.at >= SHAPE_TTL_MS) shapeCache.delete(k);
+  }
+  if (shapeCache.size >= SHAPE_CACHE_MAX) {
+    const oldest = shapeCache.keys().next().value;
+    if (oldest) shapeCache.delete(oldest);
+  }
+  // A straight-line answer is a failure, not a result: caching it would keep the map wrong for
+  // half an hour after the key or the network came back.
+  if (value.provider === "google") shapeCache.set(key, { at: Date.now(), value });
+
+  return value;
 }
 
 export const routes = {
@@ -966,6 +1010,78 @@ export const routes = {
           lng: stop.lng as number,
           address: stop.address ?? stop.addressRaw,
         },
+        available: directionsAvailable(),
+      };
+    }),
+
+  /**
+   * The whole run drawn along the streets, for the dispatcher's map.
+   *
+   * The map used to join the pins with straight lines, which reads as a shorter, tidier run than
+   * the one the driver actually drives — two drops either side of a highway with no crossing look
+   * adjacent. With the real geometry, the order can be judged from the picture: a leg that
+   * doubles back is visible as a doubling back.
+   *
+   * Read-only and access-checked like `get`, so a driver may pull the shape of his own run too.
+   * Cached per waypoint set, because this is billed per call and a dispatcher pans a lot.
+   */
+  shape: orgProc
+    .input(z.object({ routeId: z.string() }))
+    .handler(async ({ input, context }) => {
+      const route = await loadRoute(context.org.id, input.routeId);
+      assertRouteAccess(route, context);
+
+      const stops = (await loadStops(route.id)).filter(hasPin);
+      const anchor: LatLng | null =
+        typeof route.startLat === "number" && typeof route.startLng === "number"
+          ? { lat: route.startLat, lng: route.startLng }
+          : null;
+
+      // The same order the numbered pins show: out of the yard, round the drops, and back to
+      // the yard on a return run.
+      const points: LatLng[] = stops.map((s) => ({ lat: s.lat as number, lng: s.lng as number }));
+      if (anchor) {
+        points.unshift(anchor);
+        if (route.returnToStart) points.push(anchor);
+      }
+
+      if (points.length < 2) {
+        return {
+          path: [],
+          legs: [],
+          arrivals: [] as Array<{ stopId: string; metres: number; seconds: number }>,
+          metres: 0,
+          seconds: 0,
+          provider: "direct" as const,
+          startsAtDepot: anchor !== null,
+          available: directionsAvailable(),
+        };
+      }
+
+      const shape = await cachedRouteShape(route.id, points);
+
+      /**
+       * Each leg tied to the stop it arrives at, by id rather than by position.
+       *
+       * The shape only contains stops that have a pin, while the office's list shows every stop
+       * including the unresolved ones — so an index into `legs` means nothing on the page. One
+       * unlocated address in the middle would otherwise shift every drive time down a row.
+       */
+      const arrivals: Array<{ stopId: string; metres: number; seconds: number }> = [];
+      const offset = anchor ? 0 : 1;
+      stops.forEach((stop, i) => {
+        const leg = shape.legs[i - offset];
+        if (leg) arrivals.push({ stopId: stop.id, metres: leg.metres, seconds: leg.seconds });
+      });
+
+      return {
+        ...shape,
+        arrivals,
+        /**
+         * Whether leg 0 is the depot run-out. Without this the client cannot tell which stop a
+         * leg belongs to — with a depot, leg i arrives at stop i; without one, at stop i+1.
+         */
+        startsAtDepot: anchor !== null,
         available: directionsAvailable(),
       };
     }),

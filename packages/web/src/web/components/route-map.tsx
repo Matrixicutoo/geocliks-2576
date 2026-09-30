@@ -82,15 +82,24 @@ const START_ICON: google.maps.Symbol = {
  *
  * Solid rather than the evidence map's dotted line: that one is a trail of where someone has
  * already been, this one is an instruction about where to go next.
+ *
+ * Given `roadPath`, that is what gets drawn: the run as the driver will actually drive it,
+ * along the streets, the same geometry the nav screen puts in front of him. Straight hops
+ * between pins were quietly misleading — two drops either side of an uncrossable highway
+ * looked adjacent, and a dispatcher ordering by what he saw sent the van round twice. Until
+ * the shape arrives (or if it cannot be fetched) the straight line is still drawn, thinner and
+ * dashed, so the map is never empty and never passes a guess off as a route.
  */
 function PlanLine({
   stops,
   start,
   returnToStart,
+  roadPath,
 }: {
   stops: PlanStop[];
   start: StartPin | null;
   returnToStart: boolean;
+  roadPath?: google.maps.LatLngLiteral[] | null;
 }) {
   const map = useMap();
   const maps = useMapsLibrary("maps");
@@ -101,7 +110,7 @@ function PlanLine({
    * back to the yard when the run is booked to return there. Before this the line began at the
    * first drop, which is what made a set start address look like it had been ignored.
    */
-  const path = useMemo(() => {
+  const straight = useMemo(() => {
     const points: google.maps.LatLngLiteral[] = stops.map((s) => ({ lat: s.lat, lng: s.lng }));
     if (start) {
       points.unshift({ lat: start.lat, lng: start.lng });
@@ -109,6 +118,9 @@ function PlanLine({
     }
     return points;
   }, [stops, start, returnToStart]);
+
+  const onRoads = Boolean(roadPath && roadPath.length >= 2);
+  const path = onRoads ? (roadPath as google.maps.LatLngLiteral[]) : straight;
 
   useEffect(() => {
     drawn.current?.setMap(null);
@@ -119,16 +131,27 @@ function PlanLine({
       map,
       path,
       strokeColor: "#E08A00",
-      strokeOpacity: 0.85,
-      strokeWeight: 3,
-      geodesic: true,
+      // The road line is the real thing, so it is drawn solid and heavier. The placeholder
+      // reads as provisional: thin, semi-transparent, and dashed via a symbol stroke.
+      strokeOpacity: onRoads ? 0.9 : 0,
+      strokeWeight: onRoads ? 4 : 2,
+      geodesic: !onRoads,
+      icons: onRoads
+        ? undefined
+        : [
+            {
+              icon: { path: "M 0,-1 0,1", strokeOpacity: 0.7, strokeWeight: 2, scale: 2 },
+              offset: "0",
+              repeat: "12px",
+            },
+          ],
     });
 
     return () => {
       drawn.current?.setMap(null);
       drawn.current = null;
     };
-  }, [map, maps, path]);
+  }, [map, maps, path, onRoads]);
 
   return null;
 }
@@ -159,6 +182,7 @@ export function RouteMap({
   emptyMessage,
   noKeyMessage,
   onSelect,
+  roadPath,
 }: {
   stops: RouteStopPin[];
   /** The run's start point, when it has one that could be placed on the map. */
@@ -171,6 +195,11 @@ export function RouteMap({
   emptyMessage: string;
   noKeyMessage: string;
   onSelect?: (id: string) => void;
+  /**
+   * The run along the streets, from `routes.shape`. Omitted or still loading, the map falls
+   * back to a dashed straight-hop line.
+   */
+  roadPath?: { lat: number; lng: number }[] | null;
 }) {
   /**
    * Numbered in the order they appear on the map, not by database `seq`: an unlocated stop in the
@@ -235,7 +264,12 @@ export function RouteMap({
           streetViewControl
           className="size-full"
         >
-          <PlanLine stops={points} start={anchor} returnToStart={returnToStart} />
+          <PlanLine
+            stops={points}
+            start={anchor}
+            returnToStart={returnToStart}
+            roadPath={roadPath ?? null}
+          />
           <FitBounds pins={bounds} />
           {anchor && (
             <Marker

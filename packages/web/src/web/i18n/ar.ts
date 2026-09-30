@@ -937,6 +937,10 @@ export const ar: Catalog = {
   "routes.mapEmpty": "لا توجد محطات على الخريطة بعد - حدد العناوين أولاً.",
   "routes.mapNoKey": "لم يتم إعداد الخريطة بعد، لذا لا يمكن عرض المحطات هنا.",
   "routes.mapUnlocated": "{n} محطات ليست على الخريطة بعد",
+  "routes.mapRoads": "عبر الشوارع",
+  "routes.mapRoadsLoading": "جارٍ رسم مسار الشوارع…",
+  "routes.mapRoadsDirect": "معاينة بخط مستقيم — مسار الشوارع غير متاح",
+  "routes.legFromPrevious": "المسافة من النقطة السابقة",
   "routes.dragHint": "اسحب محطة لإعادة الترتيب، أو استخدم الأسهم.",
   "routes.addTitle": "إضافة محطات",
   "routes.addHint":

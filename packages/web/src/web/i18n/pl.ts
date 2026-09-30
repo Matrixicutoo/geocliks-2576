@@ -967,6 +967,10 @@ export const pl: Catalog = {
   "routes.mapEmpty": "Brak przystanków na mapie - najpierw rozwiąż adresy.",
   "routes.mapNoKey": "Mapa nie jest jeszcze skonfigurowana, więc nie można tu pokazać przystanków.",
   "routes.mapUnlocated": "{n} przystanków jeszcze nie na mapie",
+  "routes.mapRoads": "Ulicami",
+  "routes.mapRoadsLoading": "Rysowanie trasy ulicami…",
+  "routes.mapRoadsDirect": "Podgląd w linii prostej — trasa ulicami niedostępna",
+  "routes.legFromPrevious": "Przejazd od poprzedniego punktu",
   "routes.dragHint": "Przeciągnij przystanek, aby zmienić kolejność, lub użyj strzałek.",
   "routes.addTitle": "Dodaj przystanki",
   "routes.addHint":

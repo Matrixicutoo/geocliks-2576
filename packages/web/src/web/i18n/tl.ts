@@ -976,6 +976,10 @@ export const tl: Catalog = {
   "routes.mapEmpty": "Wala pang hinto sa mapa - i-resolve muna ang mga address.",
   "routes.mapNoKey": "Hindi pa nakaset up ang mapa, kaya hindi maipapakita ang mga hinto dito.",
   "routes.mapUnlocated": "{n} hinto ang wala pa sa mapa",
+  "routes.mapRoads": "Sa mga kalsada",
+  "routes.mapRoadsLoading": "Ginagawa ang ruta sa kalsada…",
+  "routes.mapRoadsDirect": "Straight-line preview — walang ruta sa kalsada",
+  "routes.legFromPrevious": "Biyahe mula sa nakaraang punto",
   "routes.dragHint": "I-drag ang hinto para baguhin ang order, o gamitin ang mga arrow.",
   "routes.addTitle": "Magdagdag ng hinto",
   "routes.addHint":
