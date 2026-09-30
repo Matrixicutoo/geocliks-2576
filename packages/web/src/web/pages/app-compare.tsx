@@ -30,10 +30,6 @@ import { cn } from "../lib/utils";
 import { useInfiniteScroll } from "../lib/use-infinite-scroll";
 import { type TKey, useT } from "../lib/i18n";
 
-/** The same outlined action button as the project page's top row. */
-const ACTION =
-  "mono inline-flex items-center gap-1.5 rounded-[8px] border border-line bg-ink-2 px-3 py-2 text-[10.5px] uppercase tracking-widest text-chalk transition-colors hover:border-amber hover:text-amber disabled:pointer-events-none disabled:opacity-50";
-
 type PickerPhoto = {
   id: string;
   url: string;
@@ -322,8 +318,6 @@ export default function AppCompare() {
   const [search, setSearch] = useState("");
   const [reportFor, setReportFor] = useState<string | null>(null);
   const [shareProject, setShareProject] = useState<string | null>(null);
-  // Opened from a pair card, the popup is locked to that pair's job; from the top, it can switch.
-  const [shareLocked, setShareLocked] = useState(false);
 
   // Memoised so an empty result is the same array every render, not a fresh `[]` that would
   // re-run every memo below it.
@@ -447,26 +441,6 @@ export default function AppCompare() {
         />
       ) : (
         <>
-          {/* The page's working actions sit first, as on a project page. A client link is for one
-              job, so it opens on the job the filter is set to, or the first one with pairs. */}
-          <div className="mb-4 flex flex-wrap items-center gap-2">
-            <button
-              type="button"
-              disabled={projectOptions.length === 0}
-              title={projectOptions.length === 0 ? t("compare.shareNoProject") : undefined}
-              onClick={() => {
-                setShareLocked(false);
-                setShareProject(projectId || projectOptions[0]?.[0] || null);
-              }}
-              className={ACTION}
-            >
-              <Link2 className="size-3.5" /> {t("project.shareClient")}
-            </button>
-            {projectOptions.length === 0 && (
-              <p className="text-[12px] text-fog">{t("compare.shareNoProject")}</p>
-            )}
-          </div>
-
           {/* The pairs, in one sideways slider across the top of the page. */}
           <section className="rounded-[12px] border border-line bg-ink-2">
             <header className="flex flex-wrap items-center gap-2 border-b border-line px-4 py-3">
@@ -539,11 +513,7 @@ export default function AppCompare() {
                             aria-label={t("project.shareClient")}
                             title={row.projectId ? t("project.shareClient") : t("compare.shareNoProject")}
                             disabled={!row.projectId}
-                            onClick={() => {
-                              if (!row.projectId) return;
-                              setShareLocked(true);
-                              setShareProject(row.projectId);
-                            }}
+                            onClick={() => row.projectId && setShareProject(row.projectId)}
                             className="mono inline-flex items-center gap-1.5 rounded-[8px] border border-line px-2 py-1.5 text-[10px] uppercase tracking-widest text-chalk transition-colors hover:border-amber hover:text-amber disabled:pointer-events-none disabled:opacity-40"
                           >
                             <Link2 className="size-3.5" /> {t("compare.share")}
@@ -649,8 +619,6 @@ export default function AppCompare() {
         <ShareProjectDialog
           projectId={shareProject}
           projectName={projectOptions.find(([value]) => value === shareProject)?.[1] ?? null}
-          projectOptions={shareLocked ? undefined : projectOptions}
-          onProjectChange={shareLocked ? undefined : setShareProject}
           onClose={() => setShareProject(null)}
         />
       )}
