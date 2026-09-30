@@ -96,7 +96,12 @@ export const reports = {
       }
 
       let ordered = rows;
-      if (input.layout === "before_after") {
+      if (input.photoIds?.length) {
+        // An explicit pick is already in the order it should read — a saved before/after pair
+        // sends [before, after] — so it is kept as sent rather than re-sorted or re-paired by tag.
+        const rank = new Map(input.photoIds.map((photoId, index) => [photoId, index]));
+        ordered = [...rows].sort((a, b) => (rank.get(a.id) ?? 0) - (rank.get(b.id) ?? 0));
+      } else if (input.layout === "before_after") {
         const before = rows.filter((p) => p.tag === "before");
         const after = rows.filter((p) => p.tag === "after");
         const pairs: typeof rows = [];

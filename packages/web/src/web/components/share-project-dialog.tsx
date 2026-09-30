@@ -15,10 +15,18 @@ export function ShareProjectDialog({
   projectId,
   projectName,
   onClose,
+  projectOptions,
+  onProjectChange,
 }: {
   projectId: string;
   projectName?: string | null;
   onClose: () => void;
+  /**
+   * Opened from somewhere that spans several jobs (Before / After), the popup offers them as a
+   * picker in its header instead of a fixed name. A link is still only ever for one job.
+   */
+  projectOptions?: [id: string, name: string][];
+  onProjectChange?: (id: string) => void;
 }) {
   const t = useT();
   const links = useShareLinks();
@@ -26,6 +34,10 @@ export function ShareProjectDialog({
   const revoke = useRevokeShareLink();
 
   const [label, setLabel] = useState(projectName ?? "");
+  // Switching job in the picker renames the new link after that job.
+  useEffect(() => {
+    setLabel(projectName ?? "");
+  }, [projectName]);
   const [allowDownload, setAllowDownload] = useState(true);
   const [expires, setExpires] = useState("30");
   const [error, setError] = useState<string | null>(null);
@@ -62,9 +74,24 @@ export function ShareProjectDialog({
         <div className="flex items-start justify-between gap-3 border-b border-line px-5 py-3">
           <div className="min-w-0">
             <p className="font-display text-[15px] font-semibold">{t("project.shareClient")}</p>
-            <p className="mono truncate text-[10.5px] uppercase tracking-widest text-fog">
-              {projectName ?? ""}
-            </p>
+            {projectOptions && projectOptions.length > 1 && onProjectChange ? (
+              <select
+                aria-label={t("common.project")}
+                value={projectId}
+                onChange={(e) => onProjectChange(e.target.value)}
+                className="mono mt-1 max-w-full rounded-[8px] border border-line bg-ink px-2 py-1 text-[10.5px] uppercase tracking-widest text-chalk outline-none focus:border-amber"
+              >
+                {projectOptions.map(([value, name]) => (
+                  <option key={value} value={value}>
+                    {name}
+                  </option>
+                ))}
+              </select>
+            ) : (
+              <p className="mono truncate text-[10.5px] uppercase tracking-widest text-fog">
+                {projectName ?? ""}
+              </p>
+            )}
           </div>
           <button
             type="button"

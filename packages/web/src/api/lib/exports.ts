@@ -407,8 +407,13 @@ export async function buildPdf(ctx: BuildContext): Promise<Uint8Array> {
     ["Generated", fmtTime(new Date())],
     [
       "Date range",
+      // Earliest to latest by the clock, not by position: a before / after package is ordered by
+      // pair, so its first and last photos are not the first and last taken.
       ctx.photos.length
-        ? `${fmtTime(ctx.photos[ctx.photos.length - 1]!.capturedAt)} – ${fmtTime(ctx.photos[0]!.capturedAt)}`
+        ? (() => {
+            const times = ctx.photos.map((p) => new Date(p.capturedAt).getTime());
+            return `${fmtTime(new Date(Math.min(...times)))} – ${fmtTime(new Date(Math.max(...times)))}`;
+          })()
         : "—",
     ],
   ];
@@ -497,7 +502,8 @@ export async function buildPdf(ctx: BuildContext): Promise<Uint8Array> {
 
   // Evidence pages
   const pageOffset = overviewImage ? 3 : 2;
-  const perPage = ctx.layout === "grid" ? 2 : 1;
+  // Before / after stacks each pair on one page, so the two moments are read side by side.
+  const perPage = ctx.layout === "grid" || ctx.layout === "before_after" ? 2 : 1;
   for (let i = 0; i < ctx.photos.length; i += perPage) {
     const page = pdf.addPage([W, H]);
     page.drawRectangle({ x: 0, y: 0, width: W, height: H, color: WHITE });

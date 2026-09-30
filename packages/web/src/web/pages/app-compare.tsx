@@ -2,7 +2,9 @@ import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import {
   ChevronLeft,
   ChevronRight,
+  FileStack,
   GitCompareArrows,
+  Link2,
   Loader2,
   MapPin,
   Plus,
@@ -13,6 +15,8 @@ import {
 import { DashboardShell } from "../components/dashboard-shell";
 import { EmptyState } from "../components/empty-state";
 import { PhotoDrawer } from "../components/photo-drawer";
+import { CompareReportDialog } from "../components/compare-report-dialog";
+import { ShareProjectDialog } from "../components/share-project-dialog";
 import { EvidenceMap, type MapPin as EvidenceMapPin } from "../components/evidence-map";
 import { formatCoords, formatStamp, VerifiedBadge } from "../components/evidence-card";
 import {
@@ -25,6 +29,10 @@ import { useProjects } from "../queries/projects";
 import { cn } from "../lib/utils";
 import { useInfiniteScroll } from "../lib/use-infinite-scroll";
 import { type TKey, useT } from "../lib/i18n";
+
+/** The same outlined action button as the project page's top row. */
+const ACTION =
+  "mono inline-flex items-center gap-1.5 rounded-[8px] border border-line bg-ink-2 px-3 py-2 text-[10.5px] uppercase tracking-widest text-chalk transition-colors hover:border-amber hover:text-amber disabled:pointer-events-none disabled:opacity-50";
 
 type PickerPhoto = {
   id: string;
@@ -312,6 +320,8 @@ export default function AppCompare() {
   const remove = useRemoveComparison();
   const [projectId, setProjectId] = useState("");
   const [search, setSearch] = useState("");
+  const [reportFor, setReportFor] = useState<string | null>(null);
+  const [shareProject, setShareProject] = useState<string | null>(null);
 
   // Memoised so an empty result is the same array every render, not a fresh `[]` that would
   // re-run every memo below it.
@@ -394,6 +404,8 @@ export default function AppCompare() {
     el.scrollBy({ left: direction * Math.max(el.clientWidth * 0.8, 240), behavior: "smooth" });
   };
 
+  const reportPair = reportFor ? (all.find((row) => row.id === reportFor) ?? null) : null;
+
   const chevron =
     "absolute top-1/2 grid size-9 -translate-y-1/2 place-items-center rounded-full border border-line bg-ink-2/95 text-steel shadow-lg transition-[background-color,border-color,color,opacity] hover:border-amber hover:bg-amber hover:text-on-amber";
 
@@ -433,6 +445,23 @@ export default function AppCompare() {
         />
       ) : (
         <>
+          {/* The page's working actions sit first, as on a project page. A client link is for one
+              job, so it opens on the job the filter is set to, or the first one with pairs. */}
+          <div className="mb-4 flex flex-wrap items-center gap-2">
+            <button
+              type="button"
+              disabled={projectOptions.length === 0}
+              title={projectOptions.length === 0 ? t("compare.shareNoProject") : undefined}
+              onClick={() => setShareProject(projectId || projectOptions[0]?.[0] || null)}
+              className={ACTION}
+            >
+              <Link2 className="size-3.5" /> {t("project.shareClient")}
+            </button>
+            {projectOptions.length === 0 && (
+              <p className="text-[12px] text-fog">{t("compare.shareNoProject")}</p>
+            )}
+          </div>
+
           {/* The pairs, in one sideways slider across the top of the page. */}
           <section className="rounded-[12px] border border-line bg-ink-2">
             <header className="flex flex-wrap items-center gap-2 border-b border-line px-4 py-3">
@@ -491,6 +520,14 @@ export default function AppCompare() {
                               {t("compare.created", { stamp: formatStamp(row.createdAt) })}
                             </p>
                           </div>
+                          <div className="flex shrink-0 items-center gap-1.5">
+                          <button
+                            type="button"
+                            onClick={() => setReportFor(row.id)}
+                            className="mono inline-flex items-center gap-1.5 rounded-[8px] border border-line px-2 py-1.5 text-[10px] uppercase tracking-widest text-chalk transition-colors hover:border-amber hover:text-amber"
+                          >
+                            <FileStack className="size-3.5" /> {t("compare.createReport")}
+                          </button>
                           <button
                             type="button"
                             aria-label={t("compare.remove")}
@@ -501,6 +538,7 @@ export default function AppCompare() {
                           >
                             <Trash2 className="size-3.5" />
                           </button>
+                          </div>
                         </header>
                         <div className="grid grid-cols-2 gap-3 p-3">
                           <Slab side={t("tag.before")} photo={row.before} onOpen={setOpenPhoto} />
@@ -574,6 +612,28 @@ export default function AppCompare() {
       )}
 
       {open && <NewComparisonDialog onClose={() => setOpen(false)} />}
+      {reportPair && (
+        <CompareReportDialog
+          key={reportPair.id}
+          pair={{
+            title: reportPair.title,
+            projectId: reportPair.projectId,
+            projectName: reportPair.projectName,
+            beforeId: reportPair.before?.id ?? null,
+            afterId: reportPair.after?.id ?? null,
+          }}
+          onClose={() => setReportFor(null)}
+        />
+      )}
+      {shareProject && (
+        <ShareProjectDialog
+          projectId={shareProject}
+          projectName={projectOptions.find(([value]) => value === shareProject)?.[1] ?? null}
+          projectOptions={projectOptions}
+          onProjectChange={setShareProject}
+          onClose={() => setShareProject(null)}
+        />
+      )}
       <PhotoDrawer photoId={openPhoto} onClose={() => setOpenPhoto(null)} />
     </DashboardShell>
   );
