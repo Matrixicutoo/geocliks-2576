@@ -1,7 +1,7 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import Constants from "expo-constants";
 import { Platform } from "react-native";
 import { client } from "./api";
+import { deviceLabel } from "./device";
 
 const KEY = "geocliks.queue.v1";
 
@@ -228,7 +228,7 @@ export async function uploadOne(item: QueuedPhoto) {
     // dispute asks for by name. Read at upload rather than carried through the queue: the
     // device name cannot change between the two, and reading it here fills the field in for
     // captures already sitting in the queue from older builds.
-    deviceModel: Constants.deviceName ?? null,
+    deviceModel: deviceLabel(),
     templateId: item.templateId,
     // Proof of delivery: who signed for it and the strokes they drew. Older queued
     // items predate these keys, so default them rather than sending undefined.

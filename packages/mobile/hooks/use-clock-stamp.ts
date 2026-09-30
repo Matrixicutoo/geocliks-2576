@@ -1,9 +1,9 @@
 import { useCallback, useState } from "react";
 import { Platform } from "react-native";
-import Constants from "expo-constants";
 import { useQueryClient } from "@tanstack/react-query";
 import { client, orpc } from "@/lib/api";
 import { clockStampForCapture } from "@/lib/clock";
+import { deviceLabel } from "@/lib/device";
 import { drainPunches, enqueuePunch, readPunches } from "@/lib/punch-queue";
 
 /** The fix the capture screen already keeps live, passed in rather than measured again here. */
@@ -70,7 +70,7 @@ export function useClockStamp() {
         address: fix.address,
         routeId,
         projectId,
-        deviceModel: Constants.deviceName ?? null,
+        deviceModel: deviceLabel(),
         platform: Platform.OS,
         note: null,
       };
