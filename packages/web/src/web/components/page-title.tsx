@@ -3,12 +3,21 @@
  * in the dark page header, so a long business name gets the full page width instead of competing
  * with the action buttons.
  */
-export function PageTitle({ name, section }: { name?: string | null; section: string }) {
+export function PageTitle({
+  name,
+  section,
+  accent = false,
+}: {
+  name?: string | null;
+  section: string;
+  /** Paint the name amber — the project page, where the job's name is what you check first. */
+  accent?: boolean;
+}) {
   return (
     <p className="label mb-4 truncate">
       {name ? (
         <>
-          <span className="text-chalk">{name}</span> · {section}
+          <span className={accent ? "text-amber" : "text-chalk"}>{name}</span> · {section}
         </>
       ) : (
         section

@@ -22,6 +22,7 @@ import { PhotoDrawer } from "../components/photo-drawer";
 import { EvidenceMap, type MapPin as EvidenceMapPin } from "../components/evidence-map";
 import { AssignCrewDialog } from "../components/assign-crew-dialog";
 import { ProjectNote } from "../components/project-note";
+import { ShareProjectDialog } from "../components/share-project-dialog";
 import { useDestroyProject, useProject, useRemoveProject } from "../queries/projects";
 import { usePhotos } from "../queries/photos";
 import { useTeam, useAssignments } from "../queries/team";
@@ -54,6 +55,7 @@ export default function ProjectPage() {
   const destroy = useDestroyProject();
   const [confirmDelete, setConfirmDelete] = useState(false);
   const [assignOpen, setAssignOpen] = useState(false);
+  const [shareOpen, setShareOpen] = useState(false);
   // Field crews work inside projects; only manager and above archive or delete them.
   const canManage = canManageWorkspace(org.data?.role);
   // Writing the crew's note is the office tier, one rung wider than archiving the job.
@@ -111,7 +113,7 @@ export default function ProjectPage() {
         </>
       }
     >
-      <PageTitle name={project.data?.name} section={t("nav.projects")} />
+      <PageTitle name={project.data?.name} section={t("nav.projects")} accent />
 
       {confirmDelete && canManage && (
         <div className="rounded-[8px] mb-4 flex flex-wrap items-center gap-3 border border-alert/50 bg-alert/10 px-4 py-3">
@@ -168,9 +170,9 @@ export default function ProjectPage() {
             )}
           </button>
         )}
-        <Link to={`/app/share?project=${encodeURIComponent(id)}`} className={ACTION}>
+        <button type="button" onClick={() => setShareOpen(true)} className={ACTION}>
           <Link2 className="size-3.5" /> {t("project.shareClient")}
-        </Link>
+        </button>
 
         {/* Who is on the job, at a glance. Adding and removing happens in the Assign popup. */}
         {assignedRows.length > 0 && (
@@ -321,6 +323,14 @@ export default function ProjectPage() {
           projectId={id}
           projectName={project.data?.name}
           onClose={() => setAssignOpen(false)}
+        />
+      )}
+
+      {shareOpen && (
+        <ShareProjectDialog
+          projectId={id}
+          projectName={project.data?.name}
+          onClose={() => setShareOpen(false)}
         />
       )}
 
