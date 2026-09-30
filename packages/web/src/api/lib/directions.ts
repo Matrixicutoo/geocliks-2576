@@ -41,6 +41,33 @@ function apiKey(): string | undefined {
   return process.env.GOOGLE_MAPS_SERVER_KEY || process.env.VITE_GOOGLE_MAPS_API_KEY;
 }
 
+/**
+ * Our locale codes, as the BCP-47 tags Google wants for turn text.
+ *
+ * The driver hears these instructions read aloud, so the language has to be his, not the
+ * server's: a Montreal driver on the French UI gets "Tournez à gauche sur Rue Belmont", and
+ * the phone's French voice can actually pronounce it. Tagalog is the one gap — Google returns
+ * no Filipino turn text, so it falls back to English rather than sending back untranslated
+ * placeholders.
+ */
+const GOOGLE_LANGUAGE: Record<string, string> = {
+  en: "en-US",
+  "fr-CA": "fr-CA",
+  es: "es-ES",
+  "pt-BR": "pt-BR",
+  de: "de-DE",
+  it: "it-IT",
+  zh: "zh-CN",
+  vi: "vi-VN",
+  tl: "en-US",
+  ar: "ar-SA",
+  pl: "pl-PL",
+};
+
+function languageTag(locale: string | null | undefined): string {
+  return (locale && GOOGLE_LANGUAGE[locale]) || "en-US";
+}
+
 /** True when the server can fetch real turn-by-turn. The nav screen says so if not. */
 export function directionsAvailable(): boolean {
   return Boolean(apiKey());
@@ -170,6 +197,7 @@ async function fetchViaRoutesApi(
   from: LatLng,
   to: LatLng,
   key: string,
+  language: string,
 ): Promise<Directions | null> {
   const fieldMask = [
     "routes.duration",
@@ -201,7 +229,7 @@ async function fetchViaRoutesApi(
       polylineQuality: "HIGH_QUALITY",
       // Turn text has to be asked for by name here, unlike the legacy API.
       computeAlternativeRoutes: false,
-      languageCode: "en-US",
+      languageCode: language,
       units: "METRIC",
     }),
     signal: AbortSignal.timeout(12_000),
@@ -267,13 +295,18 @@ type GoogleDirectionsResponse = {
  * a spent quota, a dead network in a valley — falls back to the straight line, because a
  * driver holding a parcel needs a direction to point in more than he needs an error.
  */
-export async function fetchDirections(from: LatLng, to: LatLng): Promise<Directions> {
+export async function fetchDirections(
+  from: LatLng,
+  to: LatLng,
+  locale?: string | null,
+): Promise<Directions> {
   const key = apiKey();
   if (!key) return directLine(from, to);
+  const language = languageTag(locale);
 
   // Routes API first: it is the only one Google enables on projects created these days.
   try {
-    const viaRoutes = await fetchViaRoutesApi(from, to, key);
+    const viaRoutes = await fetchViaRoutesApi(from, to, key, language);
     if (viaRoutes) return viaRoutes;
   } catch {
     // Fall through to the legacy endpoint below.
@@ -287,6 +320,7 @@ export async function fetchDirections(from: LatLng, to: LatLng): Promise<Directi
     // Live traffic on the ETA. Without it the number is a timetable, and a driver who is
     // told 12 minutes and drives 25 stops believing the app.
     url.searchParams.set("departure_time", "now");
+    url.searchParams.set("language", language);
     url.searchParams.set("key", key);
 
     const res = await fetch(url, { signal: AbortSignal.timeout(12_000) });

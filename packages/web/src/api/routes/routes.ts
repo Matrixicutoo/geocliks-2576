@@ -6,6 +6,7 @@ import * as schema from "../database/schema";
 import { directionsAvailable, fetchDirections } from "../lib/directions";
 import { geocodeAll, geocodingAvailable } from "../lib/geocode";
 import { id, shareToken } from "../lib/ids";
+import { LOCALE_CODES } from "../lib/locales";
 import { photoUrl } from "../lib/media";
 import { insertionIndex, optimizeStops } from "../lib/optimize";
 import { assertDeliveryEnabled } from "../lib/plan-guards";
@@ -929,6 +930,8 @@ export const routes = {
         stopId: z.string(),
         fromLat: z.number().min(-90).max(90),
         fromLng: z.number().min(-180).max(180),
+        /** The driver's own UI language — the turn text comes back in it, and is read aloud in it. */
+        locale: z.enum(LOCALE_CODES).nullish(),
       }),
     )
     .handler(async ({ input, context }) => {
@@ -953,6 +956,7 @@ export const routes = {
       const leg = await fetchDirections(
         { lat: input.fromLat, lng: input.fromLng },
         { lat: stop.lat as number, lng: stop.lng as number },
+        input.locale,
       );
 
       return {

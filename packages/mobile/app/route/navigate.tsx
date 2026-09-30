@@ -8,7 +8,8 @@ import NavMap, { type NavMapHandle } from "@/components/nav-map";
 import { Text } from "@/components/app-text";
 import { useColors } from "@/hooks/use-colors";
 import { Fonts } from "@/constants/theme";
-import { useT } from "@/lib/i18n";
+import { useLocale, useT } from "@/lib/i18n";
+import { IMMINENT_M, useNavVoice } from "@/lib/nav-voice";
 import { useDirections, useRoute } from "@/queries/routes";
 import { ARRIVAL_RADIUS_M, useArrival } from "@/hooks/use-arrival";
 import { arrivalClock, formatDuration, formatMetres, metresBetween, metresOffPath } from "@/lib/geo";
@@ -109,6 +110,8 @@ export default function RouteNavigate() {
   const { fix, denied } = useLiveFix(true);
   const arrival = useArrival(stop, !!stop);
   const directions = useDirections();
+  const { locale } = useLocale();
+  const voice = useNavVoice(locale);
 
   const map = useRef<NavMapHandle | null>(null);
   const [leg, setLeg] = useState<Awaited<ReturnType<typeof directions.mutateAsync>> | null>(null);
@@ -142,9 +145,13 @@ export default function RouteNavigate() {
           stopId,
           fromLat: from.lat,
           fromLng: from.lng,
+          // The turn text comes back in this language, and is then spoken in it.
+          locale,
         });
         setLeg(next);
         setStepIndex(0);
+        // A recalculated leg renumbers the steps, so the spoken history no longer applies.
+        voice.reset();
       } catch {
         // The card below already says there is no line; the destination pin is still on the map
         // and the driver can still steer at it.
@@ -152,7 +159,7 @@ export default function RouteNavigate() {
         asking.current = false;
       }
     },
-    [stopId, directions, leg],
+    [stopId, directions, leg, locale, voice],
   );
 
   // First leg, as soon as there is a position to start it from.
@@ -196,6 +203,35 @@ export default function RouteNavigate() {
     map.current?.follow(fix);
   }, [fix, following]);
 
+  /*
+    The voice.
+
+    Two utterances per turn: one when it becomes the next thing to do, carrying the distance to
+    it, and one as he reaches it, carrying just the instruction. The keys are what keep it to
+    two — they change only when the step or the phase does, so this may run on every GPS fix
+    and still say each thing exactly once.
+  */
+  const currentStep = leg?.steps[stepIndex] ?? null;
+  useEffect(() => {
+    if (arrival.state === "at") {
+      voice.say(
+        t("drive.arrivedVoice", { address: stop?.address ?? stop?.addressRaw ?? "" }),
+        "arrived",
+      );
+      return;
+    }
+    if (!fix || !currentStep) return;
+    const away = metresBetween(fix, currentStep.at);
+    if (away <= IMMINENT_M) {
+      voice.say(currentStep.instruction, `${stepIndex}:now`);
+      return;
+    }
+    voice.say(
+      t("drive.ahead", { distance: formatMetres(away), instruction: currentStep.instruction }),
+      `${stepIndex}:ahead`,
+    );
+  }, [fix, currentStep, stepIndex, arrival.state, stop, voice, t]);
+
   /** Everything the bottom bar says: what is left of the drive, and when he gets there. */
   const remaining = useMemo(() => {
     if (!fix || !pin) return null;
@@ -212,7 +248,7 @@ export default function RouteNavigate() {
     };
   }, [fix, pin, leg]);
 
-  const step = leg?.steps[stepIndex] ?? null;
+  const step = currentStep;
   const atStop = arrival.state === "at";
 
   const goShoot = (outcome: "delivered" | "failed") => {
@@ -294,6 +330,21 @@ export default function RouteNavigate() {
             )}
           </View>
           {directions.isPending ? <ActivityIndicator size="small" color={colors.amber} /> : null}
+          {/* Mute lives on the banner, next to the words being read, so it is obvious what it
+              silences — and it is a big target, because it gets pressed while driving. */}
+          <Pressable
+            onPress={voice.toggleMuted}
+            hitSlop={12}
+            accessibilityLabel={voice.muted ? t("drive.voiceOn") : t("drive.voiceOff")}
+            accessibilityRole="switch"
+            accessibilityState={{ checked: !voice.muted }}
+          >
+            <Ionicons
+              name={voice.muted ? "volume-mute-outline" : "volume-high"}
+              size={22}
+              color={voice.muted ? colors.mutedForeground : colors.amber}
+            />
+          </Pressable>
         </View>
       </SafeAreaView>
 
