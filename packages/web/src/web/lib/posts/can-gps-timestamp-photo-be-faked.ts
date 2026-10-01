@@ -114,6 +114,11 @@ export const canGpsTimestampPhotoBeFaked: Post = {
       label: "Where this goes on the site",
       items: [
         {
+          href: "/can-photo-timestamps-be-faked",
+          text: "Can a job photo timestamp be faked?",
+          note: "the short version of this answer, in eleven languages, with how a third party checks a photo code.",
+        },
+        {
           href: "/gps-timestamp-camera",
           text: "The GPS timestamp camera, in detail",
           note: "what the capture records, and how it differs from a free stamp app that reads the phone's own clock.",

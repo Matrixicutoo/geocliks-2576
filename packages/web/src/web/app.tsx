@@ -55,6 +55,8 @@ const AlternativesTimemark = lazy(() => import("./pages/alternatives-timemark"))
 // are English-only by design — see the note in components/landing-page.tsx.
 const ProofOfDelivery = lazy(() => import("./pages/proof-of-delivery"));
 const GpsTimestampCamera = lazy(() => import("./pages/gps-timestamp-camera"));
+const CompanyCamAlternative = lazy(() => import("./pages/companycam-alternative"));
+const CanPhotoTimestampsBeFaked = lazy(() => import("./pages/can-photo-timestamps-be-faked"));
 const RoofingPhotoDocumentation = lazy(() => import("./pages/roofing-photo-documentation"));
 const HvacPhotoDocumentation = lazy(() => import("./pages/hvac-photo-documentation"));
 const PropertyInspectionPhotos = lazy(() => import("./pages/property-inspection-photos"));
@@ -342,6 +344,12 @@ function App() {
               </Route>
               <Route path="/alternatives/timemark">
                 <AlternativesTimemark />
+              </Route>
+              <Route path="/companycam-alternative">
+                <CompanyCamAlternative />
+              </Route>
+              <Route path="/can-photo-timestamps-be-faked">
+                <CanPhotoTimestampsBeFaked />
               </Route>
 
               <Route path="/about">

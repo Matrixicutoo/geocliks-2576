@@ -111,6 +111,20 @@ export const PAGE_SEO = {
       "Capture proof of delivery couriers can't backdate: network-verified time, GPS and street address on every drop photo, with a code the shipper can check.",
   },
 
+  // The switcher page. Separate from `/alternatives/companycam` on purpose:
+  // "vs" is someone still comparing, "alternative" is someone already leaving.
+  "/companycam-alternative": {
+    title: "CompanyCam Alternative for Verified Job Photos | GeoCliks",
+    description:
+      "Looking for a CompanyCam alternative? GeoCliks locks network time, GPS and street address on every shot, with a photo code anyone can check. Start free.",
+  },
+
+  "/can-photo-timestamps-be-faked": {
+    title: "Can Photo Timestamps Be Faked? What Holds Up | GeoCliks",
+    description:
+      "Yes. Phone clocks and EXIF dates are easy to change. See what a network-verified timestamp is, how skew is flagged, and how to check a photo code.",
+  },
+
   "/gps-timestamp-camera": {
     title: "GPS Timestamp Camera App — Verified Time & Location",
     description:
@@ -195,6 +209,11 @@ export const LOCALIZED_SEO: Record<string, { title: TKey; description: TKey }> =
   "/get-app": { title: "seo.getApp.title", description: "seo.getApp.description" },
   "/proof-of-delivery": { title: "seo.pod.title", description: "seo.pod.description" },
   "/gps-timestamp-camera": { title: "seo.gps.title", description: "seo.gps.description" },
+  "/companycam-alternative": { title: "seo.ccAlt.title", description: "seo.ccAlt.description" },
+  "/can-photo-timestamps-be-faked": {
+    title: "seo.faked.title",
+    description: "seo.faked.description",
+  },
   "/hvac-photo-documentation": { title: "seo.hvac.title", description: "seo.hvac.description" },
   "/property-inspection-photos": {
     title: "seo.inspection.title",

@@ -239,6 +239,13 @@ export default function AlternativesCompanyCam() {
             >
               {t("cc.related.timemark")}
             </Link>
+            . {t("cc.related.switchLead")}{" "}
+            <Link
+              to="/companycam-alternative"
+              className="font-semibold text-amber underline decoration-amber/40 underline-offset-4 hover:decoration-amber"
+            >
+              {t("cc.related.switch")}
+            </Link>
             .
           </p>
         </div>

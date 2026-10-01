@@ -130,6 +130,26 @@ export const PAGE_SCHEMA = {
       { keys: { question: "pod.faq.q6", answer: "pod.faq.a6" } },
     ],
   },
+  "/companycam-alternative": {
+    crumbs: [{ name: "CompanyCam Alternative", path: "/companycam-alternative" }],
+    faq: [
+      { keys: { question: "cca.faq.q1", answer: "cca.faq.a1" } },
+      { keys: { question: "cca.faq.q2", answer: "cca.faq.a2" } },
+      { keys: { question: "cca.faq.q3", answer: "cca.faq.a3" } },
+      { keys: { question: "cca.faq.q4", answer: "cca.faq.a4" } },
+      { keys: { question: "cca.faq.q5", answer: "cca.faq.a5" } },
+    ],
+  },
+  "/can-photo-timestamps-be-faked": {
+    crumbs: [{ name: "Can Photo Timestamps Be Faked?", path: "/can-photo-timestamps-be-faked" }],
+    faq: [
+      { keys: { question: "ctf.faq.q1", answer: "ctf.faq.a1" } },
+      { keys: { question: "ctf.faq.q2", answer: "ctf.faq.a2" } },
+      { keys: { question: "ctf.faq.q3", answer: "ctf.faq.a3" } },
+      { keys: { question: "ctf.faq.q4", answer: "ctf.faq.a4" } },
+      { keys: { question: "ctf.faq.q5", answer: "ctf.faq.a5" } },
+    ],
+  },
   "/gps-timestamp-camera": {
     crumbs: [{ name: "GPS Timestamp Camera", path: "/gps-timestamp-camera" }],
     faq: [
