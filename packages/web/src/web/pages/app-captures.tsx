@@ -1,17 +1,22 @@
 import { useState } from "react";
-import { ImageOff, Loader2 } from "lucide-react";
+import { ImageOff } from "lucide-react";
 import { DashboardShell } from "../components/dashboard-shell";
-import { EvidenceCard, EvidenceSkeleton } from "../components/evidence-card";
+import { EvidenceSkeleton } from "../components/evidence-card";
 import { EmptyState } from "../components/empty-state";
 import { PageTitle } from "../components/page-title";
 import { PhotoDrawer } from "../components/photo-drawer";
+import { PhotoRail } from "../components/photo-rail";
 import { useInfinitePhotos } from "../queries/photos";
 import { useOrg } from "../queries/orgs";
 import { cn } from "../lib/utils";
-import { useInfiniteScroll } from "../lib/use-infinite-scroll";
 import { useT } from "../lib/i18n";
 
 const KINDS = ["photo", "video", "document"] as const;
+
+/** Slider tile width. 260px keeps one whole tile plus the edge of the next on a phone. */
+const TILE = "w-[260px]";
+/** Middle of a 260px-wide 4:3 thumbnail (260 × 3/8, plus the card's 1px border). */
+const TILE_ARROW_TOP = 98;
 
 /**
  * My captures — the web half of the phone app's personal page.
@@ -35,11 +40,6 @@ export default function CapturesPage() {
   const photos = useInfinitePhotos({ unassigned: true, kind });
   const loaded = photos.data?.pages.flatMap((page) => page.photos) ?? [];
   const total = photos.data?.pages[0]?.total ?? 0;
-  const sentinel = useInfiniteScroll({
-    hasMore: Boolean(photos.hasNextPage),
-    loading: photos.isFetchingNextPage,
-    onLoadMore: photos.fetchNextPage,
-  });
 
   return (
     <DashboardShell title={t("mine.title")} subtitle={t("mine.body")}>
@@ -64,31 +64,32 @@ export default function CapturesPage() {
         ))}
       </div>
 
+      {/* One sideways slider, the same rail Teamspace and project pages use, with bigger tiles
+          because the captures are the whole page here rather than a strip above other lists. */}
       <div className="mt-4">
         {photos.isLoading ? (
-          <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6">
-            {Array.from({ length: 8 }).map((_, i) => (
-              <EvidenceSkeleton key={i} />
+          <div className="flex gap-3 overflow-hidden">
+            {Array.from({ length: 6 }).map((_, i) => (
+              <div key={i} className={cn(TILE, "shrink-0")}>
+                <EvidenceSkeleton />
+              </div>
             ))}
           </div>
         ) : loaded.length === 0 ? (
           <EmptyState icon={ImageOff} title={t("mine.title")} hint={t("mine.emptyBody")} />
         ) : (
-          <>
+          <section className="rounded-[12px] border border-line bg-ink-2 p-4">
             <p className="label mb-3">{t("teamspace.newestFirst", { n: total })}</p>
-            <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6">
-              {loaded.map((photo) => (
-                <EvidenceCard key={photo.id} photo={photo} onClick={() => setOpenPhoto(photo.id)} />
-              ))}
-            </div>
-            {/* Scrolling near this pulls the next page in. */}
-            <div ref={sentinel} className="h-px" />
-            {photos.isFetchingNextPage && (
-              <div className="mono mt-4 flex items-center justify-center gap-2 text-[11px] uppercase tracking-widest text-fog">
-                <Loader2 className="size-3.5 animate-spin" /> {t("common.loading")}
-              </div>
-            )}
-          </>
+            <PhotoRail
+              photos={loaded}
+              onOpen={setOpenPhoto}
+              hasMore={Boolean(photos.hasNextPage)}
+              loadingMore={photos.isFetchingNextPage}
+              onLoadMore={() => photos.fetchNextPage()}
+              tileClassName={TILE}
+              arrowTop={TILE_ARROW_TOP}
+            />
+          </section>
         )}
       </div>
 
