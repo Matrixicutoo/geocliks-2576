@@ -12,6 +12,7 @@ export const photoDocumentationPricing: Post = {
   answer:
     "Job-site photo documentation software is sold two ways, and the difference is large. Per-seat plans, the category default, are publicly listed between $12 and $29 per user per month — $1,440 to $3,480 a year for a 10-person crew, before setup fees. Flat per-workspace plans charge for the workspace regardless of headcount: GeoCliks is $0 for Free, $7/mo for one person on Plus, $25/mo for 5 seats, $45/mo for 10 and $105/mo for 25. Free tiers are common but usually cap captures or gate verification, so compare cost per verified photo rather than cost per seat.",
   publishedAt: "2026-09-24",
+  updatedAt: "2026-10-01",
   readMinutes: 6,
   keywords: [
     "jobsite photo app pricing",
@@ -74,7 +75,7 @@ export const photoDocumentationPricing: Post = {
     },
     {
       kind: "p",
-      text: "Verification is identical across every row — network-verified time, GPS with street address, the unique photo code, the public verification page and offline capture are on Free and on Enterprise alike. What the paid tiers buy is volume, seats, Teamspace, roles, full-length verified video (3 minutes per clip versus 30 seconds), your logo on the watermark, live client share links and the Excel, ZIP and KMZ exports. Delivery routes are priced separately, on the Delivery plans, because they are sized by stops and drivers rather than captures.",
+      text: "Verification is identical across every row — network-verified time, GPS with street address, the unique photo code, the public verification page and offline capture are on Free and on Enterprise alike. What the paid tiers buy is volume, seats, Teamspace, roles, full-length verified video (3 minutes per clip; Free gets 30-second clips for its first 3 days only), your logo on the watermark, live client share links and the Excel, ZIP and KMZ exports. Delivery routes are priced separately, on the Delivery plans, because they are sized by stops and drivers rather than captures.",
     },
     { kind: "h2", text: "Costs that are not on the pricing page", id: "hidden" },
     {
@@ -122,6 +123,11 @@ export const photoDocumentationPricing: Post = {
           href: "/alternatives/companycam",
           text: "GeoCliks vs CompanyCam",
           note: "the per-seat versus per-workspace arithmetic worked through against the usual incumbent.",
+        },
+        {
+          href: "/blog/free-vs-paid-timestamp-camera-apps",
+          text: "Free vs paid timestamp camera apps",
+          note: "the same question one tier down: what a $0 stamp app gives you against a paid or per-user plan.",
         },
         {
           href: "/construction-photo-documentation",

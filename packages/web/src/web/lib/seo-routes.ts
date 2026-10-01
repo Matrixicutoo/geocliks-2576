@@ -621,6 +621,11 @@ export const BLOG_SEO = {
     description:
       "Proof of delivery needs a verified capture time, the stop's coordinates and address, the parcel and placement in frame, and a seal the recipient can check.",
   },
+  "free-vs-paid-timestamp-camera-apps": {
+    title: "Free vs Paid Timestamp Camera Apps | GeoCliks",
+    description:
+      "Paying for a timestamp camera app usually removes ads and adds exports, not a verified time. Four pricing models, three capability shapes, and yearly costs.",
+  },
 } satisfies Record<string, RouteSeoCopy>;
 
 /** Copy for a Field Notes post slug, if it has any. */

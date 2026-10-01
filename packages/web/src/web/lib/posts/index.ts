@@ -5,6 +5,7 @@ import { canGpsTimestampPhotoBeFaked } from "./can-gps-timestamp-photo-be-faked"
 import { bestConstructionPhotoSoftware } from "./best-construction-photo-software";
 import { photoDocumentationPricing } from "./photo-documentation-pricing";
 import { photoProofOfDelivery } from "./photo-proof-of-delivery";
+import { freeVsPaidTimestampCameraApps } from "./free-vs-paid-timestamp-camera-apps";
 
 export type { Post, Block, FaqItem, PostFormat } from "./types";
 
@@ -14,6 +15,7 @@ export const posts: Post[] = [
   photoDocumentationPricing,
   bestConstructionPhotoSoftware,
   photoProofOfDelivery,
+  freeVsPaidTimestampCameraApps,
 ];
 
 export function getPost(slug: string): Post | undefined {

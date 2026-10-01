@@ -108,3 +108,21 @@ Answer: Usable photo proof of delivery carries five things: a timestamp taken fr
 - Q: Does proof of delivery work without cell signal?
   A: It has to, because loading docks, basements and rural routes have none. The requirement is that the capture happens offline with the network time and location already resolved and sealed locally, then syncs when signal returns. An app that silently falls back to the device clock when offline is worse than no stamp at all, because the photo looks verified and is not.
 
+### Free vs paid timestamp camera apps: what does paying actually change?
+
+URL: https://geocliks.com/blog/free-vs-paid-timestamp-camera-apps
+Format: Comparison | Published: 2026-10-01
+
+Answer: On most timestamp camera apps, paying removes ads and adds templates, cloud folders and exports. It does not change where the time comes from, and that is what decides whether a work photo survives a dispute. Paid options run from about $40 a year for a single-phone subscription to $12–$29 per user per month for photo documentation platforms. GeoCliks puts network-verified time, GPS with street address and a SHA-256 seal on its Free plan ($0, 300 captures a month), so what you pay for there is volume, seats and exports: $7 a month for one person on Plus, $25 for five seats on Business.
+
+- Q: Is a free timestamp camera app good enough for work photos?
+  A: It is if nobody will ever dispute the photos. If someone might, check where the free app gets its time. A stamp taken from the phone clock shows whatever the clock is set to. A free plan that checks the time against the network and seals the file, as GeoCliks Free does with its 300 captures a month, gives you photos you can defend at $0.
+- Q: What do you get by paying for a timestamp camera app?
+  A: Usually no ads and no app watermark, more stamp templates and fields, notes, folders or cloud backup, and more export formats. On a stamp-only app, paying does not change where the time comes from. On GeoCliks, paying gets you unlimited captures, 3-minute video, Excel, ZIP and KMZ exports and share links on Plus ($7 a month), and 5 seats with a shared Teamspace on Business ($25 a month). Verification is the same on every plan.
+- Q: Is a timestamp camera app safe to use?
+  A: Safe for your phone and trustworthy as evidence are separate questions. For the first, read the app-store privacy label and check which permissions it asks for: a timestamp camera needs the camera and location, and not much else. For the second, a stamp that only reads the phone clock can be wrong without anyone noticing. Look for an app that checks the time against the network and can show the difference.
+- Q: Can I add a timestamp to photos for free without an app?
+  A: Your phone already saves a capture time in each photo's metadata, and a location too if location access is turned on for the camera, but those fields can be edited and are not shown on the image. Online editors that add a stamp afterwards are worse for work: if a stamp can be added after the fact, it can be faked after the fact.
+- Q: How much does a timestamp camera app cost for a crew?
+  A: It depends on the pricing model. A single-phone subscription at about $40 a year comes to $200 for five phones. Per-user platforms at $12 to $29 per user per month come to $720 to $1,740 a year for five people. A flat workspace plan such as GeoCliks Business is $25 a month, or $300 a year, for five seats, with verification included.
+
