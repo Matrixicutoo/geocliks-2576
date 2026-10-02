@@ -473,6 +473,9 @@ export const ptBR: Catalog = {
   "billing.deliveryNote":
     "Os planos de rotas são vendidos à parte. Escolha um junto com o seu plano de provas.",
   "billing.switchTo": "Mudar para {plan}",
+  "billing.manage": "Gerenciar assinatura",
+  "billing.manageNote": "Cancele, troque o cartão ou baixe suas faturas.",
+  "billing.cancelToFree": "Cancelar para mudar para {plan}",
   "billing.supportPre": "Dúvidas sobre faturamento ou um plano feito para sua frota — escreva para",
   "billing.effect": "As mudanças de plano têm efeito imediato;",
   "billing.youOwner": "você é o proprietário.",

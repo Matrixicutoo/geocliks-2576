@@ -347,6 +347,8 @@ export const auth = betterAuth({
               customerId: user.id,
               name: user.name,
               email: user.email,
+              // Autumn defaults this to off, and then Stripe never mails a receipt after a payment.
+              sendEmailReceipts: true,
             });
           } catch (e) {
             console.error("[autumn] Failed to create customer on sign-up:", e);

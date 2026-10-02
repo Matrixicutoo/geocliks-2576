@@ -474,6 +474,9 @@ export const es: Catalog = {
   "billing.deliveryNote":
     "Los planes de rutas se venden por separado. Elige uno junto a tu plan de evidencia.",
   "billing.switchTo": "Cambiar a {plan}",
+  "billing.manage": "Gestionar suscripción",
+  "billing.manageNote": "Cancela, cambia tu tarjeta o descarga tus facturas.",
+  "billing.cancelToFree": "Cancelar para pasar a {plan}",
   "billing.supportPre": "¿Dudas sobre facturación o un plan hecho para tu flota? Escribe a",
   "billing.effect": "Los cambios de plan se aplican de inmediato;",
   "billing.youOwner": "eres el propietario.",

@@ -477,6 +477,9 @@ export const frCA: Catalog = {
   "billing.deliveryNote":
     "Les forfaits de tournées se vendent séparément. Choisissez-en un en plus de votre forfait de preuves.",
   "billing.switchTo": "Passer à {plan}",
+  "billing.manage": "Gérer l'abonnement",
+  "billing.manageNote": "Annulez, changez de carte ou téléchargez vos factures.",
+  "billing.cancelToFree": "Annuler pour passer à {plan}",
   "billing.supportPre":
     "Des questions sur la facturation ou un forfait adapté à votre flotte — écrivez à",
   "billing.effect": "Les changements de forfait prennent effet immédiatement;",

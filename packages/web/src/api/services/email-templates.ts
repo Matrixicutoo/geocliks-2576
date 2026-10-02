@@ -299,23 +299,35 @@ export function receiptEmail(params: {
   planName: string;
   priceLabel: string;
   workspace: string;
+  /** Stripe's hosted page for the invoice behind this payment (view + PDF download). */
+  invoiceUrl?: string | null;
 }): Promise<SendResult> {
   const link = `${siteUrl()}/app/billing`;
+  const invoice = params.invoiceUrl
+    ? `<p style="margin:0 0 12px;font-size:14px;line-height:1.65">
+         Your invoice is ready: <a href="${params.invoiceUrl}" style="color:#b45309;font-weight:600">view or download the invoice (PDF)</a>.
+         Every past invoice is also under <strong>Billing → Manage subscription</strong>.
+       </p>`
+    : `<p style="margin:0 0 12px;font-size:14px;line-height:1.65">
+         Your invoices are under <strong>Billing → Manage subscription</strong>, where you can view and
+         download each one as a PDF.
+       </p>`;
   const html = shell(
     `Your workspace is on ${params.planName}`,
     `<p style="margin:0 0 12px;font-size:14px;line-height:1.65">
        <strong>${params.workspace}</strong> is now on the <strong>${params.planName}</strong> plan
-       (${params.priceLabel}). Stripe emails the itemised card receipt separately.
+       (${params.priceLabel}).
      </p>
+     ${invoice}
      <p style="margin:0;font-size:14px;line-height:1.65">
-       You can change or cancel the plan any time from the billing screen — a cancellation keeps the
+       To cancel, open <strong>Billing → Manage subscription</strong>. A cancellation keeps the
        workspace paid until the period you already paid for ends.
      </p>
      ${button(link, "View billing")}`,
     `Sent to the owner of the ${params.workspace} workspace.`,
   );
   const text = `${params.workspace} is now on the ${params.planName} plan (${params.priceLabel}).
-Manage billing: ${link}`;
+${params.invoiceUrl ? `Invoice (view / download PDF): ${params.invoiceUrl}\n` : ""}Manage or cancel the subscription: ${link} → Manage subscription`;
   return sendEmail({
     to: params.to,
     subject: `GeoCliks — ${params.planName} plan active`,

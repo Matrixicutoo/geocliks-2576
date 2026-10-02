@@ -38,3 +38,8 @@ export function useChangePlan() {
     }),
   );
 }
+
+/** One-time Stripe customer-portal URL (cancel, card, invoices). `url` is null when there is none. */
+export function usePortal() {
+  return useMutation(orpc.billing.portal.mutationOptions());
+}

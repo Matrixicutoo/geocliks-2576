@@ -1,8 +1,11 @@
 import { Fragment, useEffect, useRef, useState } from "react";
-import { Check, CreditCard, Loader2, Mail } from "lucide-react";
+import { Check, CreditCard, ExternalLink, Loader2, Mail } from "lucide-react";
 import { useCustomer } from "autumn-js/react";
 import { DashboardShell } from "../components/dashboard-shell";
-import { useBilling, useChangePlan, useSyncProcessor } from "../queries/billing";
+import { useBilling, useChangePlan, usePortal, useSyncProcessor } from "../queries/billing";
+
+/** Apple's own subscription page — where a plan bought in the iPhone app is cancelled. */
+const APPLE_SUBSCRIPTIONS_URL = "https://apps.apple.com/account/subscriptions";
 import { cn } from "../lib/utils";
 import { useLocale, useT } from "../lib/i18n";
 import { canManageWorkspace } from "../lib/roles";
@@ -35,6 +38,7 @@ export default function AppBilling() {
   const billing = useBilling(locale);
   const change = useChangePlan();
   const sync = useSyncProcessor();
+  const portal = usePortal();
   const { attach } = useCustomer();
   const [error, setError] = useState<string | null>(null);
   const [pendingPlan, setPendingPlan] = useState<string | null>(null);
@@ -45,6 +49,25 @@ export default function AppBilling() {
   const isOwner = data?.role === "owner";
   // Only the workspace owner changes the plan, so field crews never see the grid at all.
   const isField = !canManageWorkspace(data?.role);
+  // Who is charging the card. A paying workspace cancels (and gets its invoices) where it pays:
+  // the Stripe portal for web checkout, Apple's subscription page for an iPhone purchase.
+  const billedBy = data?.billedBy ?? null;
+
+  /** Sends the owner to wherever this subscription is managed. Support mail when there is none. */
+  const openManage = async () => {
+    setError(null);
+    if (billedBy === "apple") {
+      window.location.href = APPLE_SUBSCRIPTIONS_URL;
+      return;
+    }
+    try {
+      const res = await portal.mutateAsync({ returnUrl: `${window.location.origin}/app/billing` });
+      if (res.url) window.location.href = res.url;
+      else if (data) window.location.href = `mailto:${data.supportEmail}`;
+    } catch (err) {
+      setError(err instanceof Error ? err.message : String(err));
+    }
+  };
 
   // Stripe checkout returns here — read the subscription back from the processor.
   useEffect(() => {
@@ -96,6 +119,26 @@ export default function AppBilling() {
                 {current.period}
               </p>
               <p className="mt-3 text-[12.5px] leading-relaxed text-fog">{current.tagline}</p>
+              {isOwner && billedBy && (
+                <div className="mt-4">
+                  <button
+                    type="button"
+                    onClick={openManage}
+                    disabled={portal.isPending}
+                    className="rounded-[8px] inline-flex w-full items-center justify-center gap-2 border border-amber/60 bg-ink px-3 py-2.5 text-[13px] font-semibold text-amber transition-colors hover:bg-amber/10 disabled:opacity-50"
+                  >
+                    {portal.isPending ? (
+                      <Loader2 className="size-3.5 animate-spin" />
+                    ) : (
+                      <ExternalLink className="size-3.5" />
+                    )}
+                    {t("billing.manage")}
+                  </button>
+                  <p className="mt-1.5 text-[11.5px] leading-relaxed text-fog">
+                    {t("billing.manageNote")}
+                  </p>
+                </div>
+              )}
               {/* The billed plan and the trialling plan are two different things: this card
                   shows what is being charged for (Free, until someone pays), so a running
                   trial needs its own line naming the plan the free week is lending and the
@@ -168,6 +211,10 @@ export default function AppBilling() {
               // so the label only appears for workspaces coming from a non-delivery
               // plan. Autumn still has the final say on eligibility.
               const trial = delivery && !current.id.startsWith("delivery-") && !contactOnly;
+              // Going to Free while a card or Apple ID is still being charged has to cancel the
+              // real subscription, so that card hands off to the manage page instead of
+              // flipping the plan locally (which would keep the charges running).
+              const cancelToFree = plan.priceCents === 0 && billedBy !== null;
               return (
                 <Fragment key={plan.id}>
                   {firstDelivery && (
@@ -209,8 +256,12 @@ export default function AppBilling() {
 
                     <button
                       type="button"
-                      disabled={active || pendingPlan !== null || !isOwner}
+                      disabled={active || pendingPlan !== null || portal.isPending || !isOwner}
                       onClick={async () => {
+                        if (cancelToFree) {
+                          await openManage();
+                          return;
+                        }
                         setError(null);
                         setPendingPlan(plan.id);
                         try {
@@ -249,6 +300,11 @@ export default function AppBilling() {
                       ) : contactOnly ? (
                         <>
                           <Mail className="size-3.5" /> {t("billing.talk")}
+                        </>
+                      ) : cancelToFree ? (
+                        <>
+                          <ExternalLink className="size-3.5" />{" "}
+                          {t("billing.cancelToFree", { plan: plan.name })}
                         </>
                       ) : (
                         <>

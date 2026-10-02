@@ -479,6 +479,9 @@ export const en = {
   "billing.deliveryNote":
     "Route plans are sold on their own. Pick one alongside your evidence plan.",
   "billing.switchTo": "Switch to {plan}",
+  "billing.manage": "Manage subscription",
+  "billing.manageNote": "Cancel, update your card, or download invoices.",
+  "billing.cancelToFree": "Cancel to switch to {plan}",
   "billing.supportPre": "Questions about invoicing or a plan built for your fleet — email",
   "billing.effect": "Plan changes take effect immediately;",
   "billing.youOwner": "you are the owner.",

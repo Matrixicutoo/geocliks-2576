@@ -10,6 +10,7 @@ import { allPlans, loadPlans, planOf, visiblePlans } from "../lib/plans";
 import { localizePlan } from "../lib/plan-copy";
 import { applyProcessorState } from "../lib/billing-sync";
 import { SALES_EMAIL, SUPPORT_EMAIL } from "../lib/support";
+import { ensureEmailReceipts, openBillingPortal } from "../lib/billing-portal";
 
 
 /** Reads AUTUMN_SECRET_KEY from the root .env automatically. */
@@ -28,6 +29,30 @@ function contactMailto(planName: string, orgName: string): string {
     `Hi GeoCliks team,\n\nWe'd like to talk about the ${planName} plan.\n\nTeam size:\nIndustry:\nRegions:\n`,
   )}`;
 }
+
+/** Subscription states in which Stripe is still charging (or about to charge) the card. */
+const LIVE_STATUSES = new Set(["active", "trialing", "past_due", "incomplete", "unpaid"]);
+
+/**
+ * Who is charging this workspace right now: "stripe" (web checkout through Autumn), "apple"
+ * (StoreKit on iOS), or null (Free, or a plan we set up by hand). Moving a Stripe-billed workspace
+ * to Free locally would stop the features but NOT the charges, so that move has to go through the
+ * billing portal's cancel. Apple subscriptions are cancelled in the iPhone's Settings instead.
+ */
+async function billedBy(orgId: string): Promise<"stripe" | "apple" | null> {
+  const [sub] = await db
+    .select({ provider: schema.subscriptions.provider, status: schema.subscriptions.status })
+    .from(schema.subscriptions)
+    .where(eq(schema.subscriptions.orgId, orgId))
+    .limit(1);
+  if (!sub || !LIVE_STATUSES.has(sub.status)) return null;
+  if (sub.provider === "autumn") return "stripe";
+  if (sub.provider === "apple") return "apple";
+  return null;
+}
+
+const CANCEL_IN_PORTAL =
+  "To move to Free, cancel the subscription in the billing portal (Manage subscription). The workspace stays on its paid plan until the period you paid for ends.";
 
 export const billing = {
   /** Public — the marketing pricing table reads the same source as the enforcement code. */
@@ -78,6 +103,7 @@ export const billing = {
      * upgrade button into a no-op.
      */
     const plan = planOf(context.paidPlan);
+    const paidThrough = plan.priceCents > 0 ? await billedBy(context.org.id) : null;
     const trialPlan = context.trial.active && context.trial.plan ? planOf(context.trial.plan) : null;
     return {
       plan: localizePlan(plan, input?.locale),
@@ -92,6 +118,8 @@ export const billing = {
         .filter((p) => p.visible || p.id === plan.id)
         .map((p) => localizePlan(p, input?.locale)),
       role: context.role,
+      /** "stripe" → Manage subscription opens the Stripe portal; "apple" → manage it on the iPhone. */
+      billedBy: paidThrough,
       org: context.org,
       seats: context.org.seats,
       supportEmail: SUPPORT_EMAIL,
@@ -118,6 +146,21 @@ export const billing = {
       currentSeats: context.org.seats,
     });
   }),
+
+  /**
+   * Stripe customer portal for the owner: cancel, change card, billing details, every invoice.
+   * Returns null when the processor has no customer to show (e.g. a plan we set up by hand).
+   */
+  portal: orgProc
+    .input(z.object({ returnUrl: z.string().url().optional() }).optional())
+    .handler(async ({ input, context }) => {
+      requireRole(context.role, "owner");
+      const url = await openBillingPortal(
+        context.user.id,
+        input?.returnUrl ?? `${appOrigin()}/app/billing`,
+      );
+      return { url };
+    }),
 
   changePlan: orgProc
     .input(
@@ -148,6 +191,10 @@ export const billing = {
           )}`,
           org: context.org,
         };
+      }
+
+      if (target.priceCents === 0 && (await billedBy(context.org.id)) === "stripe") {
+        throw new ORPCError("BAD_REQUEST", { message: CANCEL_IN_PORTAL });
       }
 
       const seats = Math.min(input.seats ?? context.org.seats, target.limits.seats);
@@ -219,6 +266,9 @@ export const billing = {
       // Free plan (and re-picking the current plan) never needs the processor.
       // Compared against the PAID plan: a trialling workspace picking the plan it is trialling is
       // a real purchase, not a no-op re-pick, and must still reach the processor.
+      if (target.priceCents === 0 && (await billedBy(context.org.id)) === "stripe") {
+        throw new ORPCError("BAD_REQUEST", { message: CANCEL_IN_PORTAL });
+      }
       if (target.priceCents === 0 || target.id === context.paidPlan) {
         await applyLocally();
         return { kind: "applied" as const, plan: target, url: null };
@@ -228,6 +278,8 @@ export const billing = {
         return { kind: "unavailable" as const, url: null };
       }
 
+      // So Stripe mails the card receipt for this payment (Autumn's default is off).
+      await ensureEmailReceipts(context.user.id);
       try {
         const res = await autumnSdk.billing.attach({
           customerId: context.user.id,

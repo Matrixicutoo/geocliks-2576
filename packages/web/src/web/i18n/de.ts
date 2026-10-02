@@ -476,6 +476,9 @@ export const de: Catalog = {
   "billing.deliveryNote":
     "Tourenpakete werden separat verkauft. Wählen Sie eines zusätzlich zu Ihrem Nachweisplan.",
   "billing.switchTo": "Zu {plan} wechseln",
+  "billing.manage": "Abonnement verwalten",
+  "billing.manageNote": "Kündigen, Karte ändern oder Rechnungen herunterladen.",
+  "billing.cancelToFree": "Kündigen, um zu {plan} zu wechseln",
   "billing.supportPre": "Fragen zur Abrechnung oder ein Plan für Ihre Flotte — schreiben Sie an",
   "billing.effect": "Planwechsel wirken sofort;",
   "billing.youOwner": "Sie sind der Eigentümer.",

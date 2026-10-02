@@ -475,6 +475,9 @@ export const tl: Catalog = {
   "billing.deliveryNote":
     "Hiwalay na ibinebenta ang mga route plan. Pumili ng isa kasabay ng iyong ebidensya plan.",
   "billing.switchTo": "Lumipat sa {plan}",
+  "billing.manage": "Pamahalaan ang subscription",
+  "billing.manageNote": "Kanselahin, palitan ang card, o i-download ang mga invoice.",
+  "billing.cancelToFree": "Kanselahin para lumipat sa {plan}",
   "billing.supportPre": "May tanong sa invoicing o plano para sa fleet mo — mag-email sa",
   "billing.effect": "Agad na ipapatupad ang pagbabago ng plano;",
   "billing.youOwner": "ikaw ang may-ari.",

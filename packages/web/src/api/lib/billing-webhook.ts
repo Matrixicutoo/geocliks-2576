@@ -3,6 +3,7 @@ import { db } from "../database";
 import * as schema from "../database/schema";
 import { applyProcessorState } from "./billing-sync";
 import { receiptEmail } from "../services/email-templates";
+import { latestInvoiceUrl } from "./billing-portal";
 
 /**
  * Push side of billing sync. Autumn (and Stripe through Autumn) calls this when a subscription is
@@ -114,6 +115,7 @@ export async function handleBillingWebhook(req: Request): Promise<WebhookOutcome
         planName: result.plan.name,
         priceLabel: result.plan.priceLabel,
         workspace: org.name,
+        invoiceUrl: await latestInvoiceUrl(customerId),
       });
     }
   }

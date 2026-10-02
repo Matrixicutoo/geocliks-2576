@@ -471,6 +471,9 @@ export const it: Catalog = {
   "billing.deliveryNote":
     "I piani percorsi si acquistano separatamente. Scegline uno insieme al tuo piano prove.",
   "billing.switchTo": "Passa a {plan}",
+  "billing.manage": "Gestisci abbonamento",
+  "billing.manageNote": "Annulla, cambia carta o scarica le fatture.",
+  "billing.cancelToFree": "Annulla per passare a {plan}",
   "billing.supportPre": "Domande sulla fatturazione o un piano per la tua flotta — scrivi a",
   "billing.effect": "I cambi di piano sono immediati;",
   "billing.youOwner": "sei il proprietario.",

@@ -466,6 +466,9 @@ export const vi: Catalog = {
   "billing.deliveryNote":
     "Gói tuyến đường được bán riêng. Chọn một gói bên cạnh gói bằng chứng của bạn.",
   "billing.switchTo": "Chuyển sang {plan}",
+  "billing.manage": "Quản lý gói đăng ký",
+  "billing.manageNote": "Hủy, đổi thẻ hoặc tải hóa đơn.",
+  "billing.cancelToFree": "Hủy để chuyển sang {plan}",
   "billing.supportPre": "Thắc mắc về hoá đơn hoặc gói dành riêng cho đội của bạn — email đến",
   "billing.effect": "Thay đổi gói có hiệu lực ngay;",
   "billing.youOwner": "bạn là chủ sở hữu.",

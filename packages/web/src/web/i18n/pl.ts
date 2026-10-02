@@ -470,6 +470,9 @@ export const pl: Catalog = {
   "billing.deliveryNote":
     "Plany tras sprzedawane są osobno. Wybierz jeden obok swojego planu dowodowego.",
   "billing.switchTo": "Przejdź na {plan}",
+  "billing.manage": "Zarządzaj subskrypcją",
+  "billing.manageNote": "Anuluj, zmień kartę lub pobierz faktury.",
+  "billing.cancelToFree": "Anuluj, aby przejść na {plan}",
   "billing.supportPre": "Pytania o fakturowanie lub plan dla Twojej floty — napisz na",
   "billing.effect": "Zmiany planu działają natychmiast;",
   "billing.youOwner": "jesteś właścicielem.",
