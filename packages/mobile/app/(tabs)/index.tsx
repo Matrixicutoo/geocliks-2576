@@ -46,6 +46,7 @@ import {
   type ScanPage,
 } from "@/lib/doc-scan";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { useKeepScreenOn } from "@/hooks/use-keep-screen-on";
 
 // Remembered capture selections. A crew member doing forty drops a day should not have to
 // re-pick DELIVERY and the same project on every single shot. CLOCK mode is excluded on purpose:
@@ -160,6 +161,8 @@ function clock(seconds: number) {
 }
 
 export default function Capture() {
+  // Screen stays on while this is in front: see hooks/use-keep-screen-on.ts.
+  useKeepScreenOn("capture");
   const colors = useColors();
   const camera = useRef<CameraView | null>(null);
   const isNative = Platform.OS !== "web";

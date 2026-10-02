@@ -14,6 +14,7 @@ import { useDirections, useRoute } from "@/queries/routes";
 import { ARRIVAL_RADIUS_M, useArrival } from "@/hooks/use-arrival";
 import { arrivalClock, formatDuration, formatMetres, metresBetween, metresOffPath } from "@/lib/geo";
 import { shootParams } from "@/lib/shoot";
+import { useKeepScreenOn } from "@/hooks/use-keep-screen-on";
 
 /**
  * In-app turn-by-turn to one stop.
@@ -95,6 +96,8 @@ function useLiveFix(enabled: boolean): { fix: Fix | null; denied: boolean } {
 }
 
 export default function RouteNavigate() {
+  // Screen stays on while this is in front: see hooks/use-keep-screen-on.ts.
+  useKeepScreenOn("navigate");
   const colors = useColors();
   const t = useT();
   const router = useRouter();
