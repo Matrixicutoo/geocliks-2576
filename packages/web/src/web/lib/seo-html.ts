@@ -179,8 +179,26 @@ function jsonLdScript(block: object, pathname: string): string {
  * paint; a member whose shell was already removed (signed in) starts at once; and a timer covers
  * a tab opened in the background, where nothing paints until it is shown.
  */
-// `waitForImage` is the home page's case above. A landing page's LCP is its hero text, which has no
-// URL, so there the first LCP entry — the shell's text, painted — is the signal.
+// `waitForImage` is the home page's case above. A landing page's LCP is text, and text is where the
+// web fonts bite: the shell can paint in the fallback font (font-display: swap) and the browser
+// keeps that first, smaller size as the shell's LCP entry even after the swap. React's copy, set
+// in the web font, is then larger and becomes a new LCP that waited for the whole bundle. So a
+// landing page loads the shell's fonts first, replaces the shell with an identical copy of
+// itself — new nodes, painted in the web fonts at their final size — and starts the bundle once
+// that copy has been painted: after the first LCP entry (text is visible — while a web font is
+// still in its block period the browser paints frames with the text hidden, so counting frames
+// alone is not enough), and after the copy's own LCP entry (`LANDING_FIN`). Counting animation
+// frames is not enough there either: a paint is reported a few ms after the frame that drew it,
+// and a bundle request issued before a paint is reported is, to Lighthouse, a dependency of it. React's copy is then the same size, never larger. (The home page's LCP is its
+// still, whose on-screen size is held to the viewport on phones; see `pages/index.tsx`.)
+// A landing page's last step: start the bundle once the swapped-in copy's paint has been reported as
+// a new LCP entry, or after 150 ms if it never is (the copy was not larger than what the fallback
+// font painted, so it is not a candidate and its paint cannot be delayed by the bundle). Where LCP
+// entries are not supported, two frames.
+const LANDING_FIN =
+  `function(){setTimeout(go,150);try{var q=new PerformanceObserver(function(l){if(l.getEntries().some(function(x){return x.startTime>=T})){q.disconnect();go()}});` +
+  `q.observe({type:"largest-contentful-paint",buffered:true})}catch(e){requestAnimationFrame(function(){requestAnimationFrame(function(){setTimeout(go,0)})})}}`;
+
 function deferAppEntry(html: string, waitForImage: boolean): string {
   const entry = html.match(/<script type="module" crossorigin(?:="")? src="([^"]+)"><\/script>/);
   if (!entry) return html;
@@ -196,10 +214,20 @@ function deferAppEntry(html: string, waitForImage: boolean): string {
     `<script>(function(){var s=0;function go(){if(s)return;s=1;var h=document.head;` +
     `${JSON.stringify(preloads)}.forEach(function(u){var l=document.createElement("link");l.rel="modulepreload";l.crossOrigin="";l.href=u;h.appendChild(l)});` +
     `var e=document.createElement("script");e.type="module";e.crossOrigin="";e.src=${JSON.stringify(entry[1])};h.appendChild(e)}` +
-    `function start(){if(!document.getElementById("first-paint"))return go();setTimeout(go,1500);` +
+    `function start(){var f=document.getElementById("first-paint");if(!f)return go();setTimeout(go,1500);` +
+    // `done` is called once per condition; the bundle starts when the last one is met.
+    `var n=1,T=0,fin=${waitForImage ? "go" : LANDING_FIN};function done(){if(--n===0)fin()}` +
+    (waitForImage
+      ? ""
+      : // Landing pages: also wait for the web fonts the shell's copy uses (subsets picked by its
+        // own text), then swap the shell for a fresh copy of itself so that copy is painted in the
+        // web fonts. See the note above `deferAppEntry` for why.
+        `var D=document.fonts;if(D&&D.load){n++;var t=f.textContent;` +
+        `Promise.all(["16px Manrope","700 16px Sora",'16px "JetBrains Mono"'].map(function(x){return D.load(x,t).catch(function(){})})).then(function(){` +
+        `var g=document.getElementById("first-paint");if(g)g.replaceWith(g.cloneNode(true));T=performance.now();done()})}`) +
     `var P=window.PerformanceObserver;if(P&&P.supportedEntryTypes&&P.supportedEntryTypes.indexOf("largest-contentful-paint")>=0){` +
-    `try{new P(function(l){if(l.getEntries().some(function(x){return ${waitForImage ? "x.url" : "true"}}))go()}).observe({type:"largest-contentful-paint",buffered:true});return}catch(e){}}` +
-    `requestAnimationFrame(function(){setTimeout(go,0)})}` +
+    `try{var o=new P(function(l){if(l.getEntries().some(function(x){return ${waitForImage ? "x.url" : "true"}})){o.disconnect();done()}});o.observe({type:"largest-contentful-paint",buffered:true});return}catch(e){}}` +
+    `requestAnimationFrame(function(){setTimeout(done,0)})}` +
     `if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",start);else start()})()</script>`;
   out = appendToHead(out, loader);
   return out;

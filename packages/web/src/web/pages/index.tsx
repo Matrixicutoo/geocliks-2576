@@ -199,12 +199,17 @@ function Hero() {
           `object-cover` has little left to crop and the faces at the edges of frame
           survive: 56.25vw is 16:9 exactly, and the 92vh ceiling is what stops a
           cinema-wide monitor from getting a hero taller than its screen. `min-h`
-          rather than a fixed aspect so the band can still grow under the copy. */}
+          rather than a fixed aspect so the band can still grow under the copy.
+          On a phone the band always runs past the bottom of the screen (`max-sm:min-h`), so the
+          still's on-screen area is the viewport, not the copy's height. Without it the static
+          shell's still — painted before the web fonts, with shorter fallback-font copy — was
+          smaller than this one, and this copy became a later, larger LCP after the bundle ran.
+          KEEP IN STEP with the shell in `lib/first-paint.ts`. */}
       <motion.div
         variants={stagger}
         initial={skipIntro ? false : "hidden"}
         animate="show"
-        className="relative mx-auto flex max-w-[1180px] flex-col items-center justify-center px-5 py-20 text-center lg:min-h-[min(56.25vw,92vh)] lg:py-24"
+        className="relative mx-auto flex max-w-[1180px] flex-col items-center justify-center px-5 py-20 text-center max-sm:min-h-[calc(100svh_-_3rem)] lg:min-h-[min(56.25vw,92vh)] lg:py-24"
       >
         {/* 820 rather than 720: the body copy is four lines of it, and the narrower block broke
             "network-verified timestamp" across a line in the one sentence that has to land. */}

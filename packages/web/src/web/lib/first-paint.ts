@@ -175,7 +175,7 @@ export function firstPaintShell(pathname: string, locale: LocaleCode): string {
     `<picture class="contents"><source media="(max-width: 639px)" type="image/webp" srcset="/videos/hero-poster-portrait.webp"><source media="(min-aspect-ratio: 37/20)" srcset="/videos/hero-poster-wide.jpg">` +
     `<img alt="${t("home.hero.stillAlt")}" aria-hidden="true" class="hero-still pointer-events-none absolute inset-0 size-full object-cover" fetchpriority="high" src="/videos/hero-poster-16x9.jpg"></picture>` +
     `<div class="hero-veil pointer-events-none absolute inset-0"></div>` +
-    `<div class="relative mx-auto flex max-w-[1180px] flex-col items-center justify-center px-5 py-20 text-center lg:min-h-[min(56.25vw,92vh)] lg:py-24"><div class="max-w-[820px]">` +
+    `<div class="relative mx-auto flex max-w-[1180px] flex-col items-center justify-center px-5 py-20 text-center max-sm:min-h-[calc(100svh_-_3rem)] lg:min-h-[min(56.25vw,92vh)] lg:py-24"><div class="max-w-[820px]">` +
     `<p class="rounded-[6px] mono inline-flex items-center gap-2 border border-amber/40 bg-amber/10 px-2.5 py-1 text-[11.5px] uppercase tracking-[0.2em] text-amber-ink">${SHIELD} ${t("home.hero.eyebrow")}</p>` +
     `<div class="mt-6 font-display text-[46px] font-extrabold leading-[1.03] tracking-tight text-chalk sm:text-[64px]">${t("home.hero.title1")}<br><span class="text-amber-ink">${t("home.hero.title2")}</span></div>` +
     `<p class="mx-auto mt-6 max-w-[760px] text-[19px] leading-relaxed text-fog">${t("home.hero.body")}</p>` +
