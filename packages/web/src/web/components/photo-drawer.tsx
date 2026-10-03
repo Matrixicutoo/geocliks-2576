@@ -25,6 +25,7 @@ import { useOrg } from "../queries/orgs";
 import { formatCoords, formatStamp, TAG_LABEL, VerifiedBadge } from "./evidence-card";
 import { EvidenceMap } from "./evidence-map";
 import { PhotoShareButton } from "./share-menu";
+import { PhotoViewer } from "./photo-viewer";
 import { canManageWorkspace, canUseField } from "../lib/roles";
 
 const EVENT_LABEL: Record<string, TKey> = {
@@ -76,6 +77,8 @@ export function PhotoDrawer({ photoId, onClose }: { photoId: string | null; onCl
   const canFile = canUseField(org.data?.role);
   const projects = useProjects(undefined, { enabled: canFile });
   const [confirmDelete, setConfirmDelete] = useState(false);
+  /** The full-screen original (download, zoom, flip). Photos and clips only. */
+  const [viewing, setViewing] = useState(false);
   /**
    * Evidence files are built on demand, so the click has to survive the round trip: `building`
    * tracks which of the two buttons is waiting, and the result opens in a new tab because the
@@ -86,6 +89,13 @@ export function PhotoDrawer({ photoId, onClose }: { photoId: string | null; onCl
   const [building, setBuilding] = useState<"pdf" | "image" | null>(null);
   /** Field crews capture evidence; only manager and above can remove it. */
   const canDelete = canManageWorkspace(org.data?.role);
+
+  // A different capture opened from the list starts with the viewer shut.
+  const [viewingFor, setViewingFor] = useState(photoId);
+  if (viewingFor !== photoId) {
+    setViewingFor(photoId);
+    setViewing(false);
+  }
 
   if (!photoId) return null;
 
@@ -158,7 +168,14 @@ export function PhotoDrawer({ photoId, onClose }: { photoId: string | null; onCl
                   </span>
                 </a>
               ) : (
-                <img src={data.url} alt={data.note ?? ""} className="w-full object-cover" />
+                <button
+                  type="button"
+                  onClick={() => setViewing(true)}
+                  aria-label={t("viewer.open")}
+                  className="block w-full cursor-zoom-in"
+                >
+                  <img src={data.url} alt={data.note ?? ""} className="w-full object-cover" />
+                </button>
               )}
               <div className="absolute inset-x-0 bottom-0 flex items-stretch bg-black/72">
                 <div className="w-[3px] bg-amber" />
@@ -402,19 +419,27 @@ export function PhotoDrawer({ photoId, onClose }: { photoId: string | null; onCl
                   {isDocument ? t("download.stampedDoc") : t("download.stamped")}
                 </button>
                 {/* The untouched original stays one click away: some workflows need the exact
-                    bytes the hash was taken over, not a re-encoded copy. */}
-                <a
-                  href={data.url}
-                  download={
-                    data.kind === "document"
-                      ? (data.fileName ?? `${data.photoCode}.pdf`)
-                      : `${data.photoCode}.${data.kind === "video" ? "mp4" : "jpg"}`
-                  }
-                  className="mono flex items-center gap-2 rounded-[8px] border border-line px-3 py-2 text-[10.5px] uppercase tracking-widest text-fog transition-colors hover:border-amber/60 hover:text-amber-ink"
-                >
-                  <Download className="size-3.5" />
-                  {t("download.raw")}
-                </a>
+                    bytes the hash was taken over, not a re-encoded copy. A photo or clip opens in
+                    the in-app viewer (download, zoom, flip, Back); a scan's PDF keeps its plain link. */}
+                {isDocument ? (
+                  <a
+                    href={data.url}
+                    download={data.fileName ?? `${data.photoCode}.pdf`}
+                    className="mono flex items-center gap-2 rounded-[8px] border border-line px-3 py-2 text-[10.5px] uppercase tracking-widest text-fog transition-colors hover:border-amber/60 hover:text-amber-ink"
+                  >
+                    <Download className="size-3.5" />
+                    {t("download.raw")}
+                  </a>
+                ) : (
+                  <button
+                    type="button"
+                    onClick={() => setViewing(true)}
+                    className="mono flex items-center gap-2 rounded-[8px] border border-line px-3 py-2 text-[10.5px] uppercase tracking-widest text-fog transition-colors hover:border-amber/60 hover:text-amber-ink"
+                  >
+                    <Download className="size-3.5" />
+                    {t("download.raw")}
+                  </button>
+                )}
               </div>
               {evidence.isError && (
                 <p className="mono mt-2 text-[10.5px] uppercase tracking-widest text-alert">
@@ -505,6 +530,18 @@ export function PhotoDrawer({ photoId, onClose }: { photoId: string | null; onCl
           </div>
         )}
       </div>
+      {viewing && data && data.kind !== "document" && (
+        <PhotoViewer
+          key={data.id}
+          kind={data.kind === "video" ? "video" : "photo"}
+          src={data.url}
+          poster={data.posterUrl}
+          downloadName={`${data.photoCode}.${data.kind === "video" ? "mp4" : "jpg"}`}
+          code={data.photoCode}
+          alt={data.note ?? data.photoCode}
+          onClose={() => setViewing(false)}
+        />
+      )}
     </div>
   );
 }

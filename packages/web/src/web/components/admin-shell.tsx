@@ -63,7 +63,7 @@ export function AdminShell({
                 <p className="mt-0.5 line-clamp-2 text-[12px] text-fog sm:text-[13px]">{subtitle}</p>
               )}
             </div>
-            <div className="flex shrink-0 flex-wrap items-center justify-end gap-2">
+            <div className="flex max-w-full shrink-0 flex-wrap items-center justify-end gap-2">
               {actions}
               <LanguageSelect compact tone="amber" />
             </div>

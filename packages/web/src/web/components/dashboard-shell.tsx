@@ -215,7 +215,7 @@ export function DashboardShell({
                 </p>
               )}
             </div>
-            <div className="flex shrink-0 flex-wrap items-center justify-end gap-2">
+            <div className="flex max-w-full shrink-0 flex-wrap items-center justify-end gap-2">
               {actions}
               {/* What happened while you were away: teammate messages and new captures,
                   counted on the bell and listed in its dropdown. The desktop-popup switch
