@@ -159,7 +159,7 @@ export function DashboardShell({
             "--c-line": "#2e4670",
           } as React.CSSProperties
         }
-        className="sticky top-0 hidden h-screen w-[248px] shrink-0 flex-col overflow-y-auto border-r border-line bg-ink-2 text-chalk lg:flex"
+        className="sticky top-0 hidden h-screen w-[268px] shrink-0 flex-col overflow-y-auto border-r border-line bg-ink-2 text-chalk lg:flex"
       >
         {/* Brand block matches the page header: same dark bar, same height. Inside the
             workspace this corner carries the *workspace's* logo and company name rather than

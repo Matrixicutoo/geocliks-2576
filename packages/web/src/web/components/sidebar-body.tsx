@@ -1,3 +1,4 @@
+import { type RefObject, useLayoutEffect, useRef, useState } from "react";
 import { Link, useLocation } from "wouter";
 import {
   Camera,
@@ -29,6 +30,59 @@ function initials(name: string | null | undefined, email: string | null | undefi
   const parts = source.split(/[\s._-]+/).filter(Boolean);
   const letters = (parts[0]?.[0] ?? "") + (parts[1]?.[0] ?? "");
   return letters.toUpperCase() || source.slice(0, 2).toUpperCase();
+}
+
+/**
+ * Hrefs whose label will not fit on one line in a half-width tile, so that tile takes the full
+ * row instead of wrapping. English fits two-up everywhere; several translations
+ * ("Links de compartilhamento") cannot at any readable size, and a full-width tile keeps them on
+ * one line without shortening the copy.
+ *
+ * Measured with a canvas at the bold weight the active tile uses, so a tile never jumps between
+ * one and two columns when it becomes the current page. Re-measured when the menu resizes, the
+ * language changes, the unread badge appears, or the web fonts finish loading.
+ */
+function useWideTiles(
+  navRef: RefObject<HTMLElement | null>,
+  items: { href: string; text: string }[],
+  badgeHref: string | null,
+): Set<string> {
+  const [wide, setWide] = useState<Set<string>>(new Set());
+  const signature = items.map((i) => i.text).join("|") + `#${badgeHref ?? ""}`;
+
+  useLayoutEffect(() => {
+    const nav = navRef.current;
+    if (!nav) return;
+    const ctx = document.createElement("canvas").getContext("2d");
+    if (!ctx) return;
+
+    const measure = () => {
+      const style = getComputedStyle(nav);
+      ctx.font = `700 12px ${style.fontFamily}`;
+      // Grid padding 8px each side, 6px column gap; tile chrome is the 2px edge, 8px padding
+      // each side, the 16px icon and its 6px gap.
+      const tile = (nav.clientWidth - 16 - 6) / 2;
+      const room = tile - 2 - 16 - 16 - 6;
+      const next = new Set<string>();
+      for (const item of items) {
+        const badge = item.href === badgeHref ? 28 : 0;
+        if (ctx.measureText(item.text).width + badge > room) next.add(item.href);
+      }
+      setWide((prev) =>
+        prev.size === next.size && [...next].every((h) => prev.has(h)) ? prev : next,
+      );
+    };
+
+    measure();
+    document.fonts?.ready.then(measure).catch(() => {});
+    const observer = new ResizeObserver(measure);
+    observer.observe(nav);
+    return () => observer.disconnect();
+    // `signature` stands in for `items`, which is a fresh array every render.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [navRef, signature]);
+
+  return wide;
 }
 
 /**
@@ -73,6 +127,13 @@ export function SidebarBody({
   const unread = useUnreadMessages();
   const { theme, toggle } = useTheme();
   const { t } = useLocale();
+  const navRef = useRef<HTMLElement>(null);
+  const unreadTotal = unread.data?.total ?? 0;
+  const wide = useWideTiles(
+    navRef,
+    nav.map((item) => ({ href: item.href, text: t(item.label) })),
+    unreadTotal > 0 ? "/app/messages" : null,
+  );
 
   return (
     <>
@@ -129,8 +190,10 @@ export function SidebarBody({
 
         {/* Two columns of tiles, the same shape the mobile drawer uses. The yellow list must
             never scroll inside itself — two columns halve its height, and any overflow at
-            freak window heights is handled by the aside. */}
-        <nav className="grid shrink-0 grid-cols-2 gap-1.5 p-2">
+            freak window heights is handled by the aside. A label too long for half a row takes
+            the whole row (see `useWideTiles`), and dense flow lets the next short tile fill the
+            gap it would otherwise leave. */}
+        <nav ref={navRef} className="grid shrink-0 grid-flow-row-dense grid-cols-2 gap-1.5 p-2">
           {nav.map((item) => {
             const active =
               item.href === "/app" ? location === "/app" : location.startsWith(item.href);
@@ -140,7 +203,10 @@ export function SidebarBody({
                 key={item.href}
                 to={item.href}
                 className={cn(
-                  "flex items-center rounded-[8px] gap-2 border-l-2 bg-amber px-2.5 py-1.5 text-[12px] leading-tight text-on-amber",
+                  // One line per label, always: `whitespace-nowrap` holds it, and a label that
+                  // cannot fit half a row gets the full row instead of wrapping.
+                  wide.has(item.href) && "col-span-2",
+                  "flex items-center rounded-[8px] gap-1.5 border-l-2 bg-amber px-2 py-2 text-[12px] leading-tight whitespace-nowrap text-on-amber",
                   // Orange fill on every tile, so the pointer needs its own answer: the fill
                   // deepens and an ink hairline rings the tile. `amber-hover` stays light
                   // enough for the ink label, which `amber-deep` is not.
@@ -151,7 +217,9 @@ export function SidebarBody({
                 )}
               >
                 <item.icon className="size-4 shrink-0 text-on-amber" />
-                <span className="min-w-0 flex-1">{t(item.label)}</span>
+                <span className="min-w-0 flex-1 truncate" title={t(item.label)}>
+                  {t(item.label)}
+                </span>
                 {item.href === "/app/messages" && (unread.data?.total ?? 0) > 0 && (
                   <span className="rounded-[6px] bg-on-amber px-1.5 text-[11px] font-bold text-amber">
                     {unread.data?.total}
@@ -174,7 +242,7 @@ export function SidebarBody({
                 // Full width across both columns: inviting is the one action here that is not
                 // a destination, and the wider tile keeps it from reading as a sixth nav item.
                 // Centred rather than left-aligned, so it reads as a button instead of a row.
-                "col-span-2 flex items-center justify-center rounded-[8px] gap-2 border-l-2 border-transparent bg-amber px-2.5 py-1.5 text-center text-[12px] font-medium leading-tight text-on-amber",
+                "col-span-2 flex items-center justify-center rounded-[8px] gap-2 border-l-2 border-transparent bg-amber px-2.5 py-2 text-center text-[12px] font-medium leading-tight whitespace-nowrap text-on-amber",
                 amberFill,
               )}
             >
