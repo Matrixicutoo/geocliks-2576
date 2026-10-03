@@ -4,11 +4,12 @@ import {
   useContext,
   useEffect,
   useMemo,
+  useRef,
   useState,
 } from "react";
 import { type LocaleCode, asLocale, isRtl } from "../../api/lib/locales";
 import { isLocalizedPath, splitLocalePath } from "./locale-url";
-import { type TKey, CATALOGS, fill } from "./catalogs";
+import { type TKey, catalogFor, fill, hasCatalog, loadCatalog } from "./catalogs";
 import { en } from "../i18n/en";
 
 // The catalogs and the `{name}` substitution moved to `catalogs.ts`, which is
@@ -90,6 +91,12 @@ const fromPath = (): LocaleCode | null => {
 
 let active: LocaleCode = fromPath() ?? fromQuery() ?? read() ?? "en";
 
+// Start fetching the first locale's catalog the moment this module runs, in
+// parallel with the rest of the boot, rather than waiting for React to mount.
+// (The workspace default can still name another language later; that one loads
+// when it is asked for.)
+void loadCatalog(active);
+
 export const activeLocale = (): LocaleCode => active;
 
 export type Translate = (
@@ -127,7 +134,29 @@ export function I18nProvider({ children }: { children: React.ReactNode }) {
   // re-read by the load that follows rather than changing underneath React.
   const pathLocale = fromPath();
 
-  const locale = pathLocale ?? override ?? workspace;
+  const wanted = pathLocale ?? override ?? workspace;
+
+  // Only English ships in the entry bundle (see `catalogs.ts`). Until the wanted
+  // catalog arrives, keep rendering the last language that is loaded — a picker
+  // change shows the old language for a moment rather than a flash of English —
+  // and on the very first load render nothing, so a German visitor never sees
+  // English first.
+  const [, setLoads] = useState(0);
+  const ready = hasCatalog(wanted);
+  const shownRef = useRef<LocaleCode | null>(ready ? wanted : null);
+  if (ready) shownRef.current = wanted;
+  const locale = shownRef.current ?? wanted;
+  useEffect(() => {
+    if (ready) return;
+    let live = true;
+    void loadCatalog(wanted).then(() => {
+      if (live) setLoads((n) => n + 1);
+    });
+    return () => {
+      live = false;
+    };
+  }, [wanted, ready]);
+
   const rtl = isRtl(locale);
 
   useEffect(() => {
@@ -213,7 +242,7 @@ export function I18nProvider({ children }: { children: React.ReactNode }) {
   const t = useCallback<Translate>(
     (key, vars) => {
       // Fall back to English rather than ever rendering a raw key.
-      const table = CATALOGS[locale] ?? en;
+      const table = catalogFor(locale);
       return fill(table[key] ?? en[key] ?? key, vars);
     },
     [locale],
@@ -233,6 +262,7 @@ export function I18nProvider({ children }: { children: React.ReactNode }) {
     [locale, override, workspace, rtl, t, setLocale, useWorkspaceDefault],
   );
 
+  if (shownRef.current === null) return null;
   return <I18nContext.Provider value={value}>{children}</I18nContext.Provider>;
 }
 

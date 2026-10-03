@@ -74,8 +74,7 @@ import { AdminRoute } from "./components/admin-route";
 import { PublicOnlyRoute } from "./components/public-only-route";
 import { StaffRoute } from "./components/staff-route";
 import { Provider } from "./components/provider";
-import { ChatWidget } from "./components/chat-widget";
-import { ChatDock } from "./components/chat-dock";
+import { AfterLoad } from "./components/after-load";
 import { RouteSeo } from "./components/route-seo";
 import { useAssistantDocked } from "./lib/assistant";
 import { SITE_SCROLL_ID } from "./lib/site-scroll";
@@ -84,6 +83,16 @@ import { AgentFeedback } from "@runablehq/website-runtime";
 // Colourless, full-height placeholder: it inherits whatever the surrounding
 // theme is, so a chunk fetch never flashes a wrong-coloured screen.
 const routeFallback = <div className="min-h-screen" />;
+
+// The assistant and the crew chat dock are mounted after the page has loaded (see
+// `AfterLoad`), so their code — the AI SDK, zod and the map bindings among it —
+// stays out of the bundle every first visit has to download.
+const ChatWidget = lazy(() =>
+  import("./components/chat-widget").then((m) => ({ default: m.ChatWidget })),
+);
+const ChatDock = lazy(() =>
+  import("./components/chat-dock").then((m) => ({ default: m.ChatDock })),
+);
 
 /**
  * The router base for the URL this document was loaded at — `/es`, or `""` for
@@ -384,11 +393,15 @@ function App() {
         </div>
         {/* Outside the Switch, so the transcript survives navigation between the public site and
             the workspace. It hides itself on /admin and on plans without it. */}
-        <ChatWidget />
+        <AfterLoad>
+          <ChatWidget />
+        </AfterLoad>
       </div>
       {/* Crew chat, docked bottom-right. Outside the Switch and outside the assistant's column
           so an open thread survives every navigation inside the workspace. */}
-      <ChatDock />
+      <AfterLoad>
+        <ChatDock />
+      </AfterLoad>
       {/* Renders nothing. Keeps the private routes out of the search index from one place,
           outside the Switch so it sees every navigation. */}
       <RouteSeo />

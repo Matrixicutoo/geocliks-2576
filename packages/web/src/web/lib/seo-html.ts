@@ -27,9 +27,18 @@ import {
   splitLocalePath,
 } from "./locale-url";
 import { translate } from "./catalogs";
+// Server-side, every language must be readable synchronously; the browser loads one at a time.
+import "./catalogs-all";
 import type { LocaleCode } from "../../api/lib/locales";
 import { marketingJsonLd } from "./page-schema";
 import { SITE_URL, seoForPath } from "./seo-routes";
+
+/** Keep in step with the hero <picture> in `pages/index.tsx`. */
+const HERO_PRELOADS = [
+  `<link rel="preload" as="image" type="image/webp" href="/videos/hero-poster-portrait.webp" media="(max-width: 639px)" fetchpriority="high" />`,
+  `<link rel="preload" as="image" href="/videos/hero-poster-wide.jpg" media="(min-width: 640px) and (min-aspect-ratio: 37/20)" fetchpriority="high" />`,
+  `<link rel="preload" as="image" href="/videos/hero-poster-16x9.jpg" media="(min-width: 640px) and (max-aspect-ratio: 37/20)" fetchpriority="high" />`,
+].join("");
 
 /**
  * The public pages every crawler-readable fallback links to, so a crawler that does not run
@@ -250,6 +259,16 @@ export function injectSeoIntoHtml(html: string, pathname: string): string {
         )}" />`,
       );
     }
+  }
+
+  // The home hero's still is the page's LCP element, but React renders it, so the
+  // browser would not ask for it until the whole bundle had downloaded and run —
+  // on a throttled phone that was five seconds of nothing. Preloading it from the
+  // document starts the fetch alongside the stylesheet. One link per cut, with
+  // media queries mirroring the <picture> sources in `pages/index.tsx`, so each
+  // device fetches exactly the one file it will paint.
+  if (path === "/") {
+    out = appendToHead(out, HERO_PRELOADS);
   }
 
   // Structured data, for the crawlers that read the response and never run the

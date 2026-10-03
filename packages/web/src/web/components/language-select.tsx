@@ -78,12 +78,16 @@ export function LanguageSelect({
     };
   }, [open]);
 
+  const shown = bare ? current.code.split("-")[0] : compact ? current.code : current.native;
+
   return (
     <div ref={wrap} className="relative">
       <button
         type="button"
         onClick={() => setOpen((v) => !v)}
-        aria-label={t("language.title")}
+        // Starts with the visible text: a voice-control user says what they see ("click En"),
+        // which only works when the accessible name contains it.
+        aria-label={`${shown} — ${t("language.title")}`}
         aria-expanded={open}
         className={cn(
           "flex items-center gap-1.5",
@@ -111,7 +115,7 @@ export function LanguageSelect({
           )}
         />
         <span className={cn("truncate", bare ? "capitalize" : "mono uppercase tracking-widest")}>
-          {bare ? current.code.split("-")[0] : compact ? current.code : current.native}
+          {shown}
         </span>
         {bare && <ChevronDown className="size-3.5" />}
       </button>

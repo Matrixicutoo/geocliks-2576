@@ -19,6 +19,7 @@ import {
   Bell,
 } from "lucide-react";
 import { type TKey, useLocale, useT } from "../lib/i18n";
+import { ResponsiveImg } from "../components/responsive-img";
 import { SiteFooter } from "../components/site-footer";
 import { SiteNav } from "../components/site-nav";
 import { scrollSiteToId } from "../lib/site-scroll";
@@ -108,6 +109,9 @@ function useHeroFootage() {
   return cut;
 }
 
+/** Centre 810x1080 of the 16:9 poster: what a phone's portrait band actually shows. */
+const HERO_PORTRAIT_POSTER = "/videos/hero-poster-portrait.webp";
+
 function Hero() {
   const t = useT();
   const cut = useHeroFootage();
@@ -126,6 +130,13 @@ function Hero() {
           stylesheet has parsed. In the markup it is fetched with the document —
           and `media` picks the right cut before React has even run. */}
       <picture className="contents">
+        {/* Phones get a portrait crop of the same still. On a phone the band is
+            taller than it is wide, so `object-cover` only ever showed the middle
+            third of the 16:9 frame; this is that third, at the source's own
+            resolution, as WebP — about a third of the bytes for the same pixels
+            on screen. `seo-html.ts` preloads whichever of these three matches,
+            so the media queries there must stay in step with these. */}
+        <source media="(max-width: 639px)" type="image/webp" srcSet={HERO_PORTRAIT_POSTER} />
         <source media="(min-aspect-ratio: 37/20)" srcSet={HERO_CUTS.wide.poster} />
         {/* The `alt` describes the shot rather than being empty, because this file
             is a real photograph and the site's largest image, so it is worth
@@ -339,33 +350,37 @@ function Teamspace() {
             {[
               {
                 file: "fiber-technician.jpg",
+                widths: [400, 800],
                 alt: "home.samples.altFiber" as TKey,
                 code: "GC-7QM4-18RT-04KP",
               },
               {
                 file: "construction-framing.jpg",
+                widths: [400, 571],
                 alt: "home.samples.altConstruction" as TKey,
                 code: "GC-2XD9-73BV-51HN",
               },
               {
                 file: "property-walkthrough.jpg",
+                widths: [400, 533],
                 alt: "home.samples.altProperty" as TKey,
                 code: "GC-9FA6-20LC-88YW",
               },
               {
                 file: "hvac-install.jpg",
+                widths: [400, 450],
                 alt: "home.samples.altHvac" as TKey,
                 code: "GC-4RJ1-65NE-37TQ",
               },
             ].map((shot) => (
               <div key={shot.file} className="rounded-[12px] border border-line bg-ink-2 p-1.5">
                 <div className="relative overflow-hidden">
-                  <img
+                  <ResponsiveImg
                     src={`/images/samples/${shot.file}`}
+                    widths={shot.widths}
+                    sizes="(min-width: 1180px) 270px, (min-width: 1024px) 23vw, 46vw"
                     alt={t(shot.alt)}
                     className="aspect-square w-full object-cover"
-                    loading="lazy"
-                    decoding="async"
                   />
                   <div className="absolute inset-x-0 bottom-0 flex items-stretch bg-black/70">
                     <div className="w-[2px] bg-amber" />
@@ -420,12 +435,14 @@ function Reports() {
             {[
               {
                 file: "roof-damage.jpg",
+                widths: [400, 800],
                 tag: "BEFORE",
                 label: "tag.before" as TKey,
                 alt: "home.compare.altBefore" as TKey,
               },
               {
                 file: "roof-replaced.jpg",
+                widths: [400, 800],
                 tag: "AFTER",
                 label: "tag.after" as TKey,
                 alt: "home.compare.altAfter" as TKey,
@@ -433,15 +450,15 @@ function Reports() {
               /* label is the badge burned over the corner of the image, alt is what a
                  crawler and a screen reader get. They were the same string until the alt
                  said only "Before", which describes nothing about the roof in the frame. */
-            ].map(({ file, tag, label, alt }) => (
+            ].map(({ file, widths, tag, label, alt }) => (
               <div key={file} className="rounded-[12px] border border-line bg-ink-2 p-2">
                 <div className="relative overflow-hidden">
-                  <img
+                  <ResponsiveImg
                     src={`/images/samples/${file}`}
+                    widths={widths}
+                    sizes="(min-width: 1180px) 300px, (min-width: 1024px) 26vw, (min-width: 640px) 46vw, 92vw"
                     alt={t(alt)}
                     className="aspect-[3/4] w-full object-cover"
-                    loading="lazy"
-                    decoding="async"
                   />
                   <span className="rounded-[6px] mono absolute left-2 top-2 bg-amber px-1.5 py-0.5 text-[9.5px] font-bold uppercase tracking-widest text-on-amber">
                     {t(label)}
@@ -605,12 +622,12 @@ function Delivery() {
             <p className="mt-4 text-[16px] leading-relaxed text-fog">{t("home.delivery.intro")}</p>
           </div>
           <div className="rounded-[12px] border border-line bg-ink-2 p-2">
-            <img
+            <ResponsiveImg
               src="/images/delivery/doorstep-proof.jpg"
+              widths={[600, 1200]}
+              sizes="(min-width: 1180px) 570px, (min-width: 1024px) 48vw, 92vw"
               alt={t("home.delivery.heroAlt")}
               className="aspect-[4/3] w-full rounded-[8px] object-cover"
-              loading="lazy"
-              decoding="async"
             />
           </div>
         </div>
@@ -636,12 +653,12 @@ function Delivery() {
                 key={tile.file}
                 className="overflow-hidden rounded-[12px] border border-line bg-ink-2"
               >
-                <img
+                <ResponsiveImg
                   src={`/images/delivery/${tile.file}`}
+                  widths={[600, 1200]}
+                  sizes="(min-width: 1180px) 375px, (min-width: 640px) 31vw, 92vw"
                   alt={t(tile.alt)}
                   className="aspect-[4/3] w-full object-cover"
-                  loading="lazy"
-                  decoding="async"
                 />
                 <div className="px-4 py-3.5">
                   <h3 className="font-display text-[15px] font-semibold text-chalk">
@@ -761,13 +778,16 @@ export default function Index() {
   return (
     <div data-theme="light" id="top" className="min-h-screen bg-ink text-chalk">
       <SiteNav />
-      <Hero />
-      <Evidence />
-      <Teamspace />
-      <Reports />
-      <Delivery />
-      <Field />
-      <Pricing />
+      {/* The page's own content, as a landmark: screen-reader users jump to it past the nav. */}
+      <main>
+        <Hero />
+        <Evidence />
+        <Teamspace />
+        <Reports />
+        <Delivery />
+        <Field />
+        <Pricing />
+      </main>
       <SiteFooter />
     </div>
   );

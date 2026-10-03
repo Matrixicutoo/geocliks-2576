@@ -55,7 +55,10 @@ const server = Bun.serve({
     const filePath = getStaticFilePath(url.pathname);
     if (filePath) {
       const file = Bun.file(filePath);
-      if (await file.exists()) return new Response(file);
+      if (await file.exists()) {
+        const cache = cacheControlFor(url.pathname);
+        return new Response(file, cache ? { headers: { "Cache-Control": cache } } : undefined);
+      }
     }
 
     return renderShell(url.pathname);
@@ -69,4 +72,26 @@ function getStaticFilePath(pathname: string): string | null {
   const cleanPath = decodeURIComponent(pathname).replace(/^\/+/, "").replaceAll("..", "");
 
   return cleanPath ? `${distDir}/${cleanPath}` : null;
+}
+
+/**
+ * How long a browser may keep a static file.
+ *
+ * With no header of our own, Cloudflare stamped everything with four hours, so a
+ * returning visitor re-downloaded the whole bundle every afternoon. Vite names
+ * every file in `/assets` after a hash of its contents — a changed file is a new
+ * URL — so those can be kept for a year and never revalidated. Fonts keep fixed
+ * names but are only ever replaced by renaming, so they get the same. Images and
+ * video keep their names when edited, so they get a week, revalidated in the
+ * background. Everything else (robots.txt, the sitemap, llms.txt) is left to the
+ * default, because a crawler should see an edit to those the same day.
+ */
+function cacheControlFor(pathname: string): string | null {
+  if (pathname.startsWith("/assets/") || pathname.startsWith("/fonts/")) {
+    return "public, max-age=31536000, immutable";
+  }
+  if (/^\/(images|videos)\//.test(pathname) || /\.(png|jpe?g|webp|avif|svg|ico|mp4|webm)$/i.test(pathname)) {
+    return "public, max-age=604800, stale-while-revalidate=86400";
+  }
+  return null;
 }
