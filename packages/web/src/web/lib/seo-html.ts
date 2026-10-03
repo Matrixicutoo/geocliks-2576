@@ -26,8 +26,73 @@ import {
   localizedPath,
   splitLocalePath,
 } from "./locale-url";
+import { translate } from "./catalogs";
+import type { LocaleCode } from "../../api/lib/locales";
 import { marketingJsonLd } from "./page-schema";
 import { SITE_URL, seoForPath } from "./seo-routes";
+
+/**
+ * The public pages every crawler-readable fallback links to, so a crawler that does not run
+ * JavaScript can still walk from any page to the rest of the site (Bing Site Scan stopped at the
+ * home page because the shell had no links at all).
+ */
+const FALLBACK_LINKS = [
+  "/",
+  "/pricing",
+  "/get-app",
+  "/construction-photo-documentation",
+  "/roofing-photo-documentation",
+  "/hvac-photo-documentation",
+  "/property-inspection-photos",
+  "/proof-of-delivery",
+  "/gps-timestamp-camera",
+  "/can-photo-timestamps-be-faked",
+  "/alternatives/companycam",
+  "/alternatives/timemark",
+  "/blog",
+  "/help",
+  "/about",
+] as const;
+
+/** A route title without the brand suffix — "Pricing — GeoCliks" reads as "Pricing". */
+function headingFromTitle(title: string): string {
+  return title.replace(/\s+[—|–-]\s+GeoCliks\s*$/i, "").trim() || title;
+}
+
+/**
+ * Plain HTML written into `<div id="root">` for a crawler that reads the response and never runs
+ * the JavaScript: the page's H1, its intro line and links to the rest of the site.
+ *
+ * It is the same copy the page renders — on the home page literally the same H1 text — so a
+ * crawler and a visitor are told the same thing. `createRoot().render()` replaces the contents of
+ * #root on mount, so a visitor never sees it (on a slow connection it can show briefly before the
+ * bundle runs, so it carries its own inline styles).
+ */
+function bodyFallback(path: string, locale: LocaleCode, title: string, description: string): string {
+  const home = path === "/";
+  const h1 = home
+    ? `${translate(locale, "home.hero.h1Seo")}. ${translate(locale, "home.hero.title1")} ${translate(locale, "home.hero.title2")}`
+    : headingFromTitle(title);
+  const intro = home ? translate(locale, "home.hero.body") : description;
+  const links = FALLBACK_LINKS.filter((href) => href !== path)
+    .map((href) => {
+      const target = seoForPath(href, locale);
+      if (!target.title) return "";
+      const url = locale !== "en" && isLocalizedPath(href) ? localizedPath(href, locale) : href;
+      return `<li style="margin:6px 0"><a style="color:var(--c-amber-deep,var(--c-amber))" href="${attr(url)}">${text(headingFromTitle(target.title))}</a></li>`;
+    })
+    .filter(Boolean)
+    .join("");
+  // Inline styles because this paints before the bundle (and its Tailwind classes) are in play:
+  // on a slow phone it can be on screen for a moment, so it is laid out as a quiet, readable page
+  // in the site's colours rather than raw browser defaults.
+  return (
+    `<main style="max-width:760px;margin:0 auto;padding:64px 20px;font-family:Manrope,system-ui,sans-serif;color:var(--c-fog);line-height:1.6">` +
+    `<h1 style="font-family:Sora,Manrope,system-ui,sans-serif;font-size:30px;line-height:1.15;color:var(--c-chalk);margin:0 0 16px">${text(h1)}</h1>` +
+    `<p style="font-size:16px;margin:0 0 28px">${text(intro)}</p>` +
+    `<nav><ul style="list-style:none;padding:0;margin:0;font-size:14px">${links}</ul></nav></main>`
+  );
+}
 
 /** Escapes a value going into a double-quoted HTML attribute. */
 function attr(value: string): string {
@@ -202,6 +267,15 @@ export function injectSeoIntoHtml(html: string, pathname: string): string {
     ...marketingJsonLd(path, pageLocale),
   ]) {
     out = appendToHead(out, jsonLdScript(block, pathname));
+  }
+
+  // The body a non-JavaScript crawler reads: an H1, the intro and links onward. Without it the
+  // response body is an empty <div id="root"></div> — no heading, nothing to follow.
+  if (seo.title && seo.description) {
+    out = out.replace(
+      /<div id="root"><\/div>/,
+      `<div id="root">${bodyFallback(path, pageLocale, seo.title, seo.description)}</div>`,
+    );
   }
 
   return out;
