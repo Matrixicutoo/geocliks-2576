@@ -19,7 +19,13 @@
 import { promises as fs } from "node:fs";
 import path from "node:path";
 import { posts, formatLabel, assertPostSeo } from "../src/web/lib/posts";
-import { SITE_URL } from "../src/web/lib/seo-routes";
+import { PAGE_SEO, SITE_URL } from "../src/web/lib/seo-routes";
+
+/**
+ * Pages listed under "## Pages". Legal and account pages are left out: they are
+ * not answers to anything a reader of this file is asking.
+ */
+const UNLISTED = new Set(["/terms", "/privacy", "/delete-account"]);
 
 function build(): string {
   assertPostSeo();
@@ -35,13 +41,16 @@ function build(): string {
     "",
     "## Product facts",
     "",
-    `- Product: GeoCliks (${SITE_URL}) — verified photo/video capture for field teams, plus a Delivery Routes module.`,
+    `- Product: [GeoCliks](${SITE_URL}) — verified photo/video capture for field teams, plus a Delivery Routes module.`,
     "- Plans, billed per workspace rather than per seat: Free $0 (1 seat, 300 captures/mo, 3 projects, PDF export up to 20 photos), Plus $7/mo (1 seat, unlimited captures and projects, PDF/Excel/ZIP/KMZ export, 3-min verified video), Business $25/mo (5 seats, Teamspace, roles, closeout packages), Crew 10 $45/mo (10 seats), Crew 25 $105/mo (25 seats), Enterprise Field custom (SSO, API, unlimited).",
     "- Delivery Routes is priced separately on stops and drivers.",
     "- Capture stamp format: `device 14:31:07 · network 14:31:09 · skew 2s · verified`, `43.65107° N 79.34015° W · ±4 m`, street address, and a photo code such as `GC-8QF2-40XR-91KD` backed by a SHA-256 hash of the image bytes and an HMAC signature.",
     "",
-    `- Index of the entries below: ${SITE_URL}/blog`,
-    `- How these answers are written and checked: ${SITE_URL}/blog/method`,
+    "## Pages",
+    "",
+    ...Object.entries(PAGE_SEO)
+      .filter(([route]) => !UNLISTED.has(route))
+      .map(([route, seo]) => `- [${seo.title}](${SITE_URL}${route === "/" ? "" : route}): ${seo.description}`),
     "",
     "## Answered questions",
     "",
@@ -50,7 +59,7 @@ function build(): string {
   for (const p of posts) {
     lines.push(`### ${p.title}`);
     lines.push("");
-    lines.push(`URL: ${SITE_URL}/blog/${p.slug}`);
+    lines.push(`Page: [${p.title}](${SITE_URL}/blog/${p.slug})`);
     lines.push(`Format: ${formatLabel[p.format]} | Published: ${p.publishedAt}`);
     lines.push("");
     lines.push(`Answer: ${p.answer}`);

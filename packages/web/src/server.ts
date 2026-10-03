@@ -61,9 +61,30 @@ const server = Bun.serve({
       }
     }
 
+    if (isMissingFile(url.pathname)) {
+      return new Response("Not found\n", {
+        status: 404,
+        headers: { "Content-Type": "text/plain; charset=utf-8" },
+      });
+    }
+
     return renderShell(url.pathname);
   },
 });
+
+/**
+ * A request for a file we do not have, which must not get the shell.
+ *
+ * Machine readers ask for well-known files by name and parse what comes back.
+ * Lighthouse's Agentic Browsing check fetches `/.well-known/ai-catalog.json`;
+ * when that got the HTML shell with a 200 it reported "Malformed JSON in
+ * manifest" — a failed audit for a file we never published. A real 404 makes
+ * it "not applicable", which is the truth. Scoped to `/.well-known/` and to
+ * data-file extensions so no page route (none has a dot) can land here.
+ */
+function isMissingFile(pathname: string): boolean {
+  return pathname.startsWith("/.well-known/") || /\.(json|txt|xml|md)$/i.test(pathname);
+}
 
 console.log(`Web server listening on http://localhost:${server.port}`);
 
