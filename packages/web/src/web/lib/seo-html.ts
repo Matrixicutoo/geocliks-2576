@@ -65,8 +65,8 @@ function headingFromTitle(title: string): string {
  *
  * It is the same copy the page renders — on the home page literally the same H1 text — so a
  * crawler and a visitor are told the same thing. `createRoot().render()` replaces the contents of
- * #root on mount, so a visitor never sees it (on a slow connection it can show briefly before the
- * bundle runs, so it carries its own inline styles).
+ * #root on mount, so a visitor never sees it (it is hidden for any browser that runs JavaScript —
+ * see the `has-js` switch in `injectSeoIntoHtml` — so it only shows when scripts are off).
  */
 function bodyFallback(path: string, locale: LocaleCode, title: string, description: string): string {
   const home = path === "/";
@@ -87,7 +87,7 @@ function bodyFallback(path: string, locale: LocaleCode, title: string, descripti
   // on a slow phone it can be on screen for a moment, so it is laid out as a quiet, readable page
   // in the site's colours rather than raw browser defaults.
   return (
-    `<main style="max-width:760px;margin:0 auto;padding:64px 20px;font-family:Manrope,system-ui,sans-serif;color:var(--c-fog);line-height:1.6">` +
+    `<main id="seo-fallback" style="max-width:760px;margin:0 auto;padding:64px 20px;font-family:Manrope,system-ui,sans-serif;color:var(--c-fog);line-height:1.6">` +
     `<h1 style="font-family:Sora,Manrope,system-ui,sans-serif;font-size:30px;line-height:1.15;color:var(--c-chalk);margin:0 0 16px">${text(h1)}</h1>` +
     `<p style="font-size:16px;margin:0 0 28px">${text(intro)}</p>` +
     `<nav><ul style="list-style:none;padding:0;margin:0;font-size:14px">${links}</ul></nav></main>`
@@ -272,6 +272,14 @@ export function injectSeoIntoHtml(html: string, pathname: string): string {
   // The body a non-JavaScript crawler reads: an H1, the intro and links onward. Without it the
   // response body is an empty <div id="root"></div> — no heading, nothing to follow.
   if (seo.title && seo.description) {
+    // Visitors never see it. This runs in <head>, before the body is parsed, so in any browser
+    // that runs JavaScript the fallback is hidden before its first paint — the app then
+    // replaces it on mount. A crawler that does not run JavaScript never adds the class, so it
+    // still reads the H1, the intro and the links.
+    out = appendToHead(
+      out,
+      `<style>html.has-js #seo-fallback{display:none}</style><script>document.documentElement.classList.add("has-js")</script>`,
+    );
     out = out.replace(
       /<div id="root"><\/div>/,
       `<div id="root">${bodyFallback(path, pageLocale, seo.title, seo.description)}</div>`,
