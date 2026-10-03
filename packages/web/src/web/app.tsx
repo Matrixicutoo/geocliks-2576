@@ -1,6 +1,7 @@
 import { lazy, Suspense } from "react";
 import { Route, Router, Switch } from "wouter";
 import { splitLocalePath } from "./lib/locale-url";
+import { FirstPaintHandoff } from "./components/first-paint-handoff";
 
 // Eager: first-paint routes. The landing page and the auth screens must render
 // without an async boundary so geocliks.com paints exactly as before.
@@ -128,6 +129,8 @@ function App() {
             docked ? "min-w-0 flex-1 overflow-y-auto overscroll-contain" : "min-w-0 flex-1"
           }
         >
+          {/* Inside the providers, so it only fires on the commit that actually has a page in it. */}
+          <FirstPaintHandoff />
           <Suspense fallback={routeFallback}>
             <Switch>
               <Route path="/">

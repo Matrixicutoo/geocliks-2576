@@ -26,6 +26,7 @@ import { scrollSiteToId } from "../lib/site-scroll";
 import { useSeo } from "../lib/seo";
 import { PAGE_SEO, seoForPath } from "../lib/seo-routes";
 import { usePinnedTheme } from "../lib/theme";
+import { shellWasPainted } from "../components/first-paint-handoff";
 
 const INDUSTRIES: TKey[] = [
   "industry.construction",
@@ -109,6 +110,13 @@ function useHeroFootage() {
   return cut;
 }
 
+/**
+ * Whether this document opened on the static shell from `lib/first-paint.ts`. Read at module
+ * load — before React's first commit removes the shell — and cleared after the first Hero mount,
+ * so a later client-side visit to the home page still gets the rise-in.
+ */
+let takingOverFromShell = shellWasPainted();
+
 /** Centre 810x1080 of the 16:9 poster: what a phone's portrait band actually shows. */
 const HERO_PORTRAIT_POSTER = "/videos/hero-poster-portrait.webp";
 
@@ -116,6 +124,11 @@ function Hero() {
   const t = useT();
   const cut = useHeroFootage();
   const footage = cut ? HERO_CUTS[cut] : null;
+  // The shell already showed this copy, fully visible — start it there instead of at opacity 0.
+  const [skipIntro] = useState(() => takingOverFromShell);
+  useEffect(() => {
+    takingOverFromShell = false;
+  }, []);
 
   return (
     <section className="hero-cinema relative overflow-hidden border-b border-line">
@@ -189,7 +202,7 @@ function Hero() {
           rather than a fixed aspect so the band can still grow under the copy. */}
       <motion.div
         variants={stagger}
-        initial="hidden"
+        initial={skipIntro ? false : "hidden"}
         animate="show"
         className="relative mx-auto flex max-w-[1180px] flex-col items-center justify-center px-5 py-20 text-center lg:min-h-[min(56.25vw,92vh)] lg:py-24"
       >
