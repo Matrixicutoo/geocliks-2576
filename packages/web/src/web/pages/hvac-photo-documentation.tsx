@@ -17,6 +17,7 @@ import {
   LandingSection,
   LandingSteps,
 } from "../components/landing-page";
+import { ComingFromCompanyCam } from "../components/coming-from-companycam";
 import { pageFaq } from "../lib/page-schema";
 import { useLocale, type TKey } from "../lib/i18n";
 
@@ -100,6 +101,8 @@ export default function HvacPhotoDocumentation() {
       <LandingSection label={t("hvac.team.label")} h2={t("hvac.team.h2")}>
         <LandingCards items={TEAM_CARDS.map(card)} />
       </LandingSection>
+
+      <ComingFromCompanyCam trade="hvac" />
 
       <LandingSection label={t("hvac.faq.label")} h2={t("hvac.faq.h2")}>
         <LandingFaq entries={faq} />

@@ -16,6 +16,7 @@ import {
   LandingSection,
   LandingSteps,
 } from "../components/landing-page";
+import { ComingFromCompanyCam } from "../components/coming-from-companycam";
 import { pageFaq } from "../lib/page-schema";
 import { useLocale, type TKey } from "../lib/i18n";
 
@@ -89,6 +90,8 @@ export default function RoofingPhotoDocumentation() {
       <LandingSection label={t("rf.s4.label")} h2={t("rf.s4.h2")}>
         <LandingCards items={CREW_CARDS.map(card)} />
       </LandingSection>
+
+      <ComingFromCompanyCam trade="rf" />
 
       <LandingSection label={t("rf.faqSection.label")} h2={t("rf.faqSection.h2")}>
         <LandingFaq entries={faq} />
