@@ -34,7 +34,7 @@ function Tile({
         <Icon
           className={cn(
             "size-4",
-            tone === "amber" && "text-amber",
+            tone === "amber" && "text-amber-ink",
             tone === "alert" && "text-alert",
             tone === "verified" && "text-verified",
             tone === "sky" && "text-sky",
@@ -200,7 +200,7 @@ export default function AdminOverview() {
                   <span className="mono text-[10.5px] text-fog">
                     {new Date(e.at).toLocaleString()}
                   </span>
-                  <span className="rounded-[6px] mono border border-amber/40 bg-amber/10 px-1.5 text-[10px] uppercase tracking-widest text-amber">
+                  <span className="rounded-[6px] mono border border-amber/40 bg-amber/10 px-1.5 text-[10px] uppercase tracking-widest text-amber-ink">
                     {e.action}
                   </span>
                   <span className="text-[12.5px] text-chalk">{e.actor?.email ?? e.actorId}</span>

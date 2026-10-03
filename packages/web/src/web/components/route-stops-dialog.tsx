@@ -311,13 +311,13 @@ export function RouteStopsDialog({
             </p>
           )}
           {detail.data && !detail.data.geocodingAvailable && (
-            <p className="rounded-[8px] flex items-start gap-2 border border-amber/40 bg-amber/10 px-3 py-2 text-[13px] text-amber">
+            <p className="rounded-[8px] flex items-start gap-2 border border-amber/40 bg-amber/10 px-3 py-2 text-[13px] text-amber-ink">
               <TriangleAlert className="mt-0.5 size-4 shrink-0" />
               {t("routes.noKeyHint")}
             </p>
           )}
           {unresolved.length > 0 && (
-            <p className="rounded-[8px] border border-amber/40 bg-amber/10 px-3 py-2 text-[13px] text-amber">
+            <p className="rounded-[8px] border border-amber/40 bg-amber/10 px-3 py-2 text-[13px] text-amber-ink">
               {t("routes.needsAttention", { n: unresolved.length })}
             </p>
           )}
@@ -421,7 +421,7 @@ export function RouteStopsDialog({
                           {stop.recipientEmail && (
                             <a
                               href={`mailto:${stop.recipientEmail}`}
-                              className="break-all hover:text-amber focus:text-amber focus:outline-none"
+                              className="break-all hover:text-amber-ink focus:text-amber-ink focus:outline-none"
                             >
                               {stop.recipientEmail}
                             </a>
@@ -432,7 +432,7 @@ export function RouteStopsDialog({
                           {stop.recipientPhone && (
                             <a
                               href={`tel:${stop.recipientPhone.replace(/[^\d+]/g, "")}`}
-                              className="hover:text-amber focus:text-amber focus:outline-none"
+                              className="hover:text-amber-ink focus:text-amber-ink focus:outline-none"
                             >
                               {stop.recipientPhone}
                             </a>
@@ -808,7 +808,7 @@ export function RouteStopsDialog({
             type="button"
             disabled={addStops.isPending}
             onClick={done}
-            className="rounded-[8px] mono inline-flex items-center gap-2 bg-amber px-3.5 py-2 text-[10.5px] font-bold uppercase tracking-widest text-ink hover:bg-amber-deep disabled:opacity-60"
+            className="rounded-[8px] mono inline-flex items-center gap-2 bg-amber px-3.5 py-2 text-[10.5px] font-bold uppercase tracking-widest text-on-amber hover:bg-amber-deep disabled:opacity-60"
           >
             {addStops.isPending && <Loader2 className="size-3 animate-spin" />}
             {t("driver.done")}

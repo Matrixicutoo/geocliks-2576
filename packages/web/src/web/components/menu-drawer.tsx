@@ -101,7 +101,7 @@ export function MenuDrawer({
       >
         <Menu className="size-[18px]" />
         {badge > 0 && (
-          <span className="mono absolute -right-1 -top-1 min-w-[16px] rounded-[5px] border border-amber bg-on-amber px-1 text-[10px] font-bold leading-[16px] text-amber">
+          <span className="mono absolute -right-1 -top-1 min-w-[16px] rounded-[5px] border border-amber bg-on-amber px-1 text-[10px] font-bold leading-[16px] text-amber-ink">
             {badge}
           </span>
         )}
@@ -138,7 +138,7 @@ export function MenuDrawer({
                 type="button"
                 onClick={() => setOpen(false)}
                 aria-label={t("shell.closeMenu")}
-                className="rounded-[8px] flex size-8 shrink-0 items-center justify-center border border-line text-fog transition-colors hover:border-amber hover:text-amber"
+                className="rounded-[8px] flex size-8 shrink-0 items-center justify-center border border-line text-fog transition-colors hover:border-amber hover:text-amber-ink"
               >
                 <X className="size-4" />
               </button>

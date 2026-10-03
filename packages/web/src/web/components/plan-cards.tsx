@@ -43,7 +43,7 @@ export function PlanCard({ plan, popular = false }: { plan: PlanView; popular?: 
           {t("home.pricing.popular")}
         </span>
       )}
-      <p className="mono text-[11px] uppercase tracking-[0.2em] text-amber">{plan.name}</p>
+      <p className="mono text-[11px] uppercase tracking-[0.2em] text-amber-ink">{plan.name}</p>
       <p className="mt-3 font-display text-3xl font-bold text-chalk">{plan.priceLabel}</p>
       <p className="mono mt-1 text-[10.5px] uppercase tracking-widest text-fog">
         {plan.priceCents > 0 ? plan.period : " "}
@@ -69,13 +69,13 @@ export function PlanCard({ plan, popular = false }: { plan: PlanView; popular?: 
           <>
             <a
               href={`mailto:${SALES_EMAIL}`}
-              className="mono mb-2 block text-center text-[11px] text-amber transition-colors hover:text-chalk"
+              className="mono mb-2 block text-center text-[11px] text-amber-ink transition-colors hover:text-chalk"
             >
               {SALES_EMAIL}
             </a>
             <a
               href={`mailto:${SALES_EMAIL}?subject=${encodeURIComponent(`GeoCliks ${plan.name} plan`)}`}
-              className="mono block rounded-[8px] bg-amber px-3 py-2.5 text-center text-[11px] font-bold uppercase tracking-widest text-on-amber transition-colors hover:bg-on-amber hover:text-amber"
+              className="mono block rounded-[8px] bg-amber px-3 py-2.5 text-center text-[11px] font-bold uppercase tracking-widest text-on-amber transition-colors hover:bg-on-amber hover:text-amber-ink"
             >
               {t("home.pricing.talk")}
             </a>
@@ -90,7 +90,7 @@ export function PlanCard({ plan, popular = false }: { plan: PlanView; popular?: 
              only two tokens that hold the same value in both themes. */
           <Link
             to="/sign-up"
-            className="mono block rounded-[8px] bg-amber px-3 py-2.5 text-center text-[11px] font-bold uppercase tracking-widest text-on-amber transition-colors hover:bg-on-amber hover:text-amber"
+            className="mono block rounded-[8px] bg-amber px-3 py-2.5 text-center text-[11px] font-bold uppercase tracking-widest text-on-amber transition-colors hover:bg-on-amber hover:text-amber-ink"
           >
             {/* Delivery plans carry a 7-day free trial in Autumn, so their
                 CTA names the trial rather than a generic "Choose". */}

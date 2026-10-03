@@ -377,7 +377,7 @@ function App() {
               <Route>
                 <div className="grid min-h-screen place-items-center bg-ink px-6 text-center text-chalk">
                   <div>
-                    <p className="mono text-[11px] uppercase tracking-widest text-amber">404</p>
+                    <p className="mono text-[11px] uppercase tracking-widest text-amber-ink">404</p>
                     <p className="mt-2 font-display text-2xl font-bold">Nothing filed here</p>
                     <a
                       href="/"

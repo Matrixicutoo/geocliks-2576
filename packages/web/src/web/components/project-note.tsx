@@ -135,9 +135,9 @@ export function ProjectNote({
   if (current) {
     return (
       <div className="mt-4 flex items-start gap-2 border-l-2 border-amber/60 bg-ink-2 px-4 py-3">
-        <StickyNote className="mt-1 size-3.5 shrink-0 text-amber" aria-hidden="true" />
+        <StickyNote className="mt-1 size-3.5 shrink-0 text-amber-ink" aria-hidden="true" />
         <p className="min-w-0 flex-1 text-[13.5px] leading-relaxed text-chalk">
-          <span className="mono mr-2 text-[10px] uppercase tracking-widest text-amber">
+          <span className="mono mr-2 text-[10px] uppercase tracking-widest text-amber-ink">
             {t("project.noteLabel")}
           </span>
           {current}
@@ -148,7 +148,7 @@ export function ProjectNote({
             aria-label={t("project.noteEdit")}
             title={t("project.noteEdit")}
             onClick={() => setEditing(true)}
-            className="mt-0.5 shrink-0 rounded-[6px] p-0.5 text-fog hover:text-amber focus:text-amber focus:outline-none"
+            className="mt-0.5 shrink-0 rounded-[6px] p-0.5 text-fog hover:text-amber-ink focus:text-amber-ink focus:outline-none"
           >
             <Pencil className="size-3.5" />
           </button>
@@ -164,7 +164,7 @@ export function ProjectNote({
     <button
       type="button"
       onClick={() => setEditing(true)}
-      className="mt-4 inline-flex items-center gap-1.5 text-[12px] text-fog hover:text-amber focus:text-amber focus:outline-none"
+      className="mt-4 inline-flex items-center gap-1.5 text-[12px] text-fog hover:text-amber-ink focus:text-amber-ink focus:outline-none"
     >
       <Plus className="size-3.5" />
       {t("project.noteAdd")}

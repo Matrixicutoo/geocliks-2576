@@ -169,7 +169,7 @@ export default function JoinPage() {
               <div className="mt-8 space-y-3 rounded-[12px] border border-line bg-ink-2 p-4">
                 <a
                   href={appLink}
-                  className="rounded-[8px] mono flex w-full items-center justify-center gap-2 bg-amber px-4 py-3 text-[11.5px] font-bold uppercase tracking-widest text-ink transition-colors hover:bg-amber-deep"
+                  className="rounded-[8px] mono flex w-full items-center justify-center gap-2 bg-amber px-4 py-3 text-[11.5px] font-bold uppercase tracking-widest text-on-amber transition-colors hover:bg-amber-deep"
                 >
                   <Smartphone className="size-4" />
                   {t("join.openApp")}
@@ -179,7 +179,7 @@ export default function JoinPage() {
                 </p>
                 <Link
                   to={`/get-app?invite=${encodeURIComponent(code)}`}
-                  className="mono inline-flex items-center gap-2 text-[11px] uppercase tracking-widest text-amber hover:text-amber-deep"
+                  className="mono inline-flex items-center gap-2 text-[11px] uppercase tracking-widest text-amber-ink hover:underline"
                 >
                   <ArrowRight className="size-3.5" />
                   {t("getapp.title")}
@@ -222,7 +222,7 @@ export default function JoinPage() {
                     accept.mutate({ code });
                   }}
                   disabled={accept.isPending}
-                  className="rounded-[8px] mono mt-8 flex w-full items-center justify-center gap-2 bg-amber px-4 py-3 text-[11.5px] font-bold uppercase tracking-widest text-ink transition-colors hover:bg-amber-deep disabled:opacity-60"
+                  className="rounded-[8px] mono mt-8 flex w-full items-center justify-center gap-2 bg-amber px-4 py-3 text-[11.5px] font-bold uppercase tracking-widest text-on-amber transition-colors hover:bg-amber-deep disabled:opacity-60"
                 >
                   {accept.isPending ? (
                     <Loader2 className="size-4 animate-spin" />
@@ -241,7 +241,7 @@ export default function JoinPage() {
               <>
                 <Link
                   to={signInHref}
-                  className="rounded-[8px] mono mt-8 flex w-full items-center justify-center gap-2 bg-amber px-4 py-3 text-[11.5px] font-bold uppercase tracking-widest text-ink transition-colors hover:bg-amber-deep"
+                  className="rounded-[8px] mono mt-8 flex w-full items-center justify-center gap-2 bg-amber px-4 py-3 text-[11.5px] font-bold uppercase tracking-widest text-on-amber transition-colors hover:bg-amber-deep"
                 >
                   <ArrowRight className="size-4" />
                   {t("join.signInToAccept")}
@@ -294,7 +294,7 @@ export default function JoinPage() {
                 <button
                   type="submit"
                   disabled={claim.isPending || claimName.trim().length < 1}
-                  className="rounded-[8px] mono flex w-full items-center justify-center gap-2 bg-amber px-4 py-3 text-[11.5px] font-bold uppercase tracking-widest text-ink transition-colors hover:bg-amber-deep disabled:opacity-60"
+                  className="rounded-[8px] mono flex w-full items-center justify-center gap-2 bg-amber px-4 py-3 text-[11.5px] font-bold uppercase tracking-widest text-on-amber transition-colors hover:bg-amber-deep disabled:opacity-60"
                 >
                   {claim.isPending ? (
                     <Loader2 className="size-4 animate-spin" />
@@ -310,7 +310,7 @@ export default function JoinPage() {
                 </p>
                 <Link
                   to={signInHref}
-                  className="mono inline-flex items-center gap-2 text-[11px] uppercase tracking-widest text-amber hover:text-amber-deep"
+                  className="mono inline-flex items-center gap-2 text-[11px] uppercase tracking-widest text-amber-ink hover:underline"
                 >
                   <ArrowRight className="size-3.5" />
                   {t("join.haveAccount")}

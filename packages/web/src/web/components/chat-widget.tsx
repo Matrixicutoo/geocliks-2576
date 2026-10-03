@@ -407,7 +407,7 @@ function ReportCard({ report }: { report: ReportFile }) {
         <div className="flex items-start gap-2.5">
           <span
             className={`mono grid size-9 shrink-0 place-items-center rounded-[7px] text-[9.5px] font-bold uppercase ${
-              url ? "bg-amber/15 text-amber" : "bg-ink-3 text-fog"
+              url ? "bg-amber/15 text-amber-ink" : "bg-ink-3 text-fog"
             }`}
           >
             {report.format}
@@ -435,7 +435,7 @@ function ReportCard({ report }: { report: ReportFile }) {
             <button
               type="button"
               onClick={() => void copy()}
-              className="flex items-center justify-center gap-1.5 rounded-[7px] border border-line bg-ink-3 px-2.5 py-1.5 text-[11px] text-fog transition-colors hover:border-amber hover:text-amber"
+              className="flex items-center justify-center gap-1.5 rounded-[7px] border border-line bg-ink-3 px-2.5 py-1.5 text-[11px] text-fog transition-colors hover:border-amber hover:text-amber-ink"
             >
               {copied ? <Check className="size-3.5" /> : <Link2 className="size-3.5" />}
               {copied ? t("assistant.copied") : t("assistant.copyLink")}
@@ -443,7 +443,7 @@ function ReportCard({ report }: { report: ReportFile }) {
           </div>
         )}
       </div>
-      <p className="text-[10px] leading-snug text-fog/70">
+      <p className="text-[10px] leading-snug text-fog/90">
         {t(url ? "assistant.linkExpires" : "assistant.linkExpired")}
       </p>
     </div>
@@ -727,7 +727,7 @@ export function ChatWidget() {
               "Cliks". */}
           <div className="min-w-0 flex-1">
             <p className="truncate font-display text-[17px] font-bold tracking-tight text-chalk">
-              Geo<span className="text-amber">Cliks</span> AI Assistant
+              Geo<span className="text-amber-ink">Cliks</span> AI Assistant
             </p>
           </div>
           {messages.length > 0 && (
@@ -769,7 +769,7 @@ export function ChatWidget() {
                       clearError();
                       void sendMessage({ text: s });
                     }}
-                    className="rounded-[8px] border border-line bg-ink-3/60 px-3 py-2 text-start text-[12.5px] text-chalk transition-colors hover:border-amber hover:text-amber"
+                    className="rounded-[8px] border border-line bg-ink-3/60 px-3 py-2 text-start text-[12.5px] text-chalk transition-colors hover:border-amber hover:text-amber-ink"
                   >
                     {s}
                   </button>
@@ -880,7 +880,7 @@ export function ChatWidget() {
               </button>
             )}
           </div>
-          <p className="mt-2 text-[11px] leading-snug text-fog/70">{t("assistant.disclaimer")}</p>
+          <p className="mt-2 text-[11px] leading-snug text-fog/90">{t("assistant.disclaimer")}</p>
         </div>
       </aside>
       {/* Over the panel, not under it. The panel sits at z-65 and the drawer at z-50, so the

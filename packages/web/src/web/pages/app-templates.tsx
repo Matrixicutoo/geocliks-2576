@@ -134,7 +134,7 @@ export default function AppTemplates() {
                       <p className="truncate text-[13.5px] font-semibold text-chalk">
                         {tpl.name}
                         {tpl.isDefault && (
-                          <span className="rounded-[6px] mono ml-2 border border-amber/40 bg-amber/10 px-1.5 py-0.5 text-[9.5px] uppercase tracking-widest text-amber">
+                          <span className="rounded-[6px] mono ml-2 border border-amber/40 bg-amber/10 px-1.5 py-0.5 text-[9.5px] uppercase tracking-widest text-amber-ink">
                             {t("templates.defaultBadge")}
                           </span>
                         )}
@@ -161,7 +161,7 @@ export default function AppTemplates() {
                             setRowError(null);
                             setDefault.mutate({ id: tpl.id }, { onError: rowGone });
                           }}
-                          className="inline-flex items-center gap-1.5 rounded-[8px] border border-line px-2.5 py-1.5 text-[11.5px] text-chalk transition-colors hover:border-amber/60 hover:text-amber disabled:opacity-30"
+                          className="inline-flex items-center gap-1.5 rounded-[8px] border border-line px-2.5 py-1.5 text-[11.5px] text-chalk transition-colors hover:border-amber/60 hover:text-amber-ink disabled:opacity-30"
                         >
                           <Star className="size-3.5" /> {t("templates.defaultBadge")}
                         </button>
@@ -266,7 +266,7 @@ export default function AppTemplates() {
                       <Check
                         className={cn(
                           "mt-0.5 size-3.5 shrink-0",
-                          layout === item.id ? "text-amber" : "text-transparent",
+                          layout === item.id ? "text-amber-ink" : "text-transparent",
                         )}
                       />
                       <span className="min-w-0">
@@ -341,7 +341,7 @@ export default function AppTemplates() {
                     type="button"
                     disabled={uploading}
                     onClick={() => fileRef.current?.click()}
-                    className="inline-flex items-center gap-2 rounded-[8px] border border-line px-3 py-2 text-[12px] text-chalk transition-colors hover:border-amber/60 hover:text-amber disabled:opacity-60"
+                    className="inline-flex items-center gap-2 rounded-[8px] border border-line px-3 py-2 text-[12px] text-chalk transition-colors hover:border-amber/60 hover:text-amber-ink disabled:opacity-60"
                   >
                     {uploading && <Loader2 className="size-3.5 animate-spin" />}
                     {logoPreview ? t("templates.replace") : t("templates.upload")}
@@ -354,7 +354,7 @@ export default function AppTemplates() {
               <button
                 type="submit"
                 disabled={create.isPending}
-                className="rounded-[8px] inline-flex w-full items-center justify-center gap-2 bg-amber px-4 py-2.5 text-[13px] font-semibold text-ink disabled:opacity-60"
+                className="rounded-[8px] inline-flex w-full items-center justify-center gap-2 bg-amber px-4 py-2.5 text-[13px] font-semibold text-on-amber disabled:opacity-60"
               >
                 {create.isPending ? (
                   <Loader2 className="size-4 animate-spin" />
@@ -365,7 +365,7 @@ export default function AppTemplates() {
               </button>
 
               <p className="flex items-start gap-2 text-[11.5px] leading-relaxed text-fog">
-                <Stamp className="mt-0.5 size-3.5 shrink-0 text-amber" />
+                <Stamp className="mt-0.5 size-3.5 shrink-0 text-amber-ink" />
                 {t("templates.hint")}
               </p>
             </div>

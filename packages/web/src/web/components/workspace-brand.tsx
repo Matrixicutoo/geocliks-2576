@@ -54,7 +54,7 @@ export function WorkspaceBrand({ className }: { className?: string }) {
       )}
       {/* Amber, not chalk: the company name is the heading of the whole signed-in chrome, and
           the accent is what separates it from the ordinary white body text under it. */}
-      <span className="font-display line-clamp-2 min-w-0 text-[15px] font-extrabold leading-[1.15] tracking-tight text-amber">
+      <span className="font-display line-clamp-2 min-w-0 text-[15px] font-extrabold leading-[1.15] tracking-tight text-amber-ink">
         {name}
       </span>
     </span>

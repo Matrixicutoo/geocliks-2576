@@ -58,7 +58,7 @@ function Bar() {
           <LanguageSelect compact bare />
           <Link
             to="/"
-            className="rounded-full border border-white/25 px-3 py-1.5 text-[12px] font-semibold text-white/80 transition-colors hover:border-amber/60 hover:text-amber"
+            className="rounded-full border border-white/25 px-3 py-1.5 text-[12px] font-semibold text-white/80 transition-colors hover:border-amber/60 hover:text-amber-ink"
           >
             {t("getapp.officeSite")}
           </Link>
@@ -106,7 +106,7 @@ function StampedPhoto() {
         </div>
       </div>
       <figcaption className="flex items-center justify-between gap-2 border-t border-line px-3 py-2.5">
-        <span className="mono text-[10.5px] tracking-widest text-amber">GC-8QF2-40XR-91KD</span>
+        <span className="mono text-[10.5px] tracking-widest text-amber-ink">GC-8QF2-40XR-91KD</span>
         <span className="mono text-[10px] text-fog">SHA-256 LOCKED</span>
       </figcaption>
     </figure>
@@ -127,7 +127,7 @@ function InviteBanner({ code }: { code: string }) {
       data-theme="dark"
       className="rounded-[8px] mt-5 border border-amber/50 bg-[#0d2137] px-4 py-4 text-chalk"
     >
-      <p className="mono flex items-center gap-2 text-[10px] uppercase tracking-[0.18em] text-amber">
+      <p className="mono flex items-center gap-2 text-[10px] uppercase tracking-[0.18em] text-amber-ink">
         <UserPlus className="size-3.5" /> {t("join.eyebrow")}
       </p>
       <p className="mt-2 font-display text-[19px] font-bold leading-snug tracking-tight text-white">
@@ -141,7 +141,7 @@ function InviteBanner({ code }: { code: string }) {
       </p>
       <Link
         to={`/join/${code}`}
-        className="mt-4 flex h-[46px] items-center justify-center gap-2 bg-amber text-[14px] font-bold text-ink transition-colors hover:bg-amber-deep"
+        className="mt-4 flex h-[46px] items-center justify-center gap-2 bg-amber text-[14px] font-bold text-on-amber transition-colors hover:bg-amber-deep"
       >
         {t("join.signInToAccept")} <ArrowRight className="size-4" />
       </Link>
@@ -174,7 +174,7 @@ export default function GetApp() {
       <main className="mx-auto max-w-[460px] px-5 pb-16">
         {/* 1 — hero, above the fold on a phone */}
         <section className="pt-7">
-          <p className="rounded-[6px] mono inline-flex items-center gap-2 border border-amber/40 bg-amber/10 px-2.5 py-1 text-[10px] uppercase tracking-[0.18em] text-amber">
+          <p className="rounded-[6px] mono inline-flex items-center gap-2 border border-amber/40 bg-amber/10 px-2.5 py-1 text-[10px] uppercase tracking-[0.18em] text-amber-ink">
             <ShieldCheck className="size-3.5" /> {t("getapp.pill")}
           </p>
           <h1 className="mt-4 font-display text-[36px] font-extrabold leading-[1.05] tracking-tight">
@@ -189,7 +189,7 @@ export default function GetApp() {
           <div className="mt-5 grid gap-2.5">
             <a
               href="#download"
-              className="flex h-[52px] items-center justify-center gap-2 bg-amber text-[15px] font-bold text-ink transition-colors hover:bg-amber-deep"
+              className="flex h-[52px] items-center justify-center gap-2 bg-amber text-[15px] font-bold text-on-amber transition-colors hover:bg-amber-deep"
             >
               {t("getapp.ctaPrimary")} <ArrowRight className="size-4" />
             </a>
@@ -197,7 +197,7 @@ export default function GetApp() {
               to="/app"
               className="flex h-[52px] items-center justify-center gap-2 rounded-[12px] border border-line bg-ink-2 text-[15px] font-semibold text-chalk transition-colors hover:border-amber/60"
             >
-              <Camera className="size-4 text-amber" /> {t("getapp.ctaSecondary")}
+              <Camera className="size-4 text-amber-ink" /> {t("getapp.ctaSecondary")}
             </Link>
           </div>
           <p className="mono mt-3 text-center text-[10.5px] uppercase tracking-[0.14em] text-fog">
@@ -255,7 +255,7 @@ export default function GetApp() {
               </ul>
             </div>
             <div className="rounded-[12px] border border-amber/45 bg-amber/8 p-4">
-              <h3 className="mono text-[10.5px] font-bold uppercase tracking-[0.14em] text-amber">
+              <h3 className="mono text-[10.5px] font-bold uppercase tracking-[0.14em] text-amber-ink">
                 {t("getapp.lockTitle")}
               </h3>
               <ul className="mt-2.5 grid gap-2">
@@ -284,7 +284,7 @@ export default function GetApp() {
                 <ul className="mt-2.5 grid gap-2">
                   {items.map((k) => (
                     <li key={k} className="flex gap-2 text-[13px] leading-relaxed text-fog">
-                      <Check className="mt-0.5 size-3.5 shrink-0 text-amber" /> {t(k)}
+                      <Check className="mt-0.5 size-3.5 shrink-0 text-amber-ink" /> {t(k)}
                     </li>
                   ))}
                 </ul>
@@ -313,12 +313,12 @@ export default function GetApp() {
               </span>
             ))}
           </div>
-          <p className="mono mt-3 text-[10px] uppercase tracking-[0.12em] text-amber">
+          <p className="mono mt-3 text-[10px] uppercase tracking-[0.12em] text-amber-ink">
             {t("getapp.comingSoon")}
           </p>
           <Link
             to="/pricing"
-            className="mt-4 inline-flex items-center gap-1.5 text-[13px] font-semibold text-amber hover:underline"
+            className="mt-4 inline-flex items-center gap-1.5 text-[13px] font-semibold text-amber-ink hover:underline"
           >
             {t("home.nav.pricing")} <ArrowRight className="size-3.5" />
           </Link>
@@ -330,9 +330,9 @@ export default function GetApp() {
 
         <Link
           to="/verify"
-          className="mono mt-5 flex items-center justify-center gap-2 rounded-[12px] border border-line px-4 py-3 text-[11px] uppercase tracking-[0.14em] text-chalk transition-colors hover:border-amber/60 hover:text-amber"
+          className="mono mt-5 flex items-center justify-center gap-2 rounded-[12px] border border-line px-4 py-3 text-[11px] uppercase tracking-[0.14em] text-chalk transition-colors hover:border-amber/60 hover:text-amber-ink"
         >
-          <QrCode className="size-4 text-amber" /> {t("verify.navLink")}
+          <QrCode className="size-4 text-amber-ink" /> {t("verify.navLink")}
         </Link>
 
         <footer className="mt-8 flex flex-wrap items-center gap-x-4 gap-y-2 border-t border-line pt-5 text-[12px] text-fog">

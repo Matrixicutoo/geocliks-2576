@@ -145,7 +145,7 @@ export default function TrackPage() {
                   ? "mono inline-flex items-center gap-1.5 rounded-[6px] border border-verified/40 bg-verified/10 px-2.5 py-1 text-[10px] uppercase tracking-widest text-verified"
                   : failed
                     ? "mono inline-flex items-center gap-1.5 rounded-[6px] border border-alert/40 bg-alert/10 px-2.5 py-1 text-[10px] uppercase tracking-widest text-alert"
-                    : "mono inline-flex items-center gap-1.5 rounded-[6px] border border-amber/50 bg-amber/10 px-2.5 py-1 text-[10px] uppercase tracking-widest text-amber"
+                    : "mono inline-flex items-center gap-1.5 rounded-[6px] border border-amber/50 bg-amber/10 px-2.5 py-1 text-[10px] uppercase tracking-widest text-amber-ink"
               }
             >
               {delivered ? (
@@ -166,7 +166,7 @@ export default function TrackPage() {
             {/* how close the driver is — a count of the drops ahead, never the drops themselves */}
             {d.status === "pending" && running ? (
               <div className="mt-7 rounded-[12px] border border-amber/40 bg-amber/[0.06] p-5">
-                <p className="text-[20px] font-black tracking-tight text-amber sm:text-[24px]">
+                <p className="text-[20px] font-black tracking-tight text-amber-ink sm:text-[24px]">
                   {(d.stopsAway ?? 0) === 0
                     ? t("track.youreNext")
                     : t("track.stopsAway", { n: d.stopsAway ?? 0 })}
@@ -289,7 +289,7 @@ export default function TrackPage() {
               <div className="mt-6 flex flex-wrap gap-3">
                 <Link
                   to={`/v/${encodeURIComponent(d.proof.photoCode)}`}
-                  className="inline-flex items-center gap-2 rounded-[8px] border border-line px-5 py-3 text-[14px] font-bold text-chalk transition-colors hover:border-amber/60 hover:text-amber"
+                  className="inline-flex items-center gap-2 rounded-[8px] border border-line px-5 py-3 text-[14px] font-bold text-chalk transition-colors hover:border-amber/60 hover:text-amber-ink"
                 >
                   <MapPin className="size-4" /> {t("track.verifyLink")}
                 </Link>

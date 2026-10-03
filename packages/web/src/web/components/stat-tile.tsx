@@ -18,7 +18,7 @@ export function StatTile({
 }) {
   const accentClass = {
     chalk: "text-chalk",
-    amber: "text-amber",
+    amber: "text-amber-ink",
     verified: "text-verified",
     sky: "text-sky",
   }[accent];

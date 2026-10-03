@@ -105,7 +105,7 @@ export function MobilePopup({ onClose }: { onClose: () => void }) {
                     /* clipboard blocked — the link is on screen anyway */
                   }
                 }}
-                className="mono flex items-center gap-1.5 text-[11px] text-amber hover:underline"
+                className="mono flex items-center gap-1.5 text-[11px] text-amber-ink hover:underline"
               >
                 <Copy className="size-3" />
                 {copied ? t("checklist.mobileCopied") : qr.data.url.replace(/^https?:\/\//, "")}
@@ -117,7 +117,7 @@ export function MobilePopup({ onClose }: { onClose: () => void }) {
         <button
           type="button"
           onClick={onClose}
-          className="mono mt-4 w-full rounded-[8px] bg-amber px-4 py-2.5 text-[11px] font-bold uppercase tracking-widest text-ink"
+          className="mono mt-4 w-full rounded-[8px] bg-amber px-4 py-2.5 text-[11px] font-bold uppercase tracking-widest text-on-amber"
         >
           {t("checklist.mobileDone")}
         </button>
@@ -148,7 +148,7 @@ function CapturePopup({ onClose }: { onClose: () => void }) {
         <button
           type="button"
           onClick={onClose}
-          className="mono mt-4 w-full rounded-[8px] bg-amber px-4 py-2.5 text-[11px] font-bold uppercase tracking-widest text-ink"
+          className="mono mt-4 w-full rounded-[8px] bg-amber px-4 py-2.5 text-[11px] font-bold uppercase tracking-widest text-on-amber"
         >
           {t("checklist.captureDone")}
         </button>
@@ -217,7 +217,7 @@ export function SetupChecklist() {
       <div className="rounded-[12px] border border-line bg-ink-2 p-4 sm:p-5">
         <div className="flex items-start gap-3">
           <div className="mt-0.5 grid size-8 shrink-0 place-items-center rounded-[8px] bg-amber/15">
-            <Rocket className="size-4 text-amber" />
+            <Rocket className="size-4 text-amber-ink" />
           </div>
           <div className="min-w-0 flex-1">
             <h2 className="text-[15px] font-semibold text-chalk">{t("checklist.title")}</h2>
@@ -276,7 +276,7 @@ export function SetupChecklist() {
                     ) : null}
                   </span>
                   {complete ? null : step.key === nextKey ? (
-                    <span className="mono shrink-0 rounded-[6px] bg-amber px-2.5 py-1 text-[10px] font-bold uppercase tracking-widest text-ink">
+                    <span className="mono shrink-0 rounded-[6px] bg-amber px-2.5 py-1 text-[10px] font-bold uppercase tracking-widest text-on-amber">
                       {t("checklist.start")}
                     </span>
                   ) : (

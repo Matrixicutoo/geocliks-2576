@@ -67,7 +67,7 @@ export default function Help() {
   return (
     <HelpShell crumbs={[]} wide>
       <section className="mx-auto max-w-[720px] text-center">
-        <p className="label text-amber">{t("help.eyebrow")}</p>
+        <p className="label text-amber-ink">{t("help.eyebrow")}</p>
         <h1 className="mt-3 font-display text-[34px] font-bold leading-tight tracking-tight text-chalk sm:text-[44px]">
           {t("help.headline")}
         </h1>
@@ -126,7 +126,7 @@ export default function Help() {
                 to={`/help/${category.slug}`}
                 className="group flex h-full flex-col rounded-[18px] border border-line bg-ink-2 p-6 transition-colors hover:border-amber/60"
               >
-                <span className="grid size-10 place-items-center rounded-[12px] border border-amber/30 text-amber">
+                <span className="grid size-10 place-items-center rounded-[12px] border border-amber/30 text-amber-ink">
                   <Icon className="size-5" />
                 </span>
                 <h2 className="mt-4 font-display text-[18px] font-bold tracking-tight text-chalk">
@@ -135,7 +135,7 @@ export default function Help() {
                 <p className="mt-2 flex-1 text-[14px] leading-relaxed text-fog">
                   {category.summary}
                 </p>
-                <span className="mono mt-4 flex items-center gap-2 text-[10.5px] uppercase tracking-widest text-fog transition-colors group-hover:text-amber">
+                <span className="mono mt-4 flex items-center gap-2 text-[10.5px] uppercase tracking-widest text-fog transition-colors group-hover:text-amber-ink">
                   {t("help.articleCount", { count })}
                   <ArrowRight className="size-3.5" />
                 </span>

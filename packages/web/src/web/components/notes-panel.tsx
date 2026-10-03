@@ -83,7 +83,7 @@ export function NotesPanel({ board }: { board: NoteBoard }) {
         <button
           type="button"
           onClick={() => setOpen("new")}
-          className="mono ml-auto inline-flex items-center gap-1.5 text-[11px] font-bold uppercase tracking-widest text-amber transition-colors hover:text-amber-deep"
+          className="mono ml-auto inline-flex items-center gap-1.5 text-[11px] font-bold uppercase tracking-widest text-amber-ink transition-colors hover:underline"
         >
           <Plus className="size-3.5" /> {t("notes.add")}
         </button>
@@ -154,7 +154,7 @@ export function NotesPanel({ board }: { board: NoteBoard }) {
                             <span
                               className={cn(
                                 "inline-flex items-center gap-1",
-                                due && "text-amber",
+                                due && "text-amber-ink",
                               )}
                             >
                               <CalendarDays className="size-3" /> {note.dueDate}

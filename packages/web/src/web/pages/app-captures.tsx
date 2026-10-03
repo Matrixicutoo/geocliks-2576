@@ -55,7 +55,7 @@ export default function CapturesPage() {
             className={cn(
               "rounded-[6px] mono border px-2.5 py-1.5 text-[10.5px] uppercase tracking-widest transition-colors",
               kind === value
-                ? "border-amber/60 bg-amber/10 text-amber"
+                ? "border-amber/60 bg-amber/10 text-amber-ink"
                 : "border-line text-fog hover:text-chalk",
             )}
           >

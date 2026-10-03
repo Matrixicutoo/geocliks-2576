@@ -213,7 +213,7 @@ export function ShareProjectDialog({
                           <button
                             type="button"
                             onClick={() => copy(link.id, url)}
-                            className="inline-flex items-center gap-1.5 rounded-[8px] border border-line px-2 py-1.5 text-[11px] text-chalk hover:border-amber/60 hover:text-amber"
+                            className="inline-flex items-center gap-1.5 rounded-[8px] border border-line px-2 py-1.5 text-[11px] text-chalk hover:border-amber/60 hover:text-amber-ink"
                           >
                             {copied === link.id ? (
                               <Check className="size-3.5 text-verified" />

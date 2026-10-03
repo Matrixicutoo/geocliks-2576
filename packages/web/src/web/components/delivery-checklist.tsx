@@ -57,7 +57,7 @@ function RunPopup({ onClose }: { onClose: () => void }) {
             <button
               type="button"
               onClick={() => navigate(`/app/routes/${created}`)}
-              className="mono w-full rounded-[8px] bg-amber px-4 py-2.5 text-[11px] font-bold uppercase tracking-widest text-ink"
+              className="mono w-full rounded-[8px] bg-amber px-4 py-2.5 text-[11px] font-bold uppercase tracking-widest text-on-amber"
             >
               {t("runhelp.runAddStops")}
             </button>
@@ -120,7 +120,7 @@ function RunPopup({ onClose }: { onClose: () => void }) {
         <button
           type="submit"
           disabled={create.isPending}
-          className="mono mt-4 flex w-full items-center justify-center gap-2 rounded-[8px] bg-amber px-4 py-2.5 text-[11px] font-bold uppercase tracking-widest text-ink disabled:opacity-60"
+          className="mono mt-4 flex w-full items-center justify-center gap-2 rounded-[8px] bg-amber px-4 py-2.5 text-[11px] font-bold uppercase tracking-widest text-on-amber disabled:opacity-60"
         >
           {create.isPending ? <Loader2 className="size-3.5 animate-spin" /> : null}
           {t("runhelp.runCreate")}
@@ -152,7 +152,7 @@ function StopsPopup({ routeId, onClose }: { routeId: string | null; onClose: () 
           <button
             type="button"
             onClick={() => navigate(`/app/routes/${routeId}`)}
-            className="mono mt-4 w-full rounded-[8px] bg-amber px-4 py-2.5 text-[11px] font-bold uppercase tracking-widest text-ink"
+            className="mono mt-4 w-full rounded-[8px] bg-amber px-4 py-2.5 text-[11px] font-bold uppercase tracking-widest text-on-amber"
           >
             {t("runhelp.openRun")}
           </button>
@@ -186,7 +186,7 @@ function DropPopup({ onClose }: { onClose: () => void }) {
         <button
           type="button"
           onClick={onClose}
-          className="mono mt-4 w-full rounded-[8px] bg-amber px-4 py-2.5 text-[11px] font-bold uppercase tracking-widest text-ink"
+          className="mono mt-4 w-full rounded-[8px] bg-amber px-4 py-2.5 text-[11px] font-bold uppercase tracking-widest text-on-amber"
         >
           {t("runhelp.dropDone")}
         </button>
@@ -235,7 +235,7 @@ export function DeliveryChecklist() {
       <div className="mb-4 rounded-[12px] border border-line bg-ink-2 p-4 sm:p-5">
         <div className="flex items-start gap-3">
           <div className="mt-0.5 grid size-8 shrink-0 place-items-center rounded-[8px] bg-amber/15">
-            <Rocket className="size-4 text-amber" />
+            <Rocket className="size-4 text-amber-ink" />
           </div>
           <div className="min-w-0 flex-1">
             <h2 className="text-[15px] font-semibold text-chalk">{t("runhelp.title")}</h2>
@@ -294,7 +294,7 @@ export function DeliveryChecklist() {
                     ) : null}
                   </span>
                   {complete ? null : step.key === nextKey ? (
-                    <span className="mono shrink-0 rounded-[6px] bg-amber px-2.5 py-1 text-[10px] font-bold uppercase tracking-widest text-ink">
+                    <span className="mono shrink-0 rounded-[6px] bg-amber px-2.5 py-1 text-[10px] font-bold uppercase tracking-widest text-on-amber">
                       {t("checklist.start")}
                     </span>
                   ) : (

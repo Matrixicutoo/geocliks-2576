@@ -318,7 +318,7 @@ export default function Pricing() {
 
         <p className="mx-auto mt-6 max-w-[760px] text-[13px] leading-relaxed text-fog">
           {t("pr.plansNote")}{" "}
-          <a href={`mailto:${SALES_EMAIL}`} className="text-amber hover:underline">
+          <a href={`mailto:${SALES_EMAIL}`} className="text-amber-ink hover:underline">
             {SALES_EMAIL}
           </a>
           .
@@ -360,7 +360,7 @@ export default function Pricing() {
                 </th>
                 {columns.map((plan) => (
                   <th key={plan.id} scope="col" className="px-3 py-3 text-center align-bottom">
-                    <span className="mono block text-[11px] uppercase tracking-[0.18em] text-amber">
+                    <span className="mono block text-[11px] uppercase tracking-[0.18em] text-amber-ink">
                       {plan.name}
                     </span>
                     <span className="mt-1 block font-display text-[17px] font-bold text-chalk">
@@ -378,7 +378,7 @@ export default function Pricing() {
                       block has nowhere to slide to, and the group name scrolled out of
                       sight with the columns. The label inside it is what sticks. */}
                   <th scope="colgroup" colSpan={columns.length + 1} className="bg-ink-2 p-0">
-                    <span className="mono sticky start-0 inline-block px-3 py-2 text-[10.5px] uppercase tracking-[0.2em] text-amber">
+                    <span className="mono sticky start-0 inline-block px-3 py-2 text-[10.5px] uppercase tracking-[0.2em] text-amber-ink">
                       {t(group.title)}
                     </span>
                   </th>
@@ -408,7 +408,7 @@ export default function Pricing() {
         <p className="mx-auto mt-5 max-w-[760px] text-[13px] leading-relaxed text-fog">
           {family === "delivery" && custom ? t("pr.tableNote.custom", { name: custom.name }) : null}{" "}
           {t("pr.tableNote.lead")}{" "}
-          <a href="/help/plans-billing" className="text-amber hover:underline">
+          <a href="/help/plans-billing" className="text-amber-ink hover:underline">
             {t("pr.tableNote.link")}
           </a>
           .

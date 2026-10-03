@@ -56,7 +56,7 @@ export function AdminShell({
               {(close) => <AdminSidebarBody nav={NAV} onNavigate={close} />}
             </MenuDrawer>
             <div className="min-w-0 flex-1">
-              <h1 className="truncate font-display text-[17px] font-bold tracking-tight text-amber sm:text-xl">
+              <h1 className="truncate font-display text-[17px] font-bold tracking-tight text-amber-ink sm:text-xl">
                 {title}
               </h1>
               {subtitle && (

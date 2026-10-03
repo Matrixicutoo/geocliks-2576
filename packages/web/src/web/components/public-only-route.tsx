@@ -25,7 +25,7 @@ export function PublicOnlyRoute({ children }: { children: React.ReactNode }) {
         <div className="flex flex-col items-center gap-4">
           <Logo />
           <span className="flex items-center gap-2 label">
-            <Loader2 className="size-3.5 animate-spin text-amber" />
+            <Loader2 className="size-3.5 animate-spin text-amber-ink" />
             Opening teamspace
           </span>
         </div>

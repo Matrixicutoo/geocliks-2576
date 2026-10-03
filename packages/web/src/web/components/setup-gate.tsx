@@ -73,7 +73,7 @@ export function SetupGate({ children }: { children: React.ReactNode }) {
     <div className="grid min-h-screen place-items-center bg-ink blueprint px-5 py-12 text-chalk">
       <div className={cn("w-full", step === 1 ? "max-w-[420px]" : "max-w-[720px]")}>
         <Logo />
-        <p className="label mt-10 text-amber">{t("setup.stepOf", { n: step })}</p>
+        <p className="label mt-10 text-amber-ink">{t("setup.stepOf", { n: step })}</p>
 
         {step === 1 ? (
           <form
@@ -123,7 +123,7 @@ export function SetupGate({ children }: { children: React.ReactNode }) {
             <button
               type="submit"
               disabled={!canContinue}
-              className="rounded-[8px] mono mt-6 flex w-full items-center justify-center gap-2 bg-amber px-4 py-3 text-[11.5px] font-bold uppercase tracking-widest text-ink transition-colors hover:bg-amber-deep disabled:opacity-60"
+              className="rounded-[8px] mono mt-6 flex w-full items-center justify-center gap-2 bg-amber px-4 py-3 text-[11.5px] font-bold uppercase tracking-widest text-on-amber transition-colors hover:bg-amber-deep disabled:opacity-60"
             >
               {t("setup.next")}
             </button>
@@ -202,12 +202,12 @@ function SystemCard({
       disabled={disabled}
       className="rounded-[12px] group flex h-full flex-col items-start gap-2 border border-line bg-ink-2 p-5 text-left transition-colors hover:border-amber disabled:opacity-60"
     >
-      <span className="rounded-[8px] grid size-9 place-items-center border border-line bg-ink text-amber">
+      <span className="rounded-[8px] grid size-9 place-items-center border border-line bg-ink text-amber-ink">
         {busy ? <Loader2 className="size-4 animate-spin" /> : <Icon className="size-4" />}
       </span>
       <span className="mt-1 text-[15px] font-semibold tracking-tight text-chalk">{title}</span>
       <span className="text-[12.5px] leading-relaxed text-fog">{body}</span>
-      <span className="mono mt-auto pt-3 text-[10.5px] font-bold uppercase tracking-widest text-amber">
+      <span className="mono mt-auto pt-3 text-[10.5px] font-bold uppercase tracking-widest text-amber-ink">
         {trial}
       </span>
     </button>

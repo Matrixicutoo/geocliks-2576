@@ -111,25 +111,25 @@ export default function ProofOfDelivery() {
             {t("pod.related.lead")}{" "}
             <Link
               to="/blog/what-should-photo-proof-of-delivery-include"
-              className="font-semibold text-amber underline decoration-amber/40 underline-offset-4 hover:decoration-amber"
+              className="font-semibold text-amber-ink underline decoration-amber/40 underline-offset-4 hover:decoration-amber"
             >
               {t("pod.related.link1")}
             </Link>
             {t("pod.related.join")}{" "}
             <Link
               to="/gps-timestamp-camera"
-              className="font-semibold text-amber underline decoration-amber/40 underline-offset-4 hover:decoration-amber"
+              className="font-semibold text-amber-ink underline decoration-amber/40 underline-offset-4 hover:decoration-amber"
             >
               {t("pod.related.link2")}
             </Link>
             .
           </p>
           <p className="mt-3 flex items-center gap-2 text-[13px] text-fog">
-            <Signature className="size-4 shrink-0 text-amber" />
+            <Signature className="size-4 shrink-0 text-amber-ink" />
             {t("pod.note.signature")}
           </p>
           <p className="mt-3 flex items-center gap-2 text-[13px] text-fog">
-            <ShieldCheck className="size-4 shrink-0 text-amber" />
+            <ShieldCheck className="size-4 shrink-0 text-amber-ink" />
             {t("pod.note.legal")}
           </p>
         </div>

@@ -79,7 +79,7 @@ const WHEN: { icon: typeof Clock; title: TKey; body: TKey }[] = [
 const STAMP_PARTS = ["device 14:31:07", "network 14:31:09", "skew 2s", "verified"];
 
 const linkClass =
-  "font-semibold text-amber underline decoration-amber/40 underline-offset-4 hover:decoration-amber";
+  "font-semibold text-amber-ink underline decoration-amber/40 underline-offset-4 hover:decoration-amber";
 
 export default function CanPhotoTimestampsBeFaked() {
   const { t, locale } = useLocale();
@@ -120,7 +120,7 @@ export default function CanPhotoTimestampsBeFaked() {
             {STAMP_PARTS.map((part, index) => (
               <span key={part} className="flex items-center gap-3">
                 {index > 0 ? <span className="text-fog/50">·</span> : null}
-                <span className={index === STAMP_PARTS.length - 1 ? "font-bold text-amber" : ""}>
+                <span className={index === STAMP_PARTS.length - 1 ? "font-bold text-amber-ink" : ""}>
                   {part}
                 </span>
               </span>
@@ -144,7 +144,7 @@ export default function CanPhotoTimestampsBeFaked() {
         <div className="grid gap-6 sm:grid-cols-2">
           {WHEN.map((item) => (
             <div key={item.title} className="rounded-[12px] border border-line bg-ink-2 p-5">
-              <item.icon className="size-4.5 text-amber" />
+              <item.icon className="size-4.5 text-amber-ink" />
               <h3 className="mt-3 font-display text-[15px] font-semibold text-chalk">
                 {t(item.title)}
               </h3>

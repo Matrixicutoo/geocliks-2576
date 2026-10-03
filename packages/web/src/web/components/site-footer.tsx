@@ -55,7 +55,7 @@ function SocialRow() {
           rel="noreferrer"
           aria-label={label}
           title={label}
-          className="grid size-9 place-items-center rounded-[12px] border border-line text-fog transition-colors hover:border-amber hover:text-amber"
+          className="grid size-9 place-items-center rounded-[12px] border border-line text-fog transition-colors hover:border-amber hover:text-amber-ink"
         >
           <Icon className="size-4" />
         </a>
@@ -228,7 +228,7 @@ export function SiteFooter() {
                 className="group transition-colors hover:text-chalk"
               >
                 {t("home.nav.fieldNotes")}
-                <span className="mt-0.5 block text-[11.5px] leading-snug text-fog/70 transition-colors group-hover:text-fog">
+                <span className="mt-0.5 block text-[11.5px] leading-snug text-fog/90 transition-colors group-hover:text-fog">
                   {t("home.footer.fieldNotesTag")}
                 </span>
               </Link>
@@ -254,7 +254,7 @@ export function SiteFooter() {
           </p>
           <Link
             to="/get-app"
-            className="mono text-[10.5px] uppercase tracking-widest text-fog transition-colors hover:text-amber"
+            className="mono text-[10.5px] uppercase tracking-widest text-fog transition-colors hover:text-amber-ink"
           >
             {t("home.hero.ctaFieldApp")}
           </Link>

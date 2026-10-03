@@ -103,7 +103,7 @@ export function PhotoStrip({
             className={cn(
               "mono rounded-[6px] border px-2.5 py-1 text-[10px] uppercase tracking-widest transition-colors",
               tag === value
-                ? "border-amber/60 bg-amber/10 text-amber"
+                ? "border-amber/60 bg-amber/10 text-amber-ink"
                 : "border-line text-fog hover:text-chalk",
             )}
           >

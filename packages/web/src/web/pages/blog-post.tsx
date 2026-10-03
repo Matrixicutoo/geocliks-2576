@@ -25,13 +25,13 @@ function NotFound() {
   return (
     <BlogShell>
       <div className="mx-auto max-w-[1180px] px-6 py-28">
-        <div className="eyebrow text-amber-deep">404</div>
+        <div className="eyebrow text-amber-ink">404</div>
         <h1 className="mt-4 font-display text-[34px] font-extrabold tracking-[-0.02em] text-chalk">
           No post at that address.
         </h1>
         <Link
           to="/blog"
-          className="mt-6 inline-flex items-center gap-2 font-mono text-[12px] uppercase tracking-[0.14em] text-amber-deep"
+          className="mt-6 inline-flex items-center gap-2 font-mono text-[12px] uppercase tracking-[0.14em] text-amber-ink"
         >
           <ArrowLeft className="h-3.5 w-3.5" strokeWidth={2.5} />
           All questions
@@ -87,11 +87,11 @@ function Post({ slug }: { slug: string }) {
               <ArrowLeft className="h-3.5 w-3.5" strokeWidth={2.5} />
               Field Notes
             </Link>
-            <div className="eyebrow mt-9 text-amber">{formatLabel[post.format]}</div>
+            <div className="eyebrow mt-9 text-amber-ink">{formatLabel[post.format]}</div>
             <h1 className="mt-4 max-w-[26ch] font-display text-[36px] font-extrabold leading-[1.08] tracking-[-0.03em] text-white sm:text-[52px]">
               {post.title}
             </h1>
-            <div className="mt-7 flex flex-wrap gap-x-6 gap-y-2 font-mono text-[11px] uppercase tracking-[0.14em] text-white/45">
+            <div className="mt-7 flex flex-wrap gap-x-6 gap-y-2 font-mono text-[11px] uppercase tracking-[0.14em] text-white/60">
               <span>Published {post.publishedAt}</span>
               <span>{post.readMinutes} min read</span>
               <span>GeoCliks · Field Notes</span>
@@ -106,7 +106,7 @@ function Post({ slug }: { slug: string }) {
               <div className="eyebrow text-fog">On this page</div>
               <ul className="mt-4 space-y-3">
                 <li>
-                  <a href="#answer" className="text-[14px] font-semibold text-amber-deep">
+                  <a href="#answer" className="text-[14px] font-semibold text-amber-ink">
                     The answer
                   </a>
                 </li>
@@ -146,7 +146,7 @@ function Post({ slug }: { slug: string }) {
 
             {/* FAQ */}
             <section id="faq" className="mt-16 scroll-mt-24 border-t border-line pt-10">
-              <div className="eyebrow text-amber-deep">Follow-up questions</div>
+              <div className="eyebrow text-amber-ink">Follow-up questions</div>
               <h2 className="mt-3 font-display text-[27px] font-extrabold tracking-[-0.02em] text-chalk">
                 Asked next, answered here
               </h2>
@@ -164,7 +164,7 @@ function Post({ slug }: { slug: string }) {
 
             {/* CTA */}
             <section className="mt-16 border border-line bg-white px-7 py-8">
-              <div className="eyebrow text-amber-deep">Try the mechanism</div>
+              <div className="eyebrow text-amber-ink">Try the mechanism</div>
               <p className="measure mt-3 text-[17px] leading-[1.7] text-chalk/85">
                 Every claim above about verification describes what GeoCliks captures: network time
                 with the device skew shown, GPS with an accuracy radius and the reverse-geocoded
@@ -187,8 +187,8 @@ function Post({ slug }: { slug: string }) {
                 {others.map((p) => (
                   <li key={p.slug}>
                     <Link to={`/blog/${p.slug}`} className="group block">
-                      <span className="eyebrow text-amber-deep">{formatLabel[p.format]}</span>
-                      <span className="mt-1.5 block font-display text-[19px] font-bold leading-[1.35] tracking-[-0.01em] text-chalk group-hover:text-amber-deep">
+                      <span className="eyebrow text-amber-ink">{formatLabel[p.format]}</span>
+                      <span className="mt-1.5 block font-display text-[19px] font-bold leading-[1.35] tracking-[-0.01em] text-chalk group-hover:text-amber-ink">
                         {p.title}
                       </span>
                     </Link>

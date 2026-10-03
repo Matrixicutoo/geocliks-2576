@@ -76,7 +76,7 @@ function TextField({
     <label className="block">
       <span className="label text-fog">
         {label}
-        {required ? <span className="text-amber"> *</span> : null}
+        {required ? <span className="text-amber-ink"> *</span> : null}
       </span>
       <input
         type={type ?? "text"}
@@ -303,7 +303,7 @@ export default function AppTeamspaceSettings() {
                     type="button"
                     onClick={() => logoRef.current?.click()}
                     disabled={logoUploading}
-                    className="rounded-[8px] flex items-center gap-2 border border-amber px-3 py-2 text-[13px] font-medium text-amber transition-colors hover:bg-amber hover:text-ink disabled:opacity-60"
+                    className="rounded-[8px] flex items-center gap-2 border border-amber px-3 py-2 text-[13px] font-medium text-amber-ink transition-colors hover:bg-amber hover:text-on-amber disabled:opacity-60"
                   >
                     {logoUploading ? (
                       <Loader2 className="size-4 animate-spin" />
@@ -466,7 +466,7 @@ export default function AppTeamspaceSettings() {
             type="button"
             onClick={() => void save()}
             disabled={updateOrg.isPending || form.name.trim().length < 2}
-            className="rounded-[8px] flex items-center gap-2 bg-amber px-4 py-2.5 text-[13px] font-semibold text-ink transition-opacity disabled:opacity-50"
+            className="rounded-[8px] flex items-center gap-2 bg-amber px-4 py-2.5 text-[13px] font-semibold text-on-amber transition-opacity disabled:opacity-50"
           >
             {updateOrg.isPending ? (
               <Loader2 className="size-4 animate-spin" />

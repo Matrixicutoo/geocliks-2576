@@ -64,7 +64,7 @@ export function ProjectsPanel() {
           <button
             type="button"
             onClick={() => setOpen(true)}
-            className="mono ml-auto inline-flex items-center gap-1.5 text-[11px] font-bold uppercase tracking-widest text-amber transition-colors hover:text-amber-deep"
+            className="mono ml-auto inline-flex items-center gap-1.5 text-[11px] font-bold uppercase tracking-widest text-amber-ink transition-colors hover:underline"
           >
             <Plus className="size-3.5" /> {t("projects.new")}
           </button>
@@ -128,7 +128,7 @@ export function ProjectsPanel() {
                         {project.name}
                       </span>
                       {project.code && (
-                        <span className="mono shrink-0 text-[10px] tracking-widest text-amber">
+                        <span className="mono shrink-0 text-[10px] tracking-widest text-amber-ink">
                           {project.code}
                         </span>
                       )}
@@ -155,7 +155,7 @@ export function ProjectsPanel() {
       {found.length > SHOWN && (
         <Link
           to="/app/projects"
-          className="mono border-t border-line px-4 py-2.5 text-center text-[10.5px] uppercase tracking-widest text-fog transition-colors hover:text-amber"
+          className="mono border-t border-line px-4 py-2.5 text-center text-[10.5px] uppercase tracking-widest text-fog transition-colors hover:text-amber-ink"
         >
           {t("projects.viewAll", { n: found.length })}
         </Link>

@@ -301,7 +301,7 @@ export function AuthForm() {
             decoding="async"
           />
           <div>
-            <p className="mono mb-4 flex items-center gap-2 text-[10.5px] uppercase tracking-widest text-amber">
+            <p className="mono mb-4 flex items-center gap-2 text-[10.5px] uppercase tracking-widest text-amber-ink">
               <ShieldCheck className="size-3.5" />
               {t("signin.integrityIntact")}
             </p>
@@ -365,7 +365,7 @@ export function AuthForm() {
               <button
                 type="submit"
                 disabled={busy !== null || code.length < 6}
-                className="flex w-full items-center justify-center gap-2 rounded-[8px] bg-amber px-4 py-3 text-[14px] font-bold text-ink transition-colors hover:bg-amber-deep disabled:opacity-60"
+                className="flex w-full items-center justify-center gap-2 rounded-[8px] bg-amber px-4 py-3 text-[14px] font-bold text-on-amber transition-colors hover:bg-amber-deep disabled:opacity-60"
               >
                 {busy === "verify" ? (
                   <Loader2 className="size-4 animate-spin" />
@@ -535,7 +535,7 @@ export function AuthForm() {
                     <button
                       type="submit"
                       disabled={busy !== null}
-                      className="flex w-full items-center justify-center gap-2 rounded-[8px] bg-amber px-4 py-3 text-[14px] font-bold text-ink transition-colors hover:bg-amber-deep disabled:opacity-60"
+                      className="flex w-full items-center justify-center gap-2 rounded-[8px] bg-amber px-4 py-3 text-[14px] font-bold text-on-amber transition-colors hover:bg-amber-deep disabled:opacity-60"
                     >
                       {busy === "send" ? (
                         <Loader2 className="size-4 animate-spin" />

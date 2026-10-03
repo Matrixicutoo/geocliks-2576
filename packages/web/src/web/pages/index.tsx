@@ -198,7 +198,7 @@ function Hero() {
         <div className="max-w-[820px]">
           <motion.p
             variants={riseIn}
-            className="rounded-[6px] mono inline-flex items-center gap-2 border border-amber/40 bg-amber/10 px-2.5 py-1 text-[11.5px] uppercase tracking-[0.2em] text-amber"
+            className="rounded-[6px] mono inline-flex items-center gap-2 border border-amber/40 bg-amber/10 px-2.5 py-1 text-[11.5px] uppercase tracking-[0.2em] text-amber-ink"
           >
             <ShieldCheck className="size-3.5" /> {t("home.hero.eyebrow")}
           </motion.p>
@@ -217,7 +217,7 @@ function Hero() {
             <span aria-hidden="true">
               {t("home.hero.title1")}
               <br />
-              <span className="text-amber">{t("home.hero.title2")}</span>
+              <span className="text-amber-ink">{t("home.hero.title2")}</span>
             </span>
           </motion.h1>
 
@@ -251,10 +251,10 @@ function Hero() {
             className="mt-8 flex flex-wrap items-center justify-center gap-x-7 gap-y-2 text-[13px] text-fog"
           >
             <span className="flex items-center gap-1.5">
-              <WifiOff className="size-4 text-amber" /> {t("home.hero.noSignal")}
+              <WifiOff className="size-4 text-amber-ink" /> {t("home.hero.noSignal")}
             </span>
             <span className="flex items-center gap-1.5">
-              <Globe2 className="size-4 text-amber" /> {t("getapp.underButtons")}
+              <Globe2 className="size-4 text-amber-ink" /> {t("getapp.underButtons")}
             </span>
           </motion.div>
         </div>
@@ -300,7 +300,7 @@ function Evidence() {
         <div className="mt-12 grid gap-px bg-line md:grid-cols-3">
           {rows.map((row) => (
             <div key={row.title} className="bg-ink p-6">
-              <row.icon className="size-5 text-amber" />
+              <row.icon className="size-5 text-amber-ink" />
               <h3 className="mt-4 font-display text-[17px] font-semibold text-chalk">
                 {t(row.title)}
               </h3>
@@ -335,7 +335,7 @@ function Teamspace() {
               { icon: Camera, text: "home.team.b4" as TKey },
             ].map((item) => (
               <li key={item.text} className="flex items-center gap-3 text-[14px] text-chalk">
-                <item.icon className="size-4 shrink-0 text-amber" />
+                <item.icon className="size-4 shrink-0 text-amber-ink" />
                 {t(item.text)}
               </li>
             ))}
@@ -420,13 +420,13 @@ function Reports() {
             <div className="mt-7 grid grid-cols-2 gap-px bg-line">
               {formats.map((f) => (
                 <div key={f.name} className="bg-ink px-4 py-3.5">
-                  <p className="mono text-[13px] font-bold tracking-widest text-amber">{f.name}</p>
+                  <p className="mono text-[13px] font-bold tracking-widest text-amber-ink">{f.name}</p>
                   <p className="mt-1 text-[12px] text-fog">{t(f.note)}</p>
                 </div>
               ))}
             </div>
             <p className="mt-6 flex items-center gap-2 text-[13px] text-fog">
-              <GitCompareArrows className="size-4 text-amber" />
+              <GitCompareArrows className="size-4 text-amber-ink" />
               {t("home.reports.compare")}
             </p>
           </div>
@@ -518,7 +518,7 @@ function Field() {
               },
             ].map((item) => (
               <div key={item.title}>
-                <item.icon className="size-4.5 text-amber" />
+                <item.icon className="size-4.5 text-amber-ink" />
                 <h3 className="mt-3 font-display text-[15px] font-semibold text-chalk">
                   {t(item.title)}
                 </h3>
@@ -635,7 +635,7 @@ function Delivery() {
         <div className="mt-14 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
           {benefits.map((item) => (
             <div key={item.title}>
-              <item.icon className="size-4.5 text-amber" />
+              <item.icon className="size-4.5 text-amber-ink" />
               <h3 className="mt-3 font-display text-[15px] font-semibold text-chalk">
                 {t(item.title)}
               </h3>
@@ -683,7 +683,7 @@ function Delivery() {
         <div className="mt-10">
           <Link
             to="/pricing"
-            className="mono inline-flex items-center gap-2 rounded-[8px] bg-amber px-4 py-3 text-[11px] font-bold uppercase tracking-widest text-on-amber transition-colors hover:bg-on-amber hover:text-amber"
+            className="mono inline-flex items-center gap-2 rounded-[8px] bg-amber px-4 py-3 text-[11px] font-bold uppercase tracking-widest text-on-amber transition-colors hover:bg-on-amber hover:text-amber-ink"
           >
             {t("home.delivery.cta")}
             <ArrowRight className="size-3.5" />
@@ -714,7 +714,7 @@ function Pricing() {
           </h2>
           <Link
             to="/pricing"
-            className="mono inline-flex shrink-0 items-center gap-2 rounded-[8px] bg-amber px-5 py-3 text-[11px] font-bold uppercase tracking-widest text-on-amber transition-colors hover:bg-on-amber hover:text-amber"
+            className="mono inline-flex shrink-0 items-center gap-2 rounded-[8px] bg-amber px-5 py-3 text-[11px] font-bold uppercase tracking-widest text-on-amber transition-colors hover:bg-on-amber hover:text-amber-ink"
           >
             {t("home.pricing.seePricing")}
             <ArrowRight className="size-3.5" />

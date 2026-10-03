@@ -100,7 +100,7 @@ export default function VerifyPage() {
             <LanguageSelect compact bare />
             <Link
               to="/get-app"
-              className="whitespace-nowrap rounded-full border border-white/25 px-3 py-1.5 text-[12px] font-semibold text-white/80 transition-colors hover:border-amber/60 hover:text-amber"
+              className="whitespace-nowrap rounded-full border border-white/25 px-3 py-1.5 text-[12px] font-semibold text-white/80 transition-colors hover:border-amber/60 hover:text-amber-ink"
             >
               {t("verify.getApp")}
             </Link>
@@ -142,7 +142,7 @@ export default function VerifyPage() {
             <h1 className="mt-5 text-[32px] leading-tight font-black tracking-tight sm:text-[44px]">
               {ok ? t(copy.headline) : t("verify.headlineUnverified")}
             </h1>
-            <p className="mono mt-2 text-[16px] tracking-widest text-amber">{d.photoCode}</p>
+            <p className="mono mt-2 text-[16px] tracking-widest text-amber-ink">{d.photoCode}</p>
             <p className="mt-4 max-w-2xl text-[15px] leading-relaxed text-fog">
               {t(copy.subhead)}
             </p>
@@ -176,7 +176,7 @@ export default function VerifyPage() {
                         className="w-full bg-black object-contain"
                       />
                     ) : (
-                      <a href={d.url} className="mono block p-6 text-[12px] text-amber">
+                      <a href={d.url} className="mono block p-6 text-[12px] text-amber-ink">
                         {d.photoCode}.pdf
                       </a>
                     )}
@@ -186,7 +186,7 @@ export default function VerifyPage() {
                 )
               ) : (
                 <div className="flex items-start gap-3 p-6">
-                  <Lock className="mt-0.5 size-4 shrink-0 text-amber" />
+                  <Lock className="mt-0.5 size-4 shrink-0 text-amber-ink" />
                   <div>
                     <h2 className="text-[15px] font-bold">{t(copy.notPublishedTitle)}</h2>
                     <p className="mt-2 text-[13px] leading-relaxed text-fog">
@@ -291,7 +291,7 @@ export default function VerifyPage() {
                   href={d.url}
                   target="_blank"
                   rel="noreferrer"
-                  className="rounded-[8px] inline-flex items-center gap-2 border border-amber bg-amber px-5 py-3 text-[14px] font-bold text-ink transition-colors hover:bg-amber/90"
+                  className="rounded-[8px] inline-flex items-center gap-2 border border-amber bg-amber px-5 py-3 text-[14px] font-bold text-on-amber transition-colors hover:bg-amber/90"
                 >
                   <Download className="size-4" /> {t("verify.download")}
                 </a>
@@ -299,14 +299,14 @@ export default function VerifyPage() {
               {d.published && d.shareToken && (
                 <Link
                   to={`/share/${d.shareToken}`}
-                  className="inline-flex items-center gap-2 rounded-[8px] border border-line px-5 py-3 text-[14px] font-bold text-chalk transition-colors hover:border-amber/60 hover:text-amber"
+                  className="inline-flex items-center gap-2 rounded-[8px] border border-line px-5 py-3 text-[14px] font-bold text-chalk transition-colors hover:border-amber/60 hover:text-amber-ink"
                 >
                   <MapPin className="size-4" /> {t("verify.openRecord")}
                 </Link>
               )}
               <Link
                 to="/get-app"
-                className="inline-flex items-center gap-2 rounded-[8px] border border-line px-5 py-3 text-[14px] font-bold text-chalk transition-colors hover:border-amber/60 hover:text-amber"
+                className="inline-flex items-center gap-2 rounded-[8px] border border-line px-5 py-3 text-[14px] font-bold text-chalk transition-colors hover:border-amber/60 hover:text-amber-ink"
               >
                 {t("verify.getFieldApp")} <ArrowRight className="size-4" />
               </Link>
@@ -318,7 +318,7 @@ export default function VerifyPage() {
           </>
         ) : (
           <>
-            <span className="rounded-[6px] mono inline-flex items-center gap-1.5 border border-amber/50 bg-amber/10 px-2.5 py-1 text-[10px] uppercase tracking-widest text-amber">
+            <span className="rounded-[6px] mono inline-flex items-center gap-1.5 border border-amber/50 bg-amber/10 px-2.5 py-1 text-[10px] uppercase tracking-widest text-amber-ink">
               <ShieldCheck className="size-3" /> {t("verify.chipOriginal")}
             </span>
             <h1 className="mt-5 text-[32px] leading-tight font-black tracking-tight sm:text-[44px]">
@@ -355,7 +355,7 @@ export default function VerifyPage() {
             />
             <button
               type="submit"
-              className="rounded-[8px] inline-flex items-center gap-2 border border-amber bg-amber px-5 py-3 text-[14px] font-bold text-ink transition-colors hover:bg-amber/90"
+              className="rounded-[8px] inline-flex items-center gap-2 border border-amber bg-amber px-5 py-3 text-[14px] font-bold text-on-amber transition-colors hover:bg-amber/90"
             >
               <Search className="size-4" /> {t("verify.submit")}
             </button>

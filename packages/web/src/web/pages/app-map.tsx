@@ -41,7 +41,7 @@ export default function MapPage() {
             className={cn(
               "rounded-[8px] mono border px-2.5 py-2 text-[10.5px] uppercase tracking-widest transition-colors",
               showRoute
-                ? "border-amber/60 bg-amber/10 text-amber"
+                ? "border-amber/60 bg-amber/10 text-amber-ink"
                 : "border-line bg-ink-2 text-fog hover:border-fog/50",
             )}
           >
@@ -98,7 +98,7 @@ export default function MapPage() {
                   hover === pin.id ? "border-amber/60 bg-ink-3" : "border-line hover:border-fog/50",
                 )}
               >
-                <p className="mono text-[10px] tracking-widest text-amber">{pin.photoCode}</p>
+                <p className="mono text-[10px] tracking-widest text-amber-ink">{pin.photoCode}</p>
                 <p className="mono mt-0.5 text-[10px] text-chalk">
                   {(pin.lat as number).toFixed(5)}, {(pin.lng as number).toFixed(5)}
                 </p>

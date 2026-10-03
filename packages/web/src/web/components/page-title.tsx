@@ -17,7 +17,7 @@ export function PageTitle({
     <p className="label mb-4 truncate">
       {name ? (
         <>
-          <span className={accent ? "text-amber" : "text-chalk"}>{name}</span> · {section}
+          <span className={accent ? "text-amber-ink" : "text-chalk"}>{name}</span> · {section}
         </>
       ) : (
         section

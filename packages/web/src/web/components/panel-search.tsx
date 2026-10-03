@@ -42,7 +42,7 @@ export function PanelSearch({
             type="button"
             aria-label={t("search.clear")}
             onClick={() => onChange("")}
-            className="shrink-0 text-steel transition-colors hover:text-amber"
+            className="shrink-0 text-steel transition-colors hover:text-amber-ink"
           >
             <X className="size-3.5" />
           </button>

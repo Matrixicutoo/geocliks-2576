@@ -124,7 +124,7 @@ export function ShareMenu({
         {copied ? (
           <Check className="size-3.5 shrink-0 text-verified" />
         ) : (
-          <Link2 className="size-3.5 shrink-0 text-amber" />
+          <Link2 className="size-3.5 shrink-0 text-amber-ink" />
         )}
         {copied ? t("shareMenu.copied") : t("shareMenu.copyLink")}
       </button>
@@ -133,7 +133,7 @@ export function ShareMenu({
         href={`mailto:?subject=${encodeURIComponent(title)}&body=${encodeURIComponent(`${title}\n\n${url}`)}`}
         className={row}
       >
-        <Mail className="size-3.5 shrink-0 text-amber" />
+        <Mail className="size-3.5 shrink-0 text-amber-ink" />
         {t("shareMenu.email")}
       </a>
 
@@ -146,7 +146,7 @@ export function ShareMenu({
             rel="noreferrer"
             className={row}
           >
-            <target.icon className="size-3.5 shrink-0 text-amber" />
+            <target.icon className="size-3.5 shrink-0 text-amber-ink" />
             {target.label}
           </a>
         ))}
@@ -154,7 +154,7 @@ export function ShareMenu({
 
       {nativeShare && (
         <button type="button" onClick={nativeShare} className={cn(row, "border-t border-line")}>
-          <Share2 className="size-3.5 shrink-0 text-amber" />
+          <Share2 className="size-3.5 shrink-0 text-amber-ink" />
           {t("shareMenu.more")}
         </button>
       )}
@@ -218,7 +218,7 @@ export function PhotoShareButton({
         onClick={toggle}
         aria-label={t("shareMenu.title")}
         className={cn(
-          "mono flex items-center gap-2 rounded-[8px] border border-line text-[10.5px] uppercase tracking-widest text-chalk transition-colors hover:border-amber/60 hover:text-amber",
+          "mono flex items-center gap-2 rounded-[8px] border border-line text-[10.5px] uppercase tracking-widest text-chalk transition-colors hover:border-amber/60 hover:text-amber-ink",
           compact ? "size-8 justify-center" : "px-3 py-2",
         )}
       >

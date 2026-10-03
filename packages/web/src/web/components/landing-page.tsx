@@ -86,7 +86,7 @@ export function LandingPage({
               : "relative mx-auto max-w-[1180px] px-5 py-16 sm:py-20"
           }
         >
-          <p className="label text-amber">{eyebrow}</p>
+          <p className="label text-amber-ink">{eyebrow}</p>
           <h1
             className={`mt-3 max-w-[860px] font-display text-[34px] font-bold leading-[1.08] tracking-tight text-chalk sm:text-[46px] ${center ? "mx-auto" : ""}`}
           >
@@ -163,7 +163,7 @@ export function LandingSteps({ steps }: { steps: Array<{ title: string; body: st
     <ol className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
       {steps.map((step, index) => (
         <li key={step.title} className="rounded-[12px] border border-line bg-ink-2 p-5">
-          <span className="mono flex size-7 items-center justify-center rounded-full bg-amber text-[12px] font-bold text-ink">
+          <span className="mono flex size-7 items-center justify-center rounded-full bg-amber text-[12px] font-bold text-on-amber">
             {index + 1}
           </span>
           <h3 className="mt-3.5 font-display text-[15px] font-semibold text-chalk">{step.title}</h3>
@@ -195,7 +195,7 @@ export function LandingCards({
     <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
       {items.map((item) => (
         <div key={item.title} className="rounded-[12px] border border-line bg-ink-2 p-5">
-          <item.icon className={`size-4.5 text-amber ${center ? "mx-auto" : ""}`} />
+          <item.icon className={`size-4.5 text-amber-ink ${center ? "mx-auto" : ""}`} />
           <h3 className="mt-3 font-display text-[15px] font-semibold text-chalk">{item.title}</h3>
           <p className="mt-1.5 text-[13.5px] leading-relaxed text-fog">{item.body}</p>
         </div>
@@ -227,10 +227,10 @@ export function LandingFaq({
             className={`flex cursor-pointer items-center gap-4 font-display text-[15.5px] font-semibold text-chalk marker:content-none ${center ? "justify-center" : "justify-between"}`}
           >
             {entry.question}
-            <span className="mono shrink-0 text-[18px] leading-none text-amber group-open:hidden">
+            <span className="mono shrink-0 text-[18px] leading-none text-amber-ink group-open:hidden">
               +
             </span>
-            <span className="mono hidden shrink-0 text-[18px] leading-none text-amber group-open:inline">
+            <span className="mono hidden shrink-0 text-[18px] leading-none text-amber-ink group-open:inline">
               −
             </span>
           </summary>
@@ -267,13 +267,13 @@ export function LandingCta({
         <div className="mt-8 flex flex-wrap items-center justify-center gap-3">
           <Link
             to={primary.to}
-            className="inline-flex items-center gap-2 rounded-full bg-amber px-6 py-3 text-[14.5px] font-bold text-ink transition-colors hover:bg-amber-deep"
+            className="inline-flex items-center gap-2 rounded-full bg-amber px-6 py-3 text-[14.5px] font-bold text-on-amber transition-colors hover:bg-amber-deep"
           >
             {primary.label} <ArrowRight className="size-4" />
           </Link>
           <Link
             to={secondary.to}
-            className="inline-flex items-center gap-2 rounded-full border border-line px-6 py-3 text-[14.5px] font-semibold text-chalk transition-colors hover:border-amber hover:text-amber"
+            className="inline-flex items-center gap-2 rounded-full border border-line px-6 py-3 text-[14.5px] font-semibold text-chalk transition-colors hover:border-amber hover:text-amber-ink"
           >
             {secondary.label}
           </Link>

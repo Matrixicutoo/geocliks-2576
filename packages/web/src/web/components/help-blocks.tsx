@@ -29,15 +29,15 @@ function SeeAlso({ refs, locale }: { refs: string[]; locale: LocaleCode }) {
 
   return (
     <aside className="rounded-[16px] border border-line bg-ink-2 p-5">
-      <p className="label text-amber">{t("help.related")}</p>
+      <p className="label text-amber-ink">{t("help.related")}</p>
       <ul className="mt-3 space-y-2">
         {found.map(({ category, article }) => (
           <li key={`${category.slug}/${article.slug}`}>
             <Link
               to={articleHref(category.slug, article.slug)}
-              className="group flex items-start gap-2 text-[14px] font-semibold text-chalk transition-colors hover:text-amber"
+              className="group flex items-start gap-2 text-[14px] font-semibold text-chalk transition-colors hover:text-amber-ink"
             >
-              <ArrowRight className="mt-1 size-3.5 shrink-0 text-amber" />
+              <ArrowRight className="mt-1 size-3.5 shrink-0 text-amber-ink" />
               <span>{article.title}</span>
             </Link>
           </li>
@@ -79,7 +79,7 @@ export function HelpBlock({ block, locale }: { block: Block; locale: LocaleCode 
         <ol className="space-y-3">
           {block.items.map((item, i) => (
             <li key={item} className="flex items-start gap-3">
-              <span className="mono mt-0.5 grid size-6 shrink-0 place-items-center rounded-full border border-amber/40 text-[11px] text-amber">
+              <span className="mono mt-0.5 grid size-6 shrink-0 place-items-center rounded-full border border-amber/40 text-[11px] text-amber-ink">
                 {i + 1}
               </span>
               <span className="text-[15px] leading-[1.7] text-fog">{item}</span>

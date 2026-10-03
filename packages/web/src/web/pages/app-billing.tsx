@@ -106,7 +106,7 @@ export default function AppBilling() {
         <div className="space-y-6">
           <div className="grid gap-4 rounded-[12px] border border-line bg-ink-2 p-5 lg:grid-cols-[280px_minmax(0,1fr)]">
             <div className="rounded-[12px] border border-amber/40 bg-amber/10 p-4">
-              <p className="label text-amber">{t("billing.current")}</p>
+              <p className="label text-amber-ink">{t("billing.current")}</p>
               <p className="mt-1 font-display text-2xl font-bold text-chalk">{current.name}</p>
               {/* The price is what people come to this page to check, so it is set at the
                   same weight as on the public pricing table instead of being a footnote
@@ -125,7 +125,7 @@ export default function AppBilling() {
                     type="button"
                     onClick={openManage}
                     disabled={portal.isPending}
-                    className="rounded-[8px] inline-flex w-full items-center justify-center gap-2 border border-amber/60 bg-ink px-3 py-2.5 text-[13px] font-semibold text-amber transition-colors hover:bg-amber/10 disabled:opacity-50"
+                    className="rounded-[8px] inline-flex w-full items-center justify-center gap-2 border border-amber/60 bg-ink px-3 py-2.5 text-[13px] font-semibold text-amber-ink transition-colors hover:bg-amber/10 disabled:opacity-50"
                   >
                     {portal.isPending ? (
                       <Loader2 className="size-3.5 animate-spin" />
@@ -146,7 +146,7 @@ export default function AppBilling() {
                   while the app hands it Business features. */}
               {data.trial.active && data.trial.plan && (
                 <div className="mt-3 border-t border-amber/30 pt-3">
-                  <p className="label text-amber">{t("trial.planLabel")}</p>
+                  <p className="label text-amber-ink">{t("trial.planLabel")}</p>
                   <p className="mt-1 text-[12.5px] leading-relaxed text-chalk">
                     {t("trial.planLine", {
                       plan: data.trial.plan.name,
@@ -219,7 +219,7 @@ export default function AppBilling() {
                 <Fragment key={plan.id}>
                   {firstDelivery && (
                     <div className="col-span-full mt-2 border-t border-line pt-4">
-                      <p className="mono text-[11px] uppercase tracking-[0.2em] text-amber">
+                      <p className="mono text-[11px] uppercase tracking-[0.2em] text-amber-ink">
                         {t("billing.deliveryGroup")}
                       </p>
                       <p className="mt-1 text-[12.5px] text-fog">{t("billing.deliveryNote")}</p>
@@ -231,7 +231,7 @@ export default function AppBilling() {
                       active ? "border-amber" : "border-line",
                     )}
                   >
-                    <p className="mono text-[11px] uppercase tracking-[0.2em] text-amber">
+                    <p className="mono text-[11px] uppercase tracking-[0.2em] text-amber-ink">
                       {plan.name}
                     </p>
                     <p className="mt-2.5 font-display text-3xl font-bold leading-none text-chalk">
@@ -290,8 +290,8 @@ export default function AppBilling() {
                         active
                           ? "border border-line bg-ink text-fog"
                           : contactOnly
-                            ? "border border-amber/50 bg-transparent text-amber hover:bg-amber/10"
-                            : "bg-amber text-ink",
+                            ? "border border-amber/50 bg-transparent text-amber-ink hover:bg-amber/10"
+                            : "bg-amber text-on-amber",
                       )}
                     >
                       {change.isPending && <Loader2 className="size-3.5 animate-spin" />}
@@ -323,7 +323,7 @@ export default function AppBilling() {
 
           <p className="text-[12.5px] text-fog">
             {t("billing.supportPre")}{" "}
-            <a href={`mailto:${data.supportEmail}`} className="text-amber hover:underline">
+            <a href={`mailto:${data.supportEmail}`} className="text-amber-ink hover:underline">
               {data.supportEmail}
             </a>
             . {t("billing.effect")}{" "}

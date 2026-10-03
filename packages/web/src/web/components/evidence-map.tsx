@@ -229,7 +229,7 @@ function LayerControl({
         onClick={() => setOpen((v) => !v)}
         aria-expanded={open}
         aria-label="Map layers"
-        className="grid size-8 place-items-center rounded-[8px] border border-line bg-ink/85 text-fog backdrop-blur transition hover:text-amber"
+        className="grid size-8 place-items-center rounded-[8px] border border-line bg-ink/85 text-fog backdrop-blur transition hover:text-amber-ink"
       >
         <Layers className="size-4" />
       </button>
@@ -246,7 +246,7 @@ function LayerControl({
                 className={cn(
                   "mono rounded-[8px] border px-2 py-1.5 text-[9.5px] uppercase tracking-widest transition",
                   mapType === value
-                    ? "border-amber text-amber"
+                    ? "border-amber text-amber-ink"
                     : "border-line text-fog hover:text-paper",
                 )}
               >
@@ -266,7 +266,7 @@ function LayerControl({
               Street detail
             </span>
           </label>
-          <p className="mt-1.5 text-[10px] leading-snug text-fog/70">
+          <p className="mt-1.5 text-[10px] leading-snug text-fog/90">
             Street numbers, business names and parcel lines.
           </p>
         </div>

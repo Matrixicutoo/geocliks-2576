@@ -145,11 +145,11 @@ export default function AppProfile() {
                 />
               ) : (
                 <div className="flex size-20 shrink-0 items-center justify-center rounded-full border border-line">
-                  <Building2 className="size-8 text-amber" />
+                  <Building2 className="size-8 text-amber-ink" />
                 </div>
               )}
               <div className="min-w-0 flex-1 space-y-2">
-                <p className="font-display truncate text-[16px] font-extrabold tracking-tight text-amber">
+                <p className="font-display truncate text-[16px] font-extrabold tracking-tight text-amber-ink">
                   {org.data?.org.name ?? t("org.settings.section")}
                 </p>
                 <p className="text-[12px] leading-relaxed text-fog">
@@ -157,7 +157,7 @@ export default function AppProfile() {
                 </p>
                 <Link
                   to="/app/teamspace-settings"
-                  className="rounded-[8px] inline-flex items-center gap-2 border border-amber px-3 py-2 text-[13px] font-medium text-amber transition-colors hover:bg-amber hover:text-ink"
+                  className="rounded-[8px] inline-flex items-center gap-2 border border-amber px-3 py-2 text-[13px] font-medium text-amber-ink transition-colors hover:bg-amber hover:text-on-amber"
                 >
                   <Building2 className="size-4" />
                   {t("org.settings.title")}
@@ -179,7 +179,7 @@ export default function AppProfile() {
                   className="size-20 shrink-0 rounded-full border border-amber object-cover"
                 />
               ) : (
-                <div className="mono flex size-20 shrink-0 items-center justify-center rounded-full border border-amber text-lg text-amber">
+                <div className="mono flex size-20 shrink-0 items-center justify-center rounded-full border border-amber text-lg text-amber-ink">
                   {initials(user?.name, user?.email)}
                 </div>
               )}
@@ -199,7 +199,7 @@ export default function AppProfile() {
                   type="button"
                   onClick={() => fileRef.current?.click()}
                   disabled={uploading}
-                  className="rounded-[8px] flex items-center gap-2 border border-amber px-3 py-2 text-[13px] font-medium text-amber transition-colors hover:bg-amber hover:text-ink disabled:opacity-60"
+                  className="rounded-[8px] flex items-center gap-2 border border-amber px-3 py-2 text-[13px] font-medium text-amber-ink transition-colors hover:bg-amber hover:text-on-amber disabled:opacity-60"
                 >
                   {uploading ? (
                     <Loader2 className="size-4 animate-spin" />
@@ -244,7 +244,7 @@ export default function AppProfile() {
                 type="button"
                 onClick={() => void saveName()}
                 disabled={updateProfile.isPending || !name.trim() || name.trim() === user?.name}
-                className="rounded-[8px] flex items-center gap-2 bg-amber px-4 py-2 text-[13px] font-semibold text-ink transition-opacity disabled:opacity-50"
+                className="rounded-[8px] flex items-center gap-2 bg-amber px-4 py-2 text-[13px] font-semibold text-on-amber transition-opacity disabled:opacity-50"
               >
                 {updateProfile.isPending && <Loader2 className="size-4 animate-spin" />}
                 <User className="size-4" />
@@ -260,7 +260,7 @@ export default function AppProfile() {
             </div>
             <div className="space-y-2 p-4">
               <p className="flex items-center gap-2 text-[13px] text-chalk">
-                <Mail className="size-4 shrink-0 text-amber" />
+                <Mail className="size-4 shrink-0 text-amber-ink" />
                 {t("profile.signInPasswordless")}
               </p>
               <p className="text-[12px] leading-relaxed text-fog">
@@ -278,12 +278,12 @@ export default function AppProfile() {
               <p className="label text-fog">{t("profile.planSection")}</p>
             </div>
             <div className="space-y-3 p-4">
-              <p className="mono text-[11px] uppercase tracking-widest text-amber">
+              <p className="mono text-[11px] uppercase tracking-widest text-amber-ink">
                 {org.data?.plan.name}
               </p>
               <Link
                 to="/app/billing"
-                className="rounded-[8px] flex items-center justify-center gap-2 bg-amber px-4 py-2 text-[13px] font-semibold text-ink"
+                className="rounded-[8px] flex items-center justify-center gap-2 bg-amber px-4 py-2 text-[13px] font-semibold text-on-amber"
               >
                 <ArrowUpCircle className="size-4" />
                 {t("profile.upgrade")}

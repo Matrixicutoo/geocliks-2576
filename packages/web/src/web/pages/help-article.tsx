@@ -86,13 +86,13 @@ export default function HelpArticle() {
 
         {headings.length > 2 ? (
           <nav className="mt-8 rounded-[14px] border border-line bg-ink-2 p-5">
-            <p className="label text-amber">{t("help.onThisPage")}</p>
+            <p className="label text-amber-ink">{t("help.onThisPage")}</p>
             <ul className="mt-3 space-y-1.5">
               {headings.map((heading) => (
                 <li key={heading.text}>
                   <a
                     href={`#${anchorFor(heading.text)}`}
-                    className="text-[14px] text-fog transition-colors hover:text-amber"
+                    className="text-[14px] text-fog transition-colors hover:text-amber-ink"
                   >
                     {heading.text}
                   </a>
@@ -109,15 +109,15 @@ export default function HelpArticle() {
 
       {siblings.length > 0 ? (
         <section className="mt-14">
-          <h2 className="label text-amber">{t("help.moreIn", { category: category.title })}</h2>
+          <h2 className="label text-amber-ink">{t("help.moreIn", { category: category.title })}</h2>
           <ul className="mt-4 grid gap-2 sm:grid-cols-2">
             {siblings.map((sibling) => (
               <li key={sibling.slug}>
                 <Link
                   to={articleHref(category.slug, sibling.slug)}
-                  className="flex items-start gap-2 rounded-[12px] border border-line bg-ink-2 p-3.5 text-[14px] font-semibold text-chalk transition-colors hover:border-amber/60 hover:text-amber"
+                  className="flex items-start gap-2 rounded-[12px] border border-line bg-ink-2 p-3.5 text-[14px] font-semibold text-chalk transition-colors hover:border-amber/60 hover:text-amber-ink"
                 >
-                  <ArrowRight className="mt-0.5 size-3.5 shrink-0 text-amber" />
+                  <ArrowRight className="mt-0.5 size-3.5 shrink-0 text-amber-ink" />
                   {sibling.title}
                 </Link>
               </li>
@@ -128,7 +128,7 @@ export default function HelpArticle() {
 
       <Link
         to={`/help/${category.slug}`}
-        className="mono mt-10 inline-flex items-center gap-2 text-[11px] uppercase tracking-widest text-fog transition-colors hover:text-amber"
+        className="mono mt-10 inline-flex items-center gap-2 text-[11px] uppercase tracking-widest text-fog transition-colors hover:text-amber-ink"
       >
         <ArrowLeft className="size-3.5" /> {category.title}
       </Link>

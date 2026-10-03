@@ -160,7 +160,7 @@ export default function AppTeam() {
                         className="size-9 shrink-0 rounded-[12px] border border-line object-cover"
                       />
                     ) : (
-                      <span className="mono grid size-9 shrink-0 place-items-center rounded-[12px] border border-line bg-ink text-[12px] text-amber">
+                      <span className="mono grid size-9 shrink-0 place-items-center rounded-[12px] border border-line bg-ink text-[12px] text-amber-ink">
                         {(member.user?.name ?? member.user?.email ?? "?").slice(0, 2).toUpperCase()}
                       </span>
                     )}
@@ -193,7 +193,7 @@ export default function AppTeam() {
                         type="button"
                         onClick={() => void contact(member.userId)}
                         disabled={openChat.isPending}
-                        className="mono inline-flex shrink-0 items-center gap-1.5 rounded-[8px] border border-line px-2 py-1.5 text-[10px] uppercase tracking-widest text-fog transition-colors hover:border-amber hover:text-amber disabled:opacity-50"
+                        className="mono inline-flex shrink-0 items-center gap-1.5 rounded-[8px] border border-line px-2 py-1.5 text-[10px] uppercase tracking-widest text-fog transition-colors hover:border-amber hover:text-amber-ink disabled:opacity-50"
                       >
                         <MessageSquare className="size-3.5" />
                         {lang.t("team.message")}
@@ -243,8 +243,8 @@ export default function AppTeam() {
                           className={cn(
                             "rounded-[6px] mono inline-flex shrink-0 items-center gap-1.5 border px-2 py-1.5 text-[10px] uppercase tracking-widest transition-colors",
                             projectsFor === member.id
-                              ? "border-amber text-amber"
-                              : "border-line text-fog hover:border-amber hover:text-amber",
+                              ? "border-amber text-amber-ink"
+                              : "border-line text-fog hover:border-amber hover:text-amber-ink",
                           )}
                         >
                           <FolderOpen className="size-3.5" />
@@ -306,7 +306,7 @@ export default function AppTeam() {
                                   <span
                                     className={cn(
                                       "rounded-[4px] grid size-3.5 shrink-0 place-items-center border text-[9px]",
-                                      on ? "border-amber bg-amber text-ink" : "border-fog/50",
+                                      on ? "border-amber bg-amber text-on-amber" : "border-fog/50",
                                     )}
                                   >
                                     {on ? "✓" : ""}
@@ -384,7 +384,7 @@ export default function AppTeam() {
                         <button
                           type="button"
                           onClick={() => setQrFor(qrFor === row.id ? null : row.id)}
-                          className="mono shrink-0 rounded-[8px] border border-line px-2 py-1.5 text-[10px] uppercase tracking-widest text-fog transition-colors hover:border-amber hover:text-amber"
+                          className="mono shrink-0 rounded-[8px] border border-line px-2 py-1.5 text-[10px] uppercase tracking-widest text-fog transition-colors hover:border-amber hover:text-amber-ink"
                         >
                           <QrCode className="mr-1 inline size-3.5" />
                           {qrFor === row.id ? lang.t("team.hide") : "QR"}
@@ -468,7 +468,7 @@ export default function AppTeam() {
                     className={cn(
                       "rounded-[8px] mono inline-flex flex-1 items-center justify-center gap-1.5 border px-2 py-2 text-[10.5px] uppercase tracking-widest transition-colors",
                       override === "light"
-                        ? "border-amber text-amber-deep"
+                        ? "border-amber text-amber-ink"
                         : "border-line text-fog hover:border-fog/50",
                     )}
                   >
@@ -480,7 +480,7 @@ export default function AppTeam() {
                     className={cn(
                       "rounded-[8px] mono inline-flex flex-1 items-center justify-center gap-1.5 border px-2 py-2 text-[10.5px] uppercase tracking-widest transition-colors",
                       override === "dark"
-                        ? "border-amber text-amber-deep"
+                        ? "border-amber text-amber-ink"
                         : "border-line text-fog hover:border-fog/50",
                     )}
                   >
@@ -492,7 +492,7 @@ export default function AppTeam() {
                     className={cn(
                       "rounded-[8px] mono inline-flex flex-1 items-center justify-center border px-2 py-2 text-[10.5px] uppercase tracking-widest transition-colors",
                       override === null
-                        ? "border-amber text-amber-deep"
+                        ? "border-amber text-amber-ink"
                         : "border-line text-fog hover:border-fog/50",
                     )}
                   >
@@ -573,7 +573,7 @@ export default function AppTeam() {
                         className={cn(
                           "rounded-[8px] mono inline-flex flex-1 items-center justify-center gap-1.5 border px-2 py-2 text-[10.5px] uppercase tracking-widest transition-colors disabled:opacity-60",
                           workspace === item
-                            ? "border-amber text-amber-deep"
+                            ? "border-amber text-amber-ink"
                             : "border-line text-fog hover:border-fog/50",
                         )}
                       >

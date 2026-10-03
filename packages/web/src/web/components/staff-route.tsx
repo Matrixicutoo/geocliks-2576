@@ -13,7 +13,7 @@ function Gate({ children }: { children: React.ReactNode }) {
         <div className="flex flex-col items-center gap-4">
           <Logo />
           <span className="label flex items-center gap-2">
-            <Loader2 className="size-3.5 animate-spin text-amber" />
+            <Loader2 className="size-3.5 animate-spin text-amber-ink" />
             Checking operator access
           </span>
         </div>
@@ -36,7 +36,7 @@ function Gate({ children }: { children: React.ReactNode }) {
           </p>
           <Link
             to="/app"
-            className="rounded-[8px] mono mt-5 inline-block border border-amber/50 bg-amber/10 px-4 py-2 text-[11px] uppercase tracking-widest text-amber hover:bg-amber/20"
+            className="rounded-[8px] mono mt-5 inline-block border border-amber/50 bg-amber/10 px-4 py-2 text-[11px] uppercase tracking-widest text-amber-ink hover:bg-amber/20"
           >
             Back to workspace
           </Link>

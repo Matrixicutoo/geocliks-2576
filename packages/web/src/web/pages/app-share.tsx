@@ -131,7 +131,7 @@ export default function AppShare() {
             <button
               type="submit"
               disabled={create.isPending}
- className="rounded-[8px] inline-flex w-full items-center justify-center gap-2 bg-amber px-4 py-2.5 text-[13px] font-semibold text-ink disabled:opacity-60"
+ className="rounded-[8px] inline-flex w-full items-center justify-center gap-2 bg-amber px-4 py-2.5 text-[13px] font-semibold text-on-amber disabled:opacity-60"
             >
               {create.isPending ? (
                 <Loader2 className="size-4 animate-spin" />
@@ -201,7 +201,7 @@ export default function AppShare() {
                           setCopied(link.id);
                           setTimeout(() => setCopied(null), 1800);
                         }}
-                        className="inline-flex items-center gap-1.5 rounded-[8px] border border-line px-2.5 py-2 text-[11.5px] text-chalk transition-colors hover:border-amber/60 hover:text-amber"
+                        className="inline-flex items-center gap-1.5 rounded-[8px] border border-line px-2.5 py-2 text-[11.5px] text-chalk transition-colors hover:border-amber/60 hover:text-amber-ink"
                       >
                         {copied === link.id ? (
                           <Check className="size-3.5 text-verified" />

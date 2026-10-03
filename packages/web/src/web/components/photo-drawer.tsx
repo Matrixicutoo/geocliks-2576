@@ -103,7 +103,7 @@ export function PhotoDrawer({ photoId, onClose }: { photoId: string | null; onCl
       />
       <div className="h-full w-full max-w-[560px] overflow-y-auto border-l border-line bg-ink-2">
         <div className="sticky top-0 flex items-center justify-between border-b border-line bg-ink-2 px-5 py-3">
-          <p className="mono text-[11px] uppercase tracking-widest text-amber">
+          <p className="mono text-[11px] uppercase tracking-widest text-amber-ink">
             {data?.photoCode ?? t("common.loading")}
           </p>
           <button type="button" onClick={onClose} className="text-fog hover:text-chalk">
@@ -152,7 +152,7 @@ export function PhotoDrawer({ photoId, onClose }: { photoId: string | null; onCl
                       <FileText className="size-8 text-fog" />
                     </div>
                   )}
-                  <span className="mono absolute right-2 top-2 flex items-center gap-1.5 border border-white/25 bg-black/70 px-2 py-1 text-[10px] uppercase tracking-widest text-white transition-colors group-hover:border-amber group-hover:text-amber">
+                  <span className="mono absolute right-2 top-2 flex items-center gap-1.5 border border-white/25 bg-black/70 px-2 py-1 text-[10px] uppercase tracking-widest text-white transition-colors group-hover:border-amber group-hover:text-amber-ink">
                     <FileText className="size-3" />
                     {data.pageCount && data.pageCount > 1 ? `${data.pageCount} PP` : "PDF"}
                   </span>
@@ -388,7 +388,7 @@ export function PhotoDrawer({ photoId, onClose }: { photoId: string | null; onCl
                       },
                     );
                   }}
-                  className="mono flex items-center gap-2 rounded-[8px] border border-line px-3 py-2 text-[10.5px] uppercase tracking-widest text-chalk transition-colors hover:border-amber/60 hover:text-amber disabled:opacity-60"
+                  className="mono flex items-center gap-2 rounded-[8px] border border-line px-3 py-2 text-[10.5px] uppercase tracking-widest text-chalk transition-colors hover:border-amber/60 hover:text-amber-ink disabled:opacity-60"
                 >
                   {building === "image" ? (
                     <Loader2 className="size-3.5 animate-spin" />
@@ -410,7 +410,7 @@ export function PhotoDrawer({ photoId, onClose }: { photoId: string | null; onCl
                       ? (data.fileName ?? `${data.photoCode}.pdf`)
                       : `${data.photoCode}.${data.kind === "video" ? "mp4" : "jpg"}`
                   }
-                  className="mono flex items-center gap-2 rounded-[8px] border border-line px-3 py-2 text-[10.5px] uppercase tracking-widest text-fog transition-colors hover:border-amber/60 hover:text-amber"
+                  className="mono flex items-center gap-2 rounded-[8px] border border-line px-3 py-2 text-[10.5px] uppercase tracking-widest text-fog transition-colors hover:border-amber/60 hover:text-amber-ink"
                 >
                   <Download className="size-3.5" />
                   {t("download.raw")}

@@ -80,7 +80,7 @@ function planClock(seconds: number): string {
  * green dot up there and a green row down here are visibly the same fact.
  */
 const OUTCOME_STYLE: Record<string, string> = {
-  pending: "border-amber/40 bg-amber/10 text-amber",
+  pending: "border-amber/40 bg-amber/10 text-amber-ink",
   delivered: "border-verified/40 bg-verified/10 text-verified",
   done: "border-verified/40 bg-verified/10 text-verified",
   failed: "border-alert/40 bg-alert/10 text-alert",
@@ -301,7 +301,7 @@ export default function AppRoutePage() {
                     return t(archived ? "routes.restoredNotice" : "routes.archivedNotice");
                   })
                 }
-                className="mono inline-flex items-center gap-2 rounded-[8px] border border-line px-3 py-2 text-[11px] font-bold uppercase tracking-widest text-chalk transition-colors hover:border-amber hover:text-amber disabled:opacity-60"
+                className="mono inline-flex items-center gap-2 rounded-[8px] border border-line px-3 py-2 text-[11px] font-bold uppercase tracking-widest text-chalk transition-colors hover:border-amber hover:text-amber-ink disabled:opacity-60"
               >
                 {archived ? <RotateCcw className="size-4" /> : <Archive className="size-4" />}
                 {t(archived ? "routes.restore" : "routes.archive")}
@@ -505,14 +505,14 @@ export default function AppRoutePage() {
           )}
 
           {canManage && detail.data && !detail.data.geocodingAvailable && (
-            <p className="rounded-[8px] flex items-start gap-2 border border-amber/40 bg-amber/10 px-3 py-2 text-[13px] text-amber">
+            <p className="rounded-[8px] flex items-start gap-2 border border-amber/40 bg-amber/10 px-3 py-2 text-[13px] text-amber-ink">
               <TriangleAlert className="mt-0.5 size-4 shrink-0" />
               {t("routes.noKeyHint")}
             </p>
           )}
 
           {unresolved.length > 0 && (
-            <p className="rounded-[8px] border border-amber/40 bg-amber/10 px-3 py-2 text-[13px] text-amber">
+            <p className="rounded-[8px] border border-amber/40 bg-amber/10 px-3 py-2 text-[13px] text-amber-ink">
               {t("routes.needsAttention", { n: unresolved.length })}
             </p>
           )}
@@ -726,7 +726,7 @@ export default function AppRoutePage() {
                           {stop.recipientEmail && (
                             <a
                               href={`mailto:${stop.recipientEmail}`}
-                              className="break-all hover:text-amber focus:text-amber focus:outline-none"
+                              className="break-all hover:text-amber-ink focus:text-amber-ink focus:outline-none"
                             >
                               {stop.recipientEmail}
                             </a>
@@ -737,7 +737,7 @@ export default function AppRoutePage() {
                           {stop.recipientPhone && (
                             <a
                               href={`tel:${stop.recipientPhone.replace(/[^\d+]/g, "")}`}
-                              className="hover:text-amber focus:text-amber focus:outline-none"
+                              className="hover:text-amber-ink focus:text-amber-ink focus:outline-none"
                             >
                               {stop.recipientPhone}
                             </a>

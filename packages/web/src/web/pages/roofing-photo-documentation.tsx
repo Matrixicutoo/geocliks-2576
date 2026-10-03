@@ -57,7 +57,7 @@ const CREW_CARDS: { icon: typeof Layers; title: TKey; body: TKey }[] = [
 ];
 
 const LINK_CLASS =
-  "font-semibold text-amber underline decoration-amber/40 underline-offset-4 hover:decoration-amber";
+  "font-semibold text-amber-ink underline decoration-amber/40 underline-offset-4 hover:decoration-amber";
 
 export default function RoofingPhotoDocumentation() {
   const { t, locale } = useLocale();
@@ -119,7 +119,7 @@ export default function RoofingPhotoDocumentation() {
             {t("rf.related.end")}
           </p>
           <p className="mt-3 flex items-center gap-2 text-[13px] text-fog">
-            <ShieldCheck className="size-4 shrink-0 text-amber" />
+            <ShieldCheck className="size-4 shrink-0 text-amber-ink" />
             {t("rf.disclaimer")}
           </p>
         </div>

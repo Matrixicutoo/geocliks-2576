@@ -58,9 +58,9 @@ export default function BlogMethod() {
             <ArrowLeft className="h-3.5 w-3.5" strokeWidth={2.5} />
             Field Notes
           </Link>
-          <div className="eyebrow mt-9 text-amber">Method</div>
+          <div className="eyebrow mt-9 text-amber-ink">Method</div>
           <h1 className="mt-4 max-w-[24ch] font-display text-[36px] font-extrabold leading-[1.08] tracking-[-0.03em] text-white sm:text-[50px]">
-            Rules this log is written <span className="text-amber">under.</span>
+            Rules this log is written <span className="text-amber-ink">under.</span>
           </h1>
         </div>
       </header>
@@ -72,7 +72,7 @@ export default function BlogMethod() {
               key={r.n}
               className="grid gap-5 border-b border-line py-9 md:grid-cols-[auto_1fr_1.3fr]"
             >
-              <span className="font-mono text-[13px] font-semibold text-amber-deep md:pt-1">
+              <span className="font-mono text-[13px] font-semibold text-amber-ink md:pt-1">
                 {r.n}
               </span>
               <h2 className="max-w-[22ch] font-display text-[21px] font-bold leading-[1.3] tracking-[-0.01em] text-chalk">
@@ -90,7 +90,7 @@ export default function BlogMethod() {
               <li key={p.slug} className="flex flex-wrap items-baseline gap-x-4">
                 <Link
                   to={`/blog/${p.slug}`}
-                  className="text-[17px] font-semibold text-chalk hover:text-amber-deep"
+                  className="text-[17px] font-semibold text-chalk hover:text-amber-ink"
                 >
                   {p.title}
                 </Link>

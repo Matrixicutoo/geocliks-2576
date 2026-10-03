@@ -92,7 +92,7 @@ export function LanguageSelect({
         className={cn(
           "flex items-center gap-1.5",
           bare &&
-            "px-1 py-2 text-[13px] font-semibold text-white transition-colors hover:text-amber",
+            "px-1 py-2 text-[13px] font-semibold text-white transition-colors hover:text-amber-ink",
           !bare && "gap-2 rounded-[12px]",
           !bare &&
             tone === "amber" && [
@@ -111,7 +111,7 @@ export function LanguageSelect({
             "size-4 shrink-0",
             bare && "text-white",
             !bare && "size-3.5",
-            !bare && (tone === "amber" ? "text-on-amber" : "text-amber"),
+            !bare && (tone === "amber" ? "text-on-amber" : "text-amber-ink"),
           )}
         />
         <span className={cn("truncate", bare ? "capitalize" : "mono uppercase tracking-widest")}>
@@ -156,7 +156,7 @@ export function LanguageSelect({
             )}
           >
             {t("language.followWorkspace")}
-            {!override && <Check className="size-3.5 text-amber group-hover:text-on-amber" />}
+            {!override && <Check className="size-3.5 text-amber-ink group-hover:text-on-amber" />}
           </button>
           {LOCALES.map((l) => (
             <button
@@ -180,7 +180,7 @@ export function LanguageSelect({
                 </span>
               </span>
               {override === l.code && (
-                <Check className="size-3.5 shrink-0 text-amber group-hover:text-on-amber" />
+                <Check className="size-3.5 shrink-0 text-amber-ink group-hover:text-on-amber" />
               )}
             </button>
           ))}

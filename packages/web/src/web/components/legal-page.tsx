@@ -70,7 +70,7 @@ export function LegalPage({
           </Link>
           <Link
             to="/"
-            className="mono flex items-center gap-2 text-[11px] uppercase tracking-widest text-fog transition-colors hover:text-amber"
+            className="mono flex items-center gap-2 text-[11px] uppercase tracking-widest text-fog transition-colors hover:text-amber-ink"
           >
             <ArrowLeft className="size-3.5" /> geocliks.com
           </Link>

@@ -89,7 +89,7 @@ const FACTS: { icon: typeof Scale; label: TKey; value: string; key?: TKey }[] = 
 ];
 
 const LINK_CLASS =
-  "font-semibold text-amber underline decoration-amber/40 underline-offset-4 hover:decoration-amber";
+  "font-semibold text-amber-ink underline decoration-amber/40 underline-offset-4 hover:decoration-amber";
 
 export default function About() {
   const { t, locale } = useLocale();
@@ -122,7 +122,7 @@ export default function About() {
           {FACTS.map((fact) => (
             <div key={fact.label} className="grid gap-2 py-5 sm:grid-cols-[220px_1fr] sm:gap-6">
               <dt className="flex items-center gap-2.5 text-[13.5px] font-semibold text-fog">
-                <fact.icon className="h-4 w-4 shrink-0 text-amber-deep" />
+                <fact.icon className="h-4 w-4 shrink-0 text-amber-ink" />
                 {t(fact.label)}
               </dt>
               <dd className="text-[16px] leading-relaxed text-chalk">
@@ -132,7 +132,7 @@ export default function About() {
           ))}
           <div className="grid gap-2 py-5 sm:grid-cols-[220px_1fr] sm:gap-6">
             <dt className="flex items-center gap-2.5 text-[13.5px] font-semibold text-fog">
-              <ShieldCheck className="h-4 w-4 shrink-0 text-amber-deep" />
+              <ShieldCheck className="h-4 w-4 shrink-0 text-amber-ink" />
               {t("ab.contact.label")}
             </dt>
             <dd className="text-[16px] leading-relaxed text-chalk">
@@ -148,7 +148,7 @@ export default function About() {
           </div>
           <div className="grid gap-2 py-5 sm:grid-cols-[220px_1fr] sm:gap-6">
             <dt className="flex items-center gap-2.5 text-[13.5px] font-semibold text-fog">
-              <Globe className="h-4 w-4 shrink-0 text-amber-deep" />
+              <Globe className="h-4 w-4 shrink-0 text-amber-ink" />
               {t("ab.profiles.label")}
             </dt>
             <dd className="flex flex-wrap gap-x-5 gap-y-1 text-[16px] leading-relaxed text-chalk">

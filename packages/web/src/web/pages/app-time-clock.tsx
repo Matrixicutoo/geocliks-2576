@@ -257,7 +257,7 @@ export default function TimeClockPage() {
                   type="button"
                   onClick={() => stampPunch("out")}
                   disabled={punch.isPending}
-                  className="inline-flex items-center gap-1.5 rounded-[6px] border border-amber/60 bg-amber/10 px-2.5 py-1.5 text-[11px] uppercase tracking-widest text-amber disabled:opacity-50"
+                  className="inline-flex items-center gap-1.5 rounded-[6px] border border-amber/60 bg-amber/10 px-2.5 py-1.5 text-[11px] uppercase tracking-widest text-amber-ink disabled:opacity-50"
                 >
                   <LogOut className="size-3.5" />
                   {t("tc.clockOut")}
@@ -313,7 +313,7 @@ export default function TimeClockPage() {
                   timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone || "UTC",
                 })
               }
-              className="inline-flex items-center gap-1.5 rounded-[6px] border border-amber/60 bg-amber/10 px-2.5 py-1.5 text-[11px] uppercase tracking-widest text-amber disabled:cursor-not-allowed disabled:opacity-40"
+              className="inline-flex items-center gap-1.5 rounded-[6px] border border-amber/60 bg-amber/10 px-2.5 py-1.5 text-[11px] uppercase tracking-widest text-amber-ink disabled:cursor-not-allowed disabled:opacity-40"
             >
               <FileDown className="size-3.5" />
               {exportPdf.isPending ? t("tc.exporting") : t("tc.exportPdf")}
@@ -393,7 +393,7 @@ export default function TimeClockPage() {
                   <span
                     className={cn(
                       "mono text-[11px]",
-                      today ? "text-amber" : cell ? "text-chalk" : "text-fog",
+                      today ? "text-amber-ink" : cell ? "text-chalk" : "text-fog",
                     )}
                   >
                     {day.getDate()}
@@ -429,7 +429,7 @@ export default function TimeClockPage() {
                     <span
                       className={cn(
                         "mono inline-flex items-center gap-1 text-[10.5px] uppercase tracking-widest",
-                        entry.kind === "in" ? "text-verified" : "text-amber",
+                        entry.kind === "in" ? "text-verified" : "text-amber-ink",
                       )}
                     >
                       {entry.kind === "in" ? (
@@ -448,7 +448,7 @@ export default function TimeClockPage() {
                   {/* Everything a photograph's stamp used to carry, because there is no
                       photograph behind a punch to go back to. This panel is the whole record. */}
                   {entry.code && (
-                    <p className="mono mt-1 text-[10.5px] tracking-widest text-amber">
+                    <p className="mono mt-1 text-[10.5px] tracking-widest text-amber-ink">
                       {entry.code}
                     </p>
                   )}

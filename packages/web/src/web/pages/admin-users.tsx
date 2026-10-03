@@ -101,7 +101,7 @@ export default function AdminUsers() {
                 </td>
                 <td className="px-4 py-3 text-fog">{u.org?.name ?? "—"}</td>
                 <td className="px-4 py-3">
-                  <span className="mono text-[11px] text-amber">{u.planName ?? "—"}</span>
+                  <span className="mono text-[11px] text-amber-ink">{u.planName ?? "—"}</span>
                 </td>
                 <td className="mono px-4 py-3 text-[11px] uppercase tracking-widest text-fog">
                   {u.role ?? "—"}
@@ -163,7 +163,7 @@ export default function AdminUsers() {
                           }),
                         )
                       }
-                      className="rounded-[12px] border border-line px-2 py-1 text-fog hover:border-amber/60 hover:text-amber"
+                      className="rounded-[12px] border border-line px-2 py-1 text-fog hover:border-amber/60 hover:text-amber-ink"
                     >
                       {u.suspended ? <Undo2 className="size-3.5" /> : <Ban className="size-3.5" />}
                     </button>

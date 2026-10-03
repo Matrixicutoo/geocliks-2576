@@ -159,7 +159,7 @@ export function SidebarBody({
                   className="size-8 shrink-0 rounded-full border border-amber object-cover"
                 />
               ) : (
-                <span className="mono flex size-8 shrink-0 items-center justify-center rounded-full border border-amber text-[12px] font-bold text-amber">
+                <span className="mono flex size-8 shrink-0 items-center justify-center rounded-full border border-amber text-[12px] font-bold text-amber-ink">
                   {initials(org.data?.user.name, org.data?.user.email)}
                 </span>
               )}
@@ -174,7 +174,7 @@ export function SidebarBody({
                     it. They are what people actually came to that card to read — what this
                     account is paying for and what it is allowed to do — and both belong to the
                     person holding the menu open. */}
-                <span className="mono block truncate text-[10px] uppercase tracking-widest text-amber">
+                <span className="mono block truncate text-[10px] uppercase tracking-widest text-amber-ink">
                   {org.data?.plan.name} · {org.data?.role}
                 </span>
                 {/* A trialling workspace is running on a borrowed plan, so the plan name alone
@@ -221,7 +221,7 @@ export function SidebarBody({
                   {t(item.label)}
                 </span>
                 {item.href === "/app/messages" && (unread.data?.total ?? 0) > 0 && (
-                  <span className="rounded-[6px] bg-on-amber px-1.5 text-[11px] font-bold text-amber">
+                  <span className="rounded-[6px] bg-on-amber px-1.5 text-[11px] font-bold text-amber-ink">
                     {unread.data?.total}
                   </span>
                 )}
@@ -290,9 +290,9 @@ export function SidebarBody({
                   <span className="text-[12.5px] text-chalk">{t("appearance.title")}</span>
                   <span className="mono flex items-center gap-1.5 text-[11px] uppercase tracking-widest text-fog">
                     {theme === "dark" ? (
-                      <Moon className="size-3.5 text-amber" />
+                      <Moon className="size-3.5 text-amber-ink" />
                     ) : (
-                      <Sun className="size-3.5 text-amber" />
+                      <Sun className="size-3.5 text-amber-ink" />
                     )}
                     {theme === "dark" ? t("appearance.dark") : t("appearance.light")}
                   </span>

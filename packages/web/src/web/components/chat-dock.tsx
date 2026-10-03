@@ -229,7 +229,7 @@ function Dock() {
             "relative flex size-12 items-center justify-center rounded-full border shadow-xl transition-colors",
             dock.picker
               ? "border-amber bg-amber text-on-amber"
-              : "border-line bg-ink-2 text-amber hover:border-amber hover:bg-ink-3",
+              : "border-line bg-ink-2 text-amber-ink hover:border-amber hover:bg-ink-3",
           )}
         >
           {dock.picker ? (
@@ -329,7 +329,7 @@ function PeoplePicker() {
                   {person.title || person.role}
                 </span>
               </span>
-              {busy === person.userId && <Loader2 className="size-4 animate-spin text-amber" />}
+              {busy === person.userId && <Loader2 className="size-4 animate-spin text-amber-ink" />}
             </button>
           ))
         )}
@@ -465,7 +465,7 @@ function ChatWindow({
                   )}
                 >
                   {item.project && (
-                    <p className="mono mb-1 text-[10px] uppercase tracking-widest text-amber">
+                    <p className="mono mb-1 text-[10px] uppercase tracking-widest text-amber-ink">
                       {item.project.name}
                     </p>
                   )}
@@ -518,7 +518,7 @@ function ChatWindow({
         <div className="flex items-end gap-1.5">
           <label
             title={t("msg.attachImage")}
-            className="flex size-8 shrink-0 cursor-pointer items-center justify-center rounded-full text-fog hover:bg-ink hover:text-amber"
+            className="flex size-8 shrink-0 cursor-pointer items-center justify-center rounded-full text-fog hover:bg-ink hover:text-amber-ink"
           >
             {uploading ? (
               <Loader2 className="size-4 animate-spin" />
@@ -545,7 +545,7 @@ function ChatWindow({
               onClick={() => setEmoji((v) => !v)}
               className={cn(
                 "flex size-8 items-center justify-center rounded-full hover:bg-ink",
-                emoji ? "text-amber" : "text-fog hover:text-amber",
+                emoji ? "text-amber-ink" : "text-fog hover:text-amber-ink",
               )}
             >
               <Smile className="size-4" />
@@ -591,7 +591,7 @@ function ChatWindow({
             title={t("msg.send")}
             onClick={() => void submit()}
             disabled={send.isPending || uploading || (!body.trim() && !imageKey)}
-            className="flex size-8 shrink-0 items-center justify-center rounded-full text-amber hover:bg-ink disabled:opacity-40"
+            className="flex size-8 shrink-0 items-center justify-center rounded-full text-amber-ink hover:bg-ink disabled:opacity-40"
           >
             {send.isPending ? (
               <Loader2 className="size-4 animate-spin" />

@@ -44,7 +44,7 @@ const STATUS_LABEL: Record<string, TKey> = {
 
 const STATUS_STYLE: Record<string, string> = {
   active: "border-verified/40 bg-verified/10 text-verified",
-  on_hold: "border-amber/40 bg-amber/10 text-amber",
+  on_hold: "border-amber/40 bg-amber/10 text-amber-ink",
   complete: "border-sky/40 bg-sky/10 text-sky",
   archived: "border-line bg-ink-3 text-fog",
 };
@@ -180,7 +180,7 @@ export function NewProjectDialog({ onClose }: { onClose: () => void }) {
           <button
             type="submit"
             disabled={create.isPending}
-            className="rounded-[8px] mono flex items-center gap-2 bg-amber px-3.5 py-2 text-[10.5px] font-bold uppercase tracking-widest text-ink hover:bg-amber-deep disabled:opacity-60"
+            className="rounded-[8px] mono flex items-center gap-2 bg-amber px-3.5 py-2 text-[10.5px] font-bold uppercase tracking-widest text-on-amber hover:bg-amber-deep disabled:opacity-60"
           >
             {create.isPending && <Loader2 className="size-3.5 animate-spin" />}
             {t("projects.create")}
@@ -232,7 +232,7 @@ export default function ProjectsPage() {
           <button
             type="button"
             onClick={() => setOpen(true)}
-            className="rounded-[8px] mono flex items-center gap-2 bg-amber px-3.5 py-2 text-[11px] font-bold uppercase tracking-widest text-ink transition-colors hover:bg-amber-deep"
+            className="rounded-[8px] mono flex items-center gap-2 bg-amber px-3.5 py-2 text-[11px] font-bold uppercase tracking-widest text-on-amber transition-colors hover:bg-amber-deep"
           >
             <Plus className="size-3.5" /> {t("projects.new")}
           </button>
@@ -281,7 +281,7 @@ export default function ProjectsPage() {
                           {project.name}
                         </span>
                         {project.code && (
-                          <span className="mono shrink-0 text-[10px] tracking-widest text-amber">
+                          <span className="mono shrink-0 text-[10px] tracking-widest text-amber-ink">
                             {project.code}
                           </span>
                         )}
@@ -315,7 +315,7 @@ export default function ProjectsPage() {
                     <button
                       type="button"
                       onClick={() => setAssignFor(project.id)}
-                      className="mono inline-flex shrink-0 items-center gap-1.5 rounded-[8px] border border-line px-2.5 py-1.5 text-[10px] uppercase tracking-widest text-fog transition-colors hover:border-amber hover:text-amber"
+                      className="mono inline-flex shrink-0 items-center gap-1.5 rounded-[8px] border border-line px-2.5 py-1.5 text-[10px] uppercase tracking-widest text-fog transition-colors hover:border-amber hover:text-amber-ink"
                     >
                       <Users className="size-3.5" /> {t("assign.crew")}
                       <span className="text-chalk">{crewCount(project.id)}</span>

@@ -45,14 +45,14 @@ export default function BlogIndex() {
           }}
         />
         <div className="relative mx-auto max-w-[1180px] px-6 pt-20 pb-16">
-          <div className="eyebrow rise text-amber" style={{ animationDelay: "0ms" }}>
+          <div className="eyebrow rise text-amber-ink" style={{ animationDelay: "0ms" }}>
             01 — Field Notes
           </div>
           <h1
             className="rise mt-6 max-w-[20ch] font-display text-[44px] font-extrabold leading-[1.04] tracking-[-0.03em] text-white sm:text-[64px]"
             style={{ animationDelay: "60ms" }}
           >
-            Proof is a claim until someone can <span className="text-amber">check it.</span>
+            Proof is a claim until someone can <span className="text-amber-ink">check it.</span>
           </h1>
           <p
             className="rise mt-7 max-w-[62ch] text-[18px] leading-[1.7] text-white/65"
@@ -74,8 +74,8 @@ export default function BlogIndex() {
               { k: "Integrity seal", v: "SHA-256", n: "plus HMAC signature, re-checkable" },
             ].map((s) => (
               <div key={s.k} className="bg-navy px-6 py-7">
-                <dt className="eyebrow text-white/45">{s.k}</dt>
-                <dd className="mt-3 font-mono text-[30px] font-semibold tracking-[-0.02em] text-amber">
+                <dt className="eyebrow text-white/60">{s.k}</dt>
+                <dd className="mt-3 font-mono text-[30px] font-semibold tracking-[-0.02em] text-amber-ink">
                   {s.v}
                 </dd>
                 <dd className="mt-1.5 text-[14px] text-white/55">{s.n}</dd>
@@ -87,7 +87,7 @@ export default function BlogIndex() {
 
       {/* Question list */}
       <section className="mx-auto max-w-[1180px] px-6 py-20">
-        <div className="eyebrow text-amber-deep">02 — Answered questions</div>
+        <div className="eyebrow text-amber-ink">02 — Answered questions</div>
         <h2 className="mt-4 max-w-[26ch] font-display text-[30px] font-extrabold tracking-[-0.02em] text-chalk sm:text-[36px]">
           {posts.length} questions, each answered in the opening lines.
         </h2>
@@ -104,8 +104,8 @@ export default function BlogIndex() {
                 </span>
 
                 <span className="block">
-                  <span className="eyebrow text-amber-deep">{formatLabel[p.format]}</span>
-                  <span className="mt-2.5 block font-display text-[24px] font-bold leading-[1.25] tracking-[-0.02em] text-chalk group-hover:text-amber-deep sm:text-[27px]">
+                  <span className="eyebrow text-amber-ink">{formatLabel[p.format]}</span>
+                  <span className="mt-2.5 block font-display text-[24px] font-bold leading-[1.25] tracking-[-0.02em] text-chalk group-hover:text-amber-ink sm:text-[27px]">
                     {p.title}
                   </span>
                   <span className="mt-3 block max-w-[72ch] text-[16px] leading-[1.68] text-chalk/70">
@@ -119,7 +119,7 @@ export default function BlogIndex() {
                 </span>
 
                 <ArrowRight
-                  className="h-5 w-5 shrink-0 text-fog transition-transform group-hover:translate-x-1 group-hover:text-amber-deep md:mt-2"
+                  className="h-5 w-5 shrink-0 text-fog transition-transform group-hover:translate-x-1 group-hover:text-amber-ink md:mt-2"
                   strokeWidth={2}
                 />
               </Link>
@@ -132,7 +132,7 @@ export default function BlogIndex() {
       <section className="border-y border-line bg-white">
         <div className="mx-auto grid max-w-[1180px] gap-10 px-6 py-16 md:grid-cols-[1fr_1.2fr]">
           <div>
-            <div className="eyebrow text-amber-deep">03 — How these are written</div>
+            <div className="eyebrow text-amber-ink">03 — How these are written</div>
             <h2 className="mt-4 max-w-[22ch] font-display text-[28px] font-extrabold tracking-[-0.02em] text-chalk">
               Topics come from search and forum demand, not from a content calendar.
             </h2>
@@ -146,7 +146,7 @@ export default function BlogIndex() {
             </p>
             <Link
               to="/blog/method"
-              className="mt-6 inline-flex items-center gap-2 font-mono text-[12px] uppercase tracking-[0.14em] text-amber-deep"
+              className="mt-6 inline-flex items-center gap-2 font-mono text-[12px] uppercase tracking-[0.14em] text-amber-ink"
             >
               Read the method
               <ArrowRight className="h-3.5 w-3.5" strokeWidth={2.5} />

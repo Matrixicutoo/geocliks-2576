@@ -59,7 +59,7 @@ export default function AdminWorkspaces() {
               <div>
                 <div className="flex flex-wrap items-baseline gap-2">
                   <p className="font-display text-lg font-bold text-chalk">{ws.name}</p>
-                  <span className="rounded-[6px] mono border border-amber/40 bg-amber/10 px-1.5 text-[10px] uppercase tracking-widest text-amber">
+                  <span className="rounded-[6px] mono border border-amber/40 bg-amber/10 px-1.5 text-[10px] uppercase tracking-widest text-amber-ink">
                     {ws.planName}
                   </span>
                   {ws.subscription && (
@@ -141,7 +141,7 @@ export default function AdminWorkspaces() {
                         setError(e instanceof Error ? e.message : t("admin.ws.planFailed"));
                       }
                     }}
-                    className="rounded-[8px] mono flex w-full items-center justify-center gap-1.5 border border-amber/50 bg-amber/10 px-3 py-1.5 text-[11px] uppercase tracking-widest text-amber hover:bg-amber/20 disabled:opacity-40"
+                    className="rounded-[8px] mono flex w-full items-center justify-center gap-1.5 border border-amber/50 bg-amber/10 px-3 py-1.5 text-[11px] uppercase tracking-widest text-amber-ink hover:bg-amber/20 disabled:opacity-40"
                   >
                     <Check className="size-3.5" /> {t("admin.ws.apply")}
                   </button>

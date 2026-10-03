@@ -53,7 +53,7 @@ export default function ShareView() {
                 <button
                   type="button"
                   onClick={() => setShareOpen((v) => !v)}
-                  className="mono inline-flex items-center gap-1.5 rounded-[8px] border border-line px-2 py-1 text-[10px] uppercase tracking-widest text-chalk transition-colors hover:border-amber/60 hover:text-amber"
+                  className="mono inline-flex items-center gap-1.5 rounded-[8px] border border-line px-2 py-1 text-[10px] uppercase tracking-widest text-chalk transition-colors hover:border-amber/60 hover:text-amber-ink"
                 >
                   <Share2 className="size-3" /> {t("shareMenu.title")}
                 </button>
@@ -154,7 +154,7 @@ export default function ShareView() {
             <div className="flex items-center justify-between border-b border-line px-5 py-3">
               <Link
                 to={`/v/${open.photoCode}`}
-                className="mono text-[11px] tracking-widest text-amber underline decoration-amber/40 underline-offset-4 hover:decoration-amber"
+                className="mono text-[11px] tracking-widest text-amber-ink underline decoration-amber/40 underline-offset-4 hover:decoration-amber"
                 title={t("verify.navLink")}
               >
                 {open.photoCode}
@@ -167,7 +167,7 @@ export default function ShareView() {
                     target="_blank"
                     rel="noreferrer"
                     download
-                    className="inline-flex items-center gap-1.5 rounded-[8px] border border-line px-2.5 py-1.5 text-[11.5px] text-chalk hover:border-amber/60 hover:text-amber"
+                    className="inline-flex items-center gap-1.5 rounded-[8px] border border-line px-2.5 py-1.5 text-[11.5px] text-chalk hover:border-amber/60 hover:text-amber-ink"
                   >
                     <Download className="size-3.5" /> {t("common.download")}
                   </a>
@@ -176,7 +176,7 @@ export default function ShareView() {
                   <button
                     type="button"
                     onClick={() => setModalShareOpen((v) => !v)}
-                    className="inline-flex items-center gap-1.5 rounded-[8px] border border-line px-2.5 py-1.5 text-[11.5px] text-chalk hover:border-amber/60 hover:text-amber"
+                    className="inline-flex items-center gap-1.5 rounded-[8px] border border-line px-2.5 py-1.5 text-[11.5px] text-chalk hover:border-amber/60 hover:text-amber-ink"
                   >
                     <Share2 className="size-3.5" /> {t("shareMenu.title")}
                   </button>
@@ -248,7 +248,7 @@ export default function ShareView() {
       <footer className="border-t border-line px-5 py-6 text-center">
         <p className="mono text-[10.5px] uppercase tracking-widest text-fog">
           {t("shareView.documented")} ·{" "}
-          <a href="https://geocliks.com/" className="text-amber hover:underline">
+          <a href="https://geocliks.com/" className="text-amber-ink hover:underline">
             geocliks.com
           </a>
         </p>

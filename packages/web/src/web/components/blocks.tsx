@@ -47,7 +47,7 @@ function BlockView({ block }: { block: Block }) {
         <ol className="mb-6 space-y-3">
           {block.items.map((item, i) => (
             <li key={i} className="flex gap-4">
-              <span className="mt-[3px] font-mono text-[13px] font-semibold text-amber-deep">
+              <span className="mt-[3px] font-mono text-[13px] font-semibold text-amber-ink">
                 {String(i + 1).padStart(2, "0")}
               </span>
               <span>{item}</span>
@@ -59,7 +59,7 @@ function BlockView({ block }: { block: Block }) {
     case "callout":
       return (
         <aside className="my-8 border border-line bg-white px-6 py-5">
-          <div className="eyebrow text-amber-deep">{block.label}</div>
+          <div className="eyebrow text-amber-ink">{block.label}</div>
           <p className="mt-2.5 mb-0 text-[17px] leading-[1.65]">{block.text}</p>
         </aside>
       );
@@ -69,15 +69,15 @@ function BlockView({ block }: { block: Block }) {
     case "links":
       return (
         <aside className="my-8 border-l-[3px] border-amber bg-white py-5 pr-6 pl-6">
-          <div className="eyebrow text-amber-deep">{block.label}</div>
+          <div className="eyebrow text-amber-ink">{block.label}</div>
           <ul className="mt-3.5 mb-0 space-y-3.5">
             {block.items.map((item) => (
               <li key={item.href} className="flex gap-3">
-                <ArrowRight className="mt-[6px] h-4 w-4 shrink-0 text-amber" strokeWidth={2.5} />
+                <ArrowRight className="mt-[6px] h-4 w-4 shrink-0 text-amber-ink" strokeWidth={2.5} />
                 <span className="text-[16px] leading-[1.6]">
                   <Link
                     to={item.href}
-                    className="font-bold text-amber-deep underline decoration-amber/40 underline-offset-4 hover:decoration-amber"
+                    className="font-bold text-amber-ink underline decoration-amber/40 underline-offset-4 hover:decoration-amber"
                   >
                     {item.text}
                   </Link>

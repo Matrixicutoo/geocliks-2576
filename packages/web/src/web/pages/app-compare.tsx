@@ -231,7 +231,7 @@ function NewComparisonDialog({ onClose }: { onClose: () => void }) {
           <button
             type="submit"
             disabled={create.isPending}
- className="rounded-[8px] inline-flex items-center gap-2 bg-amber px-4 py-2 text-[13px] font-semibold text-ink disabled:opacity-60"
+ className="rounded-[8px] inline-flex items-center gap-2 bg-amber px-4 py-2 text-[13px] font-semibold text-on-amber disabled:opacity-60"
           >
             {create.isPending && <Loader2 className="size-3.5 animate-spin" />}
             {t("compare.savePair")}
@@ -301,7 +301,7 @@ function Slab({
           </div>
         </div>
       </button>
-      <figcaption className="mono mt-1.5 truncate text-[10px] tracking-widest text-amber">
+      <figcaption className="mono mt-1.5 truncate text-[10px] tracking-widest text-amber-ink">
         {photo.photoCode}
       </figcaption>
     </figure>
@@ -413,7 +413,7 @@ export default function AppCompare() {
         <button
           type="button"
           onClick={() => setOpen(true)}
-          className="rounded-[8px] inline-flex items-center gap-2 bg-amber px-3.5 py-2 text-[13px] font-semibold text-ink"
+          className="rounded-[8px] inline-flex items-center gap-2 bg-amber px-3.5 py-2 text-[13px] font-semibold text-on-amber"
         >
           <Plus className="size-4" /> {t("compare.newPair")}
         </button>
@@ -433,7 +433,7 @@ export default function AppCompare() {
             <button
               type="button"
               onClick={() => setOpen(true)}
-              className="rounded-[8px] bg-amber px-4 py-2 text-[13px] font-semibold text-ink"
+              className="rounded-[8px] bg-amber px-4 py-2 text-[13px] font-semibold text-on-amber"
             >
               {t("compare.createFirst")}
             </button>
@@ -503,7 +503,7 @@ export default function AppCompare() {
                           <button
                             type="button"
                             onClick={() => setReportFor(row.id)}
-                            className="mono inline-flex items-center gap-1.5 rounded-[8px] border border-line px-2 py-1.5 text-[10px] uppercase tracking-widest text-chalk transition-colors hover:border-amber hover:text-amber"
+                            className="mono inline-flex items-center gap-1.5 rounded-[8px] border border-line px-2 py-1.5 text-[10px] uppercase tracking-widest text-chalk transition-colors hover:border-amber hover:text-amber-ink"
                           >
                             <FileStack className="size-3.5" /> {t("compare.createReport")}
                           </button>
@@ -514,7 +514,7 @@ export default function AppCompare() {
                             title={row.projectId ? t("project.shareClient") : t("compare.shareNoProject")}
                             disabled={!row.projectId}
                             onClick={() => row.projectId && setShareProject(row.projectId)}
-                            className="mono inline-flex items-center gap-1.5 rounded-[8px] border border-line px-2 py-1.5 text-[10px] uppercase tracking-widest text-chalk transition-colors hover:border-amber hover:text-amber disabled:pointer-events-none disabled:opacity-40"
+                            className="mono inline-flex items-center gap-1.5 rounded-[8px] border border-line px-2 py-1.5 text-[10px] uppercase tracking-widest text-chalk transition-colors hover:border-amber hover:text-amber-ink disabled:pointer-events-none disabled:opacity-40"
                           >
                             <Link2 className="size-3.5" /> {t("compare.share")}
                           </button>

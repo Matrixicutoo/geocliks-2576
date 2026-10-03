@@ -118,12 +118,12 @@ function Mark({ cell }: { cell: Cell }) {
   return (
     <div className="flex items-start gap-2">
       {cell.kind === "yes" ? (
-        <Check className="mt-0.5 size-4 shrink-0 text-amber" aria-hidden />
+        <Check className="mt-0.5 size-4 shrink-0 text-amber-ink" aria-hidden />
       ) : cell.kind === "no" ? (
         <Minus className="mt-0.5 size-4 shrink-0 text-fog/50" aria-hidden />
       ) : null}
       <span
-        className={cn("text-[13.5px] leading-snug", cell.kind === "no" ? "text-fog/70" : "text-fog")}
+        className={cn("text-[13.5px] leading-snug", cell.kind === "no" ? "text-fog/90" : "text-fog")}
       >
         {verdict ? <span className="sr-only">{verdict} </span> : null}
         {cell.kind === "yes" && !cell.note ? (
@@ -160,7 +160,7 @@ export default function AlternativesTimemark() {
                 <th scope="col" className="label px-4 py-3 text-start">
                   {t("tm.table.feature")}
                 </th>
-                <th scope="col" className="label px-4 py-3 text-start text-amber">
+                <th scope="col" className="label px-4 py-3 text-start text-amber-ink">
                   {t("tm.table.us")}
                 </th>
                 <th scope="col" className="label px-4 py-3 text-start">
@@ -176,7 +176,7 @@ export default function AlternativesTimemark() {
                       {t(row.feature)}
                     </span>
                     {row.detail ? (
-                      <span className="mt-1 block text-[12.5px] leading-snug text-fog/80">
+                      <span className="mt-1 block text-[12.5px] leading-snug text-fog/90">
                         {t(row.detail)}
                       </span>
                     ) : null}
@@ -193,7 +193,7 @@ export default function AlternativesTimemark() {
           </table>
         </div>
 
-        <p className="mt-4 max-w-[820px] text-[12.5px] leading-relaxed text-fog/80">
+        <p className="mt-4 max-w-[820px] text-[12.5px] leading-relaxed text-fog/90">
           {t("tm.sources", { date: t("tm.verifiedOn"), email: SUPPORT_EMAIL })}
         </p>
       </LandingSection>
@@ -217,7 +217,7 @@ export default function AlternativesTimemark() {
           <ul className="mt-4 space-y-3">
             {PICK.map((key) => (
               <li key={key} className="flex items-start gap-2.5">
-                <Check className="mt-0.5 size-4 shrink-0 text-amber" aria-hidden />
+                <Check className="mt-0.5 size-4 shrink-0 text-amber-ink" aria-hidden />
                 <span className="text-[14px] leading-relaxed text-fog">{t(key)}</span>
               </li>
             ))}
@@ -242,14 +242,14 @@ export default function AlternativesTimemark() {
             {t("tm.related.lead")}{" "}
             <Link
               to="/alternatives/companycam"
-              className="font-semibold text-amber underline decoration-amber/40 underline-offset-4 hover:decoration-amber"
+              className="font-semibold text-amber-ink underline decoration-amber/40 underline-offset-4 hover:decoration-amber"
             >
               {t("tm.related.companycam")}
             </Link>
             {t("tm.related.mid")}{" "}
             <Link
               to="/construction-photo-documentation"
-              className="font-semibold text-amber underline decoration-amber/40 underline-offset-4 hover:decoration-amber"
+              className="font-semibold text-amber-ink underline decoration-amber/40 underline-offset-4 hover:decoration-amber"
             >
               {t("tm.related.construction")}
             </Link>

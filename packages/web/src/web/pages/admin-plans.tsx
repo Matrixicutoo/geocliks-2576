@@ -181,7 +181,7 @@ function PlanEditor({
             type="button"
             disabled={saving}
             onClick={onSave}
-            className="rounded-[8px] mono flex items-center gap-1.5 border border-amber/50 bg-amber/10 px-3 py-1 text-[11px] uppercase tracking-widest text-amber hover:bg-amber/20 disabled:opacity-40"
+            className="rounded-[8px] mono flex items-center gap-1.5 border border-amber/50 bg-amber/10 px-3 py-1 text-[11px] uppercase tracking-widest text-amber-ink hover:bg-amber/20 disabled:opacity-40"
           >
             {isNew ? <Plus className="size-3.5" /> : <Save className="size-3.5" />}
             {isNew ? t("admin.pl.create") : t("admin.pl.save")}
@@ -410,7 +410,7 @@ export default function AdminPlans() {
         <button
           type="button"
           onClick={() => setNewPlan(newPlan ? null : { ...BLANK })}
-          className="rounded-[8px] mono flex items-center gap-1.5 border border-amber/50 bg-amber/10 px-3 py-1.5 text-[11px] uppercase tracking-widest text-amber hover:bg-amber/20"
+          className="rounded-[8px] mono flex items-center gap-1.5 border border-amber/50 bg-amber/10 px-3 py-1.5 text-[11px] uppercase tracking-widest text-amber-ink hover:bg-amber/20"
         >
           <Plus className="size-3.5" /> {t("admin.pl.newPlan")}
         </button>
@@ -423,7 +423,7 @@ export default function AdminPlans() {
       )}
 
       <p className="mb-4 flex items-start gap-2 rounded-[12px] border border-line bg-ink-2 px-3 py-2.5 text-[12.5px] leading-relaxed text-fog">
-        <Info className="mt-0.5 size-4 shrink-0 text-amber" />
+        <Info className="mt-0.5 size-4 shrink-0 text-amber-ink" />
         {t("admin.pl.i18nNote")}
       </p>
 

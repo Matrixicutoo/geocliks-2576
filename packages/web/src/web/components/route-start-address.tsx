@@ -156,7 +156,7 @@ export function RouteStartAddress({
       <button
         type="button"
         onClick={() => setEditing(true)}
-        className="inline-flex items-center gap-1 rounded-[6px] text-[13px] text-fog hover:text-amber focus:text-amber focus:outline-none"
+        className="inline-flex items-center gap-1 rounded-[6px] text-[13px] text-fog hover:text-amber-ink focus:text-amber-ink focus:outline-none"
       >
         <Plus className="size-3" /> {t("routes.startAddressSet")}
       </button>
@@ -172,7 +172,7 @@ export function RouteStartAddress({
           aria-label={t("routes.startAddressEdit")}
           title={t("routes.startAddressEdit")}
           onClick={() => setEditing(true)}
-          className="shrink-0 rounded-[6px] p-0.5 text-fog hover:text-amber focus:text-amber focus:outline-none"
+          className="shrink-0 rounded-[6px] p-0.5 text-fog hover:text-amber-ink focus:text-amber-ink focus:outline-none"
         >
           <Pencil className="size-3" />
         </button>

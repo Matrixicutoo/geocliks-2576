@@ -32,7 +32,7 @@ import { canManageWorkspace, canWriteJobNote } from "../lib/roles";
 
 /** The job's action buttons, one look for all three. */
 const ACTION =
-  "mono inline-flex items-center gap-1.5 rounded-[8px] border border-line bg-ink-2 px-3 py-2 text-[10.5px] uppercase tracking-widest text-chalk transition-colors hover:border-amber hover:text-amber";
+  "mono inline-flex items-center gap-1.5 rounded-[8px] border border-line bg-ink-2 px-3 py-2 text-[10.5px] uppercase tracking-widest text-chalk transition-colors hover:border-amber hover:text-amber-ink";
 
 const STATUS_LABEL: Record<string, TKey> = {
   active: "projects.status.active",
@@ -85,7 +85,7 @@ export default function ProjectPage() {
           </Link>
           <Link
             to="/app/reports"
-            className="rounded-[8px] mono flex items-center gap-1.5 bg-amber px-3.5 py-2 text-[11px] font-bold uppercase tracking-widest text-ink hover:bg-amber-deep"
+            className="rounded-[8px] mono flex items-center gap-1.5 bg-amber px-3.5 py-2 text-[11px] font-bold uppercase tracking-widest text-on-amber hover:bg-amber-deep"
           >
             <FileStack className="size-3.5" /> {t("project.report")}
           </Link>
@@ -164,7 +164,7 @@ export default function ProjectPage() {
           <button type="button" onClick={() => setAssignOpen(true)} className={ACTION}>
             <UserPlus className="size-3.5" /> {t("assign.add")}
             {assignedRows.length > 0 && (
-              <span className="rounded-[4px] bg-amber/15 px-1.5 text-amber">
+              <span className="rounded-[4px] bg-amber/15 px-1.5 text-amber-ink">
                 {assignedRows.length}
               </span>
             )}
@@ -192,7 +192,7 @@ export default function ProjectPage() {
               ) : (
                 <span
                   key={row.id}
-                  className="mono grid size-7 place-items-center rounded-full border-2 border-ink bg-ink-3 text-[9.5px] text-amber"
+                  className="mono grid size-7 place-items-center rounded-full border-2 border-ink bg-ink-3 text-[9.5px] text-amber-ink"
                 >
                   {(row.user?.name ?? row.user?.email ?? "?").slice(0, 2).toUpperCase()}
                 </span>
@@ -255,7 +255,7 @@ export default function ProjectPage() {
           {project.data?.contactPhone && (
             <a
               href={`tel:${project.data.contactPhone.split(/[a-z]/i)[0].replace(/[^\d+]/g, "")}`}
-              className="mono inline-flex items-center gap-1.5 self-center text-[11px] text-fog transition-colors hover:text-amber"
+              className="mono inline-flex items-center gap-1.5 self-center text-[11px] text-fog transition-colors hover:text-amber-ink"
             >
               <Phone className="size-3.5 shrink-0" /> {project.data.contactPhone}
             </a>

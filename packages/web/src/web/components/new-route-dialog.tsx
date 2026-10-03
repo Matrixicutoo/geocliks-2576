@@ -288,7 +288,7 @@ export function NewRouteDialog({
           <button
             type="submit"
             disabled={create.isPending}
-            className="mono flex items-center gap-2 rounded-[8px] bg-amber px-3.5 py-2 text-[10.5px] font-bold uppercase tracking-widest text-ink hover:bg-amber-deep disabled:opacity-60"
+            className="mono flex items-center gap-2 rounded-[8px] bg-amber px-3.5 py-2 text-[10.5px] font-bold uppercase tracking-widest text-on-amber hover:bg-amber-deep disabled:opacity-60"
           >
             {create.isPending && <Loader2 className="size-3.5 animate-spin" />}
             {t("routes.create")}

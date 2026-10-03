@@ -174,7 +174,7 @@ export function StopAddress({
         <button
           type="button"
           onClick={onOpenProof}
-          className={cn("text-left hover:text-amber focus:text-amber focus:outline-none", textClass)}
+          className={cn("text-left hover:text-amber-ink focus:text-amber-ink focus:outline-none", textClass)}
         >
           {display}
         </button>
@@ -187,7 +187,7 @@ export function StopAddress({
           aria-label={t("routes.stop.editAddress")}
           title={t("routes.stop.editAddress")}
           onClick={() => setEditing(true)}
-          className="mt-0.5 shrink-0 rounded-[6px] p-0.5 text-fog hover:text-amber focus:text-amber focus:outline-none"
+          className="mt-0.5 shrink-0 rounded-[6px] p-0.5 text-fog hover:text-amber-ink focus:text-amber-ink focus:outline-none"
         >
           <Pencil className="size-3" />
         </button>

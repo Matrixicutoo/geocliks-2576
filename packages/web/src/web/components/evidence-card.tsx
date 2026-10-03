@@ -125,7 +125,7 @@ export function EvidenceCard({
           <span
             className={cn(
               "absolute right-2 top-2 z-10 flex size-5 items-center justify-center border",
-              selected ? "border-amber bg-amber text-ink" : "border-white/60 bg-black/50",
+              selected ? "border-amber bg-amber text-on-amber" : "border-white/60 bg-black/50",
             )}
           >
             {selected && <Check className="size-3.5" />}
@@ -198,7 +198,7 @@ export function EvidenceCard({
       </div>
 
       <div className={cn("space-y-1.5 p-3", shareable && "pr-12")}>
-        <p className="mono text-[10.5px] tracking-widest text-amber">{photo.photoCode}</p>
+        <p className="mono text-[10.5px] tracking-widest text-amber-ink">{photo.photoCode}</p>
         {/* No note on the tile. A two-line note pushed the address and project down and made
             neighbouring tiles different heights; it reads in the detail panel instead, where
             the whole note fits and nothing is truncated. */}

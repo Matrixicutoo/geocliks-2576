@@ -91,7 +91,7 @@ export function TrialBanner() {
           "rounded-[8px] grid size-9 shrink-0 place-items-center border",
           ending || state === "ended"
             ? "border-alert/50 bg-alert/15 text-alert"
-            : "border-amber/40 bg-amber/15 text-amber",
+            : "border-amber/40 bg-amber/15 text-amber-ink",
         )}
       >
         <Clock className="size-4" />
@@ -117,7 +117,7 @@ export function TrialBanner() {
       <div className="flex shrink-0 items-center gap-2">
         <Link
           to="/app/billing"
-          className="rounded-[8px] mono bg-amber px-3 py-2 text-[11px] font-bold uppercase tracking-widest text-ink transition-colors hover:bg-amber-deep"
+          className="rounded-[8px] mono bg-amber px-3 py-2 text-[11px] font-bold uppercase tracking-widest text-on-amber transition-colors hover:bg-amber-deep"
         >
           {state === "ended" ? t("trial.endedCta") : t("trial.cta")}
         </Link>
@@ -157,7 +157,7 @@ export function TrialChip() {
         // Inline-block with its own top margin rather than a wrapper row: the wrapper would
         // still hold its margin on the workspaces that have no trial to show.
         "rounded-[6px] mono mt-1 inline-block border px-1.5 py-0.5 text-[9.5px] font-bold uppercase tracking-widest",
-        days <= 1 ? "border-alert/50 bg-alert/15 text-alert" : "border-amber/50 bg-amber/15 text-amber",
+        days <= 1 ? "border-alert/50 bg-alert/15 text-alert" : "border-amber/50 bg-amber/15 text-amber-ink",
       )}
     >
       {days <= 1 ? t("trial.badgeLast") : t("trial.badge", { n: days })}

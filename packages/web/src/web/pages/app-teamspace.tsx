@@ -62,7 +62,7 @@ export default function TeamspacePage() {
       actions={
         <Link
           to="/app/reports"
-          className="rounded-[8px] mono bg-amber px-3.5 py-2 text-[11px] font-bold uppercase tracking-widest text-ink transition-colors hover:bg-amber-deep"
+          className="rounded-[8px] mono bg-amber px-3.5 py-2 text-[11px] font-bold uppercase tracking-widest text-on-amber transition-colors hover:bg-amber-deep"
         >
           {t("teamspace.buildReport")}
         </Link>
@@ -90,7 +90,7 @@ export default function TeamspacePage() {
                 <button
                   type="button"
                   onClick={() => seed.mutate({})}
-                  className="mono rounded-full border border-line px-3 py-1.5 text-[11px] uppercase tracking-widest text-fog transition hover:border-amber hover:text-amber"
+                  className="mono rounded-full border border-line px-3 py-1.5 text-[11px] uppercase tracking-widest text-fog transition hover:border-amber hover:text-amber-ink"
                 >
                   {t("teamspace.loadSample")}
                 </button>

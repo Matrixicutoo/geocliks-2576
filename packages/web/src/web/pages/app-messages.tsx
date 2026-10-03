@@ -170,7 +170,7 @@ export default function AppMessages() {
       }}
       className="flex items-center gap-2 rounded-[12px] border border-line px-3 py-2 text-[13px] font-medium text-chalk hover:border-amber"
     >
-      <Megaphone className="size-4 text-amber" /> {t("msg.broadcast")}
+      <Megaphone className="size-4 text-amber-ink" /> {t("msg.broadcast")}
     </button>
   ) : null;
 
@@ -381,7 +381,7 @@ export default function AppMessages() {
                           )}
                         >
                           {item.project && (
-                            <p className="mb-1 text-[11px] font-semibold uppercase tracking-wide text-amber">
+                            <p className="mb-1 text-[11px] font-semibold uppercase tracking-wide text-amber-ink">
                               {item.project.name}
                             </p>
                           )}
@@ -543,7 +543,7 @@ export default function AppMessages() {
                       className={cn(
                         "rounded-[6px] flex items-center gap-1.5 border px-2 py-1.5 text-[12px]",
                         emoji
-                          ? "border-amber text-amber"
+                          ? "border-amber text-amber-ink"
                           : "border-line text-fog hover:border-amber hover:text-chalk",
                       )}
                     >

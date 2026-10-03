@@ -206,7 +206,7 @@ export function DashboardShell({
                 below `lg`, sitting where that sidebar would otherwise start. */}
             <NavDrawer nav={nav} onInvite={() => setInviting(true)} />
             <div className="min-w-0 flex-1">
-              <h1 className="truncate font-display text-[17px] font-bold tracking-tight text-amber sm:text-xl">
+              <h1 className="truncate font-display text-[17px] font-bold tracking-tight text-amber-ink sm:text-xl">
                 {title}
               </h1>
               {subtitle && (

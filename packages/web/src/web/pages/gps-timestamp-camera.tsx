@@ -104,28 +104,28 @@ export default function GpsTimestampCamera() {
             {t("gps.related.lead")}{" "}
             <Link
               to="/blog/can-a-gps-timestamp-photo-be-faked"
-              className="font-semibold text-amber underline decoration-amber/40 underline-offset-4 hover:decoration-amber"
+              className="font-semibold text-amber-ink underline decoration-amber/40 underline-offset-4 hover:decoration-amber"
             >
               {t("gps.related.link1")}
             </Link>{" "}
             {t("gps.related.trades")}{" "}
             <Link
               to="/construction-photo-documentation"
-              className="font-semibold text-amber underline decoration-amber/40 underline-offset-4 hover:decoration-amber"
+              className="font-semibold text-amber-ink underline decoration-amber/40 underline-offset-4 hover:decoration-amber"
             >
               {t("gps.related.construction")}
             </Link>
             ,{" "}
             <Link
               to="/roofing-photo-documentation"
-              className="font-semibold text-amber underline decoration-amber/40 underline-offset-4 hover:decoration-amber"
+              className="font-semibold text-amber-ink underline decoration-amber/40 underline-offset-4 hover:decoration-amber"
             >
               {t("gps.related.roofing")}
             </Link>{" "}
             {t("gps.related.join")}{" "}
             <Link
               to="/proof-of-delivery"
-              className="font-semibold text-amber underline decoration-amber/40 underline-offset-4 hover:decoration-amber"
+              className="font-semibold text-amber-ink underline decoration-amber/40 underline-offset-4 hover:decoration-amber"
             >
               {t("gps.related.delivery")}
             </Link>

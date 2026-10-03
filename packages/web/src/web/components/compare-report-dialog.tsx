@@ -117,7 +117,7 @@ export function CompareReportDialog({
                   className={cn(
                     "mono rounded-[8px] border px-2 py-2 text-[11px] uppercase tracking-widest transition-colors",
                     format === value
-                      ? "border-amber bg-amber/10 text-amber"
+                      ? "border-amber bg-amber/10 text-amber-ink"
                       : "border-line bg-ink text-fog hover:text-chalk",
                   )}
                 >

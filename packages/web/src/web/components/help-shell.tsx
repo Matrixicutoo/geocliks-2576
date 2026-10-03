@@ -47,7 +47,7 @@ export function HelpShell({
             <LanguageSelect compact bare />
             <Link
               to="/"
-              className="mono hidden items-center gap-2 text-[11px] uppercase tracking-widest text-fog transition-colors hover:text-amber sm:flex"
+              className="mono hidden items-center gap-2 text-[11px] uppercase tracking-widest text-fog transition-colors hover:text-amber-ink sm:flex"
             >
               <ArrowLeft className="size-3.5" /> geocliks.com
             </Link>
@@ -62,14 +62,14 @@ export function HelpShell({
           hidden={crumbs.length === 0}
           className="mono flex flex-wrap items-center gap-1.5 text-[10.5px] uppercase tracking-widest text-fog"
         >
-          <Link to="/help" className="transition-colors hover:text-amber">
+          <Link to="/help" className="transition-colors hover:text-amber-ink">
             {t("help.eyebrow")}
           </Link>
           {crumbs.map((crumb) => (
             <span key={crumb.label} className="flex items-center gap-1.5">
               <ChevronRight className="size-3 opacity-50" />
               {crumb.href ? (
-                <Link to={crumb.href} className="transition-colors hover:text-amber">
+                <Link to={crumb.href} className="transition-colors hover:text-amber-ink">
                   {crumb.label}
                 </Link>
               ) : (
@@ -97,7 +97,7 @@ export function HelpContact() {
       <p className="mt-2 text-[14px] leading-relaxed text-fog">{t("help.contactBody")}</p>
       <a
         href="mailto:support@geocliks.com"
-        className="mono mt-4 inline-block rounded-[10px] border border-amber px-4 py-2 text-[11px] uppercase tracking-widest text-amber transition-colors hover:bg-amber hover:text-ink"
+        className="mono mt-4 inline-block rounded-[10px] border border-amber px-4 py-2 text-[11px] uppercase tracking-widest text-amber-ink transition-colors hover:bg-amber hover:text-on-amber"
       >
         {t("help.contactCta")}
       </a>

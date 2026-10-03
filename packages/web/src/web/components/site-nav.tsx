@@ -56,7 +56,7 @@ function NavMenu({ label, items }: { label: TKey; items: MenuItem[] }) {
         type="button"
         onClick={() => setOpen((v) => !v)}
         aria-expanded={open}
-        className="flex items-center gap-1 py-2 text-[14px] font-semibold text-white transition-colors hover:text-amber"
+        className="flex items-center gap-1 py-2 text-[14px] font-semibold text-white transition-colors hover:text-amber-ink"
       >
         {t(label)}
         <ChevronDown
@@ -151,7 +151,7 @@ const SUPPORT_ITEMS: MenuItem[] = [
  * its subtree, so children (dropdowns, language picker) stay dark too.
  */
 const mobileLink =
-  "block border-b border-white/5 py-3 text-[15px] font-semibold text-white transition-colors hover:text-amber";
+  "block border-b border-white/5 py-3 text-[15px] font-semibold text-white transition-colors hover:text-amber-ink";
 
 /** One collapsible group inside the mobile menu. */
 function MobileGroup({
@@ -171,7 +171,7 @@ function MobileGroup({
         type="button"
         onClick={() => setOpen((v) => !v)}
         aria-expanded={open}
-        className="flex w-full items-center justify-between py-3 text-[15px] font-semibold text-white transition-colors hover:text-amber"
+        className="flex w-full items-center justify-between py-3 text-[15px] font-semibold text-white transition-colors hover:text-amber-ink"
       >
         {t(label)}
         <ChevronDown
@@ -190,7 +190,7 @@ function MobileGroup({
                 ? { target: "_blank", rel: "noreferrer" }
                 : {})}
               onClick={onNavigate}
-              className="block py-2 text-[14px] text-white/70 transition-colors hover:text-amber"
+              className="block py-2 text-[14px] text-white/70 transition-colors hover:text-amber-ink"
             >
               {t(item.label)}
             </a>
@@ -225,7 +225,7 @@ export function SiteNav() {
         <nav className="hidden items-center gap-5 lg:flex xl:gap-6">
           <a
             href={home}
-            className="py-2 text-[14px] font-semibold text-white transition-colors hover:text-amber"
+            className="py-2 text-[14px] font-semibold text-white transition-colors hover:text-amber-ink"
           >
             {t("home.nav.home")}
           </a>
@@ -236,7 +236,7 @@ export function SiteNav() {
               nowhere. A routed <Link> keeps the locale prefix on its own. */}
           <Link
             to="/proof-of-delivery"
-            className="py-2 text-[14px] font-semibold text-white transition-colors hover:text-amber"
+            className="py-2 text-[14px] font-semibold text-white transition-colors hover:text-amber-ink"
           >
             {t("home.nav.delivery")}
           </Link>
@@ -244,7 +244,7 @@ export function SiteNav() {
               table all live on /pricing. */}
           <Link
             to="/pricing"
-            className="py-2 text-[14px] font-semibold text-white transition-colors hover:text-amber"
+            className="py-2 text-[14px] font-semibold text-white transition-colors hover:text-amber-ink"
           >
             {t("home.nav.pricing")}
           </Link>
@@ -254,7 +254,7 @@ export function SiteNav() {
               interested will read the label properly. */}
           <Link
             to="/blog"
-            className="py-2 text-[14px] font-semibold text-white transition-colors hover:text-amber"
+            className="py-2 text-[14px] font-semibold text-white transition-colors hover:text-amber-ink"
           >
             {t("home.nav.blog")}
           </Link>
@@ -267,13 +267,13 @@ export function SiteNav() {
           <LanguageSelect compact bare />
           <Link
             to={session ? "/app" : "/sign-in"}
-            className="hidden whitespace-nowrap text-[14px] font-semibold text-white transition-colors hover:text-amber sm:inline"
+            className="hidden whitespace-nowrap text-[14px] font-semibold text-white transition-colors hover:text-amber-ink sm:inline"
           >
             {session ? t("home.nav.teamspace") : t("home.nav.login")}
           </Link>
           <Link
             to="/sign-up"
-            className="whitespace-nowrap rounded-full bg-amber px-4 py-2 text-[13px] font-bold text-ink transition-colors hover:bg-amber-deep sm:px-5 sm:text-[14px]"
+            className="whitespace-nowrap rounded-full bg-amber px-4 py-2 text-[13px] font-bold text-on-amber transition-colors hover:bg-amber-deep sm:px-5 sm:text-[14px]"
           >
             {t("home.nav.signUp")}
           </Link>
@@ -284,7 +284,7 @@ export function SiteNav() {
             aria-label={
               mobileOpen ? t("home.nav.closeMenu") : t("home.nav.menu")
             }
-            className="-me-1 flex size-9 items-center justify-center text-white transition-colors hover:text-amber lg:hidden"
+            className="-me-1 flex size-9 items-center justify-center text-white transition-colors hover:text-amber-ink lg:hidden"
           >
             {mobileOpen ? (
               <CloseIcon className="size-5" />

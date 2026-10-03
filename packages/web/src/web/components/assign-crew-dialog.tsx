@@ -84,7 +84,7 @@ export function AssignCrewDialog({
                         className="size-9 shrink-0 rounded-[12px] border border-line object-cover"
                       />
                     ) : (
-                      <span className="mono grid size-9 shrink-0 place-items-center rounded-[12px] border border-line bg-ink text-[12px] text-amber">
+                      <span className="mono grid size-9 shrink-0 place-items-center rounded-[12px] border border-line bg-ink text-[12px] text-amber-ink">
                         {label.slice(0, 2).toUpperCase()}
                       </span>
                     )}
@@ -117,7 +117,7 @@ export function AssignCrewDialog({
                         "mono inline-flex shrink-0 items-center gap-1.5 rounded-[8px] border px-2.5 py-1.5 text-[10px] uppercase tracking-widest transition-colors disabled:opacity-60",
                         on
                           ? "border-verified/50 bg-verified/10 text-verified hover:border-alert/60 hover:text-alert"
-                          : "border-line text-fog hover:border-amber hover:text-amber",
+                          : "border-line text-fog hover:border-amber hover:text-amber-ink",
                       )}
                     >
                       {pending ? (
@@ -146,7 +146,7 @@ export function AssignCrewDialog({
           <button
             type="button"
             onClick={onClose}
-            className="rounded-[8px] mono bg-amber px-3.5 py-2 text-[10.5px] font-bold uppercase tracking-widest text-ink hover:bg-amber-deep"
+            className="rounded-[8px] mono bg-amber px-3.5 py-2 text-[10.5px] font-bold uppercase tracking-widest text-on-amber hover:bg-amber-deep"
           >
             {t("assign.done")}
           </button>

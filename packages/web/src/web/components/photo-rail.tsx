@@ -130,7 +130,7 @@ export function PhotoRail({
             type="button"
             onClick={onLoadMore}
             disabled={loadingMore}
-            className="mono grid w-[110px] shrink-0 place-items-center rounded-[8px] border border-line text-[10.5px] uppercase tracking-widest text-fog transition-colors hover:border-amber hover:text-amber"
+            className="mono grid w-[110px] shrink-0 place-items-center rounded-[8px] border border-line text-[10.5px] uppercase tracking-widest text-fog transition-colors hover:border-amber hover:text-amber-ink"
           >
             {loadingMore ? <Loader2 className="size-4 animate-spin" /> : t("feed.more")}
           </button>

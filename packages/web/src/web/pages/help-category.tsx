@@ -61,7 +61,7 @@ export default function HelpCategory() {
   return (
     <HelpShell crumbs={[{ label: category.title }]}>
       <header className="flex items-start gap-4">
-        <span className="grid size-12 shrink-0 place-items-center rounded-[14px] border border-amber/30 text-amber">
+        <span className="grid size-12 shrink-0 place-items-center rounded-[14px] border border-amber/30 text-amber-ink">
           <Icon className="size-6" />
         </span>
         <div>
@@ -84,7 +84,7 @@ export default function HelpCategory() {
       <div className="mt-10 space-y-10">
         {category.sections.map((section) => (
           <section key={section.title}>
-            <h2 className="label text-amber">{section.title}</h2>
+            <h2 className="label text-amber-ink">{section.title}</h2>
             <ul className="mt-4 divide-y divide-line/60 overflow-hidden rounded-[16px] border border-line bg-ink-2">
               {section.articles.map((article) => (
                 <li key={article.slug}>
@@ -92,9 +92,9 @@ export default function HelpCategory() {
                     to={articleHref(category.slug, article.slug)}
                     className="group flex items-start gap-3 p-4 transition-colors hover:bg-ink"
                   >
-                    <ArrowRight className="mt-1 size-4 shrink-0 text-amber" />
+                    <ArrowRight className="mt-1 size-4 shrink-0 text-amber-ink" />
                     <span>
-                      <span className="block text-[15px] font-semibold text-chalk transition-colors group-hover:text-amber">
+                      <span className="block text-[15px] font-semibold text-chalk transition-colors group-hover:text-amber-ink">
                         {article.title}
                       </span>
                       <span className="mt-1 block text-[13.5px] leading-relaxed text-fog">

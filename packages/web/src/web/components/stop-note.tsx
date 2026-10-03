@@ -122,9 +122,9 @@ export function StopNote({
   if (current) {
     return (
       <div className="flex items-start gap-1.5">
-        <StickyNote className="mt-0.5 size-3 shrink-0 text-amber" aria-hidden="true" />
+        <StickyNote className="mt-0.5 size-3 shrink-0 text-amber-ink" aria-hidden="true" />
         <p className={compact ? "text-[12px] text-fog" : "text-[12.5px] text-fog"}>
-          <span className="mono mr-1.5 text-[10px] uppercase tracking-widest text-amber">
+          <span className="mono mr-1.5 text-[10px] uppercase tracking-widest text-amber-ink">
             {t("routes.stop.noteLabel")}
           </span>
           {current}
@@ -135,7 +135,7 @@ export function StopNote({
             aria-label={t("routes.stop.noteEdit")}
             title={t("routes.stop.noteEdit")}
             onClick={() => setEditing(true)}
-            className="mt-0.5 shrink-0 rounded-[6px] p-0.5 text-fog hover:text-amber focus:text-amber focus:outline-none"
+            className="mt-0.5 shrink-0 rounded-[6px] p-0.5 text-fog hover:text-amber-ink focus:text-amber-ink focus:outline-none"
           >
             <Pencil className="size-3" />
           </button>
@@ -151,7 +151,7 @@ export function StopNote({
     <button
       type="button"
       onClick={() => setEditing(true)}
-      className="inline-flex items-center gap-1 text-[11.5px] text-fog hover:text-amber focus:text-amber focus:outline-none"
+      className="inline-flex items-center gap-1 text-[11.5px] text-fog hover:text-amber-ink focus:text-amber-ink focus:outline-none"
     >
       <Plus className="size-3" />
       {t("routes.stop.noteAdd")}

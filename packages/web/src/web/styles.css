@@ -188,14 +188,23 @@
   /* Hover fill for amber-filled controls: a deeper orange that still reads as a light fill,
      so `on-amber` ink text keeps its contrast where `amber-deep` would swallow it. */
   --c-amber-hover: #ff8f00;
+  /* Amber as *text* (and icons) on a light surface. The brand amber is a light fill —
+     great behind ink text, but as text on white it is 1.8:1, which Lighthouse and WCAG
+     both fail (4.5:1 needed). Same hue, darkened to 5.4:1 on white and 4.8:1 on ink-3.
+     Fills, borders and rings keep `--c-amber`; only `text-amber-ink` reads this. Every
+     surface pinned dark (`data-theme="dark"`, the home hero) resets it to the bright
+     amber, so dark headers and the hero look exactly as before. */
+  --c-amber-ink: #925d00;
   /* The Field Notes green, darkened for light surfaces only: `#3fbf6f` is a
      mid-tone that reads well on navy but lands at 2.2:1 on paper, and this
      token labels verified status in small text all through the app and admin
-     pages. Same hue, dropped to 28% lightness, which is 5.1:1 on paper. The
-     dark theme keeps `#3fbf6f` as specified. */
-  --c-verified: #177a45;
-  --c-alert: #d93a28;
-  --c-sky: #1b7fd4;
+     pages. Same hue, dark enough to clear 4.5:1 on its own `bg-verified/10` badge
+     tint as well as on paper (5.4:1 on the tint). The dark theme keeps `#3fbf6f`
+     as specified. */
+  --c-verified: #136b3c;
+  /* Darkened from #d93a28 (4.3:1 on ink-2) so small alert labels pass 4.5:1 on every light surface. */
+  --c-alert: #c8331f;
+  --c-sky: #1565a8;
   --c-paper: #f7f8fa;
 
   /* Textures. */
@@ -228,6 +237,7 @@
   --c-amber: #ffb021;
   --c-amber-deep: #b97b12;
   --c-amber-hover: #ff8f00;
+  --c-amber-ink: #ffb021;
   --c-verified: #3fbf6f;
   --c-alert: #ff5a47;
   --c-sky: #48a9ff;
@@ -259,6 +269,7 @@
   --color-amber: var(--c-amber);
   --color-amber-deep: var(--c-amber-deep);
   --color-amber-hover: var(--c-amber-hover);
+  --color-amber-ink: var(--c-amber-ink);
   --color-verified: var(--c-verified);
   --color-alert: var(--c-alert);
   --color-sky: var(--c-sky);
@@ -468,6 +479,20 @@
   box-shadow: inset 0 -34px 34px -32px rgba(0, 0, 0, 0.55);
 }
 
+/* Surfaces that are dark in both themes without being pinned with `data-theme="dark"`:
+   the navy mastheads and headers, and black scrims over photos. `text-amber-ink` is a
+   deep gold for light surfaces, which would sink into these, so inside them it goes
+   back to the bright brand amber. Plain CSS, not a utility: it keys off the fill
+   classes these surfaces already carry. */
+.bg-navy,
+.bg-navy-soft,
+.bg-black,
+[class*="bg-black/"],
+[class*="bg-[#0d2137]"],
+[class*="bg-[#0b0e13]"] {
+  --c-amber-ink: #ffb021;
+}
+
 /* The home hero runs dark in both themes. Its band is footage, and a white veil
    over dusk-lit trade work read as fog rather than as a hero — so it veils in ink
    whatever the rest of the page is set to, and the copy on top borrows the dark
@@ -476,6 +501,7 @@
    edge; every other `hero-band` (the SEO landing pages, which have no footage)
    keeps following the theme. */
 @utility hero-cinema {
+  --c-amber-ink: #ffb021;
   --c-chalk: #e8edf4;
   --c-fog: #9daaba;
   --c-line: #242e3c;
@@ -683,7 +709,7 @@
 }
 
 .prose-field a {
-  color: var(--c-amber-deep);
+  color: var(--c-amber-ink);
   text-decoration: underline;
   text-decoration-color: var(--c-amber);
   text-decoration-thickness: 2px;

@@ -222,7 +222,7 @@ export function InviteForm({ onSent }: { onSent?: (mode: Mode) => void }) {
       <button
         type="submit"
         disabled={invite.isPending || !role}
-        className="rounded-[8px] inline-flex w-full items-center justify-center gap-2 bg-amber px-4 py-2.5 text-[13px] font-semibold text-ink disabled:opacity-60"
+        className="rounded-[8px] inline-flex w-full items-center justify-center gap-2 bg-amber px-4 py-2.5 text-[13px] font-semibold text-on-amber disabled:opacity-60"
       >
         {invite.isPending ? (
           <Loader2 className="size-4 animate-spin" />

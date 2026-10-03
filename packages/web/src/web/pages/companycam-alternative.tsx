@@ -74,7 +74,7 @@ const SIDE: Array<{ feature: TKey; us: TKey | null; them: TKey | null }> = [
 ];
 
 const linkClass =
-  "font-semibold text-amber underline decoration-amber/40 underline-offset-4 hover:decoration-amber";
+  "font-semibold text-amber-ink underline decoration-amber/40 underline-offset-4 hover:decoration-amber";
 
 function CheckList({ items, muted = false }: { items: string[]; muted?: boolean }) {
   return (
@@ -84,7 +84,7 @@ function CheckList({ items, muted = false }: { items: string[]; muted?: boolean 
           {muted ? (
             <Minus className="mt-0.5 size-4 shrink-0 text-fog/60" aria-hidden />
           ) : (
-            <Check className="mt-0.5 size-4 shrink-0 text-amber" aria-hidden />
+            <Check className="mt-0.5 size-4 shrink-0 text-amber-ink" aria-hidden />
           )}
           <span className="text-[14px] leading-relaxed text-fog">{item}</span>
         </li>
@@ -137,7 +137,7 @@ export default function CompanyCamAlternative() {
                 <th scope="col" className="label px-4 py-3 text-start">
                   {t("cc.table.feature")}
                 </th>
-                <th scope="col" className="label px-4 py-3 text-start text-amber">
+                <th scope="col" className="label px-4 py-3 text-start text-amber-ink">
                   {t("cc.table.us")}
                 </th>
                 <th scope="col" className="label px-4 py-3 text-start">
@@ -157,7 +157,7 @@ export default function CompanyCamAlternative() {
                   <td className="bg-amber/[0.04] px-4 py-4 align-top text-[13.5px] leading-snug text-fog">
                     {row.us ? t(row.us) : t("cc.yes")}
                   </td>
-                  <td className="px-4 py-4 align-top text-[13.5px] leading-snug text-fog/80">
+                  <td className="px-4 py-4 align-top text-[13.5px] leading-snug text-fog/90">
                     {row.them ? t(row.them) : t("cc.no")}
                   </td>
                 </tr>
@@ -165,7 +165,7 @@ export default function CompanyCamAlternative() {
             </tbody>
           </table>
         </div>
-        <p className="mt-4 max-w-[820px] text-[12.5px] leading-relaxed text-fog/80">
+        <p className="mt-4 max-w-[820px] text-[12.5px] leading-relaxed text-fog/90">
           {t("cca.side.note", { date: t("cc.verifiedOn") })}
         </p>
         <p className="mt-3 text-[13.5px] leading-relaxed text-fog">

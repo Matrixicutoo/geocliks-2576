@@ -123,7 +123,7 @@ export function NotificationsBell() {
         title={t("notif.title")}
         aria-expanded={open}
         onClick={toggle}
-        className="relative flex size-9 items-center justify-center rounded-full bg-[#173350] text-amber hover:bg-[#1f4368]"
+        className="relative flex size-9 items-center justify-center rounded-full bg-[#173350] text-amber-ink hover:bg-[#1f4368]"
       >
         {/* Filled, not outlined: at 16px a stroke-only bell reads as a thin sketch against the
             dark well. Same amber, painted solid. */}
@@ -140,7 +140,7 @@ export function NotificationsBell() {
           <div className="flex items-center justify-between border-b border-line px-4 py-2.5">
             <p className="font-display text-[14px] font-bold text-chalk">{t("notif.title")}</p>
             {openedUnseen > 0 && (
-              <span className="mono text-[10px] uppercase tracking-widest text-amber">
+              <span className="mono text-[10px] uppercase tracking-widest text-amber-ink">
                 {t("notif.newCount", { n: String(openedUnseen) })}
               </span>
             )}
@@ -200,7 +200,7 @@ export function NotificationsBell() {
                         <span
                           className={cn(
                             "mono mt-1 block text-[10px] uppercase tracking-widest",
-                            item.unseen ? "text-amber" : "text-fog",
+                            item.unseen ? "text-amber-ink" : "text-fog",
                           )}
                         >
                           {relative(item.at)}
@@ -270,7 +270,7 @@ export function NotificationsBell() {
             onClick={sound.toggle}
             className={cn(
               "mono flex w-full items-center gap-2 border-t border-line px-4 py-2.5 text-[10px] uppercase tracking-widest",
-              sound.enabled ? "text-amber hover:bg-ink" : "text-fog hover:bg-ink hover:text-amber",
+              sound.enabled ? "text-amber-ink hover:bg-ink" : "text-fog hover:bg-ink hover:text-amber-ink",
             )}
           >
             {sound.enabled ? <Volume2 className="size-3.5" /> : <VolumeX className="size-3.5" />}
@@ -296,8 +296,8 @@ export function NotificationsBell() {
                 notify.blocked
                   ? "cursor-not-allowed text-fog opacity-60"
                   : notify.enabled
-                    ? "text-amber hover:bg-ink"
-                    : "text-fog hover:bg-ink hover:text-amber",
+                    ? "text-amber-ink hover:bg-ink"
+                    : "text-fog hover:bg-ink hover:text-amber-ink",
               )}
             >
               {notify.enabled ? <Bell className="size-3.5" /> : <BellOff className="size-3.5" />}

@@ -180,7 +180,7 @@ export function ReportBuilder({ onCreated }: { onCreated?: () => void }) {
               >
                 <span className="flex items-center gap-2 text-[13px] font-semibold text-chalk">
                   <item.icon
-                    className={cn("size-4", format === item.id ? "text-amber" : "text-fog")}
+                    className={cn("size-4", format === item.id ? "text-amber-ink" : "text-fog")}
                   />
                   {item.label}
                 </span>
@@ -244,7 +244,7 @@ export function ReportBuilder({ onCreated }: { onCreated?: () => void }) {
         <button
           type="submit"
           disabled={create.isPending}
-          className="rounded-[8px] inline-flex w-full items-center justify-center gap-2 bg-amber px-4 py-2.5 text-[13px] font-semibold text-ink disabled:opacity-60"
+          className="rounded-[8px] inline-flex w-full items-center justify-center gap-2 bg-amber px-4 py-2.5 text-[13px] font-semibold text-on-amber disabled:opacity-60"
         >
           {create.isPending ? (
             <>
@@ -302,7 +302,7 @@ export default function AppReports() {
                       key={report.id}
                       className="flex flex-wrap items-center gap-3 px-4 py-3 transition-colors hover:bg-ink-3/40"
                     >
-                      <span className="grid size-9 shrink-0 place-items-center rounded-[12px] border border-line bg-ink text-amber">
+                      <span className="grid size-9 shrink-0 place-items-center rounded-[12px] border border-line bg-ink text-amber-ink">
                         <Icon className="size-4" />
                       </span>
                       <div className="min-w-0 flex-1">
@@ -330,7 +330,7 @@ export default function AppReports() {
                             const res = await download.mutateAsync({ id: report.id });
                             window.open(res.url, "_blank");
                           }}
-                          className="inline-flex items-center gap-1.5 rounded-[8px] border border-line px-2.5 py-1.5 text-[11.5px] text-chalk transition-colors hover:border-amber/60 hover:text-amber disabled:opacity-60"
+                          className="inline-flex items-center gap-1.5 rounded-[8px] border border-line px-2.5 py-1.5 text-[11.5px] text-chalk transition-colors hover:border-amber/60 hover:text-amber-ink disabled:opacity-60"
                         >
                           <Download className="size-3.5" /> {t("common.download")}
                         </button>
@@ -345,7 +345,7 @@ export default function AppReports() {
                                 `${report.title.replace(/[^\w.-]+/g, "-")}.${report.format}`,
                               );
                             }}
-                            className="inline-flex items-center gap-1.5 rounded-[8px] border border-line px-2.5 py-1.5 text-[11.5px] text-chalk transition-colors hover:border-amber/60 hover:text-amber disabled:opacity-60"
+                            className="inline-flex items-center gap-1.5 rounded-[8px] border border-line px-2.5 py-1.5 text-[11.5px] text-chalk transition-colors hover:border-amber/60 hover:text-amber-ink disabled:opacity-60"
                           >
                             <HardDriveDownload className="size-3.5" /> {t("reports.saveFolder")}
                           </button>

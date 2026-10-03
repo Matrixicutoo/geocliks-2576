@@ -79,7 +79,7 @@ const TEAM_CARDS: { icon: typeof Layers; title: TKey; body: TKey }[] = [
 ];
 
 const LINK_CLASS =
-  "font-semibold text-amber underline decoration-amber/40 underline-offset-4 hover:decoration-amber";
+  "font-semibold text-amber-ink underline decoration-amber/40 underline-offset-4 hover:decoration-amber";
 
 export default function ConstructionPhotoDocumentation() {
   const { t, locale } = useLocale();

@@ -2,15 +2,15 @@ import { cn } from "../lib/utils";
 
 /** One chip per role, so permissions are readable without opening the role dropdown. */
 const ROLE_STYLES: Record<string, string> = {
-  owner: "border-amber/60 bg-amber/10 text-amber",
+  owner: "border-amber/60 bg-amber/10 text-amber-ink",
   admin: "border-sky/60 bg-sky/10 text-sky",
   manager: "border-verified/60 bg-verified/10 text-verified",
   // Deep amber, not plain amber: a dispatcher lives on the delivery board, so it borrows the
   // delivery colour while staying clearly distinct from the owner's amber chip.
-  dispatcher: "border-amber-deep/60 bg-amber-deep/10 text-amber-deep",
+  dispatcher: "border-amber-deep/60 bg-amber-deep/10 text-amber-ink",
   // Driver is delivery crew, so it borrows the same delivery colour as the dispatcher but at a
   // lighter weight — same side of the business, less authority.
-  driver: "border-amber-deep/40 bg-amber-deep/5 text-amber-deep",
+  driver: "border-amber-deep/40 bg-amber-deep/5 text-amber-ink",
   field: "border-line bg-ink text-fog",
 };
 

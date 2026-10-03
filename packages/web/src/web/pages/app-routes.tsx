@@ -44,7 +44,7 @@ export const STATUS_LABEL: Record<string, TKey> = {
 export const STATUS_STYLE: Record<string, string> = {
   draft: "border-line bg-ink-3 text-fog",
   assigned: "border-sky/40 bg-sky/10 text-sky",
-  active: "border-amber/40 bg-amber/10 text-amber",
+  active: "border-amber/40 bg-amber/10 text-amber-ink",
   completed: "border-verified/40 bg-verified/10 text-verified",
   cancelled: "border-alert/40 bg-alert/10 text-alert",
 };
@@ -180,7 +180,7 @@ export default function AppRoutes({ openNew = false }: { openNew?: boolean }) {
                 styling: naming the next run is what this page is for. */}
             <Link
               to="/app/reports"
-              className="mono inline-flex items-center gap-2 rounded-[8px] border border-line px-3 py-2 text-[11px] font-bold uppercase tracking-widest text-chalk transition-colors hover:border-amber hover:text-amber"
+              className="mono inline-flex items-center gap-2 rounded-[8px] border border-line px-3 py-2 text-[11px] font-bold uppercase tracking-widest text-chalk transition-colors hover:border-amber hover:text-amber-ink"
             >
               <FileStack className="size-4" /> {t("teamspace.buildReport")}
             </Link>
@@ -242,7 +242,7 @@ export default function AppRoutes({ openNew = false }: { openNew?: boolean }) {
                 <button
                   type="button"
                   onClick={() => setNewOpen(true)}
-                  className="mono ml-auto inline-flex items-center gap-1.5 text-[11px] font-bold uppercase tracking-widest text-amber transition-colors hover:text-amber-deep"
+                  className="mono ml-auto inline-flex items-center gap-1.5 text-[11px] font-bold uppercase tracking-widest text-amber-ink transition-colors hover:underline"
                 >
                   <Plus className="size-3.5" /> {t("routes.new")}
                 </button>
@@ -346,7 +346,7 @@ export default function AppRoutes({ openNew = false }: { openNew?: boolean }) {
                             type="button"
                             title={t("routes.assign")}
                             onClick={() => setAssignFor(route.id)}
-                            className="inline-flex max-w-[190px] shrink-0 items-center gap-1.5 rounded-[8px] border border-line bg-ink-3 px-2.5 py-1.5 text-[12px] font-semibold text-fog transition-colors hover:text-amber"
+                            className="inline-flex max-w-[190px] shrink-0 items-center gap-1.5 rounded-[8px] border border-line bg-ink-3 px-2.5 py-1.5 text-[12px] font-semibold text-fog transition-colors hover:text-amber-ink"
                           >
                             <Truck className="size-3.5 shrink-0" />
                             {/* Naming the driver on the button saves a click to find out who
@@ -377,7 +377,7 @@ export default function AppRoutes({ openNew = false }: { openNew?: boolean }) {
                                     setError(e instanceof Error ? e.message : String(e)),
                                   );
                               }}
-                              className="grid size-8 shrink-0 place-items-center rounded-[8px] border border-line bg-ink-3 text-fog transition-colors hover:border-amber hover:text-amber disabled:opacity-60"
+                              className="grid size-8 shrink-0 place-items-center rounded-[8px] border border-line bg-ink-3 text-fog transition-colors hover:border-amber hover:text-amber-ink disabled:opacity-60"
                             >
                               {archivedTab ? (
                                 <RotateCcw className="size-4" />

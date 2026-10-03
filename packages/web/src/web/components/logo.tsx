@@ -42,7 +42,7 @@ export function Logo({
       {!compact && (
         <span className="flex flex-col leading-none">
           <span className="font-display text-[15px] font-extrabold tracking-tight text-chalk">
-            GEO<span className="text-amber">CLIKS</span>
+            GEO<span className="text-amber-ink">CLIKS</span>
           </span>
           <span className="mono mt-1.5 text-[8.5px] tracking-[0.28em] text-fog">FIELD EVIDENCE</span>
         </span>
