@@ -1,5 +1,6 @@
 /**
- * A static copy of the home page's header and hero, written into the HTML response so a phone
+ * A static copy of a page's header and hero (the home page, and the search landing pages listed in
+ * `LANDING` below), written into the HTML response so a phone
  * paints the page's first screen from the document and the stylesheet alone — before the
  * JavaScript bundle has downloaded, let alone run.
  *
@@ -66,14 +67,58 @@ const LOGO =
 const NAV_LINK = "py-2 text-[14px] font-semibold text-white transition-colors hover:text-amber-ink";
 const NAV_MENU = "flex items-center gap-1 py-2 text-[14px] font-semibold text-white transition-colors hover:text-amber-ink";
 
+type Key = Parameters<typeof translate>[1];
+
 /**
- * The shell for the home page at `pathname` ("/" or a locale's home, "/de"), or "" for any other
- * route. Only the home page has a JavaScript-rendered LCP worth painting early.
+ * The search landing pages (everything built on `LandingPage`, components/landing-page.tsx), by
+ * path: the key prefix their eyebrow, headline and intro are read from, and whether the hero is
+ * centred, and the key prefix of the first `LandingSection` under the hero (`label`/`h2`/`intro`).
+ * That first band's intro paragraph is what Lighthouse reported as the LCP element on a phone —
+ * it is the largest text block on the first screen — and React painted it only once the bundle
+ * had run (~1.2 s of "element render delay" on PageSpeed). The shell carries the hero and that
+ * band's copy, so React's identical copies are never larger and never become a later LCP. The
+ * band's children (cards, tables) are not copied: they sit below the intro and are smaller.
+ * KEEP IN STEP with the keys each page passes to `LandingPage` and to its first `LandingSection`;
+ * a page missing here just paints the old way.
+ */
+const LANDING: Record<string, { k: string; first: string; center?: boolean }> = {
+  "/prove-crew-was-on-site": { k: "pcs", first: "pcs.s1" },
+  "/proof-of-delivery": { k: "pod", first: "pod.why" },
+  "/pricing": { k: "pr", first: "pr.s1", center: true },
+  "/construction-photo-log": { k: "cpl", first: "cpl.s1" },
+  "/companycam-alternative": { k: "cca", first: "cca.why" },
+  "/alternatives/timemark": { k: "tm", first: "tm.s1" },
+  "/alternatives/companycam": { k: "cc", first: "cc.s1" },
+  "/about": { k: "ab", first: "ab.s1" },
+  "/hvac-photo-documentation": { k: "hvac", first: "hvac.why" },
+  "/gps-timestamp-camera": { k: "gps", first: "gps.distinction" },
+  "/construction-photo-documentation": { k: "con", first: "con.s1" },
+  "/can-photo-timestamps-be-faked": { k: "ctf", first: "ctf.short" },
+  "/roofing-photo-documentation": { k: "rf", first: "rf.s1" },
+  "/property-inspection-photos": { k: "inspection", first: "inspection.why" },
+};
+
+/**
+ * Whether the deferred app entry should wait for an *image* LCP before it starts. The home page's
+ * LCP is its hero still; the landing pages' LCP is text, which never carries a URL.
+ */
+export function shellLcpIsImage(pathname: string): boolean {
+  return splitLocalePath(pathname).path === "/";
+}
+
+/**
+ * The shell for the page at `pathname` — the home page ("/" or a locale's home, "/de") or one of
+ * the landing pages in `LANDING` — or "" for any other route.
  */
 export function firstPaintShell(pathname: string, locale: LocaleCode): string {
-  const { path, base } = splitLocalePath(pathname);
-  if (path !== "/") return "";
-  const t = (key: Parameters<typeof translate>[1]) => esc(translate(locale, key));
+  const { path, base, locale: urlLocale } = splitLocalePath(pathname);
+  const landing = LANDING[path];
+  if (path !== "/" && !landing) return "";
+  // A prefixed URL of a page that is not translated renders English head tags but may render in
+  // the prefix's language once React runs; painting one and then the other would be a visible
+  // swap, so such a page keeps the old path.
+  if (landing && urlLocale !== locale) return "";
+  const t = (key: Key) => esc(translate(locale, key));
   // wouter prefixes every <Link> with the router base; plain anchors go through localizedHref.
   const link = (to: string) => esc(`${base}${to}`);
   const code = esc(locale.split("-")[0]);
@@ -99,6 +144,32 @@ export function firstPaintShell(pathname: string, locale: LocaleCode): string {
     `<span class="-me-1 flex size-9 items-center justify-center text-white lg:hidden">${MENU}</span>` +
     `</div></div></header>`;
 
+  if (landing) {
+    const k = (suffix: string) => t(`${landing.k}.${suffix}` as Key);
+    const c = landing.center ? " mx-auto" : "";
+    const hero =
+      `<section class="hero-band relative overflow-hidden border-b border-line">` +
+      `<div class="absolute inset-0 blueprint opacity-60"></div>` +
+      `<div class="${landing.center ? "relative mx-auto max-w-[1180px] px-5 py-16 text-center sm:py-20" : "relative mx-auto max-w-[1180px] px-5 py-16 sm:py-20"}">` +
+      `<p class="label text-amber-ink">${k("eyebrow")}</p>` +
+      // Not an <h1>: the raw HTML already carries one in #seo-fallback.
+      `<div class="mt-3 max-w-[860px] font-display text-[34px] font-bold leading-[1.08] tracking-tight text-chalk sm:text-[46px]${c}">${k("h1")}</div>` +
+      `<p class="mt-5 max-w-[680px] text-[16px] leading-relaxed text-fog sm:text-[17px]${c}">${k("sub")}</p>` +
+      `</div></section>`;
+    const f = (suffix: string) => t(`${landing.first}.${suffix}` as Key);
+    // Same classes as `LandingSection`; the heading is a <div> for the same reason as the hero's.
+    const band =
+      `<section class="border-b border-line"><div class="${landing.center ? "mx-auto max-w-[1180px] px-5 py-16 text-center sm:py-20" : "mx-auto max-w-[1180px] px-5 py-16 sm:py-20"}">` +
+      `<p class="label">${f("label")}</p>` +
+      `<div class="mt-3 max-w-[760px] font-display text-[28px] font-bold leading-tight tracking-tight text-chalk sm:text-[36px]${c}">${f("h2")}</div>` +
+      `<p class="mt-4 max-w-[680px] text-[15px] leading-relaxed text-fog${c}">${f("intro")}</p>` +
+      `</div></section>`;
+    return (
+      `<div id="${FIRST_PAINT_ID}" data-theme="light" class="min-h-screen bg-ink text-chalk">${header}${hero}${band}</div>` +
+      SIGNED_IN_DROP
+    );
+  }
+
   const hero =
     `<section class="hero-cinema relative overflow-hidden border-b border-line">` +
     `<picture class="contents"><source media="(max-width: 639px)" type="image/webp" srcset="/videos/hero-poster-portrait.webp"><source media="(min-aspect-ratio: 37/20)" srcset="/videos/hero-poster-wide.jpg">` +
@@ -121,8 +192,13 @@ export function firstPaintShell(pathname: string, locale: LocaleCode): string {
     // White below the hero, as the page under it is: the home page pins the light theme, but only
     // once React runs, and until then <html> still carries the dark default.
     `<div id="${FIRST_PAINT_ID}" class="min-h-screen" style="background:#ffffff">${header}${hero}</div>` +
-    // Signed-in visitors are redirected to their Teamspace — drop the marketing shell for them
-    // before it paints. Same storage key as `lib/auth.ts`.
-    `<script>try{if(localStorage.getItem("runable.managed-auth.token"))document.getElementById("${FIRST_PAINT_ID}").remove()}catch(e){}</script>`
+    SIGNED_IN_DROP
   );
 }
+
+/**
+ * Signed-in visitors are redirected to their Teamspace from the home page, and see "Teamspace"
+ * rather than "Log in" in the header everywhere else — drop the signed-out shell for them before
+ * it paints. Same storage key as `lib/auth.ts`.
+ */
+const SIGNED_IN_DROP = `<script>try{if(localStorage.getItem("runable.managed-auth.token"))document.getElementById("${FIRST_PAINT_ID}").remove()}catch(e){}</script>`;

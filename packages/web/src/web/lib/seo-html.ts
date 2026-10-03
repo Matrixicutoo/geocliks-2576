@@ -30,7 +30,7 @@ import { translate } from "./catalogs";
 // Server-side, every language must be readable synchronously; the browser loads one at a time.
 import "./catalogs-all";
 import type { LocaleCode } from "../../api/lib/locales";
-import { firstPaintShell } from "./first-paint";
+import { firstPaintShell, shellLcpIsImage } from "./first-paint";
 import { marketingJsonLd } from "./page-schema";
 import { SITE_URL, seoForPath } from "./seo-routes";
 
@@ -165,7 +165,7 @@ function jsonLdScript(block: object, pathname: string): string {
  * still writes whatever the route itself sets.
  */
 /**
- * Where the first screen paints from static markup (the home pages, see `first-paint.ts`), the
+ * Where the first screen paints from static markup (the home and landing pages, see `first-paint.ts`), the
  * app bundle is not needed for that paint, so it is not fetched until that paint has happened:
  * the connection goes to the stylesheet, fonts and hero still first, then to the ~300 KB of
  * script. The entry module and every chunk Vite would have modulepreloaded are requested together
@@ -179,7 +179,9 @@ function jsonLdScript(block: object, pathname: string): string {
  * paint; a member whose shell was already removed (signed in) starts at once; and a timer covers
  * a tab opened in the background, where nothing paints until it is shown.
  */
-function deferAppEntry(html: string): string {
+// `waitForImage` is the home page's case above. A landing page's LCP is its hero text, which has no
+// URL, so there the first LCP entry — the shell's text, painted — is the signal.
+function deferAppEntry(html: string, waitForImage: boolean): string {
   const entry = html.match(/<script type="module" crossorigin(?:="")? src="([^"]+)"><\/script>/);
   if (!entry) return html;
   const preloads: string[] = [];
@@ -196,7 +198,7 @@ function deferAppEntry(html: string): string {
     `var e=document.createElement("script");e.type="module";e.crossOrigin="";e.src=${JSON.stringify(entry[1])};h.appendChild(e)}` +
     `function start(){if(!document.getElementById("first-paint"))return go();setTimeout(go,1500);` +
     `var P=window.PerformanceObserver;if(P&&P.supportedEntryTypes&&P.supportedEntryTypes.indexOf("largest-contentful-paint")>=0){` +
-    `try{new P(function(l){if(l.getEntries().some(function(x){return x.url}))go()}).observe({type:"largest-contentful-paint",buffered:true});return}catch(e){}}` +
+    `try{new P(function(l){if(l.getEntries().some(function(x){return ${waitForImage ? "x.url" : "true"}}))go()}).observe({type:"largest-contentful-paint",buffered:true});return}catch(e){}}` +
     `requestAnimationFrame(function(){setTimeout(go,0)})}` +
     `if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",start);else start()})()</script>`;
   out = appendToHead(out, loader);
@@ -344,7 +346,7 @@ export function injectSeoIntoHtml(html: string, pathname: string): string {
     // The home page's header and hero as static markup, beside #root rather than inside it so
     // React's first commit cannot clear it — see `first-paint.ts` for the handoff.
     const shell = firstPaintShell(pathname, pageLocale);
-    if (shell) out = deferAppEntry(out);
+    if (shell) out = deferAppEntry(out, shellLcpIsImage(pathname));
     out = out.replace(
       /<div id="root"><\/div>/,
       `${shell}<div id="root">${bodyFallback(path, pageLocale, seo.title, seo.description)}</div>`,
