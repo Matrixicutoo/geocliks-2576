@@ -56,6 +56,8 @@ const STATIC_PATHS = [
   "/alternatives/timemark",
   "/companycam-alternative",
   "/can-photo-timestamps-be-faked",
+  "/prove-crew-was-on-site",
+  "/construction-photo-log",
   "/about",
   "/blog",
   "/blog/method",

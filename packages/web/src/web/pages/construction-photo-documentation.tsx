@@ -163,6 +163,16 @@ export default function ConstructionPhotoDocumentation() {
             </Link>
             .
           </p>
+          <p className="mt-3 text-[13.5px] leading-relaxed text-fog">
+            {t("pcs.inbound.lead")}{" "}
+            <Link to="/prove-crew-was-on-site" className={LINK_CLASS}>
+              {t("pcs.eyebrow")}
+            </Link>
+            {" · "}
+            <Link to="/construction-photo-log" className={LINK_CLASS}>
+              {t("cpl.eyebrow")}
+            </Link>
+          </p>
         </div>
       </section>
     </LandingPage>

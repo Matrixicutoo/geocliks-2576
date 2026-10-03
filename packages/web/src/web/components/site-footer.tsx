@@ -92,6 +92,8 @@ const LANDING_LINKS: Array<{ to: string; label: string }> = [
   { to: "/property-inspection-photos", label: "inspection.eyebrow" },
   { to: "/gps-timestamp-camera", label: "gps.eyebrow" },
   { to: "/can-photo-timestamps-be-faked", label: "ctf.eyebrow" },
+  { to: "/prove-crew-was-on-site", label: "pcs.eyebrow" },
+  { to: "/construction-photo-log", label: "cpl.eyebrow" },
   { to: "/alternatives/companycam", label: "cc.eyebrow" },
   { to: "/companycam-alternative", label: "cca.eyebrow" },
   { to: "/alternatives/timemark", label: "tm.eyebrow" },

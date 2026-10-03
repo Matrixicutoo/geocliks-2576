@@ -429,6 +429,12 @@ function Reports() {
               <GitCompareArrows className="size-4 text-amber-ink" />
               {t("home.reports.compare")}
             </p>
+            <Link
+              to="/construction-photo-log"
+              className="mt-4 inline-flex items-center gap-1.5 text-[13.5px] font-semibold text-amber-ink underline decoration-amber/40 underline-offset-4 hover:decoration-amber"
+            >
+              {t("home.reports.logLink")} <ArrowRight className="size-3.5 rtl:rotate-180" />
+            </Link>
           </div>
 
           <div className="grid gap-3 sm:grid-cols-2">

@@ -56,6 +56,8 @@ const FALLBACK_LINKS = [
   "/proof-of-delivery",
   "/gps-timestamp-camera",
   "/can-photo-timestamps-be-faked",
+  "/prove-crew-was-on-site",
+  "/construction-photo-log",
   "/alternatives/companycam",
   "/alternatives/timemark",
   "/blog",

@@ -138,6 +138,16 @@ export default function HvacPhotoDocumentation() {
             </Link>
             .
           </p>
+          <p className="mt-3 text-[13.5px] leading-relaxed text-fog">
+            {t("pcs.inbound.lead")}{" "}
+            <Link to="/prove-crew-was-on-site" className="font-semibold text-amber-ink underline decoration-amber/40 underline-offset-4 hover:decoration-amber">
+              {t("pcs.eyebrow")}
+            </Link>
+            {" · "}
+            <Link to="/construction-photo-log" className="font-semibold text-amber-ink underline decoration-amber/40 underline-offset-4 hover:decoration-amber">
+              {t("cpl.eyebrow")}
+            </Link>
+          </p>
           <p className="mt-3 flex items-center gap-2 text-[13px] text-fog">
             <ShieldCheck className="size-4 shrink-0 text-amber-ink" />
             {t("hvac.disclaimer")}

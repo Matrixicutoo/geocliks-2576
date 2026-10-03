@@ -140,6 +140,26 @@ export const PAGE_SCHEMA = {
       { keys: { question: "cca.faq.q5", answer: "cca.faq.a5" } },
     ],
   },
+  "/prove-crew-was-on-site": {
+    crumbs: [{ name: "Prove a Crew Was On Site", path: "/prove-crew-was-on-site" }],
+    faq: [
+      { keys: { question: "pcs.faq.q1", answer: "pcs.faq.a1" } },
+      { keys: { question: "pcs.faq.q2", answer: "pcs.faq.a2" } },
+      { keys: { question: "pcs.faq.q3", answer: "pcs.faq.a3" } },
+      { keys: { question: "pcs.faq.q4", answer: "pcs.faq.a4" } },
+      { keys: { question: "pcs.faq.q5", answer: "pcs.faq.a5" } },
+    ],
+  },
+  "/construction-photo-log": {
+    crumbs: [{ name: "Construction Photo Log", path: "/construction-photo-log" }],
+    faq: [
+      { keys: { question: "cpl.faq.q1", answer: "cpl.faq.a1" } },
+      { keys: { question: "cpl.faq.q2", answer: "cpl.faq.a2" } },
+      { keys: { question: "cpl.faq.q3", answer: "cpl.faq.a3" } },
+      { keys: { question: "cpl.faq.q4", answer: "cpl.faq.a4" } },
+      { keys: { question: "cpl.faq.q5", answer: "cpl.faq.a5" } },
+    ],
+  },
   "/can-photo-timestamps-be-faked": {
     crumbs: [{ name: "Can Photo Timestamps Be Faked?", path: "/can-photo-timestamps-be-faked" }],
     faq: [

@@ -119,6 +119,18 @@ export const PAGE_SEO = {
       "Looking for a CompanyCam alternative? GeoCliks locks network time, GPS and street address on every shot, with a photo code anyone can check. Start free.",
   },
 
+  "/prove-crew-was-on-site": {
+    title: "How to Prove a Crew Was On Site: Photo, GPS, Time | GeoCliks",
+    description:
+      "A phone photo is not proof of presence. Use network-verified time, GPS, street address and a locked photo code to show who was there, when, and where.",
+  },
+
+  "/construction-photo-log": {
+    title: "Construction Photo Log & Closeout Report | GeoCliks",
+    description:
+      "Build a dated photo log with verified time, GPS and address on every shot. Export PDF, Excel, ZIP or KMZ the same day the crew finishes.",
+  },
+
   "/can-photo-timestamps-be-faked": {
     title: "Can Photo Timestamps Be Faked? What Holds Up | GeoCliks",
     description:
@@ -210,6 +222,8 @@ export const LOCALIZED_SEO: Record<string, { title: TKey; description: TKey }> =
   "/proof-of-delivery": { title: "seo.pod.title", description: "seo.pod.description" },
   "/gps-timestamp-camera": { title: "seo.gps.title", description: "seo.gps.description" },
   "/companycam-alternative": { title: "seo.ccAlt.title", description: "seo.ccAlt.description" },
+  "/prove-crew-was-on-site": { title: "seo.crewOnSite.title", description: "seo.crewOnSite.description" },
+  "/construction-photo-log": { title: "seo.photoLog.title", description: "seo.photoLog.description" },
   "/can-photo-timestamps-be-faked": {
     title: "seo.faked.title",
     description: "seo.faked.description",
