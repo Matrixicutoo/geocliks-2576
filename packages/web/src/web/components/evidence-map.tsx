@@ -70,6 +70,9 @@ export type MapPin = {
   capturedAt?: string | Date | null;
   address?: string | null;
   url?: string | null;
+  /** "photo" | "video" | "document". A video or scan has no `<img>`-able url, only a poster. */
+  kind?: string | null;
+  posterUrl?: string | null;
   userId?: string | null;
   userName?: string | null;
 };
@@ -85,11 +88,29 @@ const dayKey = (value: string | Date | null | undefined) =>
 const time = (value: string | Date | null | undefined) =>
   value ? new Date(value).getTime() : 0;
 
+/** The road-following line for one trail, keyed like the groups below. */
+export type RoadTrail = { key: string; path: google.maps.LatLngLiteral[] };
+
+/** Same grouping as the server's `trailKey`: one trail per photographer per UTC day. */
+const trailKey = (pin: Located) => `${pin.userId ?? "unknown"}:${dayKey(pin.capturedAt)}`;
+
 /**
  * One polyline per photographer per day, in capture order — the crew's path through the site.
  * Drawn imperatively because the Maps JS API has no declarative polyline in this binding.
+ *
+ * A trail with a road shape (`roads`, from `photos.trails`) is drawn solid along the streets,
+ * like a run on the Routes page. Without one — still loading, no routing key, or every shot
+ * taken within a few metres — it stays the dotted straight line, which reads as provisional.
  */
-function RouteLines({ pins, enabled }: { pins: Located[]; enabled: boolean }) {
+function RouteLines({
+  pins,
+  enabled,
+  roads,
+}: {
+  pins: Located[];
+  enabled: boolean;
+  roads?: RoadTrail[] | null;
+}) {
   const map = useMap();
   const maps = useMapsLibrary("maps");
   const drawn = useRef<google.maps.Polyline[]>([]);
@@ -99,16 +120,30 @@ function RouteLines({ pins, enabled }: { pins: Located[]; enabled: boolean }) {
     drawn.current = [];
     if (!map || !maps || !enabled) return;
 
+    const byKey = new Map((roads ?? []).map((r) => [r.key, r.path]));
     const groups = new Map<string, Located[]>();
     for (const pin of pins) {
-      const key = `${pin.userId ?? "unknown"}:${dayKey(pin.capturedAt)}`;
+      const key = trailKey(pin);
       const bucket = groups.get(key);
       if (bucket) bucket.push(pin);
       else groups.set(key, [pin]);
     }
 
-    for (const bucket of groups.values()) {
+    for (const [key, bucket] of groups) {
       if (bucket.length < 2) continue;
+      const road = byKey.get(key);
+      if (road && road.length >= 2) {
+        drawn.current.push(
+          new maps.Polyline({
+            map,
+            path: road,
+            strokeColor: "#E08A00",
+            strokeOpacity: 0.9,
+            strokeWeight: 4,
+          }),
+        );
+        continue;
+      }
       const path = [...bucket]
         .sort((a, b) => time(a.capturedAt) - time(b.capturedAt))
         .map((p) => ({ lat: p.lat, lng: p.lng }));
@@ -134,7 +169,7 @@ function RouteLines({ pins, enabled }: { pins: Located[]; enabled: boolean }) {
       for (const line of drawn.current) line.setMap(null);
       drawn.current = [];
     };
-  }, [map, maps, pins, enabled]);
+  }, [map, maps, pins, enabled, roads]);
 
   return null;
 }
@@ -333,8 +368,11 @@ export function EvidenceMap({
   showRoute = true,
   zoomControl = true,
   layerControl = true,
+  roads,
 }: {
   pins: MapPin[];
+  /** Road-following trails from `photos.trails`; trails missing here draw dotted and straight. */
+  roads?: RoadTrail[] | null;
   onSelect?: (id: string) => void;
   className?: string;
   showRoute?: boolean;
@@ -403,7 +441,7 @@ export function EvidenceMap({
           clickableIcons={false}
         >
           <PinLayer pins={points} onSelect={onSelect} />
-          <RouteLines pins={points} enabled={showRoute} />
+          <RouteLines pins={points} enabled={showRoute} roads={roads} />
           <FitBounds pins={points} />
           <DetailOnZoom pinned={detailPinned} onDetail={setDetail} />
         </GoogleMap>

@@ -7,6 +7,7 @@ import * as schema from "../database/schema";
 import { id, photoCode } from "../lib/ids";
 import { planOf, videoAllowance } from "../lib/plans";
 import { photoUrl } from "../lib/media";
+import { buildTrails } from "../lib/trail-shapes";
 import { deleteObject, getObjectBytes, presignGet, putObject } from "../lib/s3";
 import { resolveClock, sha256, sign, verifySignature } from "../lib/verify";
 import { burnStamp, hasFfmpeg, posterFrame } from "../lib/video";
@@ -65,6 +66,47 @@ async function withProjectNames<T extends { projectId: string | null }>(rows: T[
     ...r,
     projectName: r.projectId ? (names.get(r.projectId) ?? null) : null,
   }));
+}
+
+/**
+ * The map's capture set, scoped like the Teamspace feed: field crews only see pins from the
+ * projects they are assigned to, so neither the map nor its trails can leak other jobs'
+ * locations. Geotagged rows only, newest 400.
+ */
+async function mapRows(
+  context: { org: { id: string }; user: { id: string }; role: Parameters<typeof visibleProjectIds>[2] },
+  projectId?: string | null,
+) {
+  const allowed = await visibleProjectIds(context.org.id, context.user.id, context.role);
+  const filters = [eq(schema.photos.orgId, context.org.id)];
+  if (projectId) filters.push(eq(schema.photos.projectId, projectId));
+  if (allowed) {
+    if (allowed.length === 0) return [];
+    filters.push(inArray(schema.photos.projectId, allowed));
+  }
+  const rows = await db
+    .select({
+      id: schema.photos.id,
+      lat: schema.photos.lat,
+      lng: schema.photos.lng,
+      address: schema.photos.address,
+      photoCode: schema.photos.photoCode,
+      capturedAt: schema.photos.capturedAt,
+      tag: schema.photos.tag,
+      kind: schema.photos.kind,
+      assetType: schema.photos.assetType,
+      projectId: schema.photos.projectId,
+      storageKey: schema.photos.storageKey,
+      posterKey: schema.photos.posterKey,
+      userId: schema.photos.userId,
+      userName: schema.user.name,
+    })
+    .from(schema.photos)
+    .leftJoin(schema.user, eq(schema.user.id, schema.photos.userId))
+    .where(and(...filters))
+    .orderBy(desc(schema.photos.capturedAt))
+    .limit(400);
+  return rows.filter((r) => r.lat != null && r.lng != null);
 }
 
 export const photos = {
@@ -674,39 +716,36 @@ export const photos = {
   map: fieldProc
     .input(z.object({ projectId: z.string().nullish() }).optional())
     .handler(async ({ input, context }) => {
-      // Field crews only see pins from the projects they are assigned to — same rule the
-      // Teamspace feed and the project list use, so the map can't leak other jobs' locations.
-      const allowed = await visibleProjectIds(context.org.id, context.user.id, context.role);
-      const filters = [eq(schema.photos.orgId, context.org.id)];
-      if (input?.projectId) filters.push(eq(schema.photos.projectId, input.projectId));
-      if (allowed) {
-        if (allowed.length === 0) return [];
-        filters.push(inArray(schema.photos.projectId, allowed));
-      }
-      const rows = await db
-        .select({
-          id: schema.photos.id,
-          lat: schema.photos.lat,
-          lng: schema.photos.lng,
-          address: schema.photos.address,
-          photoCode: schema.photos.photoCode,
-          capturedAt: schema.photos.capturedAt,
-          tag: schema.photos.tag,
-          assetType: schema.photos.assetType,
-          projectId: schema.photos.projectId,
-          storageKey: schema.photos.storageKey,
-          userId: schema.photos.userId,
-          userName: schema.user.name,
-        })
-        .from(schema.photos)
-        .leftJoin(schema.user, eq(schema.user.id, schema.photos.userId))
-        .where(and(...filters))
-        .orderBy(desc(schema.photos.capturedAt))
-        .limit(400);
+      const rows = await mapRows(context, input?.projectId);
       return Promise.all(
-        rows
-          .filter((r) => r.lat != null && r.lng != null)
-          .map(async (r) => ({ ...r, url: await photoUrl(r.storageKey) })),
+        rows.map(async (r) => ({
+          ...r,
+          url: await photoUrl(r.storageKey),
+          // The coordinate log shows a thumbnail per capture. A clip's url is the mp4 and a
+          // scan's is the PDF, so those need the poster frame / page one instead.
+          posterUrl: r.posterKey ? await photoUrl(r.posterKey) : null,
+        })),
+      );
+    }),
+
+  /**
+   * The map's trails along the streets: one per photographer per day, in shutter order, from
+   * the same routing the Routes page draws with. Separate from `map` so the pins never wait on
+   * Google, and the browser draws the dotted straight line until (or unless) these arrive.
+   * Same scope and the same 400 rows as `map`, so it cannot draw a trail through pins the
+   * caller is not allowed to see.
+   */
+  trails: fieldProc
+    .input(z.object({ projectId: z.string().nullish() }).optional())
+    .handler(async ({ input, context }) => {
+      const rows = await mapRows(context, input?.projectId);
+      return buildTrails(
+        rows.map((r) => ({
+          userId: r.userId,
+          capturedAt: r.capturedAt,
+          lat: r.lat as number,
+          lng: r.lng as number,
+        })),
       );
     }),
 

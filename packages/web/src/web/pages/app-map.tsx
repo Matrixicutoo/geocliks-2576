@@ -1,10 +1,10 @@
 import { useState } from "react";
-import { MapPinOff } from "lucide-react";
+import { ImageOff, MapPinOff } from "lucide-react";
 import { DashboardShell } from "../components/dashboard-shell";
 import { EmptyState } from "../components/empty-state";
 import { PhotoDrawer } from "../components/photo-drawer";
 import { EvidenceMap, type MapPin } from "../components/evidence-map";
-import { usePhotoMap } from "../queries/photos";
+import { usePhotoMap, usePhotoTrails } from "../queries/photos";
 import { useProjects } from "../queries/projects";
 import { cn } from "../lib/utils";
 import { useT } from "../lib/i18n";
@@ -24,6 +24,9 @@ export default function MapPage() {
   const [hover, setHover] = useState<string | null>(null);
   const [showRoute, setShowRoute] = useState(true);
   const pins = usePhotoMap(projectId);
+  // Street-following shapes for the trails. Only asked for while the trail is shown; until it
+  // lands (or if routing is down) the map draws the old dotted straight line.
+  const trails = usePhotoTrails(projectId, showRoute);
   const projects = useProjects();
 
   const rows = (pins.data ?? []) as unknown as MapPin[];
@@ -77,6 +80,7 @@ export default function MapPage() {
             pins={rows}
             onSelect={setOpenPhoto}
             showRoute={showRoute}
+            roads={trails.data}
             className={MAP_H}
           />
 
@@ -94,17 +98,22 @@ export default function MapPage() {
                 onMouseLeave={() => setHover(null)}
                 onClick={() => setOpenPhoto(pin.id)}
                 className={cn(
-                  "rounded-[8px] block w-full border px-2.5 py-2 text-left transition-colors",
+                  "rounded-[8px] flex w-full items-center gap-2.5 border px-2 py-2 text-left transition-colors",
                   hover === pin.id ? "border-amber/60 bg-ink-3" : "border-line hover:border-fog/50",
                 )}
               >
-                <p className="mono text-[10px] tracking-widest text-amber-ink">{pin.photoCode}</p>
-                <p className="mono mt-0.5 text-[10px] text-chalk">
-                  {(pin.lat as number).toFixed(5)}, {(pin.lng as number).toFixed(5)}
-                </p>
-                <p className="mono truncate text-[9.5px] text-fog">
-                  {pin.userName ?? "—"} · {pin.address ?? "—"}
-                </p>
+                <Thumb pin={pin} />
+                <span className="min-w-0 flex-1">
+                  <span className="mono block text-[10px] tracking-widest text-amber-ink">
+                    {pin.photoCode}
+                  </span>
+                  <span className="mono mt-0.5 block text-[10px] text-chalk">
+                    {(pin.lat as number).toFixed(5)}, {(pin.lng as number).toFixed(5)}
+                  </span>
+                  <span className="mono block truncate text-[9.5px] text-fog">
+                    {pin.userName ?? "—"} · {pin.address ?? "—"}
+                  </span>
+                </span>
               </button>
             ))}
           </aside>
@@ -113,5 +122,32 @@ export default function MapPage() {
 
       <PhotoDrawer photoId={openPhoto} onClose={() => setOpenPhoto(null)} />
     </DashboardShell>
+  );
+}
+
+/**
+ * The small square beside each log entry. A photo shows itself; a video or scan shows its
+ * poster (a PDF url cannot be an <img>). No image, or one that fails to load, gets a plain tile
+ * so the rows stay aligned. Decorative: the code and address beside it carry the meaning.
+ */
+function Thumb({ pin }: { pin: MapPin }) {
+  const [broken, setBroken] = useState(false);
+  const src = pin.kind && pin.kind !== "photo" ? pin.posterUrl : (pin.url ?? pin.posterUrl);
+  if (!src || broken) {
+    return (
+      <span className="grid size-11 shrink-0 place-items-center rounded-[6px] border border-line bg-ink-3">
+        <ImageOff className="size-4 text-fog" aria-hidden="true" />
+      </span>
+    );
+  }
+  return (
+    <img
+      src={src}
+      alt=""
+      loading="lazy"
+      decoding="async"
+      onError={() => setBroken(true)}
+      className="size-11 shrink-0 rounded-[6px] border border-line bg-ink-3 object-cover"
+    />
   );
 }

@@ -77,6 +77,19 @@ export function usePhotoMap(projectId?: string | null) {
   return useQuery(orpc.photos.map.queryOptions({ input: { projectId }, staleTime: 20_000 }));
 }
 
+/**
+ * The map's trails along the streets. Routed by Google server-side, so it is slower than the
+ * pins and billed: kept longer, and never retried in a loop — the dotted line stands in.
+ */
+export function usePhotoTrails(projectId?: string | null, enabled = true) {
+  return useQuery({
+    ...orpc.photos.trails.queryOptions({ input: { projectId } }),
+    enabled,
+    staleTime: 5 * 60_000,
+    retry: false,
+  });
+}
+
 function usePhotoInvalidate() {
   const queryClient = useQueryClient();
   return () => {
