@@ -32,8 +32,11 @@ import { useKeepScreenOn } from "@/hooks/use-keep-screen-on";
 
 /** Past this far from the drawn line he is not on it any more, and the leg is worth re-asking. */
 const OFF_ROUTE_M = 90;
-/** Never re-ask faster than this, whatever the GPS says. Each re-ask is a billed request. */
-const REROUTE_COOLDOWN_MS = 45_000;
+/**
+ * Never re-ask faster than this, whatever the GPS says. Each re-ask is a billed request (about
+ * half a US cent), but 45 s was a long time to drive a wrong turn with no line on the screen.
+ */
+const REROUTE_COOLDOWN_MS = 20_000;
 /** Within this of a step's end, that instruction is done and the next one is the live one. */
 const STEP_DONE_M = 35;
 
@@ -75,12 +78,36 @@ function useLiveFix(enabled: boolean): { fix: Fix | null; denied: boolean } {
             speed: typeof pos.coords.speed === "number" ? pos.coords.speed : null,
           });
         };
-        apply(await Location.getCurrentPositionAsync({ accuracy: Location.Accuracy.High }));
+        /*
+          Start from what the phone already knows.
+
+          This used to wait on a fresh high-accuracy fix before anything else happened, and only
+          then ask for the turns — a cold GPS in a van can take 10–30 s to answer that, which is
+          the "map is slow to give directions". The phone almost always has a recent position
+          already (the camera stamped one at the last door a minute ago), so the leg is asked for
+          from that at once. The live watch then takes over, and the off-route check re-asks if
+          the old position put the line somewhere he is not.
+        */
+        const last = await Location.getLastKnownPositionAsync({
+          maxAge: 90_000,
+          requiredAccuracy: 200,
+        }).catch(() => null);
+        if (!live) return;
+        if (last) apply(last);
         sub = await Location.watchPositionAsync(
           { accuracy: Location.Accuracy.High, distanceInterval: 10, timeInterval: 3000 },
           apply,
         );
-        if (!live) stop();
+        if (!live) {
+          stop();
+          return;
+        }
+        // Nothing recent on the phone: take the quickest fix it can give, not the best one.
+        if (!last) {
+          void Location.getCurrentPositionAsync({ accuracy: Location.Accuracy.Balanced })
+            .then(apply)
+            .catch(() => {});
+        }
       } catch {
         if (live) setDenied(true);
       }
