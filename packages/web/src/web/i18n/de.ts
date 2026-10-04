@@ -1206,7 +1206,6 @@ export const de: Catalog = {
   "download.stamped": "Gestempeltes Bild",
   "download.stampedDoc": "Gestempeltes PDF",
   "download.raw": "Originaldatei",
-  "viewer.title": "Original {code}",
   "viewer.back": "Zurück",
   "viewer.zoomIn": "Vergrößern",
   "viewer.zoomOut": "Verkleinern",

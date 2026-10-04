@@ -1193,7 +1193,6 @@ export const pl: Catalog = {
   "download.stamped": "Zdjęcie ze stemplem",
   "download.stampedDoc": "PDF ze stemplem",
   "download.raw": "Plik oryginalny",
-  "viewer.title": "Oryginał {code}",
   "viewer.back": "Wstecz",
   "viewer.zoomIn": "Powiększ",
   "viewer.zoomOut": "Pomniejsz",

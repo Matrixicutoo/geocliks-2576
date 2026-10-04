@@ -1202,7 +1202,6 @@ export const it: Catalog = {
   "download.stamped": "Immagine timbrata",
   "download.stampedDoc": "PDF timbrato",
   "download.raw": "File originale",
-  "viewer.title": "Originale {code}",
   "viewer.back": "Indietro",
   "viewer.zoomIn": "Ingrandisci",
   "viewer.zoomOut": "Riduci",

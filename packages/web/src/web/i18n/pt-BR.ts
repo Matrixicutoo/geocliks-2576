@@ -1196,7 +1196,6 @@ export const ptBR: Catalog = {
   "download.stamped": "Imagem com selo",
   "download.stampedDoc": "PDF com selo",
   "download.raw": "Arquivo original",
-  "viewer.title": "Original {code}",
   "viewer.back": "Voltar",
   "viewer.zoomIn": "Aumentar zoom",
   "viewer.zoomOut": "Diminuir zoom",

@@ -38,6 +38,7 @@ export function PhotoViewer({
   src,
   poster,
   downloadName,
+  label,
   code,
   alt,
   onClose,
@@ -46,6 +47,8 @@ export function PhotoViewer({
   src: string;
   poster?: string | null;
   downloadName: string;
+  /** Which file this is — "Original file" or "Stamped image" — shown next to the code. */
+  label: string;
   code: string;
   alt: string;
   onClose: () => void;
@@ -234,7 +237,7 @@ export function PhotoViewer({
   return createPortal(
     <dialog
       open
-      aria-label={t("viewer.title", { code })}
+      aria-label={`${code} · ${label}`}
       className="fixed inset-0 z-[80] m-0 flex h-full max-h-none w-full max-w-none flex-col border-0 bg-black p-0 text-white"
     >
       <div className="flex items-center gap-2 border-b border-white/10 bg-black/80 px-2 py-1.5 sm:px-3">
@@ -247,7 +250,7 @@ export function PhotoViewer({
           <span className="hidden sm:inline">{t("viewer.back")}</span>
         </button>
         <p className="mono hidden min-w-0 truncate text-[11px] uppercase tracking-widest text-amber-ink md:block">
-          {code} · {t("download.raw")}
+          {code} · {label}
         </p>
 
         <div className="ml-auto flex min-w-0 items-center gap-0.5 overflow-x-auto">

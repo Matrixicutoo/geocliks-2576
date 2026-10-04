@@ -1199,7 +1199,6 @@ export const en = {
   "download.stamped": "Stamped image",
   "download.stampedDoc": "Stamped PDF",
   "download.raw": "Original file",
-  "viewer.title": "Original {code}",
   "viewer.back": "Back",
   "viewer.zoomIn": "Zoom in",
   "viewer.zoomOut": "Zoom out",

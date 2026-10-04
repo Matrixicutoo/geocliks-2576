@@ -1206,7 +1206,6 @@ export const tl: Catalog = {
   "download.stamped": "Naka-stamp na larawan",
   "download.stampedDoc": "Naka-stamp na PDF",
   "download.raw": "Orihinal na file",
-  "viewer.title": "Orihinal {code}",
   "viewer.back": "Bumalik",
   "viewer.zoomIn": "Mag-zoom in",
   "viewer.zoomOut": "Mag-zoom out",

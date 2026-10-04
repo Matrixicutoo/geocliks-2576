@@ -1152,7 +1152,6 @@ export const ar: Catalog = {
   "download.stamped": "صورة مختومة",
   "download.stampedDoc": "PDF مختوم",
   "download.raw": "الملف الأصلي",
-  "viewer.title": "الأصل {code}",
   "viewer.back": "رجوع",
   "viewer.zoomIn": "تكبير",
   "viewer.zoomOut": "تصغير",

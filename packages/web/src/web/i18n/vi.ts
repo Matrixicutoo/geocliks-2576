@@ -1182,7 +1182,6 @@ export const vi: Catalog = {
   "download.stamped": "Ảnh có dấu",
   "download.stampedDoc": "PDF có dấu",
   "download.raw": "Tệp gốc",
-  "viewer.title": "Bản gốc {code}",
   "viewer.back": "Quay lại",
   "viewer.zoomIn": "Phóng to",
   "viewer.zoomOut": "Thu nhỏ",

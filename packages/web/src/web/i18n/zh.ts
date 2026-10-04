@@ -1121,7 +1121,6 @@ export const zh: Catalog = {
   "download.stamped": "带戳图片",
   "download.stampedDoc": "带戳 PDF",
   "download.raw": "原始文件",
-  "viewer.title": "原始文件 {code}",
   "viewer.back": "返回",
   "viewer.zoomIn": "放大",
   "viewer.zoomOut": "缩小",

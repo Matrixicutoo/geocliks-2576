@@ -1211,7 +1211,6 @@ export const frCA: Catalog = {
   "download.stamped": "Image estampillée",
   "download.stampedDoc": "PDF estampillé",
   "download.raw": "Fichier original",
-  "viewer.title": "Original {code}",
   "viewer.back": "Retour",
   "viewer.zoomIn": "Zoom avant",
   "viewer.zoomOut": "Zoom arrière",

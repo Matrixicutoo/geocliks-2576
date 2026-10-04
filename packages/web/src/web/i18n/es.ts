@@ -1203,7 +1203,6 @@ export const es: Catalog = {
   "download.stamped": "Imagen sellada",
   "download.stampedDoc": "PDF sellado",
   "download.raw": "Archivo original",
-  "viewer.title": "Original {code}",
   "viewer.back": "Volver",
   "viewer.zoomIn": "Acercar",
   "viewer.zoomOut": "Alejar",

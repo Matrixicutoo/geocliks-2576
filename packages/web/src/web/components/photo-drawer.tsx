@@ -77,8 +77,12 @@ export function PhotoDrawer({ photoId, onClose }: { photoId: string | null; onCl
   const canFile = canUseField(org.data?.role);
   const projects = useProjects(undefined, { enabled: canFile });
   const [confirmDelete, setConfirmDelete] = useState(false);
-  /** The full-screen original (download, zoom, flip). Photos and clips only. */
-  const [viewing, setViewing] = useState(false);
+  /**
+   * What the full-screen viewer shows: the untouched original, or the stamped JPEG just built.
+   * Photos and clips only — a scan's files are PDFs.
+   */
+  const [viewing, setViewingState] = useState<false | "original" | { stamped: string }>(false);
+  const setViewing = (v: boolean) => setViewingState(v ? "original" : false);
   /**
    * Evidence files are built on demand, so the click has to survive the round trip: `building`
    * tracks which of the two buttons is waiting, and the result opens in a new tab because the
@@ -94,7 +98,7 @@ export function PhotoDrawer({ photoId, onClose }: { photoId: string | null; onCl
   const [viewingFor, setViewingFor] = useState(photoId);
   if (viewingFor !== photoId) {
     setViewingFor(photoId);
-    setViewing(false);
+    setViewingState(false);
   }
 
   if (!photoId) return null;
@@ -398,8 +402,11 @@ export function PhotoDrawer({ photoId, onClose }: { photoId: string | null; onCl
                     evidence.mutate(
                       { id: data.id, format: "image" },
                       {
+                        // A scan's stamped copy is a multi-page PDF and still downloads. A photo
+                        // or clip's stamped JPEG opens in the same viewer as the original.
                         onSuccess: (res) => {
-                          window.location.href = res.url;
+                          if (isDocument) window.location.href = res.url;
+                          else setViewingState({ stamped: res.url });
                         },
                         onSettled: () => setBuilding(null),
                       },
@@ -532,11 +539,21 @@ export function PhotoDrawer({ photoId, onClose }: { photoId: string | null; onCl
       </div>
       {viewing && data && data.kind !== "document" && (
         <PhotoViewer
-          key={data.id}
-          kind={data.kind === "video" ? "video" : "photo"}
-          src={data.url}
-          poster={data.posterUrl}
-          downloadName={`${data.photoCode}.${data.kind === "video" ? "mp4" : "jpg"}`}
+          key={`${data.id}-${typeof viewing === "string" ? viewing : "stamped"}`}
+          {...(typeof viewing === "string"
+            ? {
+                kind: data.kind === "video" ? "video" : "photo",
+                src: data.url,
+                poster: data.posterUrl,
+                downloadName: `${data.photoCode}.${data.kind === "video" ? "mp4" : "jpg"}`,
+                label: t("download.raw"),
+              }
+            : {
+                kind: "photo",
+                src: viewing.stamped,
+                downloadName: `${data.photoCode}-stamped.jpg`,
+                label: t("download.stamped"),
+              })}
           code={data.photoCode}
           alt={data.note ?? data.photoCode}
           onClose={() => setViewing(false)}
