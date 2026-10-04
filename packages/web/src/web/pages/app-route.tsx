@@ -176,6 +176,8 @@ export default function AppRoutePage() {
   const [overId, setOverId] = useState<string | null>(null);
   // The delivery photo behind a stop, opened from its thumbnail or its address.
   const [openPhoto, setOpenPhoto] = useState<string | null>(null);
+  // The stop row a map pin last pointed at, lit briefly so the eye lands on it.
+  const [flashStop, setFlashStop] = useState<string | null>(null);
 
   const route = detail.data?.route;
   /** Filed away rather than deleted — see `archive` on the routes router. */
@@ -361,6 +363,21 @@ export default function AppRoutePage() {
                 className="mt-3 h-[420px] sm:h-[600px] lg:h-[720px]"
                 emptyMessage={t("routes.mapEmpty")}
                 noKeyMessage={t("routes.mapNoKey")}
+                // A delivered pin opens its proof photo and stamp in the side drawer, the same
+                // panel the project map uses. A stop with no photo yet has nothing to show, so
+                // the pin takes you to its row in the list instead.
+                onSelect={(id) => {
+                  const stop = stops.find((s) => s.id === id);
+                  if (stop?.proof) {
+                    setOpenPhoto(stop.proof.id);
+                    return;
+                  }
+                  document
+                    .getElementById(`stop-${id}`)
+                    ?.scrollIntoView({ behavior: "smooth", block: "center" });
+                  setFlashStop(id);
+                  window.setTimeout(() => setFlashStop((v) => (v === id ? null : v)), 1600);
+                }}
               />
             </div>
           )}
@@ -620,6 +637,7 @@ export default function AppRoutePage() {
                 {stops.map((stop, index) => (
                   <li
                     key={stop.id}
+                    id={`stop-${stop.id}`}
                     draggable={canManage}
                     onDragStart={() => setDragId(stop.id)}
                     onDragEnd={() => {
@@ -641,6 +659,7 @@ export default function AppRoutePage() {
                       "flex flex-wrap items-center gap-x-4 gap-y-2 border-b border-line px-4 py-3 last:border-b-0",
                       dragId === stop.id && "opacity-40",
                       overId === stop.id && dragId !== stop.id && "bg-ink-3",
+                      flashStop === stop.id && "bg-amber/10 transition-colors",
                     )}
                   >
                     {canManage && (
