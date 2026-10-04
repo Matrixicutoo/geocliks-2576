@@ -891,7 +891,7 @@ export function ChatWidget() {
           list behind the marketing site, where there is no session to fetch them with. */}
       {openPhoto && (
         <div className="relative z-[70]">
-          <PhotoDrawer photoId={openPhoto} onClose={() => setOpenPhoto(null)} />
+          <PhotoDrawer photoId={openPhoto} onClose={() => setOpenPhoto(null)} startInViewer />
         </div>
       )}
     </>

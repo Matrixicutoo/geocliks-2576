@@ -11,6 +11,7 @@ import {
   FileText,
   FileDown,
   ImageDown,
+  Maximize2,
 } from "lucide-react";
 import { type TKey, useT } from "../lib/i18n";
 import {
@@ -61,7 +62,20 @@ function collapseViews<T extends ChainEvent>(events: T[]) {
   return rows;
 }
 
-export function PhotoDrawer({ photoId, onClose }: { photoId: string | null; onClose: () => void }) {
+export function PhotoDrawer({
+  photoId,
+  onClose,
+  startInViewer = false,
+}: {
+  photoId: string | null;
+  onClose: () => void;
+  /**
+   * Open straight into the full-screen viewer (zoom, flip, rotate, download), with the drawer and
+   * its stamp details waiting behind it for Back. The assistant's thumbnails use it: there the
+   * click means "show me the picture", and the drawer alone made the viewer one more click away.
+   */
+  startInViewer?: boolean;
+}) {
   const t = useT();
   const photo = usePhoto(photoId);
   const verify = useVerifyPhoto();
@@ -81,7 +95,9 @@ export function PhotoDrawer({ photoId, onClose }: { photoId: string | null; onCl
    * What the full-screen viewer shows: the untouched original, or the stamped JPEG just built.
    * Photos and clips only — a scan's files are PDFs.
    */
-  const [viewing, setViewingState] = useState<false | "original" | { stamped: string }>(false);
+  const [viewing, setViewingState] = useState<false | "original" | { stamped: string }>(
+    startInViewer ? "original" : false,
+  );
   const setViewing = (v: boolean) => setViewingState(v ? "original" : false);
   /**
    * Evidence files are built on demand, so the click has to survive the round trip: `building`
@@ -94,11 +110,12 @@ export function PhotoDrawer({ photoId, onClose }: { photoId: string | null; onCl
   /** Field crews capture evidence; only manager and above can remove it. */
   const canDelete = canManageWorkspace(org.data?.role);
 
-  // A different capture opened from the list starts with the viewer shut.
+  // A different capture opened from the list starts with the viewer shut (or open, for the
+  // assistant), not wherever the last one was left.
   const [viewingFor, setViewingFor] = useState(photoId);
   if (viewingFor !== photoId) {
     setViewingFor(photoId);
-    setViewingState(false);
+    setViewingState(startInViewer ? "original" : false);
   }
 
   if (!photoId) return null;
@@ -176,9 +193,14 @@ export function PhotoDrawer({ photoId, onClose }: { photoId: string | null; onCl
                   type="button"
                   onClick={() => setViewing(true)}
                   aria-label={t("viewer.open")}
-                  className="block w-full cursor-zoom-in"
+                  className="group block w-full cursor-zoom-in"
                 >
                   <img src={data.url} alt={data.note ?? ""} className="w-full object-cover" />
+                  {/* Says the photo opens: zoom, flip, rotate and download live behind it. */}
+                  <span className="mono absolute right-2 top-2 flex items-center gap-1.5 border border-white/25 bg-black/70 px-2 py-1 text-[10px] uppercase tracking-widest text-white transition-colors group-hover:border-amber group-hover:text-amber-ink">
+                    <Maximize2 className="size-3" aria-hidden="true" />
+                    {t("viewer.open")}
+                  </span>
                 </button>
               )}
               <div className="absolute inset-x-0 bottom-0 flex items-stretch bg-black/72">

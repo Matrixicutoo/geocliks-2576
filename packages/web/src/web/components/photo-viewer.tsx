@@ -244,6 +244,8 @@ export function PhotoViewer({
         <button
           type="button"
           onClick={close}
+          // The word hides on a phone; the arrow alone still needs a name.
+          aria-label={t("viewer.back")}
           className="mono flex h-9 shrink-0 items-center gap-1.5 rounded-[8px] px-2 text-[11px] uppercase tracking-widest text-white/85 transition-colors hover:bg-white/10 hover:text-white"
         >
           <ArrowLeft className="size-4 rtl:-scale-x-100" />
