@@ -62,20 +62,7 @@ function collapseViews<T extends ChainEvent>(events: T[]) {
   return rows;
 }
 
-export function PhotoDrawer({
-  photoId,
-  onClose,
-  startInViewer = false,
-}: {
-  photoId: string | null;
-  onClose: () => void;
-  /**
-   * Open straight into the full-screen viewer (zoom, flip, rotate, download), with the drawer and
-   * its stamp details waiting behind it for Back. The assistant's thumbnails use it: there the
-   * click means "show me the picture", and the drawer alone made the viewer one more click away.
-   */
-  startInViewer?: boolean;
-}) {
+export function PhotoDrawer({ photoId, onClose }: { photoId: string | null; onClose: () => void }) {
   const t = useT();
   const photo = usePhoto(photoId);
   const verify = useVerifyPhoto();
@@ -95,9 +82,7 @@ export function PhotoDrawer({
    * What the full-screen viewer shows: the untouched original, or the stamped JPEG just built.
    * Photos and clips only — a scan's files are PDFs.
    */
-  const [viewing, setViewingState] = useState<false | "original" | { stamped: string }>(
-    startInViewer ? "original" : false,
-  );
+  const [viewing, setViewingState] = useState<false | "original" | { stamped: string }>(false);
   const setViewing = (v: boolean) => setViewingState(v ? "original" : false);
   /**
    * Evidence files are built on demand, so the click has to survive the round trip: `building`
@@ -110,12 +95,11 @@ export function PhotoDrawer({
   /** Field crews capture evidence; only manager and above can remove it. */
   const canDelete = canManageWorkspace(org.data?.role);
 
-  // A different capture opened from the list starts with the viewer shut (or open, for the
-  // assistant), not wherever the last one was left.
+  // A different capture opened from the list starts with the viewer shut.
   const [viewingFor, setViewingFor] = useState(photoId);
   if (viewingFor !== photoId) {
     setViewingFor(photoId);
-    setViewingState(startInViewer ? "original" : false);
+    setViewingState(false);
   }
 
   if (!photoId) return null;

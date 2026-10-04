@@ -612,12 +612,20 @@ export function ChatWidget() {
     if (!shown) return;
     const onKey = (e: KeyboardEvent) => {
       if (e.key !== "Escape") return;
+      // A photo open from a reply is the top layer, so Escape backs out one layer at a time:
+      // the full-screen viewer closes itself (it is a <dialog>, portalled to <body>), then the
+      // drawer, and only then the assistant. Closing the panel here as well would unmount the
+      // drawer under the viewer and throw away the transcript's place in one keypress.
+      if (openPhoto) {
+        if (!document.querySelector("dialog[open]")) setOpenPhoto(null);
+        return;
+      }
       if (docked) setOpen(false);
       else setSheet(false);
     };
     globalThis.addEventListener("keydown", onKey);
     return () => globalThis.removeEventListener("keydown", onKey);
-  }, [shown, docked]);
+  }, [shown, docked, openPhoto]);
 
   // Narrowing past the breakpoint takes the column away, so the sheet starts tucked in rather
   // than covering the site the moment it stops fitting beside it.
@@ -891,7 +899,7 @@ export function ChatWidget() {
           list behind the marketing site, where there is no session to fetch them with. */}
       {openPhoto && (
         <div className="relative z-[70]">
-          <PhotoDrawer photoId={openPhoto} onClose={() => setOpenPhoto(null)} startInViewer />
+          <PhotoDrawer photoId={openPhoto} onClose={() => setOpenPhoto(null)} />
         </div>
       )}
     </>
