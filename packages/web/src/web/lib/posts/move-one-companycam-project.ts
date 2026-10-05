@@ -194,6 +194,11 @@ export const moveOneCompanycamProject: Post = {
           note: "what the office does with the pilot's photos at closeout: PDF, Excel, ZIP and KMZ.",
         },
         {
+          href: "/blog/why-teams-leave-a-photo-feed",
+          text: "Why teams leave a photo feed app",
+          note: "the four reasons behind a switch, and when staying is the better call.",
+        },
+        {
           href: "/verify",
           text: "Check a photo code",
           note: "the page your client will use, so you can see it before they do.",

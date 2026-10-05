@@ -7,6 +7,7 @@ import { photoDocumentationPricing } from "./photo-documentation-pricing";
 import { photoProofOfDelivery } from "./photo-proof-of-delivery";
 import { freeVsPaidTimestampCameraApps } from "./free-vs-paid-timestamp-camera-apps";
 import { moveOneCompanycamProject } from "./move-one-companycam-project";
+import { whyTeamsLeaveAPhotoFeed } from "./why-teams-leave-a-photo-feed";
 
 export type { Post, Block, FaqItem, PostFormat } from "./types";
 
@@ -18,6 +19,7 @@ export const posts: Post[] = [
   photoProofOfDelivery,
   freeVsPaidTimestampCameraApps,
   moveOneCompanycamProject,
+  whyTeamsLeaveAPhotoFeed,
 ];
 
 export function getPost(slug: string): Post | undefined {

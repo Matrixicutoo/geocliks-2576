@@ -654,6 +654,11 @@ export const BLOG_SEO = {
     description:
       "Switch from CompanyCam without stopping work: move one live project, invite that crew only and run both apps until it closes. Includes a 7-day plan.",
   },
+  "why-teams-leave-a-photo-feed": {
+    title: "4 Reasons Teams Leave a Photo Feed App | GeoCliks",
+    description:
+      "Teams leave a photo feed when a photo's date is questioned, a client can't check it, or the per-user bill grows. The four reasons, and when to stay.",
+  },
 } satisfies Record<string, RouteSeoCopy>;
 
 /** Copy for a Field Notes post slug, if it has any. */

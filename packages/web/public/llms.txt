@@ -164,3 +164,21 @@ Answer: Don't migrate the account. Move one live project. Export what CompanyCam
 - Q: Does my client need an app to see the photos?
   A: No. Every photo has a code that anyone can enter at geocliks.com/verify in a browser, with no account, to see its capture time, location, street address and whether the file is the untouched original. You can also send a live share link to the project, on Plus and above, or a PDF report.
 
+### Why do teams leave a photo feed app? Four reasons, and when to stay
+
+Page: [Why do teams leave a photo feed app? Four reasons, and when to stay](https://geocliks.com/blog/why-teams-leave-a-photo-feed)
+Format: Answer | Published: 2026-10-05
+
+Answer: A photo feed is built to share job photos inside a team, and it does that well. Teams leave when the photos start going outside the team and getting questioned. Four things break: the date on each photo comes from the phone's own clock, stamping depends on each person turning it on, nobody outside the account can check a single photo, and per-user pricing grows with every hire. If your photos are only for coordination and nobody has ever disputed one, none of these matter and you should stay.
+
+- Q: Is CompanyCam bad for construction photos?
+  A: No. It is a good shared photo feed for construction teams, with a project feed, before and after views, offline capture and photo reports. Teams leave it when their photos start being disputed by people outside the team, because the date comes from the phone, stamping is a per-user setting and an outsider cannot check a single photo without an account.
+- Q: Can a photo feed app prove when a photo was taken?
+  A: Not on its own, if the time comes from the phone's clock. That clock can be changed in Settings, and the stamp does not show whether it was. Proof needs a time checked against something outside the phone, plus a way for someone else to look the photo up. GeoCliks checks capture time against its server and gives every photo a code anyone can check at geocliks.com/verify.
+- Q: Is GeoCliks cheaper than CompanyCam?
+  A: For most crew sizes, yes. CompanyCam starts at $63 a month for one user plus $29 per additional user, billed annually, as listed on 14 September 2026. GeoCliks charges flat monthly prices with seats included: $7 for one person, $25 for 5 seats, $45 for 10 and $105 for 25. There is also a free plan with 300 verified captures a month.
+- Q: Can I move my CompanyCam photos into GeoCliks?
+  A: No. GeoCliks has no importer, and an imported photo could not be verified anyway, because the time, location and seal are recorded when the photo is taken. Keep your CompanyCam history where it is and start new jobs in GeoCliks.
+- Q: Does my client need an app to check a GeoCliks photo?
+  A: No. They enter the photo's code at geocliks.com/verify in any browser, with no account, and see the verified capture time, location, street address and whether the file is the untouched original.
+
