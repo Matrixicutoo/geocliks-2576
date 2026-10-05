@@ -199,6 +199,16 @@ export default function CompanyCamAlternative() {
 
       <LandingSection label={t("cca.move.label")} h2={t("cca.move.h2")} intro={t("cca.move.intro")}>
         <LandingSteps steps={steps} />
+        {/* The long form of these four steps. The post is English-only, like the rest of
+            Field Notes, so other locales say so next to the link, and `~` escapes the
+            locale base so the link goes to the canonical /blog URL, not /es/blog. */}
+        <p className="mt-6 max-w-[820px] text-[13.5px] leading-relaxed text-fog">
+          {t("ccmig.lead")}{" "}
+          <Link to="~/blog/move-one-companycam-project" className={linkClass}>
+            {t("ccmig.link")}
+          </Link>
+          {locale === "en" ? "" : ` ${t("ccmig.enNote")}`}.
+        </p>
       </LandingSection>
 
       <LandingSection label={t("cca.faq.label")} h2={t("cca.faq.h2")}>

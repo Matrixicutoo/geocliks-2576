@@ -2709,4 +2709,9 @@ export const zh: Catalog = {
   "ccsw.hvac.leave2": "正在进行的上门服务。在哪里开始就在哪里收尾，每位客户的 GeoCliks 记录从下一次上门开始。",
   "ccsw.hvac.firstTitle": "从一名技师开始，而不是整个派工台",
   "ccsw.hvac.first": "新账户可免费试用 Business 7 天，含 5 个席位，无需银行卡。让一名技师在一周内每次上门都拍下到场、设备状况、完工和离场，然后自己在 geocliks.com/verify 输入一个照片代码，看看客户会看到什么。经过验证的照片并不能决定保修索赔或账单纠纷。它给对方的是可以自行核对的时间和地址，而不是只能相信你的话。",
+
+  // SEO batch 4: links to the CompanyCam migration post (/blog/move-one-companycam-project)
+  "ccmig.lead": "完整步骤，按天安排：",
+  "ccmig.link": "7 天计划：在不打乱队员工作的情况下迁移一个 CompanyCam 项目",
+  "ccmig.enNote": "（英文）",
 };

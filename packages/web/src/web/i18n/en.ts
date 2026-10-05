@@ -2835,6 +2835,11 @@ export const en = {
   "ccsw.hvac.leave2": "Calls already in progress. Close them out where they started, and begin each customer's GeoCliks record at their next visit.",
   "ccsw.hvac.firstTitle": "Start with one tech, not the whole board",
   "ccsw.hvac.first": "New accounts get 7 days of Business free, with 5 seats and no card. Have one tech capture arrival, condition, finished work and departure on every call for a week, then enter one photo code at geocliks.com/verify yourself to see what the customer will see. A verified capture does not decide a warranty claim or a billing dispute. It gives the other side a time and an address they can check, instead of taking your word for it.",
+
+  // SEO batch 4: links to the CompanyCam migration post (/blog/move-one-companycam-project)
+  "ccmig.lead": "The full playbook, day by day:",
+  "ccmig.link": "a 7-day plan for moving one CompanyCam project without disrupting the crew",
+  "ccmig.enNote": "(in English)",
 } as const;
 
 export type Catalog = Record<keyof typeof en, string>;

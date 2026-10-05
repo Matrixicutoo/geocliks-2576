@@ -640,6 +640,11 @@ export const BLOG_SEO = {
     description:
       "Paying for a timestamp camera app usually removes ads and adds exports, not a verified time. Four pricing models, three capability shapes, and yearly costs.",
   },
+  "move-one-companycam-project": {
+    title: "Switch From CompanyCam Without Disrupting the Crew | GeoCliks",
+    description:
+      "Switch from CompanyCam without stopping work: move one live project, invite that crew only and run both apps until it closes. Includes a 7-day plan.",
+  },
 } satisfies Record<string, RouteSeoCopy>;
 
 /** Copy for a Field Notes post slug, if it has any. */

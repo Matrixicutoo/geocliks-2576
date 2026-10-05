@@ -2866,4 +2866,9 @@ export const de: Catalog = {
   "ccsw.hvac.leave2": "Laufende Einsätze. Schließen Sie sie dort ab, wo sie begonnen haben, und beginnen Sie die GeoCliks-Akte jedes Kunden beim nächsten Besuch.",
   "ccsw.hvac.firstTitle": "Mit einem Techniker anfangen, nicht mit der ganzen Disposition",
   "ccsw.hvac.first": "Neue Konten erhalten 7 Tage Business kostenlos, mit 5 Plätzen und ohne Karte. Lassen Sie einen Techniker eine Woche lang bei jedem Einsatz Ankunft, Zustand, fertige Arbeit und Abfahrt aufnehmen, und geben Sie dann selbst einen Fotocode unter geocliks.com/verify ein, um zu sehen, was der Kunde sieht. Eine verifizierte Aufnahme entscheidet weder einen Garantiefall noch einen Abrechnungsstreit. Sie gibt der Gegenseite eine Zeit und eine Adresse, die sie prüfen kann, statt Ihnen glauben zu müssen.",
+
+  // SEO batch 4: links to the CompanyCam migration post (/blog/move-one-companycam-project)
+  "ccmig.lead": "Der komplette Ablauf, Tag für Tag:",
+  "ccmig.link": "ein 7-Tage-Plan, um ein CompanyCam-Projekt umzuziehen, ohne das Team aus dem Takt zu bringen",
+  "ccmig.enNote": "(auf Englisch)",
 };

@@ -6,6 +6,7 @@ import { bestConstructionPhotoSoftware } from "./best-construction-photo-softwar
 import { photoDocumentationPricing } from "./photo-documentation-pricing";
 import { photoProofOfDelivery } from "./photo-proof-of-delivery";
 import { freeVsPaidTimestampCameraApps } from "./free-vs-paid-timestamp-camera-apps";
+import { moveOneCompanycamProject } from "./move-one-companycam-project";
 
 export type { Post, Block, FaqItem, PostFormat } from "./types";
 
@@ -16,6 +17,7 @@ export const posts: Post[] = [
   bestConstructionPhotoSoftware,
   photoProofOfDelivery,
   freeVsPaidTimestampCameraApps,
+  moveOneCompanycamProject,
 ];
 
 export function getPost(slug: string): Post | undefined {

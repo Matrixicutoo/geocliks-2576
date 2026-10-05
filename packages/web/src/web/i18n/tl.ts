@@ -2876,4 +2876,9 @@ export const tl: Catalog = {
   "ccsw.hvac.leave2": "Mga call na kasalukuyang ginagawa. Tapusin ang mga ito kung saan nagsimula, at simulan ang record ng bawat customer sa GeoCliks sa susunod nilang pagbisita.",
   "ccsw.hvac.firstTitle": "Magsimula sa isang tech, hindi sa buong dispatch board",
   "ccsw.hvac.first": "May 7 araw na libreng Business ang bagong account, may 5 seat at walang card. Ipakuha sa isang tech ang pagdating, kondisyon, natapos na trabaho at pag-alis sa bawat call sa loob ng isang linggo, pagkatapos ay ilagay mo mismo ang isang photo code sa geocliks.com/verify para makita ang makikita ng customer. Hindi nagpapasya ng warranty claim o away sa singil ang verified na kuha. Binibigyan nito ang kabilang panig ng oras at address na masusuri nila, sa halip na maniwala lang sa salita mo.",
+
+  // SEO batch 4: links to the CompanyCam migration post (/blog/move-one-companycam-project)
+  "ccmig.lead": "Ang buong plano, araw-araw:",
+  "ccmig.link": "isang 7-araw na plano para ilipat ang isang CompanyCam project nang hindi naaabala ang tropa",
+  "ccmig.enNote": "(sa Ingles)",
 };

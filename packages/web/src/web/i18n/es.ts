@@ -2867,4 +2867,9 @@ export const es: Catalog = {
   "ccsw.hvac.leave2": "Las visitas en curso. Ciérralas donde empezaron, y empieza el registro de cada cliente en GeoCliks en su próxima visita.",
   "ccsw.hvac.firstTitle": "Empieza con un técnico, no con todo el tablero",
   "ccsw.hvac.first": "Las cuentas nuevas tienen 7 días de Business gratis, con 5 puestos y sin tarjeta. Pide a un técnico que capture la llegada, el estado, el trabajo terminado y la salida en cada visita durante una semana, y luego introduce tú mismo un código de foto en geocliks.com/verify para ver lo que verá el cliente. Una captura verificada no decide un reclamo de garantía ni una disputa de facturación. Le da a la otra parte una hora y una dirección que puede comprobar, en lugar de tener que creer en tu palabra.",
+
+  // SEO batch 4: links to the CompanyCam migration post (/blog/move-one-companycam-project)
+  "ccmig.lead": "El plan completo, día a día:",
+  "ccmig.link": "un plan de 7 días para pasar un proyecto de CompanyCam sin interrumpir al equipo",
+  "ccmig.enNote": "(en inglés)",
 };

@@ -85,7 +85,7 @@ function Column({
 }
 
 export function ComingFromCompanyCam({ trade }: { trade: Trade }) {
-  const { t } = useLocale();
+  const { t, locale } = useLocale();
   const copy = COPY[trade];
 
   return (
@@ -117,6 +117,11 @@ export function ComingFromCompanyCam({ trade }: { trade: Trade }) {
           <Link to="/alternatives/companycam" className={LINK_CLASS}>
             {t("ccsw.linkCompare")}
           </Link>
+          {" · "}
+          <Link to="~/blog/move-one-companycam-project" className={LINK_CLASS}>
+            {t("ccmig.link")}
+          </Link>
+          {locale === "en" ? "" : ` ${t("ccmig.enNote")}`}
         </p>
         <p className="mt-3 text-[12.5px] leading-relaxed text-fog">
           {t("ccsw.sourceNote", { date: t("cc.verifiedOn") })}

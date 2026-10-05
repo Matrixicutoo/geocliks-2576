@@ -134,8 +134,10 @@ function Post({ slug }: { slug: string }) {
             </div>
           </aside>
 
-          {/* Body */}
-          <div>
+          {/* Body. `min-w-0` because a grid item's default minimum is its content width:
+              a wide table (scrollable inside its own wrapper) otherwise stretched this
+              column, and the whole post, past a phone's screen. */}
+          <div className="min-w-0">
             <div id="answer" className="scroll-mt-24">
               <AnswerBlock question={post.targetQuestion} answer={post.answer} />
             </div>

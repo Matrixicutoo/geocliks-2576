@@ -145,3 +145,21 @@ Answer: On most timestamp camera apps, paying removes ads and adds templates, cl
 - Q: How much does a timestamp camera app cost for a crew?
   A: It depends on the pricing model. A single-phone subscription at about $40 a year comes to $200 for five phones. Per-user platforms at $12 to $29 per user per month come to $720 to $1,740 a year for five people. A flat workspace plan such as GeoCliks Business is $25 a month, or $300 a year, for five seats, with verification included.
 
+### How do you move one CompanyCam project to GeoCliks without disrupting the crew?
+
+Page: [How do you move one CompanyCam project to GeoCliks without disrupting the crew?](https://geocliks.com/blog/move-one-companycam-project)
+Format: How-to | Published: 2026-10-05
+
+Answer: Don't migrate the account. Move one live project. Export what CompanyCam holds for that job, create the same project in GeoCliks, invite only the crew working on it, and have them shoot their next visit there while every other job carries on in CompanyCam. There is no importer, and a photo taken in another app cannot be network-verified after the fact, so the switch is a line drawn at a date, not a data transfer. New accounts get 7 days of the Business plan free with 5 seats and no card, which is enough to run one job and decide.
+
+- Q: Can I import my CompanyCam photos into GeoCliks?
+  A: No. GeoCliks has no importer. An imported photo could not be network-verified anyway, because the time, location and seal are checked when the photo is taken, not afterwards. Export what you need from CompanyCam and keep it with the job's records. Start the GeoCliks record at the next visit.
+- Q: Can the crew use CompanyCam and GeoCliks at the same time?
+  A: Yes, and that is the point of moving one project. Neither app depends on the other. The pilot crew shoots their project in GeoCliks, everyone else stays in CompanyCam, and there is nothing to connect or disconnect when the pilot ends.
+- Q: How long does it take to set up one project?
+  A: For the office, about as long as it takes to sign up, name a project and send a handful of invites. For each crew member, it takes a few minutes on site: install the app, accept the invite and pick the project on the camera once. Stamping is always on, so there is no setting to teach.
+- Q: What happens when the 7-day trial ends?
+  A: Nothing is deleted. Captures and projects stay. The workspace falls back to the Free plan, which has one seat, 3 projects, 300 captures a month and PDF export of up to 20 photos, until you pick a plan. For a crew, that means Business at $25 a month for 5 seats, Crew 10 at $45 or Crew 25 at $105.
+- Q: Does my client need an app to see the photos?
+  A: No. Every photo has a code that anyone can enter at geocliks.com/verify in a browser, with no account, to see its capture time, location, street address and whether the file is the untouched original. You can also send a live share link to the project, on Plus and above, or a PDF report.
+

@@ -2824,4 +2824,9 @@ export const vi: Catalog = {
   "ccsw.hvac.leave2": "Các lần dịch vụ đang dở. Hãy đóng chúng ở nơi đã bắt đầu, và bắt đầu hồ sơ GeoCliks của mỗi khách hàng từ lần ghé tiếp theo.",
   "ccsw.hvac.firstTitle": "Bắt đầu với một kỹ thuật viên, không phải cả bảng điều phối",
   "ccsw.hvac.first": "Tài khoản mới được dùng thử gói Business miễn phí 7 ngày, có 5 chỗ ngồi và không cần thẻ. Cho một kỹ thuật viên chụp lúc đến, tình trạng, việc đã xong và lúc đi ở mọi lần dịch vụ trong một tuần, rồi tự nhập một mã ảnh tại geocliks.com/verify để thấy những gì khách hàng sẽ thấy. Một ảnh đã xác minh không quyết định yêu cầu bảo hành hay tranh chấp hóa đơn. Nó cho bên kia một thời gian và một địa chỉ họ tự kiểm tra được, thay vì phải tin lời bạn.",
+
+  // SEO batch 4: links to the CompanyCam migration post (/blog/move-one-companycam-project)
+  "ccmig.lead": "Kế hoạch đầy đủ, theo từng ngày:",
+  "ccmig.link": "kế hoạch 7 ngày để chuyển một dự án CompanyCam mà không làm gián đoạn đội",
+  "ccmig.enNote": "(bằng tiếng Anh)",
 };
