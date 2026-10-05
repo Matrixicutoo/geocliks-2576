@@ -129,6 +129,13 @@ export default function GpsTimestampCamera() {
             >
               {t("gps.related.delivery")}
             </Link>
+            . {t("sla.fromGps.lead")}{" "}
+            <Link
+              to="/solocator-alternative"
+              className="font-semibold text-amber-ink underline decoration-amber/40 underline-offset-4 hover:decoration-amber"
+            >
+              {t("sla.fromGps.link")}
+            </Link>
             .
           </p>
         </div>

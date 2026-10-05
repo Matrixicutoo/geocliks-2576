@@ -140,6 +140,16 @@ export const PAGE_SCHEMA = {
       { keys: { question: "cca.faq.q5", answer: "cca.faq.a5" } },
     ],
   },
+  "/solocator-alternative": {
+    crumbs: [{ name: "Solocator Alternative", path: "/solocator-alternative" }],
+    faq: [
+      { keys: { question: "sla.faq.q1", answer: "sla.faq.a1" } },
+      { keys: { question: "sla.faq.q2", answer: "sla.faq.a2" } },
+      { keys: { question: "sla.faq.q3", answer: "sla.faq.a3" } },
+      { keys: { question: "sla.faq.q4", answer: "sla.faq.a4" } },
+      { keys: { question: "sla.faq.q5", answer: "sla.faq.a5" } },
+    ],
+  },
   "/prove-crew-was-on-site": {
     crumbs: [{ name: "Prove a Crew Was On Site", path: "/prove-crew-was-on-site" }],
     faq: [

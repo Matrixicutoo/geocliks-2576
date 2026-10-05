@@ -61,6 +61,7 @@ const FALLBACK_LINKS = [
   "/construction-photo-log",
   "/alternatives/companycam",
   "/alternatives/timemark",
+  "/solocator-alternative",
   "/blog",
   "/help",
   "/about",

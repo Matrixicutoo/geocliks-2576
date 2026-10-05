@@ -60,6 +60,7 @@ const CompanyCamAlternative = lazy(() => import("./pages/companycam-alternative"
 const CanPhotoTimestampsBeFaked = lazy(() => import("./pages/can-photo-timestamps-be-faked"));
 const ProveCrewWasOnSite = lazy(() => import("./pages/prove-crew-was-on-site"));
 const ConstructionPhotoLog = lazy(() => import("./pages/construction-photo-log"));
+const SolocatorAlternative = lazy(() => import("./pages/solocator-alternative"));
 const RoofingPhotoDocumentation = lazy(() => import("./pages/roofing-photo-documentation"));
 const HvacPhotoDocumentation = lazy(() => import("./pages/hvac-photo-documentation"));
 const PropertyInspectionPhotos = lazy(() => import("./pages/property-inspection-photos"));
@@ -361,6 +362,9 @@ function App() {
               </Route>
               <Route path="/companycam-alternative">
                 <CompanyCamAlternative />
+              </Route>
+              <Route path="/solocator-alternative">
+                <SolocatorAlternative />
               </Route>
               <Route path="/can-photo-timestamps-be-faked">
                 <CanPhotoTimestampsBeFaked />

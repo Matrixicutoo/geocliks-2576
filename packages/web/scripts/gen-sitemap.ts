@@ -58,6 +58,7 @@ const STATIC_PATHS = [
   "/can-photo-timestamps-be-faked",
   "/prove-crew-was-on-site",
   "/construction-photo-log",
+  "/solocator-alternative",
   "/about",
   "/blog",
   "/blog/method",

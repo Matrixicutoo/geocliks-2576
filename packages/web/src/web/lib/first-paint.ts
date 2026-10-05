@@ -87,6 +87,7 @@ const LANDING: Record<string, { k: string; first: string; center?: boolean }> = 
   "/pricing": { k: "pr", first: "pr.s1", center: true },
   "/construction-photo-log": { k: "cpl", first: "cpl.s1" },
   "/companycam-alternative": { k: "cca", first: "cca.why" },
+  "/solocator-alternative": { k: "sla", first: "sla.why" },
   "/alternatives/timemark": { k: "tm", first: "tm.s1" },
   "/alternatives/companycam": { k: "cc", first: "cc.s1" },
   "/about": { k: "ab", first: "ab.s1" },

@@ -119,6 +119,14 @@ export const PAGE_SEO = {
       "Looking for a CompanyCam alternative? GeoCliks locks network time, GPS and street address on every shot, with a photo code anyone can check. Start free.",
   },
 
+  // Stamp-camera switchers. Solocator is pay-once with no backend, so the page
+  // leads on "someone else can check it", not on features.
+  "/solocator-alternative": {
+    title: "Solocator Alternative With Verified Photo Proof | GeoCliks",
+    description:
+      "Looking for a Solocator alternative? GeoCliks checks the time against a server and seals each photo with a code anyone can verify online. Start free.",
+  },
+
   "/prove-crew-was-on-site": {
     title: "How to Prove a Crew Was On Site: Photo, GPS, Time | GeoCliks",
     description:
@@ -222,6 +230,7 @@ export const LOCALIZED_SEO: Record<string, { title: TKey; description: TKey }> =
   "/proof-of-delivery": { title: "seo.pod.title", description: "seo.pod.description" },
   "/gps-timestamp-camera": { title: "seo.gps.title", description: "seo.gps.description" },
   "/companycam-alternative": { title: "seo.ccAlt.title", description: "seo.ccAlt.description" },
+  "/solocator-alternative": { title: "seo.soloAlt.title", description: "seo.soloAlt.description" },
   "/prove-crew-was-on-site": { title: "seo.crewOnSite.title", description: "seo.crewOnSite.description" },
   "/construction-photo-log": { title: "seo.photoLog.title", description: "seo.photoLog.description" },
   "/can-photo-timestamps-be-faked": {

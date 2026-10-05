@@ -97,6 +97,7 @@ const LANDING_LINKS: Array<{ to: string; label: string }> = [
   { to: "/alternatives/companycam", label: "cc.eyebrow" },
   { to: "/companycam-alternative", label: "cca.eyebrow" },
   { to: "/alternatives/timemark", label: "tm.eyebrow" },
+  { to: "/solocator-alternative", label: "sla.eyebrow" },
 ];
 
 export function SiteFooter() {

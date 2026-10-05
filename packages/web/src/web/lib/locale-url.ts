@@ -83,6 +83,7 @@ export const LOCALIZED_PATHS: readonly string[] = [
   "/can-photo-timestamps-be-faked",
   "/prove-crew-was-on-site",
   "/construction-photo-log",
+  "/solocator-alternative",
 ];
 
 const LOCALIZED = new Set(LOCALIZED_PATHS);
