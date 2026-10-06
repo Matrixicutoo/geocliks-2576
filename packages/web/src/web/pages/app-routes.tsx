@@ -172,6 +172,7 @@ export default function AppRoutes({ openNew = false }: { openNew?: boolean }) {
   return (
     <DashboardShell
       title={t("routes.title")}
+      subtitle={t("routes.subtitle")}
       actions={
         canManage ? (
           <>
@@ -195,9 +196,6 @@ export default function AppRoutes({ openNew = false }: { openNew?: boolean }) {
         ) : null
       }
     >
-      {/* Moved out of the page header: it reads as a lead-in to the list, not as chrome. */}
-      <p className="mb-4 text-[13px] text-fog">{t("routes.subtitle")}</p>
-
       {/* First-run guide for a brand new delivery workspace. It hides itself once every step is
           done, so established workspaces never see it. */}
       <DeliveryChecklist />
